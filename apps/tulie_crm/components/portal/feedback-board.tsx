@@ -1,0 +1,861 @@
+'use client'
+
+import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Textarea } from '@repo/ui'
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+    Card,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+    CardAction,
+    CardContent,
+    Badge,
+    useConfirm,
+} from '@repo/ui'
+import { Progress } from '@repo/ui'
+import {
+    MessageSquarePlus,
+    Send,
+    CheckCircle2,
+    Clock,
+    Circle,
+    Pause,
+    XCircle,
+    RotateCcw,
+    Upload,
+    Paperclip,
+    X,
+    Image as ImageIcon,
+    ChevronDown,
+    ChevronUp,
+    MessageCircle,
+    ClipboardList,
+    Plus,
+    ListTodo,
+    Loader2,
+    ZoomIn,
+    Edit,
+    Trash2,
+    ArrowDown,
+    ArrowRight,
+    ArrowUp,
+} from 'lucide-react'
+import { toast } from 'sonner'
+import { cn } from '@/lib/utils'
+import { compressImage, getImageFromClipboard, validateFileSize, generateFileName } from '@/lib/utils/image-compressor'
+import { sanitizeHtml } from '@/lib/security/sanitize'
+
+interface Attachment {
+    url: string
+    type: string
+    name: string
+}
+
+interface FeedbackItem {
+    id: string
+    project_id: string
+    customer_id?: string
+    title: string
+    content?: string
+    attachments: Attachment[]
+    status: 'pending' | 'in_progress' | 'completed' | 'on_hold' | 'cancelled' | 'revision_needed'
+    priority: 'low' | 'normal' | 'high' | 'urgent'
+    created_by_name: string
+    created_by_role: string
+    responded_at?: string
+    responded_by?: string
+    response_content?: string
+    sort_order: number
+    created_at: string
+    updated_at: string
+}
+
+interface FeedbackBoardProps {
+    projectId: string
+    customerId?: string
+    customerName?: string
+    isAdmin?: boolean
+}
+
+const STATUS_CONFIG: Record<string, { label: string; icon: typeof Circle; colorClass: string }> = {
+    pending:          { label: 'Chờ phản hồi', icon: Clock,        colorClass: 'text-amber-500' },
+    in_progress:      { label: 'Đang xử lý',   icon: RotateCcw,    colorClass: 'text-blue-500' },
+    completed:        { label: 'Hoàn thành',    icon: CheckCircle2,  colorClass: 'text-emerald-500' },
+    on_hold:          { label: 'Tạm dừng',      icon: Pause,        colorClass: 'text-muted-foreground' },
+    cancelled:        { label: 'Đã hủy',        icon: XCircle,      colorClass: 'text-rose-500' },
+    revision_needed:  { label: 'Cần chỉnh sửa', icon: RotateCcw,    colorClass: 'text-orange-500' },
+}
+
+const PRIORITY_CONFIG: Record<string, { label: string; colorClass: string; icon: typeof ArrowDown }> = {
+    low:    { label: 'Thấp',   colorClass: 'text-muted-foreground', icon: ArrowDown },
+    normal: { label: 'Bình thường', colorClass: 'text-muted-foreground', icon: ArrowRight },
+    high:   { label: 'Cao',    colorClass: 'text-orange-500', icon: ArrowUp },
+    urgent: { label: 'Gấp',   colorClass: 'text-rose-500', icon: ArrowUp },
+}
+
+function StatusBadge({ status }: { status: string }) {
+    const s = STATUS_CONFIG[status] || STATUS_CONFIG.pending
+    return (
+        <Badge variant={status === 'completed' ? 'secondary' : 'outline'} className="gap-1.5 px-2 py-0.5 font-normal text-foreground">
+            <s.icon className={cn("w-3.5 h-3.5", s.colorClass)} />
+            {s.label}
+        </Badge>
+    )
+}
+
+function formatTimeAgo(dateStr: string): string {
+    const diff = Date.now() - new Date(dateStr).getTime()
+    const mins = Math.floor(diff / 60000)
+    if (mins < 1) return 'Vừa xong'
+    if (mins < 60) return `${mins} phút trước`
+    const hours = Math.floor(mins / 60)
+    if (hours < 24) return `${hours} giờ trước`
+    const days = Math.floor(hours / 24)
+    if (days < 7) return `${days} ngày trước`
+    return new Date(dateStr).toLocaleDateString('vi-VN')
+}
+
+// ─── Image Lightbox ─────────────────────────────────
+function ImageLightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
+    return (
+        <div
+            className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4 cursor-zoom-out"
+            onClick={onClose}
+        >
+            <button
+                onClick={onClose}
+                className="absolute top-4 right-4 w-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center text-primary-foreground transition-colors"
+            >
+                <X className="w-5 h-5" />
+            </button>
+            <img
+                src={src}
+                alt={alt}
+                className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+            />
+        </div>
+    )
+}
+
+export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = false }: FeedbackBoardProps) {
+    const [items, setItems] = useState<FeedbackItem[]>([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [showForm, setShowForm] = useState(false)
+    const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
+
+    // Admin edit state
+    const [editItemId, setEditItemId] = useState<string | null>(null)
+    const [editTitle, setEditTitle] = useState('')
+    const [editContent, setEditContent] = useState('')
+    const [isDeleting, setIsDeleting] = useState<string | null>(null)
+
+    // Agency response edit state
+    const [editResponseId, setEditResponseId] = useState<string | null>(null)
+    const [editResponseContent, setEditResponseContent] = useState('')
+    const [editResponseStatus, setEditResponseStatus] = useState('in_progress')
+
+    // New item form state
+    const [newTitle, setNewTitle] = useState('')
+    const [newContent, setNewContent] = useState('')
+    const [newPriority, setNewPriority] = useState<string>('normal')
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [attachments, setAttachments] = useState<Attachment[]>([])
+    const [isUploading, setIsUploading] = useState(false)
+
+    // Lightbox
+    const [lightboxSrc, setLightboxSrc] = useState<string | null>(null)
+    const { confirm } = useConfirm()
+
+    const textareaRef = useRef<HTMLTextAreaElement>(null)
+    const fileInputRef = useRef<HTMLInputElement>(null)
+
+    const fetchItems = useCallback(async () => {
+        try {
+            const res = await fetch(`/api/portal-feedback?project_id=${projectId}`)
+            if (res.ok) {
+                const data = await res.json()
+                setItems(data)
+            }
+        } catch (err) {
+            console.error('Error fetching feedback:', err)
+        } finally {
+            setIsLoading(false)
+        }
+    }, [projectId])
+
+    useEffect(() => {
+        fetchItems()
+    }, [fetchItems])
+
+    const toggleExpand = (id: string) => {
+        setExpandedIds(prev => {
+            const next = new Set(prev)
+            if (next.has(id)) next.delete(id)
+            else next.add(id)
+            return next
+        })
+    }
+
+    // ─── Upload helper ──────────────────────────────────
+    const uploadFile = async (file: File | Blob, fileName?: string): Promise<Attachment | null> => {
+        try {
+            // Validate size
+            if (!validateFileSize(file)) {
+                toast.error('Ảnh vượt quá 5MB. Vui lòng chọn ảnh nhỏ hơn.')
+                return null
+            }
+
+            // Compress
+            const compressed = await compressImage(file)
+            const savedPercent = Math.round((1 - compressed.compressedSize / compressed.originalSize) * 100)
+            
+            // Upload compressed blob
+            const formData = new FormData()
+            const uploadName = fileName || generateFileName()
+            formData.append('file', compressed.blob, uploadName)
+
+            const res = await fetch('/api/upload', { method: 'POST', body: formData })
+            
+            if (!res.ok) {
+                const err = await res.json()
+                throw new Error(err.error || 'Upload failed')
+            }
+
+            const result = await res.json()
+            if (savedPercent > 10) {
+                toast.success(`Đã tải ảnh lên (nén ${savedPercent}%)`)
+            } else {
+                toast.success('Đã tải ảnh lên thành công')
+            }
+            
+            return {
+                url: result.url,
+                type: result.type || 'image/webp',
+                name: result.name || uploadName,
+            }
+        } catch (error: any) {
+            toast.error(error.message || 'Không thể tải ảnh lên')
+            return null
+        }
+    }
+
+    // ─── Paste clipboard handler ────────────────────────
+    const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
+        const file = getImageFromClipboard(e)
+        if (!file) return
+
+        e.preventDefault()
+        setIsUploading(true)
+
+        const attachment = await uploadFile(file, generateFileName('clipboard.png'))
+        if (attachment) {
+            setAttachments(prev => [...prev, attachment])
+        }
+
+        setIsUploading(false)
+    }, [])
+
+    // ─── File upload handler ────────────────────────────
+    const handleFileUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files
+        if (!files || files.length === 0) return
+
+        setIsUploading(true)
+
+        for (const file of Array.from(files)) {
+            if (!file.type.startsWith('image/')) {
+                toast.error(`${file.name} không phải file ảnh`)
+                continue
+            }
+
+            const attachment = await uploadFile(file, generateFileName(file.name))
+            if (attachment) {
+                setAttachments(prev => [...prev, attachment])
+            }
+        }
+
+        setIsUploading(false)
+        // Reset input so same file can be selected again
+        if (fileInputRef.current) fileInputRef.current.value = ''
+    }, [])
+
+    // ─── Remove attachment ──────────────────────────────
+    const removeAttachment = (index: number) => {
+        setAttachments(prev => prev.filter((_, i) => i !== index))
+    }
+
+    const handleSubmit = async () => {
+        if (!newTitle.trim()) {
+            toast.error('Vui lòng nhập tiêu đề yêu cầu')
+            return
+        }
+
+        setIsSubmitting(true)
+        try {
+            const res = await fetch('/api/portal-feedback', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    project_id: projectId,
+                    customer_id: customerId,
+                    title: newTitle.trim(),
+                    content: newContent.trim() || null,
+                    attachments: attachments,
+                    created_by_name: customerName || 'Khách hàng',
+                    created_by_role: 'customer',
+                    priority: newPriority,
+                })
+            })
+
+            if (res.ok) {
+                toast.success('Đã gửi yêu cầu chỉnh sửa!')
+                setNewTitle('')
+                setNewContent('')
+                setNewPriority('normal')
+                setAttachments([])
+                setShowForm(false)
+                await fetchItems()
+            } else {
+                const err = await res.json()
+                toast.error(err.error || 'Không thể tạo yêu cầu')
+            }
+        } catch {
+            toast.error('Có lỗi xảy ra, vui lòng thử lại')
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
+
+    const handleSaveEdit = async (id: string) => {
+        setIsSubmitting(true)
+        try {
+            const res = await fetch('/api/portal-feedback', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, title: editTitle, content: editContent })
+            })
+            if (res.ok) {
+                toast.success('Đã cập nhật yêu cầu')
+                setEditItemId(null)
+                await fetchItems()
+            } else throw new Error()
+        } catch {
+            toast.error('Có lỗi xảy ra khi cập nhật')
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
+
+    const handleSaveResponse = async (id: string) => {
+        setIsSubmitting(true)
+        try {
+            const res = await fetch('/api/portal-feedback', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    id, 
+                    response_content: editResponseContent,
+                    responded_by: 'Agency', // Use standard or dynamic
+                    status: editResponseStatus
+                })
+            })
+            if (res.ok) {
+                toast.success('Đã gửi phản hồi')
+                setEditResponseId(null)
+                await fetchItems()
+            } else throw new Error()
+        } catch {
+            toast.error('Có lỗi xảy ra khi gửi phản hồi')
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
+
+    const handleDelete = async (id: string) => {
+        const isConfirmed = await confirm({
+            title: 'Xóa yêu cầu',
+            description: 'Bạn có chắc chắn muốn xóa yêu cầu này? Hành động này không thể hoàn tác.',
+            confirmText: 'Xóa',
+            cancelText: 'Hủy',
+            variant: 'destructive',
+        })
+        if (!isConfirmed) return
+        setIsDeleting(id)
+        try {
+            const res = await fetch(`/api/portal-feedback?id=${id}`, { method: 'DELETE' })
+            if (res.ok) {
+                toast.success('Đã xóa yêu cầu')
+                await fetchItems()
+            } else throw new Error()
+        } catch {
+            toast.error('Có lỗi xảy ra khi xóa')
+        } finally {
+            setIsDeleting(null)
+        }
+    }
+
+    const totalCount = items.length
+    const pendingCount = items.filter(i => ['pending', 'revision_needed'].includes(i.status)).length
+    const activeCount = items.filter(i => i.status === 'in_progress').length
+    const completedCount = items.filter(i => i.status === 'completed').length
+    
+    // Calculate progress safely
+    const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0
+
+    return (
+        <Card className="w-full font-sans">
+            {/* Lightbox */}
+            {lightboxSrc && (
+                <ImageLightbox src={lightboxSrc} alt="Enlarged" onClose={() => setLightboxSrc(null)} />
+            )}
+
+            {/* Document Header */}
+            <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4 border-b border-transparent">
+                <div className="space-y-1.5 flex-1 pr-4">
+                    <CardTitle className="text-base font-semibold leading-none tracking-tight">Nhật ký xử lý yêu cầu</CardTitle>
+                    <CardDescription className="text-sm text-muted-foreground pt-1">Danh sách yêu cầu chỉnh sửa và theo dõi trạng thái</CardDescription>
+                </div>
+                <div className="shrink-0 flex items-center">
+                    <Button 
+                        size="sm"
+                        className="h-8 shadow-sm"
+                        onClick={() => setShowForm(!showForm)} 
+                    >
+                        <Plus className="w-3.5 h-3.5 mr-1.5" />
+                        Thêm yêu cầu mới
+                    </Button>
+                </div>
+            </CardHeader>
+
+            <CardContent className="p-0">
+                {/* Statistics Banner */}
+                <div className="flex flex-col sm:flex-row border-b divide-y sm:divide-y-0 sm:divide-x bg-muted/20">
+                    <div className="px-6 py-4 flex-1 flex flex-col justify-center">
+                        <div className="flex justify-between items-end mb-2">
+                            <p className="text-sm font-medium text-muted-foreground">Tiến độ hoàn thành</p>
+                            <span className="text-sm font-semibold text-primary">{Math.round(progressPercent)}%</span>
+                        </div>
+                        <Progress value={progressPercent} className="h-2" />
+                    </div>
+                
+                    <div className="px-6 py-4 flex flex-wrap sm:flex-nowrap items-center justify-between gap-6 sm:gap-8 shrink-0">
+                        <div className="text-center flex-1 sm:flex-none">
+                            <p className="text-xs text-muted-foreground mb-1">Tổng cộng</p>
+                            <p className="text-xl font-semibold text-foreground">{totalCount}</p>
+                        </div>
+                        <div className="text-center flex-1 sm:flex-none">
+                            <p className="text-xs text-muted-foreground mb-1">Cần xử lý</p>
+                            <p className="text-xl font-semibold text-amber-500">{pendingCount}</p>
+                        </div>
+                        <div className="text-center flex-1 sm:flex-none">
+                            <p className="text-xs text-muted-foreground mb-1">Đang làm</p>
+                            <p className="text-xl font-semibold text-blue-500">{activeCount}</p>
+                        </div>
+                        <div className="text-center flex-1 sm:flex-none">
+                            <p className="text-xs text-muted-foreground mb-1">Hoàn thành</p>
+                            <p className="text-xl font-semibold text-emerald-500">{completedCount}</p>
+                        </div>
+                    </div>
+                </div>
+
+            {/* Form Creation */}
+            {showForm && (
+                <div className="p-6 bg-muted border-b border-border">
+                    <div className="max-w-4xl space-y-5 bg-background p-6 rounded-md border border-border/60">
+                        <div className="flex items-center gap-2 mb-2 pb-4 border-b border-border">
+                            <MessageSquarePlus className="w-5 h-5 text-foreground" />
+                            <h3 className="font-semibold text-foreground">Tạo yêu cầu / Phản hồi mới</h3>
+                        </div>
+
+                        <div>
+                            <label className="text-sm font-medium mb-2 block">Tiêu đề yêu cầu <span className="text-destructive">*</span></label>
+                            <Input
+                                value={newTitle}
+                                onChange={(e) => setNewTitle(e.target.value)}
+                                placeholder="Ghi chú ngắn gọn (ví dụ: Thay đổi màu sắc logo)"
+                                className="h-11 font-medium"
+                                autoFocus
+                            />
+                        </div>
+
+                        <div>
+                            <label className="text-sm font-medium mb-2 block">
+                                Diễn giải chi tiết
+                                <span className="text-muted-foreground font-normal text-xs ml-2">Hỗ trợ dán ảnh (Ctrl+V)</span>
+                            </label>
+                            <Textarea
+                                ref={textareaRef}
+                                value={newContent}
+                                onChange={(e) => setNewContent(e.target.value)}
+                                onPaste={handlePaste}
+                                placeholder="Mô tả cụ thể những gì bạn cần thay đổi hoặc cập nhật..."
+                                className="min-h-[160px] resize-y leading-relaxed"
+                            />
+                        </div>
+
+                        {/* Upload buttons */}
+                        <div className="flex items-center gap-3">
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                onChange={handleFileUpload}
+                                className="hidden"
+                            />
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => fileInputRef.current?.click()}
+                                disabled={isUploading}
+                                className="gap-2"
+                            >
+                                {isUploading ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <Upload className="w-4 h-4" />
+                                )}
+                                Tải ảnh lên
+                            </Button>
+                            <span className="text-[11px] text-muted-foreground font-medium">
+                                Hoặc dán ảnh từ clipboard (Ctrl+V) • Tối đa 5MB/ảnh • Tự động nén
+                            </span>
+                        </div>
+
+                        {/* Attachments preview gallery */}
+                        {attachments.length > 0 && (
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium flex items-center gap-2">
+                                    <Paperclip className="w-3.5 h-3.5" />
+                                    Ảnh đính kèm ({attachments.length})
+                                </label>
+                                <div className="flex flex-wrap gap-3">
+                                    {attachments.map((att, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="relative group w-24 h-24 rounded-lg overflow-hidden border border-border bg-muted"
+                                        >
+                                            <img
+                                                src={att.url}
+                                                alt={att.name}
+                                                className="w-full h-full object-cover cursor-zoom-in transition-transform group-hover:scale-105"
+                                                onClick={() => setLightboxSrc(att.url)}
+                                            />
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); removeAttachment(idx) }}
+                                                className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/60 hover:bg-black/80 flex items-center justify-center text-primary-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+                                            >
+                                                <X className="w-3 h-3" />
+                                            </button>
+                                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-transparent p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <ZoomIn className="w-3 h-3 text-primary-foreground mx-auto" />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center justify-between pt-2">
+                            <div className="flex items-center gap-3">
+                                <span className="text-sm font-medium mr-1">Mức độ:</span>
+                                {Object.entries(PRIORITY_CONFIG).map(([key, config]) => (
+                                    <button
+                                        key={key}
+                                        onClick={() => setNewPriority(key)}
+                                        className={cn(
+                                            "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all border",
+                                            newPriority === key
+                                                ? "bg-muted text-foreground border-border shadow-sm"
+                                                : "bg-background text-muted-foreground border-transparent hover:bg-muted"
+                                        )}
+                                    >
+                                        <config.icon className={cn("w-3.5 h-3.5", newPriority === key ? config.colorClass : "text-muted-foreground")} />
+                                        {config.label}
+                                    </button>
+                                ))}
+                            </div>
+                            
+                            <div className="flex gap-3 w-full sm:w-auto">
+                                <Button variant="ghost" onClick={() => { setShowForm(false); setAttachments([]) }} className="flex-1 sm:flex-none">
+                                    Hủy bỏ
+                                </Button>
+                                <Button onClick={handleSubmit} disabled={isSubmitting || isUploading} className="flex-1 sm:flex-none min-w-[120px]">
+                                    {isSubmitting ? <Clock className="w-4 h-4 mr-2 animate-spin" /> : <Send className="w-4 h-4 mr-2" />}
+                                    Gửi yêu cầu
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Content Body */}
+            <div>
+                {isLoading ? (
+                    <div className="py-20 flex flex-col items-center justify-center text-center">
+                        <Clock className="w-8 h-8 text-muted-foreground/50 animate-spin mb-3" />
+                        <p className="text-sm font-medium text-muted-foreground">Đang tải dữ liệu nhật ký...</p>
+                    </div>
+                ) : items.length === 0 ? (
+                    <div className="py-24 flex flex-col items-center justify-center text-center bg-muted/50">
+                        <ClipboardList className="w-12 h-12 text-zinc-200 mb-4" />
+                        <h4 className="text-base font-semibold text-foreground/80 mb-1">Chưa có bản ghi nào</h4>
+                        <p className="text-sm text-muted-foreground max-w-sm">Danh sách yêu cầu chỉnh sửa và theo dõi trạng thái sẽ xuất hiện tại đây.</p>
+                        <Button variant="outline" onClick={() => setShowForm(true)} className="mt-6 bg-background font-semibold">
+                            Tạo tác vụ đầu tiên
+                        </Button>
+                    </div>
+                ) : (
+                    <div className="flex flex-col border-t divide-y divide-border">
+                        {/* List Header */}
+                        <div className="bg-muted/30 px-6 py-3 flex items-center justify-between text-sm font-medium text-muted-foreground">
+                            <span>{pendingCount} cần xử lý • {completedCount} hoàn thành</span>
+                        </div>
+                        
+                        <div className="flex flex-col divide-y divide-border">
+                            {items.map((item, index) => {
+                                const isExpanded = expandedIds.has(item.id)
+                                const isCompleted = item.status === 'completed'
+                                const priorityConf = PRIORITY_CONFIG[item.priority] || PRIORITY_CONFIG.normal
+                                const hasAttachments = item.attachments && item.attachments.length > 0
+                                const sConfig = STATUS_CONFIG[item.status] || STATUS_CONFIG.pending
+                                
+                                return (
+                                    <div key={item.id} className={cn("group flex flex-col transition-colors", isExpanded ? "bg-muted/30" : "hover:bg-muted/50", isCompleted && !isExpanded && "opacity-75")}>
+                                        {/* Main Row */}
+                                        <div 
+                                            className="flex items-start sm:items-center gap-4 px-5 py-4 cursor-pointer"
+                                            onClick={() => toggleExpand(item.id)}
+                                        >
+                                            <div className="shrink-0 mt-0.5 sm:mt-0">
+                                                <sConfig.icon className={cn("w-5 h-5", sConfig.colorClass)} />
+                                            </div>
+                                            
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-1.5">
+                                                    <span className={cn("font-medium text-[15px] truncate", isCompleted && "text-muted-foreground line-through")}>
+                                                        {item.title}
+                                                    </span>
+                                                    <div className="flex items-center gap-2 shrink-0">
+                                                        <Badge variant="outline" className={cn("text-[10px] uppercase font-bold px-1.5 py-0", priorityConf.colorClass)}>
+                                                            {priorityConf.label}
+                                                        </Badge>
+                                                        <Badge variant={isCompleted ? "secondary" : "outline"} className={cn("text-[10px] uppercase px-1.5 py-0 font-semibold", sConfig.colorClass)}>
+                                                            {sConfig.label}
+                                                        </Badge>
+                                                        {hasAttachments && (
+                                                            <div className="flex items-center gap-1 text-[11px] text-muted-foreground font-medium bg-muted px-1.5 rounded-sm h-5">
+                                                                <Paperclip className="w-3 h-3" /> {item.attachments.length}
+                                                            </div>
+                                                        )}
+                                                        {item.response_content && (
+                                                            <div className="flex items-center gap-1 text-[11px] text-blue-600 font-medium bg-blue-50 px-1.5 rounded-sm h-5">
+                                                                <MessageCircle className="w-3 h-3" /> 1
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                                    <span>#{item.id.substring(0,8)} • mở lúc {formatTimeAgo(item.created_at)} bởi <span className="font-semibold text-foreground/80">{item.created_by_name}</span></span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="shrink-0 text-muted-foreground">
+                                                <ChevronDown className={cn("w-5 h-5 transition-transform", isExpanded && "rotate-180 text-foreground")} />
+                                            </div>
+                                        </div>
+
+                                        {/* Expanded Detail Row */}
+                                        {isExpanded && (
+                                            <div className="px-0 sm:px-5 pb-5">
+                                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-8 bg-background rounded-lg border border-border/60 p-5 shadow-sm">
+                                                                {/* Left: Original Request */}
+                                                                <div className="lg:col-span-7 space-y-4">
+                                                                    <div className="flex items-start justify-between gap-4 mb-3">
+                                                                        <div className="flex items-center gap-2">
+                                                                            <div className="w-6 h-6 rounded-full bg-secondary flex items-center justify-center border border-border shrink-0">
+                                                                                <span className="text-[10px] text-muted-foreground">{item.created_by_name.charAt(0)}</span>
+                                                                            </div>
+                                                                            <div>
+                                                                                <p className="text-xs font-semibold text-foreground">
+                                                                                    Nội dung yêu cầu từ {item.created_by_name}
+                                                                                </p>
+                                                                                <p className="text-[10px] text-muted-foreground">
+                                                                                    Vào lúc {new Date(item.created_at).toLocaleString('vi-VN')}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        {isAdmin && editItemId !== item.id && (
+                                                                            <div className="flex items-center gap-2">
+                                                                                <Button variant="outline" size="sm" onClick={(e) => {
+                                                                                    e.stopPropagation()
+                                                                                    setEditItemId(item.id)
+                                                                                    setEditTitle(item.title)
+                                                                                    setEditContent(item.content || '')
+                                                                                }} className="h-7 text-xs px-2 bg-background hover:bg-muted border-border text-muted-foreground font-semibold hover:text-foreground transition-colors">
+                                                                                    <Edit className="w-3 h-3 mr-1.5" /> Sửa
+                                                                                </Button>
+                                                                                <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); handleDelete(item.id); }} disabled={isDeleting === item.id} className="h-7 text-xs px-2 bg-background hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 border-border transition-colors text-muted-foreground font-semibold">
+                                                                                    {isDeleting === item.id ? <Loader2 className="w-3 h-3 mr-1.5 animate-spin" /> : <Trash2 className="w-3 h-3 mr-1.5" />} Xóa
+                                                                                </Button>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                    
+                                                                    {editItemId === item.id ? (
+                                                                        <div className="space-y-4 bg-muted/50 p-4 border border-border rounded-md">
+                                                                            <div>
+                                                                                <label className="text-sm font-medium block mb-2">Sửa tiêu đề</label>
+                                                                                <Input value={editTitle} onChange={e => setEditTitle(e.target.value)} className="h-9 text-sm font-medium" />
+                                                                            </div>
+                                                                            <div>
+                                                                                <label className="text-sm font-medium block mb-2">Sửa mô tả chi tiết</label>
+                                                                                <Textarea value={editContent} onChange={e => setEditContent(e.target.value)} className="min-h-[100px] text-sm leading-relaxed" />
+                                                                            </div>
+                                                                            <div className="flex items-center gap-2 justify-end pt-2">
+                                                                                <Button variant="ghost" size="sm" onClick={() => setEditItemId(null)} className="h-8 shadow-none font-semibold text-muted-foreground">Hủy</Button>
+                                                                                <Button onClick={() => handleSaveEdit(item.id)} disabled={isSubmitting} size="sm" className="h-8 shadow-md font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all">
+                                                                                    {isSubmitting ? <Loader2 className="w-3 h-3 mr-1.5 animate-spin" /> : <Send className="w-3 h-3 mr-1.5" />} Tóm tắt lại
+                                                                                </Button>
+                                                                            </div>
+                                                                        </div>
+                                                                    ) : item.content ? (
+                                                                        <div 
+                                                                            className="text-[13px] text-foreground/80 leading-relaxed font-medium prose prose-sm max-w-none prose-img:rounded-md prose-img:border prose-img:border-border"
+                                                                            dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.content) }}
+                                                                        />
+                                                                    ) : (
+                                                                        <p className="text-[13px] text-muted-foreground font-medium">Không có mô tả chi tiết.</p>
+                                                                    )}
+
+                                                                    {/* Attachments Gallery */}
+                                                                    {hasAttachments && (
+                                                                        <div className="space-y-2 pt-3 border-t border-border">
+                                                                            <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                                                                                <Paperclip className="w-3 h-3" />
+                                                                                Ảnh đính kèm ({item.attachments.length})
+                                                                            </p>
+                                                                            <div className="flex flex-wrap gap-2">
+                                                                                {item.attachments.map((att, i) => (
+                                                                                    <div
+                                                                                        key={i}
+                                                                                        className="relative group w-20 h-20 rounded-lg overflow-hidden border border-border bg-muted cursor-zoom-in hover:shadow-md transition-shadow"
+                                                                                        onClick={(e) => { e.stopPropagation(); setLightboxSrc(att.url) }}
+                                                                                    >
+                                                                                        <img
+                                                                                            src={att.url}
+                                                                                            alt={att.name}
+                                                                                            className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                                                                                        />
+                                                                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                                                                            <ZoomIn className="w-4 h-4 text-primary-foreground opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                ))}
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+
+                                                                {/* Right: Agency Response */}
+                                                                <div className="lg:col-span-5 border-t lg:border-t-0 lg:border-l border-border pt-6 lg:pt-0 lg:pl-8 flex flex-col h-full">
+                                                                    <div className="flex items-center justify-between mb-3">
+                                                                        <div className="flex items-center gap-2">
+                                                                            <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center border border-blue-200 shrink-0">
+                                                                                <MessageCircle className="w-3 h-3 text-blue-700" />
+                                                                            </div>
+                                                                            <div>
+                                                                                <p className="text-xs font-semibold text-foreground">
+                                                                                    Agency phản hồi
+                                                                                </p>
+                                                                                {item.responded_at && (
+                                                                                    <p className="text-[10px] text-blue-600/70 font-medium">
+                                                                                        {new Date(item.responded_at).toLocaleString('vi-VN')}
+                                                                                    </p>
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        {isAdmin && editResponseId !== item.id && (
+                                                                            <Button 
+                                                                                variant="outline" 
+                                                                                size="sm" 
+                                                                                onClick={(e) => { 
+                                                                                    e.stopPropagation(); 
+                                                                                    setEditResponseId(item.id);
+                                                                                    setEditResponseContent(item.response_content || '');
+                                                                                    setEditResponseStatus(item.status === 'pending' ? 'in_progress' : item.status);
+                                                                                }} 
+                                                                                className="h-7 text-xs px-2 bg-background hover:bg-muted border-border text-muted-foreground font-semibold hover:text-foreground transition-colors"
+                                                                            >
+                                                                                <Edit className="w-3 h-3 mr-1.5" /> {item.response_content ? 'Sửa' : 'Trả lời'}
+                                                                            </Button>
+                                                                        )}
+                                                                    </div>
+                                                                    
+                                                                    {editResponseId === item.id ? (
+                                                                        <div className="flex-1 flex flex-col gap-3">
+                                                                            <Textarea 
+                                                                                value={editResponseContent} 
+                                                                                onChange={e => setEditResponseContent(e.target.value)} 
+                                                                                placeholder="Nhập nội dung phản hồi..."
+                                                                                className="flex-1 min-h-[120px] text-[13px] resize-none" 
+                                                                            />
+                                                                            <div className="flex items-center justify-between gap-2">
+                                                                                <div className="flex items-center gap-2">
+                                                                                    <span className="text-xs font-medium text-muted-foreground hidden sm:inline-block">Trạng thái:</span>
+                                                                                    <select
+                                                                                        value={editResponseStatus}
+                                                                                        onChange={e => setEditResponseStatus(e.target.value)}
+                                                                                        className="h-8 rounded-md border border-input bg-background px-3 text-xs font-medium text-foreground sm:min-w-[140px] focus:outline-none focus:ring-1 focus:ring-ring"
+                                                                                    >
+                                                                                        {Object.entries(STATUS_CONFIG).map(([key, config]) => (
+                                                                                            <option key={key} value={key}>{config.label}</option>
+                                                                                        ))}
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div className="flex items-center gap-2">
+                                                                                    <Button variant="ghost" size="sm" onClick={() => setEditResponseId(null)} className="h-8 shadow-none font-semibold text-muted-foreground">Hủy</Button>
+                                                                                    <Button onClick={() => handleSaveResponse(item.id)} disabled={isSubmitting} size="sm" className="h-8 shadow-md font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-all">
+                                                                                        {isSubmitting ? <Loader2 className="w-3 h-3 animate-spin mr-1.5" /> : <Send className="w-3 h-3 mr-1.5" />} {isSubmitting ? 'Đ.gửi...' : 'Gửi'}
+                                                                                    </Button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    ) : item.response_content ? (
+                                                                        <div className="bg-blue-50/50 p-4 rounded-lg border border-blue-100/50 text-[13px] text-blue-900 leading-relaxed font-medium">
+                                                                            <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.response_content) }} />
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div className="bg-muted p-4 border border-border border-dashed rounded-lg flex items-center justify-center flex-1 min-h-[100px]">
+                                                                            <p className="text-xs text-muted-foreground font-medium text-center">Đang chờ phản hồi từ đội ngũ hỗ trợ...</p>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                )}
+            </div>
+        </CardContent>
+        </Card>
+    )
+}

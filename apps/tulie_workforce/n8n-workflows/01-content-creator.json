@@ -1,0 +1,152 @@
+{
+  "name": "Content Creator - AI Viết Bài",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "hours", "hoursInterval": 8 }]
+        }
+      },
+      "id": "trigger-schedule",
+      "name": "Lịch tự động (8h/lần)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [180, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "content/create",
+        "responseMode": "responseNode"
+      },
+      "id": "trigger-webhook",
+      "name": "Webhook (Manual trigger)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [180, 500]
+    },
+    {
+      "parameters": {
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.app'}}/api/n8n/templates",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.N8N_WEBHOOK_SECRET}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-templates",
+      "name": "Lấy Content Templates",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [420, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "const templates = $input.first().json.templates;\nconst category = $input.first().json.category || 'education';\nconst topic = $input.first().json.topic || 'AI trong marketing';\n\nconst template = templates.find(t => t.category === category) || templates[0];\n\nconst prompt = template.prompt_template\n  .replace('{{topic}}', topic)\n  .replace('{{product_name}}', topic)\n  .replace('{{company}}', 'Tulie Lab')\n  .replace('{{context}}', topic)\n  .replace('{{features}}', topic);\n\nconst imagePrompt = (template.image_prompt_template || '')\n  .replace('{{topic}}', topic)\n  .replace('{{product_name}}', topic)\n  .replace('{{event_name}}', topic);\n\nreturn [{\n  json: {\n    prompt,\n    imagePrompt,\n    category: template.category,\n    tone: template.tone,\n    hashtags: template.hashtag_suggestions || [],\n    topic\n  }\n}];"
+      },
+      "id": "prepare-prompt",
+      "name": "Chuẩn bị Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [640, 400]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "={{$json.prompt}}\n\nHãy trả về JSON với format:\n{\n  \"title\": \"tiêu đề bài viết\",\n  \"body\": \"nội dung caption đầy đủ\",\n  \"hashtags\": [\"#hashtag1\", \"#hashtag2\"],\n  \"image_prompt\": \"prompt tiếng Anh để tạo ảnh minh họa phù hợp với bài viết\"\n}\n\nChỉ trả về JSON, không giải thích thêm."
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.8,
+          "responseFormat": "json_object"
+        }
+      },
+      "id": "openai-chat",
+      "name": "GPT-4o Viết Bài",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [860, 400],
+      "credentials": {
+        "openAiApi": {
+          "id": "OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = JSON.parse($input.first().json.message.content);\nconst meta = $('Chuẩn bị Prompt').first().json;\n\nreturn [{\n  json: {\n    title: response.title,\n    body: response.body,\n    hashtags: response.hashtags || meta.hashtags,\n    image_prompt: response.image_prompt || meta.imagePrompt,\n    category: meta.category,\n    tone: meta.tone,\n    status: 'draft'\n  }\n}];"
+      },
+      "id": "parse-response",
+      "name": "Parse AI Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1080, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.app'}}/api/n8n/content",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.N8N_WEBHOOK_SECRET}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "save-content",
+      "name": "Lưu vào Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1300, 400]
+    }
+  ],
+  "connections": {
+    "Lịch tự động (8h/lần)": {
+      "main": [[ { "node": "Lấy Content Templates", "type": "main", "index": 0 } ]]
+    },
+    "Webhook (Manual trigger)": {
+      "main": [[ { "node": "Lấy Content Templates", "type": "main", "index": 0 } ]]
+    },
+    "Lấy Content Templates": {
+      "main": [[ { "node": "Chuẩn bị Prompt", "type": "main", "index": 0 } ]]
+    },
+    "Chuẩn bị Prompt": {
+      "main": [[ { "node": "GPT-4o Viết Bài", "type": "main", "index": 0 } ]]
+    },
+    "GPT-4o Viết Bài": {
+      "main": [[ { "node": "Parse AI Response", "type": "main", "index": 0 } ]]
+    },
+    "Parse AI Response": {
+      "main": [[ { "node": "Lưu vào Supabase", "type": "main", "index": 0 } ]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [{ "name": "content" }, { "name": "ai" }],
+  "meta": {
+    "instanceId": "tulie-workforce"
+  }
+}

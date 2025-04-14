@@ -1,0 +1,736 @@
+'use client'
+
+import { RetailOrder } from '@/types'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Label } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Separator } from '@repo/ui'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@repo/ui'
+import { formatCurrency, formatDate } from '@/lib/utils/format'
+import {
+    Phone,
+    Mail,
+    FileText,
+    ExternalLink,
+    CreditCard,
+    Save,
+    CheckCircle2,
+    Sparkles,
+    Download,
+    QrCode,
+    History,
+    Send,
+    Building2,
+    Copy,
+    Truck,
+    MapPin,
+    ImageIcon,
+    Printer,
+    AlertTriangle,
+    Scale
+} from 'lucide-react'
+import { LoadingSpinner } from '@repo/ui'
+import { useState } from 'react'
+import { updateRetailOrder, recordRetailPayment } from '@/lib/supabase/services/retail-order-service'
+import { getBankAccounts } from '@/lib/supabase/services/settings-service'
+import { generatePaymentContent } from '@/lib/utils/payment-utils'
+import { cn } from '@/lib/utils'
+import { toast } from 'sonner'
+import { useEffect } from 'react'
+import { buildVietQrUrl } from '@/lib/utils/vietqr'
+
+interface OrderDetailContentProps {
+    order: RetailOrder
+}
+
+export function OrderDetailContent({ order }: OrderDetailContentProps) {
+    const [isSavingLinks, setIsSavingLinks] = useState(false)
+    const [isRecordingPayment, setIsRecordingPayment] = useState(false)
+    const [paymentAmount, setPaymentAmount] = useState('')
+    const [isConfirmingTransfer, setIsConfirmingTransfer] = useState(false)
+    const [transferConfirmed, setTransferConfirmed] = useState(false)
+    const [isRecalculating, setIsRecalculating] = useState(false)
+    const [availableBanks, setAvailableBanks] = useState<any[]>([])
+    const [links, setLinks] = useState({
+        resource_link: order.resource_link || '',
+        tracking_number: order.tracking_number || ''
+    })
+    const metaShipping = (order as any).metadata?.shipping || {}
+    const [shippingInfo, setShippingInfo] = useState({
+        recipient_name: order.shipping_info?.recipient_name || metaShipping.name || '',
+        recipient_phone: order.shipping_info?.recipient_phone || metaShipping.phone || '',
+        province: order.shipping_info?.province || (metaShipping.region === 'hanoi' ? 'Hà Nội' : '') || '',
+        ward: order.shipping_info?.ward || '',
+        address: order.shipping_info?.address || metaShipping.address || '',
+    })
+    const [isSavingShipping, setIsSavingShipping] = useState(false)
+
+    useEffect(() => {
+        const fetchBanks = async () => {
+            const data = await getBankAccounts()
+            setAvailableBanks(data)
+        }
+        fetchBanks()
+    }, [])
+
+    const remainingAmount = order.total_amount - (order.paid_amount || 0)
+
+    // Find the bank account configured as default for Studio B2C (retail_order)
+    const defaultB2CBank = availableBanks.find((b: any) => (b.default_for || []).includes('retail_order'))
+    const fallbackBank = defaultB2CBank || availableBanks[0]
+    const bankInfo = (order as any).metadata?.bank_info || (fallbackBank ? {
+        bank_name: fallbackBank.bank_name,
+        account_no: fallbackBank.account_no,
+        account_name: fallbackBank.account_name
+    } : {
+        bank_name: 'ICB',
+        account_no: '104002106705',
+        account_name: 'NGHIEM THI LIEN'
+    })
+
+
+    const paymentContent = generatePaymentContent(order.order_number, 'studio')
+    const qrUrl = buildVietQrUrl({ bankName: bankInfo.bank_name, accountNo: bankInfo.account_no, accountName: bankInfo.account_name, amount: remainingAmount, addInfo: paymentContent })
+
+    const handleSaveLinks = async () => {
+        if (links.resource_link === order.resource_link && links.tracking_number === order.tracking_number) {
+            toast.info('Không có thay đổi nào để lưu')
+            return
+        }
+
+        setIsSavingLinks(true)
+        try {
+            await updateRetailOrder(order.id, links)
+            toast.success('Đã cập nhật link bàn giao')
+        } catch (error: any) {
+            toast.error(error.message || 'Lỗi khi cập nhật link')
+        } finally {
+            setIsSavingLinks(false)
+        }
+    }
+
+    const handleRecordPayment = async () => {
+        const amount = parseFloat(paymentAmount)
+        if (isNaN(amount) || amount <= 0) {
+            toast.error('Vui lòng nhập số tiền hợp lệ')
+            return
+        }
+
+        setIsRecordingPayment(true)
+        try {
+            await recordRetailPayment(order.id, amount)
+            toast.success('Đã ghi nhận thanh toán và gửi Telegram')
+            setPaymentAmount('')
+        } catch (error: any) {
+            toast.error(error.message || 'Lỗi khi ghi nhận thanh toán')
+        } finally {
+            setIsRecordingPayment(false)
+        }
+    }
+
+    const handleRecalculate = async () => {
+        setIsRecalculating(true)
+        try {
+            const res = await fetch('/api/studio/recalculate-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderId: order.id }),
+            })
+            const data = await res.json()
+            if (!res.ok) throw new Error(data.error || 'Failed')
+
+            if (data.delta === 0) {
+                toast.info('Thanh toán đã chính xác — không cần điều chỉnh')
+            } else {
+                toast.success(`Đã cân bằng: ${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.previousPaid)} → ${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.actualPaid)}`)
+                // Refresh page to show updated data
+                window.location.reload()
+            }
+        } catch (error: any) {
+            toast.error(error.message || 'Lỗi khi cân bằng thanh toán')
+        } finally {
+            setIsRecalculating(false)
+        }
+    }
+
+
+    return (
+        <div className="grid gap-6 lg:grid-cols-3">
+            <div className="lg:col-span-2 space-y-6">
+                {/* Delivery Links Section */}
+                <Card className="rounded-md border-border overflow-hidden">
+                    <CardHeader className="bg-muted/50 border-b">
+                        <div className="flex items-center justify-between">
+                            <div className="space-y-1">
+                                <CardTitle className="text-base font-semibold flex items-center gap-2">
+                                    <Sparkles className="h-4 w-4 text-primary" />
+                                    Bàn giao tài nguyên (Delivery)
+                                </CardTitle>
+                                <CardDescription className="text-xs font-normal">Quản lý các đường dẫn sản phẩm cho khách hàng</CardDescription>
+                            </div>
+                            <Button
+                                onClick={handleSaveLinks}
+                                disabled={isSavingLinks}
+                                size="sm"
+                                className="h-8 rounded-lg font-medium"
+                            >
+                                {isSavingLinks ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="mr-1.5 h-3.5 w-3.5" />}
+                                Lưu thay đổi
+                            </Button>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="p-6 space-y-5">
+                        <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                                <Label className="text-sm font-semibold text-zinc-700">Link bàn giao</Label>
+                                {order.resource_link && (
+                                    <Badge variant="outline" className="font-normal text-[11px] bg-muted py-0 h-5 border-primary/20 text-primary">
+                                        <a href={order.resource_link} target="_blank" className="flex items-center gap-1">
+                                            Mở link <ExternalLink className="h-3 w-3" />
+                                        </a>
+                                    </Badge>
+                                )}
+                            </div>
+                            <Input
+                                placeholder="Dán link Google Drive, Dropbox hoặc folder bàn giao..."
+                                value={links.resource_link}
+                                onChange={(e) => setLinks({ ...links, resource_link: e.target.value })}
+                                className="border-border focus-visible:ring-primary/20 bg-white shadow-none"
+                            />
+                            <p className="text-[11px] text-muted-foreground font-normal">Chỉ hiển thị sau khi khách thanh toán 100%.</p>
+                        </div>
+
+                        <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                                <Label className="text-sm font-semibold text-zinc-700 flex items-center gap-2">
+                                    <Truck className="h-4 w-4 text-muted-foreground" />
+                                    Mã vận đơn / Link tra cứu
+                                </Label>
+                                {order.tracking_number && /^https?:\/\//.test(order.tracking_number) && (
+                                    <Badge variant="outline" className="font-normal text-[11px] bg-muted py-0 h-5">
+                                        <a href={order.tracking_number} target="_blank" className="flex items-center gap-1 hover:text-primary">
+                                            Tra cứu <ExternalLink className="h-3 w-3" />
+                                        </a>
+                                    </Badge>
+                                )}
+                            </div>
+                            <Input
+                                placeholder="VD: GHTK123456 hoặc https://tracking.ghn.vn/..."
+                                value={links.tracking_number}
+                                onChange={(e) => setLinks({ ...links, tracking_number: e.target.value })}
+                                className="border-border focus-visible:ring-primary/20 bg-white shadow-none"
+                            />
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Customer Photos & Original Link */}
+                {((order as any).metadata?.photo_urls?.length > 0 || (order as any).metadata?.original_link) && (
+                    <Card className="rounded-md border-border overflow-hidden">
+                        <CardHeader className="bg-muted/50 border-b">
+                            <div className="space-y-1">
+                                <CardTitle className="text-base font-semibold flex items-center gap-2">
+                                    <ImageIcon className="h-4 w-4 text-primary" />
+                                    Ảnh gốc khách gửi
+                                </CardTitle>
+                                <CardDescription className="text-xs font-normal">
+                                    {((order as any).metadata?.photo_urls?.length || 0)} ảnh tải lên {(order as any).metadata?.original_link && "• Có kèm theo link ảnh gốc"}
+                                </CardDescription>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="p-4">
+                            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                                {(order as any).metadata.photo_urls.map((url: string, idx: number) => (
+                                    <a key={idx} href={url} target="_blank" rel="noopener noreferrer" className="block">
+                                        <div className="relative aspect-square rounded-lg overflow-hidden border border-border bg-muted hover:ring-2 hover:ring-primary/30 transition-all">
+                                            <img src={url} alt={`Ảnh ${idx + 1}`} className="w-full h-full object-cover" />
+                                            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/40 to-transparent px-2 py-1">
+                                                <p className="text-[11px] text-white font-medium">Ảnh {idx + 1}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                ))}
+                            </div>
+                            
+                            {(order as any).metadata?.original_link && (
+                                <div className={cn("mt-4", (order as any).metadata?.photo_urls?.length > 0 ? "pt-4 border-t border-border" : "mt-0")}>
+                                    <p className="text-[11px] font-semibold text-muted-foreground mb-2">Link Drive/iCloud</p>
+                                    <div className="flex items-center gap-2 bg-muted border border-border p-3 rounded-lg overflow-hidden group">
+                                        <ExternalLink className="h-4 w-4 text-muted-foreground shrink-0" />
+                                        <a href={(order as any).metadata.original_link} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-blue-600 hover:underline truncate">
+                                            {(order as any).metadata.original_link}
+                                        </a>
+                                    </div>
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+                )}
+
+                {/* Product/Service List */}
+                <Card className="rounded-md border-border overflow-hidden">
+                    <CardHeader className="bg-muted/50 border-b">
+                        <div className="space-y-1">
+                            <CardTitle className="text-base font-semibold flex items-center gap-2">
+                                <FileText className="h-4 w-4 text-primary" />
+                                Chi tiết sản phẩm & dịch vụ
+                            </CardTitle>
+                            <CardDescription className="text-xs font-normal">Danh sách các hạng mục khách hàng đã đăng ký</CardDescription>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                        <div className="overflow-x-auto">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>STT</TableHead>
+                                        <TableHead>Tên sản phẩm/dịch vụ</TableHead>
+                                        <TableHead className="text-center">SL</TableHead>
+                                        <TableHead className="text-right">Đơn giá</TableHead>
+                                        <TableHead className="text-right">Thành tiền</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {order.items && order.items.length > 0 ? (
+                                        order.items.map((item, index) => (
+                                            <TableRow key={item.id}>
+                                                <TableCell className="font-medium text-muted-foreground text-xs w-12">{index + 1}</TableCell>
+                                                <TableCell>
+                                                    <div className="font-semibold">{item.product_name}</div>
+                                                    {item.product_id && (
+                                                        <div className="text-[11px] text-muted-foreground mt-0.5 font-medium">SKU: {item.product_id.split('-')[0].toUpperCase()}</div>
+                                                    )}
+                                                </TableCell>
+                                                <TableCell className="text-center tabular-nums">{item.quantity}</TableCell>
+                                                <TableCell className="text-right font-medium text-muted-foreground tabular-nums">{formatCurrency(item.unit_price)}</TableCell>
+                                                <TableCell className="text-right tabular-nums">{formatCurrency(item.total_price)}</TableCell>
+                                            </TableRow>
+                                        ))
+                                    ) : (
+                                        <TableRow>
+                                            <TableCell colSpan={5} className="py-12 text-center">
+                                                <div className="flex flex-col items-center gap-2">
+                                                    <div className="w-10 rounded-full bg-muted flex items-center justify-center">
+                                                        <FileText className="h-5 w-5 text-zinc-200" />
+                                                    </div>
+                                                    <p className="text-sm text-muted-foreground font-medium">Chưa có thông tin sản phẩm.</p>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                    <TableRow className="bg-muted/30 border-t">
+                                        <TableCell colSpan={4} className="text-right text-[11px] text-muted-foreground">Tổng cộng</TableCell>
+                                        <TableCell className="text-right text-base tabular-nums">
+                                            {formatCurrency(order.total_amount)}
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Info & Notes */}
+                <div className="grid md:grid-cols-2 gap-6">
+                    <Card className="rounded-md border-border overflow-hidden">
+                        <CardHeader className="bg-muted/50 border-b">
+                            <div className="space-y-1">
+                                <CardTitle className="text-base font-semibold flex items-center gap-2">
+                                    <Phone className="h-4 w-4 text-primary" />
+                                    Chi tiết khách hàng
+                                </CardTitle>
+                                <CardDescription className="text-xs font-normal">Thông tin liên hệ và ghi chú đơn hàng</CardDescription>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="p-6 space-y-4">
+                            <div className="flex items-start gap-4">
+                                <div className="h-9 w-9 rounded-lg bg-muted flex items-center justify-center shrink-0 border border-border">
+                                    <Phone className="h-4 w-4 text-muted-foreground" />
+                                </div>
+                                <div>
+                                    <p className="text-[11px] font-semibold text-muted-foreground mb-0.5">Điện thoại</p>
+                                    <p className="text-sm font-semibold text-foreground">{order.customer_phone || 'Chưa cập nhật'}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-4">
+                                <div className="h-9 w-9 rounded-lg bg-muted flex items-center justify-center shrink-0 border border-border">
+                                    <Mail className="h-4 w-4 text-muted-foreground" />
+                                </div>
+                                <div>
+                                    <p className="text-[11px] font-semibold text-muted-foreground mb-0.5">Email</p>
+                                    <p className="text-sm font-semibold text-foreground truncate max-w-[180px]">{order.customer_email || 'Chưa cập nhật'}</p>
+                                </div>
+                            </div>
+                            <Separator className="bg-muted" />
+                            <div className="space-y-2">
+                                <p className="text-[11px] font-semibold text-muted-foreground">Ghi chú nghiệp vụ</p>
+                                <div className="p-3 bg-muted/50 rounded-lg border border-dashed border-border">
+                                    <p className="text-sm text-muted-foreground leading-relaxed font-normal whitespace-pre-line">
+                                        {order.notes || "Không có ghi chú nào từ khách hàng hoặc tư vấn viên."}
+                                    </p>
+                                </div>
+                            </div>
+                            {/* Per-vỉ size info from metadata */}
+                            {(order as any).metadata?.vi_sizes?.length > 0 && (() => {
+                                const SIZE_NAMES: Record<string, string> = {
+                                    'mix': 'Mix (3×4×6 + 5×3×4 + 3×2×3)',
+                                    '2x3': '2×3 cm', '3x4': '3×4 cm', '4x6': '4×6 cm',
+                                    '3.5x4.5': '3.5×4.5 cm', '3.3x4.8': '3.3×4.8 cm',
+                                    '4.5x4.5': '4.5×4.5 cm', '5x5': '5×5 cm',
+                                }
+                                const viLabels = (order as any).metadata?.vi_labels || []
+                                return (
+                                    <div className="space-y-2 mt-3">
+                                        <p className="text-[11px] font-semibold text-muted-foreground flex items-center gap-1"><Printer className="size-3" /> Kích thước in từng vỉ</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {(order as any).metadata.vi_sizes.map((sizeId: string, idx: number) => (
+                                                <div key={idx} className="px-2.5 py-1.5 rounded-lg bg-blue-50 border border-blue-100 text-xs font-semibold text-blue-700">
+                                                    Vỉ {idx + 1}{viLabels[idx] ? ` (${viLabels[idx]})` : ''}: {SIZE_NAMES[sizeId] || sizeId}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )
+                            })()}
+                        </CardContent>
+                    </Card>
+
+                    {/* Shipping Info Card */}
+                    <Card className="rounded-md border-border overflow-hidden">
+                        <CardHeader className="bg-muted/50 border-b">
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-1">
+                                    <CardTitle className="text-base font-semibold flex items-center gap-2">
+                                        <MapPin className="h-4 w-4 text-primary" />
+                                        Thông tin nhận hàng
+                                    </CardTitle>
+                                    <CardDescription className="text-xs font-normal">Người nhận có thể khác khách hàng</CardDescription>
+                                </div>
+                                <Button
+                                    size="sm"
+                                    className="h-8 rounded-lg font-medium"
+                                    disabled={isSavingShipping}
+                                    onClick={async () => {
+                                        setIsSavingShipping(true)
+                                        try {
+                                            await updateRetailOrder(order.id, { shipping_info: shippingInfo } as any)
+                                            toast.success('Đã lưu thông tin nhận hàng')
+                                        } catch (e: any) {
+                                            toast.error(e.message || 'Lỗi khi lưu')
+                                        } finally {
+                                            setIsSavingShipping(false)
+                                        }
+                                    }}
+                                >
+                                    {isSavingShipping ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="mr-1.5 h-3.5 w-3.5" />}
+                                    Lưu thay đổi
+                                </Button>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="p-6 space-y-3">
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="space-y-1">
+                                    <Label className="text-[11px] font-semibold text-muted-foreground">Người nhận</Label>
+                                    <Input
+                                        value={shippingInfo.recipient_name}
+                                        onChange={e => setShippingInfo({ ...shippingInfo, recipient_name: e.target.value })}
+                                        placeholder={order.customer_name}
+                                        className="h-9 text-sm"
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label className="text-[11px] font-semibold text-muted-foreground">SĐT nhận hàng</Label>
+                                    <Input
+                                        value={shippingInfo.recipient_phone}
+                                        onChange={e => setShippingInfo({ ...shippingInfo, recipient_phone: e.target.value })}
+                                        placeholder={order.customer_phone || '09xx'}
+                                        className="h-9 text-sm"
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="space-y-1">
+                                    <Label className="text-[11px] font-semibold text-muted-foreground">Tỉnh / TP</Label>
+                                    <Input
+                                        value={shippingInfo.province}
+                                        onChange={e => setShippingInfo({ ...shippingInfo, province: e.target.value })}
+                                        placeholder="VD: TP. Hồ Chí Minh"
+                                        className="h-9 text-sm"
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label className="text-[11px] font-semibold text-muted-foreground">Phường / Xã</Label>
+                                    <Input
+                                        value={shippingInfo.ward}
+                                        onChange={e => setShippingInfo({ ...shippingInfo, ward: e.target.value })}
+                                        placeholder="VD: Phường Bến Nghé"
+                                        className="h-9 text-sm"
+                                    />
+                                </div>
+                            </div>
+                            <div className="space-y-1">
+                                <Label className="text-[11px] font-semibold text-muted-foreground">Địa chỉ chi tiết</Label>
+                                <Input
+                                    value={shippingInfo.address}
+                                    onChange={e => setShippingInfo({ ...shippingInfo, address: e.target.value })}
+                                    placeholder="Số nhà, tên đường, tòa nhà..."
+                                    className="h-9 text-sm"
+                                />
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+
+            <div className="space-y-6">
+                {/* Payment Card */}
+                <Card className="rounded-md border-border overflow-hidden">
+                    <CardHeader className="bg-muted/50 border-b pb-3">
+                        <Badge variant="outline" className="w-fit mb-2 text-[11px] uppercase tracking-widest px-3 py-1">
+                            Thanh toán
+                        </Badge>
+                        <CardTitle className="text-3xl tracking-tighter tabular-nums">
+                            {formatCurrency(remainingAmount)}
+                        </CardTitle>
+                        <CardDescription className="font-normal">Công nợ còn phải thu</CardDescription>
+                    </CardHeader>
+
+                    <CardContent className="space-y-5 pt-5">
+                        {/* Payment Progress */}
+                        <div className="space-y-3">
+                            <div className="flex justify-between items-end">
+                                <div>
+                                    <p className="text-[11px] text-muted-foreground mb-1">
+                                        Tiến độ thanh toán
+                                    </p>
+                                    <p className="text-2xl tabular-nums">
+                                        {formatCurrency(order.paid_amount || 0)}
+                                        <span className="text-sm font-normal text-muted-foreground"> / {formatCurrency(order.total_amount)}</span>
+                                    </p>
+                                </div>
+                                <Badge
+                                    className={cn(
+                                        "font-bold px-2.5 py-1",
+                                        order.payment_status === 'paid'
+                                            ? "bg-emerald-100 text-emerald-700 border-emerald-200"
+                                            : order.payment_status === 'partial'
+                                                ? "bg-amber-50 text-amber-700 border-amber-200"
+                                                : "bg-muted text-muted-foreground border-border"
+                                    )}
+                                    variant="outline"
+                                >
+                                    {order.payment_status === 'paid' ? 'Hoàn tất' : order.payment_status === 'partial' ? 'Đã thu 1 phần' : 'Chưa thanh toán'}
+                                </Badge>
+                            </div>
+
+                            {/* Progress Bar */}
+                            <div className="h-2 bg-muted rounded-full overflow-hidden">
+                                <div
+                                    className={cn(
+                                        "h-full rounded-full transition-all duration-700 ease-out",
+                                        order.payment_status === 'paid'
+                                            ? "bg-emerald-500"
+                                            : (order.paid_amount || 0) > 0
+                                                ? "bg-amber-500"
+                                                : "bg-muted"
+                                    )}
+                                    style={{ width: `${order.total_amount > 0 ? Math.min(((order.paid_amount || 0) / order.total_amount) * 100, 100) : 0}%` }}
+                                />
+                            </div>
+
+                            {remainingAmount > 0 && (
+                                <p className="text-xs text-muted-foreground font-medium">
+                                    Còn thiếu: <span className="font-bold text-foreground">{formatCurrency(remainingAmount)}</span>
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Overpayment Warning Banner */}
+                        {(order.paid_amount || 0) > order.total_amount && (
+                            <div className="p-4 rounded-md bg-red-50 border border-red-200 space-y-3">
+                                <div className="flex items-start gap-3">
+                                    <div className="h-8 w-8 rounded-lg bg-red-100 flex items-center justify-center shrink-0">
+                                        <AlertTriangle className="h-4 w-4 text-red-600" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-red-800">
+                                            Thu thừa {formatCurrency((order.paid_amount || 0) - order.total_amount)}
+                                        </p>
+                                        <p className="text-xs text-red-600 mt-0.5">
+                                            Paid: {formatCurrency(order.paid_amount || 0)} / Total: {formatCurrency(order.total_amount)}. 
+                                            Có thể do xác thực tay + webhook ghi nhận trùng lặp.
+                                        </p>
+                                    </div>
+                                </div>
+                                <Button
+                                    onClick={handleRecalculate}
+                                    disabled={isRecalculating}
+                                    size="sm"
+                                    variant="outline"
+                                    className="w-full h-9 rounded-lg text-xs border-red-200 text-red-700 hover:bg-red-100"
+                                >
+                                    {isRecalculating
+                                        ? <LoadingSpinner size="sm" className="mr-2" />
+                                        : <Scale className="mr-1.5 h-3.5 w-3.5" />
+                                    }
+                                    Cân bằng thanh toán
+                                </Button>
+                            </div>
+                        )}
+
+                        {remainingAmount > 0 && (
+                            <>
+                                <Separator />
+
+                                {/* Bank Info */}
+                                <div className="p-3 rounded-lg bg-blue-50/70 border border-blue-100 space-y-1.5">
+                                    <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest text-blue-600">
+                                        <Building2 className="h-3 w-3" />
+                                        Thông tin chuyển khoản
+                                    </div>
+                                    <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
+                                        <span className="text-muted-foreground font-medium">Ngân hàng:</span>
+                                        <span className="font-bold">{bankInfo.bank_name}</span>
+                                        <span className="text-muted-foreground font-medium">Số TK:</span>
+                                        <span className="font-bold font-mono tracking-wider flex items-center gap-1.5">
+                                            {bankInfo.account_no}
+                                            <button onClick={() => { navigator.clipboard.writeText(bankInfo.account_no); toast.success('Đã copy STK') }} className="text-muted-foreground hover:text-foreground transition-colors">
+                                                <Copy className="h-3 w-3" />
+                                            </button>
+                                        </span>
+                                        <span className="text-muted-foreground font-medium">Chủ TK:</span>
+                                        <span className="font-bold">{bankInfo.account_name}</span>
+                                        <span className="text-muted-foreground font-medium">Nội dung:</span>
+                                        <span className="font-bold font-mono text-primary flex items-center gap-1.5">
+                                            {paymentContent}
+                                            <button onClick={() => { navigator.clipboard.writeText(paymentContent); toast.success('Đã copy nội dung CK') }} className="text-muted-foreground hover:text-foreground transition-colors">
+                                                <Copy className="h-3 w-3" />
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* QR Code */}
+                                <div className="flex flex-col items-center gap-3 p-4 rounded-md border bg-muted/20">
+                                    <div className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+                                        <QrCode className="h-4 w-4" />
+                                        Mã QR thanh toán nhanh
+                                    </div>
+                                    <div className="p-2 bg-white rounded-md border">
+                                        <img src={qrUrl} alt="QR Code" className="w-44 h-auto" />
+                                    </div>
+                                    <p className="text-[11px] text-muted-foreground text-center leading-relaxed font-medium">
+                                        Gửi mã này cho khách để quét bằng app Ngân hàng.
+                                    </p>
+                                </div>
+
+                                {/* Two buttons: Copy text + Copy QR image */}
+                                <div className="grid grid-cols-2 gap-2">
+                                    <Button
+                                        variant="outline"
+                                        className="rounded-lg text-xs border-blue-200 text-blue-700 hover:bg-blue-50"
+                                        onClick={() => {
+                                            const portalUrl = `${window.location.origin}/portal/order/${order.public_token}`
+                                            const amount = new Intl.NumberFormat('vi-VN').format(remainingAmount)
+                                            const msg = [
+                                                `💳 THÔNG TIN CHUYỂN KHOẢN`,
+                                                `━━━━━━━━━━━━━━━━━`,
+                                                `🏦 Ngân hàng: ${bankInfo.bank_name}`,
+                                                `📋 Số TK: ${bankInfo.account_no}`,
+                                                `👤 Chủ TK: ${bankInfo.account_name}`,
+                                                `💰 Số tiền: ${amount}đ`,
+                                                `📝 Nội dung CK: ${paymentContent}`,
+                                                ``,
+                                                `⚠️ Vui lòng KHÔNG thay đổi nội dung chuyển khoản để hệ thống xác nhận tự động.`,
+                                                ``,
+                                                `🔗 Theo dõi đơn hàng: ${portalUrl}`,
+                                            ].join('\n')
+                                            navigator.clipboard.writeText(msg)
+                                            toast.success('Đã copy nội dung — dán vào Zalo')
+                                        }}
+                                    >
+                                        <Copy className="mr-1.5 h-3.5 w-3.5" />
+                                        Copy nội dung
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        className="rounded-lg text-xs border-emerald-200 text-emerald-700 hover:bg-emerald-50"
+                                        onClick={async () => {
+                                            try {
+                                                const res = await fetch(qrUrl)
+                                                const blob = await res.blob()
+                                                // Convert to PNG blob for clipboard
+                                                const pngBlob = new Blob([blob], { type: 'image/png' })
+                                                await navigator.clipboard.write([
+                                                    new ClipboardItem({ 'image/png': pngBlob })
+                                                ])
+                                                toast.success('Đã copy mã QR — dán vào Zalo')
+                                            } catch {
+                                                toast.error('Không thể copy ảnh, thử click phải vào mã QR → Copy Image')
+                                            }
+                                        }}
+                                    >
+                                        <QrCode className="mr-1.5 h-3.5 w-3.5" />
+                                        Copy mã QR
+                                    </Button>
+                                </div>
+
+
+                            </>
+                        )}
+                    </CardContent>
+                </Card>
+
+                {/* Record Payment Section (Manual) */}
+                {remainingAmount > 0 && (
+                    <Card className="rounded-md border-border overflow-hidden">
+                        <CardHeader className="pb-3 bg-muted/30">
+                            <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                                <History className="h-4 w-4 text-muted-foreground" />
+                                Thu tiền thực tế (Manual)
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-5 space-y-4">
+                            <div className="space-y-3">
+                                <Label className="text-xs font-semibold text-muted-foreground">Số tiền khách vừa chuyển khoản/tiền mặt (đ)</Label>
+                                <div className="relative">
+                                    <Input
+                                        type="text"
+                                        inputMode="numeric"
+                                        placeholder={new Intl.NumberFormat('vi-VN').format(remainingAmount)}
+                                        value={paymentAmount ? new Intl.NumberFormat('vi-VN').format(Number(paymentAmount)) : ''}
+                                        onChange={(e) => {
+                                            const raw = e.target.value.replace(/\./g, '').replace(/[^0-9]/g, '')
+                                            setPaymentAmount(raw)
+                                        }}
+                                        className="h-12 text-lg tabular-nums border-border focus-visible:ring-emerald-500/20 pl-4 pr-14"
+                                    />
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-zinc-300 pointer-events-none">đ</div>
+                                </div>
+                            </div>
+                            <Button
+                                onClick={handleRecordPayment}
+                                disabled={isRecordingPayment}
+                                className={cn(
+                                    "w-full h-11 rounded-lg transition-all",
+                                    "bg-zinc-900 text-white hover:bg-zinc-800"
+                                )}
+                            >
+                                {isRecordingPayment ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4" />}
+                                Ghi nhận & Bắn Telegram
+                            </Button>
+                            <div className="flex gap-2 p-3 bg-muted rounded-lg border border-border">
+                                <div className="h-4 w-4 rounded-full bg-zinc-900 flex items-center justify-center shrink-0 mt-0.5">
+                                    <span className="text-[11px] text-white">!</span>
+                                </div>
+                                <p className="text-[11px] text-muted-foreground font-medium leading-normal">Hệ thống sẽ ngay lập tức gửi một tin nhắn báo biến động số dư lên Telegram Group của team Tulie Studio.</p>
+                            </div>
+                        </CardContent>
+                    </Card>
+                )}
+            </div>
+        </div>
+    )
+}

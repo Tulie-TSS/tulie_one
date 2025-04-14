@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibe 1: ClickUp/Linear (Monochrome Premium)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Premium Tech/Marketing Vibe (Black & White Core) */
+      --bg-canvas: #FAFAFA; /* Very light neutral gray */
+      --bg-surface: #FFFFFF;
+      --bg-surface-hover: #F4F4F5; /* Zinc 100 */
+      
+      /* Crisp Zinc Monochromes */
+      --text-main: #09090B; /* Zinc 950 - Almost solid black */
+      --text-muted: #71717A; /* Zinc 500 */
+      
+      /* Primary: Pure Tech Black */
+      --primary: #09090B; 
+      --primary-hover: #27272A; /* Zinc 800 */
+      --primary-glow: rgba(0, 0, 0, 0.15);
+      --primary-tint: #F4F4F5; /* Zinc 100 */
+      
+      /* Borders & Dividers */
+      --border-light: rgba(0, 0, 0, 0.08); /* Extremely subtle and clean */
+      --border-focus: rgba(0, 0, 0, 0.3);
+      
+      /* Vibrant Status */
+      --status-success-bg: #D1FAE5; --status-success-text: #059669; /* Emerald */
+      --status-warning-bg: #FEF3C7; --status-warning-text: #D97706; /* Amber */
+      --status-danger-bg: #FEE2E2; --status-danger-text: #E11D48; /* Rose */
+      --status-info-bg: #DBEAFE; --status-info-text: #2563EB; /* Blue */
+      --status-purple-bg: #F3E8FF; --status-purple-text: #9333EA; /* Purple */
+      
+      --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px; --radius-xl: 16px;
+      
+      /* Deep Soft Shadows (Linear/Apple Vibe) */
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 3px 6px rgba(0, 0, 0, 0.03), 0 8px 16px rgba(0, 0, 0, 0.03);
+      --shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.04), 0 16px 32px rgba(0, 0, 0, 0.06);
+      
+      --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif; background-color: var(--bg-canvas); color: var(--text-main);
+      line-height: 1.5; padding: 40px; -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
+    
+    /* Typography & Layout */
+    .section-title { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    
+    /* Core Components */
+    .card { background: var(--bg-surface); border-radius: var(--radius-lg); border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); padding: 24px; transition: all 0.3s var(--ease-apple); }
+    .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: rgba(15, 23, 42, 0.12); }
+    
+    .btn { display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 16px; font-size: 14px; font-weight: 500; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s var(--ease-apple); border: none; outline: none; gap: 8px; }
+    .btn:active { transform: scale(0.97) !important; }
+    .btn-primary { background: var(--primary); color: white; box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1); }
+    .btn-primary:hover { background: var(--primary-hover); box-shadow: 0 4px 12px var(--primary-glow), inset 0 1px 0 rgba(255,255,255,0.1); transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); }
+    .btn-outline:hover { background: var(--bg-surface-hover); border-color: rgba(15, 23, 42, 0.15); }
+    
+    /* Badges */
+    .badge { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; font-size: 12px; font-weight: 600; border-radius: 99px; letter-spacing: 0.02em; }
+    .badge::before { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; }
+    .badge-success { background: var(--status-success-bg); color: var(--status-success-text); } .badge-success::before { background: var(--status-success-text); }
+    .badge-warning { background: var(--status-warning-bg); color: var(--status-warning-text); } .badge-warning::before { background: var(--status-warning-text); }
+    .badge-danger { background: var(--status-danger-bg); color: var(--status-danger-text); } .badge-danger::before { background: var(--status-danger-text); }
+    .badge-purple { background: var(--status-purple-bg); color: var(--status-purple-text); } .badge-purple::before { background: var(--status-purple-text); }
+
+    /* Inputs & Switch */
+    .input { height: 36px; padding: 0 12px; font-size: 14px; border-radius: var(--radius-md); border: 1px solid var(--border-light); background: var(--bg-surface); box-shadow: var(--shadow-sm); transition: all 0.2s var(--ease-apple); outline: none; width: 100%; }
+    .input:hover { border-color: rgba(15, 23, 42, 0.15); } .input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow), var(--shadow-sm); }
+    
+    .switch-wrap { display: flex; align-items: center; gap: 12px; }
+    .switch { position: relative; width: 44px; height: 24px; background: var(--border-light); border-radius: 99px; cursor: pointer; transition: background 0.3s var(--ease-apple); }
+    .switch.on { background: var(--primary); }
+    .switch-thumb { position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: white; border-radius: 50%; box-shadow: var(--shadow-sm); transition: transform 0.3s var(--ease-apple); }
+    .switch.on .switch-thumb { transform: translateX(20px); }
+
+    /* Segmented Control */
+    .segmented { display: inline-flex; background: var(--bg-surface-hover); padding: 4px; border-radius: var(--radius-md); border: 1px solid var(--border-light); }
+    .segment { padding: 6px 16px; font-size: 14px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-radius: var(--radius-sm); transition: all 0.2s var(--ease-apple); }
+    .segment.active { background: var(--bg-surface); color: var(--text-main); box-shadow: var(--shadow-sm); }
+    
+    /* Kanban / Table */
+    .kanban-board { display: flex; gap: 24px; overflow-x: auto; padding-bottom: 12px; }
+    .kanban-column { background: var(--bg-surface-hover); border-radius: var(--radius-lg); width: 320px; flex-shrink: 0; padding: 16px; border: 1px solid var(--border-light); }
+    .kanban-card { background: var(--bg-surface); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); cursor: grab; transition: all 0.2s var(--ease-apple); }
+    .kanban-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    
+    /* --- EXTENDED COMPONENTS --- */
+    /* Progress */
+    .progress-wrap { width: 100%; background: var(--bg-surface-hover); border-radius: 99px; height: 8px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); }
+    .progress-bar { background: var(--primary); height: 100%; border-radius: 99px; }
+    
+    /* Skeleton */
+    .skeleton { background: linear-gradient(90deg, #F4F4F5 25%, #E4E4E7 50%, #F4F4F5 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: var(--radius-sm); }
+    @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* Accordion */
+    .accordion { border-bottom: 1px solid var(--border-light); padding: 16px 0; cursor: pointer; }
+    .accordion-header { display: flex; justify-content: space-between; align-items: center; font-weight: 500; font-size: 15px; }
+    .accordion-content { font-size: 14px; color: var(--text-muted); padding-top: 8px; line-height: 1.6; }
+
+    /* Checkbox */
+    .checkbox-wrap { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .custom-check { width: 18px; height: 18px; border: 1px solid rgba(0,0,0,0.2); border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: var(--bg-surface); }
+    .custom-check.checked { background: var(--primary); border-color: var(--primary); color: white; }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div>
+    <h1 style="font-size: 32px; font-weight: 700; letter-spacing: -0.03em;">Vibe 1: The Monochrome Tech</h1>
+    <p style="color: var(--text-muted); font-size: 16px; margin-top: 4px;">ClickUp/Vercel Vibe. Minimalist Black & White Base + Vibrant Tags + Soft Drop Shadows.</p>
+  </div>
+  
+  <!-- Basic Tools -->
+  <div>
+    <h2 class="section-title">Controls & Navigations</h2>
+    <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap;">
+      <div class="segmented">
+        <div class="segment active">Overview</div><div class="segment">List View</div><div class="segment">Board</div>
+      </div>
+      <div class="switch-wrap">
+        <div class="switch on" onclick="this.classList.toggle('on')"><div class="switch-thumb"></div></div>
+        <span style="font-size: 14px; font-weight: 500;">Enable AI</span>
+      </div>
+      <button class="btn btn-outline" style="border-radius: 99px;">Rounded Base</button>
+      <button class="btn btn-primary">
+        New Task
+      </button>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div>
+    <h2 class="section-title">Surface & Insights</h2>
+    <div class="grid-3">
+      <div class="card">
+        <div style="font-size: 13px; color: var(--text-muted); font-weight: 500;">TOTAL REVENUE</div>
+        <div style="font-size: 32px; font-weight: 700; margin: 8px 0; letter-spacing: -0.02em;">$45,231.89</div>
+        <div class="progress-wrap" style="margin-bottom: 8px;"><div class="progress-bar" style="width: 70%;"></div></div>
+        <div style="font-size: 13px; color: var(--text-muted);">+20.1% from last month</div>
+      </div>
+      
+      <div class="card">
+        <h3 style="font-weight: 600; font-size: 15px; margin-bottom: 16px;">Loading State</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="skeleton" style="height: 20px; width: 100%;"></div>
+          <div class="skeleton" style="height: 20px; width: 80%;"></div>
+          <div class="skeleton" style="height: 20px; width: 90%;"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-weight: 600; font-size: 15px; margin-bottom: 8px;">Checklist</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="checkbox-wrap" onclick="this.querySelector('.custom-check').classList.toggle('checked')">
+            <div class="custom-check checked"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <span style="font-size: 14px; font-weight: 500;">Wireframe Mockups</span>
+          </div>
+          <div class="checkbox-wrap" onclick="this.querySelector('.custom-check').classList.toggle('checked')">
+            <div class="custom-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></svg></div>
+            <span style="font-size: 14px; font-weight: 500;">Client Feedback</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kanban -->
+  <div>
+    <h2 class="section-title">Kanban (Pill Badges)</h2>
+    <div class="kanban-board">
+      <div class="kanban-column">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-weight: 600; font-size: 14px;">
+          <span>To Do</span>
+          <span style="background: rgba(0,0,0,0.06); color: var(--text-muted); padding: 2px 8px; border-radius: 12px; font-size: 12px;">2</span>
+        </div>
+        <div class="kanban-card">
+          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <span class="badge badge-danger">High Prio</span> <span class="badge badge-purple">Design</span>
+          </div>
+          <div style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Revamp Auth Flow</div>
+        </div>
+      </div>
+      <div class="kanban-column">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-weight: 600; font-size: 14px;">
+          <span>In Progress</span>
+          <span style="background: rgba(0,0,0,0.06); color: var(--text-muted); padding: 2px 8px; border-radius: 12px; font-size: 12px;">1</span>
+        </div>
+        <div class="kanban-card">
+          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <span class="badge badge-warning">Marketing</span>
+          </div>
+          <div style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Q1 Campaign Assets</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion & Data -->
+  <div>
+    <h2 class="section-title">FAQ & Accordion</h2>
+    <div style="background: var(--bg-surface); border-radius: var(--radius-lg); border: 1px solid var(--border-light); padding: 8px 24px; box-shadow: var(--shadow-sm);">
+      <div class="accordion">
+        <div class="accordion-header">
+          What is the tech stack?
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        <div class="accordion-content">Tailwind CSS 4, React 19, and Radix UI under the hood.</div>
+      </div>
+      <div class="accordion" style="border-bottom: none;">
+        <div class="accordion-header">
+          Is it accessible?
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.segment').forEach(el => {
+    el.addEventListener('click', function() {
+      document.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

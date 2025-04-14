@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tulie Design System v2.0 — @repo/ui Components</title>
+<style>
+:root {
+  /* Vibe 1: Monochrome Tech */
+  --bg: #fafafa; --fg: #09090b; --card: #ffffff; --card-fg: #09090b;
+  --muted: #f4f4f5; --muted-fg: #71717a; --accent: #f4f4f5; --accent-fg: #09090b;
+  --primary: #09090b; --primary-fg: #fafafa; --secondary: #f4f4f5; --secondary-fg: #09090b;
+  --destructive: #e11d48; --border: rgba(0,0,0,0.08); --input: rgba(0,0,0,0.08); --ring: rgba(0,0,0,0.15);
+  --radius: 12px;
+  /* Semantic accent (ClickUp Style) */
+  --info: #2563eb; --info-tint: #dbeafe; --info-border: transparent;
+  --warning: #d97706; --warning-tint: #fef3c7; --warning-border: transparent;
+  --success: #059669; --success-tint: #d1fae5; --success-border: transparent;
+  /* Elevation (Soft Drop-Shadows) */
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.04); 
+  --shadow-dropdown: 0 8px 24px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04); 
+  --shadow-dialog: 0 16px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.06);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.dark {
+  --bg: #09090b; --fg: #fafafa; --card: #141417; --card-fg: #fafafa;
+  --muted: #27272a; --muted-fg: #a1a1aa; --accent: #27272a; --accent-fg: #fafafa;
+  --primary: #fafafa; --primary-fg: #09090b; --secondary: #27272a; --secondary-fg: #fafafa;
+  --destructive: #e11d48; --border: rgba(255,255,255,0.1); --input: rgba(255,255,255,0.1); --ring: rgba(255,255,255,0.2);
+}
+* { margin:0; padding:0; box-sizing:border-box; border-color: var(--border); }
+body { background: var(--bg); color: var(--fg); font-size:14px; line-height:1.5; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+/* Showcase Layout */
+.page-layout { display:flex; min-height:100vh; }
+.toc-sidebar { position:fixed; top:0; left:0; width:200px; height:100vh; overflow-y:auto; padding:20px 0; border-right:1px solid var(--border); background:var(--card); z-index:50; }
+.toc-sidebar .toc-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted-fg); padding:0 16px; margin-bottom:8px; }
+.toc-sidebar a { display:block; padding:6px 16px; font-size:12px; color:var(--muted-fg); text-decoration:none; border-left:2px solid transparent; transition:all .15s; }
+.toc-sidebar a:hover { color:var(--fg); background:var(--accent); }
+.toc-sidebar a.active { color:var(--fg); border-left-color:var(--fg); font-weight:500; }
+.showcase { max-width:1200px; margin:0 auto; padding:0 40px; margin-left:200px; }
+.showcase-header { text-align:center; padding:56px 0 36px; border-bottom:1px solid var(--border); margin-bottom:48px; }
+.showcase-header h1 { font-size:1.8rem; font-weight:700; letter-spacing:-0.03em; margin-bottom:8px; }
+.showcase-header p { font-size:0.85rem; color:var(--muted-fg); max-width:480px; margin:0 auto; }
+.dark-toggle { position:fixed; top:16px; right:16px; z-index:100; width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:var(--card); color:var(--fg); cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:all .2s; box-shadow:var(--shadow-card); }
+.dark-toggle:hover { background:var(--accent); }
+.version { display:inline-flex; align-items:center; padding:2px 8px; border-radius:9999px; background:var(--secondary); color:var(--muted-fg); font-size:11px; font-weight:500; margin-left:8px; vertical-align:middle; }
+
+/* Section */
+.section { margin-bottom:48px; }
+.section-title { font-size:20px; font-weight:600; letter-spacing:-0.02em; margin-bottom:4px; }
+.section-desc { font-size:0.82rem; color:var(--muted-fg); margin-bottom:24px; }
+.section-divider { border:none; border-top:1px solid var(--border); margin:48px 0; }
+.label-sub { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted-fg); margin-bottom:12px; margin-top:20px; }
+.label-sub:first-child { margin-top:0; }
+
+/* Component Block */
+.block { margin-bottom:28px; }
+.block-title { font-size:15px; font-weight:600; margin-bottom:10px; }
+.block-content { border:1px solid var(--border); border-radius:12px; padding:20px; background:var(--card); box-shadow:var(--shadow-card); transition:all .3s cubic-bezier(0.16,1,0.3,1); }
+.block-content:hover { box-shadow:var(--shadow-dropdown); border-color:rgba(0,0,0,0.12); }
+.flex-wrap { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+.grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:16px; }
+.space-y > * + * { margin-top:12px; }
+.space-y-sm > * + * { margin-top:8px; }
+
+/* Button */
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; white-space:nowrap; border-radius:6px; font-size:14px; font-weight:500; transition:all .2s cubic-bezier(0.16,1,0.3,1); border:1px solid transparent; cursor:pointer; height:36px; padding:0 16px; outline:none; }
+.btn:active { transform:scale(0.97) !important; }
+.btn-default { background:var(--primary); color:var(--primary-fg); box-shadow:0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1); }
+.btn-default:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1); background:#27272A; }
+.btn-secondary { background:var(--secondary); color:var(--secondary-fg); box-shadow:var(--shadow-card); border:1px solid var(--border); }
+.btn-secondary:hover { opacity:.8; }
+.btn-outline { background:var(--card); color:var(--fg); border-color:var(--border); box-shadow:var(--shadow-card); }
+.btn-outline:hover { background:var(--accent); border-color:rgba(0,0,0,0.15); }
+.btn-ghost { background:transparent; color:var(--fg); }
+.btn-ghost:hover { background:var(--accent); }
+.btn-destructive { background:var(--destructive); color:white; }
+.btn-destructive:hover { opacity:.9; }
+.btn-link { background:transparent; color:var(--primary); text-decoration:underline; text-underline-offset:4px; border:none; }
+.btn-sm { height:32px; padding:0 12px; font-size:13px; border-radius:6px; }
+.btn-lg { height:40px; padding:0 24px; border-radius:6px; }
+.btn-icon { width:36px; height:36px; padding:0; border-radius:6px; }
+.btn-icon-sm { width:32px; height:32px; padding:0; border-radius:6px; }
+.btn[disabled] { opacity:.5; pointer-events:none; }
+
+/* Badge */
+.badge { display:inline-flex; align-items:center; justify-content:center; border-radius:9999px; padding:2px 10px; font-size:12px; font-weight:500; white-space:nowrap; border:1px solid transparent; }
+.badge-default { background:var(--primary); color:var(--primary-fg); }
+.badge-secondary { background:var(--secondary); color:var(--secondary-fg); }
+.badge-outline { background:transparent; color:var(--fg); border-color:var(--border); }
+.badge-destructive { background:var(--destructive); color:white; }
+
+/* ═══ UNIFIED STATUS BADGE ═══
+ * 5 visual levels: ghost, outline, soft, solid, danger
+ * All use font-weight:500, font-size:11px, rounded-full
+ */
+.status-badge { display:inline-flex; align-items:center; gap:5px; border-radius:9999px; padding:3px 10px; font-size:11px; font-weight:500; height:24px; border:1px solid transparent; white-space:nowrap; }
+.status-badge .dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+/* Ghost — muted/inactive states */
+.sb-ghost { background:#f4f4f5; color:#71717a; border-color:transparent; }
+.sb-ghost .dot { background:#a1a1aa; }
+/* Outline — neutral/pending */
+.sb-outline { background:transparent; color:#52525b; border-color:var(--border); }
+.sb-outline .dot { background:#a1a1aa; }
+/* Solid — confirmed/final */
+.sb-solid { background:#09090b; color:white; border-color:transparent; }
+.sb-solid .dot { background:white; }
+/* Danger — destructive/overdue */
+.sb-danger { background:#FEE2E2; color:#E11D48; border-color:transparent; }
+.sb-danger .dot { background:#E11D48; }
+/* Cancelled */
+.sb-cancelled { background:#f4f4f5; color:#a1a1aa; border-color:transparent; text-decoration:line-through; }
+.sb-cancelled .dot { background:#d4d4d8; }
+
+/* Soft — tinted pastel (ClickUp Vibest!) */
+.sb-blue { background:#DBEAFE; color:#2563EB; border-color:transparent; }
+.sb-blue .dot { background:#2563EB; }
+.sb-violet { background:#F3E8FF; color:#9333EA; border-color:transparent; }
+.sb-violet .dot { background:#9333EA; }
+.sb-amber { background:#FEF3C7; color:#D97706; border-color:transparent; }
+.sb-amber .dot { background:#D97706; }
+.sb-orange { background:#FFEDD5; color:#EA580C; border-color:transparent; }
+.sb-orange .dot { background:#EA580C; }
+.sb-emerald { background:#D1FAE5; color:#059669; border-color:transparent; }
+.sb-emerald .dot { background:#059669; }
+.sb-rose { background:#FFE4E6; color:#E11D48; border-color:transparent; }
+.sb-rose .dot { background:#E11D48; }
+.sb-cyan { background:#CFFAFE; color:#0891B2; border-color:transparent; }
+.sb-cyan .dot { background:#0891B2; }
+.sb-sky { background:#E0F2FE; color:#0284C7; border-color:transparent; }
+.sb-sky .dot { background:#0284C7; }
+.sb-lime { background:#ECFCCB; color:#65A30D; border-color:transparent; }
+.sb-lime .dot { background:#65A30D; }
+.sb-pink { background:#FCE7F3; color:#DB2777; border-color:transparent; }
+.sb-pink .dot { background:#DB2777; }
+.sb-teal { background:#CCFBF1; color:#0D9488; border-color:transparent; }
+.sb-teal .dot { background:#0D9488; }
+
+/* Brand badges — with brand colors */
+.sb-brand-agency { background:#f4f4f5; color:#27272a; border-color:transparent; }
+.sb-brand-agency .dot { background:#27272a; }
+.sb-brand-studio { background:#eef2ff; color:#4338ca; border-color:transparent; }
+.sb-brand-studio .dot { background:#4f46e5; }
+.sb-brand-academy { background:#fffbeb; color:#92400e; border-color:transparent; }
+.sb-brand-academy .dot { background:#d97706; }
+
+/* Elevation demo */
+.elev-card { border:1px solid var(--border); border-radius:12px; padding:20px; background:var(--card); }
+.elev-1 { box-shadow:var(--shadow-card); }
+.elev-2 { box-shadow:var(--shadow-dropdown); }
+.elev-3 { box-shadow:var(--shadow-dialog); }
+
+/* Toast demo */
+.toast-demo { display:flex; align-items:center; gap:10px; padding:12px 16px; border:1px solid var(--border); border-radius:8px; background:var(--card); box-shadow:var(--shadow-dropdown); font-size:14px; max-width:360px; }
+.toast-demo .toast-icon { font-size:16px; flex-shrink:0; }
+.toast-demo .toast-msg { flex:1; }
+.toast-demo .toast-close { color:var(--muted-fg); cursor:pointer; font-size:16px; }
+
+/* Empty state */
+.empty-state { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:48px 24px; text-align:center; color:var(--muted-fg); }
+.empty-state .empty-icon { font-size:40px; margin-bottom:12px; opacity:.5; }
+.empty-state .empty-title { font-size:16px; font-weight:500; color:var(--fg); margin-bottom:4px; }
+.empty-state .empty-desc { font-size:14px; margin-bottom:16px; }
+
+/* Breadcrumb */
+.breadcrumb { display:flex; align-items:center; gap:6px; font-size:14px; color:var(--muted-fg); }
+.breadcrumb a { color:var(--muted-fg); transition:color .15s; }
+.breadcrumb a:hover { color:var(--fg); }
+.breadcrumb .bc-sep { color:var(--muted-fg); opacity:.5; }
+.breadcrumb .bc-current { color:var(--fg); font-weight:500; }
+
+/* Form */
+.input { height:36px; width:100%; border:1px solid var(--border); border-radius:8px; padding:0 12px; font-size:14px; background:var(--card); color:var(--fg); outline:none; transition:all .2s cubic-bezier(0.16,1,0.3,1); box-shadow:var(--shadow-card); }
+.input:hover { border-color:rgba(0,0,0,0.15); }
+.input:focus { border-color:var(--fg); box-shadow:0 0 0 3px rgba(0,0,0,0.15), var(--shadow-card); }
+.input[disabled] { opacity:.5; cursor:not-allowed; }
+.textarea { width:100%; border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-size:14px; background:var(--card); color:var(--fg); outline:none; resize:vertical; font-family:inherit; min-height:80px; box-shadow:var(--shadow-card); transition:all .2s; }
+.textarea:hover { border-color:rgba(0,0,0,0.15); }
+.textarea:focus { border-color:var(--fg); box-shadow:0 0 0 3px rgba(0,0,0,0.15), var(--shadow-card); }
+.label { font-size:14px; font-weight:500; display:block; margin-bottom:6px; }
+.select { height:36px; width:100%; border:1px solid var(--border); border-radius:8px; padding:0 12px; font-size:14px; background:var(--card); color:var(--fg); outline:none; cursor:pointer; appearance:auto; box-shadow:var(--shadow-card); transition:all .2s; }
+.select:hover { border-color:rgba(0,0,0,0.15); }
+.checkbox-row { display:flex; align-items:center; gap:8px; font-size:14px; }
+.checkbox { width:16px; height:16px; accent-color:var(--primary); cursor:pointer; }
+
+/* Card */
+.card { border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--card-fg); overflow:hidden; box-shadow:var(--shadow-card); transition:all .3s cubic-bezier(0.16,1,0.3,1); }
+.card:hover { transform:translateY(-2px); box-shadow:var(--shadow-dropdown); border-color:rgba(0,0,0,0.12); }
+.card-header { padding:24px 24px 0; }
+.card-title { font-weight:600; letter-spacing:-0.025em; }
+.card-desc { font-size:14px; color:var(--muted-fg); margin-top:4px; }
+.card-content { padding:24px; }
+.card-footer { padding:0 24px 24px; display:flex; align-items:center; gap:8px; }
+
+/* Alert */
+/* Alert — 4 semantic variants */
+.alert { position:relative; width:100%; border-radius:8px; padding:12px 16px 12px 44px; font-size:13px; border:1px solid var(--border); background:var(--card); }
+.alert-icon { position:absolute; left:14px; top:13px; width:16px; height:16px; display:flex; align-items:center; justify-content:center; }
+.alert-title { font-weight:600; margin-bottom:2px; font-size:13px; }
+.alert-desc { font-size:13px; color:var(--muted-fg); }
+.alert-info { background:#eff6ff; border-color:#bfdbfe; color:#1e40af; }
+.alert-info .alert-desc { color:#1e40af; opacity:.8; }
+.alert-success { background:#ecfdf5; border-color:#a7f3d0; color:#065f46; }
+.alert-success .alert-desc { color:#065f46; opacity:.8; }
+.alert-warning { background:#fffbeb; border-color:#fde68a; color:#92400e; }
+.alert-warning .alert-desc { color:#92400e; opacity:.8; }
+.alert-destructive { background:#fef2f2; border-color:#fecaca; color:#991b1b; }
+.alert-destructive .alert-desc { color:#991b1b; opacity:.8; }
+
+/* Table */
+.table-wrap { overflow-x:auto; background:var(--card); border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow-card); }
+table { width:100%; border-collapse:collapse; font-size:14px; text-align:left; }
+th { background:var(--accent); padding:12px 16px; font-weight:600; color:var(--muted-fg); border-bottom:1px solid var(--border); }
+td { padding:14px 16px; border-bottom:1px solid var(--border); transition:background 0.2s; }
+tr:hover td { background:var(--bg); }
+tr:last-child td { border-bottom:none; }
+td.muted { color:var(--muted-fg); }
+td.right { text-align:right; font-weight:500; }
+
+/* Productivity Views (Kanban & Gantt) */
+.kanban-board { display:flex; gap:24px; overflow-x:auto; padding-bottom:12px; }
+.kanban-col { background:var(--accent); border-radius:12px; min-width:320px; width:320px; flex-shrink:0; padding:16px; border:1px solid var(--border); }
+.kanban-card { background:var(--card); border-radius:10px; padding:16px; margin-bottom:12px; box-shadow:var(--shadow-card); border:1px solid var(--border); cursor:grab; transition:all .3s cubic-bezier(0.16,1,0.3,1); }
+.kanban-card:hover { box-shadow:var(--shadow-dropdown); transform:translateY(-2px); border-color:rgba(0,0,0,0.12); }
+.kanban-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; font-weight:600; font-size:14px; }
+.kanban-count { background:rgba(0,0,0,0.06); color:var(--muted-fg); padding:2px 8px; border-radius:12px; font-size:12px; }
+
+.timeline-wrap { border:1px solid var(--border); border-radius:12px; background:var(--card); box-shadow:var(--shadow-card); overflow-x:auto; display:flex; flex-direction:column; min-width:800px; }
+.timeline-header { display:grid; grid-template-columns: 200px repeat(7, 1fr); border-bottom:1px solid var(--border); background:var(--accent); font-size:12px; font-weight:600; color:var(--muted-fg); }
+.timeline-header > div { padding:10px 12px; border-right:1px solid var(--border); text-align:center; }
+.timeline-header > div:first-child { text-align:left; }
+.timeline-row { display:grid; grid-template-columns: 200px 1fr; border-bottom:1px solid var(--border); position:relative; }
+.timeline-row:last-child { border-bottom:none; }
+.timeline-task { padding:14px 12px; font-size:13px; font-weight:500; border-right:1px solid var(--border); background:var(--card); z-index:2; position:relative; }
+.timeline-grid { display:grid; grid-template-columns: repeat(7, 1fr); position:relative; }
+.timeline-grid > div { border-right:1px solid var(--border); height:100%; }
+.timeline-grid > div:last-child { border-right:none; }
+.timeline-bar { position:absolute; top:10px; height:26px; border-radius:6px; display:flex; align-items:center; padding:0 10px; font-size:11px; font-weight:600; color:white; box-shadow:0 2px 4px rgba(0,0,0,0.1); cursor:pointer; transition:all .2s; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.timeline-bar:hover { filter:brightness(1.1); transform:translateY(-1px); box-shadow:var(--shadow-dropdown); }
+
+/* Tabs */
+.tabs-list { display:inline-flex; background:var(--muted); border-radius:6px; padding:4px; gap:2px; }
+.tab { padding:6px 16px; border-radius:4px; font-size:14px; font-weight:500; cursor:pointer; border:none; background:transparent; color:var(--muted-fg); transition:all .15s; }
+.tab.active { background:var(--bg); color:var(--fg); box-shadow:0 1px 2px rgba(0,0,0,.05); }
+
+/* Avatar */
+.avatar { width:40px; height:40px; border-radius:9999px; background:var(--muted); display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:500; color:var(--muted-fg); overflow:hidden; flex-shrink:0; }
+.avatar img { width:100%; height:100%; object-fit:cover; }
+.avatar-sm { width:32px; height:32px; font-size:12px; }
+.avatar-lg { width:48px; height:48px; font-size:18px; }
+
+/* Skeleton */
+.skeleton { background:var(--muted); border-radius:6px; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+/* Progress */
+.progress { height:8px; width:100%; background:var(--secondary); border-radius:9999px; overflow:hidden; }
+.progress-bar { height:100%; background:var(--primary); border-radius:9999px; transition:width .3s; }
+
+/* Separator */
+.sep { border:none; border-top:1px solid var(--border); margin:16px 0; }
+.sep-v { display:inline-block; width:1px; height:20px; background:var(--border); vertical-align:middle; margin:0 12px; }
+
+/* Tooltip (CSS only) */
+.tip { position:relative; display:inline-flex; }
+.tip:hover .tip-text { opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+.tip-text { position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%) translateY(4px); background:var(--primary); color:var(--primary-fg); font-size:12px; padding:4px 8px; border-radius:4px; white-space:nowrap; opacity:0; pointer-events:none; transition:all .15s; z-index:10; }
+
+/* Color Swatch — SFSV compact style */
+.color-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
+.swatch { width:88px; height:88px; border-radius:10px; display:flex; flex-direction:column; justify-content:flex-end; padding:7px 9px; font-size:0.6rem; font-weight:600; transition:transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s; cursor:default; line-height:1.3; }
+.swatch:hover { transform:scale(1.08) translateY(-3px); box-shadow:var(--shadow-dropdown); }
+.swatch.light-text { color:rgba(255,255,255,.85); }
+.swatch.dark-text { color:rgba(0,0,0,.7); }
+.swatch-label { font-size:12px; font-weight:600; margin-top:6px; }
+.swatch-var { font-size:11px; color:var(--muted-fg); margin-top:1px; font-family:'JetBrains Mono',monospace,SFMono-Regular,Menlo; }
+
+/* Code token */
+.token { display:flex; align-items:center; gap:12px; font-size:14px; }
+.token code { background:var(--muted); padding:2px 8px; border-radius:4px; font-size:12px; font-family:monospace; }
+.token span { color:var(--muted-fg); }
+
+/* Font demos */
+.font-demo > * + * { margin-top:8px; }
+
+/* (dark-toggle defined in Showcase Layout section above) */
+
+/* SVG icons inline */
+.icon { width:16px; height:16px; display:inline-block; vertical-align:middle; }
+
+/* Switch */
+.switch { position:relative; display:inline-block; width:44px; height:24px; }
+.switch input { opacity:0; width:0; height:0; }
+.switch-slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:var(--input); border-radius:9999px; transition:.2s; }
+.switch-slider:before { content:''; position:absolute; height:20px; width:20px; left:2px; bottom:2px; background:white; border-radius:50%; transition:.2s; box-shadow:0 1px 2px rgba(0,0,0,.1); }
+.switch input:checked + .switch-slider { background:var(--primary); }
+.switch input:checked + .switch-slider:before { transform:translateX(20px); }
+
+/* Radio */
+.radio { width:16px; height:16px; accent-color:var(--primary); cursor:pointer; }
+.radio-row { display:flex; align-items:center; gap:8px; font-size:14px; }
+
+/* Dialog/Modal */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:100; align-items:center; justify-content:center; backdrop-filter:blur(2px); }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:24px; max-width:420px; width:90%; box-shadow:0 10px 25px rgba(0,0,0,.15); }
+.modal-title { font-weight:600; font-size:16px; margin-bottom:4px; }
+.modal-desc { font-size:14px; color:var(--muted-fg); margin-bottom:16px; }
+.modal-footer { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
+
+/* Sheet */
+.sheet-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:100; backdrop-filter:blur(2px); }
+.sheet-overlay.open { display:block; }
+.sheet-panel { position:fixed; top:0; right:0; bottom:0; width:360px; max-width:90vw; background:var(--bg); border-left:1px solid var(--border); padding:24px; z-index:101; transform:translateX(100%); transition:transform .3s ease; box-shadow:-4px 0 15px rgba(0,0,0,.1); overflow-y:auto; }
+.sheet-overlay.open .sheet-panel { transform:translateX(0); }
+.sheet-title { font-weight:600; font-size:16px; margin-bottom:4px; }
+.sheet-desc { font-size:14px; color:var(--muted-fg); margin-bottom:16px; }
+
+/* Dropdown */
+.dropdown { position:relative; display:inline-block; }
+.dropdown-trigger { cursor:pointer; }
+.dropdown-menu { display:none; position:absolute; top:calc(100% + 4px); left:0; min-width:180px; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:4px; box-shadow:0 4px 12px rgba(0,0,0,.1); z-index:50; }
+.dropdown.open .dropdown-menu { display:block; }
+.dropdown-item { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:4px; font-size:14px; cursor:pointer; transition:background .1s; border:none; background:none; width:100%; text-align:left; color:var(--fg); }
+.dropdown-item:hover { background:var(--accent); }
+.dropdown-sep { height:1px; background:var(--border); margin:4px 0; }
+
+/* Popover */
+.popover { position:relative; display:inline-block; }
+.popover-content { display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); min-width:220px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:16px; box-shadow:0 4px 12px rgba(0,0,0,.1); z-index:50; }
+.popover.open .popover-content { display:block; }
+
+/* Command palette */
+.cmd { border:1px solid var(--border); border-radius:8px; overflow:hidden; max-width:480px; background:var(--bg); box-shadow:0 4px 12px rgba(0,0,0,.08); }
+.cmd-input { display:flex; align-items:center; gap:8px; padding:12px 16px; border-bottom:1px solid var(--border); }
+.cmd-input input { border:none; outline:none; flex:1; font-size:14px; background:transparent; color:var(--fg); }
+.cmd-group { padding:4px; }
+.cmd-group-label { padding:8px 12px; font-size:12px; font-weight:500; color:var(--muted-fg); }
+.cmd-item { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:4px; font-size:14px; cursor:pointer; transition:background .1s; }
+.cmd-item:hover { background:var(--accent); }
+.cmd-item .cmd-shortcut { margin-left:auto; font-size:12px; color:var(--muted-fg); font-family:monospace; }
+
+/* Calendar */
+.cal { border:1px solid var(--border); border-radius:8px; padding:16px; display:inline-block; background:var(--card); }
+.cal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.cal-nav { border:none; background:var(--accent); width:28px; height:28px; border-radius:4px; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; color:var(--fg); }
+.cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; text-align:center; }
+.cal-day { font-size:12px; font-weight:500; color:var(--muted-fg); padding:6px 0; }
+.cal-date { font-size:14px; padding:6px 0; border-radius:6px; cursor:pointer; transition:background .1s; }
+.cal-date:hover { background:var(--accent); }
+.cal-date.today { background:var(--primary); color:var(--primary-fg); font-weight:600; }
+.cal-date.muted { color:var(--muted-fg); opacity:.4; }
+
+/* Price Input */
+.price-wrap { position:relative; }
+.price-wrap .input { padding-right:48px; text-align:right; font-weight:500; }
+.price-suffix { position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:13px; color:var(--muted-fg); font-weight:500; pointer-events:none; }
+
+/* Scroll Area */
+.scroll-area { max-height:160px; overflow-y:auto; border:1px solid var(--border); border-radius:6px; padding:8px; }
+.scroll-area::-webkit-scrollbar { width:6px; }
+.scroll-area::-webkit-scrollbar-track { background:transparent; }
+.scroll-area::-webkit-scrollbar-thumb { background:var(--muted-fg); border-radius:3px; opacity:.5; }
+
+/* Responsive */
+@media (max-width:768px) {
+  .sidebar { display:none; }
+  .grid-4 { grid-template-columns:repeat(2,1fr); }
+  .grid-3 { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Dark mode toggle -->
+<button class="dark-toggle" onclick="document.body.classList.toggle('dark');this.textContent=document.body.classList.contains('dark')?'☀':'☾'">☾</button>
+
+<!-- Sidebar TOC -->
+<nav class="toc-sidebar" id="toc">
+  <div class="toc-title">Contents</div>
+  <a href="#colors">1. Color System</a>
+  <a href="#elevation">2. Elevation</a>
+  <a href="#typography">3. Typography</a>
+  <a href="#spacing">4. Spacing & Size</a>
+  <a href="#buttons">5. Buttons</a>
+  <a href="#badges">6. Badges & Status</a>
+  <a href="#forms">7. Forms</a>
+  <a href="#cards">8. Cards & Stat</a>
+  <a href="#alerts">9. Alerts</a>
+  <a href="#tables">10. Tables</a>
+  <a href="#dialogs">11. Dialogs</a>
+  <a href="#dropdowns">12. Dropdowns</a>
+  <a href="#misc">13. Misc</a>
+  <a href="#new-v2">14. New v2.0</a>
+  <a href="#prod-views">15. Productivity Views</a>
+</nav>
+
+<div class="showcase">
+  <header class="showcase-header">
+    <h1>Tulie Design System <span class="version">v2.0</span></h1>
+    <p>@repo/ui — Shared component library • OKLCH • shadcn/ui + data-slot • 55 components</p>
+  </header>
+
+
+
+
+<!-- ═══ 1. COLORS ═══ -->
+<section class="section" id="colors">
+  <h2 class="section-title">1. Color System</h2>
+  <p class="section-desc">Zinc monochrome palette + Semantic accent — CSS variables từ shadcn/ui.</p>
+
+  <div class="label-sub">Zinc Palette</div>
+  <div class="color-row">
+    <div class="swatch light-text" style="background:#09090b"><span>950</span><span>#09090b</span></div>
+    <div class="swatch light-text" style="background:#18181b"><span>900</span><span>#18181b</span></div>
+    <div class="swatch light-text" style="background:#27272a"><span>800</span><span>#27272a</span></div>
+    <div class="swatch light-text" style="background:#3f3f46"><span>700</span><span>#3f3f46</span></div>
+    <div class="swatch light-text" style="background:#52525b"><span>600</span><span>#52525b</span></div>
+    <div class="swatch light-text" style="background:#71717a"><span>500</span><span>#71717a</span></div>
+    <div class="swatch dark-text" style="background:#a1a1aa"><span>400</span><span>#a1a1aa</span></div>
+    <div class="swatch dark-text" style="background:#d4d4d8"><span>300</span><span>#d4d4d8</span></div>
+    <div class="swatch dark-text" style="background:#e4e4e7"><span>200</span><span>#e4e4e7</span></div>
+    <div class="swatch dark-text" style="background:#f4f4f5"><span>100</span><span>#f4f4f5</span></div>
+    <div class="swatch dark-text" style="background:#fafafa;border:1px solid #e4e4e7"><span>50</span><span>#fafafa</span></div>
+  </div>
+
+  <div class="label-sub">Semantic UI</div>
+  <div class="color-row">
+    <div class="swatch light-text" style="background:#ef4444"><span>Error</span><span>#ef4444</span></div>
+    <div class="swatch light-text" style="background:#d97706"><span>Warning</span><span>#d97706</span></div>
+    <div class="swatch light-text" style="background:#059669"><span>Success</span><span>#059669</span></div>
+    <div class="swatch light-text" style="background:#2563eb"><span>Info</span><span>#2563eb</span></div>
+  </div>
+
+  <div class="label-sub">Status Accent Tints</div>
+  <div class="color-row">
+    <div class="swatch light-text" style="background:#3b82f6"><span>Blue</span><span>#3b82f6</span></div>
+    <div class="swatch dark-text" style="background:#eff6ff;border:1px solid #bfdbfe"><span>Blue Tint</span><span>#eff6ff</span></div>
+    <div class="swatch light-text" style="background:#8b5cf6"><span>Violet</span><span>#8b5cf6</span></div>
+    <div class="swatch dark-text" style="background:#f5f3ff;border:1px solid #ddd6fe"><span>Violet Tint</span><span>#f5f3ff</span></div>
+    <div class="swatch light-text" style="background:#f59e0b"><span>Amber</span><span>#f59e0b</span></div>
+    <div class="swatch dark-text" style="background:#fffbeb;border:1px solid #fde68a"><span>Amber Tint</span><span>#fffbeb</span></div>
+    <div class="swatch light-text" style="background:#10b981"><span>Emerald</span><span>#10b981</span></div>
+    <div class="swatch dark-text" style="background:#ecfdf5;border:1px solid #a7f3d0"><span>Emerald Tint</span><span>#ecfdf5</span></div>
+    <div class="swatch light-text" style="background:#f43f5e"><span>Rose</span><span>#f43f5e</span></div>
+    <div class="swatch dark-text" style="background:#fff1f2;border:1px solid #fecdd3"><span>Rose Tint</span><span>#fff1f2</span></div>
+  </div>
+
+  <div class="label-sub">CSS Variables</div>
+  <div class="block-content" style="font-size:12px;font-family:monospace;line-height:2;color:var(--muted-fg);padding:16px 20px">
+    --primary: #000 &nbsp;|&nbsp; --primary-fg: #fafafa &nbsp;|&nbsp; --secondary: #f4f4f5 &nbsp;|&nbsp; --muted: #f4f4f5 &nbsp;|&nbsp; --muted-fg: #71717a<br>
+    --accent: #f4f4f5 &nbsp;|&nbsp; --destructive: #ef4444 &nbsp;|&nbsp; --border: #e4e4e7 &nbsp;|&nbsp; --input: #e4e4e7 &nbsp;|&nbsp; --ring: #a1a1aa
+  </div>
+
+  <div class="label-sub" style="margin-top:28px">Status Badge Levels</div>
+  <div class="block-content">
+    <div class="flex-wrap">
+      <span class="status-badge sb-ghost"><span class="dot"></span>Ghost</span>
+      <span class="status-badge sb-outline"><span class="dot"></span>Outline</span>
+      <span class="status-badge sb-blue"><span class="dot"></span>Blue</span>
+      <span class="status-badge sb-violet"><span class="dot"></span>Violet</span>
+      <span class="status-badge sb-amber"><span class="dot"></span>Amber</span>
+      <span class="status-badge sb-orange"><span class="dot"></span>Orange</span>
+      <span class="status-badge sb-emerald"><span class="dot"></span>Emerald</span>
+      <span class="status-badge sb-rose"><span class="dot"></span>Rose</span>
+      <span class="status-badge sb-cyan"><span class="dot"></span>Cyan</span>
+      <span class="status-badge sb-sky"><span class="dot"></span>Sky</span>
+      <span class="status-badge sb-lime"><span class="dot"></span>Lime</span>
+      <span class="status-badge sb-pink"><span class="dot"></span>Pink</span>
+      <span class="status-badge sb-teal"><span class="dot"></span>Teal</span>
+      <span class="status-badge sb-solid"><span class="dot"></span>Solid</span>
+      <span class="status-badge sb-danger"><span class="dot"></span>Danger</span>
+      <span class="status-badge sb-cancelled"><span class="dot"></span>Cancelled</span>
+    </div>
+  </div>
+
+  <div class="label-sub" style="margin-top:20px">Brand</div>
+  <div class="color-row">
+    <div class="swatch light-text" style="background:#27272a"><span>Agency</span><span>#27272a</span></div>
+    <div class="swatch light-text" style="background:#4f46e5"><span>Studio</span><span>#4f46e5</span></div>
+    <div class="swatch light-text" style="background:#d97706"><span>Academy</span><span>#d97706</span></div>
+  </div>
+  <div class="block-content" style="margin-top:8px">
+    <div class="flex-wrap">
+      <span class="status-badge sb-brand-agency"><span class="dot"></span>Tulie Agency</span>
+      <span class="status-badge sb-brand-studio"><span class="dot"></span>Tulie Studio</span>
+      <span class="status-badge sb-brand-academy"><span class="dot"></span>Tulie Academy</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ELEVATION ═══ -->
+<hr class="section-divider">
+<section class="section" id="elevation">
+  <h2 class="section-title">2. Elevation</h2>
+  <p class="section-desc">3-tier shadow system — cards, dropdowns, dialogs.</p>
+  
+
+  <div class="block">
+    <h3 class="block-title">Shadow Levels</h3>
+    <div class="block-content">
+      <div class="grid-3">
+        <div class="elev-card elev-1"><p style="font-weight:500">shadow-card</p><p style="font-size:12px;color:var(--muted-fg);margin-top:4px">0 1px 3px rgba(0,0,0,0.04)</p><p style="font-size:12px;color:var(--muted-fg)">Cards, stat boxes</p></div>
+        <div class="elev-card elev-2"><p style="font-weight:500">shadow-dropdown</p><p style="font-size:12px;color:var(--muted-fg);margin-top:4px">0 4px 12px rgba(0,0,0,0.08)</p><p style="font-size:12px;color:var(--muted-fg)">Dropdowns, popover, toast</p></div>
+        <div class="elev-card elev-3"><p style="font-weight:500">shadow-dialog</p><p style="font-size:12px;color:var(--muted-fg);margin-top:4px">0 16px 40px rgba(0,0,0,0.12)</p><p style="font-size:12px;color:var(--muted-fg)">Dialog, modal, sheet</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TYPOGRAPHY ═══ -->
+<hr class="section-divider">
+<section class="section" id="typography">
+  <h2 class="section-title">3. Typography</h2>
+  <p class="section-desc">Inter font — KHÔNG uppercase, max font-bold (700) trong dashboard.</p>
+  
+
+  <div class="block">
+    <h3 class="block-title">Text Styles (TEXT tokens)</h3>
+    <div class="block-content space-y">
+      <div class="token"><code>pageTitle</code><span style="font-size:24px;font-weight:700;letter-spacing:-0.025em">Tulie CRM — Quản lý khách hàng</span></div>
+      <div class="token"><code>pageDescription</code><span style="font-size:14px;color:var(--muted-fg)">Tulie CRM — Quản lý khách hàng</span></div>
+      <div class="token"><code>sectionTitle</code><span style="font-size:18px;font-weight:600">Tulie CRM — Quản lý khách hàng</span></div>
+      <div class="token"><code>cardTitle</code><span style="font-weight:600">Tulie CRM — Quản lý khách hàng</span></div>
+      <div class="token"><code>body</code><span style="font-size:14px">Tulie CRM — Quản lý khách hàng</span></div>
+      <div class="token"><code>bodyMuted</code><span style="font-size:14px;color:var(--muted-fg)">Tulie CRM — Quản lý khách hàng</span></div>
+      <div class="token"><code>caption</code><span style="font-size:12px;color:var(--muted-fg)">Tulie CRM — Quản lý khách hàng</span></div>
+      <div class="token"><code>label</code><span style="font-size:14px;font-weight:500">Tulie CRM — Quản lý khách hàng</span></div>
+      <div class="token"><code>statValue</code><span style="font-size:24px;font-weight:700;letter-spacing:-0.025em">450M</span></div>
+      <div class="token"><code>statLabel</code><span style="font-size:12px;color:var(--muted-fg)">Doanh thu tháng</span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Font Weight</h3>
+    <div class="block-content font-demo">
+      <p style="font-weight:400">font-normal (400) — Body text</p>
+      <p style="font-weight:500">font-medium (500) — Labels, nav items</p>
+      <p style="font-weight:600">font-semibold (600) — Card titles</p>
+      <p style="font-weight:700">font-bold (700) — Page titles</p>
+      <p style="font-weight:900;color:var(--muted-fg);text-decoration:line-through">font-black (900) — ❌ KHÔNG DÙNG</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Font Size Scale</h3>
+    <div class="block-content font-demo">
+      <p style="font-size:12px">text-xs (12px) — Captions, badges</p>
+      <p style="font-size:14px">text-sm (14px) — Body, labels</p>
+      <p style="font-size:16px">text-base (16px) — Larger body</p>
+      <p style="font-size:18px">text-lg (18px) — Section titles</p>
+      <p style="font-size:20px">text-xl (20px) — Sub-page</p>
+      <p style="font-size:24px">text-2xl (24px) — Page titles</p>
+      <p style="font-size:30px">text-3xl (30px) — Hero stats</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SPACING ═══ -->
+<hr class="section-divider">
+<section class="section" id="spacing">
+  <h2 class="section-title">4. Spacing</h2>
+  <p class="section-desc">Layout tokens — gap, padding, grid patterns.</p>
+  
+
+  <div class="block">
+    <h3 class="block-title">Layout Tokens</h3>
+    <div class="block-content space-y">
+      <div><strong style="font-size:14px">PAGE</strong>
+        <div class="space-y-sm" style="margin-top:8px">
+          <div class="token"><code>PAGE.wrapper</code><span>flex flex-col gap-6 pb-20</span></div>
+          <div class="token"><code>PAGE.maxWidth</code><span>max-w-7xl</span></div>
+        </div>
+      </div>
+      <div><strong style="font-size:14px">CARD</strong>
+        <div class="space-y-sm" style="margin-top:8px">
+          <div class="token"><code>CARD.padding</code><span>p-6</span></div>
+          <div class="token"><code>CARD.gap</code><span>gap-4</span></div>
+        </div>
+      </div>
+      <div><strong style="font-size:14px">FORM</strong>
+        <div class="space-y-sm" style="margin-top:8px">
+          <div class="token"><code>FORM.fieldGap</code><span>gap-4</span></div>
+          <div class="token"><code>FORM.sectionGap</code><span>gap-6</span></div>
+          <div class="token"><code>FORM.gridCols2</code><span>grid grid-cols-1 md:grid-cols-2 gap-4</span></div>
+        </div>
+      </div>
+      <div><strong style="font-size:14px">THEME</strong>
+        <div class="space-y-sm" style="margin-top:8px">
+          <div class="token"><code>radius.button</code><span>rounded-md</span></div>
+          <div class="token"><code>radius.card</code><span>rounded-xl</span></div>
+          <div class="token"><code>radius.badge</code><span>rounded-full</span></div>
+          <div class="token"><code>shadow.card</code><span>var(--shadow-card)</span></div>
+          <div class="token"><code>shadow.dropdown</code><span>var(--shadow-dropdown)</span></div>
+          <div class="token"><code>shadow.dialog</code><span>var(--shadow-dialog)</span></div>
+          <div class="token"><code>size.buttonDefault</code><span>h-9 (36px)</span></div>
+          <div class="token"><code>size.inputDefault</code><span>h-9 (36px)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BUTTONS ═══ -->
+<hr class="section-divider">
+<section class="section" id="buttons">
+  <h2 class="section-title">5. Buttons</h2>
+  <p class="section-desc">6 variants × 6 sizes — shadcn/ui Button.</p>
+  
+
+  <div class="block">
+    <h3 class="block-title">Variants</h3>
+    <div class="block-content">
+      <div class="flex-wrap">
+        <button class="btn btn-default">Default</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <button class="btn btn-outline">Outline</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn btn-link">Link</button>
+        <button class="btn btn-destructive">Destructive</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Sizes</h3>
+    <div class="block-content">
+      <div class="flex-wrap">
+        <button class="btn btn-default btn-sm">Small</button>
+        <button class="btn btn-default">Default</button>
+        <button class="btn btn-default btn-lg">Large</button>
+        <button class="btn btn-default btn-icon">＋</button>
+        <button class="btn btn-default btn-icon-sm">＋</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">With Icons</h3>
+    <div class="block-content">
+      <div class="flex-wrap">
+        <button class="btn btn-default">＋ Tạo mới</button>
+        <button class="btn btn-outline"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Tải xuống</button>
+        <button class="btn btn-secondary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Tìm kiếm</button>
+        <button class="btn btn-destructive"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Xoá</button>
+        <button class="btn btn-ghost"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Sửa</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">States</h3>
+    <div class="block-content">
+      <div class="flex-wrap">
+        <button class="btn btn-default">Active</button>
+        <button class="btn btn-default" disabled>Disabled</button>
+        <button class="btn btn-outline">Normal</button>
+        <button class="btn btn-outline" disabled>Outline Disabled</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BADGES ═══ -->
+<hr class="section-divider">
+<section class="section" id="badges">
+  <h2 class="section-title">6. Badges & Status</h2>
+  <p class="section-desc">Badge variants + StatusBadge cho tất cả entity types.</p>
+  
+
+  <div class="block">
+    <h3 class="block-title">Badge Variants (shadcn)</h3>
+    <div class="block-content">
+      <div class="flex-wrap">
+        <span class="badge badge-default">Default</span>
+        <span class="badge badge-secondary">Secondary</span>
+        <span class="badge badge-outline">Outline</span>
+        <span class="badge badge-destructive">Destructive</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">StatusBadge — Customer</h3>
+    <div class="block-content"><div class="flex-wrap">
+      <span class="status-badge sb-ghost"><span class="dot"></span>Tiềm năng</span>
+      <span class="status-badge sb-blue"><span class="dot"></span>Đang theo dõi</span>
+      <span class="status-badge sb-emerald"><span class="dot"></span>Khách hàng</span>
+      <span class="status-badge sb-violet"><span class="dot"></span>VIP</span>
+      <span class="status-badge sb-cancelled"><span class="dot"></span>Đã rời bỏ</span>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">StatusBadge — Quotation</h3>
+    <div class="block-content"><div class="flex-wrap">
+      <span class="status-badge sb-ghost"><span class="dot"></span>Bản nháp</span>
+      <span class="status-badge sb-outline"><span class="dot"></span>Đã gửi</span>
+      <span class="status-badge sb-blue"><span class="dot"></span>Đã xem</span>
+      <span class="status-badge sb-emerald"><span class="dot"></span>Đã chấp nhận</span>
+      <span class="status-badge sb-danger"><span class="dot"></span>Từ chối</span>
+      <span class="status-badge sb-amber"><span class="dot"></span>Hết hạn</span>
+      <span class="status-badge sb-violet"><span class="dot"></span>Đã chuyển HĐ</span>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">StatusBadge — Contract</h3>
+    <div class="block-content"><div class="flex-wrap">
+      <span class="status-badge sb-ghost"><span class="dot"></span>Bản nháp</span>
+      <span class="status-badge sb-outline"><span class="dot"></span>Đã gửi</span>
+      <span class="status-badge sb-sky"><span class="dot"></span>Đã xem</span>
+      <span class="status-badge sb-emerald"><span class="dot"></span>Đã ký</span>
+      <span class="status-badge sb-blue"><span class="dot"></span>Đang thực hiện</span>
+      <span class="status-badge sb-emerald"><span class="dot"></span>Hoàn thành</span>
+      <span class="status-badge sb-cancelled"><span class="dot"></span>Đã hủy</span>
+      <span class="status-badge sb-amber"><span class="dot"></span>Tạm dừng</span>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">StatusBadge — Invoice</h3>
+    <div class="block-content"><div class="flex-wrap">
+      <span class="status-badge sb-ghost"><span class="dot"></span>Bản nháp</span>
+      <span class="status-badge sb-outline"><span class="dot"></span>Đã gửi</span>
+      <span class="status-badge sb-emerald"><span class="dot"></span>Đã thanh toán</span>
+      <span class="status-badge sb-amber"><span class="dot"></span>Thanh toán một phần</span>
+      <span class="status-badge sb-danger"><span class="dot"></span>Quá hạn</span>
+      <span class="status-badge sb-cancelled"><span class="dot"></span>Đã hủy</span>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">StatusBadge — Deal</h3>
+    <div class="block-content"><div class="flex-wrap">
+      <span class="status-badge sb-ghost"><span class="dot"></span>Mới tạo</span>
+      <span class="status-badge sb-blue"><span class="dot"></span>Đang lấy Brief</span>
+      <span class="status-badge sb-sky"><span class="dot"></span>Đã gửi báo giá</span>
+      <span class="status-badge sb-emerald"><span class="dot"></span>Đã ký (Thành công)</span>
+      <span class="status-badge sb-cancelled"><span class="dot"></span>Đã hủy (Thất bại)</span>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">StatusBadge — Project</h3>
+    <div class="block-content"><div class="flex-wrap">
+      <span class="status-badge sb-ghost"><span class="dot"></span>Chờ triển khai</span>
+      <span class="status-badge sb-blue"><span class="dot"></span>Đang thực hiện</span>
+      <span class="status-badge sb-amber"><span class="dot"></span>Đang nghiệm thu</span>
+      <span class="status-badge sb-emerald"><span class="dot"></span>Đã hoàn thành</span>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">StatusBadge — Product & Brand</h3>
+    <div class="block-content"><div class="flex-wrap">
+      <span class="status-badge sb-emerald"><span class="dot"></span>Đang bán</span>
+      <span class="status-badge sb-ghost"><span class="dot"></span>Ngừng bán</span>
+      <span class="sep-v"></span>
+      <span class="status-badge sb-brand-agency"><span class="dot"></span>Tulie Agency</span>
+      <span class="status-badge sb-brand-studio"><span class="dot"></span>Tulie Studio</span>
+      <span class="status-badge sb-brand-academy"><span class="dot"></span>Tulie Academy</span>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">StatusBadge — Ticket Priority</h3>
+    <div class="block-content"><div class="flex-wrap">
+      <span class="status-badge sb-ghost"><span class="dot"></span>Thấp</span>
+      <span class="status-badge sb-outline"><span class="dot"></span>Bình thường</span>
+      <span class="status-badge sb-amber"><span class="dot"></span>Cao</span>
+      <span class="status-badge sb-danger"><span class="dot"></span>Khẩn cấp</span>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">StatusBadge — Retail Order</h3>
+    <div class="block-content"><div class="flex-wrap">
+      <span class="status-badge sb-ghost"><span class="dot"></span>Chờ xử lý</span>
+      <span class="status-badge sb-blue"><span class="dot"></span>Đang chỉnh sửa</span>
+      <span class="status-badge sb-sky"><span class="dot"></span>Hoàn thành CS</span>
+      <span class="status-badge sb-amber"><span class="dot"></span>Chờ giao hàng</span>
+      <span class="status-badge sb-orange"><span class="dot"></span>Đang giao hàng</span>
+      <span class="status-badge sb-emerald"><span class="dot"></span>Hoàn thành</span>
+      <span class="status-badge sb-cancelled"><span class="dot"></span>Đã hủy</span>
+    </div></div>
+  </div>
+</section>
+
+<!-- ═══ FORMS ═══ -->
+<hr class="section-divider">
+<section class="section" id="forms">
+  <h2 class="section-title">7. Forms</h2>
+  <p class="section-desc">Input, Textarea, Select, Checkbox, Switch, Label.</p>
+  
+
+  <div class="block">
+    <h3 class="block-title">Input</h3>
+    <div class="block-content" style="max-width:400px">
+      <div style="margin-bottom:16px">
+        <label class="label">Tên khách hàng</label>
+        <input class="input" placeholder="Nhập tên...">
+      </div>
+      <div style="margin-bottom:16px">
+        <label class="label">Disabled</label>
+        <input class="input" placeholder="Không thể nhập" disabled>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Textarea</h3>
+    <div class="block-content" style="max-width:400px">
+      <label class="label">Ghi chú</label>
+      <textarea class="textarea" placeholder="Nhập ghi chú..." rows="3"></textarea>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Select</h3>
+    <div class="block-content" style="max-width:400px">
+      <label class="label">Trạng thái</label>
+      <select class="select">
+        <option value="">Chọn trạng thái...</option>
+        <option>Tiềm năng</option>
+        <option>Đang theo dõi</option>
+        <option>Khách hàng</option>
+        <option>VIP</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Checkbox & Switch</h3>
+    <div class="block-content space-y-sm">
+      <label class="checkbox-row"><input type="checkbox" class="checkbox"> Đánh dấu quan trọng</label>
+      <label class="checkbox-row"><input type="checkbox" class="checkbox" checked disabled> Checked & Disabled</label>
+      <hr class="sep">
+      <div style="display:flex;align-items:center;gap:12px">
+        <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span></label>
+        <span>Bật thông báo</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <label class="switch"><input type="checkbox"><span class="switch-slider"></span></label>
+        <span>Chế độ bảo trì</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;opacity:.5">
+        <label class="switch"><input type="checkbox" disabled><span class="switch-slider"></span></label>
+        <span>Disabled</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Radio Group</h3>
+    <div class="block-content space-y-sm">
+      <label class="radio-row"><input type="radio" name="contact" class="radio" checked> Email</label>
+      <label class="radio-row"><input type="radio" name="contact" class="radio"> Điện thoại</label>
+      <label class="radio-row"><input type="radio" name="contact" class="radio"> Zalo</label>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Price Input (VND)</h3>
+    <div class="block-content" style="max-width:400px">
+      <label class="label">Giá trị hợp đồng</label>
+      <div class="price-wrap">
+        <input class="input" value="150,000,000" style="text-align:right;font-weight:500;padding-right:36px">
+        <span class="price-suffix">đ</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Form Layout Grid</h3>
+    <div class="block-content">
+      <div class="grid-2">
+        <div><label class="label">Họ tên</label><input class="input" placeholder="Nguyễn Văn A"></div>
+        <div><label class="label">Email</label><input class="input" type="email" placeholder="email@example.com"></div>
+        <div><label class="label">Số điện thoại</label><input class="input" placeholder="0123 456 789"></div>
+        <div><label class="label">Công ty</label><input class="input" placeholder="Tên công ty"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CARDS ═══ -->
+<hr class="section-divider">
+<section class="section" id="cards">
+  <h2 class="section-title">8. Cards</h2>
+  <p class="section-desc">Card layout pattern — header, content, footer.</p>
+  
+
+  <div class="block">
+    <h3 class="block-title">Basic Card</h3>
+    <div class="block-content">
+      <div class="card" style="max-width:400px">
+        <div class="card-header">
+          <div class="card-title">Thông tin khách hàng</div>
+          <div class="card-desc">Quản lý thông tin liên hệ</div>
+        </div>
+        <div class="card-content"><p style="color:var(--muted-fg)">Nội dung card hiển thị ở đây.</p></div>
+        <div class="card-footer">
+          <button class="btn btn-default btn-sm">Lưu</button>
+          <button class="btn btn-outline btn-sm">Hủy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Stat Cards (Dashboard)</h3>
+    <div class="block-content">
+      <div class="grid-4">
+        <div class="card"><div class="card-content">
+          <p style="font-size:12px;color:var(--muted-fg)">Tổng khách hàng</p>
+          <p style="font-size:24px;font-weight:700;letter-spacing:-0.025em;margin-top:4px">1,234</p>
+          <p style="font-size:12px;font-weight:500;margin-top:4px">+12% so với tháng trước</p>
+        </div></div>
+        <div class="card"><div class="card-content">
+          <p style="font-size:12px;color:var(--muted-fg)">Đang theo dõi</p>
+          <p style="font-size:24px;font-weight:700;letter-spacing:-0.025em;margin-top:4px">56</p>
+          <p style="font-size:12px;font-weight:500;margin-top:4px">+5% so với tháng trước</p>
+        </div></div>
+        <div class="card"><div class="card-content">
+          <p style="font-size:12px;color:var(--muted-fg)">Báo giá mới</p>
+          <p style="font-size:24px;font-weight:700;letter-spacing:-0.025em;margin-top:4px">12</p>
+          <p style="font-size:12px;font-weight:500;color:var(--muted-fg);margin-top:4px">-2% so với tháng trước</p>
+        </div></div>
+        <div class="card"><div class="card-content">
+          <p style="font-size:12px;color:var(--muted-fg)">Doanh thu tháng</p>
+          <p style="font-size:24px;font-weight:700;letter-spacing:-0.025em;margin-top:4px">450M</p>
+          <p style="font-size:12px;font-weight:500;margin-top:4px">+18% so với tháng trước</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ALERTS ═══ -->
+<hr class="section-divider">
+<section class="section" id="alerts">
+  <h2 class="section-title">9. Alerts</h2>
+  <p class="section-desc">4 semantic alert variants — info, success, warning, destructive.</p>
+  
+
+  <div class="block">
+    <h3 class="block-title">Alert Variants</h3>
+    <div class="block-content">
+      <div class="space-y">
+        <div class="alert alert-info">
+          <span class="alert-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
+          <div class="alert-title">Thông báo</div>
+          <div class="alert-desc">Có 3 báo giá mới cần duyệt trong hôm nay.</div>
+        </div>
+        <div class="alert alert-success">
+          <span class="alert-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+          <div class="alert-title">Thành công</div>
+          <div class="alert-desc">Hợp đồng đã được ký thành công.</div>
+        </div>
+        <div class="alert alert-warning">
+          <span class="alert-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+          <div class="alert-title">Cảnh báo</div>
+          <div class="alert-desc">Còn 2 hoá đơn sắp quá hạn thanh toán.</div>
+        </div>
+        <div class="alert alert-destructive">
+          <span class="alert-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span>
+          <div class="alert-title">Lỗi</div>
+          <div class="alert-desc">Không thể kết nối đến server. Vui lòng thử lại sau.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TABLES ═══ -->
+<hr class="section-divider">
+<section class="section" id="tables">
+  <h2 class="section-title">10. Tables</h2>
+  <p class="section-desc">Data table pattern.</p>
+  
+
+  <div class="block">
+    <h3 class="block-title">Basic Table</h3>
+    <div class="block-content table-wrap">
+      <table>
+        <thead><tr>
+          <th>Tên khách hàng</th><th>Email</th><th>Trạng thái</th><th>Brand</th><th style="text-align:right">Doanh thu</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="font-weight:500">Nguyễn Văn A</td><td class="muted">a@example.com</td><td><span class="status-badge sb-blue"><span class="dot"></span>Khách hàng</span></td><td><span class="status-badge sb-brand-agency">Tulie Agency</span></td><td class="right">120,000,000đ</td></tr>
+          <tr><td style="font-weight:500">Trần Thị B</td><td class="muted">b@example.com</td><td><span class="status-badge sb-violet"><span class="dot"></span>VIP</span></td><td><span class="status-badge sb-brand-studio">Tulie Studio</span></td><td class="right">350,000,000đ</td></tr>
+          <tr><td style="font-weight:500">Lê Văn C</td><td class="muted">c@example.com</td><td><span class="status-badge sb-ghost"><span class="dot"></span>Tiềm năng</span></td><td><span class="status-badge sb-brand-academy">Tulie Academy</span></td><td class="right">0đ</td></tr>
+          <tr><td style="font-weight:500">Phạm Thị D</td><td class="muted">d@example.com</td><td><span class="status-badge sb-outline"><span class="dot"></span>Đang theo dõi</span></td><td><span class="status-badge sb-brand-agency">Tulie Agency</span></td><td class="right">15,000,000đ</td></tr>
+          <tr><td style="font-weight:500">Hoàng Văn E</td><td class="muted">e@example.com</td><td><span class="status-badge sb-cancelled"><span class="dot"></span>Đã rời bỏ</span></td><td><span class="status-badge sb-brand-studio">Tulie Studio</span></td><td class="right">80,000,000đ</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIALOGS & SHEETS ═══ -->
+<hr class="section-divider">
+<section class="section" id="dialogs">
+  <h2 class="section-title">11. Dialogs & Sheets</h2>
+  <p class="section-desc">Modal dialog, Confirm dialog, Sheet (slide panel).</p>
+  
+
+  <div class="block">
+    <h3 class="block-title">Dialog</h3>
+    <div class="block-content">
+      <div class="flex-wrap">
+        <button class="btn btn-outline" onclick="document.getElementById('demo-dialog').classList.add('open')">Mở Dialog</button>
+        <button class="btn btn-default" onclick="document.getElementById('demo-dialog-form').classList.add('open')">Dialog Form</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Confirm Dialog</h3>
+    <div class="block-content">
+      <button class="btn btn-destructive" onclick="document.getElementById('demo-confirm').classList.add('open')">Xoá khách hàng</button>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Sheet (slide panel)</h3>
+    <div class="block-content">
+      <button class="btn btn-outline" onclick="document.getElementById('demo-sheet').classList.add('open')">Mở Sheet →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DROPDOWNS & COMMAND ═══ -->
+<hr class="section-divider">
+<section class="section" id="dropdowns">
+  <h2 class="section-title">12. Dropdowns & Command</h2>
+  <p class="section-desc">Dropdown menu, Popover, Command palette (⌘K).</p>
+  
+
+  <div class="block">
+    <h3 class="block-title">Dropdown Menu</h3>
+    <div class="block-content">
+      <div class="dropdown" id="demo-dropdown">
+        <button class="btn btn-outline dropdown-trigger" onclick="this.parentElement.classList.toggle('open')">⋯ Actions</button>
+        <div class="dropdown-menu">
+          <button class="dropdown-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Sửa</button>
+          <button class="dropdown-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Sao chép</button>
+          <button class="dropdown-item">📤 Xuất PDF</button>
+          <div class="dropdown-sep"></div>
+          <button class="dropdown-item" style="color:var(--destructive)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Xoá</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Popover</h3>
+    <div class="block-content">
+      <div class="popover" id="demo-popover">
+        <button class="btn btn-outline" onclick="this.parentElement.classList.toggle('open')">Tuỳ chỉnh hiển thị</button>
+        <div class="popover-content">
+          <h4 style="font-size:14px;font-weight:500;margin-bottom:12px">Tuỳ chỉnh cột</h4>
+          <div class="space-y-sm">
+            <label class="checkbox-row"><input type="checkbox" class="checkbox" checked> Hiện cột Email</label>
+            <label class="checkbox-row"><input type="checkbox" class="checkbox" checked> Hiện cột Trạng thái</label>
+            <label class="checkbox-row"><input type="checkbox" class="checkbox"> Hiện cột Doanh thu</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Command Palette (⌘K)</h3>
+    <div class="block-content">
+      <div class="cmd">
+        <div class="cmd-input">
+          <span style="color:var(--muted-fg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          <input placeholder="Tìm kiếm..." value="">
+        </div>
+        <div class="cmd-group">
+          <div class="cmd-group-label">Gợi ý</div>
+          <div class="cmd-item">📊 Bảng điều khiển <span class="cmd-shortcut">⌘D</span></div>
+          <div class="cmd-item">👥 Khách hàng <span class="cmd-shortcut">⌘K</span></div>
+          <div class="cmd-item">📄 Báo giá <span class="cmd-shortcut">⌘Q</span></div>
+          <div class="cmd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Hợp đồng <span class="cmd-shortcut">⌘C</span></div>
+        </div>
+        <div class="cmd-group">
+          <div class="cmd-group-label">Hành động</div>
+          <div class="cmd-item">＋ Tạo khách hàng mới</div>
+          <div class="cmd-item">＋ Tạo báo giá mới</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Calendar / Date Picker</h3>
+    <div class="block-content">
+      <div class="cal">
+        <div class="cal-header">
+          <button class="cal-nav">‹</button>
+          <span style="font-weight:600;font-size:14px">Tháng 3 2026</span>
+          <button class="cal-nav">›</button>
+        </div>
+        <div class="cal-grid">
+          <span class="cal-day">CN</span><span class="cal-day">T2</span><span class="cal-day">T3</span><span class="cal-day">T4</span><span class="cal-day">T5</span><span class="cal-day">T6</span><span class="cal-day">T7</span>
+          <span class="cal-date muted">23</span><span class="cal-date muted">24</span><span class="cal-date muted">25</span><span class="cal-date muted">26</span><span class="cal-date muted">27</span><span class="cal-date muted">28</span><span class="cal-date">1</span>
+          <span class="cal-date">2</span><span class="cal-date">3</span><span class="cal-date">4</span><span class="cal-date">5</span><span class="cal-date">6</span><span class="cal-date">7</span><span class="cal-date">8</span>
+          <span class="cal-date">9</span><span class="cal-date">10</span><span class="cal-date">11</span><span class="cal-date">12</span><span class="cal-date">13</span><span class="cal-date today">14</span><span class="cal-date">15</span>
+          <span class="cal-date">16</span><span class="cal-date">17</span><span class="cal-date">18</span><span class="cal-date">19</span><span class="cal-date">20</span><span class="cal-date">21</span><span class="cal-date">22</span>
+          <span class="cal-date">23</span><span class="cal-date">24</span><span class="cal-date">25</span><span class="cal-date">26</span><span class="cal-date">27</span><span class="cal-date">28</span><span class="cal-date">29</span>
+          <span class="cal-date">30</span><span class="cal-date">31</span><span class="cal-date muted">1</span><span class="cal-date muted">2</span><span class="cal-date muted">3</span><span class="cal-date muted">4</span><span class="cal-date muted">5</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MISC ═══ -->
+<hr class="section-divider">
+<section class="section" id="misc">
+  <h2 class="section-title">13. Misc Components</h2>
+  <p class="section-desc">Tabs, Tooltip, Avatar, Skeleton, Progress, Separator.</p>
+  
+
+  <div class="block">
+    <h3 class="block-title">Tabs</h3>
+    <div class="block-content">
+      <div class="tabs-list">
+        <button class="tab active">Thông tin</button>
+        <button class="tab">Đơn hàng</button>
+        <button class="tab">Lịch sử</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Tooltip (hover)</h3>
+    <div class="block-content">
+      <div class="flex-wrap">
+        <div class="tip"><button class="btn btn-outline btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><span class="tip-text">Sao chép</span></div>
+        <div class="tip"><button class="btn btn-outline btn-icon">✉</button><span class="tip-text">Gửi email</span></div>
+        <div class="tip"><button class="btn btn-outline btn-icon">⚙</button><span class="tip-text">Cài đặt</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Avatar</h3>
+    <div class="block-content">
+      <div class="flex-wrap">
+        <div class="avatar"><img src="https://github.com/shadcn.png" alt="avatar"></div>
+        <div class="avatar">AB</div>
+        <div class="avatar avatar-lg">VN</div>
+        <div class="avatar avatar-sm">SM</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Skeleton</h3>
+    <div class="block-content" style="max-width:400px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div class="skeleton" style="width:40px;height:40px;border-radius:9999px;flex-shrink:0"></div>
+        <div style="flex:1">
+          <div class="skeleton" style="height:16px;width:75%;margin-bottom:8px"></div>
+          <div class="skeleton" style="height:12px;width:50%"></div>
+        </div>
+      </div>
+      <div class="skeleton" style="height:128px;width:100%;border-radius:8px"></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Progress</h3>
+    <div class="block-content" style="max-width:400px">
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px"><span>Tiến độ dự án</span><span style="color:var(--muted-fg)">75%</span></div>
+        <div class="progress"><div class="progress-bar" style="width:75%"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px"><span>Mục tiêu doanh thu</span><span style="color:var(--muted-fg)">35%</span></div>
+        <div class="progress"><div class="progress-bar" style="width:35%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Separator</h3>
+    <div class="block-content" style="max-width:400px">
+      <p>Nội dung phía trên</p>
+      <hr class="sep">
+      <p>Nội dung phía dưới</p>
+      <div style="display:flex;align-items:center;gap:0;margin-top:16px">
+        <span>Item 1</span><span class="sep-v"></span>
+        <span>Item 2</span><span class="sep-v"></span>
+        <span>Item 3</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Scroll Area</h3>
+    <div class="block-content" style="max-width:400px">
+      <div class="scroll-area">
+        <div style="padding:8px 12px;border-bottom:1px solid var(--border)">Nguyễn Văn A — Khách hàng</div>
+        <div style="padding:8px 12px;border-bottom:1px solid var(--border)">Trần Thị B — VIP</div>
+        <div style="padding:8px 12px;border-bottom:1px solid var(--border)">Lê Văn C — Tiềm năng</div>
+        <div style="padding:8px 12px;border-bottom:1px solid var(--border)">Phạm Thị D — Đang theo dõi</div>
+        <div style="padding:8px 12px;border-bottom:1px solid var(--border)">Hoàng Văn E — Đã rời bỏ</div>
+        <div style="padding:8px 12px;border-bottom:1px solid var(--border)">Vũ Thị F — Tiềm năng</div>
+        <div style="padding:8px 12px;border-bottom:1px solid var(--border)">Đặng Văn G — Khách hàng</div>
+        <div style="padding:8px 12px">Bùi Thị H — VIP</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Toast / Notification</h3>
+    <div class="block-content space-y">
+      <div class="toast-demo" style="border-color:#a7f3d0"><span class="toast-icon" style="color:#059669"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span><span class="toast-msg">Đã lưu thay đổi thành công</span><span class="toast-close">✕</span></div>
+      <div class="toast-demo" style="border-color:#fecaca"><span class="toast-icon" style="color:#dc2626"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span><span class="toast-msg" style="color:var(--destructive)">Lỗi khi xóa đơn hàng</span><span class="toast-close">✕</span></div>
+      <div class="toast-demo" style="border-color:#bfdbfe"><span class="toast-icon" style="color:#2563eb"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span><span class="toast-msg">Đã copy link Portal cho khách</span><span class="toast-close">✕</span></div>
+      <div class="toast-demo" style="border-color:#fde68a"><span class="toast-icon" style="color:#d97706"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span class="toast-msg">Phiên làm việc sắp hết hạn</span><span class="toast-close">✕</span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Empty State</h3>
+    <div class="block-content">
+      <div class="empty-state">
+        <div class="empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>
+        <div class="empty-title">Chưa có đơn hàng nào</div>
+        <div class="empty-desc">Tạo đơn hàng đầu tiên để bắt đầu quản lý</div>
+        <button class="btn btn-default btn-sm">＋ Tạo đơn hàng</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Breadcrumb</h3>
+    <div class="block-content">
+      <nav class="breadcrumb">
+        <a href="#">Dashboard</a>
+        <span class="bc-sep">/</span>
+        <a href="#">Studio</a>
+        <span class="bc-sep">/</span>
+        <span class="bc-current">Đơn hàng #TL-0042</span>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NEW v2.0 COMPONENTS ═══ -->
+<hr class="section-divider">
+<section class="section" id="new-v2">
+  <h2 class="section-title">14. New v2.0 Components</h2>
+  <p class="section-desc">7 components mới được thêm vào Design System v2.0</p>
+
+  <div class="block">
+    <h3 class="block-title">Accordion</h3>
+    <div class="block-content" style="max-width:500px">
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
+        <div style="border-bottom:1px solid var(--border)">
+          <button onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'" style="display:flex;justify-content:space-between;width:100%;padding:12px 16px;font-size:14px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--fg)">Thông tin cơ bản <span>▾</span></button>
+          <div style="padding:0 16px 12px;font-size:14px;color:var(--muted-fg)">Accordion content — hiển thị/ẩn nội dung theo section</div>
+        </div>
+        <div style="border-bottom:1px solid var(--border)">
+          <button onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'" style="display:flex;justify-content:space-between;width:100%;padding:12px 16px;font-size:14px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--fg)">Cài đặt nâng cao <span>▾</span></button>
+          <div style="padding:0 16px 12px;font-size:14px;color:var(--muted-fg);display:none">Nội dung cài đặt nâng cao...</div>
+        </div>
+        <div>
+          <button onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'" style="display:flex;justify-content:space-between;width:100%;padding:12px 16px;font-size:14px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--fg)">Câu hỏi thường gặp <span>▾</span></button>
+          <div style="padding:0 16px 12px;font-size:14px;color:var(--muted-fg);display:none">Nội dung FAQ...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">AlertDialog (Confirm)</h3>
+    <div class="block-content">
+      <div class="flex-wrap">
+        <button class="btn btn-destructive" onclick="document.getElementById('demo-alert-dialog').classList.add('open')">Xoá tài khoản</button>
+        <button class="btn btn-outline" onclick="document.getElementById('demo-alert-logout').classList.add('open')">Đăng xuất</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Slider</h3>
+    <div class="block-content" style="max-width:400px">
+      <div style="margin-bottom:16px">
+        <label class="label">Ngân sách (triệu VND)</label>
+        <input type="range" min="0" max="500" value="150" style="width:100%;accent-color:var(--primary);cursor:pointer">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted-fg);margin-top:4px"><span>0</span><span>150M</span><span>500M</span></div>
+      </div>
+      <div>
+        <label class="label">Độ ưu tiên</label>
+        <input type="range" min="1" max="5" value="3" style="width:100%;accent-color:var(--primary);cursor:pointer">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted-fg);margin-top:4px"><span>1 (Thấp)</span><span>3</span><span>5 (Cao)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">DatePicker (Popover + Calendar)</h3>
+    <div class="block-content" style="max-width:300px">
+      <label class="label">Ngày bắt đầu</label>
+      <button class="btn btn-outline" style="width:100%;justify-content:flex-start;font-weight:400;color:var(--muted-fg);gap:8px">📅 Chọn ngày...</button>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted-fg)">→ Khi click sẽ mở Calendar popover (React component)</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Combobox (Searchable Select)</h3>
+    <div class="block-content" style="max-width:300px">
+      <label class="label">Chọn khách hàng</label>
+      <button class="btn btn-outline" style="width:100%;justify-content:space-between;font-weight:400;color:var(--muted-fg)">Tìm và chọn... <span style="opacity:.5">⌃</span></button>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted-fg)">→ Khi click sẽ mở Command popover với search (React component)</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Sonner (Toast)</h3>
+    <div class="block-content space-y">
+      <div class="toast-demo" style="border-color:var(--border)"><span class="toast-icon">✅</span><span class="toast-msg">toast.success('Đã lưu thành công')</span><span class="toast-close">✕</span></div>
+      <div class="toast-demo" style="border-color:var(--border)"><span class="toast-icon">❌</span><span class="toast-msg" style="color:var(--destructive)">toast.error('Có lỗi xảy ra')</span><span class="toast-close">✕</span></div>
+      <div class="toast-demo" style="border-color:var(--border)"><span class="toast-icon">📋</span><span class="toast-msg">toast('Đã sao chép vào clipboard')</span><span class="toast-close">✕</span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Component Summary</h3>
+    <div class="block-content table-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Số lượng</th><th>Ví dụ</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:500">Tier 1: Primitives</td><td>35</td><td class="muted">Button, Card, Badge, Dialog, Tabs, Accordion...</td></tr>
+          <tr><td style="font-weight:500">Tier 2: Patterns</td><td>7 files / 9 exports</td><td class="muted">PageHeader, StatCard, FormField, EmptyState...</td></tr>
+          <tr><td style="font-weight:500">Tier 3: Composites</td><td>6</td><td class="muted">DataTable, StatusBadge, ThemeProvider, Toaster...</td></tr>
+          <tr><td style="font-weight:500">Tier 4: Future</td><td>5</td><td class="muted">Toggle, ToggleGroup, Collapsible, NavigationMenu...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRODUCTIVITY VIEWS ═══ -->
+<hr class="section-divider">
+<section class="section" id="prod-views">
+  <h2 class="section-title">15. Productivity Views</h2>
+  <p class="section-desc">Các component phức tạp cho quản lý công việc (Kanban, Gantt) chuẩn ClickUp/Linear.</p>
+
+  <div class="block">
+    <h3 class="block-title">Kanban Board</h3>
+    <div class="block-content" style="padding:0; border:none; background:transparent; box-shadow:none;">
+      <div class="kanban-board">
+        <!-- Column 1 -->
+        <div class="kanban-col">
+          <div class="kanban-header">
+            <span>To Do</span>
+            <span class="kanban-count">2</span>
+          </div>
+          <div class="kanban-card">
+            <div style="display:flex;gap:8px;margin-bottom:8px">
+              <span class="status-badge sb-danger"><span class="dot"></span>High Prio</span>
+              <span class="status-badge sb-violet"><span class="dot"></span>Design</span>
+            </div>
+            <div style="font-size:14px;font-weight:500;margin-bottom:8px">Revamp Auth Flow</div>
+            <div style="font-size:12px;color:var(--muted-fg);display:flex;justify-content:space-between;align-items:center">
+              <span>TL-104</span>
+              <div class="avatar avatar-sm">TN</div>
+            </div>
+          </div>
+          <div class="kanban-card">
+            <div style="display:flex;gap:8px;margin-bottom:8px">
+              <span class="status-badge sb-outline"><span class="dot"></span>Pending</span>
+            </div>
+            <div style="font-size:14px;font-weight:500;margin-bottom:8px">API Integration</div>
+            <div style="font-size:12px;color:var(--muted-fg);display:flex;justify-content:space-between;align-items:center">
+              <span>TL-105</span>
+              <div class="avatar avatar-sm">H</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2 -->
+        <div class="kanban-col">
+          <div class="kanban-header">
+            <span>In Progress</span>
+            <span class="kanban-count">1</span>
+          </div>
+          <div class="kanban-card">
+            <div style="display:flex;gap:8px;margin-bottom:8px">
+              <span class="status-badge sb-amber"><span class="dot"></span>Marketing</span>
+            </div>
+            <div style="font-size:14px;font-weight:500;margin-bottom:8px">Q1 Campaign Assets</div>
+            <div style="font-size:12px;color:var(--muted-fg);display:flex;justify-content:space-between;align-items:center">
+              <span>MKT-22</span>
+              <div class="avatar avatar-sm"><img src="https://ui-avatars.com/api/?name=An&background=random" alt="An" style="width:100%"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Column 3 -->
+        <div class="kanban-col">
+          <div class="kanban-header">
+            <span>Done</span>
+            <span class="kanban-count">3</span>
+          </div>
+          <div style="padding:16px;text-align:center;color:var(--muted-fg);font-size:13px;border:1px dashed var(--border);border-radius:8px">
+            Kéo thả thẻ vào đây
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3 class="block-title">Gantt Chart / Timeline</h3>
+    <div class="block-content timeline-wrap" style="padding:0">
+      <div class="timeline-header">
+        <div>Task / Project</div>
+        <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+      </div>
+      
+      <!-- Row 1 -->
+      <div class="timeline-row">
+        <div class="timeline-task">
+          <div style="display:flex;align-items:center;gap:6px"><span style="color:var(--info)">●</span> Website Redesign</div>
+          <div style="font-size:11px;color:var(--muted-fg);margin-top:2px;font-weight:400">Tulie Agency</div>
+        </div>
+        <div class="timeline-grid">
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          <div class="timeline-bar" style="background:var(--info);left:calc(100%/7 * 1 + 10px);width:calc(100%/7 * 3 - 20px)">Design Phase</div>
+        </div>
+      </div>
+      
+      <!-- Row 2 -->
+      <div class="timeline-row">
+        <div class="timeline-task">
+          <div style="display:flex;align-items:center;gap:6px"><span style="color:var(--success)">●</span> CRM Migration</div>
+          <div style="font-size:11px;color:var(--muted-fg);margin-top:2px;font-weight:400">Internal Dept</div>
+        </div>
+        <div class="timeline-grid">
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          <div class="timeline-bar" style="background:var(--success);left:calc(100%/7 * 3 + 10px);width:calc(100%/7 * 4 - 20px)">Data Import</div>
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="timeline-row">
+        <div class="timeline-task">
+          <div style="display:flex;align-items:center;gap:6px"><span style="color:var(--warning)">●</span> Marketing Shoot</div>
+          <div style="font-size:11px;color:var(--muted-fg);margin-top:2px;font-weight:400">Tulie Studio</div>
+        </div>
+        <div class="timeline-grid">
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          <div class="timeline-bar" style="background:var(--warning);left:calc(100%/7 * 0 + 10px);width:calc(100%/7 * 2 - 20px)">Pre-prod</div>
+          <div class="timeline-bar" style="background:var(--destructive);left:calc(100%/7 * 5 + 10px);width:calc(100%/7 * 2 - 20px)">Shooting</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<div style="border-top:1px solid var(--border);padding:32px 0 64px;text-align:center">
+  <p style="font-size:14px;color:var(--muted-fg)">Tulie Design System v2.0 — @repo/ui • 55 components • OKLCH • shadcn/ui + data-slot</p>
+</div>
+
+</div> <!-- /showcase -->
+
+
+<!-- Modal: Dialog -->
+<div class="modal-overlay" id="demo-dialog" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal-title">Thông tin</div>
+    <div class="modal-desc">Đây là một dialog thông thường. Bạn có thể hiển thị nội dung bất kỳ ở đây.</div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-sm" onclick="this.closest('.modal-overlay').classList.remove('open')">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Dialog Form -->
+<div class="modal-overlay" id="demo-dialog-form" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal-title">Tạo khách hàng mới</div>
+    <div class="modal-desc">Nhập thông tin khách hàng</div>
+    <div style="margin-bottom:12px"><label class="label">Tên</label><input class="input" placeholder="Nguyễn Văn A"></div>
+    <div style="margin-bottom:12px"><label class="label">Email</label><input class="input" type="email" placeholder="email@example.com"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-sm" onclick="this.closest('.modal-overlay').classList.remove('open')">Hủy</button>
+      <button class="btn btn-default btn-sm" onclick="this.closest('.modal-overlay').classList.remove('open')">Tạo mới</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Confirm -->
+<div class="modal-overlay" id="demo-confirm" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal-title">Xác nhận xoá</div>
+    <div class="modal-desc">Bạn có chắc chắn muốn xoá khách hàng này? Hành động này không thể hoàn tác.</div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-sm" onclick="this.closest('.modal-overlay').classList.remove('open')">Hủy</button>
+      <button class="btn btn-destructive btn-sm" onclick="this.closest('.modal-overlay').classList.remove('open')">Xoá</button>
+    </div>
+  </div>
+</div>
+
+<!-- Sheet -->
+<div class="sheet-overlay" id="demo-sheet" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="sheet-panel">
+    <div class="sheet-title">Chi tiết khách hàng</div>
+    <div class="sheet-desc">Xem và chỉnh sửa thông tin</div>
+    <div style="margin-bottom:12px"><label class="label">Tên</label><input class="input" value="Nguyễn Văn A"></div>
+    <div style="margin-bottom:12px"><label class="label">Email</label><input class="input" value="a@example.com"></div>
+    <div style="margin-bottom:12px"><label class="label">Điện thoại</label><input class="input" value="0123 456 789"></div>
+    <div style="margin-top:16px">
+      <button class="btn btn-default btn-sm" onclick="this.closest('.sheet-overlay').classList.remove('open')">Lưu thay đổi</button>
+    </div>
+  </div>
+</div>
+
+<!-- AlertDialog: Delete Account -->
+<div class="modal-overlay" id="demo-alert-dialog" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal-title">Bạn có chắc chắn?</div>
+    <div class="modal-desc">Hành động này sẽ xoá vĩnh viễn tài khoản và tất cả dữ liệu. Không thể hoàn tác.</div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-sm" onclick="this.closest('.modal-overlay').classList.remove('open')">Huỷ bỏ</button>
+      <button class="btn btn-destructive btn-sm" onclick="this.closest('.modal-overlay').classList.remove('open')">Xoá tài khoản</button>
+    </div>
+  </div>
+</div>
+
+<!-- AlertDialog: Logout -->
+<div class="modal-overlay" id="demo-alert-logout" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal-title">Đăng xuất</div>
+    <div class="modal-desc">Bạn sẽ cần đăng nhập lại để tiếp tục sử dụng hệ thống.</div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-sm" onclick="this.closest('.modal-overlay').classList.remove('open')">Huỷ bỏ</button>
+      <button class="btn btn-default btn-sm" onclick="this.closest('.modal-overlay').classList.remove('open')">Đăng xuất</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Close dropdown/popover when clicking outside
+document.addEventListener('click', function(e) {
+  document.querySelectorAll('.dropdown.open').forEach(function(el) {
+    if (!el.contains(e.target)) el.classList.remove('open');
+  });
+  document.querySelectorAll('.popover.open').forEach(function(el) {
+    if (!el.contains(e.target)) el.classList.remove('open');
+  });
+});
+
+// Scroll-spy for TOC sidebar 
+var tocLinks = document.querySelectorAll('.toc-sidebar a');
+var sections = [];
+tocLinks.forEach(function(link) {
+  var id = link.getAttribute('href').slice(1);
+  var el = document.getElementById(id);
+  if (el) sections.push({ id: id, el: el, link: link });
+});
+function updateToc() {
+  var scrollY = window.scrollY + 100;
+  var active = sections[0];
+  sections.forEach(function(s) {
+    if (s.el.offsetTop <= scrollY) active = s;
+  });
+  tocLinks.forEach(function(l) { l.classList.remove('active'); });
+  if (active) active.link.classList.add('active');
+}
+window.addEventListener('scroll', updateToc);
+updateToc();
+</script>
+
+</body>
+</html>

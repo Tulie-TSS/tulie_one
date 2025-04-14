@@ -1,0 +1,89 @@
+'use client'
+
+import React, { useState } from 'react'
+import { login } from '../actions'
+import { Button } from '@repo/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Label } from '@repo/ui'
+import { LoadingSpinner } from '@repo/ui'
+import { Eye, EyeOff } from 'lucide-react'
+
+export default function LoginPage() {
+    const [error, setError] = useState<string | null>(null)
+    const [loading, setLoading] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
+
+    async function handleAction(formData: FormData) {
+        setLoading(true)
+        setError(null)
+        try {
+            const result = await login(formData)
+            if (result?.error) {
+                setError(result.error)
+                setLoading(false)
+            }
+        } catch (e) {
+            if (
+                e instanceof Error &&
+                (e.message === 'NEXT_REDIRECT' || (e as any).digest?.startsWith('NEXT_REDIRECT') || e.message.includes('NEXT_REDIRECT'))
+            ) {
+                throw e
+            }
+            console.error('Login error:', e)
+            setError('Đã có lỗi xảy ra. Vui lòng thử lại.')
+            setLoading(false)
+        }
+    }
+
+    return (
+        <Card className="border-none shadow-lg">
+            <CardHeader>
+                <CardTitle className="text-2xl">Hệ thống Tulie CRM</CardTitle>
+                <CardDescription>
+                    Nhập email và mật khẩu để đăng nhập vào hệ thống
+                </CardDescription>
+            </CardHeader>
+            <form action={handleAction}>
+                <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input id="email" name="email" type="email" placeholder="admin@tulie.app" required />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="password">Mật khẩu</Label>
+                        <div className="relative">
+                            <Input
+                                id="password"
+                                name="password"
+                                type={showPassword ? "text" : "password"}
+                                required
+                                className="pr-10"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer p-1"
+                            >
+                                {showPassword ? (
+                                    <EyeOff className="h-4 w-4" />
+                                ) : (
+                                    <Eye className="h-4 w-4" />
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                    {error && (
+                        <div className="text-sm font-medium text-destructive">
+                            {error}
+                        </div>
+                    )}
+                    <Button className="w-full" type="submit" disabled={loading}>
+                        {loading && <LoadingSpinner size="sm" className="mr-2" />}
+                        {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+                    </Button>
+                </CardContent>
+            </form>
+        </Card>
+    )
+}

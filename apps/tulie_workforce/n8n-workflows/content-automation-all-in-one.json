@@ -1,0 +1,658 @@
+{
+  "name": "Content Automation Pipeline (All-in-One)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "minutes", "minutesInterval": 30 }]
+        }
+      },
+      "id": "trigger-generation",
+      "name": "⏰ Check New Content (30min)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, -400],
+      "notes": "FLOW 1: Content Generation — chạy mỗi 30 phút"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "minutes", "minutesInterval": 5 }]
+        }
+      },
+      "id": "trigger-publish",
+      "name": "⏰ Check Publish Queue (5min)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 600],
+      "notes": "FLOW 3: Scheduled Publisher — chạy mỗi 5 phút"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "content-approval",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "trigger-approval",
+      "name": "🔔 Webhook: Slack Approval",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 100],
+      "webhookId": "content-approval-webhook",
+      "notes": "FLOW 2: Approval Handler — nhận callback từ Slack"
+    },
+
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": { "__rl": true, "mode": "id", "value": "={{ $env.GOOGLE_SHEET_ID }}" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "ContentPlan" },
+        "filtersUI": { "values": [{ "lookupColumn": "status", "lookupValue": "pending" }] },
+        "options": {}
+      },
+      "id": "read-pending",
+      "name": "📊 Read Pending Content",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [260, -400],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets" } }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [{ "leftValue": "={{ $json.status }}", "rightValue": "pending", "operator": { "type": "string", "operation": "equals" } }]
+        }
+      },
+      "id": "filter-pending",
+      "name": "Filter Pending",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [480, -400]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": { "__rl": true, "mode": "id", "value": "={{ $env.GOOGLE_SHEET_ID }}" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "ContentPlan" },
+        "columns": { "mappingMode": "defineBelow", "value": { "status": "creating" }, "matchingColumns": ["post_id"] }
+      },
+      "id": "set-creating",
+      "name": "Status → Creating",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [700, -400],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets" } }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.bannerbear.com/v2/images",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"template\": \"{{ $json.image_template }}\",\n  \"modifications\": [\n    { \"name\": \"background\", \"image_url\": \"{{ $json.background_url }}\" },\n    { \"name\": \"person\", \"image_url\": \"{{ $json.person_image_url }}\" },\n    { \"name\": \"logo\", \"image_url\": \"{{ $env.LOGO_URL }}\" },\n    { \"name\": \"headline\", \"text\": \"{{ $json.headline_text }}\" },\n    { \"name\": \"subtext\", \"text\": \"{{ $json.sub_text }}\" },\n    { \"name\": \"cta\", \"text\": \"{{ $json.cta_text }}\" }\n  ]\n}",
+        "options": {}
+      },
+      "id": "bannerbear-create",
+      "name": "🖼️ Create Image (Bannerbear)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [920, -400],
+      "credentials": { "httpHeaderAuth": { "id": "BANNERBEAR_CREDENTIAL_ID", "name": "Bannerbear API" } }
+    },
+    {
+      "parameters": { "amount": 10, "unit": "seconds" },
+      "id": "wait-image",
+      "name": "⏳ Wait Render",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1140, -400]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.bannerbear.com/v2/images/{{ $json.uid }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "bannerbear-poll",
+      "name": "Check Image Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1360, -400],
+      "credentials": { "httpHeaderAuth": { "id": "BANNERBEAR_CREDENTIAL_ID", "name": "Bannerbear API" } }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [{ "leftValue": "={{ $json.status }}", "rightValue": "completed", "operator": { "type": "string", "operation": "equals" } }]
+        }
+      },
+      "id": "if-image-ready",
+      "name": "Image Ready?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1580, -400]
+    },
+    {
+      "parameters": {
+        "assignments": { "assignments": [{ "id": "img", "name": "generated_image_url", "value": "={{ $json.image_url }}", "type": "string" }] }
+      },
+      "id": "set-image-url",
+      "name": "Set Image URL",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1800, -400]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            { "conditions": { "conditions": [{ "leftValue": "={{ $json.channel }}", "rightValue": "facebook", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": "Facebook" },
+            { "conditions": { "conditions": [{ "leftValue": "={{ $json.channel }}", "rightValue": "website", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": "Website" },
+            { "conditions": { "conditions": [{ "leftValue": "={{ $json.channel }}", "rightValue": "both", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": "Both" }
+          ]
+        }
+      },
+      "id": "switch-channel",
+      "name": "🔀 Route by Channel",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [2020, -400]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "operation": "complete",
+        "model": { "__rl": true, "mode": "list", "value": "gpt-4o" },
+        "messages": { "values": [{ "content": "=Bạn là content creator chuyên nghiệp cho thương hiệu {{ $env.BRAND_NAME }}.\n\n**CHỦ ĐỀ:** {{ $json.topic }}\n**TỪ KHOÁ:** {{ $json.keywords }}\n**THÔNG TIN CỐT LÕI:** {{ $json.core_message }}\n**TONE:** {{ $json.tone }}\n\nViết caption Facebook:\n- Hook gây tò mò (1-2 câu)\n- Nội dung chính truyền tải thông tin cốt lõi\n- CTA: {{ $json.cta_text }}\n- 5-8 hashtag (mix phổ biến + niche)\n- 150-300 từ, có emoji phù hợp\n- Tiếng Việt, tone: {{ $json.tone }}\n\nChỉ trả về caption." }] },
+        "options": { "temperature": 0.7, "maxTokens": 1000 }
+      },
+      "id": "ai-fb",
+      "name": "✍️ AI: Facebook Caption",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.8,
+      "position": [2280, -550],
+      "credentials": { "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI" } }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "operation": "complete",
+        "model": { "__rl": true, "mode": "list", "value": "gpt-4o" },
+        "messages": { "values": [{ "content": "=Bạn là SEO content writer cho {{ $env.BRAND_NAME }}.\n\n**CHỦ ĐỀ:** {{ $json.topic }}\n**TỪ KHOÁ:** {{ $json.keywords }}\n**THÔNG TIN CỐT LÕI:** {{ $json.core_message }}\n\nViết bài blog SEO tiếng Việt:\n- H1 chứa từ khoá chính\n- Meta description ≤155 ký tự\n- Cấu trúc: Intro → 3-5 H2 → Conclusion\n- 800-1200 từ, không nhồi keyword\n- CTA cuối: {{ $json.cta_text }}\n\nOutput:\n---\ntitle: \"...\"\nmeta_description: \"...\"\n---\n[Nội dung]" }] },
+        "options": { "temperature": 0.7, "maxTokens": 3000 }
+      },
+      "id": "ai-wp",
+      "name": "✍️ AI: Website Article",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.8,
+      "position": [2280, -250],
+      "credentials": { "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI" } }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "mergeByFields": { "values": [{ "field1": "post_id", "field2": "post_id" }] },
+        "options": {}
+      },
+      "id": "merge-ai",
+      "name": "Merge AI Results",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [2520, -400]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": { "__rl": true, "mode": "id", "value": "={{ $env.GOOGLE_SHEET_ID }}" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "ContentPlan" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "generated_image_url": "={{ $json.generated_image_url }}",
+            "generated_caption_fb": "={{ $json.generated_caption_fb || '' }}",
+            "generated_article_wp": "={{ $json.generated_article_wp || '' }}",
+            "status": "review"
+          },
+          "matchingColumns": ["post_id"]
+        }
+      },
+      "id": "save-content",
+      "name": "💾 Save to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [2740, -400],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets" } }
+    },
+    {
+      "parameters": {
+        "channel": "={{ $env.SLACK_REVIEW_CHANNEL }}",
+        "text": "📋 Content Review",
+        "blocksUi": {
+          "blocksValues": [
+            { "type": "header", "text": { "type": "plain_text", "text": "📋 Content Review #{{ $json.post_id }}" } },
+            { "type": "section", "text": { "type": "mrkdwn", "text": "*Channel:* {{ $json.channel }} | *Topic:* {{ $json.topic }}\n*Scheduled:* {{ $json.date_planned }} {{ $json.time_planned }}" } },
+            { "type": "image", "title": { "type": "plain_text", "text": "Generated Image" }, "image_url": "={{ $json.generated_image_url }}", "alt_text": "content image" },
+            { "type": "section", "text": { "type": "mrkdwn", "text": "*📱 Facebook Caption:*\n>>> {{ $json.generated_caption_fb }}" } },
+            { "type": "divider" },
+            { "type": "actions", "block_id": "review_{{ $json.post_id }}", "elements": [
+              { "type": "button", "text": { "type": "plain_text", "text": "✅ Approve" }, "style": "primary", "action_id": "approve_content", "value": "{{ $json.post_id }}" },
+              { "type": "button", "text": { "type": "plain_text", "text": "❌ Reject" }, "style": "danger", "action_id": "reject_content", "value": "{{ $json.post_id }}" },
+              { "type": "button", "text": { "type": "plain_text", "text": "✏️ Edit" }, "action_id": "edit_content", "value": "{{ $json.post_id }}" }
+            ]}
+          ]
+        }
+      },
+      "id": "slack-review",
+      "name": "📤 Send for Review",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [2960, -400],
+      "credentials": { "slackApi": { "id": "SLACK_CREDENTIAL_ID", "name": "Slack Bot" } }
+    },
+
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "OK",
+        "options": {}
+      },
+      "id": "webhook-response",
+      "name": "Respond 200 OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [260, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = JSON.parse($input.first().json.body.payload);\nconst action = payload.actions[0];\nreturn [{ json: {\n  post_id: action.value,\n  action: action.action_id,\n  reviewer: payload.user.username,\n  reviewer_id: payload.user.id,\n  response_url: payload.response_url,\n  timestamp: new Date().toISOString()\n}}];"
+      },
+      "id": "parse-slack",
+      "name": "Parse Slack Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [260, 0]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            { "conditions": { "conditions": [{ "leftValue": "={{ $json.action }}", "rightValue": "approve_content", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": "Approve" },
+            { "conditions": { "conditions": [{ "leftValue": "={{ $json.action }}", "rightValue": "reject_content", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": "Reject" },
+            { "conditions": { "conditions": [{ "leftValue": "={{ $json.action }}", "rightValue": "edit_content", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": "Edit" }
+          ]
+        }
+      },
+      "id": "switch-action",
+      "name": "🔀 Route Action",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [480, 0]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": { "__rl": true, "mode": "id", "value": "={{ $env.GOOGLE_SHEET_ID }}" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "ContentPlan" },
+        "columns": { "mappingMode": "defineBelow", "value": { "status": "approved", "approval_note": "=Approved by {{ $json.reviewer }} at {{ $json.timestamp }}" }, "matchingColumns": ["post_id"] }
+      },
+      "id": "approve-sheet",
+      "name": "✅ Status → Approved",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [740, -100],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets" } }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.response_url }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"replace_original\": true, \"text\": \"✅ *Content #{{ $json.post_id }} APPROVED* by <@{{ $json.reviewer_id }}>\" }"
+      },
+      "id": "slack-approved",
+      "name": "Slack: Confirmed ✅",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [980, -100]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": { "__rl": true, "mode": "id", "value": "={{ $env.GOOGLE_SHEET_ID }}" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "ContentPlan" },
+        "columns": { "mappingMode": "defineBelow", "value": { "status": "rejected", "approval_note": "=Rejected by {{ $json.reviewer }} at {{ $json.timestamp }}" }, "matchingColumns": ["post_id"] }
+      },
+      "id": "reject-sheet",
+      "name": "❌ Status → Rejected",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [740, 50],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets" } }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.response_url }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"replace_original\": true, \"text\": \"❌ *Content #{{ $json.post_id }} REJECTED* by <@{{ $json.reviewer_id }}>. Set status to 'pending' to retry.\" }"
+      },
+      "id": "slack-rejected",
+      "name": "Slack: Confirmed ❌",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [980, 50]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.response_url }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"replace_original\": false, \"text\": \"✏️ Edit requested for #{{ $json.post_id }}. Update Sheet + set status to 'pending' to regenerate.\" }"
+      },
+      "id": "slack-edit",
+      "name": "Slack: Edit Requested ✏️",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [740, 200]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": { "__rl": true, "mode": "id", "value": "={{ $env.GOOGLE_SHEET_ID }}" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "ContentPlan" },
+        "columns": { "mappingMode": "defineBelow", "value": { "status": "editing", "approval_note": "=Edit requested by {{ $json.reviewer }}" }, "matchingColumns": ["post_id"] }
+      },
+      "id": "edit-sheet",
+      "name": "Status → Editing",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [980, 200],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets" } }
+    },
+
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": { "__rl": true, "mode": "id", "value": "={{ $env.GOOGLE_SHEET_ID }}" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "ContentPlan" },
+        "filtersUI": { "values": [{ "lookupColumn": "status", "lookupValue": "approved" }] },
+        "options": {}
+      },
+      "id": "read-approved",
+      "name": "📊 Get Approved Posts",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [260, 600],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets" } }
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\nconst items = $input.all();\nconst ready = [];\nfor (const item of items) {\n  const d = item.json.date_planned;\n  const t = item.json.time_planned;\n  if (!d || !t) continue;\n  const scheduled = new Date(`${d}T${t}:00+07:00`);\n  if (scheduled <= now) ready.push({ json: { ...item.json, scheduled_time: scheduled.toISOString() } });\n}\nreturn ready.length ? ready : [];"
+      },
+      "id": "filter-time",
+      "name": "⏰ Filter: Time to Publish",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 600]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "or",
+          "conditions": [
+            { "leftValue": "={{ $json.channel }}", "rightValue": "facebook", "operator": { "type": "string", "operation": "equals" } },
+            { "leftValue": "={{ $json.channel }}", "rightValue": "both", "operator": { "type": "string", "operation": "equals" } }
+          ]
+        }
+      },
+      "id": "if-fb",
+      "name": "Post to FB?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [740, 500]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "or",
+          "conditions": [
+            { "leftValue": "={{ $json.channel }}", "rightValue": "website", "operator": { "type": "string", "operation": "equals" } },
+            { "leftValue": "={{ $json.channel }}", "rightValue": "both", "operator": { "type": "string", "operation": "equals" } }
+          ]
+        }
+      },
+      "id": "if-wp",
+      "name": "Post to WP?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [740, 700]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v19.0/{{ $env.FB_PAGE_ID }}/photos",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"url\": \"{{ $json.generated_image_url }}\",\n  \"caption\": {{ JSON.stringify($json.generated_caption_fb) }},\n  \"published\": true\n}",
+        "sendQuery": true,
+        "queryParameters": { "parameters": [{ "name": "access_token", "value": "={{ $env.FB_ACCESS_TOKEN }}" }] },
+        "options": {}
+      },
+      "id": "publish-fb",
+      "name": "📱 Publish Facebook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [980, 500]
+    },
+    {
+      "parameters": {
+        "jsCode": "const article = $json.generated_article_wp || '';\nlet title = '', meta = '', content = article;\nconst fm = article.match(/^---\\n([\\s\\S]*?)\\n---\\n([\\s\\S]*)$/);\nif (fm) {\n  const y = fm[1]; content = fm[2].trim();\n  const t = y.match(/title:\\s*[\"'](.+?)[\"']/); if (t) title = t[1];\n  const m = y.match(/meta_description:\\s*[\"'](.+?)[\"']/); if (m) meta = m[1];\n}\ncontent = content.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/\\*\\*(.+?)\\*\\*/g,'<strong>$1</strong>').replace(/\\*(.+?)\\*/g,'<em>$1</em>').replace(/\\n\\n/g,'</p><p>');\nreturn [{ json: { ...$json, wp_title: title || $json.topic, wp_meta: meta, wp_content: content } }];"
+      },
+      "id": "parse-wp",
+      "name": "Parse Article → HTML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [980, 700]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.WP_URL }}/wp-json/wp/v2/media",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "Content-Disposition", "value": "=attachment; filename=\"post-{{ $json.post_id }}.jpg\"" }] },
+        "sendBody": true,
+        "contentType": "raw",
+        "body": "={{ $json.generated_image_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "id": "wp-media",
+      "name": "WP: Upload Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1220, 700],
+      "credentials": { "httpBasicAuth": { "id": "WP_CREDENTIAL_ID", "name": "WordPress" } }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.WP_URL }}/wp-json/wp/v2/posts",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"title\": {{ JSON.stringify($('Parse Article → HTML').item.json.wp_title) }},\n  \"content\": {{ JSON.stringify($('Parse Article → HTML').item.json.wp_content) }},\n  \"status\": \"publish\",\n  \"featured_media\": {{ $json.id }}\n}",
+        "options": {}
+      },
+      "id": "wp-post",
+      "name": "🌐 WP: Create Post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1460, 700],
+      "credentials": { "httpBasicAuth": { "id": "WP_CREDENTIAL_ID", "name": "WordPress" } }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": { "__rl": true, "mode": "id", "value": "={{ $env.GOOGLE_SHEET_ID }}" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "ContentPlan" },
+        "columns": { "mappingMode": "defineBelow", "value": { "status": "published", "published_url": "=Published at {{ new Date().toISOString() }}" }, "matchingColumns": ["post_id"] }
+      },
+      "id": "update-published",
+      "name": "✅ Status → Published",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1700, 600],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets" } }
+    },
+    {
+      "parameters": {
+        "channel": "={{ $env.SLACK_REVIEW_CHANNEL }}",
+        "text": "=🚀 *Content #{{ $json.post_id }} Published!*\n*Topic:* {{ $json.topic }} | *Channel:* {{ $json.channel }}"
+      },
+      "id": "slack-published",
+      "name": "🚀 Slack: Published!",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [1940, 600],
+      "credentials": { "slackApi": { "id": "SLACK_CREDENTIAL_ID", "name": "Slack Bot" } }
+    }
+  ],
+  "connections": {
+    "⏰ Check New Content (30min)": {
+      "main": [[{ "node": "📊 Read Pending Content", "type": "main", "index": 0 }]]
+    },
+    "📊 Read Pending Content": {
+      "main": [[{ "node": "Filter Pending", "type": "main", "index": 0 }]]
+    },
+    "Filter Pending": {
+      "main": [[{ "node": "Status → Creating", "type": "main", "index": 0 }]]
+    },
+    "Status → Creating": {
+      "main": [[{ "node": "🖼️ Create Image (Bannerbear)", "type": "main", "index": 0 }]]
+    },
+    "🖼️ Create Image (Bannerbear)": {
+      "main": [[{ "node": "⏳ Wait Render", "type": "main", "index": 0 }]]
+    },
+    "⏳ Wait Render": {
+      "main": [[{ "node": "Check Image Status", "type": "main", "index": 0 }]]
+    },
+    "Check Image Status": {
+      "main": [[{ "node": "Image Ready?", "type": "main", "index": 0 }]]
+    },
+    "Image Ready?": {
+      "main": [
+        [{ "node": "Set Image URL", "type": "main", "index": 0 }],
+        [{ "node": "⏳ Wait Render", "type": "main", "index": 0 }]
+      ]
+    },
+    "Set Image URL": {
+      "main": [[{ "node": "🔀 Route by Channel", "type": "main", "index": 0 }]]
+    },
+    "🔀 Route by Channel": {
+      "main": [
+        [{ "node": "✍️ AI: Facebook Caption", "type": "main", "index": 0 }],
+        [{ "node": "✍️ AI: Website Article", "type": "main", "index": 0 }],
+        [{ "node": "✍️ AI: Facebook Caption", "type": "main", "index": 0 }, { "node": "✍️ AI: Website Article", "type": "main", "index": 0 }]
+      ]
+    },
+    "✍️ AI: Facebook Caption": {
+      "main": [[{ "node": "Merge AI Results", "type": "main", "index": 0 }]]
+    },
+    "✍️ AI: Website Article": {
+      "main": [[{ "node": "Merge AI Results", "type": "main", "index": 1 }]]
+    },
+    "Merge AI Results": {
+      "main": [[{ "node": "💾 Save to Sheet", "type": "main", "index": 0 }]]
+    },
+    "💾 Save to Sheet": {
+      "main": [[{ "node": "📤 Send for Review", "type": "main", "index": 0 }]]
+    },
+
+    "🔔 Webhook: Slack Approval": {
+      "main": [[
+        { "node": "Parse Slack Payload", "type": "main", "index": 0 },
+        { "node": "Respond 200 OK", "type": "main", "index": 0 }
+      ]]
+    },
+    "Parse Slack Payload": {
+      "main": [[{ "node": "🔀 Route Action", "type": "main", "index": 0 }]]
+    },
+    "🔀 Route Action": {
+      "main": [
+        [{ "node": "✅ Status → Approved", "type": "main", "index": 0 }],
+        [{ "node": "❌ Status → Rejected", "type": "main", "index": 0 }],
+        [{ "node": "Slack: Edit Requested ✏️", "type": "main", "index": 0 }]
+      ]
+    },
+    "✅ Status → Approved": {
+      "main": [[{ "node": "Slack: Confirmed ✅", "type": "main", "index": 0 }]]
+    },
+    "❌ Status → Rejected": {
+      "main": [[{ "node": "Slack: Confirmed ❌", "type": "main", "index": 0 }]]
+    },
+    "Slack: Edit Requested ✏️": {
+      "main": [[{ "node": "Status → Editing", "type": "main", "index": 0 }]]
+    },
+
+    "⏰ Check Publish Queue (5min)": {
+      "main": [[{ "node": "📊 Get Approved Posts", "type": "main", "index": 0 }]]
+    },
+    "📊 Get Approved Posts": {
+      "main": [[{ "node": "⏰ Filter: Time to Publish", "type": "main", "index": 0 }]]
+    },
+    "⏰ Filter: Time to Publish": {
+      "main": [[
+        { "node": "Post to FB?", "type": "main", "index": 0 },
+        { "node": "Post to WP?", "type": "main", "index": 0 }
+      ]]
+    },
+    "Post to FB?": {
+      "main": [
+        [{ "node": "📱 Publish Facebook", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "Post to WP?": {
+      "main": [
+        [{ "node": "Parse Article → HTML", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "📱 Publish Facebook": {
+      "main": [[{ "node": "✅ Status → Published", "type": "main", "index": 0 }]]
+    },
+    "Parse Article → HTML": {
+      "main": [[{ "node": "WP: Upload Image", "type": "main", "index": 0 }]]
+    },
+    "WP: Upload Image": {
+      "main": [[{ "node": "🌐 WP: Create Post", "type": "main", "index": 0 }]]
+    },
+    "🌐 WP: Create Post": {
+      "main": [[{ "node": "✅ Status → Published", "type": "main", "index": 0 }]]
+    },
+    "✅ Status → Published": {
+      "main": [[{ "node": "🚀 Slack: Published!", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [{ "name": "content-automation", "id": "content-automation" }],
+  "triggerCount": 3,
+  "pinData": {}
+}

@@ -1,0 +1,114 @@
+{
+  "name": "Image Generator - AI Tạo Ảnh",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "content/generate-image",
+        "responseMode": "responseNode"
+      },
+      "id": "trigger-webhook",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [180, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.app'}}/api/n8n/content?status=draft",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.N8N_WEBHOOK_SECRET}}"
+            }
+          ]
+        }
+      },
+      "id": "get-posts",
+      "name": "Lấy bài draft chưa có ảnh",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [400, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const posts = $input.first().json.posts || [];\nconst needImage = posts.filter(p => !p.image_url && p.image_prompt);\n\nif (needImage.length === 0) {\n  return [{ json: { skip: true, message: 'No posts need images' } }];\n}\n\nreturn needImage.map(p => ({ json: p }));"
+      },
+      "id": "filter-posts",
+      "name": "Lọc bài cần ảnh",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [620, 300]
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "generate",
+        "model": "dall-e-3",
+        "prompt": "={{$json.image_prompt}}",
+        "options": {
+          "size": "1792x1024",
+          "quality": "standard",
+          "style": "vivid"
+        }
+      },
+      "id": "dalle-generate",
+      "name": "DALL-E 3 Tạo Ảnh",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [840, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.app'}}/api/n8n/content",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.N8N_WEBHOOK_SECRET}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ id: $('Lọc bài cần ảnh').item.json.id, image_url: $json.data[0].url, status: 'pending' }) }}",
+        "options": {}
+      },
+      "id": "update-post",
+      "name": "Cập nhật bài + chuyển pending",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1060, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [[ { "node": "Lấy bài draft chưa có ảnh", "type": "main", "index": 0 } ]]
+    },
+    "Lấy bài draft chưa có ảnh": {
+      "main": [[ { "node": "Lọc bài cần ảnh", "type": "main", "index": 0 } ]]
+    },
+    "Lọc bài cần ảnh": {
+      "main": [[ { "node": "DALL-E 3 Tạo Ảnh", "type": "main", "index": 0 } ]]
+    },
+    "DALL-E 3 Tạo Ảnh": {
+      "main": [[ { "node": "Cập nhật bài + chuyển pending", "type": "main", "index": 0 } ]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "tags": [{ "name": "content" }, { "name": "image" }]
+}

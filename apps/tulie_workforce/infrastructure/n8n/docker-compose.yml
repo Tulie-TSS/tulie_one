@@ -1,0 +1,48 @@
+version: '3.8'
+
+volumes:
+  caddy_data:
+  caddy_config:
+  n8n_data:
+
+services:
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - n8n_net
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    container_name: n8n
+    restart: unless-stopped
+    environment:
+      - N8N_HOST=${SUBDOMAIN}.${DOMAIN_NAME}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+      # Database connection (optional, if you want to connect to a specific DB instead of SQLite)
+      # - DB_TYPE=postgresdb
+      # - DB_POSTGRESDB_DATABASE=${DB_POSTGRESDB_DATABASE}
+      # - DB_POSTGRESDB_HOST=${DB_POSTGRESDB_HOST}
+      # - DB_POSTGRESDB_PORT=${DB_POSTGRESDB_PORT}
+      # - DB_POSTGRESDB_USER=${DB_POSTGRESDB_USER}
+      # - DB_POSTGRESDB_PASSWORD=${DB_POSTGRESDB_PASSWORD}
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - n8n_net
+
+networks:
+  n8n_net:
+    name: n8n_net

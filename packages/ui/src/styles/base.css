@@ -1,0 +1,80 @@
+/*
+ * Tulie Design System — Base Styles
+ * Source: shadcn/ui v4 base + custom extensions
+ */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  ::selection {
+    @apply bg-selection text-selection-foreground;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  /* Safe area insets for notched devices */
+  main {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+/* Custom scrollbar (custom extension) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(80% .01 270);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(65% .01 270);
+}
+
+/* Print Styles (custom extension) */
+@media print {
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  nav,
+  aside,
+  header,
+  footer,
+  button,
+  .no-print,
+  [role="dialog"],
+  .sonner-toast {
+    display: none !important;
+  }
+
+  h1, h2, h3, h4 {
+    color: black !important;
+  }
+
+  table {
+    border-collapse: collapse !important;
+  }
+}

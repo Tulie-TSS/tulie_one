@@ -1,0 +1,154 @@
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@repo/ui'
+import { Button } from '@repo/ui'
+import {
+    MoreHorizontal,
+    Eye,
+    Edit,
+    Trash2,
+    Download,
+    Receipt,
+    Send
+} from 'lucide-react'
+import { toast } from 'sonner'
+import { Invoice } from '@/types'
+import { deleteInvoice } from '@/lib/supabase/services/invoice-service'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@repo/ui'
+import { SendEmailDialog } from '@/components/shared/send-email-dialog'
+import { formatCurrency, formatDate } from '@/lib/utils/format'
+
+interface InvoiceCellActionProps {
+    data: Invoice
+}
+
+export function InvoiceCellAction({ data }: InvoiceCellActionProps) {
+    const router = useRouter()
+    const [loading, setLoading] = useState(false)
+    const [open, setOpen] = useState(false)
+    const [emailOpen, setEmailOpen] = useState(false)
+
+    const onDelete = async () => {
+
+        try {
+            setLoading(true)
+            await deleteInvoice(data.id)
+            router.refresh()
+            toast.success('Xóa hóa đơn thành công')
+        } catch (error) {
+            toast.error(`Lỗi xóa hóa đơn: ${(error as any)?.message || 'Thử lại sau'}`)
+        } finally {
+            setLoading(false)
+            setOpen(false)
+        }
+    }
+
+    return (
+        <>
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Bạn có chắc chắn muốn xóa?</DialogTitle>
+                        <DialogDescription>
+                            Hành động này không thể hoàn tác. Hóa đơn <strong>{data.invoice_number}</strong> sẽ bị xóa vĩnh viễn khỏi hệ thống.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button
+                            variant="outline"
+                            onClick={() => setOpen(false)}
+                            disabled={loading}
+                        >
+                            Hủy
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            onClick={onDelete}
+                            disabled={loading}
+                        >
+                            {loading ? 'Đang xóa...' : 'Xác nhận xóa'}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            <SendEmailDialog
+                open={emailOpen}
+                onOpenChange={setEmailOpen}
+                type="invoice"
+                defaultTo={data.customer?.email || ''}
+                data={{
+                    customerName: data.customer?.company_name || 'Quý khách',
+                    invoiceNumber: data.invoice_number,
+                    totalAmount: formatCurrency(data.total_amount),
+                    dueDate: formatDate(data.due_date),
+                    senderName: data.creator?.full_name || 'Tulie Agency',
+                }}
+            />
+
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Mở menu</span>
+                        <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Hành động</DropdownMenuLabel>
+                    <DropdownMenuItem asChild>
+                        <Link href={`/invoices/${data.id}`}>
+                            <Eye className="h-4 w-4" />
+                            Xem chi tiết
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href={`/invoices/${data.id}/edit`}>
+                            <Edit className="h-4 w-4" />
+                            Chỉnh sửa
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => setEmailOpen(true)}>
+                        <Send className="h-4 w-4" />
+                        Gửi email
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <Download className="h-4 w-4" />
+                        Tải PDF
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href={`/finance/payments/new?invoice=${data.id}`}>
+                            <Receipt className="h-4 w-4" />
+                            Ghi nhận thanh toán
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                        className="text-destructive font-medium"
+                        onClick={() => setOpen(true)}
+                    >
+                        <Trash2 className="h-4 w-4" />
+                        Xóa
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </>
+    )
+}
