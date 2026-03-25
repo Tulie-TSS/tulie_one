@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -52,25 +54,25 @@ html {
 }
 
 :root {
-  --radius: 0.5rem;
-  --background: oklch(1 0 0);
+  --radius: 0.75rem;
+  --background: oklch(0.98 0.002 247.84);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0 0 0);
+  --primary: oklch(0.21 0.006 285.885);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.965 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.967 0.001 286.375);
   --muted-foreground: oklch(0.552 0.016 285.938);
   --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0 0 0);
+  --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.707 0.022 286.324);
+  --border: oklch(0.93 0.003 286.32);
+  --input: oklch(0.93 0.003 286.32);
+  --ring: oklch(0.705 0.015 286.067);
 
   /* Semantic accent colors */
   --info: #2563eb;
@@ -83,24 +85,26 @@ html {
   --success-tint: #ecfdf5;
   --success-border: #a7f3d0;
 
-  /* Elevation */
-  --shadow-card: 0 1px 3px rgba(0,0,0,0.04);
-  --shadow-dropdown: 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-dialog: 0 16px 40px rgba(0,0,0,0.12);
+  /* Premium Elevation */
+  --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.02), 0 1px 3px 0 rgb(0 0 0 / 0.04);
+  --shadow-dropdown: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+  --shadow-dialog: 0 10px 15px -3px rgb(0 0 0 / 0.04), 0 4px 6px -4px rgb(0 0 0 / 0.04);
 
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-primary: oklch(0.21 0.006 285.885);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.707 0.022 286.324);
+
+  /* Dark sidebar — premium contrast */
+  --sidebar: oklch(0.17 0.01 270);
+  --sidebar-foreground: oklch(0.80 0.01 270);
+  --sidebar-primary: oklch(1 0 0);
+  --sidebar-primary-foreground: oklch(0.17 0.01 270);
+  --sidebar-accent: oklch(0.24 0.015 270);
+  --sidebar-accent-foreground: oklch(0.95 0.005 270);
+  --sidebar-border: oklch(0.28 0.015 270);
+  --sidebar-ring: oklch(0.623 0.214 259.815);
 }
 
 .dark {
@@ -164,6 +168,10 @@ html {
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -280,4 +288,30 @@ html {
   25% { transform: rotate(-12deg); }
   50% { transform: rotate(12deg); }
   75% { transform: rotate(-6deg); }
+}
+
+/* Premium card elevations */
+.card-elevated {
+  box-shadow: 0 1px 3px rgba(0,0,0,.04), 0 1px 2px rgba(0,0,0,.02);
+  border: 1px solid oklch(93% .003 286.32);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.card-elevated:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,.06), 0 2px 4px rgba(0,0,0,.04);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(80% .01 270);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(65% .01 270);
 }
