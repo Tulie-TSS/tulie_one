@@ -1,51 +1,69 @@
+import { getDashboardStats, getRevenueChartData } from '@/lib/supabase/services/dashboard-service'
+import { getInvoices } from '@/lib/supabase/services/invoice-service'
 import {
+  DollarSign,
   FileText,
   CreditCard,
-  Package,
-  Building2,
+  AlertTriangle,
   TrendingUp,
   TrendingDown,
-  DollarSign,
-  AlertTriangle,
+  ArrowUpRight,
 } from 'lucide-react'
+import Link from 'next/link'
+
+function formatCurrency(amount: number) {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
+}
 
 function StatCard({
-  title,
-  value,
-  change,
-  icon: Icon,
-  trend,
+  title, value, subtitle, icon: Icon, color, href,
 }: {
-  title: string
-  value: string
-  change: string
-  icon: React.ElementType
-  trend: 'up' | 'down' | 'neutral'
+  title: string; value: string; subtitle?: string; icon: React.ElementType; color: string; href?: string
 }) {
-  return (
-    <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+  const content = (
+    <>
       <div className="flex items-center justify-between">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-          <Icon className="h-5 w-5 text-primary" />
+        <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${color}`}>
+          <Icon className="h-5 w-5 text-white" />
         </div>
-        <span
-          className={`flex items-center gap-1 text-xs font-medium ${
-            trend === 'up' ? 'text-emerald-600' : trend === 'down' ? 'text-red-500' : 'text-muted-foreground'
-          }`}
-        >
-          {trend === 'up' ? <TrendingUp className="h-3 w-3" /> : trend === 'down' ? <TrendingDown className="h-3 w-3" /> : null}
-          {change}
-        </span>
+        {href && <ArrowUpRight className="h-4 w-4 text-muted-foreground" />}
       </div>
       <div className="mt-4">
         <p className="text-2xl font-bold text-foreground">{value}</p>
         <p className="text-sm text-muted-foreground">{title}</p>
+        {subtitle && <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>}
       </div>
-    </div>
+    </>
   )
+  const cls = "rounded-xl border border-border bg-card p-6 shadow-sm hover:shadow-md transition-shadow block"
+  return href ? <Link href={href} className={cls}>{content}</Link> : <div className={cls}>{content}</div>
 }
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  let stats = null
+  let invoices: any[] = []
+  let revenueData: any[] = []
+
+  try {
+    stats = await getDashboardStats()
+  } catch {}
+  try {
+    invoices = await getInvoices()
+  } catch {}
+  try {
+    revenueData = await getRevenueChartData()
+  } catch {}
+
+  // Calculate from invoices as fallback
+  const paidInvoices = invoices.filter(i => i.type === 'output' && i.status === 'paid')
+  const pendingInvoices = invoices.filter(i => i.status === 'sent' || i.status === 'partial')
+  const overdueInvoices = invoices.filter(i => i.status === 'overdue')
+
+  const totalRevenue = paidInvoices.reduce((s, i) => s + i.total_amount, 0)
+  const totalPending = pendingInvoices.reduce((s, i) => s + (i.total_amount - i.paid_amount), 0)
+  const totalOverdue = overdueInvoices.reduce((s, i) => s + (i.total_amount - i.paid_amount), 0)
+  const totalInvoices = invoices.length
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -54,73 +72,115 @@ export default function DashboardPage() {
         <p className="text-muted-foreground">Quản lý tài chính và vận hành doanh nghiệp</p>
       </div>
 
-      {/* Stats Grid */}
+      {/* KPI Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          title="Doanh thu tháng"
-          value="--"
-          change="Đang tải..."
+          title="Doanh thu (đã thu)"
+          value={formatCurrency(stats?.revenue?.total ?? totalRevenue)}
           icon={DollarSign}
-          trend="neutral"
+          color="bg-emerald-500"
+          href="/reports"
         />
         <StatCard
-          title="Hóa đơn chờ thanh toán"
-          value="--"
-          change="Đang tải..."
+          title="Chờ thanh toán"
+          value={formatCurrency(totalPending)}
+          subtitle={`${pendingInvoices.length} hóa đơn`}
           icon={FileText}
-          trend="neutral"
+          color="bg-amber-500"
+          href="/invoices"
         />
         <StatCard
-          title="Thanh toán đã nhận"
-          value="--"
-          change="Đang tải..."
-          icon={CreditCard}
-          trend="neutral"
-        />
-        <StatCard
-          title="Hóa đơn quá hạn"
-          value="--"
-          change="Cần xử lý"
+          title="Quá hạn thanh toán"
+          value={formatCurrency(totalOverdue)}
+          subtitle={overdueInvoices.length > 0 ? `${overdueInvoices.length} hóa đơn cần xử lý` : 'Không có'}
           icon={AlertTriangle}
-          trend="neutral"
+          color={totalOverdue > 0 ? 'bg-red-500' : 'bg-gray-400'}
+          href="/invoices"
+        />
+        <StatCard
+          title="Tổng giao dịch"
+          value={String(totalInvoices)}
+          subtitle="Hóa đơn đầu ra + đầu vào"
+          icon={CreditCard}
+          color="bg-blue-500"
+          href="/payments"
         />
       </div>
 
-      {/* Placeholder sections */}
+      {/* Content Grid */}
       <div className="grid gap-6 lg:grid-cols-2">
+        {/* Recent invoices */}
         <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-foreground mb-4">Doanh thu theo tháng</h2>
-          <div className="flex h-64 items-center justify-center text-muted-foreground">
-            <p className="text-sm">Kết nối dữ liệu để hiển thị biểu đồ</p>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-foreground">Hóa đơn gần đây</h2>
+            <Link href="/invoices" className="text-sm text-primary hover:underline">Xem tất cả</Link>
           </div>
-        </div>
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-foreground mb-4">Hoạt động gần đây</h2>
-          <div className="flex h-64 items-center justify-center text-muted-foreground">
-            <p className="text-sm">Chưa có hoạt động nào</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Quick links */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {[
-          { name: 'Tạo hóa đơn', icon: FileText, href: '/invoices/new', color: 'bg-blue-500' },
-          { name: 'Quản lý sản phẩm', icon: Package, href: '/products', color: 'bg-emerald-500' },
-          { name: 'Nhà cung cấp', icon: Building2, href: '/vendors', color: 'bg-amber-500' },
-          { name: 'Dòng tiền', icon: TrendingUp, href: '/cash-flow', color: 'bg-purple-500' },
-        ].map((item) => (
-          <a
-            key={item.name}
-            href={item.href}
-            className="group flex items-center gap-3 rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow-md hover:border-primary/20"
-          >
-            <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${item.color} text-white`}>
-              <item.icon className="h-5 w-5" />
+          {invoices.length === 0 ? (
+            <p className="text-sm text-muted-foreground text-center py-8">Chưa có hóa đơn nào</p>
+          ) : (
+            <div className="space-y-3">
+              {invoices.slice(0, 5).map((inv) => (
+                <div key={inv.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{inv.invoice_number}</p>
+                    <p className="text-xs text-muted-foreground">{inv.customer?.company_name || inv.vendor?.name || '—'}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-medium text-foreground">{formatCurrency(inv.total_amount)}</p>
+                    <p className={`text-xs ${inv.status === 'paid' ? 'text-emerald-600' : inv.status === 'overdue' ? 'text-red-500' : 'text-muted-foreground'}`}>
+                      {inv.status === 'paid' ? 'Đã thanh toán' : inv.status === 'overdue' ? 'Quá hạn' : inv.status === 'sent' ? 'Chờ TT' : inv.status}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
-            <span className="font-medium text-foreground group-hover:text-primary transition-colors">{item.name}</span>
-          </a>
-        ))}
+          )}
+        </div>
+
+        {/* Quick Actions */}
+        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-foreground mb-4">Thao tác nhanh</h2>
+          <div className="grid gap-3 grid-cols-2">
+            {[
+              { name: 'Tạo hóa đơn', href: '/invoices/new', icon: FileText, color: 'bg-blue-500' },
+              { name: 'Xem thanh toán', href: '/payments', icon: CreditCard, color: 'bg-emerald-500' },
+              { name: 'Sản phẩm', href: '/products', icon: TrendingUp, color: 'bg-purple-500' },
+              { name: 'Nhà cung cấp', href: '/vendors', icon: TrendingDown, color: 'bg-amber-500' },
+            ].map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="group flex items-center gap-3 rounded-xl border border-border p-4 hover:shadow-md hover:border-primary/20 transition-all"
+              >
+                <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${item.color} text-white`}>
+                  <item.icon className="h-4 w-4" />
+                </div>
+                <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{item.name}</span>
+              </Link>
+            ))}
+          </div>
+
+          {/* Health indicators */}
+          <div className="mt-6 pt-4 border-t border-border">
+            <h3 className="text-sm font-medium text-muted-foreground mb-3">Sức khỏe tài chính</h3>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-foreground">Tỷ lệ thu hồi</span>
+                <span className="text-sm font-medium text-emerald-600">
+                  {totalRevenue + totalPending + totalOverdue > 0
+                    ? Math.round((totalRevenue / (totalRevenue + totalPending + totalOverdue)) * 100)
+                    : 0}%
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-foreground">Hóa đơn quá hạn</span>
+                <span className={`text-sm font-medium ${overdueInvoices.length > 0 ? 'text-red-500' : 'text-emerald-600'}`}>
+                  {overdueInvoices.length} / {totalInvoices}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
