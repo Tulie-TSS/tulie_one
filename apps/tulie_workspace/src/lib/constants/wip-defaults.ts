@@ -1,0 +1,39 @@
+export const WIP_DEFAULTS = {
+    PERSONAL: 2,
+    PERSONAL_MIN: 1,
+    PERSONAL_MAX: 5,
+    TEAM_MULTIPLIER: 1,
+    DEPARTMENT_MAX_PROJECTS: 5,
+    COMPANY_MAX_STRATEGIC: 3,
+} as const
+
+export const HOFSTADTER_DEFAULTS = {
+    DEFAULT_MULTIPLIER: 1.30,
+    MIN_MULTIPLIER: 1.00,
+    MAX_MULTIPLIER: 3.00,
+} as const
+
+export const CYCLE_DEFAULTS = {
+    WEEKS: 12,
+    BUFFER_WEEKS: 1,
+    MILESTONES_PER_CYCLE: 3,
+    WEEKS_PER_MILESTONE: 4,
+} as const
+
+export const QUICK_STRIKE_LIMITS = {
+    MAX_DESCRIPTION: 200,
+    SUGGEST_FORMAL_TASK: 50,
+    MAX_EFFORT_MINUTES: 2,
+} as const
+
+export const ONHOLD_ESCALATION = {
+    REMINDER_DAYS: 3,
+    ESCALATION_DAYS: 7,
+    AUTO_BACKLOG_DAYS: 14,
+} as const
+
+export const CARRIED_OVER = {
+    WARNING: 1,
+    CHRONIC: 2,
+    ESCALATE: 3,
+} as const

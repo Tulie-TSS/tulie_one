@@ -1,0 +1,317 @@
+{
+  "name": "Approval Handler",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "content-approval",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-approval",
+      "name": "Webhook: Slack Interaction",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "content-approval-webhook",
+      "notes": "Nhận callback từ Slack khi user click Approve/Reject/Edit"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse Slack interaction payload\nconst payload = JSON.parse($input.first().json.body.payload);\n\nconst action = payload.actions[0];\nconst postId = action.value;\nconst actionId = action.action_id;\nconst userId = payload.user.id;\nconst userName = payload.user.username;\n\nreturn [{\n  json: {\n    post_id: postId,\n    action: actionId,\n    reviewer: userName,\n    reviewer_id: userId,\n    response_url: payload.response_url,\n    trigger_id: payload.trigger_id,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "parse-payload",
+      "name": "Parse Slack Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "approve_content",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              },
+              "renameOutput": "Approve"
+            },
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "reject_content",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              },
+              "renameOutput": "Reject"
+            },
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "edit_content",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              },
+              "renameOutput": "Edit"
+            }
+          ]
+        }
+      },
+      "id": "switch-action",
+      "name": "Route Action",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $env.GOOGLE_SHEET_ID }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "ContentPlan"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "approved",
+            "approval_note": "=Approved by {{ $json.reviewer }} at {{ $json.timestamp }}"
+          },
+          "matchingColumns": ["post_id"]
+        }
+      },
+      "id": "approve-update-sheet",
+      "name": "Update: Approved",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [700, -200],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.response_url }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"replace_original\": true,\n  \"text\": \"✅ *Content #{{ $json.post_id }} APPROVED* by <@{{ $json.reviewer_id }}>\\nScheduled for publishing.\"\n}"
+      },
+      "id": "slack-confirm-approve",
+      "name": "Slack: Confirm Approved",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [920, -200]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $env.GOOGLE_SHEET_ID }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "ContentPlan"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "rejected",
+            "approval_note": "=Rejected by {{ $json.reviewer }} at {{ $json.timestamp }}"
+          },
+          "matchingColumns": ["post_id"]
+        }
+      },
+      "id": "reject-update-sheet",
+      "name": "Update: Rejected",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [700, 0],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.response_url }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"replace_original\": true,\n  \"text\": \"❌ *Content #{{ $json.post_id }} REJECTED* by <@{{ $json.reviewer_id }}>\\nPlease update the content plan and resubmit.\"\n}"
+      },
+      "id": "slack-confirm-reject",
+      "name": "Slack: Confirm Rejected",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [920, 0]
+    },
+    {
+      "parameters": {
+        "channel": "={{ $env.SLACK_REVIEW_CHANNEL }}",
+        "text": "=❌ Content #{{ $json.post_id }} was rejected by {{ $json.reviewer }}. Please review and update the content plan row, then set status back to 'pending' to re-generate."
+      },
+      "id": "slack-notify-reject",
+      "name": "Slack: Notify Team",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [1140, 0],
+      "credentials": {
+        "slackApi": {
+          "id": "SLACK_CREDENTIAL_ID",
+          "name": "Slack Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.response_url }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"replace_original\": false,\n  \"text\": \"✏️ *Edit requested for Content #{{ $json.post_id }}* by <@{{ $json.reviewer_id }}>\\nPlease reply in thread with your feedback. Then set the Sheet row status to 'pending' with your notes in approval_note to regenerate.\"\n}"
+      },
+      "id": "slack-edit-prompt",
+      "name": "Slack: Request Edit Details",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [700, 200]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $env.GOOGLE_SHEET_ID }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "ContentPlan"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "editing",
+            "approval_note": "=Edit requested by {{ $json.reviewer }} at {{ $json.timestamp }}"
+          },
+          "matchingColumns": ["post_id"]
+        }
+      },
+      "id": "edit-update-sheet",
+      "name": "Update: Editing",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [920, 200],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "OK",
+        "options": {}
+      },
+      "id": "webhook-response",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [220, 300],
+      "notes": "Respond 200 OK to Slack immediately"
+    }
+  ],
+  "connections": {
+    "Webhook: Slack Interaction": {
+      "main": [
+        [
+          { "node": "Parse Slack Payload", "type": "main", "index": 0 },
+          { "node": "Respond to Webhook", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Parse Slack Payload": {
+      "main": [
+        [{ "node": "Route Action", "type": "main", "index": 0 }]
+      ]
+    },
+    "Route Action": {
+      "main": [
+        [{ "node": "Update: Approved", "type": "main", "index": 0 }],
+        [{ "node": "Update: Rejected", "type": "main", "index": 0 }],
+        [{ "node": "Slack: Request Edit Details", "type": "main", "index": 0 }]
+      ]
+    },
+    "Update: Approved": {
+      "main": [
+        [{ "node": "Slack: Confirm Approved", "type": "main", "index": 0 }]
+      ]
+    },
+    "Update: Rejected": {
+      "main": [
+        [{ "node": "Slack: Confirm Rejected", "type": "main", "index": 0 }]
+      ]
+    },
+    "Slack: Confirm Rejected": {
+      "main": [
+        [{ "node": "Slack: Notify Team", "type": "main", "index": 0 }]
+      ]
+    },
+    "Slack: Request Edit Details": {
+      "main": [
+        [{ "node": "Update: Editing", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "content-automation",
+      "id": "content-automation"
+    }
+  ],
+  "triggerCount": 1,
+  "pinData": {}
+}

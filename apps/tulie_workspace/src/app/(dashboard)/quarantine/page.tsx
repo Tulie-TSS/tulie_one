@@ -1,0 +1,237 @@
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import { MOCK_TASKS } from '@/lib/mock/data'
+import { useLocaleStore } from '@/lib/stores/locale-store'
+import type { Task } from '@/types/database.types'
+
+export default function QuarantinePage() {
+    const { t } = useLocaleStore()
+    const [quarantineTasks, setQuarantineTasks] = useState(
+        MOCK_TASKS.filter(task => task.status === 'quarantine')
+    )
+    const [tradeOffTask, setTradeOffTask] = useState<Task | null>(null)
+    const [selectedSwap, setSelectedSwap] = useState<string | null>(null)
+    const [toast, setToast] = useState<string | null>(null)
+
+    const doingTasks = MOCK_TASKS.filter(task => task.status === 'doing')
+
+    const showToast = (msg: string) => {
+        setToast(msg)
+        setTimeout(() => setToast(null), 3000)
+    }
+
+    const handleTradeOff = (task: Task) => {
+        setTradeOffTask(task)
+        setSelectedSwap(null)
+    }
+
+    const confirmSwap = () => {
+        if (tradeOffTask && selectedSwap) {
+            setQuarantineTasks(prev => prev.filter(t => t.id !== tradeOffTask.id))
+            setTradeOffTask(null)
+            setSelectedSwap(null)
+            showToast(t('quarantine.swapSuccess'))
+        }
+    }
+
+    const handleDefer = (task: Task) => {
+        const isUrgent = task.eisenhower_quadrant === 'Q1'
+        setQuarantineTasks(prev => prev.filter(t => t.id !== task.id))
+        const dest = isUrgent ? t('status.ready') : t('status.backlog')
+        showToast(`${t('quarantine.deferSuccess')} → ${dest}`)
+    }
+
+    const handleReject = (task: Task) => {
+        setQuarantineTasks(prev => prev.filter(t => t.id !== task.id))
+        showToast(t('quarantine.rejectSuccess'))
+    }
+
+    const getDeferTarget = (task: Task) => {
+        return task.eisenhower_quadrant === 'Q1'
+            ? t('quarantine.deferToReady')
+            : t('quarantine.deferToBacklog')
+    }
+
+    return (
+        <div>
+            <div className="mb-6">
+                <h1 className="text-2xl font-semibold" style={{ color: 'var(--color-fg)' }}>{t('quarantine.title')}</h1>
+                <p style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('quarantine.subtitle')}</p>
+            </div>
+
+            {quarantineTasks.length === 0 ? (
+                <div className="p-12 text-center rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                    <div className="text-4xl mb-4">✅</div>
+                    <h3 className="font-semibold mb-1" style={{ color: 'var(--color-fg)' }}>{t('quarantine.empty')}</h3>
+                    <p style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('quarantine.noTriage')}</p>
+                </div>
+            ) : (
+                <div className="space-y-4">
+                    {quarantineTasks.map(task => (
+                        <div key={task.id} className="p-5 rounded-xl" style={{
+                            backgroundColor: 'var(--color-bg)',
+                            border: '1px solid var(--color-warning)',
+                            boxShadow: '0 0 0 1px var(--color-warning-bg)',
+                        }}>
+                            {/* Badges */}
+                            <div className="flex items-center gap-2 mb-2">
+                                <span className="px-2 py-0.5 rounded-full font-semibold" style={{ backgroundColor: 'var(--color-warning-bg)', color: 'var(--color-warning)', fontSize: 'var(--text-xs)' }}>
+                                    {t('status.quarantine')}
+                                </span>
+                                {task.eisenhower_quadrant && (
+                                    <span className="px-2 py-0.5 rounded-full font-semibold" style={{
+                                        fontSize: 'var(--text-xs)',
+                                        backgroundColor: task.eisenhower_quadrant === 'Q1' ? 'var(--color-danger-bg)' : 'var(--color-surface)',
+                                        color: task.eisenhower_quadrant === 'Q1' ? 'var(--color-danger)' : 'var(--color-fg-secondary)',
+                                    }}>
+                                        {task.eisenhower_quadrant}
+                                    </span>
+                                )}
+                                {task.tags?.map(tag => (
+                                    <span key={tag.id} className="px-1.5 py-0.5 rounded" style={{ backgroundColor: tag.color + '15', color: tag.color, fontSize: '10px' }}>{tag.name}</span>
+                                ))}
+                            </div>
+
+                            {/* Title & Description */}
+                            <Link href={`/tasks/${task.id}`} className="no-underline">
+                                <h3 className="text-lg font-semibold mb-1" style={{ color: 'var(--color-fg)' }}>{task.title}</h3>
+                            </Link>
+                            {task.description && (
+                                <p className="mb-4" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{task.description}</p>
+                            )}
+
+                            {/* Actions */}
+                            <div className="flex items-center gap-2 flex-wrap">
+                                <button onClick={() => handleTradeOff(task)}
+                                    className="px-4 py-2 font-medium cursor-pointer"
+                                    style={{ backgroundColor: 'var(--color-info)', color: 'white', borderRadius: 'var(--radius-md)', border: 'none', fontSize: 'var(--text-sm)' }}>
+                                    {t('quarantine.tradeOff')}
+                                </button>
+                                <div className="relative group">
+                                    <button onClick={() => handleDefer(task)}
+                                        className="px-4 py-2 font-medium cursor-pointer"
+                                        style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-fg)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-sm)' }}>
+                                        {t('quarantine.defer')}
+                                    </button>
+                                    {/* Tooltip showing where task goes */}
+                                    <div className="absolute bottom-full left-0 mb-1 px-3 py-1.5 rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                                        style={{ backgroundColor: 'var(--color-fg)', color: 'var(--color-bg)', fontSize: 'var(--text-xs)', boxShadow: 'var(--shadow-md)' }}>
+                                        {getDeferTarget(task)}
+                                    </div>
+                                </div>
+                                <button onClick={() => handleReject(task)}
+                                    className="px-4 py-2 font-medium cursor-pointer"
+                                    style={{ backgroundColor: 'transparent', color: 'var(--color-danger)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-danger)', fontSize: 'var(--text-sm)' }}>
+                                    {t('quarantine.reject')}
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Trade-Off Dialog */}
+            {tradeOffTask && (
+                <div className="fixed inset-0 flex items-center justify-center" style={{ zIndex: 1000 }}>
+                    <div className="absolute inset-0 bg-black/40" onClick={() => setTradeOffTask(null)} />
+                    <div className="relative w-full max-w-lg mx-4 p-6 rounded-2xl" style={{
+                        backgroundColor: 'var(--color-bg)',
+                        boxShadow: 'var(--shadow-lg)',
+                        border: '1px solid var(--color-border)',
+                    }}>
+                        <h2 className="text-lg font-semibold mb-1" style={{ color: 'var(--color-fg)' }}>{t('quarantine.tradeOffTitle')}</h2>
+                        <p className="mb-5" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('quarantine.tradeOffDesc')}</p>
+
+                        {/* Incoming task */}
+                        <div className="mb-4 p-3 rounded-lg" style={{ backgroundColor: 'var(--color-info-bg)', border: '1px solid var(--color-info)' }}>
+                            <div style={{ color: 'var(--color-info)', fontSize: 'var(--text-xs)', fontWeight: 600, marginBottom: '4px' }}>↓ Nhận vào</div>
+                            <div className="font-medium" style={{ color: 'var(--color-fg)', fontSize: 'var(--text-sm)' }}>{tradeOffTask.title}</div>
+                            <div className="flex items-center gap-2 mt-1">
+                                {tradeOffTask.eisenhower_quadrant && (
+                                    <span className="px-1.5 py-0.5 rounded font-semibold" style={{
+                                        fontSize: '10px',
+                                        backgroundColor: tradeOffTask.eisenhower_quadrant === 'Q1' ? 'var(--color-danger-bg)' : 'var(--color-info-bg)',
+                                        color: tradeOffTask.eisenhower_quadrant === 'Q1' ? 'var(--color-danger)' : 'var(--color-info)',
+                                    }}>{tradeOffTask.eisenhower_quadrant}</span>
+                                )}
+                                <span style={{ color: 'var(--color-fg-tertiary)', fontSize: 'var(--text-xs)' }}>{tradeOffTask.estimated_effort_hours}h</span>
+                            </div>
+                        </div>
+
+                        {/* Doing tasks to swap */}
+                        <div className="space-y-2 mb-5">
+                            <div style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-xs)', fontWeight: 600 }}>↑ Chọn để hoán đổi ra</div>
+                            {doingTasks.length === 0 ? (
+                                <div className="p-4 text-center rounded-lg" style={{ backgroundColor: 'var(--color-surface)' }}>
+                                    <p style={{ color: 'var(--color-fg-tertiary)', fontSize: 'var(--text-sm)' }}>Không có công việc đang Doing</p>
+                                </div>
+                            ) : doingTasks.map(task => (
+                                <label key={task.id}
+                                    className="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors"
+                                    style={{
+                                        backgroundColor: selectedSwap === task.id ? 'var(--color-warning-bg)' : 'var(--color-surface)',
+                                        border: selectedSwap === task.id ? '2px solid var(--color-warning)' : '2px solid transparent',
+                                    }}
+                                >
+                                    <input type="radio" name="swap" value={task.id}
+                                        checked={selectedSwap === task.id}
+                                        onChange={() => setSelectedSwap(task.id)}
+                                        className="w-4 h-4 accent-blue-500" />
+                                    <div className="flex-1">
+                                        <div className="font-medium" style={{ color: 'var(--color-fg)', fontSize: 'var(--text-sm)' }}>{task.title}</div>
+                                        <div className="flex items-center gap-2 mt-0.5">
+                                            {task.eisenhower_quadrant && (
+                                                <span className="px-1.5 py-0.5 rounded" style={{ fontSize: '10px', fontWeight: 600, backgroundColor: 'var(--color-surface)', color: 'var(--color-fg-secondary)' }}>{task.eisenhower_quadrant}</span>
+                                            )}
+                                            <span style={{ color: 'var(--color-fg-tertiary)', fontSize: 'var(--text-xs)' }}>{task.estimated_effort_hours}h</span>
+                                            {task.assignee && (
+                                                <span style={{ color: 'var(--color-fg-tertiary)', fontSize: 'var(--text-xs)' }}>{task.assignee.full_name}</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </label>
+                            ))}
+                        </div>
+
+                        {/* Dialog Actions */}
+                        <div className="flex items-center justify-end gap-2">
+                            <button onClick={() => setTradeOffTask(null)}
+                                className="px-4 py-2 font-medium cursor-pointer"
+                                style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-fg)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-sm)' }}>
+                                {t('quarantine.cancel')}
+                            </button>
+                            <button onClick={confirmSwap}
+                                disabled={!selectedSwap}
+                                className="px-4 py-2 font-medium cursor-pointer"
+                                style={{
+                                    backgroundColor: selectedSwap ? 'var(--color-info)' : 'var(--color-surface)',
+                                    color: selectedSwap ? 'white' : 'var(--color-fg-tertiary)',
+                                    borderRadius: 'var(--radius-md)', border: 'none', fontSize: 'var(--text-sm)',
+                                    opacity: selectedSwap ? 1 : 0.5,
+                                }}>
+                                {t('quarantine.swapConfirm')}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Toast */}
+            {toast && (
+                <div className="fixed bottom-20 left-1/2 -translate-x-1/2 px-5 py-3 rounded-xl"
+                    style={{
+                        backgroundColor: 'var(--color-fg)',
+                        color: 'var(--color-bg)',
+                        fontSize: 'var(--text-sm)',
+                        fontWeight: 500,
+                        boxShadow: 'var(--shadow-lg)',
+                        zIndex: 2000,
+                    }}>
+                    {toast}
+                </div>
+            )}
+        </div>
+    )
+}

@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* ══════════════════════════════════════════
+     PREMIUM DESIGN SYSTEM — Metronic-inspired
+     ══════════════════════════════════════════ */
+
+  /* Page canvas: subtle warm-gray for depth */
+  --color-background: oklch(98% .002 247.84);
+  --color-foreground: oklch(14% .005 285.823);
+
+  /* Cards: crisp white, lifted from background */
+  --color-card: oklch(100% 0 0);
+  --color-card-foreground: oklch(14% .005 285.823);
+  --color-popover: oklch(100% 0 0);
+  --color-popover-foreground: oklch(14% .005 285.823);
+
+  /* Primary: Deep charcoal — modern & authoritative */
+  --color-primary: oklch(21% .006 285.885);
+  --color-primary-foreground: oklch(100% 0 0);
+
+  --color-secondary: oklch(96.5% .001 286.375);
+  --color-secondary-foreground: oklch(21% .006 285.885);
+
+  --color-muted: oklch(96.7% .001 286.375);
+  --color-muted-foreground: oklch(55.2% .016 285.938);
+
+  --color-accent: oklch(96.7% .001 286.375);
+  --color-accent-foreground: oklch(21% .006 285.885);
+
+  --color-destructive: oklch(57.7% .245 27.325);
+  --color-destructive-foreground: oklch(100% 0 0);
+
+  /* Refined borders: lighter for premium feel */
+  --color-border: oklch(93% .003 286.32);
+  --color-input: oklch(93% .003 286.32);
+  --color-ring: oklch(70.5% .015 286.067);
+
+  /* Semantic status colors — vibrant & distinct */
+  --color-success: oklch(65% .22 150);
+  --color-warning: oklch(80% .17 80);
+  --color-info: oklch(62% .22 265);
+
+  /* Premium Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.02), 0 1px 3px 0 rgb(0 0 0 / 0.04);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.04), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+
+  --radius: 0.75rem;
+
+  /* Sidebar: dark theme for contrast & modern feel */
+  --color-sidebar: oklch(17% .01 270);
+  --color-sidebar-foreground: oklch(80% .01 270);
+  --color-sidebar-primary: oklch(100% 0 0);
+  --color-sidebar-primary-foreground: oklch(17% .01 270);
+  --color-sidebar-accent: oklch(24% .015 270);
+  --color-sidebar-accent-foreground: oklch(95% .005 270);
+  --color-sidebar-border: oklch(28% .015 270);
+  --color-sidebar-ring: oklch(62.3% .214 259.815);
+}
+
+/* ══════════════════════════════════════════
+   GLOBAL BASE STYLES
+   ══════════════════════════════════════════ */
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  line-height: 1.6;
+  letter-spacing: -0.011em;
+}
+
+/* Premium card elevations */
+.card-elevated {
+  box-shadow: 0 1px 3px rgba(0,0,0,.04), 0 1px 2px rgba(0,0,0,.02);
+  border: 1px solid oklch(93% .003 286.32);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.card-elevated:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,.06), 0 2px 4px rgba(0,0,0,.04);
+}
+
+/* Status dot animation */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(80% .01 270);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(65% .01 270);
+}

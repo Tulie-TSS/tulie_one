@@ -1,0 +1,32 @@
+services:
+  tulie_workforce:
+    container_name: tulie_workforce
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      # Supabase (shared with CRM)
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      # OpenAI
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # n8n Integration
+      - N8N_BASE_URL=${N8N_BASE_URL:-https://n8n.tulie.vn}
+      - N8N_WEBHOOK_SECRET=${N8N_WEBHOOK_SECRET}
+      # Facebook Ads
+      - FB_APP_ID=${FB_APP_ID}
+      - FB_APP_SECRET=${FB_APP_SECRET}
+      - FB_ACCESS_TOKEN=${FB_ACCESS_TOKEN}
+      - FB_AD_ACCOUNT_ID=${FB_AD_ACCOUNT_ID}
+      # Telegram (optional)
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+    restart: unless-stopped
+

@@ -1,0 +1,245 @@
+{
+  "name": "FB Ads Manager - Quản lý Quảng cáo",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ads/create-campaign",
+        "responseMode": "responseNode"
+      },
+      "id": "trigger-webhook",
+      "name": "Webhook (Create campaign)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [180, 300]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "hours", "hoursInterval": 6 }]
+        }
+      },
+      "id": "trigger-check",
+      "name": "Check performance (6h)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [180, 700]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prepare campaign creation request\nconst input = $input.first().json;\n\nconst campaign = {\n  name: input.name || `Boost: ${input.title || 'Auto Campaign'}`,\n  objective: 'OUTCOME_ENGAGEMENT',\n  status: 'PAUSED',\n  special_ad_categories: ['NONE']\n};\n\nreturn [{ json: { ...input, campaign } }];"
+      },
+      "id": "prepare-campaign",
+      "name": "Chuẩn bị Campaign",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [420, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.FB_AD_ACCOUNT_ID}}/campaigns",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "name", "value": "={{$json.campaign.name}}" },
+            { "name": "objective", "value": "OUTCOME_ENGAGEMENT" },
+            { "name": "status", "value": "PAUSED" },
+            { "name": "special_ad_categories", "value": "[]" },
+            { "name": "access_token", "value": "={{$env.FB_ACCESS_TOKEN}}" }
+          ]
+        }
+      },
+      "id": "create-campaign",
+      "name": "Tạo Campaign trên FB",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [640, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.FB_AD_ACCOUNT_ID}}/adsets",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "name", "value": "=AdSet: {{$('Chuẩn bị Campaign').item.json.title || 'Auto'}}" },
+            { "name": "campaign_id", "value": "={{$json.id}}" },
+            { "name": "daily_budget", "value": "={{($('Chuẩn bị Campaign').item.json.boost_budget || 100000) * 100}}" },
+            { "name": "billing_event", "value": "IMPRESSIONS" },
+            { "name": "optimization_goal", "value": "POST_ENGAGEMENT" },
+            { "name": "bid_strategy", "value": "LOWEST_COST_WITHOUT_CAP" },
+            { "name": "targeting", "value": "={\"geo_locations\":{\"countries\":[\"VN\"]},\"age_min\":18,\"age_max\":55}" },
+            { "name": "status", "value": "PAUSED" },
+            { "name": "access_token", "value": "={{$env.FB_ACCESS_TOKEN}}" }
+          ]
+        }
+      },
+      "id": "create-adset",
+      "name": "Tạo Ad Set",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [860, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.FB_AD_ACCOUNT_ID}}/ads",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "name", "value": "=Ad: {{$('Chuẩn bị Campaign').item.json.title || 'Auto Ad'}}" },
+            { "name": "adset_id", "value": "={{$json.id}}" },
+            { "name": "creative", "value": "={\"object_story_id\":\"{{$env.FB_PAGE_ID}}_{{$('Chuẩn bị Campaign').item.json.fb_post_id}}\"}" },
+            { "name": "status", "value": "PAUSED" },
+            { "name": "access_token", "value": "={{$env.FB_ACCESS_TOKEN}}" }
+          ]
+        }
+      },
+      "id": "create-ad",
+      "name": "Tạo Ad (dùng post có sẵn)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1080, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.vn'}}/api/n8n/fb-sync",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer {{$env.N8N_WEBHOOK_SECRET}}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ campaigns: [{ fb_campaign_id: $('Tạo Campaign trên FB').item.json.id, name: $('Chuẩn bị Campaign').item.json.campaign.name, objective: 'OUTCOME_ENGAGEMENT', status: 'paused', daily_budget: $('Chuẩn bị Campaign').item.json.boost_budget || 100000, spent: 0, results: 0, cpr: 0, impressions: 0, reach: 0, ctr: 0, cpc: 0, frequency: 0 }] }) }}"
+      },
+      "id": "sync-to-supabase",
+      "name": "Lưu vào Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1300, 300]
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v21.0/{{$env.FB_AD_ACCOUNT_ID}}/insights",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "fields", "value": "campaign_id,campaign_name,spend,impressions,reach,clicks,ctr,cpc,actions,cost_per_action_type" },
+            { "name": "date_preset", "value": "today" },
+            { "name": "level", "value": "campaign" },
+            { "name": "access_token", "value": "={{$env.FB_ACCESS_TOKEN}}" }
+          ]
+        }
+      },
+      "id": "get-insights",
+      "name": "Lấy Insights từ FB",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [420, 700]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json.data || [];\nconst campaigns = data.map(c => {\n  const actions = c.actions || [];\n  const costPerAction = c.cost_per_action_type || [];\n  const results = actions.find(a => a.action_type === 'post_engagement');\n  const cpr = costPerAction.find(a => a.action_type === 'post_engagement');\n  \n  return {\n    fb_campaign_id: c.campaign_id,\n    name: c.campaign_name,\n    spent: parseFloat(c.spend || 0),\n    impressions: parseInt(c.impressions || 0),\n    reach: parseInt(c.reach || 0),\n    clicks: parseInt(c.clicks || 0),\n    ctr: parseFloat(c.ctr || 0),\n    cpc: parseFloat(c.cpc || 0),\n    results: results ? parseInt(results.value) : 0,\n    cpr: cpr ? parseFloat(cpr.value) : 0\n  };\n});\n\nreturn [{ json: { campaigns } }];"
+      },
+      "id": "parse-insights",
+      "name": "Parse Insights",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [640, 700]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.vn'}}/api/n8n/fb-sync",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer {{$env.N8N_WEBHOOK_SECRET}}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}"
+      },
+      "id": "sync-insights",
+      "name": "Sync Insights → Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [860, 700]
+    },
+    {
+      "parameters": {
+        "jsCode": "const campaigns = $input.first().json.campaigns || [];\nconst alerts = [];\n\nfor (const c of campaigns) {\n  // CPR quá cao\n  if (c.cpr > 50000) {\n    alerts.push({\n      campaign_name: c.name,\n      fb_campaign_id: c.fb_campaign_id,\n      severity: 'critical',\n      type: 'high_cpr',\n      message: `CPR = ${c.cpr.toLocaleString()}đ — vượt ngưỡng 50K! Đề xuất tạm dừng.`,\n      auto_action: 'pause'\n    });\n  }\n  // CTR thấp\n  else if (c.ctr < 0.5 && c.impressions > 1000) {\n    alerts.push({\n      campaign_name: c.name,\n      fb_campaign_id: c.fb_campaign_id,\n      severity: 'warning',\n      type: 'low_ctr',\n      message: `CTR = ${c.ctr.toFixed(2)}% — quá thấp. Cần đổi creative/audience.`\n    });\n  }\n}\n\nif (alerts.length === 0) {\n  return [{ json: { skip: true, message: 'Tất cả chiến dịch hoạt động bình thường' } }];\n}\n\nreturn alerts.map(a => ({ json: a }));"
+      },
+      "id": "ai-analyze",
+      "name": "AI Phân tích & Cảnh báo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1080, 700]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.vn'}}/api/n8n/fb-alert",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer {{$env.N8N_WEBHOOK_SECRET}}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}"
+      },
+      "id": "create-alert",
+      "name": "Gửi Alert → Workforce",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1300, 700]
+    }
+  ],
+  "connections": {
+    "Webhook (Create campaign)": {
+      "main": [[ { "node": "Chuẩn bị Campaign", "type": "main", "index": 0 } ]]
+    },
+    "Chuẩn bị Campaign": {
+      "main": [[ { "node": "Tạo Campaign trên FB", "type": "main", "index": 0 } ]]
+    },
+    "Tạo Campaign trên FB": {
+      "main": [[ { "node": "Tạo Ad Set", "type": "main", "index": 0 } ]]
+    },
+    "Tạo Ad Set": {
+      "main": [[ { "node": "Tạo Ad (dùng post có sẵn)", "type": "main", "index": 0 } ]]
+    },
+    "Tạo Ad (dùng post có sẵn)": {
+      "main": [[ { "node": "Lưu vào Supabase", "type": "main", "index": 0 } ]]
+    },
+    "Check performance (6h)": {
+      "main": [[ { "node": "Lấy Insights từ FB", "type": "main", "index": 0 } ]]
+    },
+    "Lấy Insights từ FB": {
+      "main": [[ { "node": "Parse Insights", "type": "main", "index": 0 } ]]
+    },
+    "Parse Insights": {
+      "main": [[ { "node": "Sync Insights → Supabase", "type": "main", "index": 0 } ]]
+    },
+    "Sync Insights → Supabase": {
+      "main": [[ { "node": "AI Phân tích & Cảnh báo", "type": "main", "index": 0 } ]]
+    },
+    "AI Phân tích & Cảnh báo": {
+      "main": [[ { "node": "Gửi Alert → Workforce", "type": "main", "index": 0 } ]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "tags": [{ "name": "ads" }, { "name": "facebook" }]
+}

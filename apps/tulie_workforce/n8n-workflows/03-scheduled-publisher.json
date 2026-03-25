@@ -1,0 +1,417 @@
+{
+  "name": "Scheduled Publisher",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      },
+      "id": "schedule-publish",
+      "name": "Check Every 5min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0],
+      "notes": "Kiểm tra bài đã approved và đến giờ đăng mỗi 5 phút"
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $env.GOOGLE_SHEET_ID }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "ContentPlan"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "status",
+              "lookupValue": "approved"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "read-approved",
+      "name": "Get Approved Posts",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [220, 0],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Filter posts where scheduled time <= now\nconst now = new Date();\nconst items = $input.all();\nconst readyItems = [];\n\nfor (const item of items) {\n  const datePlanned = item.json.date_planned; // YYYY-MM-DD\n  const timePlanned = item.json.time_planned;  // HH:mm\n  \n  if (!datePlanned || !timePlanned) continue;\n  \n  const scheduledTime = new Date(`${datePlanned}T${timePlanned}:00+07:00`);\n  \n  if (scheduledTime <= now) {\n    readyItems.push({\n      json: {\n        ...item.json,\n        scheduled_time: scheduledTime.toISOString(),\n        is_past_due: true\n      }\n    });\n  }\n}\n\nif (readyItems.length === 0) {\n  // Return empty to stop execution\n  return [];\n}\n\nreturn readyItems;"
+      },
+      "id": "filter-ready",
+      "name": "Filter: Time to Publish",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 0],
+      "notes": "Chỉ lấy các bài có date_planned + time_planned <= now"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "combinator": "or",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.channel }}",
+              "rightValue": "facebook",
+              "operator": { "type": "string", "operation": "equals" }
+            },
+            {
+              "leftValue": "={{ $json.channel }}",
+              "rightValue": "both",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ]
+        }
+      },
+      "id": "if-facebook",
+      "name": "Post to Facebook?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [660, -100]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "combinator": "or",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.channel }}",
+              "rightValue": "website",
+              "operator": { "type": "string", "operation": "equals" }
+            },
+            {
+              "leftValue": "={{ $json.channel }}",
+              "rightValue": "both",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ]
+        }
+      },
+      "id": "if-website",
+      "name": "Post to Website?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [660, 100]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v19.0/{{ $env.FB_PAGE_ID }}/photos",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"url\": \"{{ $json.generated_image_url }}\",\n  \"caption\": {{ JSON.stringify($json.generated_caption_fb) }},\n  \"published\": true\n}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $env.FB_PAGE_TOKEN }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "publish-facebook",
+      "name": "Publish to Facebook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [920, -200],
+      "notes": "Post ảnh + caption lên Facebook Page\nDùng Page Access Token (long-lived)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb-url",
+              "name": "fb_post_url",
+              "value": "=https://facebook.com/{{ $json.post_id }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "id": "set-fb-url",
+      "name": "Set FB Post URL",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1140, -200]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the article to extract title and meta_description\nconst article = $json.generated_article_wp;\nlet title = '';\nlet metaDescription = '';\nlet content = article;\n\n// Extract YAML frontmatter\nconst frontmatterMatch = article.match(/^---\\n([\\s\\S]*?)\\n---\\n([\\s\\S]*)$/);\nif (frontmatterMatch) {\n  const frontmatter = frontmatterMatch[1];\n  content = frontmatterMatch[2].trim();\n  \n  const titleMatch = frontmatter.match(/title:\\s*[\"'](.+?)[\"']/);\n  if (titleMatch) title = titleMatch[1];\n  \n  const metaMatch = frontmatter.match(/meta_description:\\s*[\"'](.+?)[\"']/);\n  if (metaMatch) metaDescription = metaMatch[1];\n}\n\n// Convert markdown headings to HTML\ncontent = content\n  .replace(/^### (.+)$/gm, '<h3>$1</h3>')\n  .replace(/^## (.+)$/gm, '<h2>$1</h2>')\n  .replace(/^# (.+)$/gm, '<h1>$1</h1>')\n  .replace(/\\*\\*(.+?)\\*\\*/g, '<strong>$1</strong>')\n  .replace(/\\*(.+?)\\*/g, '<em>$1</em>')\n  .replace(/\\n\\n/g, '</p><p>')\n  .replace(/^(.+)$/gm, (match) => {\n    if (match.startsWith('<')) return match;\n    return `<p>${match}</p>`;\n  });\n\nreturn [{\n  json: {\n    ...$json,\n    wp_title: title || $json.topic,\n    wp_meta_description: metaDescription,\n    wp_content: content\n  }\n}];"
+      },
+      "id": "parse-article",
+      "name": "Parse Article for WordPress",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [920, 0],
+      "notes": "Extract title, meta_description từ YAML frontmatter\nConvert markdown → HTML cho WordPress"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.WP_URL }}/wp-json/wp/v2/media",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Disposition",
+              "value": "=attachment; filename=\"post-{{ $json.post_id }}.jpg\""
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "body": "={{ $json.generated_image_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": true
+            }
+          }
+        }
+      },
+      "id": "wp-upload-image",
+      "name": "WP: Upload Featured Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1140, 0],
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "WP_CREDENTIAL_ID",
+          "name": "WordPress Basic Auth"
+        }
+      },
+      "notes": "Upload ảnh làm featured image\nDùng Application Password auth"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.WP_URL }}/wp-json/wp/v2/posts",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"title\": {{ JSON.stringify($('Parse Article for WordPress').item.json.wp_title) }},\n  \"content\": {{ JSON.stringify($('Parse Article for WordPress').item.json.wp_content) }},\n  \"status\": \"publish\",\n  \"featured_media\": {{ $json.id }},\n  \"meta\": {\n    \"_yoast_wpseo_metadesc\": {{ JSON.stringify($('Parse Article for WordPress').item.json.wp_meta_description) }}\n  }\n}",
+        "options": {}
+      },
+      "id": "wp-create-post",
+      "name": "WP: Create Post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1360, 0],
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "WP_CREDENTIAL_ID",
+          "name": "WordPress Basic Auth"
+        }
+      },
+      "notes": "Tạo bài viết WordPress với featured image\nSet meta description cho SEO (Yoast)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "wp-url",
+              "name": "wp_post_url",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "id": "set-wp-url",
+      "name": "Set WP Post URL",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1580, 0]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "post_id",
+              "field2": "post_id"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "merge-results",
+      "name": "Merge Publish Results",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [1800, -100]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $env.GOOGLE_SHEET_ID }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "ContentPlan"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "published",
+            "published_url": "=FB: {{ $json.fb_post_url || 'N/A' }} | WP: {{ $json.wp_post_url || 'N/A' }}"
+          },
+          "matchingColumns": ["post_id"]
+        }
+      },
+      "id": "update-published",
+      "name": "Update: Published",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [2020, -100],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "={{ $env.SLACK_REVIEW_CHANNEL }}",
+        "text": "=🚀 *Content #{{ $json.post_id }} Published!*\n\n*Topic:* {{ $json.topic }}\n*Channel:* {{ $json.channel }}\n{{ $json.fb_post_url ? '📱 Facebook: ' + $json.fb_post_url : '' }}\n{{ $json.wp_post_url ? '🌐 Website: ' + $json.wp_post_url : '' }}"
+      },
+      "id": "slack-published",
+      "name": "Slack: Notify Published",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [2240, -100],
+      "credentials": {
+        "slackApi": {
+          "id": "SLACK_CREDENTIAL_ID",
+          "name": "Slack Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Check Every 5min": {
+      "main": [
+        [{ "node": "Get Approved Posts", "type": "main", "index": 0 }]
+      ]
+    },
+    "Get Approved Posts": {
+      "main": [
+        [{ "node": "Filter: Time to Publish", "type": "main", "index": 0 }]
+      ]
+    },
+    "Filter: Time to Publish": {
+      "main": [
+        [
+          { "node": "Post to Facebook?", "type": "main", "index": 0 },
+          { "node": "Post to Website?", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Post to Facebook?": {
+      "main": [
+        [{ "node": "Publish to Facebook", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "Post to Website?": {
+      "main": [
+        [{ "node": "Parse Article for WordPress", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "Publish to Facebook": {
+      "main": [
+        [{ "node": "Set FB Post URL", "type": "main", "index": 0 }]
+      ]
+    },
+    "Set FB Post URL": {
+      "main": [
+        [{ "node": "Merge Publish Results", "type": "main", "index": 0 }]
+      ]
+    },
+    "Parse Article for WordPress": {
+      "main": [
+        [{ "node": "WP: Upload Featured Image", "type": "main", "index": 0 }]
+      ]
+    },
+    "WP: Upload Featured Image": {
+      "main": [
+        [{ "node": "WP: Create Post", "type": "main", "index": 0 }]
+      ]
+    },
+    "WP: Create Post": {
+      "main": [
+        [{ "node": "Set WP Post URL", "type": "main", "index": 0 }]
+      ]
+    },
+    "Set WP Post URL": {
+      "main": [
+        [{ "node": "Merge Publish Results", "type": "main", "index": 1 }]
+      ]
+    },
+    "Merge Publish Results": {
+      "main": [
+        [{ "node": "Update: Published", "type": "main", "index": 0 }]
+      ]
+    },
+    "Update: Published": {
+      "main": [
+        [{ "node": "Slack: Notify Published", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "content-automation",
+      "id": "content-automation"
+    }
+  ],
+  "triggerCount": 1,
+  "pinData": {}
+}

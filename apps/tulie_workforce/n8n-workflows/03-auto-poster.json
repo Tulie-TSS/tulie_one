@@ -1,0 +1,145 @@
+{
+  "name": "Auto Poster - Đăng Facebook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "content/publish",
+        "responseMode": "responseNode"
+      },
+      "id": "trigger-webhook",
+      "name": "Webhook (Publish trigger)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [180, 300]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "cronExpression", "expression": "0 9,14,19 * * *" }]
+        }
+      },
+      "id": "trigger-schedule",
+      "name": "Lịch đăng (9h, 14h, 19h)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [180, 500]
+    },
+    {
+      "parameters": {
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.vn'}}/api/n8n/content?status=approved",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer {{$env.N8N_WEBHOOK_SECRET}}" }
+          ]
+        }
+      },
+      "id": "get-approved",
+      "name": "Lấy bài đã duyệt",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [420, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "const posts = $input.first().json.posts || [];\nconst ready = posts.filter(p => p.image_url && p.status === 'approved');\n\nif (ready.length === 0) {\n  return [{ json: { skip: true, message: 'Không có bài nào sẵn sàng' } }];\n}\n\n// Take first approved post\nreturn [{ json: ready[0] }];"
+      },
+      "id": "select-post",
+      "name": "Chọn bài đăng",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [640, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{$env.FB_PAGE_ID}}/photos",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "url", "value": "={{$json.image_url}}" },
+            { "name": "caption", "value": "={{$json.body}}\\n\\n{{$json.hashtags.join(' ')}}" },
+            { "name": "access_token", "value": "={{$env.FB_PAGE_ACCESS_TOKEN}}" }
+          ]
+        }
+      },
+      "id": "fb-post-photo",
+      "name": "Đăng lên Facebook Page",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [860, 400]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.vn'}}/api/n8n/content",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer {{$env.N8N_WEBHOOK_SECRET}}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ id: $('Chọn bài đăng').item.json.id, status: 'published', fb_post_id: $json.post_id || $json.id, published_at: new Date().toISOString() }) }}"
+      },
+      "id": "update-published",
+      "name": "Cập nhật status = published",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1080, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "const post = $('Chọn bài đăng').item.json;\nconst fbResult = $('Đăng lên Facebook Page').item.json;\n\nreturn [{\n  json: {\n    message: `✅ Đã đăng bài \"${post.title}\" lên Facebook!\\n\\nFB Post ID: ${fbResult.post_id || fbResult.id}\\nCategory: ${post.category}\\nHashtags: ${post.hashtags.join(', ')}`,\n    post_id: post.id,\n    fb_post_id: fbResult.post_id || fbResult.id\n  }\n}];"
+      },
+      "id": "format-notify",
+      "name": "Format thông báo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1300, 400]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [{ "value1": "={{$('Chọn bài đăng').item.json.auto_boost}}", "value2": true }]
+        }
+      },
+      "id": "check-boost",
+      "name": "Cần auto-boost?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1300, 600]
+    }
+  ],
+  "connections": {
+    "Webhook (Publish trigger)": {
+      "main": [[ { "node": "Lấy bài đã duyệt", "type": "main", "index": 0 } ]]
+    },
+    "Lịch đăng (9h, 14h, 19h)": {
+      "main": [[ { "node": "Lấy bài đã duyệt", "type": "main", "index": 0 } ]]
+    },
+    "Lấy bài đã duyệt": {
+      "main": [[ { "node": "Chọn bài đăng", "type": "main", "index": 0 } ]]
+    },
+    "Chọn bài đăng": {
+      "main": [[ { "node": "Đăng lên Facebook Page", "type": "main", "index": 0 } ]]
+    },
+    "Đăng lên Facebook Page": {
+      "main": [[ { "node": "Cập nhật status = published", "type": "main", "index": 0 } ]]
+    },
+    "Cập nhật status = published": {
+      "main": [[ 
+        { "node": "Format thông báo", "type": "main", "index": 0 },
+        { "node": "Cần auto-boost?", "type": "main", "index": 0 }
+      ]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "tags": [{ "name": "content" }, { "name": "facebook" }]
+}
