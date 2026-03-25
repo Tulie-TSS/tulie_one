@@ -28,18 +28,12 @@ const securityHeaders = [
 ]
 
 const nextConfig: NextConfig = {
-    experimental: {
-        reactCompiler: true,
-    },
+    reactCompiler: true,
     output: "standalone",
     poweredByHeader: false,
     compress: true,
     typescript: {
         ignoreBuildErrors: false,
-    },
-    eslint: {
-        // TODO: Fix eslint-plugin-import dependency issue, then set to false
-        ignoreDuringBuilds: true,
     },
     async rewrites() {
         return {
