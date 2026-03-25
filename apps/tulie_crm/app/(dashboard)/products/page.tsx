@@ -1,43 +1,26 @@
-import { DataTable } from '@/components/shared/data-table'
-import { Button } from '@/components/ui/button'
-import { Plus, Box } from 'lucide-react'
-import Link from 'next/link'
-import { productColumns } from '@/components/products/product-columns'
-import { getProducts } from '@/lib/supabase/services/product-service'
+// Products are now managed in Tulie ERP (port 3003)
+// CRM can still reference products for quotation line items via shared DB
 
-export default async function ProductsPage() {
-    const products = await getProducts()
-
-    return (
-        <div className="space-y-6">
-            {/* Page Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-xl bg-zinc-100 flex items-center justify-center shadow-sm border border-border/50">
-                        <Box className="h-6 w-6 text-zinc-900" />
-                    </div>
-                    <div>
-                        <h1 className="text-3xl font-bold text-zinc-950 tracking-tight italic">Sản phẩm & Dịch vụ</h1>
-                        <p className="text-sm font-medium text-muted-foreground mt-1">
-                            Quản lý danh mục sản phẩm và dịch vụ của công ty
-                        </p>
-                    </div>
-                </div>
-                <Button asChild className="rounded-xl font-bold shadow-md shadow-zinc-200">
-                    <Link href="/products/new">
-                        <Plus className="mr-2 h-4 w-4" />
-                        Thêm sản phẩm
-                    </Link>
-                </Button>
-            </div>
-
-            {/* Data Table */}
-            <DataTable
-                columns={productColumns}
-                data={products}
-                searchKey="name"
-                searchPlaceholder="Tìm theo tên sản phẩm..."
-            />
+export default function ProductsPage() {
+  return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <div className="text-center max-w-md mx-auto p-8 rounded-xl border border-border bg-card">
+        <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-orange-500/10 mx-auto mb-4">
+          <svg className="h-7 w-7 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
         </div>
-    )
+        <h2 className="text-xl font-bold text-foreground mb-2">Đã chuyển sang ERP</h2>
+        <p className="text-sm text-muted-foreground mb-6">
+          Danh mục Sản phẩm & Dịch vụ được quản lý tập trung trong Tulie ERP.
+        </p>
+        <a
+          href="http://localhost:3003/products"
+          className="inline-flex items-center gap-2 rounded-lg bg-orange-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-orange-700 transition-colors"
+        >
+          Mở Sản phẩm trên ERP →
+        </a>
+      </div>
+    </div>
+  )
 }
