@@ -1,119 +1,27 @@
-import { Suspense } from 'react'
-import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
-import { getMyTodayOverview, getMyWeekOverview, getRevenueProgress, getWorkspaceAlerts, getMonthSummary } from '@/lib/supabase/services/workspace-service'
-import TodayTaskList from '@/components/workspace/TodayTaskList'
-import WeeklyTimeline from '@/components/workspace/WeeklyTimeline'
-import RevenueProgressCard from '@/components/workspace/RevenueProgressCard'
-import AlertPanel from '@/components/workspace/AlertPanel'
-import MonthSummaryCard from '@/components/workspace/MonthSummaryCard'
-import { ListTodo, Kanban, Calendar, GanttChart, ArrowRight } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { redirect } from 'next/navigation'
 
-export const dynamic = 'force-dynamic'
-
-function LoadingFallback() {
-    return (
-        <div className="flex items-center justify-center h-32">
-            <LoadingSpinner size="md" />
+// Workspace has been moved to the dedicated Tulie Workspace app (port 3002)
+// This redirect ensures CRM users are guided to the correct app
+export default function WorkspacePage() {
+  return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <div className="text-center max-w-md mx-auto p-8 rounded-xl border border-border bg-card">
+        <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-purple-500/10 mx-auto mb-4">
+          <svg className="h-7 w-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
         </div>
-    )
-}
-
-export default async function WorkspacePage() {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    const userId = user?.id || ''
-
-    const [todayOverview, weekOverview, revenueProgress, alerts, monthSummary] = await Promise.all([
-        getMyTodayOverview(userId),
-        getMyWeekOverview(userId),
-        getRevenueProgress('monthly'),
-        getWorkspaceAlerts(userId),
-        getMonthSummary(userId),
-    ])
-
-    const dangerAlerts = alerts.filter(a => a.severity === 'danger').length
-    const warningAlerts = alerts.filter(a => a.severity === 'warning').length
-
-    return (
-        <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Workspace</h1>
-                    <p className="text-muted-foreground">
-                        Tổng quan công việc cá nhân
-                    </p>
-                </div>
-                {(dangerAlerts > 0 || warningAlerts > 0) && (
-                    <div className="flex gap-2">
-                        {dangerAlerts > 0 && (
-                            <span className="inline-flex items-center gap-1.5 px-3 h-6 rounded-full text-[11px] font-normal bg-rose-50 text-rose-700">
-                                {dangerAlerts} cảnh báo
-                            </span>
-                        )}
-                        {warningAlerts > 0 && (
-                            <span className="inline-flex items-center gap-1.5 px-3 h-6 rounded-full text-[11px] font-normal bg-amber-50 text-amber-700">
-                                {warningAlerts} chú ý
-                            </span>
-                        )}
-                    </div>
-                )}
-            </div>
-
-            {/* Quick Access */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {[
-                    { title: 'Tasks', desc: 'Danh sách công việc', href: '/workspace/tasks', icon: ListTodo, color: 'bg-blue-50 text-blue-600 group-hover:bg-blue-100' },
-                    { title: 'Board', desc: 'Kanban board', href: '/workspace/board', icon: Kanban, color: 'bg-purple-50 text-purple-600 group-hover:bg-purple-100' },
-                    { title: 'Calendar', desc: 'Lịch deadline', href: '/workspace/calendar', icon: Calendar, color: 'bg-amber-50 text-amber-600 group-hover:bg-amber-50' },
-                    { title: 'Timeline', desc: 'Gantt chart', href: '/workspace/timeline', icon: GanttChart, color: 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-100' },
-                ].map((item) => {
-                    const Icon = item.icon
-                    return (
-                        <Link key={item.href} href={item.href}>
-                            <div className="group flex items-center gap-3 p-3 rounded-xl border bg-background hover:shadow-sm transition-all cursor-pointer">
-                                <div className={`h-9 w-9 rounded-lg flex items-center justify-center transition-colors ${item.color}`}>
-                                    <Icon className="h-4.5 w-4.5" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-semibold">{item.title}</p>
-                                    <p className="text-[11px] text-muted-foreground truncate">{item.desc}</p>
-                                </div>
-                                <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </div>
-                        </Link>
-                    )
-                })}
-            </div>
-
-            {/* Top row: Revenue + Month Summary */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Suspense fallback={<LoadingFallback />}>
-                    <RevenueProgressCard progress={revenueProgress} />
-                </Suspense>
-                <Suspense fallback={<LoadingFallback />}>
-                    <MonthSummaryCard summary={monthSummary} />
-                </Suspense>
-            </div>
-
-            {/* Alerts Panel */}
-            {alerts.length > 0 && (
-                <Suspense fallback={<LoadingFallback />}>
-                    <AlertPanel alerts={alerts} />
-                </Suspense>
-            )}
-
-            {/* Today's Tasks */}
-            <Suspense fallback={<LoadingFallback />}>
-                <TodayTaskList overview={todayOverview} />
-            </Suspense>
-
-            {/* Week Overview */}
-            <Suspense fallback={<LoadingFallback />}>
-                <WeeklyTimeline overview={weekOverview} />
-            </Suspense>
-        </div>
-    )
+        <h2 className="text-xl font-bold text-foreground mb-2">Đã chuyển sang Workspace</h2>
+        <p className="text-sm text-muted-foreground mb-6">
+          Module Workspace đã được tách thành ứng dụng riêng để quản lý dự án và công việc hiệu quả hơn.
+        </p>
+        <a
+          href="http://localhost:3002"
+          className="inline-flex items-center gap-2 rounded-lg bg-purple-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
+        >
+          Mở Tulie Workspace →
+        </a>
+      </div>
+    </div>
+  )
 }

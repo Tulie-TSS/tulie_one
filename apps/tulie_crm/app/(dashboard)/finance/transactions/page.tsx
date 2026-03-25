@@ -1,8 +1,5 @@
-import { getAllTransactions } from '@/lib/supabase/services/payment-service'
-import { TransactionsClient } from './transactions-client'
+import { redirect } from 'next/navigation'
 
-export default async function TransactionsPage() {
-    const { data, total } = await getAllTransactions({ limit: 50, offset: 0 })
-
-    return <TransactionsClient initialData={data} initialTotal={total} />
+export default function Page() {
+  redirect('/finance')
 }
