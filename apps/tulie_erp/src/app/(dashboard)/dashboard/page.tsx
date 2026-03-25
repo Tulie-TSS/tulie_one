@@ -16,26 +16,29 @@ function formatCurrency(amount: number) {
 }
 
 function StatCard({
-  title, value, subtitle, icon: Icon, color, href,
+  title, value, subtitle, icon: Icon, color, href, gradient
 }: {
-  title: string; value: string; subtitle?: string; icon: React.ElementType; color: string; href?: string
+  title: string; value: string; subtitle?: string; icon: React.ElementType; color: string; href?: string; gradient?: string
 }) {
   const content = (
     <>
-      <div className="flex items-center justify-between">
+      {gradient && (
+        <div className={`absolute -right-8 -top-8 h-32 w-32 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br ${gradient}`} />
+      )}
+      <div className="relative z-10 flex items-center justify-between">
         <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${color}`}>
           <Icon className="h-5 w-5 text-white" />
         </div>
         {href && <ArrowUpRight className="h-4 w-4 text-muted-foreground" />}
       </div>
-      <div className="mt-4">
+      <div className="relative z-10 mt-4">
         <p className="text-2xl font-bold text-foreground">{value}</p>
         <p className="text-sm text-muted-foreground">{title}</p>
         {subtitle && <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>}
       </div>
     </>
   )
-  const cls = "rounded-xl border border-border bg-card p-6 shadow-sm hover:shadow-md transition-shadow block"
+  const cls = "relative group overflow-hidden rounded-xl border border-border bg-card p-6 shadow-sm hover:shadow-md transition-shadow block"
   return href ? <Link href={href} className={cls}>{content}</Link> : <div className={cls}>{content}</div>
 }
 
@@ -80,6 +83,7 @@ export default async function DashboardPage() {
           icon={DollarSign}
           color="bg-emerald-500"
           href="/reports"
+          gradient="from-emerald-500/20 to-teal-500/5"
         />
         <StatCard
           title="Chờ thanh toán"
@@ -88,6 +92,7 @@ export default async function DashboardPage() {
           icon={FileText}
           color="bg-amber-500"
           href="/invoices"
+          gradient="from-amber-500/20 to-orange-500/5"
         />
         <StatCard
           title="Quá hạn thanh toán"
@@ -96,6 +101,7 @@ export default async function DashboardPage() {
           icon={AlertTriangle}
           color={totalOverdue > 0 ? 'bg-red-500' : 'bg-gray-400'}
           href="/invoices"
+          gradient="from-rose-500/20 to-pink-500/5"
         />
         <StatCard
           title="Tổng giao dịch"
@@ -104,6 +110,7 @@ export default async function DashboardPage() {
           icon={CreditCard}
           color="bg-blue-500"
           href="/payments"
+          gradient="from-sky-500/20 to-blue-500/5"
         />
       </div>
 

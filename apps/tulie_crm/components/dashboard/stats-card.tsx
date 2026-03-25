@@ -10,6 +10,7 @@ interface StatsCardProps {
     icon?: React.ReactNode
     className?: string
     isCurrency?: boolean
+    gradient?: string
 }
 
 export function StatsCard({
@@ -20,13 +21,21 @@ export function StatsCard({
     icon,
     className,
     isCurrency = false,
+    gradient,
 }: StatsCardProps) {
     const isPositive = change !== undefined && change > 0
     const isNegative = change !== undefined && change < 0
 
     return (
-        <Card className={cn('border-border/50 bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden transition-all duration-300', className)}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className={cn('relative group overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm shadow-sm transition-all duration-300', className)}>
+            {/* Decorative gradient background */}
+            {gradient && (
+                <div className={cn(
+                    "absolute -right-8 -top-8 h-32 w-32 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br",
+                    gradient
+                )} />
+            )}
+            <CardHeader className="relative z-10 flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-xs font-semibold text-muted-foreground">
                     {title}
                 </CardTitle>
@@ -36,7 +45,7 @@ export function StatsCard({
                     </div>
                 )}
             </CardHeader>
-            <CardContent>
+            <CardContent className="relative z-10">
                 <div className="text-xl sm:text-2xl font-medium truncate">{value}</div>
                 {change !== undefined && (
                     <div className="flex items-center gap-1.5 mt-2">

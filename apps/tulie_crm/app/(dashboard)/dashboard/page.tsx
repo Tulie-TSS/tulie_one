@@ -115,26 +115,30 @@ export default async function DashboardPage() {
                         value={formatCurrency(stats.revenue.total)}
                         change={stats.revenue.change}
                         changeLabel={stats.revenue.period}
-                        icon={<Wallet className="h-4 w-4 text-muted-foreground" />}
+                        icon={<Wallet className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />}
+                        gradient="from-emerald-500/20 to-teal-500/5"
                     />
                     <StatsCard
                         title="Tổng khách hàng"
                         value={stats.customers.total.toString()}
                         change={stats.customers.change}
                         changeLabel="so với tháng trước"
-                        icon={<Users className="h-4 w-4 text-muted-foreground" />}
+                        icon={<Users className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />}
+                        gradient="from-indigo-500/20 to-violet-500/5"
                     />
                     <StatsCard
                         title="Hợp đồng đang thực hiện"
                         value={stats.contracts.active.toString()}
                         change={stats.contracts.change}
                         changeLabel="Tổng giá trị HĐ"
-                        icon={<FileSignature className="h-4 w-4 text-muted-foreground" />}
+                        icon={<FileSignature className="h-4 w-4 text-sky-600 dark:text-sky-400" />}
+                        gradient="from-sky-500/20 to-blue-500/5"
                     />
                     <StatsCard
                         title="Hóa đơn chờ thanh toán"
                         value={stats.invoices.pending.toString()}
-                        icon={<Receipt className="h-4 w-4 text-muted-foreground" />}
+                        icon={<Receipt className="h-4 w-4 text-amber-600 dark:text-amber-400" />}
+                        gradient="from-amber-500/20 to-orange-500/5"
                     />
                 </div>
 
