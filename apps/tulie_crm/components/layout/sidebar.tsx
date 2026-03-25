@@ -11,9 +11,7 @@ import {
     FileText,
     FilePenLine,
     Banknote,
-    Box,
     ShoppingCart,
-    Wallet,
     UserCheck,
     PieChart,
     Settings,
@@ -23,11 +21,12 @@ import {
     TrendingUp,
     Rocket,
     Camera,
-    GraduationCap,
-    Layout,
     Contact,
     Headphones,
-    Briefcase
+    ExternalLink,
+    DollarSign,
+    Briefcase,
+    Bot
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -67,9 +66,7 @@ const navGroups: NavGroup[] = [
     {
         title: 'Hệ thống',
         items: [
-            { title: 'Tài chính', href: '/finance', icon: Wallet },
             { title: 'Nhân sự', href: '/team', icon: UserCheck },
-            { title: 'Sản phẩm & Dịch vụ', href: '/products', icon: Box },
             { title: 'Mẫu giấy tờ', href: '/templates', icon: Files },
             { title: 'Báo cáo', href: '/reports', icon: PieChart },
             { title: 'Cài đặt', href: '/settings', icon: Settings },
@@ -133,22 +130,6 @@ export function Sidebar({ className, isMobile }: { className?: string; isMobile?
                                 {!isCollapsed && <span className={cn("truncate font-medium", pathname === '/dashboard' ? "text-zinc-950" : "text-muted-foreground group-hover:text-zinc-950")}>Dashboard</span>}
                             </Button>
                         </Link>
-                        <Link href="/workspace">
-                            <Button
-                                variant="ghost"
-                                className={cn(
-                                    'w-full justify-start gap-3 h-10 transition-all duration-200 group rounded-xl',
-                                    pathname === '/workspace' || pathname.startsWith('/workspace/') ? 'bg-zinc-100 text-zinc-950 shadow-sm border border-border/50' : 'text-muted-foreground hover:text-zinc-950 hover:bg-zinc-100/50',
-                                    isCollapsed && 'justify-center px-0'
-                                )}
-                            >
-                                <Briefcase className={cn(
-                                    "h-4 w-4 shrink-0 transition-colors",
-                                    pathname === '/workspace' || pathname.startsWith('/workspace/') ? "text-zinc-950" : "opacity-70 group-hover:opacity-100"
-                                )} />
-                                {!isCollapsed && <span className={cn("truncate font-medium", pathname === '/workspace' || pathname.startsWith('/workspace/') ? "text-zinc-950" : "text-muted-foreground group-hover:text-zinc-950")}>Workspace</span>}
-                            </Button>
-                        </Link>
                     </div>
 
                     {navGroups.map((group, idx) => (
@@ -201,6 +182,44 @@ export function Sidebar({ className, isMobile }: { className?: string; isMobile?
                             </div>
                         </div>
                     ))}
+
+                    {/* External Apps */}
+                    <div className="flex flex-col">
+                        {!isCollapsed && (
+                            <h4 className="px-3 py-1.5 mt-5 mb-1 text-xs font-bold text-foreground/50 uppercase tracking-wider">
+                                Ứng dụng khác
+                            </h4>
+                        )}
+                        {isCollapsed && (
+                            <div className="h-px bg-border/50 mx-2 mt-2 mb-4" />
+                        )}
+                        <div className="flex flex-col gap-0.5">
+                            {[
+                                { title: 'ERP - Tài chính', href: 'http://localhost:3003', icon: DollarSign, color: 'text-orange-500' },
+                                { title: 'Workspace', href: 'http://localhost:3002', icon: Briefcase, color: 'text-purple-500' },
+                                { title: 'Workforce - AI', href: 'http://localhost:3001', icon: Bot, color: 'text-blue-500' },
+                            ].map((item) => (
+                                <a key={item.href} href={item.href} target="_blank" rel="noopener">
+                                    <Button
+                                        variant="ghost"
+                                        className={cn(
+                                            'w-full justify-start gap-3 h-10 transition-all duration-200 group rounded-xl text-muted-foreground hover:text-zinc-950 hover:bg-zinc-100/50',
+                                            isCollapsed && 'justify-center px-0'
+                                        )}
+                                    >
+                                        <item.icon className={cn("h-4 w-4 shrink-0", item.color)} />
+                                        {!isCollapsed && (
+                                            <span className="truncate font-medium text-muted-foreground group-hover:text-zinc-950 flex items-center gap-1.5">
+                                                {item.title}
+                                                <ExternalLink className="h-3 w-3 opacity-40" />
+                                            </span>
+                                        )}
+                                    </Button>
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+
                     {/* Thêm padding dưới cùng để khi cuộn không bị dính đáy */}
                     <div className="h-20" />
                 </nav>
