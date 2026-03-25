@@ -82,13 +82,13 @@ export function Sidebar({ className, isMobile }: { className?: string; isMobile?
         <aside
             className={cn(
                 'relative flex flex-col h-full transition-all duration-300 ease-in-out',
-                isMobile ? 'w-full border-none' : (isCollapsed ? 'w-20 border-r border-sidebar-border' : 'w-72 border-r border-sidebar-border'),
-                'bg-sidebar text-sidebar-foreground',
+                isMobile ? 'w-full border-none' : (isCollapsed ? 'w-20 border-r' : 'w-72 border-r'),
+                'bg-background',
                 className
             )}
         >
             {/* Logo */}
-            <div className="flex h-16 items-center border-b border-sidebar-border px-4 transition-all duration-300">
+            <div className="flex h-16 items-center border-b px-4 transition-all duration-300">
                 <Link href="/" className={cn(
                     "flex items-center gap-3 transition-all duration-300 ease-in-out overflow-hidden w-full",
                     isCollapsed ? "justify-center" : "justify-start"
@@ -97,12 +97,12 @@ export function Sidebar({ className, isMobile }: { className?: string; isMobile?
                         src={isCollapsed ? "/logo-icon.png" : "/logo.png"}
                         alt="Tulie"
                         className={cn(
-                            "h-10 w-auto object-contain transition-all duration-300 ease-in-out shrink-0 brightness-0 invert",
+                            "h-10 w-auto object-contain transition-all duration-300 ease-in-out shrink-0",
                             isCollapsed ? "h-8" : "h-10"
                         )}
                     />
                     {!isCollapsed && (
-                        <span className="text-xl font-bold whitespace-nowrap opacity-100 transition-opacity duration-300 text-sidebar-primary">
+                        <span className="text-xl font-bold whitespace-nowrap opacity-100 transition-opacity duration-300">
                             Tulie CRM
                         </span>
                     )}
@@ -119,15 +119,15 @@ export function Sidebar({ className, isMobile }: { className?: string; isMobile?
                                 variant="ghost"
                                 className={cn(
                                     'w-full justify-start gap-3 h-10 transition-all duration-200 group rounded-xl',
-                                    pathname === '/dashboard' ? 'bg-sidebar-accent text-sidebar-accent-foreground shadow-sm' : 'text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent/50',
+                                    pathname === '/dashboard' ? 'bg-zinc-100 text-zinc-950 shadow-sm border border-border/50' : 'text-muted-foreground hover:text-zinc-950 hover:bg-zinc-100/50',
                                     isCollapsed && 'justify-center px-0'
                                 )}
                             >
                                 <LayoutGrid className={cn(
                                     "h-4 w-4 shrink-0 transition-colors",
-                                    pathname === '/dashboard' ? "text-sidebar-accent-foreground" : "opacity-70 group-hover:opacity-100"
+                                    pathname === '/dashboard' ? "text-zinc-950" : "opacity-70 group-hover:opacity-100"
                                 )} />
-                                {!isCollapsed && <span className={cn("truncate font-medium", pathname === '/dashboard' ? "text-sidebar-accent-foreground" : "text-sidebar-foreground group-hover:text-sidebar-accent-foreground")}>Dashboard</span>}
+                                {!isCollapsed && <span className={cn("truncate font-medium", pathname === '/dashboard' ? "text-zinc-950" : "text-muted-foreground group-hover:text-zinc-950")}>Dashboard</span>}
                             </Button>
                         </Link>
                     </div>
@@ -135,12 +135,12 @@ export function Sidebar({ className, isMobile }: { className?: string; isMobile?
                     {navGroups.map((group, idx) => (
                         <div key={idx} className="flex flex-col">
                             {!isCollapsed && (
-                                <h4 className="px-3 py-1.5 mt-5 mb-1 text-xs font-bold text-sidebar-foreground/50 uppercase tracking-wider">
+                                <h4 className="px-3 py-1.5 mt-5 mb-1 text-xs font-bold text-zinc-500 uppercase tracking-wider">
                                     {group.title}
                                 </h4>
                             )}
                             {isCollapsed && (
-                                <div className="h-px bg-sidebar-border mx-2 mt-2 mb-4" />
+                                <div className="h-px bg-zinc-200 mx-2 mt-2 mb-4" />
                             )}
                             <div className="flex flex-col gap-0.5">
                                 {group.items.map((item) => {
@@ -159,18 +159,18 @@ export function Sidebar({ className, isMobile }: { className?: string; isMobile?
                                                 variant="ghost"
                                                 className={cn(
                                                     'w-full justify-start gap-3 h-10 transition-all duration-200 group rounded-xl',
-                                                    isActive ? 'bg-sidebar-accent text-sidebar-accent-foreground shadow-sm' : 'text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent/50',
+                                                    isActive ? 'bg-zinc-100 text-zinc-950 shadow-sm border border-border/50' : 'text-muted-foreground hover:text-zinc-950 hover:bg-zinc-100/50',
                                                     isCollapsed && 'justify-center px-0'
                                                 )}
                                             >
                                                 <Icon className={cn(
                                                     "h-4 w-4 shrink-0 transition-colors",
-                                                    isActive ? "text-sidebar-accent-foreground" : "opacity-70 group-hover:opacity-100"
+                                                    isActive ? "text-zinc-950" : "opacity-70 group-hover:opacity-100"
                                                 )} />
                                                 {!isCollapsed && (
                                                     <span className={cn(
                                                         "truncate font-medium",
-                                                        isActive ? "text-sidebar-accent-foreground" : "text-sidebar-foreground group-hover:text-sidebar-accent-foreground"
+                                                        isActive ? "text-zinc-950" : "text-muted-foreground group-hover:text-zinc-950"
                                                     )}>
                                                         {item.title}
                                                     </span>
@@ -186,12 +186,12 @@ export function Sidebar({ className, isMobile }: { className?: string; isMobile?
                     {/* External Apps */}
                     <div className="flex flex-col">
                         {!isCollapsed && (
-                            <h4 className="px-3 py-1.5 mt-5 mb-1 text-xs font-bold text-sidebar-foreground/50 uppercase tracking-wider">
+                            <h4 className="px-3 py-1.5 mt-5 mb-1 text-xs font-bold text-zinc-500 uppercase tracking-wider">
                                 Ứng dụng khác
                             </h4>
                         )}
                         {isCollapsed && (
-                            <div className="h-px bg-sidebar-border mx-2 mt-2 mb-4" />
+                            <div className="h-px bg-zinc-200 mx-2 mt-2 mb-4" />
                         )}
                         <div className="flex flex-col gap-0.5">
                             {[
@@ -203,13 +203,13 @@ export function Sidebar({ className, isMobile }: { className?: string; isMobile?
                                     <Button
                                         variant="ghost"
                                         className={cn(
-                                            'w-full justify-start gap-3 h-10 transition-all duration-200 group rounded-xl text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent/50',
+                                            'w-full justify-start gap-3 h-10 transition-all duration-200 group rounded-xl text-muted-foreground hover:text-zinc-950 hover:bg-zinc-100/50',
                                             isCollapsed && 'justify-center px-0'
                                         )}
                                     >
                                         <item.icon className={cn("h-4 w-4 shrink-0", item.color)} />
                                         {!isCollapsed && (
-                                            <span className="truncate font-medium text-sidebar-foreground group-hover:text-sidebar-accent-foreground flex items-center gap-1.5">
+                                            <span className="truncate font-medium text-muted-foreground group-hover:text-zinc-950 flex items-center gap-1.5">
                                                 {item.title}
                                                 <ExternalLink className="h-3 w-3 opacity-40" />
                                             </span>

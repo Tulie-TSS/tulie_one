@@ -74,15 +74,15 @@ html {
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
 
-  /* Dark sidebar — premium contrast */
-  --sidebar: oklch(0.17 0.01 270);
-  --sidebar-foreground: oklch(0.80 0.01 270);
-  --sidebar-primary: oklch(1 0 0);
-  --sidebar-primary-foreground: oklch(0.17 0.01 270);
-  --sidebar-accent: oklch(0.24 0.015 270);
-  --sidebar-accent-foreground: oklch(0.95 0.005 270);
-  --sidebar-border: oklch(0.28 0.015 270);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  /* Sidebar — light theme (original) */
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.21 0.006 285.885);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.707 0.022 286.324);
 
   /* Premium Elevation */
   --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.02), 0 1px 3px 0 rgb(0 0 0 / 0.04);
