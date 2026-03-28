@@ -2,8 +2,8 @@
 
 import * as React from 'react'
 import { WorkspaceTask } from '@/types'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@repo/ui'
+import { Button } from '@repo/ui'
 import { GanttChart, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react'
 import { QuickAddTaskDialog } from './QuickAddTaskDialog'
 import { TaskDetailPanel } from './TaskDetailPanel'

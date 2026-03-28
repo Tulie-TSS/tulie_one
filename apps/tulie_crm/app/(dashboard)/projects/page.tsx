@@ -1,10 +1,10 @@
 import { Suspense } from 'react'
 import { getProjects } from '@/lib/supabase/services/project-service'
 import { ProjectList } from '@/components/projects/project-list'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { Plus, LayoutGrid, List, Rocket } from 'lucide-react'
 import Link from 'next/link'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from '@repo/ui'
 
 export default async function ProjectsPage() {
     return (

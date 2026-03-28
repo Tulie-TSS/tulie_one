@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
+import { Badge } from '@repo/ui'
+import { Button } from '@repo/ui'
+import { Card, CardContent } from '@repo/ui'
+import { Separator } from '@repo/ui'
 import { formatCurrency } from '@/lib/utils/format'
 import { cn } from '@/lib/utils'
 import {
@@ -16,7 +16,7 @@ import {
     Banknote,
     AlertCircle
 } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import { toast } from 'sonner'
 
 interface PaymentWatcherProps {

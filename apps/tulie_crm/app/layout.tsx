@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 import { Toaster } from 'sonner'
-import { ConfirmProvider } from '@/components/ui/confirm-dialog'
+import { ConfirmProvider } from '@repo/ui'
 
 export default function RootLayout({
   children,

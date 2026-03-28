@@ -2,25 +2,32 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
-import { Textarea } from '@/components/ui/textarea'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Label } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Textarea } from '@repo/ui'
 import { ArrowLeft, Save, Info } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import Link from 'next/link'
 import { toast } from 'sonner'
-import { getTemplateById, updateDocumentTemplate } from '@/lib/supabase/services/document-template-service'
-import { DocumentTemplate } from '@/types'
+
+interface TemplateData {
+    id: string
+    name: string
+    type: string
+    content: string
+    variables: string[]
+    is_default?: boolean
+}
 
 export default function EditTemplatePage() {
     const params = useParams()
     const router = useRouter()
     const templateId = params.id as string
 
-    const [template, setTemplate] = useState<DocumentTemplate | null>(null)
+    const [template, setTemplate] = useState<TemplateData | null>(null)
     const [name, setName] = useState('')
     const [content, setContent] = useState('')
     const [isLoading, setIsLoading] = useState(true)
@@ -28,13 +35,19 @@ export default function EditTemplatePage() {
 
     useEffect(() => {
         const fetchTemplate = async () => {
-            const data = await getTemplateById(templateId)
-            if (data) {
-                setTemplate(data)
-                setName(data.name)
-                setContent(data.content)
+            try {
+                const res = await fetch(`/api/templates/${templateId}`)
+                if (res.ok) {
+                    const data = await res.json()
+                    setTemplate(data)
+                    setName(data.name)
+                    setContent(data.content)
+                }
+            } catch (err) {
+                console.error('Error fetching template:', err)
+            } finally {
+                setIsLoading(false)
             }
-            setIsLoading(false)
         }
         fetchTemplate()
     }, [templateId])
@@ -50,11 +63,20 @@ export default function EditTemplatePage() {
             const variables = Array.from(content.matchAll(/{{(.*?)}}/g)).map(match => match[1])
             const uniqueVariables = Array.from(new Set(variables))
 
-            await updateDocumentTemplate(templateId, {
-                name,
-                content,
-                variables: uniqueVariables
+            const res = await fetch(`/api/templates/${templateId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name,
+                    content,
+                    variables: uniqueVariables
+                })
             })
+
+            if (!res.ok) {
+                const err = await res.json()
+                throw new Error(err.error || 'Có lỗi xảy ra')
+            }
 
             toast.success('Đã lưu thay đổi mẫu')
             router.push('/templates')
@@ -65,6 +87,15 @@ export default function EditTemplatePage() {
         } finally {
             setIsSaving(false)
         }
+    }
+
+    const typeLabels: Record<string, string> = {
+        contract: 'Hợp đồng',
+        invoice: 'Hóa đơn',
+        payment_request: 'Đề nghị TT',
+        quotation: 'Báo giá',
+        order: 'Đơn hàng',
+        delivery_minutes: 'Biên bản giao nhận',
     }
 
     if (isLoading) {
@@ -143,9 +174,7 @@ export default function EditTemplatePage() {
                             <div className="space-y-2">
                                 <Label>Loại văn bản</Label>
                                 <Badge variant="secondary" className="block w-fit text-sm py-1">
-                                    {template.type === 'contract' ? 'Hợp đồng' :
-                                        template.type === 'invoice' ? 'Hóa đơn' :
-                                            template.type === 'payment_request' ? 'Đề nghị thanh toán' : 'Báo giá'}
+                                    {typeLabels[template.type] || template.type}
                                 </Badge>
                             </div>
                         </CardContent>

@@ -3,9 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/features/auth/hooks/use-auth";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@repo/ui";
+import { Input } from "@repo/ui";
+import { Label } from "@repo/ui";
 import {
     Card,
     CardContent,
@@ -13,7 +13,7 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
+} from "@repo/ui";
 import { Bot, Loader2 } from "lucide-react";
 
 export default function LoginPage() {

@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { getLeads, updateLead, deleteLead, Lead } from '@/lib/supabase/services/lead-service'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from '@repo/ui'
 import { Contact } from 'lucide-react'
 import { LeadsList } from './leads-list'
 

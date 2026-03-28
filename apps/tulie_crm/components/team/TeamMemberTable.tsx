@@ -1,7 +1,7 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
+import { Badge } from '@repo/ui'
 import { getRoleDisplayName } from '@/lib/security/permissions'
 import { ROLE_COLORS } from '@/lib/constants/roles'
 import type { TeamMemberPerformance } from '@/lib/supabase/services/team-performance-service'

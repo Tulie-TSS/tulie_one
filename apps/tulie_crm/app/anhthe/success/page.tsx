@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useState } from 'react'
 import { CheckCircle2, ExternalLink, Copy, ArrowRight, Phone } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import Link from 'next/link'
 import { toast } from 'sonner'
 

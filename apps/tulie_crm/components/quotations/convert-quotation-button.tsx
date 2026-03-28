@@ -1,15 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@repo/ui'
 import { ShoppingCart, FileSignature, ChevronDown } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import { convertQuotationToOrder } from '@/lib/supabase/services/contract-service'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'

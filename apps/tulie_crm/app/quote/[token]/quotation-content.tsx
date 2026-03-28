@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { formatCurrency, formatDate, readNumberToWords } from '@/lib/utils/format'
 import { CheckCircle, CheckCircle2, XCircle, Building2, Calendar, FileText, User, Mail, Phone, Globe, Info, CreditCard, MapPin, Printer, Target, ClipboardList, Lightbulb, Package, Users, Clock, Shield, Award, BookOpen, Layout, FileSignature } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import {
     Dialog,
     DialogContent,
@@ -13,18 +13,18 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+} from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Label } from '@repo/ui'
 import { toast } from 'sonner'
 import { updateQuotationStatus } from '@/lib/supabase/services/portal-actions'
 import { cn } from '@/lib/utils'
 import { QuotationDocumentPaper } from '@/components/quotations/quotation-document-paper'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@repo/ui'
 import { Check } from 'lucide-react'
 import { useQuotationTracking } from '@/hooks/use-quotation-tracking'
 
-import { Checkbox } from '@/components/ui/checkbox'
+import { Checkbox } from '@repo/ui'
 
 // Add missing types for PDF libs
 declare global {
@@ -761,7 +761,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                     <span>{brandConfig?.company_name || "Giải pháp công nghệ số"}</span>
                                 </div>
                                 <div className="flex items-center gap-4 font-medium">
-                                    <span>{brandConfig?.website || "tulie.agency"}</span>
+                                    <span>{brandConfig?.website || "tulie.app"}</span>
                                 </div>
                             </div>
                         </div>

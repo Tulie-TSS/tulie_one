@@ -1,14 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Card, CardContent, CardDescription, CardHeader } from '@repo/ui'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
 import { Lock, AlertCircle } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import { verifyQuotePassword } from '@/lib/supabase/services/portal-actions'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Label } from '@/components/ui/label'
+import { Alert, AlertDescription } from '@repo/ui'
+import { Label } from '@repo/ui'
 
 export default function QuotePasswordForm({ token, customerName }: { token: string, customerName?: string }) {
     const [password, setPassword] = useState('')

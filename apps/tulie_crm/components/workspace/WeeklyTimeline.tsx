@@ -1,8 +1,8 @@
 'use client'
 
 import { WorkspaceWeekOverview } from '@/types'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
+import { Badge } from '@repo/ui'
 import { Calendar, Milestone } from 'lucide-react'
 
 const dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']

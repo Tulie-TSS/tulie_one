@@ -2,7 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { Invoice } from '@/types'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Checkbox } from '@repo/ui'
 import {
     INVOICE_STATUS_LABELS,
     INVOICE_STATUS_COLORS

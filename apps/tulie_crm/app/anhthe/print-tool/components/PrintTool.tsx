@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Button } from '@repo/ui'
+import { Label } from '@repo/ui'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui'
 import { Camera, Crop, Download, ImagePlus, Palette, RotateCcw, SlidersHorizontal, Upload, X, ZoomIn, ZoomOut, Grid3x3, Printer, Eye, ChevronDown, ChevronUp, Scan } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Separator } from '@/components/ui/separator'
+import { Separator } from '@repo/ui'
 
 // ═══════════════════════════════════════════════════
 // CONSTANTS

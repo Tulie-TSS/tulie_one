@@ -8,12 +8,12 @@ import {
     Shield, Award, BookOpen, User, Phone, Mail, MapPin, Globe, CreditCard, Building2,
     Eye, Info, Receipt, FileSignature, Maximize2
 } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
+import { Button } from '@repo/ui'
+import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Separator } from '@repo/ui'
 import {
     Table,
     TableBody,
@@ -21,13 +21,13 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/components/ui/table'
+} from '@repo/ui'
 import {
     Tabs,
     TabsContent,
     TabsList,
     TabsTrigger,
-} from "@/components/ui/tabs"
+} from "@repo/ui"
 import {
     Dialog,
     DialogContent,
@@ -35,7 +35,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@repo/ui"
 import { formatCurrency, formatDate, readNumberToWords } from '@/lib/utils/format'
 import { QUOTATION_STATUS_LABELS, QUOTATION_STATUS_COLORS } from '@/lib/constants/status'
 import { QuotationPaper } from '@/components/quotations/quotation-paper'
@@ -54,7 +54,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@repo/ui"
 import { toast } from 'sonner'
 import { getQuotationById } from '@/lib/supabase/services/quotation-service'
 import { getBrandConfig } from '@/lib/supabase/services/settings-service'

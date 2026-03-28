@@ -2,9 +2,9 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { Product } from '@/types'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Badge } from '@repo/ui'
+import { Button } from '@repo/ui'
+import { Checkbox } from '@repo/ui'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -12,7 +12,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@repo/ui'
 import { formatCurrency } from '@/lib/utils/format'
 import { ArrowUpDown, MoreHorizontal, Eye, Edit, Trash2 } from 'lucide-react'
 import Link from 'next/link'

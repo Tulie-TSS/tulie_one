@@ -1,10 +1,10 @@
 import { Suspense } from 'react'
 import { getDeals } from '@/lib/supabase/services/deal-service'
 import { DealList } from '@/components/deals/deal-list'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { Plus, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from '@repo/ui'
 
 export default async function DealsPage() {
     return (

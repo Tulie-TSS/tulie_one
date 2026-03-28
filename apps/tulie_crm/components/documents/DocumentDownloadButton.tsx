@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { Button } from '@/components/ui/button';
+import { Button } from '@repo/ui';
 import { Download } from 'lucide-react';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { LoadingSpinner } from '@repo/ui';
 import UnifiedDocumentPdf from './UnifiedDocumentPdf';
 import { getDocumentData } from '@/lib/supabase/services/document-template-service';
 

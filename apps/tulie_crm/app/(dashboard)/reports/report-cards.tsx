@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { formatCurrency } from '@/lib/utils/format'
 import {
     TrendingUp,

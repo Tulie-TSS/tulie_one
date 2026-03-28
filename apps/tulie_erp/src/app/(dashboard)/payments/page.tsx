@@ -1,6 +1,6 @@
 import { getInvoices } from '@/lib/supabase/services/invoice-service'
 import { CreditCard, ArrowUpRight, ArrowDownLeft, Clock } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from "@repo/ui"
 import { format } from 'date-fns'
 
 function formatCurrency(amount: number) {

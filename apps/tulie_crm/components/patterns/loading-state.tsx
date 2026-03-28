@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Skeleton } from '@repo/ui'
+import { Card, CardContent, CardHeader } from '@repo/ui'
 
 /**
  * LoadingState — Standard loading skeletons

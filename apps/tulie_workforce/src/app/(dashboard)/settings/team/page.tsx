@@ -2,21 +2,21 @@
 
 import { useState } from "react";
 import { Header } from "@/components/layouts/header";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui";
 import {
     Card,
     CardContent,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@repo/ui";
+import { Badge } from "@repo/ui";
+import { Input } from "@repo/ui";
+import { Label } from "@repo/ui";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+} from "@repo/ui";
 import {
     Users,
     UserPlus,
@@ -33,7 +33,7 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@repo/ui";
 
 // ─── Mock Data ───
 
@@ -58,11 +58,11 @@ interface Member {
 }
 
 const mockMembers: Member[] = [
-    { id: "mem-1", userId: "u1", name: "Tung Nguyen", email: "tung@tulie.agency", role: "owner", joinedAt: "2026-01-01T00:00:00Z" },
-    { id: "mem-2", userId: "u2", name: "Minh Tran", email: "minh@tulie.agency", role: "manager", joinedAt: "2026-01-10T00:00:00Z" },
-    { id: "mem-3", userId: "u3", name: "Linh Pham", email: "linh@tulie.agency", role: "specialist", joinedAt: "2026-01-15T00:00:00Z" },
-    { id: "mem-4", userId: "u4", name: "Hoa Le", email: "hoa@tulie.agency", role: "specialist", joinedAt: "2026-02-01T00:00:00Z" },
-    { id: "mem-5", userId: "u5", name: "An Vo", email: "an@tulie.agency", role: "viewer", joinedAt: "2026-02-05T00:00:00Z" },
+    { id: "mem-1", userId: "u1", name: "Tung Nguyen", email: "tung@tulie.app", role: "owner", joinedAt: "2026-01-01T00:00:00Z" },
+    { id: "mem-2", userId: "u2", name: "Minh Tran", email: "minh@tulie.app", role: "manager", joinedAt: "2026-01-10T00:00:00Z" },
+    { id: "mem-3", userId: "u3", name: "Linh Pham", email: "linh@tulie.app", role: "specialist", joinedAt: "2026-01-15T00:00:00Z" },
+    { id: "mem-4", userId: "u4", name: "Hoa Le", email: "hoa@tulie.app", role: "specialist", joinedAt: "2026-02-01T00:00:00Z" },
+    { id: "mem-5", userId: "u5", name: "An Vo", email: "an@tulie.app", role: "viewer", joinedAt: "2026-02-05T00:00:00Z" },
 ];
 
 const roleConfig: Record<OrgRole, { label: string; icon: typeof Crown; color: string; description: string }> = {

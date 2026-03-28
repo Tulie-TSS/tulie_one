@@ -7,9 +7,9 @@ import StaleProjectsPanel from '@/components/projects/StaleProjectsPanel'
 import InvoiceTrackerPanel from '@/components/projects/InvoiceTrackerPanel'
 import UpcomingMilestonesPanel from '@/components/projects/UpcomingMilestonesPanel'
 import { Rocket } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 
 export const dynamic = 'force-dynamic'
 

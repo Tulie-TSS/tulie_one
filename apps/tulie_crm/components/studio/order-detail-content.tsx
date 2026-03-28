@@ -1,12 +1,12 @@
 'use client'
 
 import { RetailOrder } from '@/types'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Label } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Separator } from '@repo/ui'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
 import {
     Phone,
@@ -30,7 +30,7 @@ import {
     AlertTriangle,
     Scale
 } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import { useState } from 'react'
 import { updateRetailOrder, recordRetailPayment } from '@/lib/supabase/services/retail-order-service'
 import { getBankAccounts } from '@/lib/supabase/services/settings-service'

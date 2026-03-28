@@ -1,7 +1,7 @@
 import { getProducts } from '@/lib/supabase/services/product-service'
 import { Package, Plus } from 'lucide-react'
 import Link from 'next/link'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from "@repo/ui"
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)

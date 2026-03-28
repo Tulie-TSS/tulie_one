@@ -10,7 +10,7 @@ import { syncTransactionsFromSePay } from '@/lib/supabase/services/payment-servi
  * Bảo mật bằng CRON_SECRET thay vì admin session (cron không có cookie).
  * 
  * Cấu hình cron (cron-job.org hoặc Cloud Scheduler):
- *   URL: https://crm.tulie.agency/api/cron/sync-sepay?secret=YOUR_SECRET
+ *   URL: https://crm.tulie.app/api/cron/sync-sepay?secret=YOUR_SECRET
  *   Method: GET
  *   Schedule: every 10 minutes
  */

@@ -1,8 +1,8 @@
 'use client'
 
 import { Bell, Search, Moon, Sun, LogOut, User, Settings, Menu, ChevronDown, CheckCircle, UserPlus, FileText, CheckCircle2, CreditCard, BellRing, Trophy, XCircle, ClipboardList, AlertTriangle, Eye, LayoutGrid } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -10,15 +10,15 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@repo/ui'
 import {
     Sheet,
     SheetContent,
     SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@repo/ui"
 import { Sidebar } from './sidebar'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui'
+import { Badge } from '@repo/ui'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'

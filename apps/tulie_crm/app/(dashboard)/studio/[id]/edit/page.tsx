@@ -1,6 +1,6 @@
 import { RetailOrderForm } from '@/components/studio/order-form'
 import { getRetailOrderById } from '@/lib/supabase/services/retail-order-service'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'

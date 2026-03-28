@@ -4,9 +4,9 @@ import { Deal } from '@/types'
 import { DataTable } from '@/components/shared/data-table'
 import { dealColumns } from './deal-columns'
 import { useState } from 'react'
-import { Input } from '@/components/ui/input'
+import { Input } from '@repo/ui'
 import { Search, LayoutGrid, List } from 'lucide-react'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tabs, TabsList, TabsTrigger } from '@repo/ui'
 import { DealKanban } from './deal-kanban'
 
 interface DealListProps {

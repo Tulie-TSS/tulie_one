@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { CheckCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { markAllAsRead } from '@/lib/supabase/services/notification-service'

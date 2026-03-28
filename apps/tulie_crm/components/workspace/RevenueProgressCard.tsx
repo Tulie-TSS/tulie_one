@@ -1,7 +1,7 @@
 'use client'
 
 import { RevenueProgress } from '@/types'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { TrendingUp, Target } from 'lucide-react'
 
 interface RevenueProgressCardProps {

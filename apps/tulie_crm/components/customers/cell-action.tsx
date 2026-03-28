@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Edit, Eye, MoreHorizontal, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -13,7 +13,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@repo/ui'
 import {
     Dialog,
     DialogContent,
@@ -21,7 +21,7 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from '@/components/ui/dialog'
+} from '@repo/ui'
 import { Customer } from '@/types'
 import { deleteCustomer } from '@/lib/supabase/services/customer-service'
 import Link from 'next/link'

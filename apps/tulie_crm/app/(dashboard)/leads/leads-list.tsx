@@ -2,31 +2,31 @@
 
 import { useState } from 'react'
 import { Lead } from '@/lib/supabase/services/lead-service'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Textarea } from '@repo/ui'
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from '@/components/ui/select'
+} from '@repo/ui'
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
-} from '@/components/ui/dialog'
+} from '@repo/ui'
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@repo/ui'
 import {
     Contact, UserPlus, Phone, Mail, Building2, MessageSquare,
     MoreHorizontal, Trash2, Clock, CheckCircle2, XCircle, UserCheck, Search
@@ -34,7 +34,7 @@ import {
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { useConfirm } from '@/components/ui/confirm-dialog'
+import { useConfirm } from '@repo/ui'
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: any }> = {
     new: { label: 'Mới', color: 'bg-blue-50 text-blue-700', icon: UserPlus },

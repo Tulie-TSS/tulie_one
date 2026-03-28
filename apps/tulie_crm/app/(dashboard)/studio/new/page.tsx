@@ -1,5 +1,5 @@
 import { RetailOrderForm } from '@/components/studio/order-form'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { ArrowLeft, FileText } from 'lucide-react'
 import Link from 'next/link'
 

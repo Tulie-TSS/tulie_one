@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@repo/ui'
 import { PROJECTS, formatCurrency } from '@/lib/demo/mock-data'
 import { Rocket } from 'lucide-react'
 

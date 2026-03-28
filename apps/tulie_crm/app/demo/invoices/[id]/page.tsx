@@ -2,9 +2,9 @@
 
 import { use } from 'react'
 import Link from 'next/link'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { Badge } from '@repo/ui'
+import { Card, CardContent } from '@repo/ui'
+import { Button } from '@repo/ui'
 import { INVOICES, CUSTOMERS, formatCurrency } from '@/lib/demo/mock-data'
 import { ArrowLeft, Calendar, User, FileText, CreditCard, CheckCircle2, Clock, AlertTriangle } from 'lucide-react'
 

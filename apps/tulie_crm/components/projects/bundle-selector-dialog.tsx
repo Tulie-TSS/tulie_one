@@ -8,18 +8,18 @@ import {
     DialogTitle,
     DialogDescription,
     DialogFooter,
-} from "@/components/ui/dialog"
-import { Button } from '@/components/ui/button'
+} from "@repo/ui"
+import { Button } from '@repo/ui'
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
-import { Label } from '@/components/ui/label'
+} from "@repo/ui"
+import { Label } from '@repo/ui'
 import { BookOpen, CheckCircle2 } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import { getDocumentBundles, getTemplateById, generateDocument, saveGeneratedDocument } from '@/lib/supabase/services/document-template-service'
 import { updateWorkItem } from '@/lib/supabase/services/work-item-service'
 import { DocumentBundle, RequiredDocument } from '@/types'

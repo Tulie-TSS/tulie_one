@@ -1,10 +1,10 @@
 import { Header } from "@/components/layouts/header";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui";
 import {
     Card,
     CardContent,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+} from "@repo/ui";
+import { Badge } from "@repo/ui";
 import {
     Bot,
     Plus,

@@ -1,7 +1,7 @@
 'use client'
 
 import { WorkspaceDayOverview } from '@/types'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { AlertTriangle, CheckCircle2, Clock, CalendarDays } from 'lucide-react'
 

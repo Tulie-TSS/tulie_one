@@ -1,11 +1,11 @@
 import { createClient } from '@/lib/supabase/server'
 import { getUserById } from '@/lib/supabase/services/user-service'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Separator } from '@/components/ui/separator'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Label } from '@repo/ui'
+import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui'
+import { Separator } from '@repo/ui'
 import { redirect } from 'next/navigation'
 
 export default async function ProfilePage() {

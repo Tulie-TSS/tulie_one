@@ -7,8 +7,10 @@ import { validateBody, createLeadSchema, updateLeadSchema } from '@/lib/security
 import { applyScopeFilter } from '@/lib/security/permissions'
 import { sendTelegramNotification, formatNewLead } from '@/lib/supabase/services/telegram-service'
 
-// CORS: Allow landing page form submissions from tulie.agency
+// CORS: Allow landing page form submissions from tulie.app (and legacy tulie.agency)
 const ALLOWED_ORIGINS = [
+    'https://tulie.app',
+    'https://www.tulie.app',
     'https://tulie.agency',
     'https://www.tulie.agency',
     'http://localhost:3000',

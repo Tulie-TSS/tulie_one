@@ -329,6 +329,7 @@ export interface DocumentTemplate {
   type: 'contract' | 'invoice' | 'payment_request' | 'quotation' | 'order' | 'delivery_minutes'
   content: string 
   variables: string[] 
+  is_default?: boolean
   created_at: string
   updated_at: string
 }

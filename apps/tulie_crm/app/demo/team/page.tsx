@@ -1,4 +1,4 @@
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@repo/ui'
 import { TEAM, formatCurrency } from '@/lib/demo/mock-data'
 import { UserCheck, Mail, Phone } from 'lucide-react'
 

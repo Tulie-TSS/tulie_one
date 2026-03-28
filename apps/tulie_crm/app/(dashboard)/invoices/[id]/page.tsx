@@ -1,9 +1,9 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
+import { Button } from '@repo/ui'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Separator } from '@repo/ui'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
 import { INVOICE_STATUS_LABELS, INVOICE_STATUS_COLORS } from '@/lib/constants/status'
 import {
@@ -114,7 +114,7 @@ export default async function InvoiceDetailPage({ params }: any) {
                                     </div>
                                     <p className="text-sm text-muted-foreground">
                                         123 ABC Street, District 1, HCMC<br />
-                                        contact@tulie.agency | 0901234567
+                                        contact@tulie.app | 0901234567
                                     </p>
                                 </div>
                                 <div className="text-right">

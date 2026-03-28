@@ -1,7 +1,7 @@
 import { getCustomers } from '@/lib/supabase/services/customer-service'
 import { getUsers } from '@/lib/supabase/services/user-service'
 import { DealForm } from '@/components/deals/deal-form'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { RetailOrder, RetailOrderStatus } from '@/types'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { StatusBadge } from '@/components/shared/status-badge'
 import {
     ArrowLeft,
@@ -13,7 +13,7 @@ import {
     Calendar,
     Circle
 } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -26,7 +26,7 @@ import {
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@repo/ui'
 
 interface OrderDetailHeaderProps {
     order: RetailOrder

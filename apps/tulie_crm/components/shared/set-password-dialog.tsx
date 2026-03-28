@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Label } from '@repo/ui'
 import {
     Dialog,
     DialogContent,
@@ -12,10 +12,10 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/components/ui/dialog'
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
+} from '@repo/ui'
+import { DropdownMenuItem } from '@repo/ui'
 import { Lock, Eye, EyeOff, RefreshCw, Copy, Check } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import { toast } from 'sonner'
 import { setEntityPassword } from '@/lib/supabase/services/portal-actions'
 

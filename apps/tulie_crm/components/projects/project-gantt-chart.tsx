@@ -1,13 +1,13 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
+import { Badge } from '@repo/ui'
 import { format, differenceInDays, startOfDay, addDays, isSameDay, isWithinInterval, differenceInMilliseconds } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { LayoutGrid, Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState, useMemo, useEffect } from 'react'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 
 interface ProjectGanttChartProps {
     tasks: any[]

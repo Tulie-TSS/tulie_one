@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react'
 import { login } from '../actions'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Button } from '@repo/ui'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Label } from '@repo/ui'
 
 import { Eye, EyeOff } from 'lucide-react'
 
@@ -51,7 +51,7 @@ export default function LoginPage() {
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input id="email" name="email" type="email" placeholder="admin@tulie.agency" required />
+                        <Input id="email" name="email" type="email" placeholder="admin@tulie.app" required />
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="password">Mật khẩu</Label>

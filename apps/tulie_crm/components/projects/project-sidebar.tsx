@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import { Input } from '@/components/ui/input'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Calendar as ShadcnCalendar } from '@/components/ui/calendar'
+import { Button } from '@repo/ui'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Separator } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui'
+import { Calendar as ShadcnCalendar } from '@repo/ui'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
@@ -18,11 +18,11 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from '@/components/ui/select'
+} from '@repo/ui'
 import {
     Users, Calendar, AlertCircle, FileCheck, Plus, CheckCircle, Clock, Play, Eye, Save
 } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import { formatDate } from '@/lib/utils/format'
 import { PROJECT_STATUS_LABELS, PROJECT_STATUS_COLORS } from '@/lib/constants/status'
 import { AcceptancePDFButton } from '@/components/projects/acceptance-pdf-button'

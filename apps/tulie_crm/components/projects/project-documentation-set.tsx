@@ -1,8 +1,8 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Button } from '@repo/ui'
 import { FileText, CheckCircle2, Clock, Eye, FileSignature, Files } from 'lucide-react'
 import { Project, ProjectWorkItem } from '@/types'
 import { formatDate } from '@/lib/utils/format'

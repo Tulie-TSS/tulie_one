@@ -1,7 +1,7 @@
 import { getCustomers } from '@/lib/supabase/services/customer-service'
 import { getUsers } from '@/lib/supabase/services/user-service'
 import { Plus, Upload, Download, Users, Camera } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import Link from 'next/link'
 import { CustomerTableClient } from '@/components/customers/customer-table-client'
 

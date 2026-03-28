@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Card, CardContent } from "@repo/ui"
+import { Skeleton } from "@repo/ui"
 import { Download, ExternalLink, RefreshCw } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from "@repo/ui"
 import { getBankBin } from '@/lib/utils/vietqr'
 
 interface VietQRProps {

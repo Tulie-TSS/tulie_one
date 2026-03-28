@@ -3,17 +3,17 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from '@/components/ui/select'
+} from '@repo/ui'
 import {
     Dialog,
     DialogContent,
@@ -21,9 +21,9 @@ import {
     DialogTitle,
     DialogTrigger,
     DialogFooter,
-} from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+} from '@repo/ui'
+import { Label } from '@repo/ui'
+import { Textarea } from '@repo/ui'
 import { Plus, Search, Headphones, Clock, CheckCircle2, AlertTriangle } from 'lucide-react'
 import { SupportTicket, Customer, User } from '@/types'
 import {

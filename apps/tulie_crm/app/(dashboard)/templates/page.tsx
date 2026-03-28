@@ -1,9 +1,13 @@
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { FileText, Plus, Eye, Edit, FileSignature, Receipt, Wallet, FileCheck, Files } from 'lucide-react'
+'use client'
+
+import { useState, useEffect } from 'react'
+import { Button } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { FileText, Plus, Eye, Edit, FileSignature, Receipt, Wallet, FileCheck, Files, Copy, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-import { getDocumentTemplates } from '@/lib/supabase/services/document-template-service'
 import { DocumentTemplate } from '@/types'
+import { LoadingSpinner } from '@repo/ui'
+import { toast } from 'sonner'
 import {
     Table,
     TableBody,
@@ -11,7 +15,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/components/ui/table'
+} from '@repo/ui'
 
 const getTypeIcon = (type: DocumentTemplate['type']) => {
     switch (type) {
@@ -44,8 +48,75 @@ const getTypeLabel = (type: DocumentTemplate['type']) => {
     }
 }
 
-export default async function TemplatesPage() {
-    const templates = await getDocumentTemplates()
+export default function TemplatesPage() {
+    const [templates, setTemplates] = useState<DocumentTemplate[]>([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [duplicatingId, setDuplicatingId] = useState<string | null>(null)
+    const [deletingId, setDeletingId] = useState<string | null>(null)
+
+    const fetchTemplates = async () => {
+        try {
+            const res = await fetch('/api/templates')
+            if (res.ok) {
+                const data = await res.json()
+                setTemplates(Array.isArray(data) ? data : data.templates || [])
+            }
+        } catch (err) {
+            console.error('Error fetching templates:', err)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchTemplates()
+    }, [])
+
+    const handleDuplicate = async (id: string) => {
+        setDuplicatingId(id)
+        try {
+            const res = await fetch(`/api/templates/${id}`, { method: 'POST' })
+            if (res.ok) {
+                const newTemplate = await res.json()
+                toast.success(`Đã nhân bản: ${newTemplate.name}`)
+                await fetchTemplates()
+            } else {
+                const err = await res.json()
+                toast.error(err.error || 'Không thể nhân bản mẫu')
+            }
+        } catch {
+            toast.error('Có lỗi xảy ra')
+        } finally {
+            setDuplicatingId(null)
+        }
+    }
+
+    const handleDelete = async (id: string, name: string) => {
+        if (!confirm(`Bạn có chắc muốn xóa mẫu "${name}"?`)) return
+        setDeletingId(id)
+        try {
+            const res = await fetch(`/api/templates/${id}`, { method: 'DELETE' })
+            if (res.ok) {
+                toast.success('Đã xóa mẫu')
+                setTemplates(prev => prev.filter(t => t.id !== id))
+            } else {
+                const err = await res.json()
+                toast.error(err.error || 'Không thể xóa mẫu')
+            }
+        } catch {
+            toast.error('Có lỗi xảy ra')
+        } finally {
+            setDeletingId(null)
+        }
+    }
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-[400px]">
+                <LoadingSpinner size="lg" />
+            </div>
+        )
+    }
 
     return (
         <div className="space-y-6">
@@ -77,7 +148,7 @@ export default async function TemplatesPage() {
                             <TableHead>Tên mẫu</TableHead>
                             <TableHead className="w-[150px]">Loại</TableHead>
                             <TableHead className="w-[100px] text-center">Số biến</TableHead>
-                            <TableHead className="w-[140px] text-right">Thao tác</TableHead>
+                            <TableHead className="w-[200px] text-right">Thao tác</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -88,12 +159,17 @@ export default async function TemplatesPage() {
                                         <div className="h-9 w-9 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-500 shrink-0 border border-zinc-200/50">
                                             {getTypeIcon(template.type)}
                                         </div>
-                                        <Link
-                                            href={`/templates/${template.id}`}
-                                            className="text-sm font-semibold text-zinc-900 hover:text-primary hover:underline"
-                                        >
-                                            {template.name}
-                                        </Link>
+                                        <div>
+                                            <Link
+                                                href={`/templates/${template.id}`}
+                                                className="text-sm font-semibold text-zinc-900 hover:text-primary hover:underline"
+                                            >
+                                                {template.name}
+                                            </Link>
+                                            {template.is_default && (
+                                                <span className="ml-2 text-[10px] text-zinc-400 font-medium uppercase tracking-wider">Mặc định</span>
+                                            )}
+                                        </div>
                                     </div>
                                 </TableCell>
                                 <TableCell>
@@ -116,6 +192,36 @@ export default async function TemplatesPage() {
                                                 <Edit className="h-4 w-4" />
                                             </Link>
                                         </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="h-8 w-8 p-0"
+                                            title="Nhân bản"
+                                            disabled={duplicatingId === template.id}
+                                            onClick={() => handleDuplicate(template.id)}
+                                        >
+                                            {duplicatingId === template.id ? (
+                                                <LoadingSpinner size="sm" />
+                                            ) : (
+                                                <Copy className="h-4 w-4" />
+                                            )}
+                                        </Button>
+                                        {!template.is_default && (
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                                                title="Xóa"
+                                                disabled={deletingId === template.id}
+                                                onClick={() => handleDelete(template.id, template.name)}
+                                            >
+                                                {deletingId === template.id ? (
+                                                    <LoadingSpinner size="sm" />
+                                                ) : (
+                                                    <Trash2 className="h-4 w-4" />
+                                                )}
+                                            </Button>
+                                        )}
                                     </div>
                                 </TableCell>
                             </TableRow>

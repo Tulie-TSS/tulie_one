@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Checkbox } from '@repo/ui'
+import { Label } from '@repo/ui'
+import { Textarea } from '@repo/ui'
 import { cn } from '@/lib/utils'
 import {
     Select,
@@ -17,15 +17,15 @@ import {
     SelectValue,
     SelectGroup,
     SelectLabel,
-} from '@/components/ui/select'
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+} from '@repo/ui'
+import { RadioGroup, RadioGroupItem } from "@repo/ui"
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card'
+} from '@repo/ui'
 import {
     Table,
     TableBody,
@@ -33,11 +33,11 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/components/ui/table'
-import { Separator } from '@/components/ui/separator'
+} from '@repo/ui'
+import { Separator } from '@repo/ui'
 import { formatCurrency, formatNumber } from '@/lib/utils/format'
 import { ArrowLeft, Save, Plus, Trash2, Send, ArrowUp, ArrowDown, X, FolderPlus, FileJson, Copy, Upload, Wallet, Check, AlertCircle, RotateCcw, ChevronDown } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -45,8 +45,8 @@ import {
     DropdownMenuTrigger,
     DropdownMenuSeparator,
     DropdownMenuLabel,
-} from '@/components/ui/dropdown-menu'
-import { PriceInput } from '@/components/ui/price-input'
+} from '@repo/ui'
+import { PriceInput } from '@repo/ui'
 import { Quotation, QuotationItem, Customer, Product } from '@/types'
 import { updateQuotation } from '@/lib/supabase/services/quotation-service'
 import { toast } from 'sonner'
@@ -58,7 +58,7 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/dialog"
+} from "@repo/ui"
 import { ProductCombobox } from '@/components/quotations/product-combobox'
 
 interface QuotationFormProps {

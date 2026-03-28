@@ -1,7 +1,7 @@
 'use client'
 
 import { Invoice } from '@/types'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from "@repo/ui"
 import { format } from 'date-fns'
 import Link from 'next/link'
 import { FileText, Eye, ArrowUpRight, ArrowDownLeft } from 'lucide-react'

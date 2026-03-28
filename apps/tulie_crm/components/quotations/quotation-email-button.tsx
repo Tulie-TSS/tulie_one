@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
+import { Button } from '@repo/ui'
+import { DropdownMenuItem } from '@repo/ui'
 import { Send, Mail } from 'lucide-react'
 import { SendEmailDialog } from '@/components/shared/send-email-dialog'
 import { formatCurrency, formatDate } from '@/lib/utils/format'

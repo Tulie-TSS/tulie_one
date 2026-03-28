@@ -1,33 +1,33 @@
 'use client'
 
 import { useState, useTransition, useMemo } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Checkbox } from '@/components/ui/checkbox'
+} from "@repo/ui"
+import { Label } from '@repo/ui'
+import { Textarea } from '@repo/ui'
+import { Checkbox } from '@repo/ui'
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from "@repo/ui"
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
+} from "@repo/ui"
+import { Calendar } from "@repo/ui"
 import {
     Plus,
     Trash2,
@@ -49,7 +49,7 @@ import {
     ArrowUp,
     ArrowDown,
 } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import { toast } from 'sonner'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
 import { cn } from '@/lib/utils'
@@ -59,7 +59,7 @@ import { BundleSelectorDialog } from './bundle-selector-dialog'
 import { DocumentEditorDialog } from './document-editor-dialog'
 import { FileEdit, Eye } from 'lucide-react'
 
-import { useConfirm } from '@/components/ui/confirm-dialog'
+import { useConfirm } from '@repo/ui'
 
 interface WorkItemsManagerProps {
     project: any

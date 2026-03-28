@@ -1,15 +1,15 @@
 'use client'
 
 import { useState, useMemo, useCallback } from 'react'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { Badge } from '@repo/ui'
+import { Button } from '@repo/ui'
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@repo/ui"
 import {
     CheckCircle2,
     Clock,
@@ -45,8 +45,9 @@ import { cn } from '@/lib/utils'
 import { ProjectGanttChart } from '@/components/projects/project-gantt-chart'
 import { ProjectActivityHistory } from '@/components/projects/project-activity-history'
 import { sanitizeHtml } from '@/lib/security/sanitize'
-import { useConfirm } from '@/components/ui/confirm-dialog'
+import { useConfirm } from '@repo/ui'
 import { usePortalTracking } from '@/hooks/use-portal-tracking'
+import { FeedbackBoard } from '@/components/portal/feedback-board'
 
 interface PortalContentProps {
     data: {
@@ -209,8 +210,12 @@ export default function PortalContent({ data, token }: PortalContentProps) {
             : 0)
 
     const hasContracts = contracts.length > 0
+    const hasSignedContracts = contracts.some((c: any) => ['signed', 'active', 'completed'].includes(c.status))
     const projectStatusLabel = hasContracts ? "Đang triển khai" : "Chờ triển khai"
     const hasMultipleQuotations = quotations.filter((q: any) => ['draft','sent','viewed','accepted'].includes(q.status)).length > 1
+
+    // Conditional visibility: hide quotation/document details after contracts are signed
+    const [showDocumentDetails, setShowDocumentDetails] = useState(!hasSignedContracts)
 
     return (
         <div className="min-h-screen bg-zinc-50/50 font-sans text-zinc-900 pb-20 selection:bg-black selection:text-white">
@@ -327,7 +332,8 @@ export default function PortalContent({ data, token }: PortalContentProps) {
 
 
 
-                {/* Hạng mục dự án */}
+                {/* Hạng mục dự án — conditionally hidden when signed */}
+                {(!hasSignedContracts || showDocumentDetails) && (
                 <div className="space-y-6">
                     <div>
                         <div className="flex items-center justify-between">
@@ -371,8 +377,29 @@ export default function PortalContent({ data, token }: PortalContentProps) {
                         )}
                     </div>
                 </div>
+                )}
 
-                {/* Bộ thủ tục chứng từ đã được dời vào trong Hạng mục thay vì hiển thị riêng lẻ */}
+                {/* Conditional visibility toggle for signed contracts */}
+                {hasSignedContracts && (
+                    <div className="flex items-center justify-center">
+                        <button
+                            onClick={() => setShowDocumentDetails(!showDocumentDetails)}
+                            className="text-xs text-zinc-400 hover:text-zinc-600 transition-colors flex items-center gap-1.5 px-4 py-2 rounded-full border border-zinc-200 hover:border-zinc-300 bg-white"
+                        >
+                            <FileText className="w-3 h-3" />
+                            {showDocumentDetails ? 'Ẩn hồ sơ thủ tục' : 'Xem hồ sơ thủ tục'}
+                        </button>
+                    </div>
+                )}
+
+                {/* Feedback Board — always visible */}
+                {project?.id && (
+                    <FeedbackBoard
+                        projectId={project.id}
+                        customerId={customer?.id}
+                        customerName={customer?.company_name || customer?.full_name || 'Khách hàng'}
+                    />
+                )}
 
                 {/* Gantt View Section */}
                 <ProjectGanttChart tasks={data.tasks || []} />

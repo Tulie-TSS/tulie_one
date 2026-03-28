@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import {
     Dialog,
     DialogContent,
@@ -9,16 +9,16 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
+} from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Label } from '@repo/ui'
+import { Checkbox } from '@repo/ui'
 import { Contact } from '@/types'
 import { createContact, updateContact } from '@/lib/supabase/services/contact-service'
 import { toast } from 'sonner'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Calendar } from '@/components/ui/calendar'
+import { LoadingSpinner } from '@repo/ui'
+import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui'
+import { Calendar } from '@repo/ui'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { cn } from '@/lib/utils'

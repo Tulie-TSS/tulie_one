@@ -1,14 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@repo/ui'
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
-} from '@/components/ui/dialog'
+} from '@repo/ui'
 import { formatCurrency } from '@/lib/utils/format'
 import {
     ArrowUpRight,

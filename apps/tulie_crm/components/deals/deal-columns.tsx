@@ -14,8 +14,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Button } from '@/components/ui/button'
+} from "@repo/ui"
+import { Button } from '@repo/ui'
 
 export const dealColumns: ColumnDef<Deal>[] = [
     {

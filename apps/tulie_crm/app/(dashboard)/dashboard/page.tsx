@@ -7,8 +7,8 @@ import { Users, FileSignature, Receipt, Wallet, TrendingUp, TrendingDown, Minus 
 import { getDashboardStats, getRevenueChartData, getDealStats, getCRMAlerts } from '@/lib/supabase/services/dashboard-service'
 import { getRecentActivities } from '@/lib/supabase/services/activity-service'
 import { DealProjectionChart } from '@/components/dashboard/deal-projection-chart'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
+import { Progress } from '@repo/ui'
 
 function calculateHealthScore(stats: any, dealStats: any) {
     let score = 0

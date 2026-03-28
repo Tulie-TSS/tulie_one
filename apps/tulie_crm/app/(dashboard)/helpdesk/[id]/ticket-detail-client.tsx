@@ -3,18 +3,18 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Textarea } from '@/components/ui/textarea'
-import { Separator } from '@/components/ui/separator'
+import { Button } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
+import { Textarea } from '@repo/ui'
+import { Separator } from '@repo/ui'
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from '@/components/ui/select'
+} from '@repo/ui'
 import { ArrowLeft, Send, User as UserIcon, Headphones } from 'lucide-react'
 import { SupportTicket, User } from '@/types'
 import {

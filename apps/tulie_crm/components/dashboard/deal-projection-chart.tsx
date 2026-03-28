@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@repo/ui"
 import { Funnel, FunnelChart, ResponsiveContainer, Tooltip, Cell, LabelList } from "recharts"
 import { DEAL_STATUS_LABELS, DEAL_CHART_COLORS as COLORS } from "@/lib/constants/status"
 import { formatCurrency } from "@/lib/utils/format"

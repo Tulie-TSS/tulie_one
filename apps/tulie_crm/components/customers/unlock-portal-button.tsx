@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { updateCustomer } from '@/lib/supabase/services/customer-service'
 import { Unlock, Lock } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 

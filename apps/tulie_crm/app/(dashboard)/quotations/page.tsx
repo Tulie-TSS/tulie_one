@@ -1,13 +1,13 @@
 import { DataTable } from '@/components/shared/data-table'
 import { quotationColumns } from '@/components/quotations/quotation-columns'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from '@/components/ui/select'
+} from '@repo/ui'
 import { Plus, FileText } from 'lucide-react'
 import Link from 'next/link'
 import { getQuotations, deleteQuotations } from '@/lib/supabase/services/quotation-service'

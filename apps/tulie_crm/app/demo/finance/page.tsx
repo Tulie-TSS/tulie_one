@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { MONTHLY_REVENUE, CONTRACTS, INVOICES, formatCurrency } from '@/lib/demo/mock-data'
 import { Wallet, TrendingUp } from 'lucide-react'
 import {

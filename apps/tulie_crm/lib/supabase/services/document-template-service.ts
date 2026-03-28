@@ -93,38 +93,44 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
 ]
 
 
-// Get all templates - always includes built-in defaults
+// Get all templates — DB-first, built-in fallback when DB is empty
 export async function getDocumentTemplates() {
-    // Always include built-in defaults
-    const builtInTemplates = defaultTemplates.map((t, i) => ({
-        ...t,
-        id: `default-${i}`,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-    })) as DocumentTemplate[]
-
     try {
         const supabase = await createClient()
-        const { data, error } = await supabase
-            .from('document_templates')
-            .select('*')
-            .order('created_at', { ascending: false })
+        // Try to order by is_default first; if column doesn't exist, fallback to created_at only
+        let query = supabase.from('document_templates').select('*')
+        const { data, error } = await query
+            .order('created_at', { ascending: true })
 
-        if (error || !data) {
-            return builtInTemplates
+        if (error || !data || data.length === 0) {
+            // Fallback: return built-in templates (DB not seeded yet)
+            console.warn('No templates in DB, returning built-in defaults. Run POST /api/seed-templates to populate.')
+            return defaultTemplates.map((t, i) => ({
+                ...t,
+                id: `default-${i}`,
+                is_default: true,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            })) as DocumentTemplate[]
         }
 
-        // Merge: built-in first, then custom DB templates
-        return [...builtInTemplates, ...(data as DocumentTemplate[])]
+        return data as DocumentTemplate[]
     } catch {
-        return builtInTemplates
+        return defaultTemplates.map((t, i) => ({
+            ...t,
+            id: `default-${i}`,
+            is_default: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        })) as DocumentTemplate[]
     }
 }
 
 
-// Get template by ID
-export async function getTemplateById(id: string) {
+// Get template by ID — supports both UUID (DB) and legacy `default-N` format
+export async function getTemplateById(id: string): Promise<DocumentTemplate | null> {
     try {
+        // Legacy built-in ID fallback (pre-DB migration)
         if (id.startsWith('default-')) {
             const index = parseInt(id.replace('default-', ''))
             const template = defaultTemplates[index]
@@ -132,6 +138,7 @@ export async function getTemplateById(id: string) {
                 return {
                     ...template,
                     id,
+                    is_default: true,
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
                 } as DocumentTemplate
@@ -171,18 +178,53 @@ export async function createDocumentTemplate(template: Omit<DocumentTemplate, 'i
     return data as DocumentTemplate
 }
 
-// Update template
+// Update template — direct DB edit
 export async function updateDocumentTemplate(id: string, template: Partial<DocumentTemplate>) {
+    // Clean updated_at
+    const updatePayload = { ...template, updated_at: new Date().toISOString() }
+
     const supabase = await createClient()
     const { data, error } = await supabase
         .from('document_templates')
-        .update(template)
+        .update(updatePayload)
         .eq('id', id)
         .select()
         .single()
 
     if (error) throw error
     return data as DocumentTemplate
+}
+
+// Duplicate template — creates a copy with "(Bản sao)" suffix
+export async function duplicateDocumentTemplate(id: string): Promise<DocumentTemplate> {
+    const original = await getTemplateById(id)
+    if (!original) throw new Error('Template not found')
+
+    const supabase = await createClient()
+    const { data, error } = await supabase
+        .from('document_templates')
+        .insert([{
+            name: `${original.name} (Bản sao)`,
+            type: original.type,
+            content: original.content,
+            variables: original.variables,
+        }])
+        .select()
+        .single()
+
+    if (error) throw error
+    return data as DocumentTemplate
+}
+
+// Delete template
+export async function deleteDocumentTemplate(id: string) {
+    const supabase = await createClient()
+    const { error } = await supabase
+        .from('document_templates')
+        .delete()
+        .eq('id', id)
+
+    if (error) throw error
 }
 
 // Fill template with variables

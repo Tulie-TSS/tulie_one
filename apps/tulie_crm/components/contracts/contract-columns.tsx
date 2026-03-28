@@ -2,9 +2,9 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { Contract } from '@/types'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Badge } from '@repo/ui'
+import { Button } from '@repo/ui'
+import { Checkbox } from '@repo/ui'
 import {
     CONTRACT_STATUS_LABELS,
     CONTRACT_STATUS_COLORS

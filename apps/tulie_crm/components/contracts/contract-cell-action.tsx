@@ -10,8 +10,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Button } from '@/components/ui/button'
+} from '@repo/ui'
+import { Button } from '@repo/ui'
 import {
     MoreHorizontal,
     Eye,
@@ -30,7 +30,7 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from '@/components/ui/dialog'
+} from '@repo/ui'
 
 interface ContractCellActionProps {
     data: Contract

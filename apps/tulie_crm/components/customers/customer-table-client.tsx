@@ -4,7 +4,7 @@ import { DataTable } from '@/components/shared/data-table'
 import { customerColumns } from './customer-columns'
 import { Tag, UserPlus, Building2, User } from 'lucide-react'
 import { deleteCustomers, updateCustomersStatus, reassignCustomers } from '@/lib/supabase/services/customer-service'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tabs, TabsList, TabsTrigger } from '@repo/ui'
 import { useState } from 'react'
 
 interface CustomerTableClientProps {

@@ -1,7 +1,7 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
+import { ScrollArea } from '@repo/ui'
 import { formatRelativeTime } from '@/lib/utils/format'
 import {
     UserPlus,

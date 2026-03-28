@@ -1,16 +1,16 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from '@/components/ui/select'
+} from '@repo/ui'
 import { formatCurrency } from '@/lib/utils/format'
 import { FileSignature, Clock, CheckCircle, Plus } from 'lucide-react'
 import Link from 'next/link'
 import { getContracts, deleteContracts } from '@/lib/supabase/services/contract-service'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { DataTable } from '@/components/shared/data-table'
 import { contractColumns } from '@/components/contracts/contract-columns'
 

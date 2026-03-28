@@ -7,7 +7,7 @@ steps:
       - '--build-arg'
       - 'NEXT_PUBLIC_SUPABASE_ANON_KEY=${_NEXT_PUBLIC_SUPABASE_ANON_KEY}'
       - '--build-arg'
-      - 'NEXT_PUBLIC_APP_URL=https://crm.tulie.agency'
+      - 'NEXT_PUBLIC_APP_URL=https://crm.tulie.app'
       - '-t'
       - '${_GCR_TAG}'
       - '.'

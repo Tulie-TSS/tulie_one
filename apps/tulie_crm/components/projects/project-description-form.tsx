@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import { Project } from '@/types'
-import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@repo/ui'
+import { Textarea } from '@repo/ui'
 import { Edit, Save, X } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import { updateProject } from '@/lib/supabase/services/project-service'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'

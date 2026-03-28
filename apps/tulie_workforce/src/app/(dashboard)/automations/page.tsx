@@ -2,17 +2,17 @@
 
 import { useState } from "react";
 import { Header } from "@/components/layouts/header";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui";
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@repo/ui";
+import { Badge } from "@repo/ui";
+import { Input } from "@repo/ui";
+import { Label } from "@repo/ui";
 import {
     Workflow,
     Play,

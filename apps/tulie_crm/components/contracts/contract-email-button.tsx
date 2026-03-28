@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { Send } from 'lucide-react'
 import { SendEmailDialog } from '@/components/shared/send-email-dialog'
 import { formatCurrency, formatDate } from '@/lib/utils/format'

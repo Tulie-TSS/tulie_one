@@ -2,8 +2,8 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { Customer } from '@/types'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from '@repo/ui'
+import { Checkbox } from '@repo/ui'
 import { formatRelativeTime } from '@/lib/utils/format'
 import { ArrowUpDown, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'

@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { Check, ChevronsUpDown, Search, Package } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import {
     Command,
     CommandEmpty,
@@ -11,12 +11,12 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-} from '@/components/ui/command'
+} from '@repo/ui'
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from '@/components/ui/popover'
+} from '@repo/ui'
 
 interface Product {
     id: string

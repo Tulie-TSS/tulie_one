@@ -1,7 +1,7 @@
 'use client'
 
 import { WorkspaceAlert } from '@/types'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { AlertTriangle, FileWarning, FolderSearch, Receipt, Milestone } from 'lucide-react'
 import Link from 'next/link'
 

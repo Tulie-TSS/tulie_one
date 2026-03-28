@@ -3,7 +3,7 @@ import { getRetailOrderById } from '@/lib/supabase/services/retail-order-service
 import { notFound } from 'next/navigation'
 import { OrderDetailHeader } from '@/components/studio/order-detail-header'
 import { OrderDetailContent } from '@/components/studio/order-detail-content'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from '@repo/ui'
 
 export default async function RetailOrderDetailPage({ params }: any) {
     const { id } = await params

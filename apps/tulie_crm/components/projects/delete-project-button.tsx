@@ -1,8 +1,8 @@
 'use client'
 import { useState, useTransition } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { Trash2 } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import { deleteProject } from '@/lib/supabase/services/project-service'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
@@ -14,7 +14,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@repo/ui"
 
 export function DeleteProjectButton({ projectId }: { projectId: string }) {
     const [isPending, startTransition] = useTransition()

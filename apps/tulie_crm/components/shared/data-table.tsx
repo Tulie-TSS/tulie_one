@@ -21,10 +21,10 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Separator } from '@/components/ui/separator'
+} from '@repo/ui'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Separator } from '@repo/ui'
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -33,7 +33,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@repo/ui'
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Plus, Search, SlidersHorizontal, Trash2 } from 'lucide-react'
 import {
     Dialog,
@@ -42,8 +42,8 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from '@/components/ui/dialog'
-import { Badge } from '@/components/ui/badge'
+} from '@repo/ui'
+import { Badge } from '@repo/ui'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 

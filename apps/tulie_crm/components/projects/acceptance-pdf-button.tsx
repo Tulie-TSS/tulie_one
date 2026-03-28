@@ -3,9 +3,9 @@
 import { Project, AcceptanceReport, Customer } from '@/types'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { AcceptanceReportPDF } from './acceptance-report-pdf'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { FileDown } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 
 interface AcceptancePDFButtonProps {
     project: Project

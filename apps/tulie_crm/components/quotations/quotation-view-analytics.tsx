@@ -1,11 +1,11 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
+import { Badge } from '@repo/ui'
 import { Eye, Clock, ArrowDown, Monitor, Smartphone, Tablet, Printer, CheckCircle, XCircle, Globe, MousePointer } from 'lucide-react'
 import { getViewsByQuotation, getViewStats } from '@/lib/supabase/services/quote-tracking-service'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 
 function formatDuration(seconds: number): string {
     if (seconds < 60) return `${seconds}s`

@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useTransition, useCallback } from 'react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { Button } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@repo/ui'
 import { History, RotateCcw, Clock, Eye, ChevronDown, ChevronUp, Package, FileText, Hash, X, ArrowRight } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
 import { getQuotationVersions, getQuotationVersionSnapshot, restoreQuotationVersion } from '@/lib/supabase/services/quotation-version-service'

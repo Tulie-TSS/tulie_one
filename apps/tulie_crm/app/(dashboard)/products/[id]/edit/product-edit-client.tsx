@@ -3,34 +3,34 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Switch } from '@/components/ui/switch'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Label } from '@repo/ui'
+import { Textarea } from '@repo/ui'
+import { Switch } from '@repo/ui'
+import { Checkbox } from '@repo/ui'
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from '@/components/ui/select'
+} from '@repo/ui'
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card'
+} from '@repo/ui'
 import { ArrowLeft, Save, Trash2, Files } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
-import { PriceInput } from '@/components/ui/price-input'
+import { LoadingSpinner } from '@repo/ui'
+import { PriceInput } from '@repo/ui'
 import { Product, DocumentTemplate } from '@/types'
 import { updateProduct, deleteProduct } from '@/lib/supabase/services/product-service'
 import { getDocumentTemplates } from '@/lib/supabase/services/document-template-service'
 import { toast } from 'sonner'
-import { useConfirm } from '@/components/ui/confirm-dialog'
+import { useConfirm } from '@repo/ui'
 
 interface ProductEditClientProps {
     product: Product

@@ -1,19 +1,19 @@
 "use client"
 import * as React from 'react'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Checkbox } from '@repo/ui'
 import { useState, useEffect } from 'react'
-import { useConfirm } from '@/components/ui/confirm-dialog'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Switch } from '@/components/ui/switch'
+import { useConfirm } from '@repo/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Textarea } from '@repo/ui'
+import { Label } from '@repo/ui'
+import { Separator } from '@repo/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@repo/ui'
+import { Switch } from '@repo/ui'
 import { Building2, Bell, Palette, Shield, Database as DatabaseIcon, Tag, ListFilter, Plus, Trash2, Box, Send, Mail, CheckCircle2, Globe, Settings, BookOpen, FileText, CreditCard, Wallet, RefreshCw, Copy, GraduationCap, User } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 import { toast } from 'sonner'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
@@ -686,7 +686,7 @@ export default function SettingsPage() {
                                             type="email"
                                             value={companySettings.email}
                                             onChange={(e) => setCompanySettings({ ...companySettings, email: e.target.value })}
-                                            placeholder="contact@tulie.agency"
+                                            placeholder="contact@tulie.app"
                                         />
                                     </div>
                                     <div className="space-y-2">

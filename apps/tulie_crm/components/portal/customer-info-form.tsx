@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Label } from '@repo/ui'
 import { toast } from 'sonner'
 import { updatePortalCustomerInfo, savePortalCustomerInfoDraft } from '@/lib/supabase/services/portal-service'
 import { Building2, User, FileText, Mail, Phone, MapPin, Save, Lock, CheckCircle2 } from 'lucide-react'

@@ -2,19 +2,19 @@
 
 import { useState } from 'react'
 import { Contact } from '@/types'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import {
     Card,
     CardContent,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card'
+} from '@repo/ui'
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@repo/ui'
 import {
     Dialog,
     DialogContent,
@@ -22,12 +22,12 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from '@/components/ui/dialog'
+} from '@repo/ui'
 import { MoreHorizontal, Plus, Mail, Phone, User as UserIcon, Trash2, Edit } from 'lucide-react'
 import { ContactForm } from './contact-form'
 import { deleteContact } from '@/lib/supabase/services/contact-service'
 import { toast } from 'sonner'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@repo/ui'
 
 interface ContactListProps {
     customerId: string

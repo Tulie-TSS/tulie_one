@@ -4,7 +4,7 @@ import TeamStatsCards from '@/components/team/TeamStatsCards'
 import TeamMemberTable from '@/components/team/TeamMemberTable'
 import WorkloadChart from '@/components/team/WorkloadChart'
 import { Users } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 
 export const dynamic = 'force-dynamic'
 

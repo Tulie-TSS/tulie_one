@@ -1,10 +1,10 @@
 import { Suspense } from 'react'
 import { getRetailOrders } from '@/lib/supabase/services/retail-order-service'
 import { RetailOrderList } from '@/components/studio/order-list'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import Link from 'next/link'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Skeleton } from '@repo/ui'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { formatCurrency } from '@/lib/utils/format'
 import { Camera, Plus, Clock, CheckCircle, ShoppingCart } from 'lucide-react'
 

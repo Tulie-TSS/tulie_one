@@ -1,7 +1,7 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
+import { Badge } from '@repo/ui'
 import { DASHBOARD_STATS, MONTHLY_REVENUE, PROJECTS, INVOICES, CUSTOMERS, QUOTATIONS, CONTRACTS, formatCurrency } from '@/lib/demo/mock-data'
 import { TrendingUp, Users, Rocket, Receipt, ArrowUpRight, ArrowDownRight } from 'lucide-react'
 import {

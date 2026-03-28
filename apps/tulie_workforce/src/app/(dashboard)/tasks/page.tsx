@@ -2,14 +2,14 @@
 
 import { useState, useMemo } from "react";
 import { Header } from "@/components/layouts/header";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui";
 import {
     Card,
     CardContent,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+} from "@repo/ui";
+import { Badge } from "@repo/ui";
 import {
     Plus,
     Clock,

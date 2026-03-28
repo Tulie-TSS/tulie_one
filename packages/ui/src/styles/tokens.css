@@ -1,0 +1,233 @@
+/*
+ * Tulie Design System v2.0 — Design Tokens
+ * Vibe: Monochrome Premium (ClickUp/Linear/Apple Hybrid)
+ * Color space: OKLCH
+ * Palette: Black & White premium + vibrant semantic accents
+ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Sidebar */
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+
+  /* Chart */
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+
+  /* Core */
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  /* Semantic */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  /* Radius scale (Friendly 12px squircle baseline) */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 24px;
+
+  /* Elevation (Shadows) */
+  --shadow-card: var(--shadow-card);
+  --shadow-dropdown: var(--shadow-dropdown);
+  --shadow-dialog: var(--shadow-dialog);
+
+  /* Z-Index Scale (5 levels — consistent layering) */
+  --z-base: 0;
+  --z-dropdown: 50;
+  --z-sticky: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+  --z-tooltip: 500;
+
+  /* Responsive Breakpoints */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* Easing */
+  --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ═══════════════════════════════════════════
+   LIGHT MODE — Premium Monochrome (Vibe 1)
+   ═══════════════════════════════════════════ */
+
+:root {
+  --radius: 12px;
+
+  /* Core palette — Black & White */
+  --background: oklch(0.985 0 0); /* #FAFAFA Neutral Canvas */
+  --foreground: oklch(0.141 0.005 285.823); /* Zinc 950 */
+
+  --primary: oklch(0.141 0.005 285.823); /* Zinc 950 (Pure Tech Black) */
+  --primary-foreground: oklch(0.985 0 0); /* #FAFAFA */
+
+  --secondary: oklch(0.967 0.001 286.375); /* Zinc 100 */
+  --secondary-foreground: oklch(0.141 0.005 285.823);
+
+  --muted: oklch(0.967 0.001 286.375); /* Zinc 100 */
+  --muted-foreground: oklch(0.552 0.016 285.938); /* Zinc 500 */
+
+  --accent: oklch(0.967 0.001 286.375);
+  --accent-foreground: oklch(0.141 0.005 285.823);
+
+  --destructive: oklch(0.577 0.245 27.325); /* Rose 600 */
+
+  --card: oklch(1 0 0); /* Pure White Surface */
+  --card-foreground: oklch(0.141 0.005 285.823);
+  --popover: oklch(1 0 0 / 0.85); /* Glassmorphism Base */
+  --popover-foreground: oklch(0.141 0.005 285.823);
+
+  --border: oklch(0 0 0 / 0.08); /* Transparent subtle borders */
+  --input: oklch(0 0 0 / 0.08);
+  --ring: oklch(0 0 0 / 0.15); /* Black glow */
+
+  /* Semantic accent colors (Vibrant Pills) */
+  --success: oklch(0.957 0.038 162.48); /* D1FAE5 */
+  --success-foreground: oklch(0.596 0.145 163.225); /* 059669 */
+  --success-tint: oklch(0.97 0.02 163);
+  --success-border: oklch(0.596 0.145 163.225 / 0);
+
+  --warning: oklch(0.956 0.063 85.34); /* FEF3C7 */
+  --warning-foreground: oklch(0.609 0.126 66.947); /* D97706 */
+  --warning-tint: oklch(0.98 0.02 85);
+  --warning-border: oklch(0.609 0.126 66.947 / 0);
+
+  --info: oklch(0.923 0.046 259.815); /* DBEAFE */
+  --info-foreground: oklch(0.546 0.245 262.881); /* 2563EB */
+  --info-tint: oklch(0.97 0.02 260);
+  --info-border: oklch(0.546 0.245 262.881 / 0);
+
+  /* Elevation (Soft Linear-style Shadows) */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-dropdown: 0 16px 40px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-dialog: 0 16px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  /* Chart (Unchanged) */
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.600 0.118 184.704);
+  --chart-3: oklch(0.398 0.070 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.080);
+
+  /* Sidebar */
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.141 0.005 285.823);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-border: oklch(0 0 0 / 0.08);
+  --sidebar-ring: oklch(0 0 0 / 0.15);
+}
+
+/* ═══════════════════════════════════════════
+   DARK MODE — Deep Slate Inversion
+   ═══════════════════════════════════════════ */
+
+.dark {
+  --background: oklch(0.141 0.005 285.823); /* Zinc 950 Canvas */
+  --foreground: oklch(0.985 0 0); /* #FAFAFA text */
+
+  --primary: oklch(0.985 0 0); /* Pure White Button */
+  --primary-foreground: oklch(0.141 0.005 285.823); /* Black Text */
+
+  --secondary: oklch(0.278 0.033 285.938); /* Zinc 800 */
+  --secondary-foreground: oklch(0.985 0 0);
+
+  --muted: oklch(0.278 0.033 285.938);
+  --muted-foreground: oklch(0.707 0.022 286.324); /* Zinc 400 */
+
+  --accent: oklch(0.278 0.033 285.938);
+  --accent-foreground: oklch(0.985 0 0);
+
+  --destructive: oklch(0.396 0.141 25.723);
+
+  --card: oklch(0.21 0.006 285.885); /* Zinc 900 Surface */
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.21 0.006 285.885 / 0.85); /* Glass Surface */
+  --popover-foreground: oklch(0.985 0 0);
+
+  --border: oklch(1 1 1 / 0.1); /* White transparent border */
+  --input: oklch(1 1 1 / 0.1);
+  --ring: oklch(1 1 1 / 0.2);
+
+  /* Semantic — dark mode (glows) */
+  --success: oklch(0.396 0.145 163.225 / 0.2);
+  --success-foreground: oklch(0.696 0.17 162.48); 
+  --success-tint: oklch(0.20 0.03 163);
+  --success-border: oklch(0.30 0.05 163);
+
+  --warning: oklch(0.409 0.126 66.947 / 0.2);
+  --warning-foreground: oklch(0.828 0.189 84.429);
+  --warning-tint: oklch(0.20 0.03 85);
+  --warning-border: oklch(0.30 0.05 85);
+
+  --info: oklch(0.346 0.245 262.881 / 0.2);
+  --info-foreground: oklch(0.623 0.214 259.815);
+  --info-tint: oklch(0.20 0.03 260);
+  --info-border: oklch(0.30 0.05 260);
+
+  /* Elevation */
+  --shadow-card: none;
+  --shadow-dropdown: 0 16px 40px rgba(0, 0, 0, 0.4);
+  --shadow-dialog: 0 16px 40px rgba(0, 0, 0, 0.5);
+
+  /* Chart — dark */
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.170 162.480);
+  --chart-3: oklch(0.769 0.188 70.080);
+  --chart-4: oklch(0.627 0.265 303.900);
+  --chart-5: oklch(0.645 0.246 16.439);
+
+  /* Sidebar — dark */
+  --sidebar: oklch(0.141 0.005 285.823);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.985 0 0);
+  --sidebar-primary-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-accent: oklch(0.278 0.033 285.938);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 1 1 / 0.1);
+  --sidebar-ring: oklch(1 1 1 / 0.2);
+}

@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react'
 import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer'
 import PdfTemplate from './pdf-template'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import { Download, Eye } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import { LoadingSpinner } from '@repo/ui'
+import { Dialog, DialogContent, DialogTrigger } from '@repo/ui'
 import { Quotation } from '@/types'
 
 interface QuotationPreviewProps {
@@ -23,9 +23,9 @@ export default function QuotationPreview({ data, open, onOpenChange }: Quotation
         name: "TULIE AGENCY",
         address: "123 Đường ABC, Quận XYZ, TP.HCM",
         phone: "090 123 4567",
-        email: "hello@tulie.agency",
+        email: "hello@tulie.app",
         tax_code: "0123456789",
-        website: "tulie.agency"
+        website: "tulie.app"
     })
 
     useEffect(() => {

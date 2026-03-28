@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { Header } from "@/components/layouts/header";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui";
 import {
     Card,
     CardContent,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
+} from "@repo/ui";
+import { Badge } from "@repo/ui";
+import { Input } from "@repo/ui";
 import {
     CheckCircle2,
     XCircle,

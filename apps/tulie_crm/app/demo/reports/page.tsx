@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { CUSTOMERS, QUOTATIONS, CONTRACTS, PROJECTS, INVOICES, MONTHLY_REVENUE, TEAM, formatCurrency } from '@/lib/demo/mock-data'
 import { PieChart as PieChartIcon, Users, FileText, FilePenLine, Rocket, Receipt, UserCheck } from 'lucide-react'
 import {

@@ -3,8 +3,8 @@
 import { Deal, DealStatus } from '@/types'
 import { DEAL_STATUS_LABELS, DEAL_STATUS_COLORS } from '@/lib/constants/status'
 import { formatCurrency } from '@/lib/utils/format'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
+import { Badge } from '@repo/ui'
 import { updateDealStatus } from '@/lib/supabase/services/deal-service'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
@@ -17,8 +17,8 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Button } from '@/components/ui/button'
+} from "@repo/ui"
+import { Button } from '@repo/ui'
 
 interface DealKanbanProps {
     deals: Deal[]

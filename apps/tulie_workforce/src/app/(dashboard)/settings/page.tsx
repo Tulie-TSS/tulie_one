@@ -2,18 +2,18 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Header } from "@/components/layouts/header";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@repo/ui";
+import { Input } from "@repo/ui";
+import { Label } from "@repo/ui";
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
+} from "@repo/ui";
+import { Separator } from "@repo/ui";
+import { Badge } from "@repo/ui";
 import {
     User,
     Key,
@@ -260,7 +260,7 @@ export default function SettingsPage() {
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="email" className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Email address</Label>
-                                        <Input id="email" defaultValue="tung@tulie.agency" disabled className="h-11 rounded-xl text-[14px] font-medium bg-zinc-100/50 border-border/40 text-muted-foreground" />
+                                        <Input id="email" defaultValue="tung@tulie.app" disabled className="h-11 rounded-xl text-[14px] font-medium bg-zinc-100/50 border-border/40 text-muted-foreground" />
                                         <p className="text-[11px] font-semibold text-muted-foreground mt-1.5 flex items-center gap-1.5">
                                             <AlertCircle className="h-3 w-3" />
                                             Email address cannot be changed.

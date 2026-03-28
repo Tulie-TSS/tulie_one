@@ -6,12 +6,12 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/dialog"
+} from "@repo/ui"
 import { DocumentEditor } from './document-editor'
 import { getGeneratedDocumentById } from '@/lib/supabase/services/document-template-service'
 import { GeneratedDocument } from '@/types'
 
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { LoadingSpinner } from '@repo/ui'
 
 interface DocumentEditorDialogProps {
     docId: string | null

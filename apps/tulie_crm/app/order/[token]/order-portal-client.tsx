@@ -15,10 +15,10 @@ import {
     CircleDot,
     Copy
 } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { Button } from '@repo/ui'
+import { Separator } from '@repo/ui'
 import { cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 import { getRetailOrderByToken } from '@/lib/supabase/services/retail-order-service'

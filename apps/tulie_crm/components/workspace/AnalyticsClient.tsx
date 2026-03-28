@@ -2,8 +2,8 @@
 
 import * as React from 'react'
 import { WorkspaceTask } from '@/types'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@repo/ui'
+import { Badge } from '@repo/ui'
 import { TrendingUp, TrendingDown, CheckCircle2, Clock, AlertTriangle, BarChart3 } from 'lucide-react'
 
 const statusColors: Record<string, string> = {

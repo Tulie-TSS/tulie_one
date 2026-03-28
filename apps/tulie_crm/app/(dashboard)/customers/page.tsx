@@ -1,13 +1,13 @@
 import { DataTable } from '@/components/shared/data-table'
 import { customerColumns } from '@/components/customers/customer-columns'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui'
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from '@/components/ui/select'
+} from '@repo/ui'
 import { getCustomers } from '@/lib/supabase/services/customer-service'
 import { getUsers } from '@/lib/supabase/services/user-service'
 import { Plus, Upload, Download, Users } from 'lucide-react'

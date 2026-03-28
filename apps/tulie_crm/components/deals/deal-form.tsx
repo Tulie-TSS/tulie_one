@@ -2,22 +2,22 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@repo/ui'
+import { Input } from '@repo/ui'
+import { Label } from '@repo/ui'
+import { Textarea } from '@repo/ui'
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from '@/components/ui/select'
+} from '@repo/ui'
 import { createDeal } from '@/lib/supabase/services/deal-service'
 import { toast } from 'sonner'
 import { Save } from 'lucide-react'
-import { LoadingSpinner } from '@/components/ui/loading-spinner'
-import { Card, CardContent } from '@/components/ui/card'
+import { LoadingSpinner } from '@repo/ui'
+import { Card, CardContent } from '@repo/ui'
 
 interface DealFormProps {
     customers: any[]
