@@ -1,13 +1,11 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
-import { Badge } from '@repo/ui'
-import { format, differenceInDays, startOfDay, addDays, isSameDay, isWithinInterval, differenceInMilliseconds } from 'date-fns'
-import { vi } from 'date-fns/locale'
-import { LayoutGrid, Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState, useMemo, useEffect } from 'react'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, ScrollArea, Badge } from '@repo/ui'
+import { format, differenceInDays, startOfDay, addDays, isSameDay } from 'date-fns'
+import { vi } from 'date-fns/locale'
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, LayoutGrid } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Button } from '@repo/ui'
 
 interface ProjectGanttChartProps {
     tasks: any[]
@@ -38,11 +36,9 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
         const h = now.getHours()
         const m = now.getMinutes()
         const s = now.getSeconds()
-        // Fraction of the day elapsed
         const totalSeconds = h * 3600 + m * 60 + s
         const fraction = totalSeconds / 86400
         
-        // Return percentage relative to the total days in view
         return ((index + fraction) / daysInView) * 100
     }, [now, timelineDates, daysInView])
 
@@ -81,55 +77,62 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
         }
     }
 
+    const getStatusVariant = (status: string): "default" | "secondary" | "destructive" | "outline" => {
+        switch (status) {
+            case 'completed': return 'default'
+            case 'in_progress': return 'secondary'
+            case 'blocked': return 'destructive'
+            default: return 'outline'
+        }
+    }
+
     const getStatusColor = (status: string) => {
         switch (status) {
             case 'completed': return 'bg-emerald-500'
             case 'in_progress': return 'bg-blue-500'
-            case 'blocked': return 'bg-rose-500'
-            default: return 'bg-zinc-400'
+            case 'blocked': return 'bg-destructive'
+            default: return 'bg-muted-foreground'
         }
     }
 
     return (
-        <Card className="border-border overflow-hidden rounded-xl">
-            <div className="p-6 border-b border-border/50 flex flex-row items-center justify-between bg-background/50 backdrop-blur-sm">
-                <div>
-                    <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-muted border border-border/50 flex items-center justify-center">
-                            <LayoutGrid className="w-5 h-5 text-foreground" />
-                        </div>
-                        <div className="space-y-0.5">
-                            <h3 className="text-sm font-semibold text-foreground tracking-tight leading-none">Lộ trình triển khai (Gantt View)</h3>
-                            <p className="text-[11px] font-medium text-muted-foreground">Visual Project Timeline</p>
-                        </div>
+        <Card className="overflow-hidden flex flex-col h-[700px]">
+            <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 bg-muted/40 border-b space-y-2 sm:space-y-0 shrink-0">
+                <div className="flex items-center gap-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg border bg-background shrink-0">
+                        <LayoutGrid className="w-5 h-5 text-muted-foreground" />
+                    </div>
+                    <div>
+                        <CardTitle className="text-base">Gantt View</CardTitle>
+                        <CardDescription>Trực quan hoá lộ trình dự án</CardDescription>
                     </div>
                 </div>
-                <div className="flex items-center gap-1.5">
-                    <Button variant="outline" size="sm" className="h-8 w-8 p-0 rounded-lg" onClick={() => setViewDate(addDays(viewDate, -7))}>
+                <div className="flex items-center gap-2">
+                    <Button variant="outline" size="icon" onClick={() => setViewDate(addDays(viewDate, -7))}>
                         <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    <Button variant="outline" size="sm" className="h-8 px-3 rounded-lg text-xs font-semibold" onClick={() => setViewDate(today)}>
-                        Hôm nay
-                    </Button>
-                    <Button variant="outline" size="sm" className="h-8 w-8 p-0 rounded-lg" onClick={() => setViewDate(addDays(viewDate, 7))}>
+                    <Button variant="outline" onClick={() => setViewDate(today)}>Hôm nay</Button>
+                    <Button variant="outline" size="icon" onClick={() => setViewDate(addDays(viewDate, 7))}>
                         <ChevronRight className="h-4 w-4" />
                     </Button>
                 </div>
-            </div>
-            <CardContent className="p-0 overflow-auto custom-scrollbar max-h-[650px]">
-                <div className="min-w-[1200px] relative">
+            </CardHeader>
+
+            <CardContent className="p-0 flex-1 relative overflow-auto custom-scrollbar">
+                <div className="min-w-[1000px] h-full flex flex-col relative w-full">
+                    
                     {/* Gantt Header - Months & Days */}
-                    <div className="bg-background border-b border-border">
+                    <div className="bg-muted w-full z-20 sticky top-0 border-b">
                         {/* Month Row */}
-                        <div className="flex border-b border-border/50">
-                            <div className="w-[240px] shrink-0 bg-muted/80 border-r border-border/50 flex items-center px-4 sticky left-0 z-50">
-                                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Lịch trình</span>
+                        <div className="flex border-b border-border">
+                            <div className="w-[280px] shrink-0 bg-muted border-r font-medium text-xs text-muted-foreground uppercase flex items-center px-4">
+                                Đầu việc
                             </div>
                             <div className="flex-1 flex overflow-hidden">
                                 {monthSegments.map((seg, i) => (
                                     <div 
                                         key={i} 
-                                        className="flex-none py-2 px-4 border-r border-border/50 text-[11px] font-bold text-foreground/80 bg-muted/30"
+                                        className="py-1.5 px-4 border-r text-xs font-semibold text-muted-foreground text-center"
                                         style={{ width: `${(100 / daysInView) * seg.count}%` }}
                                     >
                                         <span className="capitalize">{seg.label}</span>
@@ -140,46 +143,39 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
 
                         {/* Days Row */}
                         <div className="flex bg-background">
-                            <div className="w-[240px] shrink-0 p-3 border-r border-border/50 text-[11px] font-bold text-foreground bg-background sticky left-0 z-50 flex items-center shadow-[1px_0_0_rgba(0,0,0,0.05)]">
-                                Đầu việc
+                            <div className="w-[280px] shrink-0 border-r bg-background p-3 flex items-center shadow-sm z-30 font-medium text-sm">
+                                Tên Task
                             </div>
                             <div className="flex-1 flex relative">
-                                {/* Today Line Header Marker */}
-                                {todayLinePosition !== null && (
-                                    <div
-                                        className="absolute top-0 h-[300px] w-[2px] bg-rose-500 z-[60] pointer-events-none"
-                                        style={{
-                                            left: `${todayLinePosition}%`,
-                                        }}
-                                    >
-                                        {/* Dot at header-body intersection */}
-                                        <div className="absolute top-[54px] left-[-5px] w-3 h-3 rounded-full bg-red-600 shadow-lg border-[3px] border-white ring-2 ring-red-500/20" />
-                                    </div>
-                                )}
-
                                 {timelineDates.map((date, i) => {
                                     const dayOfWeek = format(date, 'i', { locale: vi });
                                     const isWeekend = dayOfWeek === '6' || dayOfWeek === '7';
+                                    const isToday = isSameDay(date, today);
+                                    
                                     return (
                                         <div
                                             key={i}
                                             className={cn(
-                                                "flex-1 p-2 text-center border-r border-border/50 last:border-r-0 flex flex-col items-center justify-center min-h-[60px] min-w-[45px] gap-1 transition-colors",
-                                                isSameDay(date, today) ? "bg-rose-50/30" : isWeekend ? "bg-muted/30" : "bg-background"
+                                                "p-2 text-center border-r flex flex-col items-center justify-center min-h-[50px] transition-colors relative",
+                                                isToday ? "bg-primary/5" : isWeekend ? "bg-muted/30" : "bg-transparent"
                                             )}
+                                            style={{ width: `${100 / daysInView}%` }}
                                         >
-                                            <p className={cn(
-                                                "text-[11px] font-bold uppercase tracking-tight",
-                                                isSameDay(date, today) ? "text-red-500" : isWeekend ? "text-muted-foreground" : "text-muted-foreground"
+                                            <span className={cn(
+                                                "text-[10px] font-medium tracking-wider uppercase mb-0.5",
+                                                isToday ? "text-primary font-bold" : "text-muted-foreground"
                                             )}>
                                                 {dayOfWeek === '7' ? 'CN' : `T${Number(dayOfWeek) + 1}`}
-                                            </p>
-                                            <p className={cn(
-                                                "text-[13px] font-bold tabular-nums tracking-tight",
-                                                isSameDay(date, today) ? "text-rose-600" : isWeekend ? "text-muted-foreground" : "text-foreground"
+                                            </span>
+                                            <span className={cn(
+                                                "text-sm font-semibold tabular-nums leading-none",
+                                                isToday ? "text-primary" : "text-foreground"
                                             )}>
                                                 {format(date, 'dd')}
-                                            </p>
+                                            </span>
+                                            {isToday && (
+                                                <div className="absolute top-0 bottom-0 left-1/2 -ml-[1px] w-[2px] bg-primary z-10 pointer-events-none" />
+                                            )}
                                         </div>
                                     );
                                 })}
@@ -187,43 +183,53 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                         </div>
                     </div>
 
+                    {/* Gantt Body / Rows */}
+                    <div className="divide-y relative h-max">
+                        {/* Red "Today" Line connecting body vertically */}
+                        {todayLinePosition !== null && (
+                            <div
+                                className="absolute top-0 bottom-0 w-[2px] bg-primary/40 z-10 pointer-events-none"
+                                style={{
+                                    left: `calc(280px + ${todayLinePosition} * calc(100% - 280px) / 100)`
+                                }}
+                            >
+                                <div className="absolute top-0 -left-1 w-2.5 h-2.5 rounded-full bg-primary border-2 border-background shadow-xs" />
+                            </div>
+                        )}
 
-                    {/* Gantt Rows */}
-                    <div className="divide-y divide-zinc-50 bg-background">
                         {tasks.length === 0 ? (
-                            <div className="py-20 text-center text-muted-foreground text-sm italic">
+                            <div className="flex items-center justify-center py-16 text-muted-foreground text-sm">
                                 Chưa có dữ liệu lịch trình cho các task.
                             </div>
                         ) : tasks.map((task) => {
                             const style = getTaskStyle(task)
                             return (
-                                <div key={task.id} className="flex group hover:bg-muted/30 transition-colors">
-                                    <div className="w-[240px] shrink-0 p-3 border-r border-border/50 flex items-center bg-background sticky left-0 z-30 group-hover:bg-muted/30 transition-colors shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
-                                        <p className="text-[11px] font-semibold text-foreground leading-tight">{task.title}</p>
+                                <div key={task.id} className="flex hover:bg-muted/50 transition-colors h-[50px]">
+                                    {/* Locked Left Column */}
+                                    <div className="w-[280px] shrink-0 px-4 py-3 border-r flex items-center bg-background z-20 group-hover:bg-muted/50">
+                                        <p className="text-sm font-medium text-foreground truncate" title={task.title}>{task.title}</p>
                                     </div>
-                                    <div className="flex-1 relative h-14 flex items-center px-0">
-                                        {/* Grid Background */}
+                                    
+                                    {/* Timeline Column */}
+                                    <div className="flex-1 relative h-full flex items-center">
+                                        {/* Background Grid Lines matching the header logic */}
                                         <div className="absolute inset-0 flex">
                                             {Array.from({ length: daysInView }).map((_, i) => (
-                                                <div key={i} className="flex-1 border-r border-border/50 last:border-r-0 min-w-[45px]" />
+                                                <div key={i} className="border-r last:border-r-0" style={{ width: `${100 / daysInView}%` }} />
                                             ))}
                                         </div>
 
-                                        {/* Task Bar */}
+                                        {/* Colored Task Bar overlay */}
                                         {style && (
                                             <div
                                                 className={cn(
-                                                    "absolute h-7 rounded-full shadow-sm flex items-center px-4 z-10 transition-all group-hover:shadow-md",
-                                                    getStatusColor(task.status)
+                                                    "absolute h-7 rounded shadow-sm hover:shadow-md max-w-full flex items-center px-3 z-[15] transition-all cursor-default border",
+                                                    getStatusColor(task.status),
+                                                    task.status === 'completed' || task.status === 'active' || task.status === 'in_progress' ? "text-primary-foreground border-transparent" : "text-foreground bg-background border-border"
                                                 )}
                                                 style={style}
                                             >
-                                                <p className={cn(
-                                                    "text-[11px] font-semibold truncate tracking-tight",
-                                                    task.status === 'completed' || task.status === 'active' || task.status === 'in_progress' ? "text-primary-foreground" : "text-zinc-100"
-                                                )}>
-                                                    {task.title}
-                                                </p>
+                                                <span className="text-xs font-medium truncate">{task.title}</span>
                                             </div>
                                         )}
                                     </div>
@@ -233,22 +239,24 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                     </div>
                 </div>
             </CardContent>
-            <div className="p-5 bg-muted/30 border-t border-border/50 flex items-center gap-8 justify-center">
+
+            {/* Footer Legend */}
+            <div className="shrink-0 p-4 border-t bg-muted/40 flex flex-wrap items-center justify-center gap-6">
                 <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                    <span className="text-[11px] font-semibold text-muted-foreground">Hoàn thành</span>
+                    <div className="w-3 h-3 rounded-sm bg-emerald-500 shadow-sm" />
+                    <span className="text-xs font-medium text-muted-foreground">Hoàn thành</span>
                 </div>
                 <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-blue-500" />
-                    <span className="text-[11px] font-semibold text-muted-foreground">Đang triển khai</span>
+                    <div className="w-3 h-3 rounded-sm bg-blue-500 shadow-sm" />
+                    <span className="text-xs font-medium text-muted-foreground">Đang tiến hành</span>
                 </div>
                 <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-rose-500" />
-                    <span className="text-[11px] font-semibold text-muted-foreground">Đang vướng</span>
+                    <div className="w-3 h-3 rounded-sm bg-destructive shadow-sm" />
+                    <span className="text-xs font-medium text-muted-foreground">Bị chặn/Huỷ</span>
                 </div>
                 <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-zinc-400" />
-                    <span className="text-[11px] font-semibold text-muted-foreground">Chưa làm</span>
+                    <div className="w-3 h-3 rounded-sm bg-background border border-border shadow-sm" />
+                    <span className="text-xs font-medium text-muted-foreground">Chưa bắt đầu</span>
                 </div>
             </div>
         </Card>

@@ -1,22 +1,8 @@
 'use client'
 
 import { useState, useMemo, useCallback } from 'react'
-import { Badge } from '@repo/ui'
-import { Button } from '@repo/ui'
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@repo/ui"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@repo/ui'
-import {
-    CheckCircle2, Clock, FileText, Building2, FileSignature, ExternalLink,
-    ChevronRight, Package, Link2, ClipboardCheck, ListTodo, AlertCircle,
-    Circle, CheckCircle, ArrowRight, Wallet, CreditCard, Banknote,
-    Activity, FileCheck, Check, BookOpen, Eye, Receipt, Lock
-} from 'lucide-react'
+import { Badge, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Tabs, TabsList, TabsTrigger, TabsContent, Separator, Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@repo/ui'
+import { CheckCircle2, Clock, FileText, Building2, FileSignature, ExternalLink, ChevronRight, Package, Link2, ClipboardCheck, ListTodo, AlertCircle, Circle, CheckCircle, ArrowRight, Wallet, CreditCard, Banknote, Activity, FileCheck, Check, BookOpen, Eye, Receipt, Lock, Menu } from 'lucide-react'
 import { getGeneratedDocumentById } from '@/lib/supabase/services/document-template-service'
 import { toast } from 'sonner'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
@@ -52,32 +38,31 @@ interface PortalContentProps {
     companyName?: string
 }
 
-const STATUS_MAP: Record<string, { label: string; bg: string; text: string; dot: string; border: string }> = {
-    'pending': { label: 'Chờ xử lý', bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-400', border: 'border-border' },
-    'in_progress': { label: 'Đang thực hiện', bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500', border: 'border-blue-200' },
-    'delivered': { label: 'Đã bàn giao', bg: 'bg-sky-50', text: 'text-sky-700', dot: 'bg-sky-500', border: 'border-sky-200' },
-    'accepted': { label: 'Đã nghiệm thu', bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', border: 'border-emerald-200' },
-    'rejected': { label: 'Từ chối', bg: 'bg-rose-50', text: 'text-rose-700', dot: 'bg-rose-500', border: 'border-rose-200' },
-    'draft': { label: 'Nháp', bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-300', border: 'border-border' },
-    'sent': { label: 'Đã gửi', bg: 'bg-background', text: 'text-muted-foreground', dot: 'bg-zinc-500', border: 'border-border' },
-    'viewed': { label: 'Đã xem', bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500', border: 'border-blue-200' },
-    'active': { label: 'Đang triển khai', bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500', border: 'border-blue-200' },
-    'completed': { label: 'Hoàn thành', bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', border: 'border-emerald-200' },
-    'signed': { label: 'Đã ký', bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', border: 'border-emerald-200' },
-    'paid': { label: 'Đã thanh toán', bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', border: 'border-emerald-200' },
-    'todo': { label: 'Cần làm', bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-400', border: 'border-border' },
-    'blocked': { label: 'Bị chặn', bg: 'bg-rose-50', text: 'text-rose-700', dot: 'bg-rose-500', border: 'border-rose-200' },
-    'upcoming': { label: 'Sắp tới', bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-300', border: 'border-border' },
-    'overdue': { label: 'Trễ hạn', bg: 'bg-rose-50', text: 'text-rose-700', dot: 'bg-rose-500', border: 'border-rose-200' },
+const STATUS_MAP: Record<string, { label: string; variant: "default" | "secondary" | "outline" | "destructive" }> = {
+    'pending': { label: 'Chờ xử lý', variant: 'secondary' },
+    'in_progress': { label: 'Đang thực hiện', variant: 'default' },
+    'delivered': { label: 'Đã bàn giao', variant: 'default' },
+    'accepted': { label: 'Đã nghiệm thu', variant: 'default' },
+    'rejected': { label: 'Từ chối', variant: 'destructive' },
+    'draft': { label: 'Nháp', variant: 'outline' },
+    'sent': { label: 'Đã gửi', variant: 'secondary' },
+    'viewed': { label: 'Đã xem', variant: 'secondary' },
+    'active': { label: 'Đang triển khai', variant: 'default' },
+    'completed': { label: 'Hoàn thành', variant: 'default' },
+    'signed': { label: 'Đã ký', variant: 'default' },
+    'paid': { label: 'Đã thanh toán', variant: 'default' },
+    'todo': { label: 'Cần làm', variant: 'outline' },
+    'blocked': { label: 'Bị chặn', variant: 'destructive' },
+    'upcoming': { label: 'Sắp tới', variant: 'secondary' },
+    'overdue': { label: 'Trễ hạn', variant: 'destructive' },
 }
 
 function StatusBadge({ status }: { status: string }) {
-    const s = STATUS_MAP[status] || { label: status, bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-400', border: 'border-border' }
+    const s = STATUS_MAP[status] || { label: status, variant: 'outline' }
     return (
-        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md border border-border/60 bg-background shrink-0">
-            <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", s.dot)} />
-            <span className="text-[11px] font-semibold text-foreground/80 whitespace-nowrap tracking-wide">{s.label}</span>
-        </div>
+        <Badge variant={s.variant} className="whitespace-nowrap px-2 py-0.5 text-[11px] font-semibold">
+            {s.label}
+        </Badge>
     )
 }
 
@@ -179,260 +164,240 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
 
     const hasContracts = contracts.length > 0
     const projectStatusLabel = hasContracts ? "Đang triển khai" : "Chờ triển khai"
+    const displayName = companyName || customer?.company_name || customer?.full_name || 'Khách hàng'
 
     return (
-        <div className="min-h-screen bg-muted/50 font-sans text-foreground pb-20 selection:bg-black selection:text-primary-foreground">
-            {/* Header */}
-            <div className="bg-background border-b border-border pt-10 pb-8 px-6 sticky top-0 z-40 shadow-sm">
-                <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-                    <div className="flex items-center gap-6">
+        <div className="flex min-h-screen w-full flex-col bg-muted/40 font-sans">
+            {/* Standard Shadcn Top Navigation Header */}
+            <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-8 shadow-sm">
+                <nav className="flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6 flex-1">
+                    <div className="flex items-center gap-4">
                         <img
                             src={brandConfig?.logo_url || "/file/tulie-agency-logo.png"}
                             alt="Logo"
-                            className="h-14 w-auto object-contain grayscale"
+                            className="h-8 w-auto object-contain grayscale"
                         />
-                        <div className="w-px h-10 bg-secondary/50" />
-                        <div>
-                            <h1 className="text-xl font-semibold text-foreground tracking-tight">Customer Portal</h1>
-                            <p className="text-xs text-muted-foreground mt-0.5 font-medium uppercase tracking-wider">Hệ thống giám sát dự án</p>
+                        <Separator orientation="vertical" className="h-6" />
+                        <h1 className="text-base font-semibold text-foreground tracking-tight ml-2">Customer Portal</h1>
+                    </div>
+                </nav>
+                <div className="flex items-center gap-4 md:gap-6">
+                    <div className="hidden md:flex flex-col items-end">
+                        <span className="text-sm font-semibold tracking-tight">{displayName}</span>
+                        <div className="flex items-center gap-2">
+                             <div className={cn("w-1.5 h-1.5 rounded-full animate-pulse", hasContracts ? "bg-emerald-500" : "bg-muted-foreground")} />
+                             <span className="text-[11px] text-muted-foreground font-medium">{projectStatusLabel}</span>
                         </div>
                     </div>
-
-                    <div className="flex flex-col items-center md:items-end">
-                        <h2 className="text-2xl font-bold text-foreground tracking-tighter">{companyName || customer?.company_name || customer?.full_name || 'Khách hàng'}</h2>
-                        <div className="flex items-center gap-2 mt-3 flex-wrap justify-center">
-                            <div className={cn(
-                                "flex items-center gap-1.5 px-3 py-1.5 rounded-full border",
-                                hasContracts ? "bg-blue-50 border-blue-200" : "bg-muted border-border"
-                            )}>
-                                <span className={cn("w-1.5 h-1.5 rounded-full animate-pulse", hasContracts ? "bg-blue-500" : "bg-zinc-400")} />
-                                <span className={cn("text-[11px] font-semibold", hasContracts ? "text-blue-700" : "text-muted-foreground")}>{projectStatusLabel}</span>
-                            </div>
-
-                            {/* Unlock Button Logic */}
-                            {hasPassword && !isFinancialAuthenticated && (
-                                <Dialog open={isUnlockModalOpen} onOpenChange={setIsUnlockModalOpen}>
-                                    <DialogTrigger asChild>
-                                        <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border bg-background hover:bg-muted shadow-sm text-foreground transition-all cursor-pointer group hover:scale-[1.02] active:scale-[0.98]">
-                                            <Lock className="w-3.5 h-3.5 text-muted-foreground group-hover:text-foreground/80" />
-                                            <span className="text-[11px] font-semibold tracking-wide">Bộ chứng từ dự án</span>
-                                        </button>
-                                    </DialogTrigger>
-                                    <DialogContent className="max-w-[400px] p-0 bg-transparent border-none shadow-none rounded-3xl overflow-hidden [&>button]:hidden">
-                                        <PortalPasswordForm token={token} companyName={companyName} isModal={true} />
-                                    </DialogContent>
-                                </Dialog>
-                            )}
-
-                            {isFinancialAuthenticated && hasPassword && (
-                                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border bg-emerald-50 border-emerald-200 text-emerald-700 shadow-sm">
-                                    <Lock className="w-3.5 h-3.5 opacity-60" />
-                                    <span className="text-[11px] font-semibold">Đã mở khóa</span>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <main className="max-w-6xl mx-auto px-6 mt-8 space-y-8">
-                {/* Update Info CTA */}
-                {!isCustomerInfoComplete(customer) && (
-                <div className="relative rounded-xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden text-primary-foreground bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-800 shadow-xl shadow-zinc-900/10 border border-primary">
-                    <div className="absolute inset-0 opacity-[0.15] pointer-events-none"
-                         style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '16px 16px', WebkitMaskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%)', maskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%)' }}>
-                    </div>
-                    <div className="relative z-10 space-y-1">
-                        <h3 className="text-base font-semibold tracking-tight">Cần hoàn thiện hồ sơ khởi tạo?</h3>
-                        <p className="text-sm text-muted-foreground max-w-md font-normal">Vui lòng cập nhật đầy đủ thông tin xuất hóa đơn hoặc yêu cầu thay đổi trực tiếp tại đây.</p>
-                    </div>
-
-                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                        <DialogTrigger asChild>
-                            <Button className="relative z-10 bg-background text-foreground hover:bg-secondary font-semibold rounded-xl px-8 h-10 shadow-lg transition-all text-xs border border-border">
-                                Cập nhật hồ sơ
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[700px] rounded-xl p-0 overflow-hidden border-none shadow-2xl [&_[data-slot=dialog-close]_svg]:text-primary-foreground">
-                            <div className="bg-primary text-primary-foreground p-8 border-b border-primary">
-                                <DialogHeader>
-                                    <DialogTitle className="text-2xl font-bold tracking-tight">Cập nhật hồ sơ khách hàng</DialogTitle>
-                                    <p className="text-muted-foreground text-xs mt-1 uppercase tracking-wider font-semibold">Customer Information & Identity</p>
-                                </DialogHeader>
-                            </div>
-                            <div className="p-8 bg-muted">
-                                <CustomerInfoForm
-                                    customer={customer}
-                                    token={token}
-                                    onComplete={() => {
-                                        setIsDialogOpen(false)
-                                        router.refresh()
-                                        toast.success('Đã cập nhật thông tin thành công!')
-                                    }}
-                                    onDraftSave={() => {
-                                        setIsDialogOpen(false)
-                                        router.refresh()
-                                    }}
-                                />
-                            </div>
-                        </DialogContent>
-                    </Dialog>
-                </div>
-                )}
-
-                {/* Tabs Layout */}
-                <Tabs defaultValue="overview" className="w-full">
-                    <TabsList className="mb-8 w-full justify-start h-auto p-1.5 bg-secondary/50 border border-border/60 rounded-xl overflow-x-auto flex-nowrap shrink-0 hide-scrollbar">
-                        <TabsTrigger value="overview" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/60 text-muted-foreground whitespace-nowrap transition-all">
-                            <ListTodo className="w-4 h-4 shrink-0" /> Tổng quan tiến độ
-                        </TabsTrigger>
-                        <TabsTrigger value="gantt" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/60 text-muted-foreground whitespace-nowrap transition-all">
-                            <Clock className="w-4 h-4 shrink-0" /> Lộ trình & Lịch trình
-                        </TabsTrigger>
-                        <TabsTrigger value="feedback" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/60 text-muted-foreground whitespace-nowrap transition-all">
-                            <ClipboardCheck className="w-4 h-4 shrink-0" /> Nhật ký xử lý
-                        </TabsTrigger>
-                        {isFinancialAuthenticated && (
-                            <TabsTrigger value="finance" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-muted-foreground shadow-sm whitespace-nowrap transition-all">
-                                <Wallet className="w-4 h-4 shrink-0" /> Báo giá & Pháp lý
-                            </TabsTrigger>
-                        )}
-                    </TabsList>
-
-                    {/* Tab 1: Công việc */}
-                    <TabsContent value="overview" className="space-y-6 mt-0 focus-visible:outline-none focus-visible:ring-0">
-                        {project?.description && (
-                            <div className="bg-background rounded-xl border border-border p-6">
-                                <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-3 flex items-center gap-2">
-                                    <BookOpen className="w-3.5 h-3.5" /> Mô tả dự án
-                                </h3>
-                                <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-line font-medium">{project.description}</p>
-                            </div>
-                        )}
-
-                        <div className="flex items-center justify-between px-2">
-                            <div className="flex items-center gap-2">
-                                <Package className="w-4 h-4 text-foreground" />
-                                <h3 className="text-lg font-bold text-foreground tracking-tight leading-tight">Hạng mục & Công việc</h3>
-                            </div>
-                            <span className="text-[13px] font-semibold text-muted-foreground bg-secondary px-3 py-1 rounded-full border border-border shadow-sm">
-                                {completedItems}/{displayItems.length} hạng mục hoàn thành
-                            </span>
-                        </div>
-
-                        <div className="grid gap-4">
-                            {displayItems.length > 0 ? displayItems.map((item: any, idx: number) => (
-                                <WorkItemAccordionCard key={item.id} item={item} idx={idx} />
-                            )) : (
-                                <div className="bg-background rounded-xl border border-border border-dashed p-12 text-center">
-                                    <Package className="w-10 h-10 text-zinc-200 mx-auto mb-4" />
-                                    <p className="text-sm text-muted-foreground font-medium">Chưa có hạng mục công việc nào được khởi tạo.</p>
-                                </div>
-                            )}
-                        </div>
-                    </TabsContent>
-
-                    {/* Tab 2: Gantt & Timeline */}
-                    <TabsContent value="gantt" className="space-y-8 mt-0 focus-visible:outline-none focus-visible:ring-0">
-                         <ProjectGanttChart tasks={data.tasks || []} />
-                         <TimelineSection timeline={timeline} />
-                    </TabsContent>
-
-                    {/* Tab 3: Feedback & History */}
-                    <TabsContent value="feedback" className="space-y-8 mt-0 focus-visible:outline-none focus-visible:ring-0">
-                        {project?.id && (
-                            <FeedbackBoard
-                                projectId={project.id}
-                                customerId={customer?.id}
-                                customerName={companyName || customer?.company_name || customer?.full_name || 'Khách hàng'}
-                                isAdmin={isFinancialAuthenticated}
-                            />
-                        )}
-                        <ProjectActivityHistory projectId={project?.id} activities={data.activities} />
-                    </TabsContent>
-
-                    {/* Tab 4: Finance (Protected) */}
-                    {isFinancialAuthenticated && (
-                        <TabsContent value="finance" className="space-y-8 mt-0 focus-visible:outline-none focus-visible:ring-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            {/* Stats Row */}
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                {[
-                                    { label: 'Tổng đầu tư', value: totalInvestment, icon: Wallet, color: 'text-muted-foreground', bgColor: 'bg-secondary' },
-                                    { label: 'Đã thanh toán', value: totalPaid, icon: CreditCard, color: 'text-foreground', bgColor: 'bg-secondary' },
-                                    { label: 'Còn lại', value: balanceDue, icon: Banknote, color: 'text-foreground', bgColor: 'bg-secondary' },
-                                    { label: 'Tiến độ', value: `${projectProgress}%`, icon: Activity, color: 'text-foreground', bgColor: 'bg-secondary' },
-                                ].map((stat, i) => (
-                                    <div key={i} className="bg-background p-5 rounded-xl border border-border shadow-sm transition-all hover:shadow-md hover:border-ring">
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <div className={cn("p-1.5 rounded-lg border border-border/60 shadow-xs", stat.bgColor)}>
-                                                <stat.icon className={cn("w-4 h-4", stat.color)} />
-                                            </div>
-                                            <span className="text-[12px] font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</span>
-                                        </div>
-                                        <div className="flex items-baseline gap-1 mt-1">
-                                            <div className="text-xl sm:text-2xl font-bold text-foreground tracking-tighter tabular-nums truncate">
-                                                {typeof stat.value === 'number' ? formatCurrency(stat.value).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim() : stat.value}
-                                            </div>
-                                            {typeof stat.value === 'number' && (
-                                                <div className="text-sm font-bold text-muted-foreground">đ</div>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="flex items-center gap-2 px-2 mt-2">
-                                <Receipt className="w-5 h-5 text-foreground" />
-                                <h3 className="text-lg font-bold text-foreground tracking-tight leading-tight">Chi tiết báo giá & Pháp lý</h3>
-                            </div>
-
-                            <div className="grid gap-6">
-                                {displayItems.map((item: any, idx: number) => (
-                                    <FinancialItemCard
-                                        key={item.id}
-                                        item={item}
-                                        idx={idx}
-                                        token={token}
-                                        quotationOptions={getQuotationOptionsForItem(item)}
-                                        selectedQuotationId={selectedQuotationMap[item.id]}
-                                        onSelectQuotation={(qId: string) => handleSelectQuotation(item.id, qId)}
-                                        timeline={timeline}
-                                        contracts={contracts}
-                                        onViewContractDoc={handleViewContractDoc}
-                                        onViewDoc={handleViewDoc}
-                                    />
-                                ))}
-                            </div>
-                        </TabsContent>
+                    {/* Unlock Logic mapped to standard secondary Button/Dialog */}
+                    {hasPassword && !isFinancialAuthenticated && (
+                        <Dialog open={isUnlockModalOpen} onOpenChange={setIsUnlockModalOpen}>
+                            <DialogTrigger asChild>
+                                <Button variant="secondary" size="sm" className="h-8 gap-2 font-medium">
+                                    <Lock className="w-3.5 h-3.5" />
+                                    <span>Bộ chứng từ</span>
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-md">
+                                <PortalPasswordForm token={token} companyName={companyName} isModal={true} />
+                            </DialogContent>
+                        </Dialog>
                     )}
-                </Tabs>
+                    {isFinancialAuthenticated && hasPassword && (
+                        <Badge variant="outline" className="h-8 gap-1.5 px-3 bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+                            <Lock className="w-3.5 h-3.5 opacity-70" />
+                            Đã mở khóa
+                        </Badge>
+                    )}
+                </div>
+            </header>
+
+            {/* Dashboard Main Content Area */}
+            <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8 md:pt-10">
+                <div className="mx-auto grid w-full max-w-7xl items-start gap-6 md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr]">
+                    
+                    <Tabs defaultValue="overview" className="col-span-1 md:col-span-2 lg:col-span-3 grid md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr] gap-8">
+                        {/* Sidebar Navigation (TabsList) */}
+                        <nav className="flex flex-col gap-2">
+                            <TabsList className="flex flex-col h-auto w-full items-start bg-transparent p-0 gap-1">
+                                <TabsTrigger 
+                                    value="overview" 
+                                    className="w-full justify-start gap-2 h-9 px-3 text-left bg-transparent hover:bg-muted data-[state=active]:bg-muted data-[state=active]:font-semibold data-[state=active]:shadow-none border-none text-muted-foreground data-[state=active]:text-foreground"
+                                >
+                                    <ListTodo className="w-4 h-4 shrink-0" /> Tổng quan dự án
+                                </TabsTrigger>
+                                <TabsTrigger 
+                                    value="gantt" 
+                                    className="w-full justify-start gap-2 h-9 px-3 text-left bg-transparent hover:bg-muted data-[state=active]:bg-muted data-[state=active]:font-semibold data-[state=active]:shadow-none border-none text-muted-foreground data-[state=active]:text-foreground"
+                                >
+                                    <Clock className="w-4 h-4 shrink-0" /> Lộ trình & Lịch trình
+                                </TabsTrigger>
+                                <TabsTrigger 
+                                    value="feedback" 
+                                    className="w-full justify-start gap-2 h-9 px-3 text-left bg-transparent hover:bg-muted data-[state=active]:bg-muted data-[state=active]:font-semibold data-[state=active]:shadow-none border-none text-muted-foreground data-[state=active]:text-foreground"
+                                >
+                                    <ClipboardCheck className="w-4 h-4 shrink-0" /> Nhật ký xử lý
+                                </TabsTrigger>
+                                {isFinancialAuthenticated && (
+                                    <>
+                                        <Separator className="my-2" />
+                                        <TabsTrigger 
+                                            value="finance" 
+                                            className="w-full justify-start gap-2 h-9 px-3 text-left bg-transparent hover:bg-muted data-[state=active]:bg-muted data-[state=active]:font-semibold data-[state=active]:shadow-none border-none text-muted-foreground data-[state=active]:text-foreground"
+                                        >
+                                            <Wallet className="w-4 h-4 shrink-0" /> Báo giá & Pháp lý
+                                        </TabsTrigger>
+                                    </>
+                                )}
+                            </TabsList>
+                            
+                            {/* Update Info CTA - Sidebar Widget */}
+                            {!isCustomerInfoComplete(customer) && (
+                                <Card className="mt-6 bg-primary text-primary-foreground border-none shadow-md overflow-hidden relative">
+                                    <div className="absolute inset-0 opacity-[0.1]" style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
+                                    <CardHeader className="p-4 relativ z-10">
+                                        <CardTitle className="text-sm">Hồ sơ chưa hoàn thiện</CardTitle>
+                                        <CardDescription className="text-xs text-primary-foreground/70 mt-1">Cập nhật thông tin xuất hóa đơn tại đây.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="p-4 pt-0 relative z-10">
+                                        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                            <DialogTrigger asChild>
+                                                <Button variant="secondary" className="w-full text-xs h-8">Cập nhật ngay</Button>
+                                            </DialogTrigger>
+                                            <DialogContent className="sm:max-w-[700px]">
+                                                <DialogHeader>
+                                                    <DialogTitle>Cập nhật hồ sơ khách hàng</DialogTitle>
+                                                </DialogHeader>
+                                                <CustomerInfoForm
+                                                    customer={customer}
+                                                    token={token}
+                                                    onComplete={() => { setIsDialogOpen(false); router.refresh(); toast.success('Đã cập nhật!') }}
+                                                    onDraftSave={() => { setIsDialogOpen(false); router.refresh() }}
+                                                />
+                                            </DialogContent>
+                                        </Dialog>
+                                    </CardContent>
+                                </Card>
+                            )}
+                        </nav>
+
+                        {/* Main Tab Contents */}
+                        <div className="grid gap-6">
+                            {/* Tab 1: Công việc */}
+                            <TabsContent value="overview" className="space-y-6 mt-0">
+                                {project?.description && (
+                                    <Card>
+                                        <CardHeader className="pb-3">
+                                            <CardTitle className="text-base flex items-center gap-2"><BookOpen className="w-4 h-4 opacity-50"/> Mô tả dự án</CardTitle>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-line">{project.description}</p>
+                                        </CardContent>
+                                    </Card>
+                                )}
+
+                                <div>
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h2 className="text-xl font-semibold tracking-tight">Hạng mục & Công việc</h2>
+                                        <Badge variant="secondary" className="font-normal">{completedItems}/{displayItems.length} hoàn thành</Badge>
+                                    </div>
+                                    <div className="grid gap-4">
+                                        {displayItems.length > 0 ? displayItems.map((item: any, idx: number) => (
+                                            <WorkItemCard key={item.id} item={item} idx={idx} />
+                                        )) : (
+                                            <div className="flex flex-col items-center justify-center p-12 text-center border border-dashed rounded-lg bg-background">
+                                                <Package className="w-10 h-10 text-muted-foreground/30 mb-4" />
+                                                <p className="text-sm text-muted-foreground font-medium">Chưa có hạng mục công việc nào.</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </TabsContent>
+
+                            {/* Tab 2: Gantt & Timeline */}
+                            <TabsContent value="gantt" className="space-y-6 mt-0">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h2 className="text-xl font-semibold tracking-tight">Kế hoạch triển khai</h2>
+                                </div>
+                                <ProjectGanttChart tasks={data.tasks || []} />
+                                <TimelineSection timeline={timeline} />
+                            </TabsContent>
+
+                            {/* Tab 3: Feedback & History */}
+                            <TabsContent value="feedback" className="space-y-6 mt-0">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h2 className="text-xl font-semibold tracking-tight">Kênh giao tiếp & Phản hồi</h2>
+                                </div>
+                                {project?.id && (
+                                    <FeedbackBoard
+                                        projectId={project.id}
+                                        customerId={customer?.id}
+                                        customerName={displayName}
+                                        isAdmin={isFinancialAuthenticated}
+                                    />
+                                )}
+                                <div className="mt-8">
+                                    <h3 className="text-lg font-semibold tracking-tight mb-4">Lịch sử hoạt động</h3>
+                                    <ProjectActivityHistory projectId={project?.id} activities={data.activities} />
+                                </div>
+                            </TabsContent>
+
+                            {/* Tab 4: Finance (Protected) */}
+                            {isFinancialAuthenticated && (
+                                <TabsContent value="finance" className="space-y-6 mt-0">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h2 className="text-xl font-semibold tracking-tight">Tài chính & Pháp lý</h2>
+                                    </div>
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        {[
+                                            { label: 'Tổng đầu tư', value: totalInvestment, icon: Wallet },
+                                            { label: 'Đã thanh toán', value: totalPaid, icon: CreditCard },
+                                            { label: 'Còn lại', value: balanceDue, icon: Banknote },
+                                            { label: 'Tiến độ', value: `${projectProgress}%`, icon: Activity },
+                                        ].map((stat, i) => (
+                                            <Card key={i}>
+                                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                                    <CardTitle className="text-xs font-medium text-muted-foreground uppercase">{stat.label}</CardTitle>
+                                                    <stat.icon className="h-4 w-4 text-muted-foreground" />
+                                                </CardHeader>
+                                                <CardContent>
+                                                    <div className="text-2xl font-bold tracking-tight">
+                                                        {typeof stat.value === 'number' ? formatCurrency(stat.value).replace(/\s*[₫đ]\s*$/g, '').trim() : stat.value}
+                                                    </div>
+                                                </CardContent>
+                                            </Card>
+                                        ))}
+                                    </div>
+                                    <div className="grid gap-6 mt-6">
+                                        {displayItems.map((item: any, idx: number) => (
+                                            <FinancialItemCard
+                                                key={item.id}
+                                                item={item}
+                                                idx={idx}
+                                                token={token}
+                                                quotationOptions={getQuotationOptionsForItem(item)}
+                                                selectedQuotationId={selectedQuotationMap[item.id]}
+                                                onSelectQuotation={(qId: string) => handleSelectQuotation(item.id, qId)}
+                                                timeline={timeline}
+                                                contracts={contracts}
+                                                onViewContractDoc={handleViewContractDoc}
+                                                onViewDoc={handleViewDoc}
+                                            />
+                                        ))}
+                                    </div>
+                                </TabsContent>
+                            )}
+                        </div>
+                    </Tabs>
+                </div>
 
                 {/* Document Viewer Dialog */}
                 <Dialog open={isViewingDoc} onOpenChange={setIsViewingDoc}>
-                    <DialogContent className="max-w-[95vw] lg:max-w-[1100px] w-full p-0 overflow-hidden bg-muted border-none rounded-xl shadow-2xl" showCloseButton={false}>
-                        <div className="flex items-center justify-between px-6 py-4 bg-background border-b border-border">
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center border border-border">
-                                    <FileText className="w-4 h-4 text-foreground" />
-                                </div>
-                                <DialogTitle className="text-sm font-bold text-foreground uppercase tracking-widest">Chi tiết tài liệu</DialogTitle>
-                            </div>
-                            <Button
-                                variant="outline"
-                                onClick={() => setIsViewingDoc(false)}
-                                className="text-xs font-bold text-foreground/80 hover:text-foreground border-border bg-background shadow-sm"
-                            >
-                                Đóng tài liệu
-                            </Button>
-                        </div>
-                        <div className="px-2 py-4 sm:px-8 sm:py-8 overflow-auto max-h-[calc(100vh-120px)] sm:max-h-[85vh]">
-                            <style>{`
-                                .portal-doc-viewer > div { padding: 10mm 15mm !important; }
-                                @media (min-width: 1024px) { .portal-doc-viewer > div { padding: 15mm 20mm !important; } }
-                            `}</style>
+                    <DialogContent className="max-w-5xl h-[90vh] p-0 flex flex-col bg-muted/20" showCloseButton={true}>
+                        <div className="px-6 py-4 flex-1 overflow-auto bg-background/50 flex align-center justify-center">
                             <div
-                                className="portal-doc-viewer bg-background shadow-xl border border-border text-[#000] mx-auto relative shrink-0 rounded-sm"
-                                style={{ width: '210mm', minWidth: '210mm', minHeight: '297mm' }}
+                                className="bg-white shadow-xl border border-border text-black mx-auto relative rounded-sm my-6 p-12"
+                                style={{ width: '210mm', minHeight: '297mm' }}
                                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(selectedDocContent || '') }}
                             />
                         </div>
@@ -443,89 +408,65 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
     )
 }
 
-/* ===== Work Item Accordion (Overview Tab) ===== */
-function WorkItemAccordionCard({ item, idx }: { item: any; idx: number }) {
+/* ===== Work Item Card (Overview Tab) ===== */
+function WorkItemCard({ item, idx }: { item: any; idx: number }) {
     const deliveryLinks = item.delivery_links || []
     const itemTasks = item.tasks || []
     const completedTasks = itemTasks.filter((t: any) => t.status === 'completed').length
     const totalTasks = itemTasks.length
 
     return (
-        <div className="bg-background rounded-xl border border-border overflow-hidden hover:border-ring transition-colors p-5 group">
-            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                <div className="flex items-start gap-4 flex-1">
-                    <div className="flex shrink-0 items-center justify-center w-10 h-10 rounded-xl bg-secondary text-muted-foreground font-bold border border-border">
+        <Card>
+            <CardHeader className="flex flex-row items-start justify-between space-y-0 bg-muted/40 pb-4 border-b">
+                <div className="flex gap-4 items-start">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-md border bg-background text-xs font-semibold shrink-0">
                         {idx + 1}
                     </div>
-                    <div>
-                        <div className="flex items-center gap-3 mb-1">
-                            <h4 className="text-base font-bold text-foreground tracking-tight">{item.title}</h4>
+                    <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                            <CardTitle className="text-base">{item.title}</CardTitle>
                             <StatusBadge status={item.status} />
                         </div>
-                        {item.description && <p className="text-[13px] text-muted-foreground leading-relaxed max-w-2xl font-medium">{item.description}</p>}
+                        {item.description && <CardDescription className="max-w-xl">{item.description}</CardDescription>}
                     </div>
                 </div>
-
-                {/* Delivery Links inline at top */}
                 {deliveryLinks.length > 0 && (
-                    <div className="flex flex-col gap-2 shrink-0 md:min-w-[200px]">
-                        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1">
-                            <Link2 className="w-3 h-3" /> Link Bàn Giao
-                        </span>
-                        {deliveryLinks.map((link: any, lIdx: number) => (
-                            <a key={lIdx} href={link.url} target="_blank"
-                                className="flex items-center gap-2 p-2 rounded-lg border border-border bg-muted hover:bg-background hover:border-ring transition-all">
-                                <ExternalLink className="w-3.5 h-3.5 text-blue-500" />
-                                <span className="text-[12px] font-semibold text-foreground/80 truncate">{link.label}</span>
-                            </a>
-                        ))}
-                    </div>
+                     <div className="flex flex-col gap-2 shrink-0 text-right">
+                         <span className="text-xs font-medium text-muted-foreground">Tài liệu bàn giao</span>
+                         {deliveryLinks.map((link: any, lIdx: number) => (
+                             <a key={lIdx} href={link.url} target="_blank" className="text-sm font-medium text-primary hover:underline flex items-center gap-1 justify-end">
+                                 {link.label} <ExternalLink className="w-3 h-3" />
+                             </a>
+                         ))}
+                     </div>
                 )}
-            </div>
-
-            {/* Todo List Inline */}
-            <div className="mt-6 pt-5 border-t border-border/50">
-                <div className="flex items-center justify-between mb-4">
-                    <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                        <ListTodo className="w-3.5 h-3.5" /> Danh sách công việc ({completedTasks}/{totalTasks})
-                    </p>
-                    {totalTasks > 0 && (
-                        <div className="w-32 h-1.5 bg-secondary rounded-full overflow-hidden border border-border/50">
-                            <div 
-                                className="h-full bg-primary rounded-full transition-all duration-500" 
-                                style={{ width: `${(completedTasks / totalTasks) * 100}%` }} 
-                            />
-                        </div>
-                    )}
-                </div>
-
-                {totalTasks > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        {itemTasks.map((task: any) => (
-                            <div key={task.id} className="flex items-start gap-3 p-3 rounded-xl border border-border/50 bg-muted/50 hover:bg-muted transition-colors">
-                                {task.status === 'completed' ? (
-                                    <CheckCircle className="w-4 h-4 text-foreground mt-0.5 shrink-0" />
-                                ) : task.status === 'in_progress' ? (
-                                    <Clock className="w-4 h-4 text-blue-500 mt-0.5 shrink-0" />
-                                ) : (
-                                    <Circle className="w-4 h-4 text-muted-foreground/50 mt-0.5 shrink-0" />
-                                )}
-                                <div className="min-w-0 flex-1">
-                                    <p className={cn(
-                                        "text-[13px] font-semibold",
-                                        task.status === 'completed' ? "line-through text-muted-foreground" : "text-foreground"
-                                    )}>
-                                        {task.title}
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="py-4 text-center text-muted-foreground text-xs font-medium">Lộ trình công việc trống.</div>
-                )}
-            </div>
-        </div>
+            </CardHeader>
+            <CardContent className="p-0">
+                 {/* Unified inner table approach inside Card for tasks */}
+                 <Table>
+                    <TableBody>
+                         {totalTasks > 0 ? itemTasks.map((task: any) => (
+                             <TableRow key={task.id} className="border-b last:border-0 hover:bg-muted/50">
+                                 <TableCell className="w-8 pl-6">
+                                     {task.status === 'completed' ? (
+                                         <CheckCircle className="w-4 h-4 text-muted-foreground" />
+                                     ) : task.status === 'in_progress' ? (
+                                         <Clock className="w-4 h-4 text-primary" />
+                                     ) : (
+                                         <Circle className="w-4 h-4 text-muted-foreground/50" />
+                                     )}
+                                 </TableCell>
+                                 <TableCell className={cn("font-medium", task.status === 'completed' && "text-muted-foreground line-through")}>
+                                     {task.title}
+                                 </TableCell>
+                             </TableRow>
+                         )) : (
+                             <TableRow><TableCell className="text-center text-muted-foreground py-6 border-b-0 h-24">Chưa có đầu việc chi tiết.</TableCell></TableRow>
+                         )}
+                    </TableBody>
+                 </Table>
+            </CardContent>
+        </Card>
     )
 }
 
@@ -541,207 +482,142 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
     const itemMilestones = contractId ? timeline.filter((t: any) => t.contract_id === contractId && (t.type === 'work' || t.type === 'payment')) : []
 
     return (
-        <div className="bg-background rounded-xl border border-border overflow-hidden hover:border-ring transition-colors">
-            <div className="flex items-center justify-between p-5 border-b border-border/50 bg-muted/50">
+        <Card className="overflow-hidden">
+            <CardHeader className="bg-muted/40 border-b flex flex-row items-center justify-between pb-4">
                 <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-secondary/50 text-muted-foreground text-[13px] font-bold">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-md border bg-background text-xs font-semibold">
                         {idx + 1}
                     </div>
-                    <h4 className="text-[15px] font-bold text-foreground tracking-tight">{item.title}</h4>
+                    <CardTitle className="text-base">{item.title}</CardTitle>
                 </div>
                 <div className="flex items-baseline gap-1">
-                    <span className="text-[22px] font-bold text-foreground tracking-tighter tabular-nums">{formatCurrency(activeAmount).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim()}</span>
-                    <span className="text-sm font-bold text-muted-foreground">đ</span>
+                    <span className="text-2xl font-bold tracking-tight">{formatCurrency(activeAmount).replace(/\s*[₫đ]\s*$/g, '').trim()}</span>
+                    <span className="text-sm font-medium text-muted-foreground">đ</span>
                 </div>
-            </div>
+            </CardHeader>
 
             {quotationOptions.length > 1 && (
-                <div className="px-5 py-4 border-b border-border/50 flex flex-wrap items-center gap-3 bg-background">
-                    <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mr-2">Chọn giải pháp mưc phí:</span>
+                <div className="px-6 py-4 flex items-center gap-4 bg-muted/20 border-b">
+                    <span className="text-xs font-medium text-muted-foreground uppercase">Hạng mức:</span>
                     <div className="flex gap-2">
                         {quotationOptions.map((q: any, qIdx: number) => {
                             const isActive = q.id === (selectedQuotationId || quotation?.id)
                             return (
-                                <button
+                                <Badge
                                     key={q.id}
+                                    variant={isActive ? "default" : "outline"}
                                     onClick={() => onSelectQuotation?.(q.id)}
-                                    className={cn(
-                                        "flex items-center gap-2 px-4 py-2 rounded-xl transition-all border",
-                                        isActive
-                                            ? "bg-primary border-zinc-950 text-primary-foreground shadow-md ring-2 ring-zinc-950/20"
-                                            : "bg-background text-muted-foreground border-border hover:border-ring hover:bg-muted"
-                                    )}
+                                    className={cn("px-3 py-1.5 cursor-pointer text-sm font-medium", !isActive && "hover:bg-muted font-normal text-muted-foreground")}
                                 >
-                                    <span className="text-[12px] font-bold uppercase">{q.status === 'accepted' ? 'Đã Chọn' : `PA${qIdx + 1}`}</span>
-                                    <span className="text-sm font-bold tabular-nums ml-1">
-                                        {formatCurrency(q.total_amount).replace(/\s*[₫đ]\s*$/g, '').trim()}
-                                    </span>
-                                </button>
+                                    {q.status === 'accepted' ? 'Đã Chọn' : `PA ${qIdx + 1}`} - {formatCurrency(q.total_amount).replace(/\s*[₫đ]\s*$/g, '').trim()}
+                                </Badge>
                             )
                         })}
                     </div>
                 </div>
             )}
 
-            <div className="flex flex-col lg:flex-row bg-background">
-                {/* Documents linked */}
-                <div className="lg:w-1/2 p-5 border-b lg:border-b-0 lg:border-r border-border/50">
-                    <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-4">Hồ sơ pháp lý đính kèm</p>
-                    <div className="space-y-3">
-                        {(() => {
-                            const renderedDocs: any[] = []
-                            if (activeQuotation && ['sent', 'viewed', 'accepted', 'converted'].includes(activeQuotation.status)) {
-                                renderedDocs.push({
-                                    title: 'Báo giá',
-                                    key: 'quotation',
-                                    number: activeQuotation.quotation_number,
-                                    status: activeQuotation.status,
-                                    icon: FileText,
-                                    link: `/quote/${activeQuotation.public_token || token}`
-                                })
-                            }
-                            if (contract) {
-                                const visibleDocs = (contract.documents || []).filter((d: any) => d.is_visible_on_portal !== false)
-                                const uniqueDocsMap = new Map<string, any>()
-                                for (const d of visibleDocs) uniqueDocsMap.set(`${d.type}:${d.milestone_id || 'none'}`, d)
-                                const uniqueVisibleDocs = Array.from(uniqueDocsMap.values())
-                                const paymentDocs = uniqueVisibleDocs.filter((d: any) => d.type === 'payment_request')
-                                const DOC_TYPE_LABELS: Record<string, string> = { contract: 'Hợp đồng', order: 'Đơn đặt hàng', payment_request: 'Đề nghị thanh toán', delivery_minutes: 'Biên bản bàn giao', acceptance: 'Biên bản nghiệm thu' }
-
-                                for (const d of uniqueVisibleDocs) {
-                                    const metaTitle = DOC_TYPE_LABELS[d.type] || d.type
-                                    let docTitle = metaTitle
-                                    if (d.type === 'payment_request' && paymentDocs.length > 1) {
-                                        docTitle = `${metaTitle} đợt ${paymentDocs.indexOf(d) + 1}`
-                                    }
-                                    renderedDocs.push({ title: docTitle, key: d.id, number: d.doc_number || (d.type === 'contract' ? contract.contract_number : ''), status: d.status, icon: FileSignature, docId: d.id, content: d.content })
+            <div className="grid md:grid-cols-2">
+                <div className="p-0 border-r border-border h-full flex flex-col">
+                    <div className="px-6 py-4 border-b bg-muted/10 font-medium text-sm text-muted-foreground">Pháp lý & Chứng từ đính kèm</div>
+                    <Table>
+                        <TableBody>
+                            {(() => {
+                                const renderedDocs: any[] = []
+                                if (activeQuotation && ['sent', 'viewed', 'accepted', 'converted'].includes(activeQuotation.status)) {
+                                    renderedDocs.push({ title: 'Báo giá', number: activeQuotation.quotation_number, status: activeQuotation.status, link: `/quote/${activeQuotation.public_token || token}` })
                                 }
-                            }
-                            if (renderedDocs.length === 0) return <div className="text-xs text-muted-foreground py-2">Chưa có chứng từ.</div>
+                                if (contract) {
+                                    const visibleDocs = (contract.documents || []).filter((d: any) => d.is_visible_on_portal !== false)
+                                    const uniqueMap = new Map(); visibleDocs.forEach((d: any) => uniqueMap.set(d.id, d));
+                                    Array.from(uniqueMap.values()).forEach((d: any) => renderedDocs.push({
+                                        title: d.type === 'contract' ? 'Hợp đồng' : d.type, number: d.doc_number || '', status: d.status, docId: d.id, content: d.content
+                                    }))
+                                }
+                                
+                                if (renderedDocs.length === 0) return <TableRow><TableCell className="text-center text-muted-foreground py-8">Chưa có chứng từ</TableCell></TableRow>
 
-                            return renderedDocs.map((d, i) => (
-                                <div key={d.key || i} className="flex items-center justify-between p-3 rounded-xl border border-border bg-background hover:border-zinc-400 hover:shadow-sm transition-all shadow-xs">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2 rounded-lg bg-secondary border border-border/50">
-                                            <d.icon className="w-4 h-4 text-muted-foreground" />
-                                        </div>
-                                        <div>
-                                            <p className="text-[12px] font-bold text-foreground tracking-tight">{d.title}</p>
-                                            <div className="flex items-center gap-2 mt-0.5">
-                                                <p className="text-[11px] font-bold font-mono text-muted-foreground">#{d.number || '---'}</p>
-                                                <StatusBadge status={d.status} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        {d.link ? (
-                                            <a href={d.link} target="_blank" className="flex items-center gap-1.5 px-3 py-1.5 bg-background rounded-lg border border-border hover:bg-muted transition-colors shadow-xs text-[11px] font-bold text-foreground/80">
-                                                Xem <ExternalLink className="w-3 h-3 text-muted-foreground" />
-                                            </a>
-                                        ) : d.docId ? (
-                                            <button onClick={() => d.content ? onViewContractDoc?.(d.content) : onViewDoc?.(d.docId)} className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg shadow-md hover:bg-primary/90 transition-colors text-[11px] font-bold">
-                                                <Eye className="w-3 h-3" /> Xem Doc
-                                            </button>
-                                        ) : null}
-                                    </div>
-                                </div>
-                            ))
-                        })()}
-                    </div>
+                                return renderedDocs.map((d, i) => (
+                                    <TableRow key={i}>
+                                        <TableCell>
+                                            <div className="font-medium text-sm">{d.title}</div>
+                                            <div className="text-xs text-muted-foreground mt-0.5">#{d.number || '---'}</div>
+                                        </TableCell>
+                                        <TableCell><StatusBadge status={d.status} /></TableCell>
+                                        <TableCell className="text-right">
+                                            {d.link ? (
+                                                <Button variant="outline" size="sm" asChild className="h-7 text-xs"><a href={d.link} target="_blank">Xem</a></Button>
+                                            ) : d.docId ? (
+                                                <Button variant="secondary" size="sm" onClick={() => d.content ? onViewContractDoc?.(d.content) : onViewDoc?.(d.docId)} className="h-7 text-xs">Xem Doc</Button>
+                                            ) : null}
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            })()}
+                        </TableBody>
+                    </Table>
                 </div>
-
-                {/* Payment Milestones */}
-                <div className="lg:w-1/2 p-5 bg-muted/30">
-                    <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
-                        <Wallet className="w-3.5 h-3.5" /> Lộ trình thanh toán
-                    </p>
-                    {itemMilestones.length > 0 ? (
-                        <div className="space-y-2">
-                            {itemMilestones.map((m: any, mIdx: number) => (
-                                <div key={m.id} className="flex flex-col gap-2 p-3 rounded-xl border border-border bg-background shadow-xs hover:border-ring transition-all">
-                                    <div className="flex items-start justify-between">
-                                        <div className="flex items-center gap-2.5">
-                                            <div className={cn("w-6 h-6 rounded-md flex items-center justify-center text-[11px] font-bold shrink-0 border", m.status === 'completed' ? "bg-emerald-500 text-primary-foreground border-emerald-600" : "bg-secondary text-muted-foreground border-border")}>
-                                                {m.status === 'completed' ? <Check className="w-3.5 h-3.5" /> : mIdx + 1}
-                                            </div>
-                                            <div>
-                                                <p className={cn("text-[13px] font-bold", m.status === 'completed' ? "text-muted-foreground line-through" : "text-foreground")}>
-                                                    {m.title}
-                                                </p>
-                                                <p className="text-[11px] text-muted-foreground font-semibold mt-0.5">
-                                                    Hạn: <span className="text-muted-foreground">{formatDate(m.date)}</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        {m.amount > 0 && (
-                                            <div className="text-right shrink-0 bg-muted px-3 py-1.5 rounded-lg border border-border/50">
-                                                <span className="text-[13px] font-bold text-foreground tabular-nums">{formatCurrency(m.amount).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim()}</span>
-                                                <span className="text-[10px] text-muted-foreground ml-1 font-bold">VNĐ</span>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="py-8 text-center bg-background rounded-xl border border-border border-dashed">
-                            <Receipt className="w-6 h-6 text-muted-foreground/50 mx-auto mb-2" />
-                            <p className="text-xs text-muted-foreground font-medium">Lộ trình thanh toán trống</p>
-                        </div>
-                    )}
+                
+                <div className="p-0 h-full flex flex-col bg-muted/5">
+                    <div className="px-6 py-4 border-b border-border font-medium text-sm text-muted-foreground bg-muted/10">Kế hoạch thanh toán</div>
+                    <Table>
+                        <TableBody>
+                            {itemMilestones.length > 0 ? itemMilestones.map((m: any, mIdx: number) => (
+                                <TableRow key={m.id}>
+                                    <TableCell className="pr-1 text-muted-foreground w-8">
+                                        {m.status === 'completed' ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <div className="text-xs">{mIdx + 1}</div>}
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className={cn("text-sm font-medium", m.status === 'completed' && "text-muted-foreground line-through")}>{m.title}</div>
+                                        <div className="text-xs text-muted-foreground mt-0.5">Hạn: {formatDate(m.date)}</div>
+                                    </TableCell>
+                                    <TableCell className="text-right whitespace-nowrap">
+                                        {m.amount > 0 && <span className="text-sm font-medium tabular-nums">{formatCurrency(m.amount).replace(/\s*[₫đ]\s*$/g, '').trim()}đ</span>}
+                                    </TableCell>
+                                </TableRow>
+                            )) : (
+                                <TableRow><TableCell colSpan={3} className="text-center text-muted-foreground py-8 border-b-0 h-full">Chưa có hạng mức</TableCell></TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
                 </div>
             </div>
-        </div>
+        </Card>
     )
 }
 
 /* ===== Timeline Section ===== */
 function TimelineSection({ timeline }: { timeline: any[] }) {
-    if (timeline.length === 0) return (
-        <div className="bg-background rounded-xl border border-border border-dashed p-12 text-center">
-            <Clock className="w-10 h-10 text-zinc-200 mx-auto mb-4" />
-            <p className="text-sm text-muted-foreground font-medium">Lộ trình thời gian trống</p>
-        </div>
-    )
+    if (timeline.length === 0) return null;
 
     return (
-        <div className="bg-background rounded-xl border border-border overflow-hidden">
-            <div className="p-6 border-b border-border/50">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center border border-border">
-                        <Activity className="w-5 h-5 text-muted-foreground" />
-                    </div>
-                    <div className="space-y-0.5">
-                        <h3 className="text-lg font-bold text-foreground tracking-tight leading-none">Biểu đồ thời gian thao tác</h3>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-widest font-bold">Lịch sử Lộ trình hệ thống</p>
-                    </div>
-                </div>
-            </div>
-            <div className="p-6">
-                <div className="relative pl-6 border-l-2 border-border/50 ml-2 space-y-8">
-                    {timeline.map((event, eIdx) => (
-                        <div key={event.id} className="relative pt-1">
-                            {/* Dot */}
-                            <div className={cn(
-                                "absolute -left-[33px] top-1.5 h-4 w-4 rounded-full border-[3px] bg-background transition-colors",
-                                event.status === 'completed' ? "border-emerald-500 shadow-[0_0_0_2px_rgba(16,185,129,0.2)]" : "border-ring"
-                            )} />
-
-                            <div className="flex flex-col md:flex-row md:items-start justify-between gap-2">
-                                <div>
-                                    <h6 className={cn("text-[14px] font-bold tracking-tight", event.status === 'completed' ? "text-foreground" : "text-muted-foreground")}>
-                                        {event.title}
-                                    </h6>
-                                    {event.description && <p className="text-[13px] text-muted-foreground mt-1 max-w-lg font-medium leading-relaxed">{event.description}</p>}
+        <Card>
+            <CardHeader className="border-b bg-muted/20">
+                <CardTitle className="text-lg">Dòng chảy sự kiện</CardTitle>
+                <CardDescription>Các thao tác hệ thống tự động ghi nhận theo thời gian thực.</CardDescription>
+            </CardHeader>
+            <CardContent className="pt-6">
+                <div className="space-y-4">
+                    {timeline.map((event, i) => (
+                        <div key={event.id} className="grid grid-cols-[1fr_auto] gap-4 text-sm relative">
+                            <div className="absolute left-[-2px] top-6 bottom-[-24px] w-px bg-border/50 hidden last:block" />
+                            <div className="flex gap-4">
+                                <div className="mt-0.5">
+                                    <div className={cn("h-2.5 w-2.5 rounded-full", event.status === 'completed' ? "bg-emerald-500" : "bg-muted-foreground/30")} />
+                                    {i !== timeline.length - 1 && <div className="h-full w-px bg-border/50 ml-[4px] mt-2 absolute bottom-[-16px]" />}
                                 </div>
-                                <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground bg-muted px-2.5 py-1 rounded-md border border-border/50 shrink-0">
-                                    {formatDate(event.date)}
-                                </span>
+                                <div className="space-y-1 pb-6">
+                                    <p className={cn("font-medium leading-none", event.status === 'completed' ? "text-foreground" : "text-muted-foreground")}>{event.title}</p>
+                                    {event.description && <p className="text-xs text-muted-foreground">{event.description}</p>}
+                                </div>
+                            </div>
+                            <div className="text-xs text-muted-foreground mt-0.5 tabular-nums tabular-nums">
+                                {formatDate(event.date)}
                             </div>
                         </div>
                     ))}
                 </div>
-            </div>
-        </div>
+            </CardContent>
+        </Card>
     )
 }

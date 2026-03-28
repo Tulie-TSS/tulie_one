@@ -11,6 +11,10 @@ import {
     TableHead,
     TableHeader,
     TableRow,
+    Card,
+    CardHeader,
+    CardTitle,
+    CardContent,
 } from '@repo/ui'
 import { Progress } from '@repo/ui'
 import {
@@ -362,14 +366,14 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
     const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0
 
     return (
-        <div className="w-full bg-background border border-border rounded-xl overflow-hidden font-sans">
+        <Card className="w-full font-sans shadow-sm">
             {/* Lightbox */}
             {lightboxSrc && (
                 <ImageLightbox src={lightboxSrc} alt="Enlarged" onClose={() => setLightboxSrc(null)} />
             )}
 
             {/* Document Header */}
-            <div className="bg-muted/80 border-b border-border px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <CardHeader className="bg-muted/40 border-b px-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-lg bg-background border border-border/60 shadow-sm flex items-center justify-center shrink-0">
                         <ListTodo className="w-6 h-6 text-foreground" />
@@ -390,10 +394,11 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                     <Plus className="w-4 h-4 mr-2" />
                     Thêm yêu cầu mới
                 </Button>
-            </div>
+            </CardHeader>
 
-            {/* Statistics Banner */}
-            <div className="flex flex-col sm:flex-row border-b border-border/50 divide-y sm:divide-y-0 sm:divide-x divide-zinc-100">
+            <CardContent className="p-0">
+                {/* Statistics Banner */}
+                <div className="flex flex-col sm:flex-row border-b divide-y sm:divide-y-0 sm:divide-x">
                 <div className="px-6 py-4 flex-1 flex flex-col justify-center">
                     <div className="flex justify-between items-end mb-2">
                         <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Tiến độ hoàn thành</p>
@@ -556,7 +561,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
             )}
 
             {/* Content Body */}
-            <div>
+            <div className="border-t border-border">
                 {isLoading ? (
                     <div className="py-20 flex flex-col items-center justify-center text-center">
                         <Clock className="w-8 h-8 text-muted-foreground/50 animate-spin mb-3" />
@@ -796,6 +801,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                     </div>
                 )}
             </div>
-        </div>
+        </CardContent>
+        </Card>
     )
 }
