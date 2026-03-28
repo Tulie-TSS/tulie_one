@@ -91,7 +91,7 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
     }
 
     return (
-        <Card className="border-zinc-200 shadow-sm overflow-hidden rounded-xl">
+        <Card className="border-zinc-200/80 overflow-hidden rounded-xl">
             <div className="p-6 border-b border-zinc-100 flex flex-row items-center justify-between bg-white/50 backdrop-blur-sm">
                 <div>
                     <div className="flex items-center gap-3">
@@ -119,7 +119,7 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
             <CardContent className="p-0 overflow-auto custom-scrollbar max-h-[650px]">
                 <div className="min-w-[1200px] relative">
                     {/* Gantt Header - Months & Days */}
-                    <div className="sticky top-0 z-40 bg-white border-b border-zinc-200">
+                    <div className="bg-white border-b border-zinc-200">
                         {/* Month Row */}
                         <div className="flex border-b border-zinc-100/50">
                             <div className="w-[240px] shrink-0 bg-zinc-50/80 border-r border-zinc-100 flex items-center px-4 sticky left-0 z-50">
@@ -147,7 +147,7 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                                 {/* Today Line Header Marker */}
                                 {todayLinePosition !== null && (
                                     <div
-                                        className="absolute top-0 bottom-[-5000px] w-[2px] bg-rose-500 z-[60] pointer-events-none"
+                                        className="absolute top-0 h-[300px] w-[2px] bg-rose-500 z-[60] pointer-events-none"
                                         style={{
                                             left: `${todayLinePosition}%`,
                                         }}

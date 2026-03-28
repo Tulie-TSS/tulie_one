@@ -74,9 +74,9 @@ const STATUS_MAP: Record<string, { label: string; bg: string; text: string; dot:
 function StatusBadge({ status }: { status: string }) {
     const s = STATUS_MAP[status] || { label: status, bg: 'bg-zinc-50', text: 'text-zinc-500', dot: 'bg-zinc-400', border: 'border-zinc-200' }
     return (
-        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md border border-zinc-200/60 bg-white shrink-0">
+        <div className={cn("flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border shrink-0", s.bg, s.border)}>
             <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", s.dot)} />
-            <span className="text-[11px] font-semibold text-zinc-700 whitespace-nowrap tracking-wide">{s.label}</span>
+            <span className={cn("text-[11px] font-normal whitespace-nowrap", s.text)}>{s.label}</span>
         </div>
     )
 }
@@ -302,8 +302,8 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                     {/* Tab 1: Công việc */}
                     <TabsContent value="overview" className="space-y-6 mt-0 focus-visible:outline-none focus-visible:ring-0">
                         {project?.description && (
-                            <div className="bg-white rounded-xl border border-zinc-200/80 p-6">
-                                <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                            <div className="bg-white rounded-2xl border border-zinc-200 p-6 shadow-sm">
+                                <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-3 flex items-center gap-2">
                                     <BookOpen className="w-3.5 h-3.5" /> Mô tả dự án
                                 </h3>
                                 <p className="text-sm text-zinc-700 leading-relaxed whitespace-pre-line font-medium">{project.description}</p>
@@ -451,7 +451,7 @@ function WorkItemAccordionCard({ item, idx }: { item: any; idx: number }) {
     const totalTasks = itemTasks.length
 
     return (
-        <div className="bg-white rounded-xl border border-zinc-200/80 overflow-hidden hover:border-zinc-300 transition-colors p-5 group">
+        <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-sm hover:border-zinc-300 transition-all p-5 group">
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div className="flex items-start gap-4 flex-1">
                     <div className="flex shrink-0 items-center justify-center w-10 h-10 rounded-xl bg-zinc-100 text-zinc-500 font-bold border border-zinc-200">
@@ -541,7 +541,7 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
     const itemMilestones = contractId ? timeline.filter((t: any) => t.contract_id === contractId && (t.type === 'work' || t.type === 'payment')) : []
 
     return (
-        <div className="bg-white rounded-xl border border-zinc-200/80 overflow-hidden hover:border-zinc-300 transition-colors">
+        <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-sm hover:border-zinc-300 transition-all">
             <div className="flex items-center justify-between p-5 border-b border-zinc-100 bg-zinc-50/50">
                 <div className="flex items-center gap-3">
                     <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-zinc-200 text-zinc-600 text-[13px] font-bold">
@@ -698,21 +698,21 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
 /* ===== Timeline Section ===== */
 function TimelineSection({ timeline }: { timeline: any[] }) {
     if (timeline.length === 0) return (
-        <div className="bg-white rounded-xl border border-zinc-200/80 border-dashed p-12 text-center">
+        <div className="bg-white rounded-2xl border border-zinc-200 border-dashed p-12 text-center">
             <Clock className="w-10 h-10 text-zinc-200 mx-auto mb-4" />
             <p className="text-sm text-zinc-500 font-medium">Lộ trình thời gian trống</p>
         </div>
     )
 
     return (
-        <div className="bg-white rounded-xl border border-zinc-200/80 overflow-hidden">
+        <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-sm">
             <div className="p-6 border-b border-zinc-100">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center border border-zinc-200/80">
+                    <div className="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center border border-zinc-200">
                         <Activity className="w-5 h-5 text-zinc-600" />
                     </div>
                     <div className="space-y-0.5">
-                        <h3 className="text-lg font-bold text-zinc-950 tracking-tight leading-none">Biểu đồ thời gian thao tác</h3>
+                        <h3 className="text-lg font-bold text-zinc-950 tracking-tight leading-tight">Biểu đồ thời gian thao tác</h3>
                         <p className="text-[11px] text-zinc-400 uppercase tracking-widest font-bold">Lịch sử Lộ trình hệ thống</p>
                     </div>
                 </div>
@@ -723,7 +723,7 @@ function TimelineSection({ timeline }: { timeline: any[] }) {
                         <div key={event.id} className="relative pt-1">
                             {/* Dot */}
                             <div className={cn(
-                                "absolute -left-[33px] top-1.5 h-4 w-4 rounded-full border-[3px] bg-white transition-colors",
+                                "absolute -left-[29px] top-1.5 h-4 w-4 rounded-full border-[3px] bg-white transition-colors",
                                 event.status === 'completed' ? "border-emerald-500 shadow-[0_0_0_2px_rgba(16,185,129,0.2)]" : "border-zinc-300"
                             )} />
 
@@ -732,9 +732,9 @@ function TimelineSection({ timeline }: { timeline: any[] }) {
                                     <h6 className={cn("text-[14px] font-bold tracking-tight", event.status === 'completed' ? "text-zinc-900" : "text-zinc-500")}>
                                         {event.title}
                                     </h6>
-                                    {event.description && <p className="text-[13px] text-zinc-500 mt-1 max-w-lg font-medium leading-relaxed">{event.description}</p>}
+                                    {event.description && <p className="text-[12px] text-zinc-500 mt-1 max-w-lg font-medium leading-relaxed">{event.description}</p>}
                                 </div>
-                                <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-500 bg-zinc-50 px-2.5 py-1 rounded-md border border-zinc-100 shrink-0">
+                                <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 bg-zinc-50 px-2 py-1 rounded-md border border-zinc-100 shrink-0">
                                     {formatDate(event.date)}
                                 </span>
                             </div>

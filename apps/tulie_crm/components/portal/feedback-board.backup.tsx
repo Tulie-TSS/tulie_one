@@ -362,7 +362,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
     const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0
 
     return (
-        <div className="w-full bg-white border border-zinc-200/80 rounded-xl overflow-hidden font-sans">
+        <div className="w-full bg-white border border-zinc-200 shadow-sm rounded-xl overflow-hidden font-sans">
             {/* Lightbox */}
             {lightboxSrc && (
                 <ImageLightbox src={lightboxSrc} alt="Enlarged" onClose={() => setLightboxSrc(null)} />
