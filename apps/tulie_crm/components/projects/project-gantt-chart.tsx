@@ -91,15 +91,15 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
     }
 
     return (
-        <Card className="border-zinc-200/80 overflow-hidden rounded-xl">
-            <div className="p-6 border-b border-zinc-100 flex flex-row items-center justify-between bg-white/50 backdrop-blur-sm">
+        <Card className="border-border overflow-hidden rounded-xl">
+            <div className="p-6 border-b border-border/50 flex flex-row items-center justify-between bg-background/50 backdrop-blur-sm">
                 <div>
                     <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-zinc-50 border border-zinc-100 flex items-center justify-center">
-                            <LayoutGrid className="w-5 h-5 text-zinc-900" />
+                        <div className="w-9 h-9 rounded-xl bg-muted border border-border/50 flex items-center justify-center">
+                            <LayoutGrid className="w-5 h-5 text-foreground" />
                         </div>
                         <div className="space-y-0.5">
-                            <h3 className="text-sm font-semibold text-zinc-950 tracking-tight leading-none">Lộ trình triển khai (Gantt View)</h3>
+                            <h3 className="text-sm font-semibold text-foreground tracking-tight leading-none">Lộ trình triển khai (Gantt View)</h3>
                             <p className="text-[11px] font-medium text-muted-foreground">Visual Project Timeline</p>
                         </div>
                     </div>
@@ -119,17 +119,17 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
             <CardContent className="p-0 overflow-auto custom-scrollbar max-h-[650px]">
                 <div className="min-w-[1200px] relative">
                     {/* Gantt Header - Months & Days */}
-                    <div className="bg-white border-b border-zinc-200">
+                    <div className="bg-background border-b border-border">
                         {/* Month Row */}
-                        <div className="flex border-b border-zinc-100/50">
-                            <div className="w-[240px] shrink-0 bg-zinc-50/80 border-r border-zinc-100 flex items-center px-4 sticky left-0 z-50">
-                                <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest">Lịch trình</span>
+                        <div className="flex border-b border-border/50">
+                            <div className="w-[240px] shrink-0 bg-muted/80 border-r border-border/50 flex items-center px-4 sticky left-0 z-50">
+                                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Lịch trình</span>
                             </div>
                             <div className="flex-1 flex overflow-hidden">
                                 {monthSegments.map((seg, i) => (
                                     <div 
                                         key={i} 
-                                        className="flex-none py-2 px-4 border-r border-zinc-100/30 text-[11px] font-bold text-zinc-700 bg-zinc-50/30"
+                                        className="flex-none py-2 px-4 border-r border-border/50 text-[11px] font-bold text-foreground/80 bg-muted/30"
                                         style={{ width: `${(100 / daysInView) * seg.count}%` }}
                                     >
                                         <span className="capitalize">{seg.label}</span>
@@ -139,8 +139,8 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                         </div>
 
                         {/* Days Row */}
-                        <div className="flex bg-white">
-                            <div className="w-[240px] shrink-0 p-3 border-r border-zinc-100 text-[11px] font-bold text-zinc-900 bg-white sticky left-0 z-50 flex items-center shadow-[1px_0_0_rgba(0,0,0,0.05)]">
+                        <div className="flex bg-background">
+                            <div className="w-[240px] shrink-0 p-3 border-r border-border/50 text-[11px] font-bold text-foreground bg-background sticky left-0 z-50 flex items-center shadow-[1px_0_0_rgba(0,0,0,0.05)]">
                                 Đầu việc
                             </div>
                             <div className="flex-1 flex relative">
@@ -164,19 +164,19 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                                         <div
                                             key={i}
                                             className={cn(
-                                                "flex-1 p-2 text-center border-r border-zinc-100 last:border-r-0 flex flex-col items-center justify-center min-h-[60px] min-w-[45px] gap-1 transition-colors",
-                                                isSameDay(date, today) ? "bg-rose-50/30" : isWeekend ? "bg-zinc-50/30" : "bg-white"
+                                                "flex-1 p-2 text-center border-r border-border/50 last:border-r-0 flex flex-col items-center justify-center min-h-[60px] min-w-[45px] gap-1 transition-colors",
+                                                isSameDay(date, today) ? "bg-rose-50/30" : isWeekend ? "bg-muted/30" : "bg-background"
                                             )}
                                         >
                                             <p className={cn(
                                                 "text-[11px] font-bold uppercase tracking-tight",
-                                                isSameDay(date, today) ? "text-red-500" : isWeekend ? "text-zinc-400" : "text-zinc-500"
+                                                isSameDay(date, today) ? "text-red-500" : isWeekend ? "text-muted-foreground" : "text-muted-foreground"
                                             )}>
                                                 {dayOfWeek === '7' ? 'CN' : `T${Number(dayOfWeek) + 1}`}
                                             </p>
                                             <p className={cn(
                                                 "text-[13px] font-bold tabular-nums tracking-tight",
-                                                isSameDay(date, today) ? "text-rose-600" : isWeekend ? "text-zinc-500" : "text-zinc-900"
+                                                isSameDay(date, today) ? "text-rose-600" : isWeekend ? "text-muted-foreground" : "text-foreground"
                                             )}>
                                                 {format(date, 'dd')}
                                             </p>
@@ -189,23 +189,23 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
 
 
                     {/* Gantt Rows */}
-                    <div className="divide-y divide-zinc-50 bg-white">
+                    <div className="divide-y divide-zinc-50 bg-background">
                         {tasks.length === 0 ? (
-                            <div className="py-20 text-center text-zinc-400 text-sm italic">
+                            <div className="py-20 text-center text-muted-foreground text-sm italic">
                                 Chưa có dữ liệu lịch trình cho các task.
                             </div>
                         ) : tasks.map((task) => {
                             const style = getTaskStyle(task)
                             return (
-                                <div key={task.id} className="flex group hover:bg-zinc-50/30 transition-colors">
-                                    <div className="w-[240px] shrink-0 p-3 border-r border-zinc-100 flex items-center bg-white sticky left-0 z-30 group-hover:bg-zinc-50/30 transition-colors shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
-                                        <p className="text-[11px] font-semibold text-zinc-900 leading-tight">{task.title}</p>
+                                <div key={task.id} className="flex group hover:bg-muted/30 transition-colors">
+                                    <div className="w-[240px] shrink-0 p-3 border-r border-border/50 flex items-center bg-background sticky left-0 z-30 group-hover:bg-muted/30 transition-colors shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
+                                        <p className="text-[11px] font-semibold text-foreground leading-tight">{task.title}</p>
                                     </div>
                                     <div className="flex-1 relative h-14 flex items-center px-0">
                                         {/* Grid Background */}
                                         <div className="absolute inset-0 flex">
                                             {Array.from({ length: daysInView }).map((_, i) => (
-                                                <div key={i} className="flex-1 border-r border-zinc-100/30 last:border-r-0 min-w-[45px]" />
+                                                <div key={i} className="flex-1 border-r border-border/50 last:border-r-0 min-w-[45px]" />
                                             ))}
                                         </div>
 
@@ -220,7 +220,7 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                                             >
                                                 <p className={cn(
                                                     "text-[11px] font-semibold truncate tracking-tight",
-                                                    task.status === 'completed' || task.status === 'active' || task.status === 'in_progress' ? "text-white" : "text-zinc-100"
+                                                    task.status === 'completed' || task.status === 'active' || task.status === 'in_progress' ? "text-primary-foreground" : "text-zinc-100"
                                                 )}>
                                                     {task.title}
                                                 </p>
@@ -233,22 +233,22 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                     </div>
                 </div>
             </CardContent>
-            <div className="p-5 bg-zinc-50/30 border-t border-zinc-100 flex items-center gap-8 justify-center">
+            <div className="p-5 bg-muted/30 border-t border-border/50 flex items-center gap-8 justify-center">
                 <div className="flex items-center gap-2">
                     <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                    <span className="text-[11px] font-semibold text-zinc-500">Hoàn thành</span>
+                    <span className="text-[11px] font-semibold text-muted-foreground">Hoàn thành</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="w-2.5 h-2.5 rounded-full bg-blue-500" />
-                    <span className="text-[11px] font-semibold text-zinc-500">Đang triển khai</span>
+                    <span className="text-[11px] font-semibold text-muted-foreground">Đang triển khai</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="w-2.5 h-2.5 rounded-full bg-rose-500" />
-                    <span className="text-[11px] font-semibold text-zinc-500">Đang vướng</span>
+                    <span className="text-[11px] font-semibold text-muted-foreground">Đang vướng</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="w-2.5 h-2.5 rounded-full bg-zinc-400" />
-                    <span className="text-[11px] font-semibold text-zinc-500">Chưa làm</span>
+                    <span className="text-[11px] font-semibold text-muted-foreground">Chưa làm</span>
                 </div>
             </div>
         </Card>
