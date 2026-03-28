@@ -10,31 +10,12 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@repo/ui"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@repo/ui'
 import {
-    CheckCircle2,
-    Clock,
-    FileText,
-    Building2,
-    FileSignature,
-    ExternalLink,
-    ChevronRight,
-    Package,
-    Link2,
-    ClipboardCheck,
-    ListTodo,
-    AlertCircle,
-    Circle,
-    CheckCircle,
-    ArrowRight,
-    Wallet,
-    CreditCard,
-    Banknote,
-    Activity,
-    FileCheck,
-    Check,
-    BookOpen,
-    Eye,
-    Receipt
+    CheckCircle2, Clock, FileText, Building2, FileSignature, ExternalLink,
+    ChevronRight, Package, Link2, ClipboardCheck, ListTodo, AlertCircle,
+    Circle, CheckCircle, ArrowRight, Wallet, CreditCard, Banknote,
+    Activity, FileCheck, Check, BookOpen, Eye, Receipt, Lock
 } from 'lucide-react'
 import { getGeneratedDocumentById } from '@/lib/supabase/services/document-template-service'
 import { toast } from 'sonner'
@@ -48,6 +29,7 @@ import { sanitizeHtml } from '@/lib/security/sanitize'
 import { useConfirm } from '@repo/ui'
 import { usePortalTracking } from '@/hooks/use-portal-tracking'
 import { FeedbackBoard } from '@/components/portal/feedback-board'
+import PortalPasswordForm from './password-form'
 
 interface PortalContentProps {
     data: {
@@ -62,9 +44,12 @@ interface PortalContentProps {
         projectMetadata: any
         brandConfig: any
         workItems?: any[]
-        activities?: any[] // Add this
+        activities?: any[]
     }
     token: string
+    isFinancialAuthenticated?: boolean
+    hasPassword?: boolean
+    companyName?: string
 }
 
 const STATUS_MAP: Record<string, { label: string; bg: string; text: string; dot: string; border: string }> = {
@@ -89,20 +74,21 @@ const STATUS_MAP: Record<string, { label: string; bg: string; text: string; dot:
 function StatusBadge({ status }: { status: string }) {
     const s = STATUS_MAP[status] || { label: status, bg: 'bg-zinc-50', text: 'text-zinc-500', dot: 'bg-zinc-400', border: 'border-zinc-200' }
     return (
-        <div className={cn("flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border", s.bg, s.border)}>
+        <div className={cn("flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border shrink-0", s.bg, s.border)}>
             <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", s.dot)} />
-            <span className={cn("text-[11px] font-normal", s.text)}>{s.label}</span>
+            <span className={cn("text-[11px] font-normal whitespace-nowrap", s.text)}>{s.label}</span>
         </div>
     )
 }
 
-export default function PortalContent({ data, token }: PortalContentProps) {
+export default function PortalContent({ data, token, isFinancialAuthenticated = false, hasPassword = false, companyName }: PortalContentProps) {
     const {
         quotations = [], contracts = [], invoices = [],
         timeline = [], customer, project, brandConfig,
         workItems = [], tasks = []
     } = data
     const [isDialogOpen, setIsDialogOpen] = useState(false)
+    const [isUnlockModalOpen, setIsUnlockModalOpen] = useState(false)
     const [selectedDocContent, setSelectedDocContent] = useState<string | null>(null)
     const [isViewingDoc, setIsViewingDoc] = useState(false)
 
@@ -119,22 +105,19 @@ export default function PortalContent({ data, token }: PortalContentProps) {
         }
     }
 
-    // View contract document content directly (from contract_documents table)
     const handleViewContractDoc = (htmlContent: string) => {
         setSelectedDocContent(htmlContent)
         setIsViewingDoc(true)
     }
+
     const router = useRouter()
     const { confirm } = useConfirm()
-
-    // Portal view tracking
     const { trackInteraction } = usePortalTracking({
         portalToken: token,
         projectId: project?.id,
         customerId: customer?.id
     })
 
-    // Fallback: if no work items yet, build from quotations (legacy mode)
     const displayItems = useMemo(() => {
         if (workItems.length > 0) return workItems
         return quotations.map((q: any) => ({
@@ -150,14 +133,10 @@ export default function PortalContent({ data, token }: PortalContentProps) {
         }))
     }, [workItems, quotations, contracts, tasks])
 
-    // Quotation selection state: map workItemId -> selected quotationId
-    // Initialize with the first (or accepted) quotation for each work item
     const [selectedQuotationMap, setSelectedQuotationMap] = useState<Record<string, string>>(() => {
         const map: Record<string, string> = {}
         displayItems.forEach((item: any) => {
-            if (item.quotation) {
-                map[item.id] = item.quotation.id
-            }
+            if (item.quotation) map[item.id] = item.quotation.id
         })
         return map
     })
@@ -166,41 +145,30 @@ export default function PortalContent({ data, token }: PortalContentProps) {
         setSelectedQuotationMap(prev => ({ ...prev, [workItemId]: quotationId }))
     }, [])
 
-    // Find quotation alternatives for each work item
-    // Return all quotations linked via metadata.quotation_ids or single quotation_id
     const getQuotationOptionsForItem = useCallback((item: any): any[] => {
-        // Check metadata.quotation_ids first (multi-quotation support)
         if (item.metadata?.quotation_ids?.length) {
             return item.metadata.quotation_ids
                 .map((qId: string) => quotations.find((q: any) => q.id === qId))
                 .filter(Boolean)
         }
-        // Fallback: single quotation
         if (!item.quotation_id && !item.quotation) return []
         const itemQuotation = item.quotation || quotations.find((q: any) => q.id === item.quotation_id)
         if (!itemQuotation) return []
         return [itemQuotation]
     }, [quotations])
 
-    // Aggregate Calculations — based on selected quotation per item
     const totalInvestment = useMemo(() => {
         if (quotations.length <= 1) {
             return quotations.reduce((sum: number, q: any) => sum + (q.total_amount || 0), 0)
         }
-        // Sum only the selected quotation per work item (avoid double-counting)
         const selectedIds = new Set(Object.values(selectedQuotationMap))
-        if (selectedIds.size === 0) {
-            // fallback: take first quotation only
-            return quotations.length > 0 ? (quotations[0].total_amount || 0) : 0
-        }
+        if (selectedIds.size === 0) return quotations.length > 0 ? (quotations[0].total_amount || 0) : 0
         return quotations
             .filter((q: any) => selectedIds.has(q.id))
             .reduce((sum: number, q: any) => sum + (q.total_amount || 0), 0)
     }, [quotations, selectedQuotationMap])
 
-    const totalPaid = invoices
-        .filter((inv: any) => inv.status === 'paid')
-        .reduce((sum: any, inv: any) => sum + (inv.total_amount || 0), 0)
+    const totalPaid = invoices.filter((inv: any) => inv.status === 'paid').reduce((sum: any, inv: any) => sum + (inv.total_amount || 0), 0)
     const balanceDue = totalInvestment - totalPaid
     const completedItems = workItems.filter((w: any) => w.status === 'accepted').length
     const projectProgress = workItems.length > 0
@@ -210,17 +178,12 @@ export default function PortalContent({ data, token }: PortalContentProps) {
             : 0)
 
     const hasContracts = contracts.length > 0
-    const hasSignedContracts = contracts.some((c: any) => ['signed', 'active', 'completed'].includes(c.status))
     const projectStatusLabel = hasContracts ? "Đang triển khai" : "Chờ triển khai"
-    const hasMultipleQuotations = quotations.filter((q: any) => ['draft','sent','viewed','accepted'].includes(q.status)).length > 1
-
-    // Conditional visibility: hide quotation/document details after contracts are signed
-    const [showDocumentDetails, setShowDocumentDetails] = useState(!hasSignedContracts)
 
     return (
         <div className="min-h-screen bg-zinc-50/50 font-sans text-zinc-900 pb-20 selection:bg-black selection:text-white">
             {/* Header */}
-            <div className="bg-white border-b border-zinc-200 pt-10 pb-8 px-6">
+            <div className="bg-white border-b border-zinc-200 pt-10 pb-8 px-6 sticky top-0 z-40 shadow-sm">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
                     <div className="flex items-center gap-6">
                         <img
@@ -231,49 +194,73 @@ export default function PortalContent({ data, token }: PortalContentProps) {
                         <div className="w-px h-10 bg-zinc-200" />
                         <div>
                             <h1 className="text-xl font-semibold text-zinc-900 tracking-tight">Customer Portal</h1>
-                            <p className="text-xs text-muted-foreground mt-0.5 font-medium uppercase tracking-wider">Dự án & Tài liệu</p>
+                            <p className="text-xs text-muted-foreground mt-0.5 font-medium uppercase tracking-wider">Hệ thống giám sát dự án</p>
                         </div>
                     </div>
 
                     <div className="flex flex-col items-center md:items-end">
-                        <h2 className="text-2xl font-bold text-zinc-950 tracking-tighter">{customer?.company_name || customer?.full_name || 'Khách hàng'}</h2>
-                        <div className={cn(
-                            "flex items-center gap-1.5 px-3 py-1 rounded-full border mt-3",
-                            hasContracts ? "bg-blue-50 border-blue-200" : "bg-zinc-50 border-zinc-200"
-                        )}>
-                            <span className={cn("w-1.5 h-1.5 rounded-full", hasContracts ? "bg-blue-500" : "bg-zinc-400")} />
-                            <span className={cn("text-[11px] font-normal", hasContracts ? "text-blue-700" : "text-zinc-500")}>{projectStatusLabel}</span>
+                        <h2 className="text-2xl font-bold text-zinc-950 tracking-tighter">{companyName || customer?.company_name || customer?.full_name || 'Khách hàng'}</h2>
+                        <div className="flex items-center gap-2 mt-3 flex-wrap justify-center">
+                            <div className={cn(
+                                "flex items-center gap-1.5 px-3 py-1.5 rounded-full border",
+                                hasContracts ? "bg-blue-50 border-blue-200" : "bg-zinc-50 border-zinc-200"
+                            )}>
+                                <span className={cn("w-1.5 h-1.5 rounded-full animate-pulse", hasContracts ? "bg-blue-500" : "bg-zinc-400")} />
+                                <span className={cn("text-[11px] font-semibold", hasContracts ? "text-blue-700" : "text-zinc-500")}>{projectStatusLabel}</span>
+                            </div>
+
+                            {/* Unlock Button Logic */}
+                            {hasPassword && !isFinancialAuthenticated && (
+                                <Dialog open={isUnlockModalOpen} onOpenChange={setIsUnlockModalOpen}>
+                                    <DialogTrigger asChild>
+                                        <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-zinc-200 bg-white hover:bg-zinc-50 shadow-sm text-zinc-900 transition-all cursor-pointer group hover:scale-[1.02] active:scale-[0.98]">
+                                            <Lock className="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-700" />
+                                            <span className="text-[11px] font-semibold tracking-wide">Bộ chứng từ dự án</span>
+                                        </button>
+                                    </DialogTrigger>
+                                    <DialogContent className="max-w-[400px] p-0 bg-transparent border-none shadow-none rounded-3xl overflow-hidden [&>button]:hidden">
+                                        <PortalPasswordForm token={token} companyName={companyName} isModal={true} />
+                                    </DialogContent>
+                                </Dialog>
+                            )}
+
+                            {isFinancialAuthenticated && hasPassword && (
+                                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border bg-emerald-50 border-emerald-200 text-emerald-700 shadow-sm">
+                                    <Lock className="w-3.5 h-3.5 opacity-60" />
+                                    <span className="text-[11px] font-semibold">Đã mở khóa</span>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <main className="max-w-6xl mx-auto px-6 mt-10 space-y-10">
-                {/* Update Info CTA — hidden when all fields are filled */}
+            <main className="max-w-6xl mx-auto px-6 mt-8 space-y-8">
+                {/* Update Info CTA */}
                 {!isCustomerInfoComplete(customer) && (
-                <div className="relative rounded-xl p-8 flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden text-white bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-800">
+                <div className="relative rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden text-white bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-800 shadow-xl shadow-zinc-900/10 border border-zinc-800">
                     <div className="absolute inset-0 opacity-[0.15] pointer-events-none"
-                        style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '16px 16px', WebkitMaskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%)', maskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%)' }}>
+                         style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '16px 16px', WebkitMaskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%)', maskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%)' }}>
                     </div>
-                    <div className="relative z-10 space-y-2">
-                        <h3 className="text-lg font-semibold tracking-tight">Cần cập nhật thông tin?</h3>
-                        <p className="text-sm text-zinc-400 max-w-md font-normal">Vui lòng kiểm tra và cập nhật thông tin xuất hóa đơn hoặc yêu cầu thay đổi trực tiếp tại đây.</p>
+                    <div className="relative z-10 space-y-1">
+                        <h3 className="text-base font-semibold tracking-tight">Cần hoàn thiện hồ sơ khởi tạo?</h3>
+                        <p className="text-sm text-zinc-400 max-w-md font-normal">Vui lòng cập nhật đầy đủ thông tin xuất hóa đơn hoặc yêu cầu thay đổi trực tiếp tại đây.</p>
                     </div>
 
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                         <DialogTrigger asChild>
-                            <Button className="relative z-10 bg-white text-zinc-900 hover:bg-zinc-100 font-semibold rounded-xl px-10 h-12 shadow-xl transition-all text-xs">
+                            <Button className="relative z-10 bg-white text-zinc-900 hover:bg-zinc-100 font-semibold rounded-xl px-8 h-10 shadow-lg transition-all text-xs border border-zinc-200">
                                 Cập nhật hồ sơ
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-[700px] rounded-xl p-0 overflow-hidden border-none shadow-xl [&_[data-slot=dialog-close]_svg]:text-white">
-                            <div className="bg-zinc-900 text-white p-8">
+                        <DialogContent className="sm:max-w-[700px] rounded-2xl p-0 overflow-hidden border-none shadow-2xl [&_[data-slot=dialog-close]_svg]:text-white">
+                            <div className="bg-zinc-950 text-white p-8 border-b border-zinc-800">
                                 <DialogHeader>
                                     <DialogTitle className="text-2xl font-bold tracking-tight">Cập nhật hồ sơ khách hàng</DialogTitle>
-                                    <p className="text-zinc-400 text-xs mt-1 uppercase tracking-wider font-medium">Customer Information & Identity</p>
+                                    <p className="text-zinc-500 text-xs mt-1 uppercase tracking-wider font-semibold">Customer Information & Identity</p>
                                 </DialogHeader>
                             </div>
-                            <div className="p-8">
+                            <div className="p-8 bg-zinc-50">
                                 <CustomerInfoForm
                                     customer={customer}
                                     token={token}
@@ -293,147 +280,158 @@ export default function PortalContent({ data, token }: PortalContentProps) {
                 </div>
                 )}
 
+                {/* Tabs Layout */}
+                <Tabs defaultValue="overview" className="w-full">
+                    <TabsList className="mb-8 w-full justify-start h-auto p-1.5 bg-zinc-100/50 border border-zinc-200/60 rounded-xl overflow-x-auto flex-nowrap shrink-0 hide-scrollbar">
+                        <TabsTrigger value="overview" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-white data-[state=active]:text-zinc-950 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-zinc-200/60 text-zinc-500 whitespace-nowrap transition-all">
+                            <ListTodo className="w-4 h-4 shrink-0" /> Tổng quan tiến độ
+                        </TabsTrigger>
+                        <TabsTrigger value="gantt" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-white data-[state=active]:text-zinc-950 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-zinc-200/60 text-zinc-500 whitespace-nowrap transition-all">
+                            <Clock className="w-4 h-4 shrink-0" /> Lộ trình & Lịch trình
+                        </TabsTrigger>
+                        <TabsTrigger value="feedback" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-white data-[state=active]:text-zinc-950 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-zinc-200/60 text-zinc-500 whitespace-nowrap transition-all">
+                            <ClipboardCheck className="w-4 h-4 shrink-0" /> Nhật ký xử lý
+                        </TabsTrigger>
+                        {isFinancialAuthenticated && (
+                            <TabsTrigger value="finance" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-zinc-950 data-[state=active]:text-white text-zinc-500 shadow-sm whitespace-nowrap transition-all">
+                                <Wallet className="w-4 h-4 shrink-0" /> Báo giá & Pháp lý
+                            </TabsTrigger>
+                        )}
+                    </TabsList>
 
-                {/* Stats Row — Clean, no uppercase, no letter-spacing */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {[
-                        { label: 'Tổng đầu tư', value: totalInvestment, sub: 'Project Investment', icon: Wallet, color: 'text-zinc-600', bgColor: 'bg-zinc-100' },
-                        { label: 'Đã thanh toán', value: totalPaid, sub: 'Total Paid', icon: CreditCard, color: 'text-zinc-950', bgColor: 'bg-zinc-100' },
-                        { label: 'Còn lại', value: balanceDue, sub: 'Balance Due', icon: Banknote, color: 'text-zinc-950', bgColor: 'bg-zinc-100' },
-                        { label: 'Tiến độ', value: `${projectProgress}%`, sub: 'Project Progress', icon: Activity, color: 'text-zinc-950', bgColor: 'bg-zinc-100' },
-                    ].map((stat, i) => (
-                        <div key={i} className="bg-white p-6 rounded-xl border border-zinc-200 shadow-sm transition-all hover:shadow-md">
-                            <div className="flex items-center justify-between mb-4">
-                                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{stat.label}</span>
-                                <div className={cn("p-1.5 rounded-lg border border-zinc-100", stat.bgColor)}>
-                                    <stat.icon className={cn("w-4 h-4", stat.color)} />
-                                </div>
-                            </div>
-                            <div className="flex items-baseline gap-1">
-                                <div className="text-lg sm:text-2xl font-bold text-zinc-950 tracking-tighter tabular-nums truncate">
-                                    {typeof stat.value === 'number' ? formatCurrency(stat.value).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim() : stat.value}
-                                </div>
-                                {typeof stat.value === 'number' && (
-                                    <div className="text-sm font-semibold text-muted-foreground">đ</div>
-                                )}
-                            </div>
-                            <div className="text-xs font-semibold text-muted-foreground mt-1 uppercase tracking-widest">{stat.sub}</div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Mô tả dự án */}
-                {project?.description && (
-                    <div className="bg-white rounded-xl border border-zinc-200 p-6 shadow-sm">
-                        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">Mô tả dự án</h3>
-                        <p className="text-sm text-zinc-600 leading-relaxed whitespace-pre-line font-medium">{project.description}</p>
-                    </div>
-                )}
-
-
-
-                {/* Hạng mục dự án — conditionally hidden when signed */}
-                {(!hasSignedContracts || showDocumentDetails) && (
-                <div className="space-y-6">
-                    <div>
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center">
-                                    <Package className="w-5 h-5 text-zinc-900" />
-                                </div>
-                                <div>
-                                    <h3 className="text-base sm:text-lg font-semibold text-zinc-950 tracking-tight leading-tight">Hạng mục & Lộ trình thực hiện</h3>
-                                    <p className="text-xs text-zinc-400 mt-0.5">Deliverables & Progress</p>
-                                </div>
-                            </div>
-                            <span className="text-xs sm:text-sm font-semibold text-zinc-500 tabular-nums whitespace-nowrap">
-                                {displayItems.length} hạng mục · {completedItems} đã nghiệm thu
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="grid gap-6">
-                        {displayItems.map((item: any, idx: number) => (
-                            <WorkItemCard
-                                key={item.id}
-                                item={item}
-                                idx={idx}
-                                token={token}
-                                quotationOptions={getQuotationOptionsForItem(item)}
-                                selectedQuotationId={selectedQuotationMap[item.id]}
-                                onSelectQuotation={(qId: string) => handleSelectQuotation(item.id, qId)}
-                                timeline={timeline}
-                                contracts={contracts}
-                                onViewContractDoc={handleViewContractDoc}
-                                onViewDoc={handleViewDoc}
-                            />
-                        ))}
-
-                        {displayItems.length === 0 && (
-                            <div className="bg-white rounded-xl border border-zinc-200 p-10 text-center">
-                                <Package className="w-8 h-8 text-zinc-300 mx-auto mb-3" />
-                                <p className="text-sm text-muted-foreground font-medium">Chưa có hạng mục nào được tạo cho dự án này.</p>
+                    {/* Tab 1: Công việc */}
+                    <TabsContent value="overview" className="space-y-6 mt-0 focus-visible:outline-none focus-visible:ring-0">
+                        {project?.description && (
+                            <div className="bg-white rounded-2xl border border-zinc-200 p-6 shadow-sm">
+                                <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                                    <BookOpen className="w-3.5 h-3.5" /> Mô tả dự án
+                                </h3>
+                                <p className="text-sm text-zinc-700 leading-relaxed whitespace-pre-line font-medium">{project.description}</p>
                             </div>
                         )}
-                    </div>
-                </div>
-                )}
 
-                {/* Conditional visibility toggle for signed contracts */}
-                {hasSignedContracts && (
-                    <div className="flex items-center justify-center">
-                        <button
-                            onClick={() => setShowDocumentDetails(!showDocumentDetails)}
-                            className="text-xs text-zinc-400 hover:text-zinc-600 transition-colors flex items-center gap-1.5 px-4 py-2 rounded-full border border-zinc-200 hover:border-zinc-300 bg-white"
-                        >
-                            <FileText className="w-3 h-3" />
-                            {showDocumentDetails ? 'Ẩn hồ sơ thủ tục' : 'Xem hồ sơ thủ tục'}
-                        </button>
-                    </div>
-                )}
-
-                {/* Feedback Board — always visible */}
-                {project?.id && (
-                    <FeedbackBoard
-                        projectId={project.id}
-                        customerId={customer?.id}
-                        customerName={customer?.company_name || customer?.full_name || 'Khách hàng'}
-                    />
-                )}
-
-                {/* Gantt View Section */}
-                <ProjectGanttChart tasks={data.tasks || []} />
-
-                {/* Activity History Section */}
-                <ProjectActivityHistory projectId={project?.id} activities={data.activities} />
-
-                {/* Tiện ích khác — Hidden for now as it's redundant with the new milestone cards */}
-                {/* Document Viewer Dialog for Portal */}
-                <Dialog open={isViewingDoc} onOpenChange={setIsViewingDoc}>
-                    <DialogContent className="max-w-[95vw] lg:max-w-[1100px] w-full p-0 overflow-hidden bg-zinc-50 border-none rounded-xl" showCloseButton={false}>
-                        <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-zinc-100">
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center">
-                                    <FileText className="w-4 h-4 text-zinc-900" />
-                                </div>
-                                <DialogTitle className="text-base font-semibold text-zinc-900">Chi tiết tài liệu</DialogTitle>
+                        <div className="flex items-center justify-between px-2">
+                            <div className="flex items-center gap-2">
+                                <Package className="w-4 h-4 text-zinc-800" />
+                                <h3 className="text-lg font-bold text-zinc-950 tracking-tight leading-tight">Hạng mục & Công việc</h3>
                             </div>
-                            <Button
-                                variant="ghost"
-                                onClick={() => setIsViewingDoc(false)}
-                                className="text-sm font-medium text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
-                            >
-                                Đóng
-                            </Button>
+                            <span className="text-[13px] font-semibold text-zinc-500 bg-zinc-100 px-3 py-1 rounded-full border border-zinc-200 shadow-sm">
+                                {completedItems}/{displayItems.length} hạng mục hoàn thành
+                            </span>
                         </div>
 
-                        <div className="px-4 py-4 sm:px-6 sm:py-6 overflow-auto max-h-[calc(100vh-120px)] sm:max-h-[85vh]">
+                        <div className="grid gap-4">
+                            {displayItems.length > 0 ? displayItems.map((item: any, idx: number) => (
+                                <WorkItemAccordionCard key={item.id} item={item} idx={idx} />
+                            )) : (
+                                <div className="bg-white rounded-2xl border border-zinc-200 border-dashed p-12 text-center">
+                                    <Package className="w-10 h-10 text-zinc-200 mx-auto mb-4" />
+                                    <p className="text-sm text-zinc-500 font-medium">Chưa có hạng mục công việc nào được khởi tạo.</p>
+                                </div>
+                            )}
+                        </div>
+                    </TabsContent>
+
+                    {/* Tab 2: Gantt & Timeline */}
+                    <TabsContent value="gantt" className="space-y-8 mt-0 focus-visible:outline-none focus-visible:ring-0">
+                         <ProjectGanttChart tasks={data.tasks || []} />
+                         <TimelineSection timeline={timeline} />
+                    </TabsContent>
+
+                    {/* Tab 3: Feedback & History */}
+                    <TabsContent value="feedback" className="space-y-8 mt-0 focus-visible:outline-none focus-visible:ring-0">
+                        {project?.id && (
+                            <FeedbackBoard
+                                projectId={project.id}
+                                customerId={customer?.id}
+                                customerName={companyName || customer?.company_name || customer?.full_name || 'Khách hàng'}
+                                isAdmin={isFinancialAuthenticated}
+                            />
+                        )}
+                        <ProjectActivityHistory projectId={project?.id} activities={data.activities} />
+                    </TabsContent>
+
+                    {/* Tab 4: Finance (Protected) */}
+                    {isFinancialAuthenticated && (
+                        <TabsContent value="finance" className="space-y-8 mt-0 focus-visible:outline-none focus-visible:ring-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                            {/* Stats Row */}
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                {[
+                                    { label: 'Tổng đầu tư', value: totalInvestment, icon: Wallet, color: 'text-zinc-600', bgColor: 'bg-zinc-100' },
+                                    { label: 'Đã thanh toán', value: totalPaid, icon: CreditCard, color: 'text-zinc-950', bgColor: 'bg-zinc-100' },
+                                    { label: 'Còn lại', value: balanceDue, icon: Banknote, color: 'text-zinc-950', bgColor: 'bg-zinc-100' },
+                                    { label: 'Tiến độ', value: `${projectProgress}%`, icon: Activity, color: 'text-zinc-950', bgColor: 'bg-zinc-100' },
+                                ].map((stat, i) => (
+                                    <div key={i} className="bg-white p-5 rounded-2xl border border-zinc-200 shadow-sm transition-all hover:shadow-md hover:border-zinc-300">
+                                        <div className="flex items-center gap-3 mb-3">
+                                            <div className={cn("p-1.5 rounded-lg border border-zinc-200/60 shadow-xs", stat.bgColor)}>
+                                                <stat.icon className={cn("w-4 h-4", stat.color)} />
+                                            </div>
+                                            <span className="text-[12px] font-bold text-zinc-500 uppercase tracking-widest">{stat.label}</span>
+                                        </div>
+                                        <div className="flex items-baseline gap-1 mt-1">
+                                            <div className="text-xl sm:text-2xl font-bold text-zinc-950 tracking-tighter tabular-nums truncate">
+                                                {typeof stat.value === 'number' ? formatCurrency(stat.value).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim() : stat.value}
+                                            </div>
+                                            {typeof stat.value === 'number' && (
+                                                <div className="text-sm font-bold text-zinc-400">đ</div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex items-center gap-2 px-2 mt-2">
+                                <Receipt className="w-5 h-5 text-zinc-800" />
+                                <h3 className="text-lg font-bold text-zinc-950 tracking-tight leading-tight">Chi tiết báo giá & Pháp lý</h3>
+                            </div>
+
+                            <div className="grid gap-6">
+                                {displayItems.map((item: any, idx: number) => (
+                                    <FinancialItemCard
+                                        key={item.id}
+                                        item={item}
+                                        idx={idx}
+                                        token={token}
+                                        quotationOptions={getQuotationOptionsForItem(item)}
+                                        selectedQuotationId={selectedQuotationMap[item.id]}
+                                        onSelectQuotation={(qId: string) => handleSelectQuotation(item.id, qId)}
+                                        timeline={timeline}
+                                        contracts={contracts}
+                                        onViewContractDoc={handleViewContractDoc}
+                                        onViewDoc={handleViewDoc}
+                                    />
+                                ))}
+                            </div>
+                        </TabsContent>
+                    )}
+                </Tabs>
+
+                {/* Document Viewer Dialog */}
+                <Dialog open={isViewingDoc} onOpenChange={setIsViewingDoc}>
+                    <DialogContent className="max-w-[95vw] lg:max-w-[1100px] w-full p-0 overflow-hidden bg-zinc-50 border-none rounded-2xl shadow-2xl" showCloseButton={false}>
+                        <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-zinc-200">
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center border border-zinc-200">
+                                    <FileText className="w-4 h-4 text-zinc-900" />
+                                </div>
+                                <DialogTitle className="text-sm font-bold text-zinc-900 uppercase tracking-widest">Chi tiết tài liệu</DialogTitle>
+                            </div>
+                            <Button
+                                variant="outline"
+                                onClick={() => setIsViewingDoc(false)}
+                                className="text-xs font-bold text-zinc-700 hover:text-zinc-950 border-zinc-200 bg-white shadow-sm"
+                            >
+                                Đóng tài liệu
+                            </Button>
+                        </div>
+                        <div className="px-2 py-4 sm:px-8 sm:py-8 overflow-auto max-h-[calc(100vh-120px)] sm:max-h-[85vh]">
                             <style>{`
                                 .portal-doc-viewer > div { padding: 10mm 15mm !important; }
                                 @media (min-width: 1024px) { .portal-doc-viewer > div { padding: 15mm 20mm !important; } }
                             `}</style>
                             <div
-                                className="portal-doc-viewer bg-white shadow-lg border border-zinc-200 text-[#000] mx-auto relative shrink-0"
+                                className="portal-doc-viewer bg-white shadow-xl border border-zinc-200 text-[#000] mx-auto relative shrink-0 rounded-sm"
                                 style={{ width: '210mm', minWidth: '210mm', minHeight: '297mm' }}
                                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(selectedDocContent || '') }}
                             />
@@ -445,66 +443,122 @@ export default function PortalContent({ data, token }: PortalContentProps) {
     )
 }
 
-/* ===== Work Item Card ===== */
-function WorkItemCard({ item, idx, token, quotationOptions = [], selectedQuotationId, onSelectQuotation, timeline = [], contracts = [], onViewContractDoc, onViewDoc }: {
-    item: any; idx: number; token: string;
-    quotationOptions?: any[];
-    selectedQuotationId?: string;
-    onSelectQuotation?: (qId: string) => void;
-    timeline?: any[];
-    contracts?: any[];
-    onViewContractDoc?: (htmlContent: string) => void;
-    onViewDoc?: (docId: string) => void;
-}) {
-    const quotation = item.quotation
-    const contract = item.contract
+/* ===== Work Item Accordion (Overview Tab) ===== */
+function WorkItemAccordionCard({ item, idx }: { item: any; idx: number }) {
     const deliveryLinks = item.delivery_links || []
     const itemTasks = item.tasks || []
     const completedTasks = itemTasks.filter((t: any) => t.status === 'completed').length
     const totalTasks = itemTasks.length
 
-    // Determine the active quotation (selected vs default)
-    const activeQuotation = quotationOptions.length > 1
-        ? quotationOptions.find((q: any) => q.id === selectedQuotationId) || quotation
-        : quotation
-
-    const activeAmount = activeQuotation?.total_amount || item.total_amount || 0
-
-    // Get milestones for this work item's contract
-    const contractId = contract?.id
-    const itemMilestones = contractId
-        ? timeline.filter((t: any) => t.contract_id === contractId && (t.type === 'work' || t.type === 'payment'))
-        : []
-
     return (
-        <div className="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm hover:border-zinc-300 transition-all">
-            {/* Header — always on top */}
-            <div className="flex items-center justify-between p-5 border-b border-zinc-100">
-                <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900 text-white text-sm font-semibold">
+        <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-sm hover:border-zinc-300 transition-all p-5 group">
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                <div className="flex items-start gap-4 flex-1">
+                    <div className="flex shrink-0 items-center justify-center w-10 h-10 rounded-xl bg-zinc-100 text-zinc-500 font-bold border border-zinc-200">
                         {idx + 1}
                     </div>
                     <div>
-                        <h4 className="text-[15px] font-semibold text-zinc-950 tracking-tight leading-tight">{item.title}</h4>
-                        {item.description && <p className="text-xs text-zinc-400 mt-1 line-clamp-1">{item.description}</p>}
+                        <div className="flex items-center gap-3 mb-1">
+                            <h4 className="text-base font-bold text-zinc-950 tracking-tight">{item.title}</h4>
+                            <StatusBadge status={item.status} />
+                        </div>
+                        {item.description && <p className="text-[13px] text-zinc-500 leading-relaxed max-w-2xl font-medium">{item.description}</p>}
                     </div>
                 </div>
-                <StatusBadge status={item.status} />
+
+                {/* Delivery Links inline at top */}
+                {deliveryLinks.length > 0 && (
+                    <div className="flex flex-col gap-2 shrink-0 md:min-w-[200px]">
+                        <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-1">
+                            <Link2 className="w-3 h-3" /> Link Bàn Giao
+                        </span>
+                        {deliveryLinks.map((link: any, lIdx: number) => (
+                            <a key={lIdx} href={link.url} target="_blank"
+                                className="flex items-center gap-2 p-2 rounded-lg border border-zinc-200 bg-zinc-50 hover:bg-white hover:border-zinc-300 transition-all">
+                                <ExternalLink className="w-3.5 h-3.5 text-blue-500" />
+                                <span className="text-[12px] font-semibold text-zinc-700 truncate">{link.label}</span>
+                            </a>
+                        ))}
+                    </div>
+                )}
             </div>
 
-            {/* Quotation Switcher — sleek inline strip */}
-            {quotationOptions.length > 1 && (
-                <div className="flex items-center justify-between px-5 py-3 border-b border-zinc-100 bg-zinc-50/30">
-                    <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center shrink-0">
-                            <ListTodo className="w-4 h-4 text-zinc-600" />
+            {/* Todo List Inline */}
+            <div className="mt-6 pt-5 border-t border-zinc-100">
+                <div className="flex items-center justify-between mb-4">
+                    <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                        <ListTodo className="w-3.5 h-3.5" /> Danh sách công việc ({completedTasks}/{totalTasks})
+                    </p>
+                    {totalTasks > 0 && (
+                        <div className="w-32 h-1.5 bg-zinc-100 rounded-full overflow-hidden border border-zinc-200/50">
+                            <div 
+                                className="h-full bg-zinc-900 rounded-full transition-all duration-500" 
+                                style={{ width: `${(completedTasks / totalTasks) * 100}%` }} 
+                            />
                         </div>
-                        <div>
-                            <p className="text-xs font-semibold text-zinc-700 leading-tight">Phương án báo giá</p>
-                            <p className="text-xs text-zinc-400">Chọn phương án phù hợp để xem chi tiết</p>
-                        </div>
+                    )}
+                </div>
+
+                {totalTasks > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        {itemTasks.map((task: any) => (
+                            <div key={task.id} className="flex items-start gap-3 p-3 rounded-xl border border-zinc-100 bg-zinc-50/50 hover:bg-zinc-50 transition-colors">
+                                {task.status === 'completed' ? (
+                                    <CheckCircle className="w-4 h-4 text-zinc-900 mt-0.5 shrink-0" />
+                                ) : task.status === 'in_progress' ? (
+                                    <Clock className="w-4 h-4 text-blue-500 mt-0.5 shrink-0" />
+                                ) : (
+                                    <Circle className="w-4 h-4 text-zinc-300 mt-0.5 shrink-0" />
+                                )}
+                                <div className="min-w-0 flex-1">
+                                    <p className={cn(
+                                        "text-[13px] font-semibold",
+                                        task.status === 'completed' ? "line-through text-zinc-400" : "text-zinc-800"
+                                    )}>
+                                        {task.title}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                ) : (
+                    <div className="py-4 text-center text-zinc-400 text-xs font-medium">Lộ trình công việc trống.</div>
+                )}
+            </div>
+        </div>
+    )
+}
+
+/* ===== Financial Item Card (Finance Tab) ===== */
+function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQuotationId, onSelectQuotation, timeline = [], contracts = [], onViewContractDoc, onViewDoc }: any) {
+    const quotation = item.quotation
+    const contract = item.contract
+    const activeQuotation = quotationOptions.length > 1
+        ? quotationOptions.find((q: any) => q.id === selectedQuotationId) || quotation
+        : quotation
+    const activeAmount = activeQuotation?.total_amount || item.total_amount || 0
+    const contractId = contract?.id
+    const itemMilestones = contractId ? timeline.filter((t: any) => t.contract_id === contractId && (t.type === 'work' || t.type === 'payment')) : []
+
+    return (
+        <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-sm hover:border-zinc-300 transition-all">
+            <div className="flex items-center justify-between p-5 border-b border-zinc-100 bg-zinc-50/50">
+                <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-zinc-200 text-zinc-600 text-[13px] font-bold">
+                        {idx + 1}
+                    </div>
+                    <h4 className="text-[15px] font-bold text-zinc-950 tracking-tight">{item.title}</h4>
+                </div>
+                <div className="flex items-baseline gap-1">
+                    <span className="text-[22px] font-bold text-zinc-950 tracking-tighter tabular-nums">{formatCurrency(activeAmount).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim()}</span>
+                    <span className="text-sm font-bold text-zinc-500">đ</span>
+                </div>
+            </div>
+
+            {quotationOptions.length > 1 && (
+                <div className="px-5 py-4 border-b border-zinc-100 flex flex-wrap items-center gap-3 bg-white">
+                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest mr-2">Chọn giải pháp mưc phí:</span>
+                    <div className="flex gap-2">
                         {quotationOptions.map((q: any, qIdx: number) => {
                             const isActive = q.id === (selectedQuotationId || quotation?.id)
                             return (
@@ -512,17 +566,15 @@ function WorkItemCard({ item, idx, token, quotationOptions = [], selectedQuotati
                                     key={q.id}
                                     onClick={() => onSelectQuotation?.(q.id)}
                                     className={cn(
-                                        "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-center border",
+                                        "flex items-center gap-2 px-4 py-2 rounded-xl transition-all border",
                                         isActive
-                                            ? "bg-zinc-950 text-white border-zinc-950 shadow-sm"
-                                            : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400 hover:shadow-sm"
+                                            ? "bg-zinc-950 border-zinc-950 text-white shadow-md ring-2 ring-zinc-950/20"
+                                            : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
                                     )}
                                 >
-                                    <span className={cn("text-xs font-bold uppercase tracking-wide", isActive ? "text-zinc-400" : "text-zinc-400")}>
-                                        {q.status === 'accepted' ? '✓' : `PA${qIdx + 1}`}
-                                    </span>
-                                    <span className={cn("text-sm font-bold tabular-nums", isActive ? "text-white" : "text-zinc-900")}>
-                                        {formatCurrency(q.total_amount)}
+                                    <span className="text-[12px] font-bold uppercase">{q.status === 'accepted' ? 'Đã Chọn' : `PA${qIdx + 1}`}</span>
+                                    <span className="text-sm font-bold tabular-nums ml-1">
+                                        {formatCurrency(q.total_amount).replace(/\s*[₫đ]\s*$/g, '').trim()}
                                     </span>
                                 </button>
                             )
@@ -531,14 +583,13 @@ function WorkItemCard({ item, idx, token, quotationOptions = [], selectedQuotati
                 </div>
             )}
 
-            <div className="flex flex-col lg:flex-row">
-                {/* Left: Info */}
-                <div className="lg:w-2/5 p-5 border-b lg:border-b-0 lg:border-r border-zinc-100 space-y-5">
-                    {/* Documents linked */}
-                    <div className="space-y-2">
+            <div className="flex flex-col lg:flex-row bg-white">
+                {/* Documents linked */}
+                <div className="lg:w-1/2 p-5 border-b lg:border-b-0 lg:border-r border-zinc-100">
+                    <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-4">Hồ sơ pháp lý đính kèm</p>
+                    <div className="space-y-3">
                         {(() => {
                             const renderedDocs: any[] = []
-                            // 1. Quotaion
                             if (activeQuotation && ['sent', 'viewed', 'accepted', 'converted'].includes(activeQuotation.status)) {
                                 renderedDocs.push({
                                     title: 'Báo giá',
@@ -549,71 +600,47 @@ function WorkItemCard({ item, idx, token, quotationOptions = [], selectedQuotati
                                     link: `/quote/${activeQuotation.public_token || token}`
                                 })
                             }
-
-                            // 2. Contract Documents
                             if (contract) {
-                                const contractDocs: any[] = contract.documents || []
-                                const visibleDocs = contractDocs.filter((d: any) => d.is_visible_on_portal !== false)
-
-                                // Deduplicate DB documents to prevent showing duplicates caused by race conditions
+                                const visibleDocs = (contract.documents || []).filter((d: any) => d.is_visible_on_portal !== false)
                                 const uniqueDocsMap = new Map<string, any>()
-                                for (const d of visibleDocs) {
-                                    const key = `${d.type}:${d.milestone_id || 'none'}`
-                                    uniqueDocsMap.set(key, d)
-                                }
+                                for (const d of visibleDocs) uniqueDocsMap.set(`${d.type}:${d.milestone_id || 'none'}`, d)
                                 const uniqueVisibleDocs = Array.from(uniqueDocsMap.values())
-
                                 const paymentDocs = uniqueVisibleDocs.filter((d: any) => d.type === 'payment_request')
-                                const DOC_TYPE_LABELS: Record<string, string> = {
-                                    contract: 'Hợp đồng',
-                                    order: 'Đơn đặt hàng',
-                                    payment_request: 'Đề nghị thanh toán',
-                                    delivery_minutes: 'Biên bản bàn giao',
-                                    acceptance: 'Biên bản nghiệm thu',
-                                }
+                                const DOC_TYPE_LABELS: Record<string, string> = { contract: 'Hợp đồng', order: 'Đơn đặt hàng', payment_request: 'Đề nghị thanh toán', delivery_minutes: 'Biên bản bàn giao', acceptance: 'Biên bản nghiệm thu' }
 
                                 for (const d of uniqueVisibleDocs) {
                                     const metaTitle = DOC_TYPE_LABELS[d.type] || d.type
                                     let docTitle = metaTitle
                                     if (d.type === 'payment_request' && paymentDocs.length > 1) {
-                                        const idx = paymentDocs.indexOf(d) + 1
-                                        docTitle = `${metaTitle} đợt ${idx}`
+                                        docTitle = `${metaTitle} đợt ${paymentDocs.indexOf(d) + 1}`
                                     }
-
-                                    renderedDocs.push({
-                                        title: docTitle,
-                                        key: d.id,
-                                        number: d.doc_number || (d.type === 'contract' ? contract.contract_number : ''),
-                                        status: d.status,
-                                        icon: FileSignature,
-                                        docId: d.id,
-                                        content: d.content
-                                    })
+                                    renderedDocs.push({ title: docTitle, key: d.id, number: d.doc_number || (d.type === 'contract' ? contract.contract_number : ''), status: d.status, icon: FileSignature, docId: d.id, content: d.content })
                                 }
                             }
+                            if (renderedDocs.length === 0) return <div className="text-xs text-zinc-400 py-2">Chưa có chứng từ.</div>
 
                             return renderedDocs.map((d, i) => (
-                                <div key={d.key || i} className="flex items-center justify-between p-3 rounded-xl border border-zinc-100 hover:border-zinc-300 hover:bg-zinc-50 transition-all group">
+                                <div key={d.key || i} className="flex items-center justify-between p-3 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:shadow-sm transition-all shadow-xs">
                                     <div className="flex items-center gap-3">
-                                        <d.icon className="w-4 h-4 text-muted-foreground" />
+                                        <div className="p-2 rounded-lg bg-zinc-100 border border-zinc-200/50">
+                                            <d.icon className="w-4 h-4 text-zinc-600" />
+                                        </div>
                                         <div>
-                                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{d.title}</p>
-                                            <p className="text-xs font-bold font-mono text-zinc-900 mt-0.5">#{d.number || '---'}</p>
+                                            <p className="text-[12px] font-bold text-zinc-900 tracking-tight">{d.title}</p>
+                                            <div className="flex items-center gap-2 mt-0.5">
+                                                <p className="text-[11px] font-bold font-mono text-zinc-500">#{d.number || '---'}</p>
+                                                <StatusBadge status={d.status} />
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <StatusBadge status={d.status} />
                                         {d.link ? (
-                                            <a href={d.link} target="_blank" className="flex items-center justify-center w-7 h-7 bg-white rounded-lg border border-zinc-200 hover:bg-zinc-100 transition-colors">
-                                                <ExternalLink className="w-3.5 h-3.5 text-zinc-600" />
+                                            <a href={d.link} target="_blank" className="flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-lg border border-zinc-200 hover:bg-zinc-50 transition-colors shadow-xs text-[11px] font-bold text-zinc-700">
+                                                Xem <ExternalLink className="w-3 h-3 text-zinc-500" />
                                             </a>
                                         ) : d.docId ? (
-                                            <button
-                                                onClick={() => d.content ? onViewContractDoc?.(d.content) : onViewDoc?.(d.docId)}
-                                                className="flex items-center gap-1 px-2 py-1 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-100 transition-colors text-xs font-semibold text-zinc-700"
-                                            >
-                                                <Eye className="w-3 h-3" />
-                                                Xem
+                                            <button onClick={() => d.content ? onViewContractDoc?.(d.content) : onViewDoc?.(d.docId)} className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 text-white rounded-lg shadow-md hover:bg-zinc-800 transition-colors text-[11px] font-bold">
+                                                <Eye className="w-3 h-3" /> Xem Doc
                                             </button>
                                         ) : null}
                                     </div>
@@ -621,143 +648,45 @@ function WorkItemCard({ item, idx, token, quotationOptions = [], selectedQuotati
                             ))
                         })()}
                     </div>
+                </div>
 
-                    {/* Amount */}
-                    <div className="pt-4 border-t border-zinc-100">
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-1.5">Giá trị hạng mục</p>
-                        <div className="flex items-baseline gap-1">
-                            <span className="text-xl sm:text-2xl font-bold text-zinc-950 tracking-tighter tabular-nums">{formatCurrency(activeAmount).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim()}</span>
-                            <span className="text-sm font-semibold text-zinc-900">đ</span>
-                        </div>
-                    </div>
-
-                    {/* Payment Milestones — List format */}
-                    {itemMilestones.length > 0 && (
-                        <div className="pt-4 border-t border-zinc-100">
-                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                                <Wallet className="w-3 h-3" />
-                                Lộ trình thanh toán
-                            </p>
-                            <div className="space-y-2">
-                                {itemMilestones.map((m: any, mIdx: number) => (
-                                    <div key={m.id} className="flex items-center gap-3 py-2 px-3 rounded-lg bg-zinc-50/80 hover:bg-zinc-100/80 transition-colors">
-                                        <div className={cn(
-                                            "w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0",
-                                            m.status === 'completed'
-                                                ? "bg-zinc-900 text-white"
-                                                : "bg-white text-zinc-500 border border-zinc-300"
-                                        )}>
-                                            {m.status === 'completed' ? <Check className="w-3 h-3" /> : mIdx + 1}
-                                        </div>
-                                        <div className="min-w-0 flex-1">
-                                            <p className={cn(
-                                                "text-[12px] font-semibold leading-tight",
-                                                m.status === 'completed' ? "text-zinc-400 line-through" : "text-zinc-800"
-                                            )}>
-                                                {m.title}
-                                            </p>
-                                            <p className="text-[11px] text-zinc-400 mt-0.5">
-                                                Hạn: {formatDate(m.date)}
-                                            </p>
+                {/* Payment Milestones */}
+                <div className="lg:w-1/2 p-5 bg-zinc-50/30">
+                    <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <Wallet className="w-3.5 h-3.5" /> Lộ trình thanh toán
+                    </p>
+                    {itemMilestones.length > 0 ? (
+                        <div className="space-y-2">
+                            {itemMilestones.map((m: any, mIdx: number) => (
+                                <div key={m.id} className="flex flex-col gap-2 p-3 rounded-xl border border-zinc-200 bg-white shadow-xs hover:border-zinc-300 transition-all">
+                                    <div className="flex items-start justify-between">
+                                        <div className="flex items-center gap-2.5">
+                                            <div className={cn("w-6 h-6 rounded-md flex items-center justify-center text-[11px] font-bold shrink-0 border", m.status === 'completed' ? "bg-emerald-500 text-white border-emerald-600" : "bg-zinc-100 text-zinc-500 border-zinc-200")}>
+                                                {m.status === 'completed' ? <Check className="w-3.5 h-3.5" /> : mIdx + 1}
+                                            </div>
+                                            <div>
+                                                <p className={cn("text-[13px] font-bold", m.status === 'completed' ? "text-zinc-400 line-through" : "text-zinc-900")}>
+                                                    {m.title}
+                                                </p>
+                                                <p className="text-[11px] text-zinc-400 font-semibold mt-0.5">
+                                                    Hạn: <span className="text-zinc-600">{formatDate(m.date)}</span>
+                                                </p>
+                                            </div>
                                         </div>
                                         {m.amount > 0 && (
-                                            <div className="text-right shrink-0">
-                                                <span className="text-[12px] font-bold text-zinc-950 tabular-nums">
-                                                    {formatCurrency(m.amount).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim()}
-                                                </span>
-                                                <span className="text-[10px] text-zinc-500 ml-0.5">đ</span>
+                                            <div className="text-right shrink-0 bg-zinc-50 px-3 py-1.5 rounded-lg border border-zinc-100">
+                                                <span className="text-[13px] font-bold text-zinc-950 tabular-nums">{formatCurrency(m.amount).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim()}</span>
+                                                <span className="text-[10px] text-zinc-500 ml-1 font-bold">VNĐ</span>
                                             </div>
                                         )}
                                     </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Delivery Links */}
-                    {deliveryLinks.length > 0 && (
-                        <div className="pt-3 border-t border-zinc-100">
-                            <p className="text-xs text-zinc-500 mb-2 flex items-center gap-1.5">
-                                <Link2 className="w-3 h-3" />
-                                Link sản phẩm bàn giao
-                            </p>
-                            <div className="space-y-1.5">
-                                {deliveryLinks.map((link: any, lIdx: number) => (
-                                    <a key={lIdx} href={link.url} target="_blank"
-                                        className="flex items-center justify-between p-2 rounded-lg bg-zinc-50 hover:bg-zinc-100 transition-colors group">
-                                        <div className="flex items-center gap-2">
-                                            <ExternalLink className="w-3 h-3 text-zinc-400" />
-                                            <span className="text-[12px] font-medium text-zinc-700">{link.label}</span>
-                                        </div>
-                                        {link.date && <span className="text-xs text-zinc-400">{formatDate(link.date)}</span>}
-                                    </a>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-                {/* Right: Tasks (Todo List) */}
-                <div className="lg:w-3/5 p-5">
-                    <div className="flex items-center justify-between mb-4">
-                        <p className="text-xs font-bold text-zinc-400 flex items-center gap-2">
-                            <ListTodo className="w-3.5 h-3.5" />
-                            Danh sách công việc
-                        </p>
-                        {totalTasks > 0 && (
-                            <span className="text-xs font-bold text-zinc-500 bg-zinc-100 px-2 py-0.5 rounded-full">
-                                {completedTasks}/{totalTasks}
-                            </span>
-                        )}
-                    </div>
-
-                    {totalTasks > 0 ? (
-                        <div className="space-y-1.5">
-                            {/* Progress bar */}
-                            {totalTasks > 0 && (
-                                <div className="mb-4">
-                                    <div className="h-1.5 bg-zinc-100 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-zinc-900 rounded-full transition-all duration-500"
-                                            style={{ width: `${(completedTasks / totalTasks) * 100}%` }}
-                                        />
-                                    </div>
-                                </div>
-                            )}
-                            {itemTasks.map((task: any) => (
-                                <div key={task.id} className="flex items-start gap-3 py-2 px-3 rounded-lg hover:bg-zinc-50 transition-colors">
-                                    {task.status === 'completed' ? (
-                                        <CheckCircle className="w-4 h-4 text-zinc-900 mt-0.5 shrink-0" />
-                                    ) : task.status === 'in_progress' ? (
-                                        <Clock className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0" />
-                                    ) : task.status === 'blocked' ? (
-                                        <AlertCircle className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0" />
-                                    ) : (
-                                        <Circle className="w-4 h-4 text-zinc-300 mt-0.5 shrink-0" />
-                                    )}
-                                    <div className="min-w-0 flex-1">
-                                        <p className={cn(
-                                            "text-[13px]",
-                                            task.status === 'completed'
-                                                ? "line-through text-zinc-400"
-                                                : "text-zinc-800"
-                                        )}>
-                                            {task.title}
-                                        </p>
-                                        {task.description && (
-                                            <p className="text-xs text-zinc-400 mt-0.5 truncate">{task.description}</p>
-                                        )}
-                                    </div>
-                                    {task.priority === 'high' && (
-                                        <span className="text-xs font-semibold text-red-500 bg-red-50 px-1.5 py-0.5 rounded">Cao</span>
-                                    )}
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        <div className="py-8 text-center">
-                            <ListTodo className="w-6 h-6 text-zinc-200 mx-auto mb-2" />
-                            <p className="text-xs text-zinc-400">Lộ trình công việc đang được cập nhật</p>
+                        <div className="py-8 text-center bg-white rounded-xl border border-zinc-200 border-dashed">
+                            <Receipt className="w-6 h-6 text-zinc-300 mx-auto mb-2" />
+                            <p className="text-xs text-zinc-500 font-medium">Lộ trình thanh toán trống</p>
                         </div>
                     )}
                 </div>
@@ -766,49 +695,48 @@ function WorkItemCard({ item, idx, token, quotationOptions = [], selectedQuotati
     )
 }
 
-
 /* ===== Timeline Section ===== */
 function TimelineSection({ timeline }: { timeline: any[] }) {
-    if (timeline.length === 0) return null
+    if (timeline.length === 0) return (
+        <div className="bg-white rounded-2xl border border-zinc-200 border-dashed p-12 text-center">
+            <Clock className="w-10 h-10 text-zinc-200 mx-auto mb-4" />
+            <p className="text-sm text-zinc-500 font-medium">Lộ trình thời gian trống</p>
+        </div>
+    )
 
     return (
-        <div className="bg-white rounded-xl border border-zinc-200 overflow-hidden">
+        <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-sm">
             <div className="p-6 border-b border-zinc-100">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center">
-                        <Clock className="w-5 h-5 text-zinc-900" />
+                    <div className="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center border border-zinc-200">
+                        <Activity className="w-5 h-5 text-zinc-600" />
                     </div>
                     <div className="space-y-0.5">
-                        <h3 className="text-lg font-semibold text-zinc-950 tracking-tight leading-tight">Tiến độ triển khai chi tiết</h3>
-                        <p className="text-xs text-zinc-400 uppercase tracking-widest">Live Updates & Timeline</p>
+                        <h3 className="text-lg font-bold text-zinc-950 tracking-tight leading-tight">Biểu đồ thời gian thao tác</h3>
+                        <p className="text-[11px] text-zinc-400 uppercase tracking-widest font-bold">Lịch sử Lộ trình hệ thống</p>
                     </div>
                 </div>
             </div>
-            <div className="p-5">
-                <div className="relative pl-6 border-l-2 border-zinc-100 ml-2 space-y-6">
+            <div className="p-6">
+                <div className="relative pl-6 border-l-2 border-zinc-100 ml-2 space-y-8">
                     {timeline.map((event, eIdx) => (
-                        <div key={event.id} className="relative">
+                        <div key={event.id} className="relative pt-1">
                             {/* Dot */}
                             <div className={cn(
-                                "absolute -left-[25px] top-0.5 h-3.5 w-3.5 rounded-full border-2 bg-white",
-                                event.status === 'completed' ? "border-zinc-900" : "border-zinc-200"
-                            )}>
-                                {event.status === 'completed' && <div className="absolute inset-0.5 rounded-full bg-zinc-900" />}
-                            </div>
+                                "absolute -left-[29px] top-1.5 h-4 w-4 rounded-full border-[3px] bg-white transition-colors",
+                                event.status === 'completed' ? "border-emerald-500 shadow-[0_0_0_2px_rgba(16,185,129,0.2)]" : "border-zinc-300"
+                            )} />
 
-                            <div className="flex items-start justify-between">
+                            <div className="flex flex-col md:flex-row md:items-start justify-between gap-2">
                                 <div>
-                                    <h6 className={cn(
-                                        "text-[13px] font-semibold",
-                                        event.status === 'completed' ? "text-zinc-900" : "text-zinc-400"
-                                    )}>
+                                    <h6 className={cn("text-[14px] font-bold tracking-tight", event.status === 'completed' ? "text-zinc-900" : "text-zinc-500")}>
                                         {event.title}
                                     </h6>
-                                    {event.description && (
-                                        <p className="text-[12px] text-zinc-500 mt-0.5 max-w-lg">{event.description}</p>
-                                    )}
+                                    {event.description && <p className="text-[12px] text-zinc-500 mt-1 max-w-lg font-medium leading-relaxed">{event.description}</p>}
                                 </div>
-                                <span className="text-xs text-zinc-400 shrink-0 ml-4">{formatDate(event.date)}</span>
+                                <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 bg-zinc-50 px-2 py-1 rounded-md border border-zinc-100 shrink-0">
+                                    {formatDate(event.date)}
+                                </span>
                             </div>
                         </div>
                     ))}

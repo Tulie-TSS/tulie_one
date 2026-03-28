@@ -24,6 +24,7 @@ import { ProjectDocumentationSet } from '@/components/projects/project-documenta
 import { ProjectActivityHistory } from '@/components/projects/project-activity-history'
 import { getProjectTasks } from '@/lib/supabase/services/task-service'
 import { PortalViewAnalytics } from '@/components/portal/portal-view-analytics'
+import { FeedbackBoard } from '@/components/portal/feedback-board'
 
 export default async function ProjectDetailPage({ params }: any) {
     const { id } = await params
@@ -250,6 +251,7 @@ export default async function ProjectDetailPage({ params }: any) {
                 <div className="space-y-6">
                     <ProjectSidebar project={project} teamMembers={teamMembers} />
                     <PortalViewAnalytics projectId={project.id} />
+                    <FeedbackBoard projectId={project.id} customerId={project.customer_id} customerName="Agency Admin" isAdmin={true} />
                     <ProjectActivityHistory projectId={project.id} />
                 </div>
             </div>

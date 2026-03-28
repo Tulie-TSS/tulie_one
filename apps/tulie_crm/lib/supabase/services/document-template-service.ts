@@ -685,28 +685,23 @@ export async function generateDocumentBundle(contractId: string) {
         return
     }
 
-    // 2. Save visibility state of existing drafts before deleting
-    const { data: existingDrafts } = await supabase
+    // 2. Get all existing documents (both draft and signed) to reconcile
+    const { data: existingDocs } = await supabase
         .from('contract_documents')
-        .select('type, milestone_id, is_visible_on_portal')
+        .select('id, type, milestone_id, is_visible_on_portal, status')
         .eq('contract_id', contractId)
-        .eq('status', 'draft')
     
-    // Build a map: "type:milestone_id" -> is_visible_on_portal
-    const visibilityMap = new Map<string, boolean>()
-    if (existingDrafts) {
-        for (const d of existingDrafts) {
-            const key = `${d.type}:${d.milestone_id || ''}`
-            visibilityMap.set(key, d.is_visible_on_portal !== false)
+    // Build a map: "type:milestone_id" -> existing doc info
+    const existingMap = new Map<string, any>()
+    if (existingDocs) {
+        for (const d of existingDocs) {
+            const key = `${d.type}:${d.milestone_id || 'null'}`
+            // Prioritize keeping 'signed' docs if there are duplicates for some reason
+            if (!existingMap.has(key) || d.status === 'signed') {
+                existingMap.set(key, d)
+            }
         }
     }
-
-    // Delete existing DRAFT documents (preserve signed ones)
-    await supabase
-        .from('contract_documents')
-        .delete()
-        .eq('contract_id', contractId)
-        .eq('status', 'draft')
 
     // 3. Determine which doc types this contract needs
     const docTypes = getDocTypesForContract(contract.type || 'contract')
@@ -818,35 +813,58 @@ export async function generateDocumentBundle(contractId: string) {
         }
     }
 
-    // 5. Insert all generated documents (one by one to handle FK errors gracefully)
+    // 5. Reconcile existing vs target documents
     if (docs.length > 0) {
-        // Run a second delete right before insertion to clear any drafts 
-        // that might have been inserted by concurrent requests during the slow generation phase
-        await supabase
-            .from('contract_documents')
-            .delete()
-            .eq('contract_id', contractId)
-            .eq('status', 'draft')
+        const targetKeys = new Set<string>()
 
         for (const doc of docs) {
-            // Restore previous visibility state
-            const visKey = `${doc.type}:${doc.milestone_id || ''}`
-            const wasVisible = visibilityMap.get(visKey)
-            if (wasVisible !== undefined) {
-                doc.is_visible_on_portal = wasVisible
-            }
-
-            const { error: insertErr } = await supabase
-                .from('contract_documents')
-                .insert(doc)
-
-            if (insertErr) {
-                console.error(`Error inserting ${doc.type}:`, insertErr.message)
-                // If FK error on milestone_id, retry without it
-                if (insertErr.code === '23503' && doc.milestone_id) {
+            const key = `${doc.type}:${doc.milestone_id || 'null'}`
+            targetKeys.add(key)
+            
+            const existing = existingMap.get(key)
+            
+            if (existing) {
+                // Document exists. If it is a draft, update its content so we don't break UI references.
+                if (existing.status === 'draft') {
                     await supabase
                         .from('contract_documents')
-                        .insert({ ...doc, milestone_id: null })
+                        .update({
+                            content: doc.content,
+                            doc_number: doc.doc_number
+                        })
+                        .eq('id', existing.id)
+                }
+                // If it is signed/accepted, we do NOT regenerate or update the content to preserve state.
+            } else {
+                // Document doesn't exist, insert it
+                const { error: insertErr } = await supabase
+                    .from('contract_documents')
+                    .insert(doc)
+
+                if (insertErr) {
+                    console.error(`Error inserting ${doc.type}:`, insertErr.message)
+                    // If FK error on milestone_id, retry without it
+                    if (insertErr.code === '23503' && doc.milestone_id) {
+                        await supabase
+                            .from('contract_documents')
+                            .insert({ ...doc, milestone_id: null })
+                    }
+                }
+            }
+        }
+
+        // 6. Cleanup obsolete draft documents 
+        // Example: The user removed a payment milestone, so its corresponding ĐNTT draft should be removed.
+        if (existingDocs) {
+            for (const d of existingDocs) {
+                if (d.status === 'draft') {
+                    const key = `${d.type}:${d.milestone_id || 'null'}`
+                    if (!targetKeys.has(key)) {
+                        await supabase
+                            .from('contract_documents')
+                            .delete()
+                            .eq('id', d.id)
+                    }
                 }
             }
         }

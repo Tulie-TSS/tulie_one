@@ -110,3 +110,31 @@ export async function PATCH(request: NextRequest) {
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }
+
+/**
+ * DELETE /api/portal-feedback?id=xxx
+ * Delete a feedback item
+ */
+export async function DELETE(request: NextRequest) {
+    try {
+        const id = request.nextUrl.searchParams.get('id')
+        if (!id) {
+            return NextResponse.json({ error: 'id required' }, { status: 400 })
+        }
+
+        const supabase = createAdminClient()
+        const { error } = await supabase
+            .from('portal_feedback_items')
+            .delete()
+            .eq('id', id)
+
+        if (error) {
+            console.error('Error deleting feedback:', error)
+            return NextResponse.json({ error: error.message }, { status: 500 })
+        }
+
+        return NextResponse.json({ success: true })
+    } catch (error: any) {
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    }
+}

@@ -34,6 +34,8 @@ import {
     ListTodo,
     Loader2,
     ZoomIn,
+    Edit,
+    Trash2,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -68,6 +70,7 @@ interface FeedbackBoardProps {
     projectId: string
     customerId?: string
     customerName?: string
+    isAdmin?: boolean
 }
 
 const STATUS_CONFIG: Record<string, { label: string; icon: typeof Circle; bg: string; text: string; dot: string; border: string }> = {
@@ -131,11 +134,17 @@ function ImageLightbox({ src, alt, onClose }: { src: string; alt: string; onClos
     )
 }
 
-export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackBoardProps) {
+export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = false }: FeedbackBoardProps) {
     const [items, setItems] = useState<FeedbackItem[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [showForm, setShowForm] = useState(false)
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
+
+    // Admin edit state
+    const [editItemId, setEditItemId] = useState<string | null>(null)
+    const [editTitle, setEditTitle] = useState('')
+    const [editContent, setEditContent] = useState('')
+    const [isDeleting, setIsDeleting] = useState<string | null>(null)
 
     // New item form state
     const [newTitle, setNewTitle] = useState('')
@@ -305,6 +314,42 @@ export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackB
             toast.error('Có lỗi xảy ra, vui lòng thử lại')
         } finally {
             setIsSubmitting(false)
+        }
+    }
+
+    const handleSaveEdit = async (id: string) => {
+        setIsSubmitting(true)
+        try {
+            const res = await fetch('/api/portal-feedback', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, title: editTitle, content: editContent })
+            })
+            if (res.ok) {
+                toast.success('Đã cập nhật yêu cầu')
+                setEditItemId(null)
+                await fetchItems()
+            } else throw new Error()
+        } catch {
+            toast.error('Có lỗi xảy ra khi cập nhật')
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
+
+    const handleDelete = async (id: string) => {
+        if (!confirm('Bạn có chắc chắn muốn xóa yêu cầu này?')) return
+        setIsDeleting(id)
+        try {
+            const res = await fetch(`/api/portal-feedback?id=${id}`, { method: 'DELETE' })
+            if (res.ok) {
+                toast.success('Đã xóa yêu cầu')
+                await fetchItems()
+            } else throw new Error()
+        } catch {
+            toast.error('Có lỗi xảy ra khi xóa')
+        } finally {
+            setIsDeleting(null)
         }
     }
 
@@ -622,27 +667,62 @@ export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackB
                                                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                                                                 {/* Left: Original Request */}
                                                                 <div className="lg:col-span-7 space-y-4">
-                                                                    <div className="flex items-center gap-2 mb-3">
-                                                                        <div className="w-6 h-6 rounded-full bg-zinc-100 flex items-center justify-center border border-zinc-200 shrink-0">
-                                                                            <span className="text-[10px] font-bold text-zinc-600">{item.created_by_name.charAt(0)}</span>
+                                                                    <div className="flex items-start justify-between gap-4 mb-3">
+                                                                        <div className="flex items-center gap-2">
+                                                                            <div className="w-6 h-6 rounded-full bg-zinc-100 flex items-center justify-center border border-zinc-200 shrink-0">
+                                                                                <span className="text-[10px] font-bold text-zinc-600">{item.created_by_name.charAt(0)}</span>
+                                                                            </div>
+                                                                            <div>
+                                                                                <p className="text-xs font-semibold text-zinc-900">
+                                                                                    Nội dung yêu cầu từ {item.created_by_name}
+                                                                                </p>
+                                                                                <p className="text-[10px] text-zinc-500">
+                                                                                    Vào lúc {new Date(item.created_at).toLocaleString('vi-VN')}
+                                                                                </p>
+                                                                            </div>
                                                                         </div>
-                                                                        <div>
-                                                                            <p className="text-xs font-semibold text-zinc-900">
-                                                                                Nội dung yêu cầu từ {item.created_by_name}
-                                                                            </p>
-                                                                            <p className="text-[10px] text-zinc-500">
-                                                                                Vào lúc {new Date(item.created_at).toLocaleString('vi-VN')}
-                                                                            </p>
-                                                                        </div>
+
+                                                                        {isAdmin && editItemId !== item.id && (
+                                                                            <div className="flex items-center gap-2">
+                                                                                <Button variant="outline" size="sm" onClick={(e) => {
+                                                                                    e.stopPropagation()
+                                                                                    setEditItemId(item.id)
+                                                                                    setEditTitle(item.title)
+                                                                                    setEditContent(item.content || '')
+                                                                                }} className="h-7 text-xs px-2 shadow-sm bg-white hover:bg-zinc-50 border-zinc-200 text-zinc-600 font-semibold hover:text-zinc-900 transition-colors">
+                                                                                    <Edit className="w-3 h-3 mr-1.5" /> Sửa
+                                                                                </Button>
+                                                                                <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); handleDelete(item.id); }} disabled={isDeleting === item.id} className="h-7 text-xs px-2 shadow-sm bg-white hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 border-zinc-200 transition-colors text-zinc-600 font-semibold">
+                                                                                    {isDeleting === item.id ? <Loader2 className="w-3 h-3 mr-1.5 animate-spin" /> : <Trash2 className="w-3 h-3 mr-1.5" />} Xóa
+                                                                                </Button>
+                                                                            </div>
+                                                                        )}
                                                                     </div>
                                                                     
-                                                                    {item.content ? (
+                                                                    {editItemId === item.id ? (
+                                                                        <div className="space-y-4 bg-zinc-50/50 p-4 border border-zinc-200/80 rounded-xl shadow-sm">
+                                                                            <div>
+                                                                                <label className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider block mb-2">Sửa Tiêu đề</label>
+                                                                                <Input value={editTitle} onChange={e => setEditTitle(e.target.value)} className="h-9 text-sm shadow-sm font-medium" />
+                                                                            </div>
+                                                                            <div>
+                                                                                <label className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider block mb-2">Sửa Mô tả chi tiết</label>
+                                                                                <Textarea value={editContent} onChange={e => setEditContent(e.target.value)} className="min-h-[100px] text-sm shadow-sm leading-relaxed" />
+                                                                            </div>
+                                                                            <div className="flex items-center gap-2 justify-end pt-2">
+                                                                                <Button variant="ghost" size="sm" onClick={() => setEditItemId(null)} className="h-8 shadow-none font-semibold text-zinc-500">Hủy</Button>
+                                                                                <Button onClick={() => handleSaveEdit(item.id)} disabled={isSubmitting} size="sm" className="h-8 shadow-md font-semibold bg-zinc-900 text-white hover:bg-zinc-800 transition-all">
+                                                                                    {isSubmitting ? <Loader2 className="w-3 h-3 mr-1.5 animate-spin" /> : <Send className="w-3 h-3 mr-1.5" />} Tóm tắt lại
+                                                                                </Button>
+                                                                            </div>
+                                                                        </div>
+                                                                    ) : item.content ? (
                                                                         <div 
                                                                             className="text-[13px] text-zinc-700 leading-relaxed font-medium prose prose-sm max-w-none prose-img:rounded-md prose-img:border prose-img:border-zinc-200"
                                                                             dangerouslySetInnerHTML={{ __html: item.content }}
                                                                         />
                                                                     ) : (
-                                                                        <p className="text-[13px] text-zinc-400 italic">Không có mô tả chi tiết.</p>
+                                                                        <p className="text-[13px] text-zinc-400 italic font-medium">Không có mô tả chi tiết.</p>
                                                                     )}
 
                                                                     {/* Attachments Gallery */}

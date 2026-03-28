@@ -10,7 +10,9 @@ import { verifyPortalPassword } from '@/lib/supabase/services/portal-actions'
 import { Alert, AlertDescription } from '@repo/ui'
 import { Label } from '@repo/ui' // Added Label import
 
-export default function PortalPasswordForm({ token, companyName }: { token: string, companyName?: string }) {
+import { cn } from '@/lib/utils'
+
+export default function PortalPasswordForm({ token, companyName, isModal = false }: { token: string, companyName?: string, isModal?: boolean }) {
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -47,8 +49,11 @@ export default function PortalPasswordForm({ token, companyName }: { token: stri
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-6 bg-zinc-50/50 dark:bg-zinc-950 font-sans selection:bg-zinc-950 selection:text-white">
-            <div className="w-full max-w-[400px] space-y-8">
+        <div className={cn(
+            "flex items-center justify-center font-sans selection:bg-zinc-950 selection:text-white",
+            isModal ? "w-full" : "min-h-screen p-6 bg-zinc-50/50 dark:bg-zinc-950"
+        )}>
+            <div className={cn("w-full max-w-[400px]", isModal ? "space-y-6" : "space-y-8")}>
                 {/* Brand Logo/Identity */}
                 <div className="flex flex-col items-center text-center space-y-2">
                     <div className="h-14 w-14 rounded-2xl bg-zinc-950 flex items-center justify-center shadow-2xl shadow-zinc-950/20 mb-4">
@@ -60,7 +65,10 @@ export default function PortalPasswordForm({ token, companyName }: { token: stri
                     </div>
                 </div>
 
-                <Card className="rounded-3xl border-none shadow-2xl shadow-zinc-200/50 bg-white ring-1 ring-zinc-200/50 overflow-hidden">
+                <Card className={cn(
+                    "overflow-hidden border-none bg-white",
+                    isModal ? "shadow-none" : "rounded-3xl shadow-2xl shadow-zinc-200/50 ring-1 ring-zinc-200/50"
+                )}>
                     <CardHeader className="pt-8 pb-4 px-8 text-center">
                         <CardDescription className="text-zinc-500 font-medium px-4 leading-relaxed">
                             {companyName ? (
@@ -136,9 +144,11 @@ export default function PortalPasswordForm({ token, companyName }: { token: stri
                     </div>
                 </Card>
 
-                <p className="text-center text-[11px] text-zinc-400 font-medium">
-                    Quên thông tin truy cập? <a href="https://zalo.me/0963715692" target="_blank" className="text-zinc-900 font-bold hover:underline">Liên hệ quản trị viên</a>
-                </p>
+                {isModal ? null : (
+                    <p className="text-center text-[11px] text-zinc-400 font-medium">
+                        Quên thông tin truy cập? <a href="https://zalo.me/0963715692" target="_blank" className="text-zinc-900 font-bold hover:underline">Liên hệ quản trị viên</a>
+                    </p>
+                )}
             </div>
         </div>
     )

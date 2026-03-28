@@ -39,19 +39,19 @@ export default async function PublicPortalPage({ params }: Props) {
         // Check for password protection (Quotation password takes precedence, then Project password)
         const passwordHash = data.quotation.password_hash || data.project?.password_hash
 
+        let isAuthenticated = true
+        let hasPassword = false
+
         if (passwordHash) {
+            hasPassword = true
             const { signPortalToken } = await import('@/lib/supabase/services/portal-actions')
             const cookieStore = await cookies()
             const cookieValue = cookieStore.get(`portal_auth_${token}`)?.value
             const expectedValue = await signPortalToken(token)
-            const isAuthenticated = cookieValue === expectedValue
-
-            if (!isAuthenticated) {
-                return <PortalPasswordForm token={token} companyName={data.customer?.company_name} />
-            }
+            isAuthenticated = cookieValue === expectedValue
         }
 
-        return <PortalContent data={data} token={token} />
+        return <PortalContent data={data} token={token} isFinancialAuthenticated={isAuthenticated} hasPassword={hasPassword} companyName={data.customer?.company_name} />
     } catch (error) {
         console.error('Error rendering portal page:', error)
         return (
