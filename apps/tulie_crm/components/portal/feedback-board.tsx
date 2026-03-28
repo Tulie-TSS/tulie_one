@@ -22,17 +22,28 @@ import {
     Pause,
     XCircle,
     RotateCcw,
-    ImagePlus,
-    Link2,
+    Upload,
+    Paperclip,
+    X,
+    Image as ImageIcon,
     ChevronDown,
     ChevronUp,
     MessageCircle,
     ClipboardList,
     Plus,
-    ListTodo
+    ListTodo,
+    Loader2,
+    ZoomIn,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
+import { compressImage, getImageFromClipboard, validateFileSize, generateFileName } from '@/lib/utils/image-compressor'
+
+interface Attachment {
+    url: string
+    type: string
+    name: string
+}
 
 interface FeedbackItem {
     id: string
@@ -40,7 +51,7 @@ interface FeedbackItem {
     customer_id?: string
     title: string
     content?: string
-    attachments: { url: string; type: string; name: string }[]
+    attachments: Attachment[]
     status: 'pending' | 'in_progress' | 'completed' | 'on_hold' | 'cancelled' | 'revision_needed'
     priority: 'low' | 'normal' | 'high' | 'urgent'
     created_by_name: string
@@ -97,6 +108,29 @@ function formatTimeAgo(dateStr: string): string {
     return new Date(dateStr).toLocaleDateString('vi-VN')
 }
 
+// ─── Image Lightbox ─────────────────────────────────
+function ImageLightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
+    return (
+        <div
+            className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4 cursor-zoom-out"
+            onClick={onClose}
+        >
+            <button
+                onClick={onClose}
+                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+            >
+                <X className="w-5 h-5" />
+            </button>
+            <img
+                src={src}
+                alt={alt}
+                className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+            />
+        </div>
+    )
+}
+
 export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackBoardProps) {
     const [items, setItems] = useState<FeedbackItem[]>([])
     const [isLoading, setIsLoading] = useState(true)
@@ -108,9 +142,14 @@ export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackB
     const [newContent, setNewContent] = useState('')
     const [newPriority, setNewPriority] = useState<string>('normal')
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const [imageUrl, setImageUrl] = useState('')
+    const [attachments, setAttachments] = useState<Attachment[]>([])
+    const [isUploading, setIsUploading] = useState(false)
+
+    // Lightbox
+    const [lightboxSrc, setLightboxSrc] = useState<string | null>(null)
 
     const textareaRef = useRef<HTMLTextAreaElement>(null)
+    const fileInputRef = useRef<HTMLInputElement>(null)
 
     const fetchItems = useCallback(async () => {
         try {
@@ -139,31 +178,92 @@ export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackB
         })
     }
 
-    const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
-        const items = e.clipboardData.items
-        for (const item of items) {
-            if (item.type.startsWith('image/')) {
-                e.preventDefault()
-                const file = item.getAsFile()
-                if (file) {
-                    const reader = new FileReader()
-                    reader.onload = () => {
-                        const dataUrl = reader.result as string
-                        setNewContent(prev => prev + `\n<img src="${dataUrl}" alt="Pasted image" style="max-width:100%;border-radius:6px;border:1px solid #e4e4e7;margin:12px 0;" />\n`)
-                        toast.success('Đã dán ảnh thành công')
-                    }
-                    reader.readAsDataURL(file)
-                }
-                break
+    // ─── Upload helper ──────────────────────────────────
+    const uploadFile = async (file: File | Blob, fileName?: string): Promise<Attachment | null> => {
+        try {
+            // Validate size
+            if (!validateFileSize(file)) {
+                toast.error('Ảnh vượt quá 5MB. Vui lòng chọn ảnh nhỏ hơn.')
+                return null
             }
+
+            // Compress
+            const compressed = await compressImage(file)
+            const savedPercent = Math.round((1 - compressed.compressedSize / compressed.originalSize) * 100)
+            
+            // Upload compressed blob
+            const formData = new FormData()
+            const uploadName = fileName || generateFileName()
+            formData.append('file', compressed.blob, uploadName)
+
+            const res = await fetch('/api/upload', { method: 'POST', body: formData })
+            
+            if (!res.ok) {
+                const err = await res.json()
+                throw new Error(err.error || 'Upload failed')
+            }
+
+            const result = await res.json()
+            if (savedPercent > 10) {
+                toast.success(`Đã tải ảnh lên (nén ${savedPercent}%)`)
+            } else {
+                toast.success('Đã tải ảnh lên thành công')
+            }
+            
+            return {
+                url: result.url,
+                type: result.type || 'image/webp',
+                name: result.name || uploadName,
+            }
+        } catch (error: any) {
+            toast.error(error.message || 'Không thể tải ảnh lên')
+            return null
         }
+    }
+
+    // ─── Paste clipboard handler ────────────────────────
+    const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
+        const file = getImageFromClipboard(e)
+        if (!file) return
+
+        e.preventDefault()
+        setIsUploading(true)
+
+        const attachment = await uploadFile(file, generateFileName('clipboard.png'))
+        if (attachment) {
+            setAttachments(prev => [...prev, attachment])
+        }
+
+        setIsUploading(false)
     }, [])
 
-    const handleInsertImage = () => {
-        if (!imageUrl.trim()) return
-        setNewContent(prev => prev + `\n<img src="${imageUrl}" alt="Inserted image" style="max-width:100%;border-radius:6px;border:1px solid #e4e4e7;margin:12px 0;" />\n`)
-        setImageUrl('')
-        toast.success('Đã chèn ảnh')
+    // ─── File upload handler ────────────────────────────
+    const handleFileUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files
+        if (!files || files.length === 0) return
+
+        setIsUploading(true)
+
+        for (const file of Array.from(files)) {
+            if (!file.type.startsWith('image/')) {
+                toast.error(`${file.name} không phải file ảnh`)
+                continue
+            }
+
+            const attachment = await uploadFile(file, generateFileName(file.name))
+            if (attachment) {
+                setAttachments(prev => [...prev, attachment])
+            }
+        }
+
+        setIsUploading(false)
+        // Reset input so same file can be selected again
+        if (fileInputRef.current) fileInputRef.current.value = ''
+    }, [])
+
+    // ─── Remove attachment ──────────────────────────────
+    const removeAttachment = (index: number) => {
+        setAttachments(prev => prev.filter((_, i) => i !== index))
     }
 
     const handleSubmit = async () => {
@@ -182,6 +282,7 @@ export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackB
                     customer_id: customerId,
                     title: newTitle.trim(),
                     content: newContent.trim() || null,
+                    attachments: attachments,
                     created_by_name: customerName || 'Khách hàng',
                     created_by_role: 'customer',
                     priority: newPriority,
@@ -193,6 +294,7 @@ export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackB
                 setNewTitle('')
                 setNewContent('')
                 setNewPriority('normal')
+                setAttachments([])
                 setShowForm(false)
                 await fetchItems()
             } else {
@@ -216,6 +318,11 @@ export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackB
 
     return (
         <div className="w-full bg-white border border-zinc-200 shadow-sm rounded-xl overflow-hidden font-sans">
+            {/* Lightbox */}
+            {lightboxSrc && (
+                <ImageLightbox src={lightboxSrc} alt="Enlarged" onClose={() => setLightboxSrc(null)} />
+            )}
+
             {/* Document Header */}
             <div className="bg-zinc-50/80 border-b border-zinc-200 px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
@@ -305,6 +412,70 @@ export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackB
                             />
                         </div>
 
+                        {/* Upload buttons */}
+                        <div className="flex items-center gap-3">
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                onChange={handleFileUpload}
+                                className="hidden"
+                            />
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => fileInputRef.current?.click()}
+                                disabled={isUploading}
+                                className="gap-2"
+                            >
+                                {isUploading ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <Upload className="w-4 h-4" />
+                                )}
+                                Tải ảnh lên
+                            </Button>
+                            <span className="text-[11px] text-zinc-400 font-medium">
+                                Hoặc dán ảnh từ clipboard (Ctrl+V) • Tối đa 5MB/ảnh • Tự động nén
+                            </span>
+                        </div>
+
+                        {/* Attachments preview gallery */}
+                        {attachments.length > 0 && (
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-zinc-700 uppercase tracking-wider flex items-center gap-2">
+                                    <Paperclip className="w-3.5 h-3.5" />
+                                    Ảnh đính kèm ({attachments.length})
+                                </label>
+                                <div className="flex flex-wrap gap-3">
+                                    {attachments.map((att, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="relative group w-24 h-24 rounded-lg overflow-hidden border border-zinc-200 bg-zinc-50 shadow-sm"
+                                        >
+                                            <img
+                                                src={att.url}
+                                                alt={att.name}
+                                                className="w-full h-full object-cover cursor-zoom-in transition-transform group-hover:scale-105"
+                                                onClick={() => setLightboxSrc(att.url)}
+                                            />
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); removeAttachment(idx) }}
+                                                className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/60 hover:bg-black/80 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                                            >
+                                                <X className="w-3 h-3" />
+                                            </button>
+                                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-transparent p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <ZoomIn className="w-3 h-3 text-white mx-auto" />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center justify-between pt-2">
                             <div className="flex items-center gap-3">
                                 <span className="text-xs font-bold text-zinc-700 uppercase tracking-wider mr-1">Mức độ:</span>
@@ -313,7 +484,7 @@ export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackB
                                         key={key}
                                         onClick={() => setNewPriority(key)}
                                         className={cn(
-                                            "lex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all border",
+                                            "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all border",
                                             newPriority === key
                                                 ? "bg-zinc-900 text-white border-zinc-900 shadow-sm"
                                                 : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
@@ -326,10 +497,10 @@ export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackB
                             </div>
                             
                             <div className="flex gap-3 w-full sm:w-auto">
-                                <Button variant="ghost" onClick={() => setShowForm(false)} className="flex-1 sm:flex-none">
+                                <Button variant="ghost" onClick={() => { setShowForm(false); setAttachments([]) }} className="flex-1 sm:flex-none">
                                     Hủy bỏ
                                 </Button>
-                                <Button onClick={handleSubmit} disabled={isSubmitting} className="flex-1 sm:flex-none min-w-[120px]">
+                                <Button onClick={handleSubmit} disabled={isSubmitting || isUploading} className="flex-1 sm:flex-none min-w-[120px]">
                                     {isSubmitting ? <Clock className="w-4 h-4 mr-2 animate-spin" /> : <Send className="w-4 h-4 mr-2" />}
                                     Gửi yêu cầu
                                 </Button>
@@ -373,6 +544,7 @@ export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackB
                                     const isExpanded = expandedIds.has(item.id)
                                     const isCompleted = item.status === 'completed'
                                     const priorityConf = PRIORITY_CONFIG[item.priority] || PRIORITY_CONFIG.normal
+                                    const hasAttachments = item.attachments && item.attachments.length > 0
                                     
                                     return (
                                         <React.Fragment key={item.id}>
@@ -396,12 +568,20 @@ export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackB
                                                         )}>
                                                             {item.title}
                                                         </span>
-                                                        {item.response_content && !isExpanded && (
-                                                            <div className="flex items-center gap-1.5 text-[11px] text-blue-600 font-medium">
-                                                                <MessageCircle className="w-3.5 h-3.5" />
-                                                                Đã có phản hồi từ {item.responded_by || 'Agency'}
-                                                            </div>
-                                                        )}
+                                                        <div className="flex items-center gap-3">
+                                                            {item.response_content && !isExpanded && (
+                                                                <div className="flex items-center gap-1.5 text-[11px] text-blue-600 font-medium">
+                                                                    <MessageCircle className="w-3.5 h-3.5" />
+                                                                    Đã có phản hồi từ {item.responded_by || 'Agency'}
+                                                                </div>
+                                                            )}
+                                                            {hasAttachments && !isExpanded && (
+                                                                <div className="flex items-center gap-1 text-[11px] text-zinc-500 font-medium">
+                                                                    <ImageIcon className="w-3.5 h-3.5" />
+                                                                    {item.attachments.length} ảnh
+                                                                </div>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell>
@@ -463,6 +643,34 @@ export function FeedbackBoard({ projectId, customerId, customerName }: FeedbackB
                                                                         />
                                                                     ) : (
                                                                         <p className="text-[13px] text-zinc-400 italic">Không có mô tả chi tiết.</p>
+                                                                    )}
+
+                                                                    {/* Attachments Gallery */}
+                                                                    {hasAttachments && (
+                                                                        <div className="space-y-2 pt-3 border-t border-zinc-100">
+                                                                            <p className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
+                                                                                <Paperclip className="w-3 h-3" />
+                                                                                Ảnh đính kèm ({item.attachments.length})
+                                                                            </p>
+                                                                            <div className="flex flex-wrap gap-2">
+                                                                                {item.attachments.map((att, i) => (
+                                                                                    <div
+                                                                                        key={i}
+                                                                                        className="relative group w-20 h-20 rounded-lg overflow-hidden border border-zinc-200 bg-zinc-50 cursor-zoom-in shadow-sm hover:shadow-md transition-shadow"
+                                                                                        onClick={(e) => { e.stopPropagation(); setLightboxSrc(att.url) }}
+                                                                                    >
+                                                                                        <img
+                                                                                            src={att.url}
+                                                                                            alt={att.name}
+                                                                                            className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                                                                                        />
+                                                                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                                                                            <ZoomIn className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                ))}
+                                                                            </div>
+                                                                        </div>
                                                                     )}
                                                                 </div>
 

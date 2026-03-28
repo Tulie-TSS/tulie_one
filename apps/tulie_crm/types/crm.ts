@@ -326,7 +326,7 @@ export interface TicketMessage {
 export interface DocumentTemplate {
   id: string
   name: string
-  type: 'contract' | 'invoice' | 'payment_request' | 'quotation' | 'order' | 'delivery_minutes'
+  type: 'contract' | 'invoice' | 'payment_request' | 'quotation' | 'order' | 'delivery_minutes' | 'confirmation'
   content: string 
   variables: string[] 
   is_default?: boolean

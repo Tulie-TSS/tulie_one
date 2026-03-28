@@ -5,7 +5,7 @@
 CREATE TABLE IF NOT EXISTS document_templates (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
-  type TEXT NOT NULL CHECK (type IN ('contract', 'invoice', 'payment_request', 'quotation', 'order', 'delivery_minutes')),
+  type TEXT NOT NULL CHECK (type IN ('contract', 'invoice', 'payment_request', 'quotation', 'order', 'delivery_minutes', 'confirmation')),
   content TEXT NOT NULL DEFAULT '',
   variables JSONB NOT NULL DEFAULT '[]',
   is_default BOOLEAN NOT NULL DEFAULT false,

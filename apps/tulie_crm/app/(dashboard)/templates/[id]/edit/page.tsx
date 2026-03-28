@@ -96,6 +96,7 @@ export default function EditTemplatePage() {
         quotation: 'Báo giá',
         order: 'Đơn hàng',
         delivery_minutes: 'Biên bản giao nhận',
+        confirmation: 'Biên bản xác nhận',
     }
 
     if (isLoading) {
