@@ -4,6 +4,7 @@ import { useState, useTransition, useCallback } from 'react'
 import { Button } from '@repo/ui'
 import { Badge } from '@repo/ui'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@repo/ui'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@repo/ui'
 import { History, RotateCcw, Clock, Eye, ChevronDown, ChevronUp, Package, FileText, Hash, X, ArrowRight } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
 import { getQuotationVersions, getQuotationVersionSnapshot, restoreQuotationVersion } from '@/lib/supabase/services/quotation-version-service'
@@ -248,28 +249,28 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                                                                     Danh sách hạng mục ({snapshot.items.length})
                                                                 </p>
                                                                 <div className="max-h-[200px] overflow-y-auto rounded-lg border border-border">
-                                                                    <table className="w-full text-xs">
-                                                                        <thead>
-                                                                            <tr className="bg-muted text-muted-foreground">
-                                                                                <th className="text-left py-1.5 px-2.5 font-medium">#</th>
-                                                                                <th className="text-left py-1.5 px-2.5 font-medium">Hạng mục</th>
-                                                                                <th className="text-right py-1.5 px-2.5 font-medium">SL</th>
-                                                                                <th className="text-right py-1.5 px-2.5 font-medium">Đơn giá</th>
-                                                                                <th className="text-right py-1.5 px-2.5 font-medium">Thành tiền</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
+                                                                    <Table>
+                                                                        <TableHeader>
+                                                                            <TableRow>
+                                                                                <TableHead className="text-[10px]">#</TableHead>
+                                                                                <TableHead className="text-[10px]">Hạng mục</TableHead>
+                                                                                <TableHead className="text-right text-[10px]">SL</TableHead>
+                                                                                <TableHead className="text-right text-[10px]">Đơn giá</TableHead>
+                                                                                <TableHead className="text-right text-[10px]">Thành tiền</TableHead>
+                                                                            </TableRow>
+                                                                        </TableHeader>
+                                                                        <TableBody>
                                                                             {snapshot.items.map((item: any, i: number) => (
-                                                                                <tr key={i} className="border-t border-zinc-50">
-                                                                                    <td className="py-1.5 px-2.5 text-muted-foreground tabular-nums">{i + 1}</td>
-                                                                                    <td className="py-1.5 px-2.5 font-medium text-zinc-700 truncate max-w-[160px]">{item.product_name}</td>
-                                                                                    <td className="py-1.5 px-2.5 text-right tabular-nums text-muted-foreground">{item.quantity}</td>
-                                                                                    <td className="py-1.5 px-2.5 text-right tabular-nums text-muted-foreground">{formatCurrency(item.unit_price || 0).replace('₫', '')}</td>
-                                                                                    <td className="py-1.5 px-2.5 text-right tabular-nums font-semibold text-zinc-700">{formatCurrency(item.total_price || (item.quantity * item.unit_price) || 0).replace('₫', '')}</td>
-                                                                                </tr>
+                                                                                <TableRow key={i}>
+                                                                                    <TableCell className="text-muted-foreground tabular-nums text-xs">{i + 1}</TableCell>
+                                                                                    <TableCell className="font-medium text-zinc-700 truncate max-w-[160px] text-xs">{item.product_name}</TableCell>
+                                                                                    <TableCell className="text-right tabular-nums text-muted-foreground text-xs">{item.quantity}</TableCell>
+                                                                                    <TableCell className="text-right tabular-nums text-muted-foreground text-xs">{formatCurrency(item.unit_price || 0).replace('₫', '')}</TableCell>
+                                                                                    <TableCell className="text-right tabular-nums font-semibold text-zinc-700 text-xs">{formatCurrency(item.total_price || (item.quantity * item.unit_price) || 0).replace('₫', '')}</TableCell>
+                                                                                </TableRow>
                                                                             ))}
-                                                                        </tbody>
-                                                                    </table>
+                                                                        </TableBody>
+                                                                    </Table>
                                                                 </div>
                                                             </div>
                                                         )}

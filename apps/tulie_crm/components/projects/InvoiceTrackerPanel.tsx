@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { Badge } from '@repo/ui'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@repo/ui'
 import { Receipt, AlertTriangle, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
 import type { InvoiceReconciliationItem } from '@/lib/supabase/services/invoice-tracker-service'
@@ -89,44 +90,44 @@ export default function InvoiceTrackerPanel({ reconciliation, unissuedInvoices }
                         </p>
                     ) : (
                         <div className="overflow-x-auto">
-                            <table className="w-full text-sm">
-                                <thead>
-                                    <tr className="border-b text-left text-muted-foreground">
-                                        <th className="pb-2 font-medium">Dự án</th>
-                                        <th className="pb-2 font-medium text-right">HĐ Đầu ra</th>
-                                        <th className="pb-2 font-medium text-right">Đã thu</th>
-                                        <th className="pb-2 font-medium text-right">HĐ Đầu vào</th>
-                                        <th className="pb-2 font-medium text-right">Chênh lệch</th>
-                                        <th className="pb-2 font-medium text-center">Trạng thái</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Dự án</TableHead>
+                                        <TableHead className="text-right">HĐ Đầu ra</TableHead>
+                                        <TableHead className="text-right">Đã thu</TableHead>
+                                        <TableHead className="text-right">HĐ Đầu vào</TableHead>
+                                        <TableHead className="text-right">Chênh lệch</TableHead>
+                                        <TableHead className="text-center">Trạng thái</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
                                     {reconciliation.slice(0, 20).map(item => {
                                         const config = statusConfig[item.status]
                                         return (
-                                            <tr key={item.project_id} className="border-b last:border-0 hover:bg-muted/30">
-                                                <td className="py-2 pr-2">
+                                            <TableRow key={item.project_id}>
+                                                <TableCell>
                                                     <Link href={`/projects/${item.project_id}`} className="hover:underline">
                                                         <p className="font-medium truncate max-w-[200px]">{item.project_title}</p>
                                                         <p className="text-xs text-muted-foreground">{item.customer_name}</p>
                                                     </Link>
-                                                </td>
-                                                <td className="py-2 text-right">{formatVND(item.output_invoiced)}₫</td>
-                                                <td className="py-2 text-right font-medium text-green-700">{formatVND(item.output_paid)}₫</td>
-                                                <td className="py-2 text-right">{formatVND(item.input_invoiced)}₫</td>
-                                                <td className={`py-2 text-right font-medium ${item.gap > 0 ? 'text-green-700' : 'text-rose-700'}`}>
+                                                </TableCell>
+                                                <TableCell className="text-right">{formatVND(item.output_invoiced)}₫</TableCell>
+                                                <TableCell className="text-right font-medium text-green-700">{formatVND(item.output_paid)}₫</TableCell>
+                                                <TableCell className="text-right">{formatVND(item.input_invoiced)}₫</TableCell>
+                                                <TableCell className={`text-right font-medium ${item.gap > 0 ? 'text-green-700' : 'text-rose-700'}`}>
                                                     {item.gap > 0 ? '+' : ''}{formatVND(item.gap)}₫
-                                                </td>
-                                                <td className="py-2 text-center">
+                                                </TableCell>
+                                                <TableCell className="text-center">
                                                     <Badge variant="outline" className={`text-xs ${config.color}`}>
                                                         {config.label}
                                                     </Badge>
-                                                </td>
-                                            </tr>
+                                                </TableCell>
+                                            </TableRow>
                                         )
                                     })}
-                                </tbody>
-                            </table>
+                                </TableBody>
+                            </Table>
                         </div>
                     )}
                 </CardContent>

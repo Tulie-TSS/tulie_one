@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@repo/ui'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@repo/ui'
 import {
     Dialog,
     DialogContent,
@@ -443,39 +444,39 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                                         </div>
 
                                         {/* Items table */}
-                                        <table className="w-full">
-                                            <thead>
-                                                <tr className="border-b">
-                                                    <th className="text-left px-6 py-2 text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Mô tả</th>
-                                                    <th className="text-right px-6 py-2 text-[11px] font-medium text-muted-foreground uppercase tracking-wider w-28">Ngày</th>
-                                                    <th className="text-right px-6 py-2 text-[11px] font-medium text-muted-foreground uppercase tracking-wider w-32">Số tiền</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow>
+                                                    <TableHead className="text-[11px]">Mô tả</TableHead>
+                                                    <TableHead className="text-right text-[11px] w-28">Ngày</TableHead>
+                                                    <TableHead className="text-right text-[11px] w-32">Số tiền</TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
                                                 {items.map((item, idx) => (
-                                                    <tr key={`${item.reference_id || idx}`} className="hover:bg-muted/30 transition-colors">
-                                                        <td className="px-6 py-2.5">
+                                                    <TableRow key={`${item.reference_id || idx}`}>
+                                                        <TableCell>
                                                             <p className="text-sm font-medium truncate max-w-[280px]" title={item.description}>
                                                                 {item.description}
                                                             </p>
                                                             {item.customer_name && (
                                                                 <p className="text-xs text-muted-foreground truncate">{item.customer_name}</p>
                                                             )}
-                                                        </td>
-                                                        <td className="px-6 py-2.5 text-right text-xs text-muted-foreground whitespace-nowrap">
+                                                        </TableCell>
+                                                        <TableCell className="text-right text-xs text-muted-foreground whitespace-nowrap">
                                                             {item.date
                                                                 ? new Date(item.date).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' })
                                                                 : '—'}
-                                                        </td>
-                                                        <td className="px-6 py-2.5 text-right">
+                                                        </TableCell>
+                                                        <TableCell className="text-right">
                                                             <span className="text-sm font-semibold tabular-nums text-emerald-600">
                                                                 +{formatCurrency(item.amount)}
                                                             </span>
-                                                        </td>
-                                                    </tr>
+                                                        </TableCell>
+                                                    </TableRow>
                                                 ))}
-                                            </tbody>
-                                        </table>
+                                            </TableBody>
+                                        </Table>
                                     </div>
                                 )
                             })}

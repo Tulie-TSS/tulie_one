@@ -1,27 +1,29 @@
 import { cn } from '../lib/utils'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/card'
-import { ArrowUpRight, ArrowDownRight } from 'lucide-react'
+import { Card, CardHeader, CardTitle, CardDescription, CardAction, CardFooter } from '../components/card'
+import { Badge } from '../components/badge'
+import { TrendingUp, TrendingDown } from 'lucide-react'
 
 /**
- * StatCard — Dashboard stat card following shadcn/ui Dashboard example
+ * StatCard — Follows shadcn/ui dashboard-01 `section-cards.tsx` EXACTLY.
  *
- * Structure (from shadcn screenshot):
+ * Structure (from shadcn/ui blocks dashboard-01):
  * ┌─────────────────────────────────────┐
- * │ Card Title           Trend (+12.5%) │
- * │ $1,250.00                           │ ← stat value
- * │ Trending up this month              │ ← description
- * │ Visitors for the last 6 months      │ ← footer text
+ * │ CardDescription (label)   Badge(trend)│  ← CardHeader + CardAction
+ * │ CardTitle (value)                     │
+ * │                                       │
+ * │ Description line        TrendIcon     │  ← CardFooter
+ * │ Footer text (muted)                   │
  * └─────────────────────────────────────┘
  *
  * Usage:
  * ```tsx
  * <StatCard
- *   title="Tổng doanh thu"
- *   value="1.250.000.000 ₫"
+ *   title="Total Revenue"
+ *   value="$1,250.00"
  *   trend="+12.5%"
  *   trendUp
- *   description="Tăng trưởng so với tháng trước"
- *   footer="Dữ liệu 6 tháng gần nhất"
+ *   description="Trending up this month"
+ *   footer="Visitors for the last 6 months"
  * />
  * ```
  */
@@ -33,7 +35,6 @@ interface StatCardProps {
     trendUp?: boolean
     description?: string
     footer?: string
-    icon?: React.ReactNode
     className?: string
 }
 
@@ -44,56 +45,55 @@ export function StatCard({
     trendUp,
     description,
     footer,
-    icon,
     className,
 }: StatCardProps) {
     return (
-        <Card className={cn("shadow-sm", className)}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                    {title}
+        <Card className={cn("@container/card", className)}>
+            <CardHeader>
+                <CardDescription>{title}</CardDescription>
+                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+                    {value}
                 </CardTitle>
                 {trend && (
-                    <div className="flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold">
-                        {trendUp !== false ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
-                        {trend}
-                    </div>
-                )}
-                {icon && !trend && (
-                    <div className="text-muted-foreground">{icon}</div>
+                    <CardAction>
+                        <Badge variant="outline">
+                            {trendUp !== false ? <TrendingUp /> : <TrendingDown />}
+                            {trend}
+                        </Badge>
+                    </CardAction>
                 )}
             </CardHeader>
-            <CardContent>
-                <div className="text-3xl font-bold tracking-tight">{value}</div>
-                {description && (
-                    <div className="mt-4 flex items-center gap-2 text-sm">
-                        <span className="font-medium text-foreground">{description}</span>
-                        {trendUp !== false ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
-                    </div>
-                )}
-                {footer && (
-                    <p className="text-sm text-muted-foreground mt-1">{footer}</p>
-                )}
-                {/* Fallback for when we only have description and no footer but we want it to look like standard description */}
-                {!footer && !description && (
-                    // Just a spacer if needed
-                    <div className="h-0" />
-                )}
-            </CardContent>
+            {(description || footer) && (
+                <CardFooter className="flex-col items-start gap-1.5 text-sm">
+                    {description && (
+                        <div className="line-clamp-1 flex gap-2 font-medium">
+                            {description}
+                            {trendUp !== undefined && (
+                                trendUp !== false
+                                    ? <TrendingUp className="size-4" />
+                                    : <TrendingDown className="size-4" />
+                            )}
+                        </div>
+                    )}
+                    {footer && (
+                        <div className="text-muted-foreground">{footer}</div>
+                    )}
+                </CardFooter>
+            )}
         </Card>
     )
 }
 
 /**
- * StatGrid — Grid container for stat cards
+ * StatGrid — Grid container with shadcn/ui dashboard-01 gradient pattern.
+ *
+ * Applies gradient background to all child cards via data-slot selectors.
  *
  * Usage:
  * ```tsx
  * <StatGrid>
- *   <StatCard title="Revenue" value="$1,250" />
- *   <StatCard title="Users" value="1,234" />
- *   <StatCard title="Active" value="45,678" />
- *   <StatCard title="Growth" value="4.5%" />
+ *   <StatCard title="Revenue" value="$1,250" trend="+12.5%" trendUp />
+ *   <StatCard title="Users" value="1,234" trend="-20%" trendUp={false} />
  * </StatGrid>
  * ```
  */
@@ -106,7 +106,11 @@ export function StatGrid({
     className?: string
 }) {
     return (
-        <div className={cn('grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4', className)}>
+        <div className={cn(
+            'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4',
+            '*:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card',
+            className
+        )}>
             {children}
         </div>
     )

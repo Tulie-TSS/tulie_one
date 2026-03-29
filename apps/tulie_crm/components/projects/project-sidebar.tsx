@@ -24,7 +24,7 @@ import {
 } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import { formatDate } from '@/lib/utils/format'
-import { PROJECT_STATUS_LABELS, PROJECT_STATUS_COLORS } from '@/lib/constants/status'
+import { PROJECT_STATUS_LABELS } from '@/lib/constants/status'
 import { AcceptancePDFButton } from '@/components/projects/acceptance-pdf-button'
 import { toast } from 'sonner'
 
@@ -128,8 +128,9 @@ export function ProjectSidebar({ project, teamMembers = [] }: ProjectSidebarProp
         <div className="space-y-6">
             {/* Status & Management */}
             <Card>
-                <CardHeader className="pb-3">
-                    <CardTitle className="text-base font-semibold">Quản lý dự án</CardTitle>
+                <CardHeader>
+                    <CardTitle>Quản lý dự án</CardTitle>
+                    <CardDescription>Trạng thái, phân công, timeline</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {/* Status Selector */}
@@ -271,8 +272,8 @@ export function ProjectSidebar({ project, teamMembers = [] }: ProjectSidebarProp
 
             {/* Acceptance Reports */}
             <Card>
-                <CardHeader className="pb-3">
-                    <CardTitle className="text-base font-semibold">Nghiệm thu</CardTitle>
+                <CardHeader>
+                    <CardTitle>Nghiệm thu</CardTitle>
                     <CardDescription>Biên bản giao nhận và nghiệm thu dự án</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">

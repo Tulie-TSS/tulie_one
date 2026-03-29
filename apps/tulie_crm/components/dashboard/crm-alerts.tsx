@@ -14,6 +14,7 @@ import {
 import { formatDistanceToNow } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import Link from 'next/link'
+import { cn } from '@/lib/utils'
 import { CRMAlert } from '@/lib/supabase/services/dashboard-service'
 
 interface CRMAlertsProps {
@@ -32,19 +33,19 @@ export function CRMAlerts({ alerts }: CRMAlertsProps) {
     }
 
     const getColorClass = (severity: string) => {
-        if (severity === 'danger') return 'text-destructive'
-        return 'text-amber-500'
+        if (severity === 'danger') return 'text-foreground border-foreground'
+        return 'text-muted-foreground border-border'
     }
 
     return (
         <Card className="h-full">
             <CardHeader className="pb-3 flex flex-row items-center justify-between">
                 <CardTitle className="text-base font-medium flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4 text-amber-500" />
+                    <AlertTriangle className="h-4 w-4 text-foreground" />
                     Cần Hành Động
                 </CardTitle>
                 {alerts.length > 0 && (
-                    <Badge variant="destructive" className="h-5 px-1.5 min-w-[20px] rounded-full text-[10px] flex justify-center">
+                    <Badge variant="default" className="h-5 px-1.5 min-w-[20px] rounded-full text-[10px] flex justify-center bg-primary text-primary-foreground">
                         {alerts.length}
                     </Badge>
                 )}
@@ -78,7 +79,10 @@ export function CRMAlerts({ alerts }: CRMAlertsProps) {
                                         <p className="text-xs mt-1 text-muted-foreground line-clamp-1">
                                             {alert.description}
                                         </p>
-                                        <span className={`text-[11px] font-medium mt-1 inline-block ${getColorClass(alert.severity)}`}>
+                                        <span className={cn(
+                                            "text-[11px] font-medium mt-1 inline-block",
+                                            alert.severity === 'danger' ? 'text-foreground font-semibold' : 'text-muted-foreground'
+                                        )}>
                                             {formatDistanceToNow(new Date(alert.date), {
                                                 addSuffix: true,
                                                 locale: vi

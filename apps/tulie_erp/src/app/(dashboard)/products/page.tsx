@@ -1,7 +1,7 @@
 import { getProducts } from '@/lib/supabase/services/product-service'
 import { Package, Plus } from 'lucide-react'
 import Link from 'next/link'
-import { Badge } from "@repo/ui"
+import { Badge, Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@repo/ui"
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
@@ -33,56 +33,56 @@ export default async function ProductsPage() {
           <p className="mt-2 text-sm text-muted-foreground">Thêm sản phẩm/dịch vụ đầu tiên</p>
         </div>
       ) : (
-        <div className="rounded-md border border-border overflow-hidden">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Tên sản phẩm</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">SKU</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Danh mục</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Đơn vị</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Giá bán</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Giá vốn</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Margin</th>
-                <th className="px-4 py-3 text-center text-xs font-medium text-muted-foreground uppercase">Trạng thái</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Tên sản phẩm</TableHead>
+                <TableHead>SKU</TableHead>
+                <TableHead>Danh mục</TableHead>
+                <TableHead>Đơn vị</TableHead>
+                <TableHead className="text-right">Giá bán</TableHead>
+                <TableHead className="text-right">Giá vốn</TableHead>
+                <TableHead className="text-right">Margin</TableHead>
+                <TableHead className="text-center">Trạng thái</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {products.map((product) => {
                 const margin = product.cost_price
                   ? Math.round(((product.price - product.cost_price) / product.price) * 100)
                   : null
                 return (
-                  <tr key={product.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-4 py-3">
+                  <TableRow key={product.id}>
+                    <TableCell>
                       <Link href={`/products/${product.id}`} className="font-medium text-foreground hover:text-primary">
                         {product.name}
                       </Link>
-                    </td>
-                    <td className="px-4 py-3 text-sm text-muted-foreground">{product.sku || '—'}</td>
-                    <td className="px-4 py-3 text-sm text-muted-foreground">{product.category || '—'}</td>
-                    <td className="px-4 py-3 text-sm text-muted-foreground">{product.unit}</td>
-                    <td className="px-4 py-3 text-sm text-right font-medium text-foreground">{formatCurrency(product.price)}</td>
-                    <td className="px-4 py-3 text-sm text-right text-muted-foreground">
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">{product.sku || '—'}</TableCell>
+                    <TableCell className="text-muted-foreground">{product.category || '—'}</TableCell>
+                    <TableCell className="text-muted-foreground">{product.unit}</TableCell>
+                    <TableCell className="text-right font-medium text-foreground">{formatCurrency(product.price)}</TableCell>
+                    <TableCell className="text-right text-muted-foreground">
                       {product.cost_price ? formatCurrency(product.cost_price) : '—'}
-                    </td>
-                    <td className="px-4 py-3 text-sm text-right">
+                    </TableCell>
+                    <TableCell className="text-right">
                       {margin !== null ? (
                         <span className={margin >= 30 ? 'text-emerald-600 font-medium' : margin >= 15 ? 'text-amber-600' : 'text-red-500'}>
                           {margin}%
                         </span>
                       ) : '—'}
-                    </td>
-                    <td className="px-4 py-3 text-center">
+                    </TableCell>
+                    <TableCell className="text-center">
                       <Badge variant={product.is_active ? 'default' : 'secondary'}>
                         {product.is_active ? 'Hoạt động' : 'Ẩn'}
                       </Badge>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 )
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
     </div>

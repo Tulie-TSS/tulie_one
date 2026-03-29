@@ -7,7 +7,6 @@ import { Button } from '@repo/ui'
 import { Checkbox } from '@repo/ui'
 import {
     QUOTATION_STATUS_LABELS,
-    QUOTATION_STATUS_COLORS
 } from '@/lib/constants/status'
 import { formatCurrency, formatDate, formatRelativeTime } from '@/lib/utils/format'
 import { ArrowUpDown } from 'lucide-react'

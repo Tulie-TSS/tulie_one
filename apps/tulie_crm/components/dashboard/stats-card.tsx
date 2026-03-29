@@ -1,14 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
-import { cn } from '@/lib/utils'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardAction, CardFooter, Badge } from '@repo/ui'
+import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
+
+/**
+ * StatsCard — follows shadcn/ui dashboard-01 section-cards.tsx pattern.
+ *
+ * Uses CardDescription for label, CardTitle for value,
+ * CardAction+Badge for trend, CardFooter for description.
+ */
 
 interface StatsCardProps {
     title: string
     value: string | number
     change?: number
     changeLabel?: string
-    icon?: React.ReactNode
     className?: string
-    gradient?: string // Kept for API compatibility with page.tsx, but unused in UI
 }
 
 export function StatsCard({
@@ -16,34 +21,49 @@ export function StatsCard({
     value,
     change,
     changeLabel,
-    icon,
     className,
 }: StatsCardProps) {
     const isPositive = change !== undefined && change > 0
     const isNegative = change !== undefined && change < 0
+    const isPercentage = change !== undefined && Math.abs(change) < 1000
 
     return (
-        <Card className={cn("shadow-sm", className)}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                    {title}
+        <Card className={`@container/card ${className || ''}`}>
+            <CardHeader>
+                <CardDescription>{title}</CardDescription>
+                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+                    {value}
                 </CardTitle>
-                {icon}
-            </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold">{value}</div>
-                {(changeLabel || change !== undefined) && (
-                    <p className="text-xs text-muted-foreground">
-                        {change !== undefined && (
-                            <span className="font-medium mr-1">
-                                {isPositive ? '+' : ''}
-                                {Math.abs(change) < 1000 ? `${change.toFixed(1)}%` : change.toLocaleString('vi-VN')}
-                            </span>
-                        )}
-                        {changeLabel}
-                    </p>
+                {change !== undefined && isPercentage && (
+                    <CardAction>
+                        <Badge variant="outline">
+                            {isPositive ? <TrendingUp /> : isNegative ? <TrendingDown /> : <Minus />}
+                            {isPositive ? '+' : ''}{change.toFixed(1)}%
+                        </Badge>
+                    </CardAction>
                 )}
-            </CardContent>
+            </CardHeader>
+            {(changeLabel || (change !== undefined && !isPercentage)) && (
+                <CardFooter className="flex-col items-start gap-1.5 text-sm">
+                    {change !== undefined && isPercentage && (
+                        <div className="line-clamp-1 flex gap-2 font-medium">
+                            {isPositive ? 'Tăng trưởng trong kỳ' : isNegative ? 'Sụt giảm trong kỳ' : 'Ổn định trong kỳ'}
+                            {isPositive ? <TrendingUp className="size-4" /> : isNegative ? <TrendingDown className="size-4" /> : <Minus className="size-4" />}
+                        </div>
+                    )}
+                    {change !== undefined && !isPercentage && (
+                        <div className="line-clamp-1 flex gap-2 font-medium">
+                            {isPositive ? '+' : ''}{change.toLocaleString('vi-VN')} đ
+                            {isPositive ? <TrendingUp className="size-4" /> : isNegative ? <TrendingDown className="size-4" /> : null}
+                        </div>
+                    )}
+                    {changeLabel && (
+                        <div className="text-muted-foreground">
+                            {changeLabel}
+                        </div>
+                    )}
+                </CardFooter>
+            )}
         </Card>
     )
 }

@@ -1,45 +1,18 @@
 import { getDashboardStats, getRevenueChartData } from '@/lib/supabase/services/dashboard-service'
 import { getInvoices } from '@/lib/supabase/services/invoice-service'
 import {
-  DollarSign,
-  FileText,
-  CreditCard,
-  AlertTriangle,
   TrendingUp,
   TrendingDown,
-  ArrowUpRight,
 } from 'lucide-react'
 import Link from 'next/link'
-import { Card, CardContent, CardHeader, CardTitle, Progress } from '@repo/ui'
+import {
+  Card, CardContent, CardHeader, CardTitle, CardDescription, CardAction, CardFooter,
+  Progress, Badge,
+} from '@repo/ui'
 import { cn } from '@/lib/utils'
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
-}
-
-function StatCard({
-  title, value, subtitle, icon: Icon, href
-}: {
-  title: string; value: string; subtitle?: string; icon: React.ElementType; href?: string;
-}) {
-  const content = (
-    <Card className={cn("shadow-sm h-full flex flex-col justify-between transition-colors", href && "hover:bg-muted/50")}>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <Icon className="h-4 w-4 text-muted-foreground" />
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
-        {(subtitle || href) && (
-          <div className="flex items-center justify-between mt-1">
-            <p className="text-xs text-muted-foreground">{subtitle}</p>
-            {href && <ArrowUpRight className="h-4 w-4 text-muted-foreground" />}
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  )
-  return href ? <Link href={href} className="block">{content}</Link> : content
 }
 
 export default async function DashboardPage() {
@@ -78,44 +51,68 @@ export default async function DashboardPage() {
         <p className="text-sm text-muted-foreground">Quản lý tài chính và vận hành doanh nghiệp</p>
       </div>
 
-      {/* KPI Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          title="Doanh thu (đã thu)"
-          value={formatCurrency(stats?.revenue?.total ?? totalRevenue)}
-          icon={DollarSign}
-          href="/reports"
-        />
-        <StatCard
-          title="Chờ thanh toán"
-          value={formatCurrency(totalPending)}
-          subtitle={`${pendingInvoices.length} hóa đơn`}
-          icon={FileText}
-          href="/invoices"
-        />
-        <StatCard
-          title="Quá hạn thanh toán"
-          value={formatCurrency(totalOverdue)}
-          subtitle={overdueInvoices.length > 0 ? `${overdueInvoices.length} cần xử lý` : 'Không có'}
-          icon={AlertTriangle}
-          href="/invoices"
-        />
-        <StatCard
-          title="Tổng giao dịch"
-          value={String(totalInvoices)}
-          subtitle="Hóa đơn mua & bán"
-          icon={CreditCard}
-          href="/payments"
-        />
+      {/* KPI Grid — shadcn dashboard-01 pattern */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card">
+        <Card className="@container/card">
+          <CardHeader>
+            <CardDescription>Doanh thu (đã thu)</CardDescription>
+            <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+              {formatCurrency(stats?.revenue?.total ?? totalRevenue)}
+            </CardTitle>
+          </CardHeader>
+          <CardFooter className="flex-col items-start gap-1.5 text-sm">
+            <div className="text-muted-foreground">Tổng doanh thu đã ghi nhận</div>
+          </CardFooter>
+        </Card>
+
+        <Card className="@container/card">
+          <CardHeader>
+            <CardDescription>Chờ thanh toán</CardDescription>
+            <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+              {formatCurrency(totalPending)}
+            </CardTitle>
+          </CardHeader>
+          <CardFooter className="flex-col items-start gap-1.5 text-sm">
+            <div className="text-muted-foreground">{pendingInvoices.length} hóa đơn</div>
+          </CardFooter>
+        </Card>
+
+        <Card className="@container/card">
+          <CardHeader>
+            <CardDescription>Quá hạn thanh toán</CardDescription>
+            <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+              {formatCurrency(totalOverdue)}
+            </CardTitle>
+          </CardHeader>
+          <CardFooter className="flex-col items-start gap-1.5 text-sm">
+            <div className="text-muted-foreground">
+              {overdueInvoices.length > 0 ? `${overdueInvoices.length} cần xử lý` : 'Không có'}
+            </div>
+          </CardFooter>
+        </Card>
+
+        <Card className="@container/card">
+          <CardHeader>
+            <CardDescription>Tổng giao dịch</CardDescription>
+            <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+              {totalInvoices}
+            </CardTitle>
+          </CardHeader>
+          <CardFooter className="flex-col items-start gap-1.5 text-sm">
+            <div className="text-muted-foreground">Hóa đơn mua & bán</div>
+          </CardFooter>
+        </Card>
       </div>
 
       {/* Content Grid */}
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Recent invoices */}
-        <Card className="shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-3">
+        <Card>
+          <CardHeader>
             <CardTitle className="text-base font-medium">Hóa đơn gần đây</CardTitle>
-            <Link href="/invoices" className="text-xs font-semibold text-primary">Xem tất cả</Link>
+            <CardAction>
+              <Link href="/invoices" className="text-xs font-semibold text-primary hover:underline">Xem tất cả</Link>
+            </CardAction>
           </CardHeader>
           <CardContent className="px-0">
             {invoices.length === 0 ? (
@@ -129,10 +126,10 @@ export default async function DashboardPage() {
                       <p className="text-xs text-muted-foreground truncate max-w-[200px]">{inv.customer?.company_name || inv.vendor?.name || '—'}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-semibold">{formatCurrency(inv.total_amount)}</p>
-                      <p className={`text-xs font-medium ${inv.status === 'paid' ? 'text-emerald-500' : inv.status === 'overdue' ? 'text-destructive' : 'text-muted-foreground'}`}>
+                      <p className="text-sm font-semibold tabular-nums">{formatCurrency(inv.total_amount)}</p>
+                      <Badge variant={inv.status === 'paid' ? 'default' : inv.status === 'overdue' ? 'destructive' : 'secondary'} className="text-xs">
                         {inv.status === 'paid' ? 'Đã thanh toán' : inv.status === 'overdue' ? 'Quá hạn' : inv.status === 'sent' ? 'Chờ TT' : inv.status}
-                      </p>
+                      </Badge>
                     </div>
                   </div>
                 ))}
@@ -143,24 +140,23 @@ export default async function DashboardPage() {
 
         {/* Quick Actions & Health */}
         <div className="flex flex-col gap-4">
-          <Card className="shadow-sm">
-            <CardHeader className="pb-3">
+          <Card>
+            <CardHeader>
               <CardTitle className="text-base font-medium">Thao tác nhanh</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid gap-3 grid-cols-2">
                 {[
-                  { name: 'Tạo hóa đơn', href: '/invoices/new', icon: FileText },
-                  { name: 'Xem thanh toán', href: '/payments', icon: CreditCard },
-                  { name: 'Sản phẩm', href: '/products', icon: TrendingUp },
-                  { name: 'Nhà cung cấp', href: '/vendors', icon: TrendingDown },
+                  { name: 'Tạo hóa đơn', href: '/invoices/new' },
+                  { name: 'Xem thanh toán', href: '/payments' },
+                  { name: 'Sản phẩm', href: '/products' },
+                  { name: 'Nhà cung cấp', href: '/vendors' },
                 ].map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
                     className="group flex items-center gap-3 rounded-md border p-3 hover:bg-muted/50 transition-colors"
                   >
-                    <item.icon className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                     <span className="text-sm font-medium text-foreground">{item.name}</span>
                   </Link>
                 ))}
@@ -168,28 +164,28 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
 
-          <Card className="shadow-sm">
-            <CardHeader className="pb-3">
+          <Card>
+            <CardHeader>
               <CardTitle className="text-base font-medium">Sức khỏe tài chính</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <span className="font-medium">Tỷ lệ thu hồi</span>
-                  <span className="text-xs font-medium text-emerald-500">
+                  <span className="text-xs font-medium text-muted-foreground tabular-nums">
                     {recoveryRate}%
                   </span>
                 </div>
-                <Progress value={recoveryRate} className="h-2 [&>div]:bg-emerald-500" />
+                <Progress value={recoveryRate} className="h-2" />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <span className="font-medium">Hóa đơn quá hạn</span>
-                  <span className={`text-xs font-medium ${overdueInvoices.length > 0 ? 'text-destructive' : 'text-emerald-500'}`}>
+                  <span className="text-xs font-medium text-muted-foreground tabular-nums">
                     {overdueInvoices.length} / {totalInvoices}
                   </span>
                 </div>
-                <Progress value={totalInvoices > 0 ? (overdueInvoices.length / totalInvoices) * 100 : 0} className="h-2 [&>div]:bg-destructive" />
+                <Progress value={totalInvoices > 0 ? (overdueInvoices.length / totalInvoices) * 100 : 0} className="h-2" />
               </div>
             </CardContent>
           </Card>

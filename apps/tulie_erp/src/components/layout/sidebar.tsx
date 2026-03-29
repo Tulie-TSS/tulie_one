@@ -15,7 +15,13 @@ import {
   BarChart3,
   LogOut,
   User,
-  ChevronsUpDown
+  ChevronsUpDown,
+  BookOpen,
+  Calculator,
+  FileCheck2,
+  Landmark,
+  PiggyBank,
+  Scale,
 } from 'lucide-react'
 
 import {
@@ -39,15 +45,27 @@ import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
-const navigation = [
+const coreNavigation = [
   { name: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
   { name: 'Hóa đơn', url: '/invoices', icon: FileText },
   { name: 'Thanh toán', url: '/payments', icon: CreditCard },
   { name: 'Sản phẩm', url: '/products', icon: Package },
   { name: 'Nhà cung cấp', url: '/vendors', icon: Building2 },
   { name: 'Chi phí', url: '/expenses', icon: Receipt },
-  { name: 'Báo cáo', url: '/reports', icon: BarChart3 },
   { name: 'Dòng tiền', url: '/cash-flow', icon: TrendingUp },
+]
+
+const accountingNavigation = [
+  { name: 'Hệ thống tài khoản', url: '/chart-of-accounts', icon: BookOpen },
+  { name: 'Sổ nhật ký', url: '/journal', icon: Scale },
+  { name: 'Hóa đơn điện tử', url: '/einvoice', icon: FileCheck2 },
+  { name: 'Thuế', url: '/tax', icon: Calculator },
+  { name: 'Ngân hàng', url: '/bank', icon: Landmark },
+  { name: 'Ngân sách', url: '/budget', icon: PiggyBank },
+]
+
+const utilityNavigation = [
+  { name: 'Báo cáo', url: '/reports', icon: BarChart3 },
   { name: 'Cài đặt', url: '/settings', icon: Settings },
 ]
 
@@ -98,7 +116,49 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <SidebarGroupLabel>Nghiệp vụ cốt lõi</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {navigation.map((item) => {
+                            {coreNavigation.map((item) => {
+                                const isActive = pathname === item.url || pathname.startsWith(item.url + '/')
+                                return (
+                                    <SidebarMenuItem key={item.name}>
+                                        <SidebarMenuButton asChild isActive={isActive} tooltip={item.name}>
+                                            <Link href={item.url}>
+                                                <item.icon className="h-4 w-4" />
+                                                <span>{item.name}</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                )
+                            })}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+
+                <SidebarGroup>
+                    <SidebarGroupLabel>Kế toán VAS</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {accountingNavigation.map((item) => {
+                                const isActive = pathname === item.url || pathname.startsWith(item.url + '/')
+                                return (
+                                    <SidebarMenuItem key={item.name}>
+                                        <SidebarMenuButton asChild isActive={isActive} tooltip={item.name}>
+                                            <Link href={item.url}>
+                                                <item.icon className="h-4 w-4" />
+                                                <span>{item.name}</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                )
+                            })}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+
+                <SidebarGroup>
+                    <SidebarGroupLabel>Hệ thống</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {utilityNavigation.map((item) => {
                                 const isActive = pathname === item.url || pathname.startsWith(item.url + '/')
                                 return (
                                     <SidebarMenuItem key={item.name}>

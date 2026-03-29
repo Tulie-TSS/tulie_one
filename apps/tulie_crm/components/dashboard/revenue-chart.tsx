@@ -71,7 +71,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
                                 </defs>
                                 <CartesianGrid vertical={false} stroke="var(--color-border)" />
                                 <XAxis
-                                    dataKey="name"
+                                    dataKey="date"
                                     axisLine={false}
                                     tickLine={false}
                                     tick={{ fill: 'var(--color-muted-foreground)', fontSize: 12 }}

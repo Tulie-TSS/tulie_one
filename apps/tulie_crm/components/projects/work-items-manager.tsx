@@ -219,13 +219,11 @@ export function WorkItemsManager({ project, workItems: initialWorkItems }: WorkI
 
     return (
         <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <div>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                        <Package className="h-5 w-5 text-foreground" />
-                        Hạng mục dự án
-                    </CardTitle>
-                    <CardDescription className="text-xs">Quản lý các hạng mục, công việc, link bàn giao và chứng từ</CardDescription>
+            <CardHeader className="flex flex-row items-center border-b px-6 py-4 space-y-0 text-foreground">
+                <div className="flex items-center gap-2">
+                    <Package className="w-4 h-4 text-muted-foreground" />
+                    <CardTitle className="text-base font-semibold">Hạng mục dự án</CardTitle>
+                    <span className="text-xs ml-2 text-muted-foreground font-normal hidden lg:inline-flex">Quản lý các hạng mục, công việc, link bàn giao và chứng từ</span>
                 </div>
 
                 <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>

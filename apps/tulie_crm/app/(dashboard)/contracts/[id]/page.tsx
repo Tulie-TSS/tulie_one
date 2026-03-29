@@ -2,13 +2,11 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@repo/ui'
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
-import { Badge } from '@repo/ui'
 import { Separator } from '@repo/ui'
 import { Progress } from '@repo/ui'
 import {
     formatCurrency, formatDate
 } from '@/lib/utils/format'
-import { CONTRACT_STATUS_LABELS, CONTRACT_STATUS_COLORS } from '@/lib/constants/status'
 import {
     ArrowLeft,
     Edit,
@@ -17,18 +15,17 @@ import {
     Building2,
     Receipt,
     CheckCircle,
-    Clock,
     AlertTriangle,
     FileSignature,
     Globe
 } from 'lucide-react'
 import { getContractById } from '@/lib/supabase/services/contract-service'
 import { notFound } from 'next/navigation'
-import { ContractStatus } from '@/types'
 import { ContractEmailButton } from '@/components/contracts/contract-email-button'
 import { ContractDocuments } from '@/components/contracts/contract-documents'
 import { ContractLifecycle } from '@/components/contracts/contract-lifecycle'
 import { SetPasswordDialog } from '@/components/shared/set-password-dialog'
+import { StatusBadge } from '@/components/shared/status-badge'
 import { createClient } from '@/lib/supabase/server'
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
@@ -93,11 +90,9 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                 <div className="px-2 py-0.5 rounded-md border bg-muted font-medium h-6 flex items-center text-xs">
                                     {contract.contract_number}
                                 </div>
-                                <Badge className={CONTRACT_STATUS_COLORS[contract.status as ContractStatus] || 'bg-gray-100'}>
-                                    {CONTRACT_STATUS_LABELS[contract.status as ContractStatus] || contract.status}
-                                </Badge>
+                                <StatusBadge status={contract.status} entityType="contract" />
                             </div>
-                            <h1 className="text-3xl leading-none">{contract.customer?.company_name}</h1>
+                            <h1 className="text-2xl font-semibold tracking-tight">{contract.customer?.company_name}</h1>
                         </div>
                     </div>
                 </div>
@@ -163,7 +158,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                         <CardContent className="space-y-4">
                             {contract.milestones?.map((milestone: any, index: number) => (
                                 <div key={milestone.id} className="flex items-start gap-4">
-                                    <div className={`mt-1 h-8 w-8 rounded-full flex items-center justify-center ${milestone.status === 'completed' ? 'bg-emerald-500 text-white' : milestone.status === 'overdue' ? 'bg-rose-500 text-white' : 'bg-muted text-muted-foreground' }`}>
+                                    <div className={`mt-1 h-8 w-8 rounded-full flex items-center justify-center ${milestone.status === 'completed' ? 'bg-primary text-primary-foreground' : milestone.status === 'overdue' ? 'bg-destructive text-destructive-foreground' : 'bg-muted text-muted-foreground' }`}>
                                         {milestone.status === 'completed' ? (
                                             <CheckCircle className="h-5 w-5" />
                                         ) : milestone.status === 'overdue' ? (
@@ -180,7 +175,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                         <div className="flex items-center justify-between text-sm text-muted-foreground">
                                             <span>Hạn: {formatDate(milestone.due_date)}</span>
                                             {milestone.completed_at && (
-                                                <span className="text-green-500">Đã thanh toán {formatDate(milestone.completed_at)}</span>
+                                                <span className="font-medium">Đã thanh toán {formatDate(milestone.completed_at)}</span>
                                             )}
                                         </div>
                                     </div>

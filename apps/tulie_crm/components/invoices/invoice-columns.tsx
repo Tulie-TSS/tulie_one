@@ -5,7 +5,6 @@ import { Invoice } from '@/types'
 import { Checkbox } from '@repo/ui'
 import {
     INVOICE_STATUS_LABELS,
-    INVOICE_STATUS_COLORS
 } from '@/lib/constants/status'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
 import { StatusBadge } from '@/components/shared/status-badge'

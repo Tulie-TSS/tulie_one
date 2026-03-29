@@ -16,6 +16,7 @@ Hệ sinh thái ứng dụng của Tulie sử dụng chiến lược tách biệ
 | **Core API/Backend** | N/A (Server riêng/ DB) | `api.tulie.io.vn` | Hệ thống xử lý logic ngầm, Database kết nối đa ứng dụng |
 | **Tulie CRM** | `apps/tulie_crm` | `crm.tulie.app` | Quản lý quan hệ khách hàng (SaaS) |
 | **Tulie ERP** | `apps/tulie_erp` | `erp.tulie.app` | Quản trị nguồn lực doanh nghiệp (SaaS) |
+| **Tulie HRM** | `apps/tulie_hrm` | `hrm.tulie.app` | Quản trị nguồn nhân lực (SaaS) |
 | **Tulie Workforce** | `apps/tulie_workforce` | `workforce.tulie.app` | Quản lý nhân sự, làm việc từ xa (SaaS) |
 | **Tulie Workspace** | `apps/tulie_workspace` | `workspace.tulie.app` | Không gian làm việc, tài liệu dùng chung (SaaS) |
 | **SSO / ID Lock** | `apps/tulie_id` *(Tương lai)*| `id.tulie.app` | Cổng đăng nhập tập trung xuyên suốt hệ sinh thái ứng dụng |

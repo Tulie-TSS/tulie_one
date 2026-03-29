@@ -1,31 +1,18 @@
 import { Badge } from '@repo/ui'
 import { cn } from '@/lib/utils'
-import { CheckCircle2, CircleDashed, AlertCircle, XCircle, Clock, Circle } from "lucide-react"
 import {
     CUSTOMER_STATUS_LABELS,
-    CUSTOMER_STATUS_COLORS,
     QUOTATION_STATUS_LABELS,
-    QUOTATION_STATUS_COLORS,
     CONTRACT_STATUS_LABELS,
-    CONTRACT_STATUS_COLORS,
     INVOICE_STATUS_LABELS,
-    INVOICE_STATUS_COLORS,
     DEAL_STATUS_LABELS,
-    DEAL_STATUS_COLORS,
     PROJECT_STATUS_LABELS,
-    PROJECT_STATUS_COLORS,
     PRODUCT_STATUS_LABELS,
-    PRODUCT_STATUS_COLORS,
     BRAND_LABELS,
-    BRAND_COLORS,
     TICKET_STATUS_LABELS,
-    TICKET_STATUS_COLORS,
     TICKET_PRIORITY_LABELS,
-    TICKET_PRIORITY_COLORS,
     RETAIL_ORDER_STATUS_LABELS,
-    RETAIL_ORDER_STATUS_COLORS,
     RETAIL_PAYMENT_STATUS_LABELS,
-    RETAIL_PAYMENT_STATUS_COLORS,
 } from '@/lib/constants/status'
 
 type EntityType = 'customer' | 'quotation' | 'contract' | 'invoice' | 'deal' | 'project' | 'product' | 'brand' | 'ticket' | 'ticket_priority' | 'retail_order' | 'retail_payment' | 'none'
@@ -38,80 +25,65 @@ interface StatusBadgeProps {
     showDot?: boolean
 }
 
-const MAPPINGS: Record<Exclude<EntityType, 'none'>, { labels: any, colors: any }> = {
-    customer: { labels: CUSTOMER_STATUS_LABELS, colors: CUSTOMER_STATUS_COLORS },
-    quotation: { labels: QUOTATION_STATUS_LABELS, colors: QUOTATION_STATUS_COLORS },
-    contract: { labels: CONTRACT_STATUS_LABELS, colors: CONTRACT_STATUS_COLORS },
-    invoice: { labels: INVOICE_STATUS_LABELS, colors: INVOICE_STATUS_COLORS },
-    deal: { labels: DEAL_STATUS_LABELS, colors: DEAL_STATUS_COLORS },
-    project: { labels: PROJECT_STATUS_LABELS, colors: PROJECT_STATUS_COLORS },
-    product: { labels: PRODUCT_STATUS_LABELS, colors: PRODUCT_STATUS_COLORS },
-    brand: { labels: BRAND_LABELS, colors: BRAND_COLORS },
-    ticket: { labels: TICKET_STATUS_LABELS, colors: TICKET_STATUS_COLORS },
-    ticket_priority: { labels: TICKET_PRIORITY_LABELS, colors: TICKET_PRIORITY_COLORS },
-    retail_order: { labels: RETAIL_ORDER_STATUS_LABELS, colors: RETAIL_ORDER_STATUS_COLORS },
-    retail_payment: { labels: RETAIL_PAYMENT_STATUS_LABELS, colors: RETAIL_PAYMENT_STATUS_COLORS },
+const LABEL_MAPPINGS: Record<Exclude<EntityType, 'none'>, any> = {
+    customer: CUSTOMER_STATUS_LABELS,
+    quotation: QUOTATION_STATUS_LABELS,
+    contract: CONTRACT_STATUS_LABELS,
+    invoice: INVOICE_STATUS_LABELS,
+    deal: DEAL_STATUS_LABELS,
+    project: PROJECT_STATUS_LABELS,
+    product: PRODUCT_STATUS_LABELS,
+    brand: BRAND_LABELS,
+    ticket: TICKET_STATUS_LABELS,
+    ticket_priority: TICKET_PRIORITY_LABELS,
+    retail_order: RETAIL_ORDER_STATUS_LABELS,
+    retail_payment: RETAIL_PAYMENT_STATUS_LABELS,
 }
 
-export function StatusBadge({ status, label, entityType = 'none', className, showDot = true }: StatusBadgeProps) {
+/**
+ * Shadcn v4 standard Badge — uses only `variant` for visual styling.
+ * No custom colors, no hardcoded classes.
+ * Maps status → shadcn Badge variant (default | secondary | outline | destructive)
+ */
+export function StatusBadge({ status, label, entityType = 'none', className }: StatusBadgeProps) {
     let displayLabel = label || status
-    let colorClass = ''
 
     if (entityType !== 'none') {
-        const mapping = MAPPINGS[entityType]
-        displayLabel = label || mapping.labels[status as keyof typeof mapping.labels] || status
-        colorClass = mapping.colors[status as keyof typeof mapping.colors] || ''
+        const labels = LABEL_MAPPINGS[entityType]
+        displayLabel = label || labels?.[status as keyof typeof labels] || status
     }
 
-    // Determine config from the semantic color class or status
-    const config = getIconConfig(colorClass, status)
-    const Icon = config.icon
+    const variant = getVariant(status)
 
     return (
-        <Badge
-            variant="outline"
-            className={cn(
-                'font-medium whitespace-nowrap px-2.5 py-0.5 h-6 flex items-center gap-1.5 rounded-full border-border bg-background text-foreground',
-                className
-            )}
-        >
-            {showDot && (
-                <Icon className={cn('w-3.5 h-3.5 shrink-0', config.color)} />
-            )}
+        <Badge variant={variant} className={cn(className)}>
             {displayLabel}
         </Badge>
     )
 }
 
-function getIconConfig(colorClass?: string, status?: string) {
-    let icon = Circle
-    let color = 'text-zinc-400'
+/**
+ * Map any status string → standard shadcn Badge variant.
+ * No custom colors — only the 4 built-in variants.
+ */
+function getVariant(status: string): "default" | "secondary" | "outline" | "destructive" {
+    const s = status.toLowerCase()
 
-    const s = (status || '').toLowerCase()
-    const c = (colorClass || '').toLowerCase()
-
-    // Status map overrides
-    if (s === 'completed' || s === 'success' || s === 'done' || s === 'active' || s === 'ready' || s === 'approved' || c.includes('emerald') || c.includes('success')) {
-        icon = CheckCircle2
-        color = 'text-emerald-500'
-    } else if (s === 'in_progress' || s === 'running' || s === 'processing' || s === 'changes_requested' || c.includes('blue') || c.includes('info') || c.includes('sky')) {
-        icon = CircleDashed
-        color = 'text-muted-foreground'
-    } else if (s === 'failed' || s === 'cancelled' || s === 'error' || s === 'rejected' || c.includes('rose') || c.includes('destructive') || c.includes('failed')) {
-        icon = XCircle
-        color = 'text-rose-500'
-    } else if (s === 'urgent' || s === 'high' || s === 'medium' || s === 'pending_review' || c.includes('amber') || c.includes('warning') || c.includes('orange')) {
-        icon = AlertCircle
-        color = 'text-amber-500'
-    } else if (s === 'pending' || s === 'idle' || s === 'draft' || c.includes('zinc') || c.includes('muted')) {
-        icon = Clock
-        color = 'text-zinc-400'
+    // Destructive states
+    if (['rejected', 'failed', 'cancelled', 'error', 'overdue', 'urgent', 'blocked', 'churned'].includes(s)) {
+        return 'destructive'
     }
 
-    if (s === 'todo' || s === 'low') {
-        icon = Circle
-        color = 'text-zinc-400'
+    // Success / active states → default (primary)
+    if (['completed', 'done', 'active', 'paid', 'signed', 'accepted', 'approved', 'ready', 'resolved', 'closed_won', 'vip', 'converted', 'edit_done'].includes(s)) {
+        return 'default'
     }
 
-    return { icon, color }
+    // In-progress / waiting → secondary
+    if (['in_progress', 'running', 'processing', 'sent', 'viewed', 'shipping', 'waiting_ship', 'waiting', 'open', 'editing', 'briefing', 'prospect', 'proposal_sent', 'partial', 'review', 'pending_review', 'changes_requested'].includes(s)) {
+        return 'secondary'
+    }
+
+    // Default → outline (draft, pending, todo, etc.)
+    return 'outline'
 }

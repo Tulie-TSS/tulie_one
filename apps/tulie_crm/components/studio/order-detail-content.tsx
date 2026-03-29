@@ -7,6 +7,7 @@ import { Input } from '@repo/ui'
 import { Label } from '@repo/ui'
 import { Badge } from '@repo/ui'
 import { Separator } from '@repo/ui'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@repo/ui'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
 import {
     Phone,
@@ -281,54 +282,52 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                     </CardHeader>
                     <CardContent className="p-0">
                         <div className="overflow-x-auto">
-                            <table className="w-full text-sm text-left">
-                                <thead className="text-[11px] uppercase tracking-widest text-muted-foreground bg-muted/30 border-b border-border">
-                                    <tr>
-                                        <th className="px-6 py-3">STT</th>
-                                        <th className="px-6 py-3">Tên sản phẩm/dịch vụ</th>
-                                        <th className="px-6 py-3 text-center">SL</th>
-                                        <th className="px-6 py-3 text-right">Đơn giá</th>
-                                        <th className="px-6 py-3 text-right">Thành tiền</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-zinc-100">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>STT</TableHead>
+                                        <TableHead>Tên sản phẩm/dịch vụ</TableHead>
+                                        <TableHead className="text-center">SL</TableHead>
+                                        <TableHead className="text-right">Đơn giá</TableHead>
+                                        <TableHead className="text-right">Thành tiền</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
                                     {order.items && order.items.length > 0 ? (
                                         order.items.map((item, index) => (
-                                            <tr key={item.id} className="hover:bg-muted/50 transition-colors">
-                                                <td className="px-6 py-4 font-medium text-muted-foreground text-xs w-12">{index + 1}</td>
-                                                <td className="px-6 py-4">
-                                                    <div className="font-semibold text-foreground group-hover:text-primary transition-colors">{item.product_name}</div>
+                                            <TableRow key={item.id}>
+                                                <TableCell className="font-medium text-muted-foreground text-xs w-12">{index + 1}</TableCell>
+                                                <TableCell>
+                                                    <div className="font-semibold">{item.product_name}</div>
                                                     {item.product_id && (
                                                         <div className="text-[11px] text-muted-foreground mt-0.5 font-medium">SKU: {item.product_id.split('-')[0].toUpperCase()}</div>
                                                     )}
-                                                </td>
-                                                <td className="px-6 py-4 text-center text-zinc-700 tabular-nums">{item.quantity}</td>
-                                                <td className="px-6 py-4 text-right font-medium text-muted-foreground tabular-nums">{formatCurrency(item.unit_price)}</td>
-                                                <td className="px-6 py-4 text-right text-foreground tabular-nums">{formatCurrency(item.total_price)}</td>
-                                            </tr>
+                                                </TableCell>
+                                                <TableCell className="text-center tabular-nums">{item.quantity}</TableCell>
+                                                <TableCell className="text-right font-medium text-muted-foreground tabular-nums">{formatCurrency(item.unit_price)}</TableCell>
+                                                <TableCell className="text-right tabular-nums">{formatCurrency(item.total_price)}</TableCell>
+                                            </TableRow>
                                         ))
                                     ) : (
-                                        <tr>
-                                            <td colSpan={5} className="px-6 py-12 text-center">
+                                        <TableRow>
+                                            <TableCell colSpan={5} className="py-12 text-center">
                                                 <div className="flex flex-col items-center gap-2">
                                                     <div className="w-10 rounded-full bg-muted flex items-center justify-center">
                                                         <FileText className="h-5 w-5 text-zinc-200" />
                                                     </div>
                                                     <p className="text-sm text-muted-foreground font-medium">Chưa có thông tin sản phẩm.</p>
                                                 </div>
-                                            </td>
-                                        </tr>
+                                            </TableCell>
+                                        </TableRow>
                                     )}
-                                </tbody>
-                                <tfoot className="bg-muted/30 border-t border-border">
-                                    <tr>
-                                        <td colSpan={4} className="px-6 py-4 text-right text-[11px] uppercase tracking-wider text-muted-foreground">Tổng cộng</td>
-                                        <td className="px-6 py-4 text-right text-base text-foreground tabular-nums">
+                                    <TableRow className="bg-muted/30 border-t">
+                                        <TableCell colSpan={4} className="text-right text-[11px] uppercase tracking-wider text-muted-foreground">Tổng cộng</TableCell>
+                                        <TableCell className="text-right text-base tabular-nums">
                                             {formatCurrency(order.total_amount)}
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
                         </div>
                     </CardContent>
                 </Card>

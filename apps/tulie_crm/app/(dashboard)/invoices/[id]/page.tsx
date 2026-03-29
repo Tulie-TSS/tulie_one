@@ -4,8 +4,9 @@ import { Button } from '@repo/ui'
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { Badge } from '@repo/ui'
 import { Separator } from '@repo/ui'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@repo/ui'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
-import { INVOICE_STATUS_LABELS, INVOICE_STATUS_COLORS } from '@/lib/constants/status'
+import { StatusBadge } from '@/components/shared/status-badge'
 import {
     ArrowLeft,
     Edit,
@@ -61,9 +62,7 @@ export default async function InvoiceDetailPage({ params }: any) {
                                 <div className="px-2 py-0.5 rounded-md border bg-muted font-medium h-6 flex items-center text-xs">
                                     {invoice.invoice_number}
                                 </div>
-                                <Badge className={INVOICE_STATUS_COLORS[invoice.status] || 'bg-gray-100'}>
-                                    {INVOICE_STATUS_LABELS[invoice.status] || invoice.status}
-                                </Badge>
+                                <StatusBadge status={invoice.status} entityType="invoice" />
                             </div>
                             <h1 className="text-3xl leading-none">{invoice.customer?.company_name}</h1>
                         </div>
@@ -147,36 +146,36 @@ export default async function InvoiceDetailPage({ params }: any) {
 
                             {/* Items */}
                             <div className="border rounded-lg overflow-hidden mb-6">
-                                <table className="w-full">
-                                    <thead className="bg-muted">
-                                        <tr>
-                                            <th className="text-left p-3 font-medium">Mô tả</th>
-                                            <th className="text-center p-3 font-medium w-20">SL</th>
-                                            <th className="text-right p-3 font-medium w-32">Đơn giá</th>
-                                            <th className="text-right p-3 font-medium w-32">Thành tiền</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Mô tả</TableHead>
+                                            <TableHead className="text-center w-20">SL</TableHead>
+                                            <TableHead className="text-right w-32">Đơn giá</TableHead>
+                                            <TableHead className="text-right w-32">Thành tiền</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
                                         {invoice.items?.map((item: any) => (
-                                            <tr key={item.id} className="border-t">
-                                                <td className="p-3">
+                                            <TableRow key={item.id}>
+                                                <TableCell>
                                                     <p className="font-medium">{item.name || item.description}</p>
                                                     {item.description && item.name && (
                                                         <p className="text-sm text-muted-foreground">{item.description}</p>
                                                     )}
-                                                </td>
-                                                <td className="p-3 text-center">{item.quantity} {item.unit}</td>
-                                                <td className="p-3 text-right">{formatCurrency(item.unit_price)}</td>
-                                                <td className="p-3 text-right font-medium">{formatCurrency(item.total)}</td>
-                                            </tr>
+                                                </TableCell>
+                                                <TableCell className="text-center">{item.quantity} {item.unit}</TableCell>
+                                                <TableCell className="text-right">{formatCurrency(item.unit_price)}</TableCell>
+                                                <TableCell className="text-right font-medium">{formatCurrency(item.total)}</TableCell>
+                                            </TableRow>
                                         ))}
                                         {(!invoice.items || invoice.items.length === 0) && (
-                                            <tr>
-                                                <td colSpan={4} className="p-8 text-center text-muted-foreground">Không có hạng mục nào</td>
-                                            </tr>
+                                            <TableRow>
+                                                <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">Không có hạng mục nào</TableCell>
+                                            </TableRow>
                                         )}
-                                    </tbody>
-                                </table>
+                                    </TableBody>
+                                </Table>
                             </div>
 
                             {/* Totals */}
@@ -197,7 +196,7 @@ export default async function InvoiceDetailPage({ params }: any) {
                                     </div>
                                     {invoice.paid_amount > 0 && (
                                         <>
-                                            <div className="flex justify-between text-sm text-green-500">
+                                            <div className="flex justify-between text-sm font-medium">
                                                 <span>Đã thanh toán</span>
                                                 <span>{formatCurrency(invoice.paid_amount)}</span>
                                             </div>
@@ -228,8 +227,8 @@ export default async function InvoiceDetailPage({ params }: any) {
                         <CardContent className="space-y-4">
                             {invoice.payments?.map((payment: any) => (
                                 <div key={payment.id} className="flex items-center gap-4 p-4 rounded-lg border">
-                                    <div className="w-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                                        <CheckCircle className="h-5 w-5 text-green-500" />
+                                    <div className="w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                        <CheckCircle className="h-5 w-5 text-primary" />
                                     </div>
                                     <div className="flex-1">
                                         <div className="flex items-center justify-between">

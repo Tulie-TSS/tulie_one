@@ -373,27 +373,22 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
             )}
 
             {/* Document Header */}
-            <CardHeader className="bg-muted/40 border-b px-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-background border border-border/60 flex items-center justify-center shrink-0">
-                        <ListTodo className="w-6 h-6 text-foreground" />
-                    </div>
-                    <div>
-                        <h2 className="text-lg text-foreground uppercase">Nhật ký xử lý yêu cầu</h2>
-                        <div className="text-sm font-medium text-muted-foreground flex items-center gap-2 mt-0.5">
-                            <span>Revision & Feedback Log</span>
-                            <span className="w-1 h-1 rounded-full bg-zinc-300" />
-                            <span className="text-muted-foreground">Project: {projectId.slice(0, 8).toUpperCase()}</span>
-                        </div>
-                    </div>
+            <CardHeader className="flex flex-row items-center border-b px-6 py-4 space-y-0">
+                <div className="flex items-center gap-2">
+                    <ListTodo className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle className="text-sm font-semibold text-foreground">Nhật ký xử lý yêu cầu</CardTitle>
                 </div>
-                <Button 
-                    onClick={() => setShowForm(!showForm)} 
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
-                >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Thêm yêu cầu mới
-                </Button>
+                <div className="ml-auto flex items-center gap-4 text-sm">
+                    <span className="text-muted-foreground hidden sm:inline-flex">Project: {projectId.slice(0, 8).toUpperCase()}</span>
+                    <Button 
+                        size="sm"
+                        onClick={() => setShowForm(!showForm)} 
+                        className="h-8 gap-1"
+                    >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Thêm yêu cầu mới</span>
+                    </Button>
+                </div>
             </CardHeader>
 
             <CardContent className="p-0">

@@ -1,0 +1,23 @@
+{
+  "name": "@repo/vietnam",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vietnamese market compliance: VAS accounting, E-Invoice, Tax, Insurance, Banking",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tax": "./src/tax/index.ts",
+    "./einvoice": "./src/einvoice/index.ts",
+    "./insurance": "./src/insurance/index.ts",
+    "./currency": "./src/utils/currency.ts",
+    "./types": "./src/types/index.ts",
+    "./accounting": "./src/accounting/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  }
+}

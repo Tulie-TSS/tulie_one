@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@repo/ui'
 import { Avatar, AvatarFallback } from '@repo/ui'
 import { Separator } from '@repo/ui'
 import { formatCurrency, formatDate, formatRelativeTime } from '@/lib/utils/format'
-import { CUSTOMER_STATUS_LABELS, CUSTOMER_STATUS_COLORS } from '@/lib/constants/status'
+import { StatusBadge } from '@/components/shared/status-badge'
 import {
     ArrowLeft,
     Edit,
@@ -71,9 +71,7 @@ export default async function CustomerDetailPage({ params }: any) {
                     <div className="min-w-0">
                         <h1 className="text-2xl leading-tight">{customer.company_name}</h1>
                         <div className="flex items-center gap-2 flex-wrap mt-1.5">
-                            <Badge className={`text-xs ${CUSTOMER_STATUS_COLORS[customer.status] || 'bg-muted text-muted-foreground'}`}>
-                                {CUSTOMER_STATUS_LABELS[customer.status] || customer.status}
-                            </Badge>
+                            <StatusBadge status={customer.status} entityType="customer" />
                             <Badge variant="outline" className="text-xs">
                                 {customer.customer_type === 'individual' ? 'Cá nhân' : 'Doanh nghiệp'}
                             </Badge>
@@ -220,7 +218,7 @@ export default async function CustomerDetailPage({ params }: any) {
                                     </div>
                                     <div className="text-right">
                                         <p className="font-medium">{formatCurrency(quote.total_amount)}</p>
-                                        <Badge variant="secondary">{quote.status}</Badge>
+                                        <StatusBadge status={quote.status} entityType="quotation" />
                                     </div>
                                 </Link>
                             ))}
@@ -245,7 +243,7 @@ export default async function CustomerDetailPage({ params }: any) {
                                     </div>
                                     <div className="text-right">
                                         <p className="font-medium">{formatCurrency(contract.total_amount)}</p>
-                                        <Badge variant="secondary">{contract.status}</Badge>
+                                        <StatusBadge status={contract.status} entityType="contract" />
                                     </div>
                                 </Link>
                             ))}

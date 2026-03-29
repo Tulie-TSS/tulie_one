@@ -3,12 +3,11 @@ import { RevenueChart } from '@/components/dashboard/revenue-chart'
 import { RecentActivities } from '@/components/dashboard/recent-activities'
 import { CRMAlerts } from '@/components/dashboard/crm-alerts'
 import { formatCurrency } from '@/lib/utils/format'
-import { Users, FileSignature, Receipt, Wallet } from 'lucide-react'
 import { getDashboardStats, getRevenueChartData, getDealStats, getCRMAlerts } from '@/lib/supabase/services/dashboard-service'
 import { getRecentActivities } from '@/lib/supabase/services/activity-service'
 import { DealProjectionChart } from '@/components/dashboard/deal-projection-chart'
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
-import { Progress, Badge } from '@repo/ui'
+import { Progress } from '@repo/ui'
 import { cn } from '@/lib/utils'
 
 function calculateHealthScore(stats: any, dealStats: any) {
@@ -24,7 +23,7 @@ function calculateHealthScore(stats: any, dealStats: any) {
         value: revenueScore,
         max: 30,
         status: stats.revenue.total > 30000000 ? 'Tốt' : stats.revenue.total > 10000000 ? 'Trung bình' : stats.revenue.total > 0 ? 'Yếu' : 'Chưa có',
-        colorClass: stats.revenue.total > 30000000 ? '[&>div]:bg-emerald-500' : stats.revenue.total > 10000000 ? '[&>div]:bg-amber-500' : '[&>div]:bg-red-500',
+        colorClass: '[&>div]:bg-zinc-800 dark:[&>div]:bg-zinc-200',
         target: `Mục tiêu: ${formatCurrency(TARGET_REVENUE)}`
     })
 
@@ -37,7 +36,7 @@ function calculateHealthScore(stats: any, dealStats: any) {
         value: customerScore,
         max: 25,
         status: `${stats.customers.new} khách`,
-        colorClass: stats.customers.new >= 3 ? '[&>div]:bg-emerald-500' : stats.customers.new >= 1 ? '[&>div]:bg-amber-500' : '[&>div]:bg-red-500',
+        colorClass: '[&>div]:bg-zinc-700 dark:[&>div]:bg-zinc-300',
         target: `Mục tiêu: ${TARGET_CUSTOMERS} khách/tháng`
     })
 
@@ -50,7 +49,7 @@ function calculateHealthScore(stats: any, dealStats: any) {
         value: contractScore,
         max: 25,
         status: `${stats.contracts.active} HĐ`,
-        colorClass: stats.contracts.active >= 3 ? '[&>div]:bg-emerald-500' : stats.contracts.active >= 1 ? '[&>div]:bg-amber-500' : '[&>div]:bg-red-500',
+        colorClass: '[&>div]:bg-zinc-600 dark:[&>div]:bg-zinc-400',
         target: `Mục tiêu: ${TARGET_CONTRACTS} hợp đồng`
     })
 
@@ -64,7 +63,7 @@ function calculateHealthScore(stats: any, dealStats: any) {
         value: pipelineScore,
         max: 20,
         status: pipelineValue > 0 ? formatCurrency(pipelineValue) : 'Chưa có',
-        colorClass: pipelineValue > 30000000 ? '[&>div]:bg-emerald-500' : pipelineValue > 5000000 ? '[&>div]:bg-amber-500' : '[&>div]:bg-red-500',
+        colorClass: '[&>div]:bg-zinc-500',
         target: `Mục tiêu: ${formatCurrency(TARGET_PIPELINE)}`
     })
 
@@ -72,10 +71,10 @@ function calculateHealthScore(stats: any, dealStats: any) {
 }
 
 function getScoreColorClass(score: number): string {
-    if (score >= 75) return 'text-emerald-500 border-emerald-500'
-    if (score >= 50) return 'text-amber-500 border-amber-500'
-    if (score >= 25) return 'text-orange-500 border-orange-500'
-    return 'text-red-500 border-red-500'
+    if (score >= 75) return 'text-foreground border-foreground'
+    if (score >= 50) return 'text-zinc-600 border-zinc-600 dark:text-zinc-400 dark:border-zinc-400'
+    if (score >= 25) return 'text-muted-foreground border-border'
+    return 'text-destructive border-border'
 }
 
 function getScoreLabel(score: number): string {
@@ -110,32 +109,29 @@ export default async function DashboardPage() {
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+                {/* Stats — shadcn dashboard-01 pattern */}
+                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card">
                     <StatsCard
                         title="Doanh thu tổng"
                         value={formatCurrency(stats.revenue.total)}
                         change={stats.revenue.change}
                         changeLabel={stats.revenue.period}
-                        icon={<Wallet className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />}
                     />
                     <StatsCard
                         title="Tổng khách hàng"
                         value={stats.customers.total.toString()}
                         change={stats.customers.change}
                         changeLabel="so với tháng trước"
-                        icon={<Users className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />}
                     />
                     <StatsCard
                         title="Hợp đồng đang thực hiện"
                         value={stats.contracts.active.toString()}
                         change={stats.contracts.change}
                         changeLabel="Tổng giá trị HĐ"
-                        icon={<FileSignature className="h-4 w-4 text-sky-600 dark:text-sky-400" />}
                     />
                     <StatsCard
                         title="Hóa đơn chờ thanh toán"
                         value={stats.invoices.pending.toString()}
-                        icon={<Receipt className="h-4 w-4 text-amber-600 dark:text-amber-400" />}
                     />
                 </div>
 
@@ -151,7 +147,7 @@ export default async function DashboardPage() {
                     <CRMAlerts alerts={crmAlerts} />
 
                     {/* Business Health Card */}
-                    <Card className="">
+                    <Card>
                         <CardHeader className="pb-3">
                             <CardTitle className="text-base font-medium">Sức khỏe doanh nghiệp</CardTitle>
                         </CardHeader>

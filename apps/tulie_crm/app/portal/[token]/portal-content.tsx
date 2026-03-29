@@ -1,8 +1,19 @@
 'use client'
 
 import { useState, useMemo, useCallback } from 'react'
-import { Badge, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Tabs, TabsList, TabsTrigger, TabsContent, Separator, Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@repo/ui'
-import { CheckCircle2, Clock, FileText, Building2, FileSignature, ExternalLink, ChevronRight, Package, Link2, ClipboardCheck, ListTodo, AlertCircle, Circle, CheckCircle, ArrowRight, Wallet, CreditCard, Banknote, Activity, FileCheck, Check, BookOpen, Eye, Receipt, Lock, Menu } from 'lucide-react'
+import {
+    Badge, Button,
+    Card, CardHeader, CardTitle, CardDescription, CardContent, CardAction, CardFooter,
+    Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,
+    Tabs, TabsList, TabsTrigger, TabsContent,
+    Separator,
+    Table, TableHeader, TableRow, TableHead, TableBody, TableCell,
+} from '@repo/ui'
+import {
+    CheckCircle2, Clock, FileText, CheckCircle, Circle,
+    ExternalLink, Package, ClipboardCheck, ListTodo,
+    Wallet, CreditCard, FileSignature, Lock, BookOpen, Eye,
+} from 'lucide-react'
 import { getGeneratedDocumentById } from '@/lib/supabase/services/document-template-service'
 import { toast } from 'sonner'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
@@ -16,6 +27,8 @@ import { useConfirm } from '@repo/ui'
 import { usePortalTracking } from '@/hooks/use-portal-tracking'
 import { FeedbackBoard } from '@/components/portal/feedback-board'
 import PortalPasswordForm from './password-form'
+
+/* ===== Types ===== */
 
 interface PortalContentProps {
     data: {
@@ -38,6 +51,8 @@ interface PortalContentProps {
     companyName?: string
 }
 
+/* ===== Status Map (semantic variants only) ===== */
+
 const STATUS_MAP: Record<string, { label: string; variant: "default" | "secondary" | "outline" | "destructive" }> = {
     'pending': { label: 'Chờ xử lý', variant: 'secondary' },
     'in_progress': { label: 'Đang thực hiện', variant: 'default' },
@@ -58,13 +73,11 @@ const STATUS_MAP: Record<string, { label: string; variant: "default" | "secondar
 }
 
 function StatusBadge({ status }: { status: string }) {
-    const s = STATUS_MAP[status] || { label: status, variant: 'outline' }
-    return (
-        <Badge variant={s.variant} className="whitespace-nowrap px-2 py-0.5 text-[11px] font-semibold">
-            {s.label}
-        </Badge>
-    )
+    const s = STATUS_MAP[status] || { label: status, variant: 'outline' as const }
+    return <Badge variant={s.variant}>{s.label}</Badge>
 }
+
+/* ===== Main Portal Content ===== */
 
 export default function PortalContent({ data, token, isFinancialAuthenticated = false, hasFinancialPassword = false, companyName }: PortalContentProps) {
     const {
@@ -163,39 +176,39 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
             : 0)
 
     const hasContracts = contracts.length > 0
-    const projectStatusLabel = hasContracts ? "Đang triển khai" : "Chờ triển khai"
     const displayName = companyName || customer?.company_name || customer?.full_name || 'Khách hàng'
 
+    /* ===== Sidebar nav items ===== */
+    const navItems = [
+        { value: 'overview', label: 'Tổng quan dự án', icon: ListTodo },
+        { value: 'gantt', label: 'Lộ trình triển khai', icon: Clock },
+        { value: 'feedback', label: 'Nhật ký xử lý', icon: ClipboardCheck },
+    ]
+
     return (
-        <div className="flex min-h-screen w-full flex-col bg-muted/40 font-sans">
-            {/* Standard Shadcn Top Navigation Header */}
-            <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-8 shadow-sm">
-                <nav className="flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6 flex-1">
-                    <div className="flex items-center gap-4">
-                        <img
-                            src={brandConfig?.logo_url || "/file/tulie-agency-logo.png"}
-                            alt="Logo"
-                            className="h-8 w-auto object-contain grayscale"
-                        />
-                        <Separator orientation="vertical" className="h-6" />
-                        <h1 className="text-base font-semibold text-foreground ml-2">Customer Portal</h1>
-                    </div>
-                </nav>
-                <div className="flex items-center gap-4 md:gap-6">
-                    <div className="hidden md:flex flex-col items-end">
-                        <span className="text-sm font-semibold">{displayName}</span>
-                        <div className="flex items-center gap-2">
-                             <div className={cn("w-1.5 h-1.5 rounded-full animate-pulse", hasContracts ? "bg-emerald-500" : "bg-muted-foreground")} />
-                             <span className="text-[11px] text-muted-foreground font-medium">{projectStatusLabel}</span>
-                        </div>
-                    </div>
-                    {/* Unlock Logic mapped to standard secondary Button/Dialog */}
+        <div className="flex min-h-screen w-full flex-col bg-muted/40">
+            {/* ===== Header — clean shadcn nav bar ===== */}
+            <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b bg-background px-4 md:px-6">
+                <div className="flex items-center gap-3 flex-1">
+                    <img
+                        src={brandConfig?.logo_url || "/file/tulie-agency-logo.png"}
+                        alt="Logo"
+                        className="h-7 w-auto object-contain"
+                    />
+                    <Separator orientation="vertical" className="h-5" />
+                    <span className="text-sm font-medium text-foreground">Customer Portal</span>
+                </div>
+                <div className="flex items-center gap-3">
+                    <span className="hidden md:inline text-sm font-medium text-foreground">{displayName}</span>
+                    <Badge variant={hasContracts ? 'default' : 'secondary'}>
+                        {hasContracts ? 'Đang triển khai' : 'Chờ triển khai'}
+                    </Badge>
                     {hasFinancialPassword && !isFinancialAuthenticated && (
                         <Dialog open={isUnlockModalOpen} onOpenChange={setIsUnlockModalOpen}>
                             <DialogTrigger asChild>
-                                <Button variant="secondary" size="sm" className="h-8 gap-2 font-medium">
+                                <Button variant="outline" size="sm">
                                     <Lock className="w-3.5 h-3.5" />
-                                    <span>Bộ chứng từ</span>
+                                    Mở khóa tài chính
                                 </Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-md">
@@ -204,197 +217,182 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                         </Dialog>
                     )}
                     {isFinancialAuthenticated && hasFinancialPassword && (
-                        <Badge variant="outline" className="h-8 gap-1.5 px-3 bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
-                            <Lock className="w-3.5 h-3.5 opacity-70" />
+                        <Badge variant="outline">
+                            <Lock className="w-3 h-3" />
                             Đã mở khóa
                         </Badge>
                     )}
                 </div>
             </header>
 
-            {/* Dashboard Main Content Area */}
-            <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8 md:pt-10">
-                <Tabs orientation="vertical" defaultValue="overview" className="mx-auto grid w-full max-w-7xl items-start gap-6 md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr]">
-                    
-                    {/* Sidebar Navigation (TabsList) */}
-                        <nav className="flex flex-col gap-2 sticky top-[88px] h-[calc(100vh-100px)] overflow-y-auto">
-                            <TabsList className="flex flex-col h-auto w-full items-start bg-transparent p-0 gap-1">
-                                <TabsTrigger 
-                                    value="overview" 
-                                    className="w-full flex items-center justify-start gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground border-none shadow-none bg-transparent"
+            {/* ===== Main Layout ===== */}
+            <main className="flex-1 p-4 md:p-6 lg:p-8">
+                <Tabs
+                    orientation="vertical"
+                    defaultValue="overview"
+                    className="mx-auto grid w-full max-w-7xl gap-6 md:grid-cols-[200px_1fr] lg:grid-cols-[220px_1fr]"
+                >
+                    {/* ===== Sidebar nav ===== */}
+                    <nav className="flex flex-col gap-1 sticky top-[72px] h-fit">
+                        <TabsList className="flex flex-col h-auto w-full bg-transparent p-0 gap-0.5">
+                            {navItems.map(item => (
+                                <TabsTrigger
+                                    key={item.value}
+                                    value={item.value}
+                                    className="w-full justify-start gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:ring-1 data-[state=active]:ring-foreground/10"
                                 >
-                                    <ListTodo className="w-4 h-4 shrink-0" /> Tổng quan dự án
+                                    <item.icon className="w-4 h-4 shrink-0" />
+                                    <span className="truncate">{item.label}</span>
                                 </TabsTrigger>
-                                <TabsTrigger 
-                                    value="gantt" 
-                                    className="w-full flex items-center justify-start gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground border-none shadow-none bg-transparent"
-                                >
-                                    <Clock className="w-4 h-4 shrink-0" /> Lộ trình & Lịch trình
-                                </TabsTrigger>
-                                <TabsTrigger 
-                                    value="feedback" 
-                                    className="w-full flex items-center justify-start gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground border-none shadow-none bg-transparent"
-                                >
-                                    <ClipboardCheck className="w-4 h-4 shrink-0" /> Nhật ký xử lý
-                                </TabsTrigger>
-                                {isFinancialAuthenticated && (
-                                    <>
-                                        <Separator className="my-2" />
-                                        <TabsTrigger 
-                                            value="finance" 
-                                            className="w-full flex items-center justify-start gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground border-none shadow-none bg-transparent"
-                                        >
-                                            <Wallet className="w-4 h-4 shrink-0" /> Báo giá & Pháp lý
-                                        </TabsTrigger>
-                                    </>
-                                )}
-                            </TabsList>
-                            
-                            {/* Update Info CTA - Sidebar Widget */}
-                            {!isCustomerInfoComplete(customer) && (
-                                <Card className="mt-6 bg-primary text-primary-foreground border-none shadow-md overflow-hidden relative">
-                                    <div className="absolute inset-0 opacity-[0.1]" style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
-                                    <CardHeader className="p-4 relativ z-10">
-                                        <CardTitle className="text-sm">Hồ sơ chưa hoàn thiện</CardTitle>
-                                        <CardDescription className="text-xs text-primary-foreground/70 mt-1">Cập nhật thông tin xuất hóa đơn tại đây.</CardDescription>
+                            ))}
+                            {isFinancialAuthenticated && (
+                                <>
+                                    <Separator className="my-2" />
+                                    <TabsTrigger
+                                        value="finance"
+                                        className="w-full justify-start gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:ring-1 data-[state=active]:ring-foreground/10"
+                                    >
+                                        <Wallet className="w-4 h-4 shrink-0" />
+                                        <span className="truncate">Tài chính & Pháp lý</span>
+                                    </TabsTrigger>
+                                </>
+                            )}
+                        </TabsList>
+
+                        {/* Customer info incomplete CTA */}
+                        {!isCustomerInfoComplete(customer) && (
+                            <Card className="mt-4">
+                                <CardHeader>
+                                    <CardTitle>Hồ sơ chưa hoàn thiện</CardTitle>
+                                    <CardDescription>Cập nhật thông tin xuất hóa đơn.</CardDescription>
+                                </CardHeader>
+                                <CardFooter>
+                                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                        <DialogTrigger asChild>
+                                            <Button variant="outline" size="sm" className="w-full">Cập nhật ngay</Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="sm:max-w-[700px]">
+                                            <DialogHeader>
+                                                <DialogTitle>Cập nhật hồ sơ khách hàng</DialogTitle>
+                                            </DialogHeader>
+                                            <CustomerInfoForm
+                                                customer={customer}
+                                                token={token}
+                                                onComplete={() => { setIsDialogOpen(false); router.refresh(); toast.success('Đã cập nhật!') }}
+                                                onDraftSave={() => { setIsDialogOpen(false); router.refresh() }}
+                                            />
+                                        </DialogContent>
+                                    </Dialog>
+                                </CardFooter>
+                            </Card>
+                        )}
+                    </nav>
+
+                    {/* ===== Tab Content ===== */}
+                    <div className="min-w-0 space-y-6">
+
+                        {/* Tab: Overview */}
+                        <TabsContent value="overview" className="mt-0 space-y-4">
+                            {project?.description && (
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Mô tả dự án</CardTitle>
                                     </CardHeader>
-                                    <CardContent className="p-4 pt-0 relative z-10">
-                                        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                                            <DialogTrigger asChild>
-                                                <Button variant="secondary" className="w-full text-xs h-8">Cập nhật ngay</Button>
-                                            </DialogTrigger>
-                                            <DialogContent className="sm:max-w-[700px]">
-                                                <DialogHeader>
-                                                    <DialogTitle>Cập nhật hồ sơ khách hàng</DialogTitle>
-                                                </DialogHeader>
-                                                <CustomerInfoForm
-                                                    customer={customer}
-                                                    token={token}
-                                                    onComplete={() => { setIsDialogOpen(false); router.refresh(); toast.success('Đã cập nhật!') }}
-                                                    onDraftSave={() => { setIsDialogOpen(false); router.refresh() }}
-                                                />
-                                            </DialogContent>
-                                        </Dialog>
+                                    <CardContent>
+                                        <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{project.description}</p>
                                     </CardContent>
                                 </Card>
                             )}
-                        </nav>
 
-                        {/* Main Tab Contents */}
-                        <div className="grid gap-6">
-                            {/* Tab 1: Công việc */}
-                            <TabsContent value="overview" className="space-y-6 mt-0">
-                                {project?.description && (
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-base font-medium">Hạng mục công việc</h2>
+                                <Badge variant="secondary">{completedItems}/{displayItems.length} hoàn thành</Badge>
+                            </div>
+
+                            <div className="grid gap-3">
+                                {displayItems.length > 0 ? displayItems.map((item: any, idx: number) => (
+                                    <WorkItemCard key={item.id} item={item} idx={idx} />
+                                )) : (
                                     <Card>
-                                        <CardHeader className="pb-3">
-                                            <CardTitle className="text-base flex items-center gap-2"><BookOpen className="w-4 h-4 opacity-50"/> Mô tả dự án</CardTitle>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-line">{project.description}</p>
+                                        <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+                                            <Package className="w-8 h-8 text-muted-foreground/40 mb-3" />
+                                            <p className="text-sm text-muted-foreground">Chưa có hạng mục công việc nào.</p>
                                         </CardContent>
                                     </Card>
                                 )}
+                            </div>
+                        </TabsContent>
 
-                                <div>
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h2 className="text-xl font-semibold">Hạng mục & Công việc</h2>
-                                        <Badge variant="secondary" className="font-normal">{completedItems}/{displayItems.length} hoàn thành</Badge>
-                                    </div>
-                                    <div className="grid gap-4">
-                                        {displayItems.length > 0 ? displayItems.map((item: any, idx: number) => (
-                                            <WorkItemCard key={item.id} item={item} idx={idx} />
-                                        )) : (
-                                            <div className="flex flex-col items-center justify-center p-12 text-center border border-dashed rounded-lg bg-background">
-                                                <Package className="w-10 h-10 text-muted-foreground/30 mb-4" />
-                                                <p className="text-sm text-muted-foreground font-medium">Chưa có hạng mục công việc nào.</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </TabsContent>
+                        {/* Tab: Gantt & Timeline */}
+                        <TabsContent value="gantt" className="mt-0 space-y-4">
+                            <ProjectGanttChart tasks={data.tasks || []} />
+                            <TimelineSection timeline={timeline} />
+                        </TabsContent>
 
-                            {/* Tab 2: Gantt & Timeline */}
-                            <TabsContent value="gantt" className="space-y-6 mt-0">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h2 className="text-xl font-semibold">Kế hoạch triển khai</h2>
-                                </div>
-                                <ProjectGanttChart tasks={data.tasks || []} />
-                                <TimelineSection timeline={timeline} />
-                            </TabsContent>
-
-                            {/* Tab 3: Feedback & History */}
-                            <TabsContent value="feedback" className="space-y-6 mt-0">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h2 className="text-xl font-semibold">Kênh giao tiếp & Phản hồi</h2>
-                                </div>
-                                {project?.id && (
-                                    <FeedbackBoard
-                                        projectId={project.id}
-                                        customerId={customer?.id}
-                                        customerName={displayName}
-                                        isAdmin={isFinancialAuthenticated}
-                                    />
-                                )}
-                                <div className="mt-8">
-                                    <h3 className="text-lg font-semibold mb-4">Lịch sử hoạt động</h3>
-                                    <ProjectActivityHistory projectId={project?.id} activities={data.activities} />
-                                </div>
-                            </TabsContent>
-
-                            {/* Tab 4: Finance (Protected) */}
-                            {isFinancialAuthenticated && (
-                                <TabsContent value="finance" className="space-y-6 mt-0">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h2 className="text-xl font-semibold">Tài chính & Pháp lý</h2>
-                                    </div>
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                        {[
-                                            { label: 'Tổng đầu tư', value: totalInvestment, icon: Wallet },
-                                            { label: 'Đã thanh toán', value: totalPaid, icon: CreditCard },
-                                            { label: 'Còn lại', value: balanceDue, icon: Banknote },
-                                            { label: 'Tiến độ', value: `${projectProgress}%`, icon: Activity },
-                                        ].map((stat, i) => (
-                                            <Card key={i}>
-                                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                                    <CardTitle className="text-xs font-medium text-muted-foreground uppercase">{stat.label}</CardTitle>
-                                                    <stat.icon className="h-4 w-4 text-muted-foreground" />
-                                                </CardHeader>
-                                                <CardContent>
-                                                    <div className="text-2xl font-bold">
-                                                        {typeof stat.value === 'number' ? formatCurrency(stat.value).replace(/\s*[₫đ]\s*$/g, '').trim() : stat.value}
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-                                        ))}
-                                    </div>
-                                    <div className="grid gap-6 mt-6">
-                                        {displayItems.map((item: any, idx: number) => (
-                                            <FinancialItemCard
-                                                key={item.id}
-                                                item={item}
-                                                idx={idx}
-                                                token={token}
-                                                quotationOptions={getQuotationOptionsForItem(item)}
-                                                selectedQuotationId={selectedQuotationMap[item.id]}
-                                                onSelectQuotation={(qId: string) => handleSelectQuotation(item.id, qId)}
-                                                timeline={timeline}
-                                                contracts={contracts}
-                                                onViewContractDoc={handleViewContractDoc}
-                                                onViewDoc={handleViewDoc}
-                                            />
-                                        ))}
-                                    </div>
-                                </TabsContent>
+                        {/* Tab: Feedback & History */}
+                        <TabsContent value="feedback" className="mt-0 space-y-4">
+                            {project?.id && (
+                                <FeedbackBoard
+                                    projectId={project.id}
+                                    customerId={customer?.id}
+                                    customerName={displayName}
+                                    isAdmin={isFinancialAuthenticated}
+                                />
                             )}
-                        </div>
-                    </Tabs>
+                            <ProjectActivityHistory projectId={project?.id} activities={data.activities} />
+                        </TabsContent>
+
+                        {/* Tab: Finance (protected) */}
+                        {isFinancialAuthenticated && (
+                            <TabsContent value="finance" className="mt-0 space-y-6">
+                                {/* Finance stat grid — shadcn dashboard-01 */}
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card">
+                                    {[
+                                        { label: 'Tổng đầu tư', value: totalInvestment },
+                                        { label: 'Đã thanh toán', value: totalPaid },
+                                        { label: 'Còn lại', value: balanceDue },
+                                        { label: 'Tiến độ', value: `${projectProgress}%` },
+                                    ].map((stat, i) => (
+                                        <Card key={i} className="@container/card">
+                                            <CardHeader>
+                                                <CardDescription>{stat.label}</CardDescription>
+                                                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+                                                    {typeof stat.value === 'number' ? formatCurrency(stat.value).replace(/\s*[₫đ]\s*$/g, '').trim() : stat.value}
+                                                </CardTitle>
+                                            </CardHeader>
+                                        </Card>
+                                    ))}
+                                </div>
+
+                                {/* Financial cards per item */}
+                                <div className="grid gap-4">
+                                    {displayItems.map((item: any, idx: number) => (
+                                        <FinancialItemCard
+                                            key={item.id}
+                                            item={item}
+                                            idx={idx}
+                                            token={token}
+                                            quotationOptions={getQuotationOptionsForItem(item)}
+                                            selectedQuotationId={selectedQuotationMap[item.id]}
+                                            onSelectQuotation={(qId: string) => handleSelectQuotation(item.id, qId)}
+                                            timeline={timeline}
+                                            contracts={contracts}
+                                            onViewContractDoc={handleViewContractDoc}
+                                            onViewDoc={handleViewDoc}
+                                        />
+                                    ))}
+                                </div>
+                            </TabsContent>
+                        )}
+                    </div>
+                </Tabs>
 
                 {/* Document Viewer Dialog */}
                 <Dialog open={isViewingDoc} onOpenChange={setIsViewingDoc}>
-                    <DialogContent className="max-w-5xl h-[90vh] p-0 flex flex-col bg-muted/20" showCloseButton={true}>
-                        <div className="px-6 py-4 flex-1 overflow-auto bg-background/50 flex align-center justify-center">
+                    <DialogContent className="max-w-5xl h-[90vh] p-0 flex flex-col" showCloseButton={true}>
+                        <div className="px-4 py-4 flex-1 overflow-auto bg-muted/40 flex items-center justify-center">
                             <div
-                                className="bg-white shadow-xl border border-border text-black mx-auto relative rounded-sm my-6 p-12"
+                                className="bg-white shadow-xl ring-1 ring-foreground/10 text-black mx-auto relative rounded-md my-4 p-12"
                                 style={{ width: '210mm', minHeight: '297mm' }}
                                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(selectedDocContent || '') }}
                             />
@@ -406,7 +404,10 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
     )
 }
 
-/* ===== Work Item Card (Overview Tab) ===== */
+/* ================================================================
+   WorkItemCard — Overview Tab
+   ================================================================ */
+
 function WorkItemCard({ item, idx }: { item: any; idx: number }) {
     const deliveryLinks = item.delivery_links || []
     const itemTasks = item.tasks || []
@@ -414,61 +415,59 @@ function WorkItemCard({ item, idx }: { item: any; idx: number }) {
     const totalTasks = itemTasks.length
 
     return (
-        <Card className="overflow-hidden p-0">
-            <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4 border-b pt-4 px-6">
-                <div className="flex gap-4 items-start">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-md border bg-background text-xs font-semibold shrink-0">
-                        {idx + 1}
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <span className="text-muted-foreground font-mono text-xs tabular-nums">{idx + 1}.</span>
+                    {item.title}
+                </CardTitle>
+                {item.description && <CardDescription className="line-clamp-1">{item.description}</CardDescription>}
+                <CardAction>
+                    <div className="flex items-center gap-2">
+                        <StatusBadge status={item.status} />
+                        {deliveryLinks.length > 0 && deliveryLinks.map((link: any, lIdx: number) => (
+                            <a key={lIdx} href={link.url} target="_blank" className="text-sm font-medium text-primary hover:underline inline-flex items-center gap-1">
+                                {link.label} <ExternalLink className="w-3 h-3" />
+                            </a>
+                        ))}
                     </div>
-                    <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                            <CardTitle className="text-base">{item.title}</CardTitle>
-                            <StatusBadge status={item.status} />
-                        </div>
-                        {item.description && <CardDescription className="max-w-xl">{item.description}</CardDescription>}
-                    </div>
-                </div>
-                {deliveryLinks.length > 0 && (
-                     <div className="flex flex-col gap-2 shrink-0 text-right">
-                         <span className="text-xs font-medium text-muted-foreground">Tài liệu bàn giao</span>
-                         {deliveryLinks.map((link: any, lIdx: number) => (
-                             <a key={lIdx} href={link.url} target="_blank" className="text-sm font-medium text-primary hover:underline flex items-center gap-1 justify-end">
-                                 {link.label} <ExternalLink className="w-3 h-3" />
-                             </a>
-                         ))}
-                     </div>
-                )}
+                </CardAction>
             </CardHeader>
             <CardContent className="p-0">
-                 {/* Unified inner table approach inside Card for tasks */}
-                 <Table>
-                    <TableBody>
-                         {totalTasks > 0 ? itemTasks.map((task: any) => (
-                             <TableRow key={task.id} className="border-b last:border-0 hover:bg-muted/50">
-                                 <TableCell className="w-8 pl-6">
-                                     {task.status === 'completed' ? (
-                                         <CheckCircle className="w-4 h-4 text-muted-foreground" />
-                                     ) : task.status === 'in_progress' ? (
-                                         <Clock className="w-4 h-4 text-primary" />
-                                     ) : (
-                                         <Circle className="w-4 h-4 text-muted-foreground/50" />
-                                     )}
-                                 </TableCell>
-                                 <TableCell className={cn("font-medium", task.status === 'completed' && "text-muted-foreground line-through")}>
-                                     {task.title}
-                                 </TableCell>
-                             </TableRow>
-                         )) : (
-                             <TableRow><TableCell className="text-center text-muted-foreground py-6 border-b-0 h-24">Chưa có đầu việc chi tiết.</TableCell></TableRow>
-                         )}
-                    </TableBody>
-                 </Table>
+                {totalTasks > 0 ? (
+                    <div className="divide-y">
+                        {itemTasks.map((task: any) => (
+                            <div key={task.id} className="flex items-center gap-3 px-4 py-2.5 hover:bg-muted/50 transition-colors">
+                                {task.status === 'completed' ? (
+                                    <CheckCircle className="w-4 h-4 text-muted-foreground shrink-0" />
+                                ) : task.status === 'in_progress' ? (
+                                    <Clock className="w-4 h-4 text-primary shrink-0" />
+                                ) : (
+                                    <Circle className="w-4 h-4 text-muted-foreground/40 shrink-0" />
+                                )}
+                                <span className={cn(
+                                    "text-sm",
+                                    task.status === 'completed' && "text-muted-foreground line-through"
+                                )}>
+                                    {task.title}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="px-4 py-6 text-center text-sm text-muted-foreground">
+                        Chưa có đầu việc chi tiết.
+                    </div>
+                )}
             </CardContent>
         </Card>
     )
 }
 
-/* ===== Financial Item Card (Finance Tab) ===== */
+/* ================================================================
+   FinancialItemCard — Finance Tab
+   ================================================================ */
+
 function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQuotationId, onSelectQuotation, timeline = [], contracts = [], onViewContractDoc, onViewDoc }: any) {
     const quotation = item.quotation
     const contract = item.contract
@@ -480,137 +479,205 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
     const itemMilestones = contractId ? timeline.filter((t: any) => t.contract_id === contractId && (t.type === 'work' || t.type === 'payment')) : []
 
     return (
-        <Card className="overflow-hidden p-0">
-            <CardHeader className="border-b flex flex-row items-center justify-between pb-4 pt-4 px-6">
-                <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-md border bg-background text-xs font-semibold">
-                        {idx + 1}
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <span className="text-muted-foreground font-mono text-xs tabular-nums">{idx + 1}.</span>
+                    {item.title}
+                </CardTitle>
+                <CardAction>
+                    <div className="flex items-baseline gap-1">
+                        <span className="text-lg font-semibold tabular-nums">{formatCurrency(activeAmount).replace(/\s*[₫đ]\s*$/g, '').trim()}</span>
+                        <span className="text-xs text-muted-foreground">đ</span>
                     </div>
-                    <CardTitle className="text-base">{item.title}</CardTitle>
-                </div>
-                <div className="flex items-baseline gap-1">
-                    <span className="text-2xl font-bold">{formatCurrency(activeAmount).replace(/\s*[₫đ]\s*$/g, '').trim()}</span>
-                    <span className="text-sm font-medium text-muted-foreground">đ</span>
-                </div>
+                </CardAction>
             </CardHeader>
 
+            {/* Quotation selector (multi-option) */}
             {quotationOptions.length > 1 && (
-                <div className="px-6 py-4 flex items-center gap-4 bg-muted/20 border-b">
-                    <span className="text-xs font-medium text-muted-foreground uppercase">Hạng mức:</span>
-                    <div className="flex gap-2">
-                        {quotationOptions.map((q: any, qIdx: number) => {
-                            const isActive = q.id === (selectedQuotationId || quotation?.id)
-                            return (
-                                <Badge
-                                    key={q.id}
-                                    variant={isActive ? "default" : "outline"}
-                                    onClick={() => onSelectQuotation?.(q.id)}
-                                    className={cn("px-3 py-1.5 cursor-pointer text-sm font-medium", !isActive && "hover:bg-muted font-normal text-muted-foreground")}
-                                >
-                                    {q.status === 'accepted' ? 'Đã Chọn' : `PA ${qIdx + 1}`} - {formatCurrency(q.total_amount).replace(/\s*[₫đ]\s*$/g, '').trim()}
-                                </Badge>
-                            )
-                        })}
+                <CardContent className="border-t bg-muted/30 py-3">
+                    <div className="flex items-center gap-3">
+                        <span className="text-xs font-medium text-muted-foreground">Phương án:</span>
+                        <div className="flex gap-2">
+                            {quotationOptions.map((q: any, qIdx: number) => {
+                                const isActive = q.id === (selectedQuotationId || quotation?.id)
+                                return (
+                                    <Badge
+                                        key={q.id}
+                                        variant={isActive ? "default" : "outline"}
+                                        onClick={() => onSelectQuotation?.(q.id)}
+                                        className="cursor-pointer"
+                                    >
+                                        {q.status === 'accepted' ? 'Đã Chọn' : `PA ${qIdx + 1}`} — {formatCurrency(q.total_amount).replace(/\s*[₫đ]\s*$/g, '').trim()}
+                                    </Badge>
+                                )
+                            })}
+                        </div>
                     </div>
-                </div>
+                </CardContent>
             )}
 
-            <div className="grid md:grid-cols-2">
-                <div className="p-0 border-r border-border h-full flex flex-col">
-                    <div className="px-6 py-4 border-b bg-muted/10 font-medium text-sm text-muted-foreground">Pháp lý & Chứng từ đính kèm</div>
-                    <Table>
-                        <TableBody>
-                            {(() => {
-                                const renderedDocs: any[] = []
-                                if (activeQuotation && ['sent', 'viewed', 'accepted', 'converted'].includes(activeQuotation.status)) {
-                                    renderedDocs.push({ title: 'Báo giá', number: activeQuotation.quotation_number, status: activeQuotation.status, link: `/quote/${activeQuotation.public_token || token}` })
-                                }
-                                if (contract) {
-                                    const visibleDocs = (contract.documents || []).filter((d: any) => d.is_visible_on_portal !== false)
-                                    const uniqueMap = new Map(); visibleDocs.forEach((d: any) => uniqueMap.set(d.id, d));
-                                    Array.from(uniqueMap.values()).forEach((d: any) => renderedDocs.push({
-                                        title: d.type === 'contract' ? 'Hợp đồng' : d.type, number: d.doc_number || '', status: d.status, docId: d.id, content: d.content
-                                    }))
-                                }
-                                
-                                if (renderedDocs.length === 0) return <TableRow><TableCell className="text-center text-muted-foreground py-8">Chưa có chứng từ</TableCell></TableRow>
-
-                                return renderedDocs.map((d, i) => (
-                                    <TableRow key={i}>
-                                        <TableCell>
-                                            <div className="font-medium text-sm">{d.title}</div>
-                                            <div className="text-xs text-muted-foreground mt-0.5">#{d.number || '---'}</div>
-                                        </TableCell>
-                                        <TableCell><StatusBadge status={d.status} /></TableCell>
-                                        <TableCell className="text-right">
-                                            {d.link ? (
-                                                <Button variant="outline" size="sm" asChild className="h-7 text-xs"><a href={d.link} target="_blank">Xem</a></Button>
-                                            ) : d.docId ? (
-                                                <Button variant="secondary" size="sm" onClick={() => d.content ? onViewContractDoc?.(d.content) : onViewDoc?.(d.docId)} className="h-7 text-xs">Xem Doc</Button>
-                                            ) : null}
-                                        </TableCell>
+            <CardContent>
+                <div className="grid gap-6 lg:grid-cols-2">
+                    {/* Legal docs */}
+                    <div className="space-y-3">
+                        <h4 className="text-sm font-medium flex items-center gap-2">
+                            <FileSignature className="w-4 h-4 text-muted-foreground" /> Pháp lý & Chứng từ
+                        </h4>
+                        <div className="rounded-lg ring-1 ring-foreground/10 overflow-hidden">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Tài liệu</TableHead>
+                                        <TableHead className="w-24">Trạng thái</TableHead>
+                                        <TableHead className="w-20 text-right">Xem</TableHead>
                                     </TableRow>
-                                ))
-                            })()}
-                        </TableBody>
-                    </Table>
+                                </TableHeader>
+                                <TableBody>
+                                    {(() => {
+                                        const DOC_TYPE_MAP: Record<string, string> = {
+                                            'contract': 'Hợp đồng',
+                                            'payment_request': 'Đề nghị thanh toán',
+                                            'acceptance': 'Biên bản nghiệm thu',
+                                            'appendix': 'Phụ lục',
+                                            'addendum': 'Phụ lục bổ sung',
+                                            'invoice': 'Hóa đơn',
+                                            'receipt': 'Biên nhận',
+                                        }
+                                        const STATUS_PRIORITY: Record<string, number> = {
+                                            'signed': 4, 'active': 4, 'completed': 4,
+                                            'sent': 3, 'viewed': 3,
+                                            'pending': 2,
+                                            'draft': 1,
+                                        }
+                                        const renderedDocs: any[] = []
+                                        if (activeQuotation && ['sent', 'viewed', 'accepted', 'converted'].includes(activeQuotation.status)) {
+                                            renderedDocs.push({ title: 'Báo giá', number: activeQuotation.quotation_number, status: activeQuotation.status, link: `/quote/${activeQuotation.public_token || token}` })
+                                        }
+                                        if (contract) {
+                                            const visibleDocs = (contract.documents || []).filter((d: any) => d.is_visible_on_portal !== false)
+                                            // Dedup by doc_number — keep the version with the highest status priority
+                                            const docByNumber = new Map<string, any>()
+                                            visibleDocs.forEach((d: any) => {
+                                                const key = d.doc_number || d.id
+                                                const existing = docByNumber.get(key)
+                                                const currentPriority = STATUS_PRIORITY[d.status] || 0
+                                                const existingPriority = existing ? (STATUS_PRIORITY[existing.status] || 0) : -1
+                                                if (currentPriority > existingPriority) {
+                                                    docByNumber.set(key, d)
+                                                }
+                                            })
+                                            Array.from(docByNumber.values()).forEach((d: any) => renderedDocs.push({
+                                                title: DOC_TYPE_MAP[d.type] || d.type, number: d.doc_number || '', status: d.status, docId: d.id, content: d.content
+                                            }))
+                                        }
+
+                                        if (renderedDocs.length === 0) return <TableRow><TableCell colSpan={3} className="text-center text-muted-foreground py-6">Chưa có chứng từ</TableCell></TableRow>
+
+                                        return renderedDocs.map((d, i) => (
+                                            <TableRow key={i}>
+                                                <TableCell>
+                                                    <div className="text-sm font-medium">{d.title}</div>
+                                                    <div className="text-xs text-muted-foreground">#{d.number || '---'}</div>
+                                                </TableCell>
+                                                <TableCell><StatusBadge status={d.status} /></TableCell>
+                                                <TableCell className="text-right">
+                                                    {d.link ? (
+                                                        <Button variant="outline" size="sm" asChild><a href={d.link} target="_blank">Xem</a></Button>
+                                                    ) : d.docId ? (
+                                                        <Button variant="outline" size="sm" onClick={() => d.content ? onViewContractDoc?.(d.content) : onViewDoc?.(d.docId)}>
+                                                            <Eye className="w-3.5 h-3.5" />
+                                                        </Button>
+                                                    ) : null}
+                                                </TableCell>
+                                            </TableRow>
+                                        ))
+                                    })()}
+                                </TableBody>
+                            </Table>
+                        </div>
+                    </div>
+
+                    {/* Payment schedule */}
+                    <div className="space-y-3">
+                        <h4 className="text-sm font-medium flex items-center gap-2">
+                            <CreditCard className="w-4 h-4 text-muted-foreground" /> Kế hoạch thanh toán
+                        </h4>
+                        <div className="rounded-lg ring-1 ring-foreground/10 overflow-hidden">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="w-10 text-center">TT</TableHead>
+                                        <TableHead>Giai đoạn</TableHead>
+                                        <TableHead className="w-28 text-right">Số tiền</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {itemMilestones.length > 0 ? itemMilestones.map((m: any, mIdx: number) => (
+                                        <TableRow key={m.id}>
+                                            <TableCell className="text-center">
+                                                {m.status === 'completed' ? <CheckCircle2 className="w-4 h-4 text-muted-foreground mx-auto" /> : <span className="text-xs text-muted-foreground tabular-nums">{mIdx + 1}</span>}
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className={cn("text-sm font-medium", m.status === 'completed' && "text-muted-foreground line-through")}>{m.title}</div>
+                                                <div className="text-xs text-muted-foreground">Hạn: {formatDate(m.date)}</div>
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                                {m.amount > 0 ? <span className="text-sm font-medium tabular-nums">{formatCurrency(m.amount).replace(/\s*[₫đ]\s*$/g, '').trim()}đ</span> : '—'}
+                                            </TableCell>
+                                        </TableRow>
+                                    )) : (
+                                        <TableRow><TableCell colSpan={3} className="text-center text-muted-foreground py-6">Chưa có kế hoạch thanh toán</TableCell></TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </div>
+                    </div>
                 </div>
-                
-                <div className="p-0 h-full flex flex-col bg-muted/5">
-                    <div className="px-6 py-4 border-b border-border font-medium text-sm text-muted-foreground bg-muted/10">Kế hoạch thanh toán</div>
-                    <Table>
-                        <TableBody>
-                            {itemMilestones.length > 0 ? itemMilestones.map((m: any, mIdx: number) => (
-                                <TableRow key={m.id}>
-                                    <TableCell className="pr-1 text-muted-foreground w-8">
-                                        {m.status === 'completed' ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <div className="text-xs">{mIdx + 1}</div>}
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className={cn("text-sm font-medium", m.status === 'completed' && "text-muted-foreground line-through")}>{m.title}</div>
-                                        <div className="text-xs text-muted-foreground mt-0.5">Hạn: {formatDate(m.date)}</div>
-                                    </TableCell>
-                                    <TableCell className="text-right whitespace-nowrap">
-                                        {m.amount > 0 && <span className="text-sm font-medium tabular-nums">{formatCurrency(m.amount).replace(/\s*[₫đ]\s*$/g, '').trim()}đ</span>}
-                                    </TableCell>
-                                </TableRow>
-                            )) : (
-                                <TableRow><TableCell colSpan={3} className="text-center text-muted-foreground py-8 border-b-0 h-full">Chưa có hạng mức</TableCell></TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </div>
-            </div>
+            </CardContent>
         </Card>
     )
 }
 
-/* ===== Timeline Section ===== */
+/* ================================================================
+   TimelineSection — Events timeline
+   ================================================================ */
+
 function TimelineSection({ timeline }: { timeline: any[] }) {
-    if (timeline.length === 0) return null;
+    if (timeline.length === 0) return null
 
     return (
         <Card>
-            <CardHeader className="border-b bg-muted/20">
-                <CardTitle className="text-lg">Dòng chảy sự kiện</CardTitle>
-                <CardDescription>Các thao tác hệ thống tự động ghi nhận theo thời gian thực.</CardDescription>
+            <CardHeader>
+                <CardTitle>Dòng chảy sự kiện</CardTitle>
+                <CardDescription>Các thao tác hệ thống tự động ghi nhận theo thời gian thực</CardDescription>
             </CardHeader>
-            <CardContent className="pt-6">
+            <CardContent>
                 <div className="space-y-4">
                     {timeline.map((event, i) => (
-                        <div key={event.id} className="grid grid-cols-[1fr_auto] gap-4 text-sm relative">
-                            <div className="absolute left-[-2px] top-6 bottom-[-24px] w-px bg-border/50 hidden last:block" />
-                            <div className="flex gap-4">
-                                <div className="mt-0.5">
-                                    <div className={cn("h-2.5 w-2.5 rounded-full", event.status === 'completed' ? "bg-emerald-500" : "bg-muted-foreground/30")} />
-                                    {i !== timeline.length - 1 && <div className="h-full w-px bg-border/50 ml-[4px] mt-2 absolute bottom-[-16px]" />}
-                                </div>
-                                <div className="space-y-1 pb-6">
-                                    <p className={cn("font-medium leading-none", event.status === 'completed' ? "text-foreground" : "text-muted-foreground")}>{event.title}</p>
-                                    {event.description && <p className="text-xs text-muted-foreground">{event.description}</p>}
-                                </div>
+                        <div key={event.id} className="flex gap-3 text-sm">
+                            <div className="mt-1 flex flex-col items-center">
+                                <div className={cn(
+                                    "h-2 w-2 rounded-full",
+                                    event.status === 'completed' ? "bg-primary" : "bg-muted-foreground/30"
+                                )} />
+                                {i !== timeline.length - 1 && (
+                                    <div className="w-px flex-1 bg-border mt-1" />
+                                )}
                             </div>
-                            <div className="text-xs text-muted-foreground mt-0.5 tabular-nums tabular-nums">
-                                {formatDate(event.date)}
+                            <div className="flex-1 pb-4">
+                                <div className="flex items-center justify-between gap-4">
+                                    <p className={cn(
+                                        "font-medium leading-none",
+                                        event.status === 'completed' ? "text-foreground" : "text-muted-foreground"
+                                    )}>{event.title}</p>
+                                    <span className="text-xs text-muted-foreground tabular-nums shrink-0">
+                                        {formatDate(event.date)}
+                                    </span>
+                                </div>
+                                {event.description && (
+                                    <p className="text-xs text-muted-foreground mt-1">{event.description}</p>
+                                )}
                             </div>
                         </div>
                     ))}

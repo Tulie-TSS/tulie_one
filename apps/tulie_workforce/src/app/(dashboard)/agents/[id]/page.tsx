@@ -14,6 +14,14 @@ import { Badge } from "@repo/ui";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { Separator } from "@repo/ui";
 import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from "@repo/ui";
+import {
     Bot,
     ArrowLeft,
     Settings,
@@ -356,32 +364,32 @@ export default function AgentDetailPage() {
                             </CardHeader>
                             <CardContent className="pt-6">
                                 <div className="overflow-x-auto">
-                                    <table className="w-full text-sm">
-                                        <thead>
-                                            <tr className="border-b border-border">
-                                                <th className="text-left py-2 font-medium text-muted-foreground">Task</th>
-                                                <th className="text-right py-2 font-medium text-muted-foreground">Tokens in</th>
-                                                <th className="text-right py-2 font-medium text-muted-foreground">Tokens out</th>
-                                                <th className="text-right py-2 font-medium text-muted-foreground">Cost</th>
-                                                <th className="text-right py-2 font-medium text-muted-foreground">Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead>Task</TableHead>
+                                                <TableHead className="text-right">Tokens in</TableHead>
+                                                <TableHead className="text-right">Tokens out</TableHead>
+                                                <TableHead className="text-right">Cost</TableHead>
+                                                <TableHead className="text-right">Date</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
                                             {agentTasks.map((task) => (
-                                                <tr key={task.id} className="border-b border-border">
-                                                    <td className="py-2">
+                                                <TableRow key={task.id}>
+                                                    <TableCell>
                                                         <Link href={`/tasks/${task.id}`} className="text-foreground hover:underline">
                                                             {task.title}
                                                         </Link>
-                                                    </td>
-                                                    <td className="text-right py-2 text-muted-foreground">{formatTokens(task.tokensIn)}</td>
-                                                    <td className="text-right py-2 text-muted-foreground">{formatTokens(task.tokensOut)}</td>
-                                                    <td className="text-right py-2 text-muted-foreground">{formatCost(task.costUsd)}</td>
-                                                    <td className="text-right py-2 text-muted-foreground">{timeAgo(task.createdAt)}</td>
-                                                </tr>
+                                                    </TableCell>
+                                                    <TableCell className="text-right text-muted-foreground">{formatTokens(task.tokensIn)}</TableCell>
+                                                    <TableCell className="text-right text-muted-foreground">{formatTokens(task.tokensOut)}</TableCell>
+                                                    <TableCell className="text-right text-muted-foreground">{formatCost(task.costUsd)}</TableCell>
+                                                    <TableCell className="text-right text-muted-foreground">{timeAgo(task.createdAt)}</TableCell>
+                                                </TableRow>
                                             ))}
-                                        </tbody>
-                                    </table>
+                                        </TableBody>
+                                    </Table>
                                 </div>
                             </CardContent>
                         </Card>

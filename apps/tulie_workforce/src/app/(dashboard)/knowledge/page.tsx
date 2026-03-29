@@ -8,6 +8,14 @@ import { Badge } from "@repo/ui";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { Input } from "@repo/ui";
 import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from "@repo/ui";
+import {
     FileText,
     Upload,
     Search,
@@ -63,27 +71,27 @@ export default function KnowledgePage() {
                 <Card className="card-elevated border-transparent overflow-hidden">
                     <CardContent className="p-0">
                         <div className="overflow-x-auto">
-                            <table className="w-full text-sm">
-                                <thead>
-                                    <tr className="border-b border-border/40 bg-muted/50">
-                                        <th className="text-left px-5 py-3.5 text-[11px] uppercase tracking-wider text-muted-foreground">Document</th>
-                                        <th className="text-left px-5 py-3.5 text-[11px] uppercase tracking-wider text-muted-foreground">Type</th>
-                                        <th className="text-right px-5 py-3.5 text-[11px] uppercase tracking-wider text-muted-foreground">Size</th>
-                                        <th className="text-right px-5 py-3.5 text-[11px] uppercase tracking-wider text-muted-foreground">Chunks</th>
-                                        <th className="text-left px-5 py-3.5 text-[11px] uppercase tracking-wider text-muted-foreground">Status</th>
-                                        <th className="text-right px-5 py-3.5 text-[11px] uppercase tracking-wider text-muted-foreground">Uploaded</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Document</TableHead>
+                                        <TableHead>Type</TableHead>
+                                        <TableHead className="text-right">Size</TableHead>
+                                        <TableHead className="text-right">Chunks</TableHead>
+                                        <TableHead>Status</TableHead>
+                                        <TableHead className="text-right">Uploaded</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
                                     {mockDocuments.map((doc) => {
                                         const Icon = typeIcons[doc.type];
                                         const statusInfo = statusStyles[doc.status];
                                         return (
-                                            <tr
+                                            <TableRow
                                                 key={doc.id}
-                                                className="border-b border-border/40 hover:bg-muted/50 transition-colors group cursor-pointer"
+                                                className="group cursor-pointer"
                                             >
-                                                <td className="px-5 py-4">
+                                                <TableCell>
                                                     <div className="flex items-center gap-4">
                                                         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 group-hover:scale-105 transition-transform">
                                                             <Icon className="h-5 w-5 text-indigo-600" />
@@ -97,29 +105,29 @@ export default function KnowledgePage() {
                                                             </p>
                                                         </div>
                                                     </div>
-                                                </td>
-                                                <td className="px-5 py-4">
+                                                </TableCell>
+                                                <TableCell>
                                                     <Badge variant="outline" className="text-[10px] uppercase tracking-wider bg-muted border-border text-muted-foreground px-2 py-0.5">
                                                         {doc.type}
                                                     </Badge>
-                                                </td>
-                                                <td className="px-5 py-4 text-right text-[13px] font-semibold text-muted-foreground">
+                                                </TableCell>
+                                                <TableCell className="text-right text-[13px] font-semibold text-muted-foreground">
                                                     {formatFileSize(doc.fileSize)}
-                                                </td>
-                                                <td className="px-5 py-4 text-right text-[13px] font-semibold text-muted-foreground">
+                                                </TableCell>
+                                                <TableCell className="text-right text-[13px] font-semibold text-muted-foreground">
                                                     {doc.chunkCount || "—"}
-                                                </td>
-                                                <td className="px-5 py-4">
+                                                </TableCell>
+                                                <TableCell>
                                                     <StatusBadge status={doc.status} label={statusInfo.label} className="text-[10px]" />
-                                                </td>
-                                                <td className="px-5 py-4 text-right text-[12px] font-medium text-muted-foreground">
+                                                </TableCell>
+                                                <TableCell className="text-right text-[12px] font-medium text-muted-foreground">
                                                     {timeAgo(doc.createdAt)}
-                                                </td>
-                                            </tr>
+                                                </TableCell>
+                                            </TableRow>
                                         );
                                     })}
-                                </tbody>
-                            </table>
+                                </TableBody>
+                            </Table>
                         </div>
                     </CardContent>
                 </Card>

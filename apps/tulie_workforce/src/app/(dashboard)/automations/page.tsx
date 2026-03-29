@@ -15,6 +15,14 @@ import { StatusBadge } from "@/components/shared/status-badge";
 import { Input } from "@repo/ui";
 import { Label } from "@repo/ui";
 import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from "@repo/ui";
+import {
     Workflow,
     Play,
     Pause,
@@ -391,19 +399,19 @@ export default function AutomationsPage() {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="p-0">
-                                    <table className="w-full text-sm">
-                                        <thead>
-                                            <tr className="border-b border-border/60 bg-white">
-                                                <th className="text-left py-3 px-5 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Status</th>
-                                                <th className="text-left py-3 px-5 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Execution ID</th>
-                                                <th className="text-right py-3 px-5 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Duration</th>
-                                                <th className="text-right py-3 px-5 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Time</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-border/40">
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead>Status</TableHead>
+                                                <TableHead>Execution ID</TableHead>
+                                                <TableHead className="text-right">Duration</TableHead>
+                                                <TableHead className="text-right">Time</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
                                             {selected.recentExecutions.map((exec) => (
-                                                <tr key={exec.id} className="group hover:bg-muted/50 transition-colors">
-                                                    <td className="py-3 px-5">
+                                                <TableRow key={exec.id} className="group">
+                                                    <TableCell>
                                                         <span className={`flex items-center gap-1.5 text-xs font-semibold ${execStatusStyle[exec.status]}`}>
                                                             {exec.status === "success" ? (
                                                                 <CheckCircle2 className="h-4 w-4" />
@@ -414,14 +422,14 @@ export default function AutomationsPage() {
                                                             )}
                                                             {exec.status}
                                                         </span>
-                                                    </td>
-                                                    <td className="py-3 px-5 text-muted-foreground font-mono text-[13px]">{exec.id}</td>
-                                                    <td className="py-3 px-5 text-right text-muted-foreground text-[13px] font-medium">{exec.duration}</td>
-                                                    <td className="py-3 px-5 text-right text-muted-foreground text-[13px] font-medium">{timeAgo(exec.startedAt)}</td>
-                                                </tr>
+                                                    </TableCell>
+                                                    <TableCell className="text-muted-foreground font-mono text-[13px]">{exec.id}</TableCell>
+                                                    <TableCell className="text-right text-muted-foreground text-[13px] font-medium">{exec.duration}</TableCell>
+                                                    <TableCell className="text-right text-muted-foreground text-[13px] font-medium">{timeAgo(exec.startedAt)}</TableCell>
+                                                </TableRow>
                                             ))}
-                                        </tbody>
-                                    </table>
+                                        </TableBody>
+                                    </Table>
                                 </CardContent>
                             </Card>
                         )}
@@ -434,24 +442,24 @@ export default function AutomationsPage() {
                         <h3 className="text-lg text-foreground mb-4">All executions</h3>
                         <Card className="card-elevated border-transparent overflow-hidden">
                             <CardContent className="p-0">
-                                <table className="w-full text-sm">
-                                    <thead>
-                                        <tr className="border-b border-border/60 bg-muted/50">
-                                            <th className="text-left py-3 px-6 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Workflow</th>
-                                            <th className="text-left py-3 px-6 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Status</th>
-                                            <th className="text-right py-3 px-6 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Duration</th>
-                                            <th className="text-right py-3 px-6 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Time</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-border/40">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Workflow</TableHead>
+                                            <TableHead>Status</TableHead>
+                                            <TableHead className="text-right">Duration</TableHead>
+                                            <TableHead className="text-right">Time</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
                                         {mockWorkflows.flatMap((wf) =>
                                             wf.recentExecutions.map((exec) => (
-                                                <tr key={exec.id} className="group hover:bg-muted/50 transition-colors">
-                                                    <td className="py-4 px-6">
+                                                <TableRow key={exec.id} className="group">
+                                                    <TableCell>
                                                         <p className="text-[14px] text-foreground">{wf.name}</p>
                                                         <p className="text-[11px] font-medium text-muted-foreground mt-0.5">{wf.trigger}</p>
-                                                    </td>
-                                                    <td className="py-4 px-6">
+                                                    </TableCell>
+                                                    <TableCell>
                                                         <span className={`flex items-center gap-1 text-xs font-semibold ${execStatusStyle[exec.status]}`}>
                                                             {exec.status === "success" ? (
                                                                 <CheckCircle2 className="h-3.5 w-3.5" />
@@ -462,14 +470,14 @@ export default function AutomationsPage() {
                                                             )}
                                                             {exec.status}
                                                         </span>
-                                                    </td>
-                                                    <td className="py-4 px-6 text-right text-muted-foreground text-[13px] font-medium">{exec.duration}</td>
-                                                    <td className="py-4 px-6 text-right text-muted-foreground text-[13px] font-medium">{timeAgo(exec.startedAt)}</td>
-                                                </tr>
+                                                    </TableCell>
+                                                    <TableCell className="text-right text-muted-foreground text-[13px] font-medium">{exec.duration}</TableCell>
+                                                    <TableCell className="text-right text-muted-foreground text-[13px] font-medium">{timeAgo(exec.startedAt)}</TableCell>
+                                                </TableRow>
                                             ))
                                         )}
-                                    </tbody>
-                                </table>
+                                    </TableBody>
+                                </Table>
                             </CardContent>
                         </Card>
                     </div>

@@ -1,6 +1,6 @@
 import { getInvoices } from '@/lib/supabase/services/invoice-service'
 import { CreditCard, ArrowUpRight, ArrowDownLeft, Clock } from 'lucide-react'
-import { Badge } from "@repo/ui"
+import { Badge, Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@repo/ui"
 import { format } from 'date-fns'
 
 function formatCurrency(amount: number) {
@@ -73,45 +73,45 @@ export default async function PaymentsPage() {
           <h3 className="mt-4 text-lg font-medium text-foreground">Chưa có giao dịch nào</h3>
         </div>
       ) : (
-        <div className="rounded-md border border-border overflow-hidden">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Ngày</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Hóa đơn</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Khách hàng / NCC</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Phương thức</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Số tiền</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Ghi chú</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Ngày</TableHead>
+                <TableHead>Hóa đơn</TableHead>
+                <TableHead>Khách hàng / NCC</TableHead>
+                <TableHead>Phương thức</TableHead>
+                <TableHead className="text-right">Số tiền</TableHead>
+                <TableHead>Ghi chú</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {allPayments.slice(0, 50).map((payment) => (
-                <tr key={payment.id} className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3 text-sm text-foreground">
+                <TableRow key={payment.id}>
+                  <TableCell className="text-foreground">
                     {format(new Date(payment.payment_date), 'dd/MM/yyyy')}
-                  </td>
-                  <td className="px-4 py-3 text-sm font-medium text-foreground">
+                  </TableCell>
+                  <TableCell className="font-medium text-foreground">
                     {payment.invoice.invoice_number}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-foreground">
+                  </TableCell>
+                  <TableCell className="text-foreground">
                     {payment.invoice.customer?.company_name || payment.invoice.vendor?.name || '—'}
-                  </td>
-                  <td className="px-4 py-3">
+                  </TableCell>
+                  <TableCell>
                     <Badge variant="secondary">{payment.payment_method}</Badge>
-                  </td>
-                  <td className="px-4 py-3 text-sm text-right font-medium">
+                  </TableCell>
+                  <TableCell className="text-right font-medium">
                     <span className={payment.invoice.type === 'output' ? 'text-emerald-600' : 'text-red-600'}>
                       {payment.invoice.type === 'output' ? '+' : '-'}{formatCurrency(payment.amount)}
                     </span>
-                  </td>
-                  <td className="px-4 py-3 text-sm text-muted-foreground truncate max-w-[200px]">
+                  </TableCell>
+                  <TableCell className="text-muted-foreground truncate max-w-[200px]">
                     {payment.notes || '—'}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
     </div>

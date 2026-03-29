@@ -121,11 +121,11 @@ export const DEAL_STATUS_LABELS: Record<DealStatus, string> = {
 }
 
 export const DEAL_CHART_COLORS: Record<DealStatus, string> = {
-    new: '#a1a1aa',          // zinc-400
-    briefing: '#3b82f6',     // blue-500
-    proposal_sent: '#0ea5e9', // sky-500
-    closed_won: '#10b981',    // emerald-500
-    closed_lost: '#d4d4d8'    // zinc-300
+    new: '#d4d4d8',          // zinc-300
+    briefing: '#a1a1aa',     // zinc-400
+    proposal_sent: '#52525b', // zinc-600
+    closed_won: '#18181b',    // zinc-900
+    closed_lost: '#f4f4f5'    // zinc-100
 }
 
 export const DEAL_STATUS_COLORS: Record<DealStatus, string> = {

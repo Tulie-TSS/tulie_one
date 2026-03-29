@@ -47,15 +47,13 @@ export function ProjectActivityHistory({ projectId, activities: initialActivitie
 
     return (
         <Card className="border-border overflow-hidden rounded-md">
-            <CardHeader className="py-6 px-6 border-b border-zinc-50">
-                <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-md bg-muted border border-border flex items-center justify-center">
-                        <Activity className="w-5 h-5 text-foreground" />
-                    </div>
-                    <div className="space-y-0.5">
-                        <CardTitle className="text-base font-semibold text-foreground">Lịch sử hoạt động</CardTitle>
-                        <CardDescription className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Các thay đổi và cập nhật gần đây trong dự án.</CardDescription>
-                    </div>
+            <CardHeader className="flex flex-row items-center border-b px-6 py-4 space-y-0">
+                <div className="flex items-center gap-2">
+                    <Activity className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle className="text-sm font-semibold text-foreground">Lịch sử hoạt động</CardTitle>
+                </div>
+                <div className="ml-auto flex items-center gap-4 text-sm">
+                    <span className="text-xs text-muted-foreground hidden sm:inline-flex">Các thay đổi và cập nhật gần đây trong dự án</span>
                 </div>
             </CardHeader>
             <CardContent className="p-0">

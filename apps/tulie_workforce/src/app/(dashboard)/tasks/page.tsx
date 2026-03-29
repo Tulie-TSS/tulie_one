@@ -10,12 +10,20 @@ import {
     CardTitle,
 } from "@repo/ui";
 import { Badge } from "@repo/ui";
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from "@repo/ui";
 import { StatusBadge } from "@/components/shared/status-badge";
 import {
     Plus,
     Clock,
     Bot,
-    Table,
+    Table as TableIcon,
     Columns3,
     Calendar,
     GanttChart,
@@ -69,8 +77,8 @@ const filterTabs: { value: FilterStatus; label: string }[] = [
     { value: "failed", label: "Failed" },
 ];
 
-const viewModes: { value: ViewMode; label: string; icon: typeof Table }[] = [
-    { value: "table", label: "Table", icon: Table },
+const viewModes: { value: ViewMode; label: string; icon: typeof TableIcon }[] = [
+    { value: "table", label: "Table", icon: TableIcon },
     { value: "kanban", label: "Kanban", icon: Columns3 },
     { value: "calendar", label: "Calendar", icon: Calendar },
     { value: "gantt", label: "Gantt", icon: GanttChart },
@@ -251,21 +259,21 @@ export default function TasksPage() {
                     <Card className="card-elevated border-transparent">
                         <CardContent className="p-0">
                             <div className="overflow-x-auto">
-                                <table className="w-full text-sm">
-                                    <thead>
-                                        <tr className="border-b border-border bg-muted/50">
-                                            <th className="text-left px-6 py-4 text-[11px] uppercase tracking-widest text-muted-foreground">Task Overview</th>
-                                            <th className="text-left px-6 py-4 text-[11px] uppercase tracking-widest text-muted-foreground">Assigned Agent</th>
-                                            <th className="text-left px-6 py-4 text-[11px] uppercase tracking-widest text-muted-foreground">Priority</th>
-                                            <th className="text-left px-6 py-4 text-[11px] uppercase tracking-widest text-muted-foreground">Status</th>
-                                            <th className="text-right px-6 py-4 text-[11px] uppercase tracking-widest text-muted-foreground">Cost/Tokens</th>
-                                            <th className="text-right px-6 py-4 text-[11px] uppercase tracking-widest text-muted-foreground">Timeline</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Task Overview</TableHead>
+                                            <TableHead>Assigned Agent</TableHead>
+                                            <TableHead>Priority</TableHead>
+                                            <TableHead>Status</TableHead>
+                                            <TableHead className="text-right">Cost/Tokens</TableHead>
+                                            <TableHead className="text-right">Timeline</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
                                         {filtered.map((task) => (
-                                            <tr key={task.id} className="border-b border-border/40 transition-colors hover:bg-muted/50 group">
-                                                <td className="px-6 py-4">
+                                            <TableRow key={task.id} className="group">
+                                                <TableCell>
                                                     <div className="flex items-start gap-3">
                                                         <div className={`mt-1 h-2 w-2 rounded-full shrink-0 ${ task.status === 'in_progress' ? 'bg-emerald-500 animate-pulse-dot' : task.status === 'failed' ? 'bg-destructive' : 'bg-transparent' }`} />
                                                         <div>
@@ -275,44 +283,44 @@ export default function TasksPage() {
                                                             <p className="text-[13px] text-muted-foreground mt-1 line-clamp-1 max-w-sm">{task.description}</p>
                                                         </div>
                                                     </div>
-                                                </td>
-                                                <td className="px-6 py-4">
+                                                </TableCell>
+                                                <TableCell>
                                                     <div className="flex items-center gap-2.5">
                                                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600">
                                                             <Bot className="h-4 w-4" />
                                                         </div>
                                                         <span className="text-[13px] font-medium text-foreground">{task.agentName}</span>
                                                     </div>
-                                                </td>
-                                                <td className="px-6 py-4">
+                                                </TableCell>
+                                                <TableCell>
                                                     <StatusBadge status={task.priority} />
-                                                </td>
-                                                <td className="px-6 py-4">
+                                                </TableCell>
+                                                <TableCell>
                                                     <StatusBadge status={task.status} label={statusLabel[task.status]} />
-                                                </td>
-                                                <td className="px-6 py-4 text-right">
+                                                </TableCell>
+                                                <TableCell className="text-right">
                                                     <div className="flex flex-col items-end">
                                                         <span className="text-[13px] text-foreground">{formatCost(task.costUsd)}</span>
                                                         <span className="text-[11px] text-muted-foreground font-medium">{formatTokens(task.tokensIn + task.tokensOut)} tkns</span>
                                                     </div>
-                                                </td>
-                                                <td className="px-6 py-4 text-right">
+                                                </TableCell>
+                                                <TableCell className="text-right">
                                                     <div className="flex items-center justify-end gap-1.5 text-[13px] font-medium text-muted-foreground">
                                                         <Clock className="h-4 w-4 text-muted-foreground" />
                                                         {timeAgo(task.createdAt)}
                                                     </div>
-                                                </td>
-                                            </tr>
+                                                </TableCell>
+                                            </TableRow>
                                         ))}
                                         {filtered.length === 0 && (
-                                            <tr>
-                                                <td colSpan={6} className="px-6 py-12 text-center text-muted-foreground">
+                                            <TableRow>
+                                                <TableCell colSpan={6} className="text-center text-muted-foreground py-12">
                                                     No tasks found matching your filters.
-                                                </td>
-                                            </tr>
+                                                </TableCell>
+                                            </TableRow>
                                         )}
-                                    </tbody>
-                                </table>
+                                    </TableBody>
+                                </Table>
                             </div>
                         </CardContent>
                     </Card>

@@ -92,22 +92,18 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
 
     return (
         <Card className="overflow-hidden flex flex-col h-[700px]">
-            <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 bg-muted/40 border-b space-y-2 sm:space-y-0 shrink-0">
-                <div className="flex items-center gap-4">
-                    <div className="flex w-10 items-center justify-center rounded-lg border bg-background shrink-0">
-                        <LayoutGrid className="w-5 h-5 text-muted-foreground" />
-                    </div>
-                    <div>
-                        <CardTitle className="text-base">Gantt View</CardTitle>
-                        <CardDescription>Trực quan hoá lộ trình dự án</CardDescription>
-                    </div>
-                </div>
+            <CardHeader className="flex flex-row items-center border-b px-6 py-4 space-y-0 shrink-0">
                 <div className="flex items-center gap-2">
-                    <Button variant="outline" size="icon" onClick={() => setViewDate(addDays(viewDate, -7))}>
+                    <LayoutGrid className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle className="text-sm font-semibold text-foreground">Kế hoạch triển khai (Gantt View)</CardTitle>
+                    <span className="text-xs text-muted-foreground hidden sm:inline-flex ml-2">Trực quan hoá lộ trình dự án</span>
+                </div>
+                <div className="ml-auto flex items-center gap-2">
+                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setViewDate(addDays(viewDate, -7))}>
                         <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    <Button variant="outline" onClick={() => setViewDate(today)}>Hôm nay</Button>
-                    <Button variant="outline" size="icon" onClick={() => setViewDate(addDays(viewDate, 7))}>
+                    <Button variant="outline" className="h-8 text-xs px-3" onClick={() => setViewDate(today)}>Hôm nay</Button>
+                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setViewDate(addDays(viewDate, 7))}>
                         <ChevronRight className="h-4 w-4" />
                     </Button>
                 </div>
@@ -157,20 +153,17 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                                             style={{ width: `${100 / daysInView}%` }}
                                         >
                                             <span className={cn(
-                                                "text-[10px] font-medium tracking-wider uppercase mb-0.5",
+                                                "text-[10px] font-bold tracking-wider uppercase mb-0.5",
                                                 isToday ? "text-primary" : "text-muted-foreground"
                                             )}>
                                                 {dayOfWeek === '7' ? 'CN' : `T${Number(dayOfWeek) + 1}`}
                                             </span>
                                             <span className={cn(
-                                                "text-sm font-semibold tabular-nums leading-none",
+                                                "text-sm font-bold tabular-nums leading-none",
                                                 isToday ? "text-primary" : "text-foreground"
                                             )}>
                                                 {format(date, 'dd')}
                                             </span>
-                                            {isToday && (
-                                                <div className="absolute top-0 bottom-0 left-1/2 -ml-[1px] w-[2px] bg-primary z-10 pointer-events-none" />
-                                            )}
                                         </div>
                                     );
                                 })}
@@ -188,7 +181,7 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                                     left: `calc(280px + ${todayLinePosition} * calc(100% - 280px) / 100)`
                                 }}
                             >
-                                <div className="absolute top-0 -left-1 w-2.5 h-2.5 rounded-full bg-primary border-2 border-background shadow-xs" />
+                                <div className="absolute top-0 -left-[5px] w-3 h-3 rounded-full bg-primary border-2 border-background shadow-xs" />
                             </div>
                         )}
 

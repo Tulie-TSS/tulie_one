@@ -14,6 +14,7 @@ import { getBankAccounts, getNoteTemplates } from '@/lib/supabase/services/setti
 import { User, CircleDollarSign, CheckCircle2, Trash2, Calendar as CalendarIcon, Package, Truck, Link as LinkIcon, QrCode, Hash, CreditCard, FileText, Clock, CircleCheck, CircleDashed, Plus, Copy, AlertCircle } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@repo/ui'
 import { formatCurrency } from '@/lib/utils/format'
 import { buildVietQrUrl } from '@/lib/utils/vietqr'
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui'
@@ -363,40 +364,40 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
 
                             {selectedItems.length > 0 ? (
                                 <div className="rounded-md border overflow-hidden bg-background">
-                                    <table className="w-full text-sm">
-                                        <thead className="bg-muted text-xs font-medium text-muted-foreground border-b text-left">
-                                            <tr>
-                                                <th className="px-6 py-4">Sản phẩm</th>
-                                                <th className="px-6 py-4 w-24 text-center">SL</th>
-                                                <th className="px-6 py-4 text-right">Đơn giá</th>
-                                                <th className="px-6 py-4 text-right">Thành tiền</th>
-                                                <th className="px-6 py-4 w-12"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-zinc-50 dark:divide-zinc-900/50">
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead>Sản phẩm</TableHead>
+                                                <TableHead className="w-24 text-center">SL</TableHead>
+                                                <TableHead className="text-right">Đơn giá</TableHead>
+                                                <TableHead className="text-right">Thành tiền</TableHead>
+                                                <TableHead className="w-12"></TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
                                             {selectedItems.map((item, index) => (
-                                                <tr key={index} className="hover:bg-muted/30 dark:hover:bg-zinc-900/20 transition-colors">
-                                                    <td className="px-6 py-4 font-semibold text-foreground dark:text-zinc-100">{item.product_name}</td>
-                                                    <td className="px-6 py-4">
+                                                <TableRow key={index}>
+                                                    <TableCell className="font-semibold">{item.product_name}</TableCell>
+                                                    <TableCell>
                                                         <Input
                                                             type="number"
                                                             min="1"
                                                             value={item.quantity}
                                                             onChange={(e) => updateItemQuantity(index, parseInt(e.target.value) || 1)}
-                                                            className="h-8 w-16 text-center border-border dark:border-zinc-700 bg-transparent mx-auto"
+                                                            className="h-8 w-16 text-center border-border bg-transparent mx-auto"
                                                         />
-                                                    </td>
-                                                    <td className="px-6 py-4 text-right tabular-nums">
+                                                    </TableCell>
+                                                    <TableCell className="text-right tabular-nums">
                                                         <PriceInput
                                                             value={item.unit_price}
                                                             onChange={(val) => updateItemPrice(index, val)}
                                                             className="h-8 w-28 text-right bg-transparent border-none focus-visible:ring-0 p-0 ml-auto"
                                                         />
-                                                    </td>
-                                                    <td className="px-6 py-4 text-right font-semibold tabular-nums text-foreground dark:text-zinc-100">
+                                                    </TableCell>
+                                                    <TableCell className="text-right font-semibold tabular-nums">
                                                         {formatCurrency(item.total_price)}
-                                                    </td>
-                                                    <td className="px-6 py-4 text-right">
+                                                    </TableCell>
+                                                    <TableCell className="text-right">
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
@@ -406,20 +407,18 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                                         >
                                                             <Trash2 className="h-4 w-4" />
                                                         </Button>
-                                                    </td>
-                                                </tr>
+                                                    </TableCell>
+                                                </TableRow>
                                             ))}
-                                        </tbody>
-                                        <tfoot className="bg-muted/30 dark:bg-zinc-900/30 border-t border-border dark:border-zinc-800">
-                                            <tr>
-                                                <td colSpan={3} className="px-6 py-4 text-muted-foreground text-xs font-medium">Tổng cộng tạm tính</td>
-                                                <td className="px-6 py-4 text-right text-lg text-foreground dark:text-zinc-100 tabular-nums">
+                                            <TableRow className="bg-muted/30 border-t">
+                                                <TableCell colSpan={3} className="text-muted-foreground text-xs font-medium">Tổng cộng tạm tính</TableCell>
+                                                <TableCell className="text-right text-lg tabular-nums">
                                                     {formatCurrency(formData.total_amount)}
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
+                                                </TableCell>
+                                                <TableCell></TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
                                 </div>
                             ) : (
                                 <div className="text-center py-12 border-2 border-dashed border-border dark:border-zinc-800 rounded-md">

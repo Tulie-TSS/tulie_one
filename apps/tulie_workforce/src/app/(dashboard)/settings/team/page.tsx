@@ -11,6 +11,14 @@ import { Badge } from "@repo/ui";
 import { Input } from "@repo/ui";
 import { Label } from "@repo/ui";
 import {
+    Table as ShadcnTable,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from "@repo/ui";
+import {
     Select,
     SelectContent,
     SelectItem,
@@ -214,22 +222,22 @@ export default function TeamPage() {
                 {/* Members Table */}
                 <Card className="card-elevated border-transparent overflow-hidden">
                     <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                            <thead className="bg-muted/30">
-                                <tr className="border-b border-border/60">
-                                    <th className="text-left py-3.5 px-5 font-medium text-muted-foreground text-xs uppercase tracking-wider">Member</th>
-                                    <th className="text-left py-3.5 px-5 font-medium text-muted-foreground text-xs uppercase tracking-wider">Role</th>
-                                    <th className="text-right py-3.5 px-5 font-medium text-muted-foreground text-xs uppercase tracking-wider">Joined</th>
-                                    <th className="w-12 px-5"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <ShadcnTable>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Member</TableHead>
+                                    <TableHead>Role</TableHead>
+                                    <TableHead className="text-right">Joined</TableHead>
+                                    <TableHead className="w-12"></TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
                                 {members.map((member) => {
                                     const config = roleConfig[member.role];
                                     const Icon = config.icon;
                                     return (
-                                        <tr key={member.id} className="border-b border-border/40 last:border-0 hover:bg-muted/10 transition-colors">
-                                            <td className="py-3 px-5">
+                                        <TableRow key={member.id}>
+                                            <TableCell>
                                                 <div className="flex items-center gap-3">
                                                     <div className="flex h-9 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-sm ring-1 ring-primary/20">
                                                         {member.name.split(" ").map((n) => n[0]).join("")}
@@ -239,8 +247,8 @@ export default function TeamPage() {
                                                         <span className="text-xs text-muted-foreground">{member.email}</span>
                                                     </div>
                                                 </div>
-                                            </td>
-                                            <td className="py-3 px-5">
+                                            </TableCell>
+                                            <TableCell>
                                                 <Select
                                                     value={member.role}
                                                     onValueChange={(v) => handleRoleChange(member.id, v as OrgRole)}
@@ -261,15 +269,15 @@ export default function TeamPage() {
                                                         <SelectItem value="viewer">Viewer</SelectItem>
                                                     </SelectContent>
                                                 </Select>
-                                            </td>
-                                            <td className="py-3 px-5 text-right text-muted-foreground text-xs font-medium">
+                                            </TableCell>
+                                            <TableCell className="text-right text-muted-foreground text-xs font-medium">
                                                 {new Date(member.joinedAt).toLocaleDateString("en-US", {
                                                     month: "short",
                                                     day: "numeric",
                                                     year: "numeric",
                                                 })}
-                                            </td>
-                                            <td className="py-3 px-5 text-right">
+                                            </TableCell>
+                                            <TableCell className="text-right">
                                                 {member.role !== "owner" && (
                                                     <DropdownMenu>
                                                         <DropdownMenuTrigger asChild>
@@ -288,12 +296,12 @@ export default function TeamPage() {
                                                         </DropdownMenuContent>
                                                     </DropdownMenu>
                                                 )}
-                                            </td>
-                                        </tr>
+                                            </TableCell>
+                                        </TableRow>
                                     );
                                 })}
-                            </tbody>
-                        </table>
+                            </TableBody>
+                        </ShadcnTable>
                     </div>
                 </Card>
             </div>

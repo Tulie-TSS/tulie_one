@@ -1,9 +1,9 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardAction } from '@repo/ui'
 import { Badge } from '@repo/ui'
 import { Button } from '@repo/ui'
-import { FileText, CheckCircle2, Clock, Eye, FileSignature, Files } from 'lucide-react'
+import { CheckCircle2, Eye } from 'lucide-react'
 import { Project, ProjectWorkItem } from '@/types'
 import { formatDate } from '@/lib/utils/format'
 import { cn } from '@/lib/utils'
@@ -37,70 +37,63 @@ export function ProjectDocumentationSet({ project, workItems }: ProjectDocumenta
 
     return (
         <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-md bg-muted border border-border flex items-center justify-center">
-                        <Files className="w-5 h-5 text-foreground" />
-                    </div>
-                    <div className="space-y-0.5">
-                        <CardTitle className="text-sm font-semibold text-foreground leading-none">Bộ chứng từ dự án</CardTitle>
-                        <CardDescription className="text-[11px] font-medium">Lộ trình hoàn thiện hồ sơ pháp lý và thủ tục cho toàn bộ dự án.</CardDescription>
-                    </div>
-                </div>
-                <Badge variant="secondary" className="font-semibold">
-                    Full Documents
-                </Badge>
+            <CardHeader>
+                <CardTitle>Bộ chứng từ dự án</CardTitle>
+                <CardDescription>Lộ trình hoàn thiện hồ sơ pháp lý và thủ tục cho toàn bộ dự án.</CardDescription>
+                <CardAction>
+                    <Badge variant="secondary">
+                        {allDocs.filter(d => d.status === 'signed').length}/{allDocs.length} hoàn thành
+                    </Badge>
+                </CardAction>
             </CardHeader>
             <CardContent className="p-0">
-                <div className="divide-y divide-zinc-50">
+                <div className="divide-y">
                     {allDocs.length === 0 ? (
                         <div className="py-12 text-center text-muted-foreground text-sm">
                             Chưa có chứng từ nào được gán cho các hạng mục dự án.
                         </div>
                     ) : (
                         allDocs.map((doc, idx) => (
-                            <div key={idx} className="flex items-center gap-6 p-4 px-6 hover:bg-muted/50 transition-colors group">
-                                <div className="flex items-center gap-4 flex-1">
+                            <div key={idx} className="flex items-center gap-4 px-4 py-3 hover:bg-muted/50 transition-colors group">
+                                <div className="flex items-center gap-3 flex-1 min-w-0">
                                     <div className={cn(
-                                        "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
-                                        doc.status === 'signed' ? "bg-emerald-500 text-white" : "bg-amber-50 text-amber-600 text-xs"
+                                        "w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-xs font-medium",
+                                        doc.status === 'signed'
+                                            ? "bg-primary text-primary-foreground"
+                                            : "bg-muted text-muted-foreground"
                                     )}>
-                                        {doc.status === 'signed' ? <CheckCircle2 className="w-5 h-5" /> : idx + 1}
+                                        {doc.status === 'signed' ? <CheckCircle2 className="w-4 h-4" /> : idx + 1}
                                     </div>
                                     <div className="min-w-0">
-                                        <p className="font-semibold text-sm truncate">{doc.title}</p>
-                                        <p className="text-[11px] text-muted-foreground truncate font-medium mt-0.5">
+                                        <p className={cn(
+                                            "text-sm font-medium truncate",
+                                            doc.status === 'signed' && "text-muted-foreground line-through"
+                                        )}>{doc.title}</p>
+                                        <p className="text-xs text-muted-foreground truncate mt-0.5">
                                             {doc.workItemTitle}
                                         </p>
                                     </div>
                                 </div>
 
-                                <div className="hidden md:flex items-center gap-8 text-right shrink-0">
+                                <div className="flex items-center gap-3 shrink-0">
                                     {doc.date && (
-                                        <div className="space-y-0.5">
-                                            <p className="text-[11px] font-semibold text-muted-foreground">{formatDate(doc.date)}</p>
-                                            <p className="text-[11px] font-medium text-muted-foreground">HẠN HOÀN THÀNH</p>
-                                        </div>
+                                        <span className="text-xs text-muted-foreground tabular-nums hidden md:inline">
+                                            {formatDate(doc.date)}
+                                        </span>
                                     )}
-                                    <Badge variant="secondary" className={cn(
-                                        "font-medium",
-                                        doc.status === 'signed' ? "bg-emerald-50 text-emerald-600" : "bg-amber-50 text-amber-600"
-                                    )}>
-                                        <span className="w-1.5 h-1.5 rounded-full mr-2 bg-current" />
-                                        {doc.status === 'signed' ? "Đã hoàn thành" : "Chờ xử lý"}
+                                    <Badge variant={doc.status === 'signed' ? 'default' : 'outline'}>
+                                        {doc.status === 'signed' ? "Hoàn thành" : "Chờ xử lý"}
                                     </Badge>
-                                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        {doc.generated_doc_id && (
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                className="h-8 w-8 p-0 rounded-lg hover:bg-muted"
-                                                onClick={() => setViewingDocId(doc.generated_doc_id)}
-                                            >
-                                                <Eye className="w-4 h-4 text-muted-foreground" />
-                                            </Button>
-                                        )}
-                                    </div>
+                                    {doc.generated_doc_id && (
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="h-7 w-7 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                            onClick={() => setViewingDocId(doc.generated_doc_id)}
+                                        >
+                                            <Eye className="w-3.5 h-3.5" />
+                                        </Button>
+                                    )}
                                 </div>
                             </div>
                         ))

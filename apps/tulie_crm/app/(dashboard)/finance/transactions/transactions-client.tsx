@@ -6,6 +6,7 @@ import { Badge } from '@repo/ui'
 import { Button } from '@repo/ui'
 import { Input } from '@repo/ui'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@repo/ui'
 import { formatCurrency } from '@/lib/utils/format'
 import { ArrowDownLeft, ArrowUpRight, Search, RefreshCw, CheckCircle2, XCircle, ArrowLeft, ExternalLink, Filter, ArrowDownToLine } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
@@ -176,30 +177,30 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
             {/* Table */}
             <Card className="overflow-hidden rounded-md border-border">
                 <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                        <thead className="bg-muted/50 text-xs text-muted-foreground uppercase tracking-wider border-b">
-                            <tr>
-                                <th className="px-4 py-3 text-left">Thời gian</th>
-                                <th className="px-4 py-3 text-left">Loại</th>
-                                <th className="px-4 py-3 text-right">Số tiền</th>
-                                <th className="px-4 py-3 text-left">Nội dung CK</th>
-                                <th className="px-4 py-3 text-left">Mã đơn</th>
-                                <th className="px-4 py-3 text-left">Khớp</th>
-                                <th className="px-4 py-3 text-left">Nguồn</th>
-                                <th className="px-4 py-3 text-left">Ngân hàng</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border/50">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Thời gian</TableHead>
+                                <TableHead>Loại</TableHead>
+                                <TableHead className="text-right">Số tiền</TableHead>
+                                <TableHead>Nội dung CK</TableHead>
+                                <TableHead>Mã đơn</TableHead>
+                                <TableHead>Khớp</TableHead>
+                                <TableHead>Nguồn</TableHead>
+                                <TableHead>Ngân hàng</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
                             {transactions.length === 0 ? (
-                                <tr>
-                                    <td colSpan={8} className="px-4 py-16 text-center text-muted-foreground">
+                                <TableRow>
+                                    <TableCell colSpan={8} className="text-center py-16 text-muted-foreground">
                                         <div className="flex flex-col items-center gap-2">
                                             <ArrowDownToLine className="h-8 w-8 opacity-20" />
                                             <p className="font-medium">Chưa có giao dịch nào</p>
                                             <p className="text-xs">Nhấn "Đồng bộ SePay" để kéo dữ liệu giao dịch về.</p>
                                         </div>
-                                    </td>
-                                </tr>
+                                    </TableCell>
+                                </TableRow>
                             ) : transactions.map((tx: any) => {
                                 const isIn = tx.transfer_type === 'in'
                                 const amount = isIn ? tx.amount_in : tx.amount_out
@@ -208,16 +209,16 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                                 const isMatched = matchedOrder || matchedInvoice
 
                                 return (
-                                    <tr key={tx.id} className="hover:bg-muted/30 transition-colors">
-                                        <td className="px-4 py-3 whitespace-nowrap">
+                                    <TableRow key={tx.id}>
+                                        <TableCell className="whitespace-nowrap">
                                             <div className="text-xs font-medium">
                                                 {tx.transaction_date ? new Date(tx.transaction_date).toLocaleDateString('vi-VN') : '—'}
                                             </div>
                                             <div className="text-[11px] text-muted-foreground">
                                                 {tx.transaction_date ? new Date(tx.transaction_date).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) : ''}
                                             </div>
-                                        </td>
-                                        <td className="px-4 py-3">
+                                        </TableCell>
+                                        <TableCell>
                                             {isIn ? (
                                                 <Badge variant="outline" className="text-emerald-600 border-green-200 bg-emerald-50 gap-1 text-[11px]">
                                                     <ArrowDownLeft className="h-3 w-3" /> Vào
@@ -227,28 +228,28 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                                                     <ArrowUpRight className="h-3 w-3" /> Ra
                                                 </Badge>
                                             )}
-                                        </td>
-                                        <td className="px-4 py-3 text-right whitespace-nowrap">
+                                        </TableCell>
+                                        <TableCell className="text-right whitespace-nowrap">
                                             <span className={cn(
                                                 "font-bold tabular-nums",
                                                 isIn ? "text-emerald-600" : "text-red-500"
                                             )}>
                                                 {isIn ? '+' : '-'}{formatCurrency(amount)}
                                             </span>
-                                        </td>
-                                        <td className="px-4 py-3 max-w-[250px]">
+                                        </TableCell>
+                                        <TableCell className="max-w-[250px]">
                                             <p className="text-xs truncate font-medium" title={tx.content || tx.description}>
                                                 {tx.content || tx.description || '—'}
                                             </p>
-                                        </td>
-                                        <td className="px-4 py-3 whitespace-nowrap">
+                                        </TableCell>
+                                        <TableCell className="whitespace-nowrap">
                                             {tx.code ? (
                                                 <code className="text-xs font-mono bg-muted px-2 py-0.5 rounded">{tx.code}</code>
                                             ) : (
                                                 <span className="text-xs text-muted-foreground">—</span>
                                             )}
-                                        </td>
-                                        <td className="px-4 py-3 whitespace-nowrap">
+                                        </TableCell>
+                                        <TableCell className="whitespace-nowrap">
                                             {matchedOrder ? (
                                                 <Link href={`/studio/${matchedOrder.id}`} className="group">
                                                     <Badge variant="secondary" className="text-[11px] gap-1 bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100 transition-colors">
@@ -268,8 +269,8 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                                                     <XCircle className="h-3 w-3" /> Chưa khớp
                                                 </Badge>
                                             )}
-                                        </td>
-                                        <td className="px-4 py-3 whitespace-nowrap">
+                                        </TableCell>
+                                        <TableCell className="whitespace-nowrap">
                                             <Badge variant="outline" className={cn(
                                                 "text-[11px]",
                                                 tx.source_system === 'studio' && "text-violet-600 border-violet-200 bg-violet-50",
@@ -278,15 +279,15 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                                             )}>
                                                 {tx.source_system === 'studio' ? 'Studio' : tx.source_system === 'lab' ? 'Lab' : '—'}
                                             </Badge>
-                                        </td>
-                                        <td className="px-4 py-3 whitespace-nowrap">
+                                        </TableCell>
+                                        <TableCell className="whitespace-nowrap">
                                             <span className="text-xs text-muted-foreground font-medium">{tx.gateway || '—'}</span>
-                                        </td>
-                                    </tr>
+                                        </TableCell>
+                                    </TableRow>
                                 )
                             })}
-                        </tbody>
-                    </table>
+                        </TableBody>
+                    </Table>
                 </div>
 
                 {/* Pagination */}

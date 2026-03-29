@@ -15,6 +15,14 @@ import {
 import { Separator } from "@repo/ui";
 import { Badge } from "@repo/ui";
 import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from "@repo/ui";
+import {
     User,
     Key,
     TrendingUp,
@@ -461,52 +469,52 @@ export default function SettingsPage() {
                                     </CardHeader>
                                     <CardContent>
                                         <div className="overflow-x-auto">
-                                            <table className="w-full text-sm">
-                                                <thead>
-                                                    <tr className="border-b border-border">
-                                                        <th className="text-left py-2 font-medium text-muted-foreground">Model</th>
-                                                        <th className="text-left py-2 font-medium text-muted-foreground">Provider</th>
-                                                        <th className="text-right py-2 font-medium text-muted-foreground">Input $/1M</th>
-                                                        <th className="text-right py-2 font-medium text-muted-foreground">Output $/1M</th>
-                                                        <th className="text-right py-2 font-medium text-muted-foreground">Context</th>
-                                                        <th className="text-center py-2 font-medium text-muted-foreground">Tính năng</th>
-                                                        <th className="text-center py-2 font-medium text-muted-foreground">Tier</th>
-                                                        <th className="text-center py-2 font-medium text-muted-foreground">Default</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                            <Table>
+                                                <TableHeader>
+                                                    <TableRow>
+                                                        <TableHead>Model</TableHead>
+                                                        <TableHead>Provider</TableHead>
+                                                        <TableHead className="text-right">Input $/1M</TableHead>
+                                                        <TableHead className="text-right">Output $/1M</TableHead>
+                                                        <TableHead className="text-right">Context</TableHead>
+                                                        <TableHead className="text-center">Tính năng</TableHead>
+                                                        <TableHead className="text-center">Tier</TableHead>
+                                                        <TableHead className="text-center">Default</TableHead>
+                                                    </TableRow>
+                                                </TableHeader>
+                                                <TableBody>
                                                     {(allModels.length > 0 ? allModels : providers.flatMap(p => p.models)).map((model) => {
                                                         const provActive = "providerActive" in model ? model.providerActive : true;
                                                         const isDefault = defaultModel === model.modelId;
 
                                                         return (
-                                                            <tr
+                                                            <TableRow
                                                                 key={model.modelId}
-                                                                className={`border-b border-border transition-colors ${!provActive ? "opacity-40" : "hover:bg-accent/50"}`}
+                                                                className={`${!provActive ? "opacity-40" : ""}`}
                                                             >
-                                                                <td className="py-2.5">
+                                                                <TableCell>
                                                                     <div className="flex items-center gap-2">
                                                                         <span className="font-medium text-foreground">{model.displayName}</span>
                                                                         {model.description && (
                                                                             <span className="text-xs text-muted-foreground hidden lg:inline">{model.description}</span>
                                                                         )}
                                                                     </div>
-                                                                </td>
-                                                                <td className="py-2.5">
+                                                                </TableCell>
+                                                                <TableCell>
                                                                     <Badge variant="outline" className={`text-xs ${providerColors[("provider" in model ? model.provider : "") as string] ?? ""}`}>
                                                                         {(() => { const p = ("provider" in model ? String(model.provider) : ""); return p.charAt(0).toUpperCase() + p.slice(1); })()}
                                                                     </Badge>
-                                                                </td>
-                                                                <td className="text-right py-2.5 font-mono text-muted-foreground">
+                                                                </TableCell>
+                                                                <TableCell className="text-right font-mono text-muted-foreground">
                                                                     {formatPrice(model.inputPrice)}
-                                                                </td>
-                                                                <td className="text-right py-2.5 font-mono text-muted-foreground">
+                                                                </TableCell>
+                                                                <TableCell className="text-right font-mono text-muted-foreground">
                                                                     {formatPrice(model.outputPrice)}
-                                                                </td>
-                                                                <td className="text-right py-2.5 text-muted-foreground">
+                                                                </TableCell>
+                                                                <TableCell className="text-right text-muted-foreground">
                                                                     {formatContext(model.maxContext)}
-                                                                </td>
-                                                                <td className="py-2.5">
+                                                                </TableCell>
+                                                                <TableCell>
                                                                     <div className="flex gap-1 justify-center">
                                                                         {model.supportsVision && (
                                                                             <span title="Vision" className="text-muted-foreground"><ImageIcon className="h-3.5 w-3.5" /></span>
@@ -518,13 +526,13 @@ export default function SettingsPage() {
                                                                             <span title="JSON mode" className="text-muted-foreground text-xs font-mono">{"{}"}</span>
                                                                         )}
                                                                     </div>
-                                                                </td>
-                                                                <td className="py-2.5 text-center">
+                                                                </TableCell>
+                                                                <TableCell className="text-center">
                                                                     <Badge className={`text-xs ${tierBadge[model.tier]?.className ?? ""}`}>
                                                                         {tierBadge[model.tier]?.label ?? model.tier}
                                                                     </Badge>
-                                                                </td>
-                                                                <td className="py-2.5 text-center">
+                                                                </TableCell>
+                                                                <TableCell className="text-center">
                                                                     <button
                                                                         onClick={() => handleSetDefault(model.modelId)}
                                                                         className={`p-1 rounded transition-colors ${isDefault ? "text-amber-500" : "text-muted-foreground/60 hover:text-amber-400" }`}
@@ -533,12 +541,12 @@ export default function SettingsPage() {
                                                                     >
                                                                         <Star className={`h-4 w-4 ${isDefault ? "fill-amber-500" : ""}`} />
                                                                     </button>
-                                                                </td>
-                                                            </tr>
+                                                                </TableCell>
+                                                            </TableRow>
                                                         );
                                                     })}
-                                                </tbody>
-                                            </table>
+                                                </TableBody>
+                                            </Table>
                                         </div>
                                     </CardContent>
                                 </Card>

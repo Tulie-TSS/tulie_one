@@ -5,10 +5,6 @@ import { Contract } from '@/types'
 import { Badge } from '@repo/ui'
 import { Button } from '@repo/ui'
 import { Checkbox } from '@repo/ui'
-import {
-    CONTRACT_STATUS_LABELS,
-    CONTRACT_STATUS_COLORS
-} from '@/lib/constants/status'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
 import { ArrowUpDown } from 'lucide-react'
 import Link from 'next/link'

@@ -1,6 +1,7 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@repo/ui'
 import { MONTHLY_REVENUE, CONTRACTS, INVOICES, formatCurrency } from '@/lib/demo/mock-data'
 import { Wallet, TrendingUp } from 'lucide-react'
 import {
@@ -162,42 +163,42 @@ export default function DemoFinance() {
                 </CardHeader>
                 <CardContent>
                     <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                            <thead>
-                                <tr className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider border-b">
-                                    <th className="text-left py-3 px-2">Tháng</th>
-                                    <th className="text-right py-3 px-2">Doanh thu</th>
-                                    <th className="text-right py-3 px-2">Chi phí</th>
-                                    <th className="text-right py-3 px-2">Lợi nhuận</th>
-                                    <th className="text-right py-3 px-2">Biên LN</th>
-                                    <th className="text-right py-3 px-2">Dự án</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-border/50">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Tháng</TableHead>
+                                    <TableHead className="text-right">Doanh thu</TableHead>
+                                    <TableHead className="text-right">Chi phí</TableHead>
+                                    <TableHead className="text-right">Lợi nhuận</TableHead>
+                                    <TableHead className="text-right">Biên LN</TableHead>
+                                    <TableHead className="text-right">Dự án</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
                                 {MONTHLY_REVENUE.map((m, i) => {
                                     const p = m.revenue - m.expenses
                                     const margin = Math.round((p / m.revenue) * 100)
                                     return (
-                                        <tr key={i} className="hover:bg-muted dark:hover:bg-zinc-800/50">
-                                            <td className="py-3 px-2 font-semibold text-foreground dark:text-zinc-50">{m.month}</td>
-                                            <td className="py-3 px-2 text-right font-bold text-foreground dark:text-zinc-100">{formatCurrency(m.revenue)}</td>
-                                            <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground">{formatCurrency(m.expenses)}</td>
-                                            <td className="py-3 px-2 text-right font-bold text-emerald-700 dark:text-emerald-400">{formatCurrency(p)}</td>
-                                            <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground">{margin}%</td>
-                                            <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground">{m.projects}</td>
-                                        </tr>
+                                        <TableRow key={i}>
+                                            <TableCell className="font-semibold">{m.month}</TableCell>
+                                            <TableCell className="text-right font-bold">{formatCurrency(m.revenue)}</TableCell>
+                                            <TableCell className="text-right text-muted-foreground">{formatCurrency(m.expenses)}</TableCell>
+                                            <TableCell className="text-right font-bold text-emerald-700">{formatCurrency(p)}</TableCell>
+                                            <TableCell className="text-right text-muted-foreground">{margin}%</TableCell>
+                                            <TableCell className="text-right text-muted-foreground">{m.projects}</TableCell>
+                                        </TableRow>
                                     )
                                 })}
-                                <tr className="bg-muted dark:bg-zinc-800/50 font-bold">
-                                    <td className="py-3 px-2 text-foreground dark:text-zinc-50">Tổng cộng</td>
-                                    <td className="py-3 px-2 text-right text-foreground dark:text-zinc-100">{formatCurrency(totalRevenue)}</td>
-                                    <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground">{formatCurrency(totalExpenses)}</td>
-                                    <td className="py-3 px-2 text-right text-emerald-700 dark:text-emerald-400">{formatCurrency(profit)}</td>
-                                    <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground">{profitMargin}%</td>
-                                    <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground">{MONTHLY_REVENUE.reduce((s, m) => s + m.projects, 0)}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <TableRow className="bg-muted font-bold">
+                                    <TableCell>Tổng cộng</TableCell>
+                                    <TableCell className="text-right">{formatCurrency(totalRevenue)}</TableCell>
+                                    <TableCell className="text-right text-muted-foreground">{formatCurrency(totalExpenses)}</TableCell>
+                                    <TableCell className="text-right text-emerald-700">{formatCurrency(profit)}</TableCell>
+                                    <TableCell className="text-right text-muted-foreground">{profitMargin}%</TableCell>
+                                    <TableCell className="text-right text-muted-foreground">{MONTHLY_REVENUE.reduce((s, m) => s + m.projects, 0)}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
                     </div>
                 </CardContent>
             </Card>

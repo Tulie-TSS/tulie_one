@@ -146,12 +146,12 @@
   --info: oklch(0.923 0.046 259.815);
   --info-foreground: oklch(0.546 0.245 262.881);
 
-  /* Chart */
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.600 0.118 184.704);
-  --chart-3: oklch(0.398 0.070 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.080);
+  /* Chart — Monochrome Grayscale */
+  --chart-1: oklch(0.205 0 0); /* Dark / primary */
+  --chart-2: oklch(0.556 0 0); /* Medium gray / muted-foreground */
+  --chart-3: oklch(0.800 0 0); /* Light gray */
+  --chart-4: oklch(0.400 0 0); /* Darker gray */
+  --chart-5: oklch(0.922 0 0); /* Very light gray / border */
 
   /* Sidebar */
   --sidebar: oklch(0.985 0 0);
@@ -216,12 +216,12 @@
   --info: oklch(0.346 0.245 262.881 / 0.2);
   --info-foreground: oklch(0.623 0.214 259.815);
 
-  /* Chart — dark */
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.170 162.480);
-  --chart-3: oklch(0.769 0.188 70.080);
-  --chart-4: oklch(0.627 0.265 303.900);
-  --chart-5: oklch(0.645 0.246 16.439);
+  /* Chart — dark monochrome */
+  --chart-1: oklch(0.985 0 0); /* White / foreground */
+  --chart-2: oklch(0.556 0 0); /* Medium gray / muted-foreground */
+  --chart-3: oklch(0.300 0 0); /* Dark gray */
+  --chart-4: oklch(0.708 0 0); /* Light gray / muted-foreground */
+  --chart-5: oklch(0.205 0 0); /* Very dark gray */
 
   /* Sidebar — dark */
   --sidebar: oklch(0.205 0 0);

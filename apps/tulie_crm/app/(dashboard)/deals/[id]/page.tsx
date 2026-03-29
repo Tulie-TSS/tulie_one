@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo
 import { Badge } from '@repo/ui'
 import { Separator } from '@repo/ui'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
-import { DEAL_STATUS_LABELS, DEAL_STATUS_COLORS } from '@/lib/constants/status'
+import { StatusBadge } from '@/components/shared/status-badge'
 import { ArrowLeft, Edit, ExternalLink, Plus, FileText, TrendingUp, Users, Wallet, Calendar, CheckCircle2, XCircle } from 'lucide-react'
 import Link from 'next/link'
 
@@ -27,9 +27,7 @@ export default async function DealDetailPage({ params }: any) {
                     <div>
                         <div className="flex items-center gap-3">
                             <h1 className="text-3xl">{deal.title}</h1>
-                            <Badge className={DEAL_STATUS_COLORS[deal.status as keyof typeof DEAL_STATUS_LABELS] || 'bg-gray-100'}>
-                                {DEAL_STATUS_LABELS[deal.status as keyof typeof DEAL_STATUS_LABELS] || deal.status}
-                            </Badge>
+                            <StatusBadge status={deal.status} entityType="deal" />
                         </div>
                         <p className="text-muted-foreground flex items-center gap-2">
                             <Users className="h-4 w-4" />
@@ -63,7 +61,7 @@ export default async function DealDetailPage({ params }: any) {
                         <CardContent className="space-y-4">
                             <div className="grid gap-4 sm:grid-cols-3">
                                 <div className="p-4 bg-muted/20 rounded-md border flex flex-col items-center justify-center text-center">
-                                    <Wallet className="h-5 w-5 mb-2 text-emerald-600" />
+                                    <Wallet className="h-5 w-5 mb-2 text-muted-foreground" />
                                     <p className="text-xs text-muted-foreground">Ngân sách dự kiến</p>
                                     <p className="text-lg">{formatCurrency(deal.budget || 0)}</p>
                                 </div>
@@ -155,10 +153,10 @@ export default async function DealDetailPage({ params }: any) {
                                     <Button variant="outline" size="sm" className="justify-start">
                                         <FileText className="h-4 w-4" /> Lên báo giá
                                     </Button>
-                                    <Button variant="secondary" size="sm" className="justify-start text-emerald-600 bg-emerald-50 hover:bg-green-100 border-green-200">
+                                    <Button variant="default" size="sm" className="justify-start">
                                         <CheckCircle2 className="h-4 w-4" /> Chốt thành công
                                     </Button>
-                                    <Button variant="secondary" size="sm" className="justify-start text-rose-600 bg-rose-50 hover:bg-rose-100 border-rose-200">
+                                    <Button variant="destructive" size="sm" className="justify-start">
                                         <XCircle className="h-4 w-4" /> Thất bại
                                     </Button>
                                 </div>
