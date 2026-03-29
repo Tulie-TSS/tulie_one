@@ -1,7 +1,7 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@repo/ui"
-import { Funnel, FunnelChart, ResponsiveContainer, Tooltip, Cell, LabelList } from "recharts"
+import { Bar, BarChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Cell } from "recharts"
 import { DEAL_STATUS_LABELS, DEAL_CHART_COLORS as COLORS } from "@/lib/constants/status"
 import { formatCurrency } from "@/lib/utils/format"
 
@@ -23,45 +23,58 @@ export function DealProjectionChart({ stats }: DealProjectionChartProps) {
         name: item.name,
         amount: item.value / 1000000,
         rawAmount: item.value,
-        fullName: DEAL_STATUS_LABELS[item.key as keyof typeof DEAL_STATUS_LABELS],
+        fullName: DEAL_STATUS_LABELS[item.key as keyof typeof DEAL_STATUS_LABELS]?.split('(')[0] || item.name,
         key: item.key
     }))
 
     const hasData = barData.length > 0
 
     return (
-        <Card className="col-span-2 rounded-md border shadow-sm overflow-hidden">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <div>
-                    <CardTitle className="text-base font-semibold">Dự báo doanh thu (Deals Pipeline)</CardTitle>
-                    <CardDescription className="text-xs mt-1">Tiềm năng doanh thu dựa trên các cơ hội đang theo đuổi</CardDescription>
+        <Card className="shadow-sm">
+            <CardHeader className="flex flex-row items-start justify-between pb-4">
+                <div className="space-y-1">
+                    <CardTitle className="text-base font-medium">Pipeline Doanh thu</CardTitle>
+                    <CardDescription className="text-sm">Tiềm năng dựa trên các cơ hội</CardDescription>
                 </div>
-                <div className="text-right">
-                    <p className="text-xs text-muted-foreground">Tổng tiềm năng</p>
-                    <p className="text-xl font-bold">{formatCurrency(stats.total_potential)}</p>
+                <div className="text-right space-y-1">
+                    <p className="text-sm text-muted-foreground mr-4">Tổng tiềm năng</p>
+                    <p className="text-xl font-bold mr-4">{formatCurrency(stats.total_potential)}</p>
                 </div>
             </CardHeader>
-            <CardContent className="pt-2">
+            <CardContent>
                 {!hasData ? (
                     <div className="h-[250px] flex items-center justify-center text-muted-foreground text-sm">
                         <div className="text-center space-y-2">
-                            <p className="text-3xl">📈</p>
-                            <p>Chưa có cơ hội (deal) nào</p>
-                            <p className="text-xs">Tạo cơ hội để theo dõi pipeline</p>
+                            <p className="text-3xl">📭</p>
+                            <p>Không có dữ liệu</p>
                         </div>
                     </div>
                 ) : (
                     <>
-                        <div className="h-[250px] w-full">
+                        <div className="h-[200px] w-full">
                             <ResponsiveContainer width="100%" height="100%">
-                                <FunnelChart>
+                                <BarChart
+                                    data={barData}
+                                    layout="vertical"
+                                    margin={{ top: 0, right: 20, left: 10, bottom: 0 }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e5e7eb" />
+                                    <XAxis type="number" hide />
+                                    <YAxis 
+                                        dataKey="name" 
+                                        type="category" 
+                                        axisLine={false} 
+                                        tickLine={false} 
+                                        tick={{ fill: '#6b7280', fontSize: 12 }}
+                                        width={80}
+                                    />
                                     <Tooltip
-                                        cursor={{ fill: 'transparent' }}
+                                        cursor={{ fill: '#f3f4f6' }}
                                         content={({ active, payload }) => {
                                             if (active && payload && payload.length) {
                                                 const d = payload[0].payload
                                                 return (
-                                                    <div className="rounded-lg border bg-background p-3 shadow-lg">
+                                                    <div className="rounded-lg border bg-background p-3 shadow-sm">
                                                         <p className="text-xs font-medium text-muted-foreground mb-1">{d.fullName}</p>
                                                         <p className="text-sm font-bold">{formatCurrency(d.rawAmount)}</p>
                                                     </div>
@@ -70,32 +83,27 @@ export function DealProjectionChart({ stats }: DealProjectionChartProps) {
                                             return null
                                         }}
                                     />
-                                    <Funnel
-                                        dataKey="amount"
-                                        data={barData}
-                                        isAnimationActive
-                                    >
+                                    <Bar dataKey="amount" radius={[0, 4, 4, 0]} barSize={24}>
                                         {barData.map((entry, index) => (
                                             <Cell
                                                 key={`cell-${index}`}
-                                                fill={(COLORS as any)[entry.key] || '#6366f1'}
+                                                fill={(COLORS as any)[entry.key] || '#3b82f6'}
                                             />
                                         ))}
-                                    </Funnel>
-                                </FunnelChart>
+                                    </Bar>
+                                </BarChart>
                             </ResponsiveContainer>
                         </div>
-
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4 pt-4 border-t">
                             {data.map((item) => (
-                                <div key={item.key} className="space-y-1 p-3 rounded-lg border bg-muted/30">
+                                <div key={item.key} className="space-y-1">
                                     <div className="flex items-center gap-2">
-                                        <span className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: (COLORS as any)[item.key] }} />
-                                        <span className="text-xs text-muted-foreground">
+                                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: (COLORS as any)[item.key] || '#3b82f6' }} />
+                                        <span className="text-xs text-muted-foreground font-medium truncate">
                                             {DEAL_STATUS_LABELS[item.key as keyof typeof DEAL_STATUS_LABELS]?.split('(')[0]}
                                         </span>
                                     </div>
-                                    <p className="text-sm font-semibold">
+                                    <p className="text-sm font-semibold truncate">
                                         {formatCurrency(item.value)}
                                     </p>
                                 </div>

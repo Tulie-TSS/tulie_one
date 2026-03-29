@@ -28,6 +28,14 @@ import {
     DropdownMenuTrigger,
 } from '@repo/ui'
 import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@repo/ui'
+import {
     Contact, UserPlus, Phone, Mail, Building2, MessageSquare,
     MoreHorizontal, Trash2, Clock, CheckCircle2, XCircle, UserCheck, Search
 } from 'lucide-react'
@@ -37,11 +45,11 @@ import { cn } from '@/lib/utils'
 import { useConfirm } from '@repo/ui'
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: any }> = {
-    new: { label: 'Mới', color: 'bg-blue-50 text-blue-700', icon: UserPlus },
-    contacted: { label: 'Đã liên hệ', color: 'bg-amber-50 text-amber-700', icon: Phone },
-    qualified: { label: 'Tiềm năng', color: 'bg-emerald-50 text-emerald-700', icon: UserCheck },
-    converted: { label: 'Đã chuyển đổi', color: 'bg-zinc-900 text-white', icon: CheckCircle2 },
-    lost: { label: 'Mất', color: 'bg-rose-50 text-rose-700', icon: XCircle },
+    new: { label: 'Mới', color: 'bg-blue-100/50 text-blue-700', icon: UserPlus },
+    contacted: { label: 'Đã liên hệ', color: 'bg-amber-100/50 text-amber-700', icon: Phone },
+    qualified: { label: 'Tiềm năng', color: 'bg-emerald-100/50 text-emerald-700', icon: UserCheck },
+    converted: { label: 'Đã chuyển đổi', color: 'bg-zinc-800 text-white', icon: CheckCircle2 },
+    lost: { label: 'Mất', color: 'bg-rose-100/50 text-rose-700', icon: XCircle },
 }
 
 interface LeadsListProps {
@@ -77,7 +85,6 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
                 body: JSON.stringify({ id: leadId, status: newStatus }),
             })
             if (!res.ok) {
-                // Fallback: use server action directly
                 const { updateLead } = await import('@/lib/supabase/services/lead-service')
                 await updateLead(leadId, { status: newStatus as any })
             }
@@ -116,8 +123,7 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
     }
 
     return (
-        <div className="space-y-6">
-            {/* Stats */}
+        <div className="space-y-4">
             <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
                 {[
                     { label: 'Tổng leads', value: stats.total, icon: Contact, color: 'text-muted-foreground' },
@@ -125,31 +131,30 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
                     { label: 'Đã liên hệ', value: stats.contacted, icon: Phone, color: 'text-amber-600' },
                     { label: 'Tiềm năng', value: stats.qualified, icon: UserCheck, color: 'text-emerald-600' },
                 ].map((s, i) => (
-                    <Card key={i} className="rounded-md border-border">
+                    <Card key={i} className="shadow-sm">
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-bold text-muted-foreground">{s.label}</CardTitle>
+                            <CardTitle className="text-sm font-medium">{s.label}</CardTitle>
                             <s.icon className={cn("h-4 w-4", s.color)} />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold text-foreground">{s.value}</div>
+                            <div className="text-2xl font-bold">{s.value}</div>
                         </CardContent>
                     </Card>
                 ))}
             </div>
 
-            {/* Filters */}
-            <div className="flex flex-col sm:flex-row gap-3">
-                <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
+                <div className="relative w-full max-w-sm">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
-                        placeholder="Tìm theo tên, SĐT, email, công ty..."
+                        placeholder="Tìm khách hàng..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="pl-9 h-10 rounded-md"
+                        className="pl-8"
                     />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-full sm:w-48 h-10 rounded-md">
+                    <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Trạng thái" />
                     </SelectTrigger>
                     <SelectContent>
@@ -161,183 +166,159 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
                 </Select>
             </div>
 
-            {/* Leads Table */}
-            <div className="bg-white rounded-md border border-border overflow-hidden">
-                {filtered.length === 0 ? (
-                    <div className="p-12 text-center">
-                        <Contact className="w-8 h-8 text-zinc-300 mx-auto mb-3" />
-                        <p className="text-sm text-muted-foreground font-medium">Chưa có lead nào{statusFilter !== 'all' ? ' với trạng thái này' : ''}.</p>
-                    </div>
-                ) : (
-                    <div className="divide-y divide-border/50">
-                        {/* Header */}
-                        <div className="hidden md:grid grid-cols-12 gap-4 px-5 py-3 bg-muted/50 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-                            <div className="col-span-3">Khách hàng</div>
-                            <div className="col-span-2">Liên hệ</div>
-                            <div className="col-span-2">Công ty</div>
-                            <div className="col-span-2">Nguồn</div>
-                            <div className="col-span-2">Trạng thái</div>
-                            <div className="col-span-1"></div>
-                        </div>
-
-                        {filtered.map((lead) => {
-                            const statusCfg = STATUS_CONFIG[lead.status] || STATUS_CONFIG.new
-                            return (
-                                <div
-                                    key={lead.id}
-                                    className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-5 py-4 hover:bg-muted/50 transition-colors cursor-pointer items-center"
-                                    onClick={() => { setSelectedLead(lead); setIsDetailOpen(true) }}
-                                >
-                                    <div className="col-span-3">
-                                        <p className="text-sm font-semibold text-foreground">{lead.full_name}</p>
-                                        {lead.business_type && (
-                                            <p className="text-[11px] text-muted-foreground mt-0.5">{lead.business_type}</p>
-                                        )}
-                                    </div>
-                                    <div className="col-span-2 space-y-0.5">
-                                        <p className="text-xs font-medium text-zinc-700">{lead.phone}</p>
-                                        <p className="text-[11px] text-muted-foreground">{formatDate(lead.created_at)}</p>
-                                    </div>
-                                    <div className="col-span-2">
-                                        <p className="text-xs font-medium text-muted-foreground truncate">{lead.company_name || '—'}</p>
-                                    </div>
-                                    <div className="col-span-2">
-                                         <Badge variant="outline" className="text-[10px] bg-muted text-zinc-700 font-semibold border-border">
-                                            {lead.source === 'lp_thiet_ke_website' ? 'LP Thiết kế Web' : (lead.source || 'Website Tulie')}
-                                        </Badge>
-                                    </div>
-                                    <div className="col-span-2">
-                                        <Badge className={cn("text-[11px] font-semibold border-none px-2.5 py-1 rounded-lg", statusCfg.color)}>
-                                            {statusCfg.label}
-                                        </Badge>
-                                    </div>
-                                    <div className="col-span-1 flex justify-end" onClick={(e) => e.stopPropagation()}>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-lg">
-                                                    <MoreHorizontal className="h-4 w-4" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end" className="w-48">
-                                                {Object.entries(STATUS_CONFIG).map(([key, cfg]) => (
+            <div className="rounded-md border bg-card">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="w-[250px]">KHÁCH HÀNG</TableHead>
+                            <TableHead>LIÊN HỆ</TableHead>
+                            <TableHead>CÔNG TY</TableHead>
+                            <TableHead>NGUỒN</TableHead>
+                            <TableHead>TRẠNG THÁI</TableHead>
+                            <TableHead className="w-[50px]"></TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {filtered.length === 0 ? (
+                            <TableRow>
+                                <TableCell colSpan={6} className="h-24 text-center">
+                                    Không tìm thấy dữ liệu.
+                                </TableCell>
+                            </TableRow>
+                        ) : (
+                            filtered.map((lead) => {
+                                const statusCfg = STATUS_CONFIG[lead.status] || STATUS_CONFIG.new
+                                return (
+                                    <TableRow
+                                        key={lead.id}
+                                        className="cursor-pointer"
+                                        onClick={() => { setSelectedLead(lead); setIsDetailOpen(true) }}
+                                    >
+                                        <TableCell>
+                                            <div className="font-medium">{lead.full_name}</div>
+                                            {lead.business_type && (
+                                                <div className="text-xs text-muted-foreground mt-0.5">{lead.business_type}</div>
+                                            )}
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="text-sm font-medium">{lead.phone}</div>
+                                            <div className="text-xs text-muted-foreground">{formatDate(lead.created_at)}</div>
+                                        </TableCell>
+                                        <TableCell>{lead.company_name || '—'}</TableCell>
+                                        <TableCell>
+                                            <Badge variant="secondary" className="text-[10px] font-medium">
+                                                {lead.source === 'lp_thiet_ke_website' ? 'LP Thiết kế Web' : (lead.source || 'Website Tulie')}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Badge variant="outline" className={cn("border-none", statusCfg.color)}>
+                                                {statusCfg.label}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell onClick={(e) => e.stopPropagation()}>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                                                        <span className="sr-only">Open menu</span>
+                                                        <MoreHorizontal className="h-4 w-4" />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end">
+                                                    {Object.entries(STATUS_CONFIG).map(([key, cfg]) => (
+                                                        <DropdownMenuItem
+                                                            key={key}
+                                                            onClick={() => handleStatusChange(lead.id, key)}
+                                                            disabled={lead.status === key}
+                                                        >
+                                                            <cfg.icon className="w-4 h-4 mr-2" />
+                                                            {cfg.label}
+                                                        </DropdownMenuItem>
+                                                    ))}
+                                                    <DropdownMenuSeparator />
                                                     <DropdownMenuItem
-                                                        key={key}
-                                                        onClick={() => handleStatusChange(lead.id, key)}
-                                                        disabled={lead.status === key}
+                                                        className="text-destructive focus:text-destructive"
+                                                        onClick={() => handleDelete(lead.id)}
                                                     >
-                                                        <cfg.icon className="w-3.5 h-3.5 mr-2" />
-                                                        {cfg.label}
+                                                        <Trash2 className="w-4 h-4 mr-2" />
+                                                        Xóa
                                                     </DropdownMenuItem>
-                                                ))}
-                                                <DropdownMenuSeparator />
-                                                <DropdownMenuItem
-                                                    className="text-rose-600"
-                                                    onClick={() => handleDelete(lead.id)}
-                                                >
-                                                    <Trash2 className="w-3.5 h-3.5 mr-2" />
-                                                    Xóa
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </div>
-                )}
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            })
+                        )}
+                    </TableBody>
+                </Table>
             </div>
 
-            {/* Detail Dialog */}
             <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-                <DialogContent className="sm:max-w-[500px] rounded-md p-0 overflow-hidden border-none shadow-xl">
+                <DialogContent className="sm:max-w-[500px]">
                     {selectedLead && (
                         <>
-                            <div className="bg-zinc-950 text-white p-6">
-                                <DialogHeader>
-                                    <DialogTitle className="text-xl font-bold">{selectedLead.full_name}</DialogTitle>
-                                    <div className="flex items-center gap-2 mt-2">
-                                        <Badge className={cn("text-[11px] font-semibold border-none px-2.5 py-1 rounded-lg", STATUS_CONFIG[selectedLead.status]?.color)}>
-                                            {STATUS_CONFIG[selectedLead.status]?.label}
-                                        </Badge>
-                                        <span className="text-xs text-muted-foreground">{formatDate(selectedLead.created_at)}</span>
-                                    </div>
-                                </DialogHeader>
-                            </div>
-                            <div className="p-6 space-y-5">
+                            <DialogHeader>
+                                <DialogTitle className="text-xl">{selectedLead.full_name}</DialogTitle>
+                                <div className="flex items-center gap-2 mt-2">
+                                    <Badge variant="secondary" className={cn(STATUS_CONFIG[selectedLead.status]?.color, "border-none")}>
+                                        {STATUS_CONFIG[selectedLead.status]?.label}
+                                    </Badge>
+                                    <span className="text-xs text-muted-foreground">{formatDate(selectedLead.created_at)}</span>
+                                </div>
+                            </DialogHeader>
+                            <div className="space-y-4 py-4">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Điện thoại</p>
-                                        <p className="text-sm font-semibold text-foreground">{selectedLead.phone}</p>
+                                        <p className="text-xs font-medium text-muted-foreground uppercase">Điện thoại</p>
+                                        <p className="text-sm font-medium">{selectedLead.phone}</p>
                                     </div>
                                     <div className="space-y-1">
-                                        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Email</p>
-                                        <p className="text-sm font-semibold text-foreground">{selectedLead.email || '—'}</p>
+                                        <p className="text-xs font-medium text-muted-foreground uppercase">Email</p>
+                                        <p className="text-sm font-medium">{selectedLead.email || '—'}</p>
                                     </div>
                                     <div className="space-y-1">
-                                        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Công ty</p>
-                                        <p className="text-sm font-semibold text-foreground">{selectedLead.company_name || '—'}</p>
+                                        <p className="text-xs font-medium text-muted-foreground uppercase">Công ty</p>
+                                        <p className="text-sm font-medium">{selectedLead.company_name || '—'}</p>
                                     </div>
                                     <div className="space-y-1">
-                                        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Lĩnh vực</p>
-                                        <p className="text-sm font-semibold text-foreground">{selectedLead.business_type || '—'}</p>
+                                        <p className="text-xs font-medium text-muted-foreground uppercase">Lĩnh vực</p>
+                                        <p className="text-sm font-medium">{selectedLead.business_type || '—'}</p>
                                     </div>
                                     <div className="space-y-1 col-span-2">
-                                        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Nguồn thu thập</p>
-                                        <p className="text-sm font-semibold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-lg inline-block">{selectedLead.source === 'lp_thiet_ke_website' ? 'Landing Page: Thiết kế Web' : (selectedLead.source || 'Website Chính')}</p>
+                                        <p className="text-xs font-medium text-muted-foreground uppercase">Nguồn</p>
+                                        <Badge variant="secondary" className="font-normal mt-1">
+                                            {selectedLead.source === 'lp_thiet_ke_website' ? 'Landing Page: Thiết kế Web' : (selectedLead.source || 'Website Chính')}
+                                        </Badge>
                                     </div>
                                 </div>
 
                                 {selectedLead.message && (
                                     <div className="space-y-1.5">
-                                        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Nhu cầu</p>
-                                        <div className="p-4 bg-muted rounded-md border border-border">
-                                            <p className="text-sm text-zinc-700 leading-relaxed whitespace-pre-line">{selectedLead.message}</p>
+                                        <p className="text-xs font-medium text-muted-foreground uppercase">Nhu cầu</p>
+                                        <div className="p-3 bg-muted/50 rounded-md text-sm border">
+                                            {selectedLead.message}
                                         </div>
                                     </div>
                                 )}
 
-                                <div className="space-y-2">
-                                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Cập nhật trạng thái</p>
+                                <div className="space-y-2 pt-4">
+                                    <p className="text-xs font-medium text-muted-foreground uppercase">Đổi trạng thái</p>
                                     <div className="flex gap-2 flex-wrap">
                                         {Object.entries(STATUS_CONFIG).map(([key, cfg]) => (
                                             <Button
                                                 key={key}
                                                 variant={selectedLead.status === key ? "default" : "outline"}
                                                 size="sm"
-                                                className="rounded-lg text-xs font-semibold gap-1.5 h-8"
-                                                disabled={updating || selectedLead.status === key}
                                                 onClick={() => {
                                                     handleStatusChange(selectedLead.id, key)
                                                     setSelectedLead({ ...selectedLead, status: key as any })
                                                 }}
                                             >
-                                                <cfg.icon className="w-3 h-3" />
+                                                <cfg.icon className="w-4 h-4 mr-2" />
                                                 {cfg.label}
                                             </Button>
                                         ))}
                                     </div>
-                                </div>
-
-                                <div className="flex gap-3 pt-2">
-                                    <Button
-                                        asChild
-                                        variant="outline"
-                                        className="flex-1 rounded-md h-10 gap-2 font-semibold"
-                                    >
-                                        <a href={`tel:${selectedLead.phone}`}>
-                                            <Phone className="w-4 h-4" />
-                                            Gọi điện
-                                        </a>
-                                    </Button>
-                                    <Button
-                                        asChild
-                                        className="flex-1 rounded-md h-10 gap-2 font-semibold"
-                                    >
-                                        <a href={`https://zalo.me/${selectedLead.phone.replace(/\D/g, '')}`} target="_blank">
-                                            <MessageSquare className="w-4 h-4" />
-                                            Chat Zalo
-                                        </a>
-                                    </Button>
                                 </div>
                             </div>
                         </>

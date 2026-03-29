@@ -3,16 +3,17 @@ import { RevenueChart } from '@/components/dashboard/revenue-chart'
 import { RecentActivities } from '@/components/dashboard/recent-activities'
 import { CRMAlerts } from '@/components/dashboard/crm-alerts'
 import { formatCurrency } from '@/lib/utils/format'
-import { Users, FileSignature, Receipt, Wallet, TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { Users, FileSignature, Receipt, Wallet } from 'lucide-react'
 import { getDashboardStats, getRevenueChartData, getDealStats, getCRMAlerts } from '@/lib/supabase/services/dashboard-service'
 import { getRecentActivities } from '@/lib/supabase/services/activity-service'
 import { DealProjectionChart } from '@/components/dashboard/deal-projection-chart'
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
-import { Progress } from '@repo/ui'
+import { Progress, Badge } from '@repo/ui'
+import { cn } from '@/lib/utils'
 
 function calculateHealthScore(stats: any, dealStats: any) {
     let score = 0
-    const metrics: { label: string; value: number; max: number; status: string; color: string; target: string }[] = []
+    const metrics: { label: string; value: number; max: number; status: string; colorClass: string; target: string }[] = []
 
     // 1. Revenue score (0-30): based on total revenue vs target 50M
     const TARGET_REVENUE = 50000000
@@ -23,7 +24,7 @@ function calculateHealthScore(stats: any, dealStats: any) {
         value: revenueScore,
         max: 30,
         status: stats.revenue.total > 30000000 ? 'Tốt' : stats.revenue.total > 10000000 ? 'Trung bình' : stats.revenue.total > 0 ? 'Yếu' : 'Chưa có',
-        color: stats.revenue.total > 30000000 ? '#10b981' : stats.revenue.total > 10000000 ? '#f59e0b' : '#ef4444',
+        colorClass: stats.revenue.total > 30000000 ? '[&>div]:bg-emerald-500' : stats.revenue.total > 10000000 ? '[&>div]:bg-amber-500' : '[&>div]:bg-red-500',
         target: `Mục tiêu: ${formatCurrency(TARGET_REVENUE)}`
     })
 
@@ -36,7 +37,7 @@ function calculateHealthScore(stats: any, dealStats: any) {
         value: customerScore,
         max: 25,
         status: `${stats.customers.new} khách`,
-        color: stats.customers.new >= 3 ? '#10b981' : stats.customers.new >= 1 ? '#f59e0b' : '#ef4444',
+        colorClass: stats.customers.new >= 3 ? '[&>div]:bg-emerald-500' : stats.customers.new >= 1 ? '[&>div]:bg-amber-500' : '[&>div]:bg-red-500',
         target: `Mục tiêu: ${TARGET_CUSTOMERS} khách/tháng`
     })
 
@@ -45,11 +46,11 @@ function calculateHealthScore(stats: any, dealStats: any) {
     const contractScore = Math.min(Math.round((stats.contracts.active / TARGET_CONTRACTS) * 25), 25)
     score += contractScore
     metrics.push({
-        label: 'Hợp đồng đang chạy',
+        label: 'Hợp đồng đang thực hiện',
         value: contractScore,
         max: 25,
         status: `${stats.contracts.active} HĐ`,
-        color: stats.contracts.active >= 3 ? '#10b981' : stats.contracts.active >= 1 ? '#f59e0b' : '#ef4444',
+        colorClass: stats.contracts.active >= 3 ? '[&>div]:bg-emerald-500' : stats.contracts.active >= 1 ? '[&>div]:bg-amber-500' : '[&>div]:bg-red-500',
         target: `Mục tiêu: ${TARGET_CONTRACTS} hợp đồng`
     })
 
@@ -63,18 +64,18 @@ function calculateHealthScore(stats: any, dealStats: any) {
         value: pipelineScore,
         max: 20,
         status: pipelineValue > 0 ? formatCurrency(pipelineValue) : 'Chưa có',
-        color: pipelineValue > 30000000 ? '#10b981' : pipelineValue > 5000000 ? '#f59e0b' : '#ef4444',
+        colorClass: pipelineValue > 30000000 ? '[&>div]:bg-emerald-500' : pipelineValue > 5000000 ? '[&>div]:bg-amber-500' : '[&>div]:bg-red-500',
         target: `Mục tiêu: ${formatCurrency(TARGET_PIPELINE)}`
     })
 
     return { score, metrics }
 }
 
-function getScoreColor(score: number): string {
-    if (score >= 75) return '#10b981'
-    if (score >= 50) return '#f59e0b'
-    if (score >= 25) return '#f97316'
-    return '#ef4444'
+function getScoreColorClass(score: number): string {
+    if (score >= 75) return 'text-emerald-500 border-emerald-500'
+    if (score >= 50) return 'text-amber-500 border-amber-500'
+    if (score >= 25) return 'text-orange-500 border-orange-500'
+    return 'text-red-500 border-red-500'
 }
 
 function getScoreLabel(score: number): string {
@@ -95,28 +96,27 @@ export default async function DashboardPage() {
         ])
 
         const health = calculateHealthScore(stats, dealStats)
-        const scoreColor = getScoreColor(health.score)
+        const scoreColorClass = getScoreColorClass(health.score)
         const scoreLabel = getScoreLabel(health.score)
 
         return (
-            <div className="space-y-6 max-w-[1600px] mx-auto">
+            <div className="space-y-6 max-w-[1600px] mx-auto w-full">
                 {/* Page Header */}
                 <div className="flex flex-col gap-1">
-                    <h1 className="text-2xl font-semibold">Dashboard</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
                     <p className="text-sm text-muted-foreground">
                         Tổng quan hoạt động kinh doanh của Tulie Agency
                     </p>
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
+                <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
                     <StatsCard
                         title="Doanh thu tổng"
                         value={formatCurrency(stats.revenue.total)}
                         change={stats.revenue.change}
                         changeLabel={stats.revenue.period}
                         icon={<Wallet className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />}
-                        gradient="from-emerald-500/20 to-teal-500/5"
                     />
                     <StatsCard
                         title="Tổng khách hàng"
@@ -124,7 +124,6 @@ export default async function DashboardPage() {
                         change={stats.customers.change}
                         changeLabel="so với tháng trước"
                         icon={<Users className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />}
-                        gradient="from-indigo-500/20 to-violet-500/5"
                     />
                     <StatsCard
                         title="Hợp đồng đang thực hiện"
@@ -132,70 +131,61 @@ export default async function DashboardPage() {
                         change={stats.contracts.change}
                         changeLabel="Tổng giá trị HĐ"
                         icon={<FileSignature className="h-4 w-4 text-sky-600 dark:text-sky-400" />}
-                        gradient="from-sky-500/20 to-blue-500/5"
                     />
                     <StatsCard
                         title="Hóa đơn chờ thanh toán"
                         value={stats.invoices.pending.toString()}
                         icon={<Receipt className="h-4 w-4 text-amber-600 dark:text-amber-400" />}
-                        gradient="from-amber-500/20 to-orange-500/5"
                     />
                 </div>
 
                 {/* Charts */}
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col md:grid md:grid-cols-2 gap-4">
                     <RevenueChart data={chartData} />
                     <DealProjectionChart stats={dealStats} />
                 </div>
 
                 {/* Bottom Section */}
-                <div className="grid gap-6 lg:grid-cols-3">
+                <div className="grid gap-4 lg:grid-cols-3">
                     <RecentActivities data={recentActivities} />
                     <CRMAlerts alerts={crmAlerts} />
 
                     {/* Business Health Card */}
-                    <Card>
+                    <Card className="shadow-sm">
                         <CardHeader className="pb-3">
-                            <CardTitle className="text-base font-semibold">Sức khỏe doanh nghiệp</CardTitle>
+                            <CardTitle className="text-base font-medium">Sức khỏe doanh nghiệp</CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-5">
+                        <CardContent className="space-y-6">
                             {/* Score display */}
                             <div className="flex items-center gap-4">
                                 <div
-                                    className="h-16 w-16 rounded-full flex items-center justify-center border-4 shrink-0"
-                                    style={{ borderColor: scoreColor }}
+                                    className={cn("h-16 w-16 rounded-full flex items-center justify-center border-4 shrink-0", scoreColorClass)}
                                 >
-                                    <span className="text-xl font-bold" style={{ color: scoreColor }}>
+                                    <span className="text-xl font-bold">
                                         {health.score}
                                     </span>
                                 </div>
-                                <div>
-                                    <p className="text-sm font-medium">{scoreLabel}</p>
+                                <div className="space-y-1">
+                                    <p className="text-sm font-semibold">{scoreLabel}</p>
                                     <p className="text-xs text-muted-foreground">Điểm sức khỏe tổng thể /100</p>
                                 </div>
                             </div>
 
                             {/* Metrics */}
-                            <div className="space-y-3">
+                            <div className="space-y-4">
                                 {health.metrics.map((metric, i) => (
-                                    <div key={i} className="space-y-1.5">
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-muted-foreground">{metric.label}</span>
-                                            <span className="font-medium text-xs">{metric.status}</span>
+                                    <div key={i} className="space-y-2">
+                                        <div className="flex items-center justify-between text-sm">
+                                            <span className="font-medium">{metric.label}</span>
+                                            <span className="text-xs text-muted-foreground">{metric.status}</span>
                                         </div>
-                                        <div className="h-2 bg-muted rounded-full overflow-hidden">
-                                            <div
-                                                className="h-full rounded-full transition-all duration-700"
-                                                style={{
-                                                    width: `${(metric.value / metric.max) * 100}%`,
-                                                    backgroundColor: metric.color,
-                                                    minWidth: metric.value > 0 ? '8px' : '0'
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="flex justify-between items-end mt-1">
-                                            <p className="text-[11px] text-muted-foreground font-medium">{metric.target}</p>
-                                            <p className="text-[11px] text-muted-foreground font-semibold">{metric.value}/{metric.max} điểm</p>
+                                        <Progress 
+                                            value={(metric.value / metric.max) * 100} 
+                                            className={cn("h-2", metric.colorClass)}
+                                        />
+                                        <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                                            <span>{metric.target}</span>
+                                            <span className="font-medium">{metric.value}/{metric.max} điểm</span>
                                         </div>
                                     </div>
                                 ))}
@@ -208,14 +198,16 @@ export default async function DashboardPage() {
     } catch (error) {
         console.error('Fatal crash on DashboardPage:', error)
         return (
-            <div className="p-8 text-center space-y-4">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
-                    <span className="text-xl">⚠️</span>
+            <div className="flex h-[400px] items-center justify-center flex-col p-8 text-center space-y-4">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                    ⚠️
                 </div>
-                <h1 className="text-2xl font-semibold">Hệ thống đang gặp sự cố tải dữ liệu</h1>
-                <p className="text-muted-foreground mx-auto max-w-md">
-                    Rất tiếc, chúng tôi không thể tải dữ liệu tổng quan vào lúc này.
-                </p>
+                <div className="space-y-1">
+                    <h1 className="text-lg font-semibold">Hệ thống đang gặp sự cố tải dữ liệu</h1>
+                    <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+                        Rất tiếc, chúng tôi không thể tải dữ liệu tổng quan vào lúc này.
+                    </p>
+                </div>
             </div>
         )
     }

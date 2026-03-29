@@ -36,18 +36,18 @@ const getActivityIcon = (type: ActivityLog['action']) => {
 
 export function RecentActivities({ data }: RecentActivitiesProps) {
     return (
-        <Card className="border-border bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden">
-            <CardHeader className="pb-3 text-card-foreground">
-                <CardTitle className="text-xs font-medium text-muted-foreground">Hoạt động gần đây</CardTitle>
+        <Card className="shadow-sm">
+            <CardHeader className="pb-3">
+                <CardTitle className="text-base font-medium">Hoạt động gần đây</CardTitle>
             </CardHeader>
-            <CardContent className="p-0">
+            <CardContent className="px-0">
                 <ScrollArea className="h-[300px]">
-                    <div className="space-y-0 px-6 pb-4">
+                    <div className="space-y-4 px-6 pb-4">
                         {data.length > 0 ? (
                             data.map((activity) => (
                                 <div
                                     key={activity.id}
-                                    className="flex items-start gap-4 py-3.5 border-b last:border-0 group transition-all"
+                                    className="flex items-start gap-4"
                                 >
                                     <div className="mt-1 h-8 w-8 rounded-md bg-secondary flex items-center justify-center shrink-0 border border-border">
                                         {getActivityIcon(activity.action)}

@@ -10,36 +10,36 @@ import {
   ArrowUpRight,
 } from 'lucide-react'
 import Link from 'next/link'
+import { Card, CardContent, CardHeader, CardTitle, Progress } from '@repo/ui'
+import { cn } from '@/lib/utils'
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
 }
 
 function StatCard({
-  title, value, subtitle, icon: Icon, color, href, gradient
+  title, value, subtitle, icon: Icon, href
 }: {
-  title: string; value: string; subtitle?: string; icon: React.ElementType; color: string; href?: string; gradient?: string
+  title: string; value: string; subtitle?: string; icon: React.ElementType; href?: string;
 }) {
   const content = (
-    <>
-      {gradient && (
-        <div className={`absolute -right-8 -top-8 h-32 w-32 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br ${gradient}`} />
-      )}
-      <div className="relative z-10 flex items-center justify-between">
-        <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${color}`}>
-          <Icon className="h-5 w-5 text-white" />
-        </div>
-        {href && <ArrowUpRight className="h-4 w-4 text-muted-foreground" />}
-      </div>
-      <div className="relative z-10 mt-4">
-        <p className="text-2xl font-bold text-foreground">{value}</p>
-        <p className="text-sm text-muted-foreground">{title}</p>
-        {subtitle && <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>}
-      </div>
-    </>
+    <Card className={cn("shadow-sm h-full flex flex-col justify-between transition-colors", href && "hover:bg-muted/50")}>
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <Icon className="h-4 w-4 text-muted-foreground" />
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{value}</div>
+        {(subtitle || href) && (
+          <div className="flex items-center justify-between mt-1">
+            <p className="text-xs text-muted-foreground">{subtitle}</p>
+            {href && <ArrowUpRight className="h-4 w-4 text-muted-foreground" />}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   )
-  const cls = "relative group overflow-hidden rounded-md border border-border bg-card p-6 shadow-sm hover:shadow-md transition-shadow block"
-  return href ? <Link href={href} className={cls}>{content}</Link> : <div className={cls}>{content}</div>
+  return href ? <Link href={href} className="block">{content}</Link> : content
 }
 
 export default async function DashboardPage() {
@@ -57,7 +57,6 @@ export default async function DashboardPage() {
     revenueData = await getRevenueChartData()
   } catch {}
 
-  // Calculate from invoices as fallback
   const paidInvoices = invoices.filter(i => i.type === 'output' && i.status === 'paid')
   const pendingInvoices = invoices.filter(i => i.status === 'sent' || i.status === 'partial')
   const overdueInvoices = invoices.filter(i => i.status === 'overdue')
@@ -67,12 +66,16 @@ export default async function DashboardPage() {
   const totalOverdue = overdueInvoices.reduce((s, i) => s + (i.total_amount - i.paid_amount), 0)
   const totalInvoices = invoices.length
 
+  const recoveryRate = totalRevenue + totalPending + totalOverdue > 0
+    ? Math.round((totalRevenue / (totalRevenue + totalPending + totalOverdue)) * 100)
+    : 0
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">Tổng quan tài chính</h1>
-        <p className="text-muted-foreground">Quản lý tài chính và vận hành doanh nghiệp</p>
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl font-semibold tracking-tight">Tổng quan tài chính</h1>
+        <p className="text-sm text-muted-foreground">Quản lý tài chính và vận hành doanh nghiệp</p>
       </div>
 
       {/* KPI Grid */}
@@ -81,112 +84,115 @@ export default async function DashboardPage() {
           title="Doanh thu (đã thu)"
           value={formatCurrency(stats?.revenue?.total ?? totalRevenue)}
           icon={DollarSign}
-          color="bg-emerald-500"
           href="/reports"
-          gradient="from-emerald-500/20 to-teal-500/5"
         />
         <StatCard
           title="Chờ thanh toán"
           value={formatCurrency(totalPending)}
           subtitle={`${pendingInvoices.length} hóa đơn`}
           icon={FileText}
-          color="bg-amber-500"
           href="/invoices"
-          gradient="from-amber-500/20 to-orange-500/5"
         />
         <StatCard
           title="Quá hạn thanh toán"
           value={formatCurrency(totalOverdue)}
-          subtitle={overdueInvoices.length > 0 ? `${overdueInvoices.length} hóa đơn cần xử lý` : 'Không có'}
+          subtitle={overdueInvoices.length > 0 ? `${overdueInvoices.length} cần xử lý` : 'Không có'}
           icon={AlertTriangle}
-          color={totalOverdue > 0 ? 'bg-red-500' : 'bg-gray-400'}
           href="/invoices"
-          gradient="from-rose-500/20 to-pink-500/5"
         />
         <StatCard
           title="Tổng giao dịch"
           value={String(totalInvoices)}
-          subtitle="Hóa đơn đầu ra + đầu vào"
+          subtitle="Hóa đơn mua & bán"
           icon={CreditCard}
-          color="bg-blue-500"
           href="/payments"
-          gradient="from-sky-500/20 to-blue-500/5"
         />
       </div>
 
       {/* Content Grid */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-2">
         {/* Recent invoices */}
-        <div className="rounded-md border border-border bg-card p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-foreground">Hóa đơn gần đây</h2>
-            <Link href="/invoices" className="text-sm text-primary hover:underline">Xem tất cả</Link>
-          </div>
-          {invoices.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-8">Chưa có hóa đơn nào</p>
-          ) : (
-            <div className="space-y-3">
-              {invoices.slice(0, 5).map((inv) => (
-                <div key={inv.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{inv.invoice_number}</p>
-                    <p className="text-xs text-muted-foreground">{inv.customer?.company_name || inv.vendor?.name || '—'}</p>
+        <Card className="shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between pb-3">
+            <CardTitle className="text-base font-medium">Hóa đơn gần đây</CardTitle>
+            <Link href="/invoices" className="text-xs font-semibold text-primary">Xem tất cả</Link>
+          </CardHeader>
+          <CardContent className="px-0">
+            {invoices.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-8">Chưa có hóa đơn nào</p>
+            ) : (
+              <div className="space-y-4 px-6 pb-2">
+                {invoices.slice(0, 5).map((inv) => (
+                  <div key={inv.id} className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-foreground">{inv.invoice_number}</p>
+                      <p className="text-xs text-muted-foreground truncate max-w-[200px]">{inv.customer?.company_name || inv.vendor?.name || '—'}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-semibold">{formatCurrency(inv.total_amount)}</p>
+                      <p className={`text-xs font-medium ${inv.status === 'paid' ? 'text-emerald-500' : inv.status === 'overdue' ? 'text-destructive' : 'text-muted-foreground'}`}>
+                        {inv.status === 'paid' ? 'Đã thanh toán' : inv.status === 'overdue' ? 'Quá hạn' : inv.status === 'sent' ? 'Chờ TT' : inv.status}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-foreground">{formatCurrency(inv.total_amount)}</p>
-                    <p className={`text-xs ${inv.status === 'paid' ? 'text-emerald-600' : inv.status === 'overdue' ? 'text-red-500' : 'text-muted-foreground'}`}>
-                      {inv.status === 'paid' ? 'Đã thanh toán' : inv.status === 'overdue' ? 'Quá hạn' : inv.status === 'sent' ? 'Chờ TT' : inv.status}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Quick Actions */}
-        <div className="rounded-md border border-border bg-card p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-foreground mb-4">Thao tác nhanh</h2>
-          <div className="grid gap-3 grid-cols-2">
-            {[
-              { name: 'Tạo hóa đơn', href: '/invoices/new', icon: FileText, color: 'bg-blue-500' },
-              { name: 'Xem thanh toán', href: '/payments', icon: CreditCard, color: 'bg-emerald-500' },
-              { name: 'Sản phẩm', href: '/products', icon: TrendingUp, color: 'bg-purple-500' },
-              { name: 'Nhà cung cấp', href: '/vendors', icon: TrendingDown, color: 'bg-amber-500' },
-            ].map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="group flex items-center gap-3 rounded-md border border-border p-4 hover:shadow-md hover:border-primary/20 transition-all"
-              >
-                <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${item.color} text-white`}>
-                  <item.icon className="h-4 w-4" />
-                </div>
-                <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{item.name}</span>
-              </Link>
-            ))}
-          </div>
-
-          {/* Health indicators */}
-          <div className="mt-6 pt-4 border-t border-border">
-            <h3 className="text-sm font-medium text-muted-foreground mb-3">Sức khỏe tài chính</h3>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-foreground">Tỷ lệ thu hồi</span>
-                <span className="text-sm font-medium text-emerald-600">
-                  {totalRevenue + totalPending + totalOverdue > 0
-                    ? Math.round((totalRevenue / (totalRevenue + totalPending + totalOverdue)) * 100)
-                    : 0}%
-                </span>
+                ))}
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-foreground">Hóa đơn quá hạn</span>
-                <span className={`text-sm font-medium ${overdueInvoices.length > 0 ? 'text-red-500' : 'text-emerald-600'}`}>
-                  {overdueInvoices.length} / {totalInvoices}
-                </span>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Quick Actions & Health */}
+        <div className="flex flex-col gap-4">
+          <Card className="shadow-sm">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium">Thao tác nhanh</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-3 grid-cols-2">
+                {[
+                  { name: 'Tạo hóa đơn', href: '/invoices/new', icon: FileText },
+                  { name: 'Xem thanh toán', href: '/payments', icon: CreditCard },
+                  { name: 'Sản phẩm', href: '/products', icon: TrendingUp },
+                  { name: 'Nhà cung cấp', href: '/vendors', icon: TrendingDown },
+                ].map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="group flex items-center gap-3 rounded-md border p-3 hover:bg-muted/50 transition-colors"
+                  >
+                    <item.icon className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                    <span className="text-sm font-medium text-foreground">{item.name}</span>
+                  </Link>
+                ))}
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-sm">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium">Sức khỏe tài chính</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-medium">Tỷ lệ thu hồi</span>
+                  <span className="text-xs font-medium text-emerald-500">
+                    {recoveryRate}%
+                  </span>
+                </div>
+                <Progress value={recoveryRate} className="h-2 [&>div]:bg-emerald-500" />
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-medium">Hóa đơn quá hạn</span>
+                  <span className={`text-xs font-medium ${overdueInvoices.length > 0 ? 'text-destructive' : 'text-emerald-500'}`}>
+                    {overdueInvoices.length} / {totalInvoices}
+                  </span>
+                </div>
+                <Progress value={totalInvoices > 0 ? (overdueInvoices.length / totalInvoices) * 100 : 0} className="h-2 [&>div]:bg-destructive" />
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
