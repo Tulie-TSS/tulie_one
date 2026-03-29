@@ -221,19 +221,19 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             <TabsList className="flex flex-col h-auto w-full items-start bg-transparent p-0 gap-1">
                                 <TabsTrigger 
                                     value="overview" 
-                                    className="w-full justify-start gap-2 h-9 px-3 text-left bg-transparent hover:bg-muted data-[state=active]:bg-muted data-[state=active]:font-semibold data-[state=active]:shadow-none border-none text-muted-foreground data-[state=active]:text-foreground"
+                                    className="w-full flex items-center justify-start gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground border-none shadow-none bg-transparent"
                                 >
                                     <ListTodo className="w-4 h-4 shrink-0" /> Tổng quan dự án
                                 </TabsTrigger>
                                 <TabsTrigger 
                                     value="gantt" 
-                                    className="w-full justify-start gap-2 h-9 px-3 text-left bg-transparent hover:bg-muted data-[state=active]:bg-muted data-[state=active]:font-semibold data-[state=active]:shadow-none border-none text-muted-foreground data-[state=active]:text-foreground"
+                                    className="w-full flex items-center justify-start gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground border-none shadow-none bg-transparent"
                                 >
                                     <Clock className="w-4 h-4 shrink-0" /> Lộ trình & Lịch trình
                                 </TabsTrigger>
                                 <TabsTrigger 
                                     value="feedback" 
-                                    className="w-full justify-start gap-2 h-9 px-3 text-left bg-transparent hover:bg-muted data-[state=active]:bg-muted data-[state=active]:font-semibold data-[state=active]:shadow-none border-none text-muted-foreground data-[state=active]:text-foreground"
+                                    className="w-full flex items-center justify-start gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground border-none shadow-none bg-transparent"
                                 >
                                     <ClipboardCheck className="w-4 h-4 shrink-0" /> Nhật ký xử lý
                                 </TabsTrigger>
@@ -242,7 +242,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                         <Separator className="my-2" />
                                         <TabsTrigger 
                                             value="finance" 
-                                            className="w-full justify-start gap-2 h-9 px-3 text-left bg-transparent hover:bg-muted data-[state=active]:bg-muted data-[state=active]:font-semibold data-[state=active]:shadow-none border-none text-muted-foreground data-[state=active]:text-foreground"
+                                            className="w-full flex items-center justify-start gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground border-none shadow-none bg-transparent"
                                         >
                                             <Wallet className="w-4 h-4 shrink-0" /> Báo giá & Pháp lý
                                         </TabsTrigger>

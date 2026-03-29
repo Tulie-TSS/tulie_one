@@ -1,5 +1,6 @@
 import { Badge } from '@repo/ui'
 import { cn } from '@/lib/utils'
+import { CheckCircle2, CircleDashed, AlertCircle, XCircle, Clock, Circle } from "lucide-react"
 import {
     CUSTOMER_STATUS_LABELS,
     CUSTOMER_STATUS_COLORS,
@@ -62,40 +63,55 @@ export function StatusBadge({ status, label, entityType = 'none', className, sho
         colorClass = mapping.colors[status as keyof typeof mapping.colors] || ''
     }
 
-    // Determine dot color from the semantic color class
-    const dotColor = getDotColor(colorClass)
+    // Determine config from the semantic color class or status
+    const config = getIconConfig(colorClass, status)
+    const Icon = config.icon
 
     return (
         <Badge
             variant="outline"
             className={cn(
-                'font-medium whitespace-nowrap px-2.5 py-0.5 h-6 flex items-center gap-1.5 text-[11px] rounded-full border-border bg-background text-foreground',
+                'font-medium whitespace-nowrap px-2.5 py-0.5 h-6 flex items-center gap-1.5 rounded-full border-border bg-background text-foreground',
                 className
             )}
         >
-            {showDot && dotColor && (
-                <span className={cn('w-1.5 h-1.5 rounded-full shrink-0', dotColor)} />
+            {showDot && (
+                <Icon className={cn('w-3.5 h-3.5 shrink-0', config.color)} />
             )}
             {displayLabel}
         </Badge>
     )
 }
 
-/**
- * Map semantic color class → dot color
- * Matches components.html dot colors
- */
-function getDotColor(colorClass: string): string {
-    if (!colorClass) return 'bg-zinc-400'
-    if (colorClass.includes('line-through')) return 'bg-zinc-400'
-    if (colorClass.includes('emerald')) return 'bg-emerald-500'
-    if (colorClass.includes('blue-')) return 'bg-blue-500'
-    if (colorClass.includes('sky-')) return 'bg-sky-500'
-    if (colorClass.includes('amber')) return 'bg-amber-500'
-    if (colorClass.includes('rose')) return 'bg-rose-500'
-    if (colorClass.includes('violet')) return 'bg-violet-500'
-    if (colorClass.includes('orange')) return 'bg-orange-500'
-    if (colorClass.includes('indigo')) return 'bg-indigo-500'
-    if (colorClass.includes('border border-zinc')) return 'bg-zinc-500'
-    return 'bg-zinc-400'
+function getIconConfig(colorClass?: string, status?: string) {
+    let icon = Circle
+    let color = 'text-zinc-400'
+
+    const s = (status || '').toLowerCase()
+    const c = (colorClass || '').toLowerCase()
+
+    // Status map overrides
+    if (s === 'completed' || s === 'success' || s === 'done' || s === 'active' || s === 'ready' || s === 'approved' || c.includes('emerald') || c.includes('success')) {
+        icon = CheckCircle2
+        color = 'text-emerald-500'
+    } else if (s === 'in_progress' || s === 'running' || s === 'processing' || s === 'changes_requested' || c.includes('blue') || c.includes('info') || c.includes('sky')) {
+        icon = CircleDashed
+        color = 'text-muted-foreground'
+    } else if (s === 'failed' || s === 'cancelled' || s === 'error' || s === 'rejected' || c.includes('rose') || c.includes('destructive') || c.includes('failed')) {
+        icon = XCircle
+        color = 'text-rose-500'
+    } else if (s === 'urgent' || s === 'high' || s === 'medium' || s === 'pending_review' || c.includes('amber') || c.includes('warning') || c.includes('orange')) {
+        icon = AlertCircle
+        color = 'text-amber-500'
+    } else if (s === 'pending' || s === 'idle' || s === 'draft' || c.includes('zinc') || c.includes('muted')) {
+        icon = Clock
+        color = 'text-zinc-400'
+    }
+
+    if (s === 'todo' || s === 'low') {
+        icon = Circle
+        color = 'text-zinc-400'
+    }
+
+    return { icon, color }
 }

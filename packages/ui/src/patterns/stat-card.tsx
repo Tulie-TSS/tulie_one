@@ -1,5 +1,6 @@
 import { cn } from '../lib/utils'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/card'
+import { ArrowUpRight, ArrowDownRight } from 'lucide-react'
 
 /**
  * StatCard — Dashboard stat card following shadcn/ui Dashboard example
@@ -47,34 +48,36 @@ export function StatCard({
     className,
 }: StatCardProps) {
     return (
-        <Card className={cn(className)}>
-            <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                    <CardDescription className="text-sm font-medium">
-                        {title}
-                    </CardDescription>
-                    {trend && (
-                        <span
-                            className={cn(
-                                'text-xs font-medium',
-                                trendUp ? 'text-foreground' : 'text-muted-foreground'
-                            )}
-                        >
-                            {trend}
-                        </span>
-                    )}
-                    {icon && !trend && (
-                        <div className="text-muted-foreground">{icon}</div>
-                    )}
-                </div>
+        <Card className={cn("shadow-sm", className)}>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                    {title}
+                </CardTitle>
+                {trend && (
+                    <div className="flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold">
+                        {trendUp !== false ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+                        {trend}
+                    </div>
+                )}
+                {icon && !trend && (
+                    <div className="text-muted-foreground">{icon}</div>
+                )}
             </CardHeader>
             <CardContent>
-                <p className="text-2xl font-bold">{value}</p>
+                <div className="text-3xl font-bold tracking-tight">{value}</div>
                 {description && (
-                    <p className="text-xs text-muted-foreground mt-1">{description}</p>
+                    <div className="mt-4 flex items-center gap-2 text-sm">
+                        <span className="font-medium text-foreground">{description}</span>
+                        {trendUp !== false ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
+                    </div>
                 )}
                 {footer && (
-                    <p className="text-xs text-muted-foreground mt-1">{footer}</p>
+                    <p className="text-sm text-muted-foreground mt-1">{footer}</p>
+                )}
+                {/* Fallback for when we only have description and no footer but we want it to look like standard description */}
+                {!footer && !description && (
+                    // Just a spacer if needed
+                    <div className="h-0" />
                 )}
             </CardContent>
         </Card>

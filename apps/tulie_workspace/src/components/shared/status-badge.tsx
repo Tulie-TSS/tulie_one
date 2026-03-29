@@ -1,5 +1,6 @@
 import { Badge } from "@repo/ui"
 import { cn } from "@/lib/utils/cn"
+import { CheckCircle2, CircleDashed, AlertCircle, XCircle, Clock, Circle } from "lucide-react"
 
 interface StatusBadgeProps {
     status: string
@@ -12,8 +13,9 @@ interface StatusBadgeProps {
 export function StatusBadge({ status, label, colorClass, className, showDot = true }: StatusBadgeProps) {
     const displayLabel = label || status
 
-    // Determine dot color from the semantic color class or status
-    const dotColor = getDotColor(colorClass, status)
+    // Determine config from the semantic color class or status
+    const config = getIconConfig(colorClass, status)
+    const Icon = config.icon
 
     return (
         <Badge
@@ -23,36 +25,43 @@ export function StatusBadge({ status, label, colorClass, className, showDot = tr
                 className
             )}
         >
-            {showDot && dotColor && (
-                <span className={cn('w-1.5 h-1.5 rounded-full shrink-0', dotColor)} />
+            {showDot && (
+                <Icon className={cn('w-3.5 h-3.5 shrink-0', config.color)} />
             )}
             {displayLabel}
         </Badge>
     )
 }
 
-function getDotColor(colorClass?: string, status?: string): string {
-    if (colorClass) {
-        if (colorClass.includes('emerald') || colorClass.includes('success')) return 'bg-emerald-500'
-        if (colorClass.includes('blue-') || colorClass.includes('info')) return 'bg-blue-500'
-        if (colorClass.includes('amber') || colorClass.includes('warning')) return 'bg-amber-500'
-        if (colorClass.includes('rose') || colorClass.includes('destructive') || colorClass.includes('failed')) return 'bg-rose-500'
-        if (colorClass.includes('indigo') || colorClass.includes('completed')) return 'bg-indigo-500'
-        if (colorClass.includes('zinc') || colorClass.includes('muted')) return 'bg-zinc-500'
-    }
-    
-    // Fallback dictionary based on status strings common in workforce
-    if (status) {
-        const s = status.toLowerCase()
-        if (s === 'completed' || s === 'success' || s === 'done' || s === 'active' || s === 'ready' || s === 'approved') return 'bg-emerald-500'
-        if (s === 'in_progress' || s === 'running' || s === 'processing' || s === 'changes_requested') return 'bg-blue-500'
-        if (s === 'pending' || s === 'idle' || s === 'draft') return 'bg-zinc-400'
-        if (s === 'failed' || s === 'cancelled' || s === 'error' || s === 'urgent' || s === 'rejected') return 'bg-rose-500'
-        if (s === 'high' || s === 'pending_review') return 'bg-orange-500'
-        if (s === 'high') return 'bg-orange-500'
-        if (s === 'medium') return 'bg-amber-500'
-        if (s === 'low') return 'bg-zinc-400'
+function getIconConfig(colorClass?: string, status?: string) {
+    let icon = Circle
+    let color = 'text-zinc-400'
+
+    const s = (status || '').toLowerCase()
+    const c = (colorClass || '').toLowerCase()
+
+    // Status map overrides
+    if (s === 'completed' || s === 'success' || s === 'done' || s === 'active' || s === 'ready' || s === 'approved' || c.includes('emerald') || c.includes('success')) {
+        icon = CheckCircle2
+        color = 'text-emerald-500'
+    } else if (s === 'in_progress' || s === 'running' || s === 'processing' || s === 'changes_requested' || c.includes('blue') || c.includes('info')) {
+        icon = CircleDashed
+        color = 'text-muted-foreground'
+    } else if (s === 'failed' || s === 'cancelled' || s === 'error' || s === 'rejected' || c.includes('rose') || c.includes('destructive') || c.includes('failed')) {
+        icon = XCircle
+        color = 'text-rose-500'
+    } else if (s === 'urgent' || s === 'high' || s === 'medium' || s === 'pending_review' || c.includes('amber') || c.includes('warning') || c.includes('orange')) {
+        icon = AlertCircle
+        color = 'text-amber-500'
+    } else if (s === 'pending' || s === 'idle' || s === 'draft' || c.includes('zinc') || c.includes('muted')) {
+        icon = Clock
+        color = 'text-zinc-400'
     }
 
-    return 'bg-zinc-400'
+    if (s === 'todo' || s === 'low') {
+        icon = Circle
+        color = 'text-zinc-400'
+    }
+
+    return { icon, color }
 }
