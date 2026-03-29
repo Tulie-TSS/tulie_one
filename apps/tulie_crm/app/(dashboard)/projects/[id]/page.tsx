@@ -97,11 +97,11 @@ export default async function ProjectDetailPage({ params }: any) {
                     <Card>
                         <CardHeader>
                             <div className="flex items-center gap-3">
-                                <div className="w-9 h-9 rounded-xl bg-zinc-50 border border-zinc-100 flex items-center justify-center">
-                                    <Layout className="w-5 h-5 text-zinc-900" />
+                                <div className="w-9 h-9 rounded-md bg-muted border border-border flex items-center justify-center">
+                                    <Layout className="w-5 h-5 text-foreground" />
                                 </div>
                                 <div className="space-y-0.5">
-                                    <CardTitle className="text-sm font-semibold text-zinc-950 tracking-tight leading-none">Tài nguyên dự án (Agency Assets)</CardTitle>
+                                    <CardTitle className="text-sm font-semibold text-foreground leading-none">Tài nguyên dự án (Agency Assets)</CardTitle>
                                     <CardDescription className="text-[11px] font-medium">Các liên kết quan trọng phục vụ bàn giao và triển khai dự án.</CardDescription>
                                 </div>
                             </div>
@@ -123,11 +123,11 @@ export default async function ProjectDetailPage({ params }: any) {
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <div className="flex items-center gap-3">
-                                <div className="w-9 h-9 rounded-xl bg-zinc-50 border border-zinc-100 flex items-center justify-center">
-                                    <Receipt className="w-5 h-5 text-zinc-900" />
+                                <div className="w-9 h-9 rounded-md bg-muted border border-border flex items-center justify-center">
+                                    <Receipt className="w-5 h-5 text-foreground" />
                                 </div>
                                 <div className="space-y-0.5">
-                                    <CardTitle className="text-sm font-semibold text-zinc-950 tracking-tight leading-none">Tài chính &amp; Pháp lý</CardTitle>
+                                    <CardTitle className="text-sm font-semibold text-foreground leading-none">Tài chính &amp; Pháp lý</CardTitle>
                                     <CardDescription className="text-[11px] font-medium">Quản lý báo giá và hợp đồng liên quan đến dự án</CardDescription>
                                 </div>
                             </div>
@@ -152,7 +152,7 @@ export default async function ProjectDetailPage({ params }: any) {
                                             <Link
                                                 key={q.id}
                                                 href={`/quotations/${q.id}?from=/projects/${id}`}
-                                                className="group flex items-center justify-between p-3 border rounded-xl hover:border-slate-300 hover:bg-muted/30 transition-all cursor-pointer"
+                                                className="group flex items-center justify-between p-3 border rounded-md hover:border-slate-300 hover:bg-muted/30 transition-all cursor-pointer"
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <div className="p-2 bg-muted rounded-lg group-hover:bg-muted/80 transition-colors">
@@ -195,7 +195,7 @@ export default async function ProjectDetailPage({ params }: any) {
                                             <Link
                                                 key={c.id}
                                                 href={`/contracts/${c.id}?from=/projects/${id}`}
-                                                className="group flex items-center justify-between p-3 border rounded-xl hover:border-slate-300 hover:bg-muted/30 transition-all font-sans cursor-pointer"
+                                                className="group flex items-center justify-between p-3 border rounded-md hover:border-slate-300 hover:bg-muted/30 transition-all font-sans cursor-pointer"
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <div className="p-2 bg-muted rounded-lg group-hover:bg-muted/80 transition-colors">
@@ -232,11 +232,11 @@ export default async function ProjectDetailPage({ params }: any) {
                     <Card>
                         <CardHeader>
                             <div className="flex items-center gap-3">
-                                <div className="w-9 h-9 rounded-xl bg-zinc-50 border border-zinc-100 flex items-center justify-center">
-                                    <FileTextIcon className="w-5 h-5 text-zinc-900" />
+                                <div className="w-9 h-9 rounded-md bg-muted border border-border flex items-center justify-center">
+                                    <FileTextIcon className="w-5 h-5 text-foreground" />
                                 </div>
                                 <div className="space-y-0.5">
-                                    <CardTitle className="text-sm font-semibold text-zinc-950 tracking-tight leading-none">Mô tả dự án</CardTitle>
+                                    <CardTitle className="text-sm font-semibold text-foreground leading-none">Mô tả dự án</CardTitle>
                                     <CardDescription className="text-[11px] font-medium">Thông tin chi tiết về dự án</CardDescription>
                                 </div>
                             </div>

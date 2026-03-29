@@ -124,7 +124,7 @@ export function ContractLifecycle({ contract, project }: ContractLifecycleProps)
         : steps.every(s => s.status === 'completed') ? 100 : 0
 
     return (
-        <Card className="rounded-xl border shadow-sm">
+        <Card className="rounded-md border shadow-sm">
             <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                     <CardTitle className="text-base font-semibold flex items-center gap-2">

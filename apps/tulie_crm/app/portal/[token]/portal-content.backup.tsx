@@ -53,26 +53,26 @@ interface PortalContentProps {
 }
 
 const STATUS_MAP: Record<string, { label: string; bg: string; text: string; dot: string; border: string }> = {
-    'pending': { label: 'Chờ xử lý', bg: 'bg-zinc-50', text: 'text-zinc-500', dot: 'bg-zinc-400', border: 'border-zinc-200' },
+    'pending': { label: 'Chờ xử lý', bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-400', border: 'border-border' },
     'in_progress': { label: 'Đang thực hiện', bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500', border: 'border-blue-200' },
     'delivered': { label: 'Đã bàn giao', bg: 'bg-sky-50', text: 'text-sky-700', dot: 'bg-sky-500', border: 'border-sky-200' },
     'accepted': { label: 'Đã nghiệm thu', bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', border: 'border-emerald-200' },
     'rejected': { label: 'Từ chối', bg: 'bg-rose-50', text: 'text-rose-700', dot: 'bg-rose-500', border: 'border-rose-200' },
-    'draft': { label: 'Nháp', bg: 'bg-zinc-50', text: 'text-zinc-400', dot: 'bg-zinc-300', border: 'border-zinc-200' },
-    'sent': { label: 'Đã gửi', bg: 'bg-white', text: 'text-zinc-600', dot: 'bg-zinc-500', border: 'border-zinc-200' },
+    'draft': { label: 'Nháp', bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-300', border: 'border-border' },
+    'sent': { label: 'Đã gửi', bg: 'bg-white', text: 'text-muted-foreground', dot: 'bg-zinc-500', border: 'border-border' },
     'viewed': { label: 'Đã xem', bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500', border: 'border-blue-200' },
     'active': { label: 'Đang triển khai', bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500', border: 'border-blue-200' },
     'completed': { label: 'Hoàn thành', bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', border: 'border-emerald-200' },
     'signed': { label: 'Đã ký', bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', border: 'border-emerald-200' },
     'paid': { label: 'Đã thanh toán', bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', border: 'border-emerald-200' },
-    'todo': { label: 'Cần làm', bg: 'bg-zinc-50', text: 'text-zinc-500', dot: 'bg-zinc-400', border: 'border-zinc-200' },
+    'todo': { label: 'Cần làm', bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-400', border: 'border-border' },
     'blocked': { label: 'Bị chặn', bg: 'bg-rose-50', text: 'text-rose-700', dot: 'bg-rose-500', border: 'border-rose-200' },
-    'upcoming': { label: 'Sắp tới', bg: 'bg-zinc-50', text: 'text-zinc-400', dot: 'bg-zinc-300', border: 'border-zinc-200' },
+    'upcoming': { label: 'Sắp tới', bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-300', border: 'border-border' },
     'overdue': { label: 'Trễ hạn', bg: 'bg-rose-50', text: 'text-rose-700', dot: 'bg-rose-500', border: 'border-rose-200' },
 }
 
 function StatusBadge({ status }: { status: string }) {
-    const s = STATUS_MAP[status] || { label: status, bg: 'bg-zinc-50', text: 'text-zinc-500', dot: 'bg-zinc-400', border: 'border-zinc-200' }
+    const s = STATUS_MAP[status] || { label: status, bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-400', border: 'border-border' }
     return (
         <div className={cn("flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border shrink-0", s.bg, s.border)}>
             <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", s.dot)} />
@@ -181,9 +181,9 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
     const projectStatusLabel = hasContracts ? "Đang triển khai" : "Chờ triển khai"
 
     return (
-        <div className="min-h-screen bg-zinc-50/50 font-sans text-zinc-900 pb-20 selection:bg-black selection:text-white">
+        <div className="min-h-screen bg-muted/50 font-sans text-foreground pb-20 selection:bg-black selection:text-white">
             {/* Header */}
-            <div className="bg-white border-b border-zinc-200 pt-10 pb-8 px-6 sticky top-0 z-40 shadow-sm">
+            <div className="bg-white border-b border-border pt-10 pb-8 px-6 sticky top-0 z-40 shadow-sm">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
                     <div className="flex items-center gap-6">
                         <img
@@ -191,30 +191,30 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             alt="Logo"
                             className="h-14 w-auto object-contain grayscale"
                         />
-                        <div className="w-px h-10 bg-zinc-200" />
+                        <div className="w-px h-10 bg-muted" />
                         <div>
-                            <h1 className="text-xl font-semibold text-zinc-900 tracking-tight">Customer Portal</h1>
+                            <h1 className="text-xl font-semibold text-foreground">Customer Portal</h1>
                             <p className="text-xs text-muted-foreground mt-0.5 font-medium uppercase tracking-wider">Hệ thống giám sát dự án</p>
                         </div>
                     </div>
 
                     <div className="flex flex-col items-center md:items-end">
-                        <h2 className="text-2xl font-bold text-zinc-950 tracking-tighter">{companyName || customer?.company_name || customer?.full_name || 'Khách hàng'}</h2>
+                        <h2 className="text-2xl font-bold text-foreground tracking-tighter">{companyName || customer?.company_name || customer?.full_name || 'Khách hàng'}</h2>
                         <div className="flex items-center gap-2 mt-3 flex-wrap justify-center">
                             <div className={cn(
                                 "flex items-center gap-1.5 px-3 py-1.5 rounded-full border",
-                                hasContracts ? "bg-blue-50 border-blue-200" : "bg-zinc-50 border-zinc-200"
+                                hasContracts ? "bg-blue-50 border-blue-200" : "bg-muted border-border"
                             )}>
                                 <span className={cn("w-1.5 h-1.5 rounded-full animate-pulse", hasContracts ? "bg-blue-500" : "bg-zinc-400")} />
-                                <span className={cn("text-[11px] font-semibold", hasContracts ? "text-blue-700" : "text-zinc-500")}>{projectStatusLabel}</span>
+                                <span className={cn("text-[11px] font-semibold", hasContracts ? "text-blue-700" : "text-muted-foreground")}>{projectStatusLabel}</span>
                             </div>
 
                             {/* Unlock Button Logic */}
                             {hasPassword && !isFinancialAuthenticated && (
                                 <Dialog open={isUnlockModalOpen} onOpenChange={setIsUnlockModalOpen}>
                                     <DialogTrigger asChild>
-                                        <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-zinc-200 bg-white hover:bg-zinc-50 shadow-sm text-zinc-900 transition-all cursor-pointer group hover:scale-[1.02] active:scale-[0.98]">
-                                            <Lock className="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-700" />
+                                        <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border bg-white hover:bg-muted shadow-sm text-foreground transition-all cursor-pointer group hover:scale-[1.02] active:scale-[0.98]">
+                                            <Lock className="w-3.5 h-3.5 text-muted-foreground group-hover:text-zinc-700" />
                                             <span className="text-[11px] font-semibold tracking-wide">Bộ chứng từ dự án</span>
                                         </button>
                                     </DialogTrigger>
@@ -238,29 +238,29 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
             <main className="max-w-6xl mx-auto px-6 mt-8 space-y-8">
                 {/* Update Info CTA */}
                 {!isCustomerInfoComplete(customer) && (
-                <div className="relative rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden text-white bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-800 shadow-xl shadow-zinc-900/10 border border-zinc-800">
+                <div className="relative rounded-md p-6 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden text-white bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-800 shadow-xl shadow-zinc-900/10 border border-zinc-800">
                     <div className="absolute inset-0 opacity-[0.15] pointer-events-none"
                          style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '16px 16px', WebkitMaskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%)', maskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%)' }}>
                     </div>
                     <div className="relative z-10 space-y-1">
-                        <h3 className="text-base font-semibold tracking-tight">Cần hoàn thiện hồ sơ khởi tạo?</h3>
-                        <p className="text-sm text-zinc-400 max-w-md font-normal">Vui lòng cập nhật đầy đủ thông tin xuất hóa đơn hoặc yêu cầu thay đổi trực tiếp tại đây.</p>
+                        <h3 className="text-base font-semibold">Cần hoàn thiện hồ sơ khởi tạo?</h3>
+                        <p className="text-sm text-muted-foreground max-w-md font-normal">Vui lòng cập nhật đầy đủ thông tin xuất hóa đơn hoặc yêu cầu thay đổi trực tiếp tại đây.</p>
                     </div>
 
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                         <DialogTrigger asChild>
-                            <Button className="relative z-10 bg-white text-zinc-900 hover:bg-zinc-100 font-semibold rounded-xl px-8 h-10 shadow-lg transition-all text-xs border border-zinc-200">
+                            <Button className="relative z-10 bg-white text-foreground hover:bg-muted font-semibold rounded-md px-8 h-10 shadow-lg transition-all text-xs border border-border">
                                 Cập nhật hồ sơ
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-[700px] rounded-2xl p-0 overflow-hidden border-none shadow-2xl [&_[data-slot=dialog-close]_svg]:text-white">
+                        <DialogContent className="sm:max-w-[700px] rounded-md p-0 overflow-hidden border-none shadow-2xl [&_[data-slot=dialog-close]_svg]:text-white">
                             <div className="bg-zinc-950 text-white p-8 border-b border-zinc-800">
                                 <DialogHeader>
-                                    <DialogTitle className="text-2xl font-bold tracking-tight">Cập nhật hồ sơ khách hàng</DialogTitle>
-                                    <p className="text-zinc-500 text-xs mt-1 uppercase tracking-wider font-semibold">Customer Information & Identity</p>
+                                    <DialogTitle className="text-2xl font-bold">Cập nhật hồ sơ khách hàng</DialogTitle>
+                                    <p className="text-muted-foreground text-xs mt-1 uppercase tracking-wider font-semibold">Customer Information & Identity</p>
                                 </DialogHeader>
                             </div>
-                            <div className="p-8 bg-zinc-50">
+                            <div className="p-8 bg-muted">
                                 <CustomerInfoForm
                                     customer={customer}
                                     token={token}
@@ -282,18 +282,18 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
 
                 {/* Tabs Layout */}
                 <Tabs defaultValue="overview" className="w-full">
-                    <TabsList className="mb-8 w-full justify-start h-auto p-1.5 bg-zinc-100/50 border border-zinc-200/60 rounded-xl overflow-x-auto flex-nowrap shrink-0 hide-scrollbar">
-                        <TabsTrigger value="overview" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-white data-[state=active]:text-zinc-950 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-zinc-200/60 text-zinc-500 whitespace-nowrap transition-all">
+                    <TabsList className="mb-8 w-full justify-start h-auto p-1.5 bg-muted/50 border border-border/60 rounded-md overflow-x-auto flex-nowrap shrink-0 hide-scrollbar">
+                        <TabsTrigger value="overview" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/60 text-muted-foreground whitespace-nowrap transition-all">
                             <ListTodo className="w-4 h-4 shrink-0" /> Tổng quan tiến độ
                         </TabsTrigger>
-                        <TabsTrigger value="gantt" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-white data-[state=active]:text-zinc-950 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-zinc-200/60 text-zinc-500 whitespace-nowrap transition-all">
+                        <TabsTrigger value="gantt" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/60 text-muted-foreground whitespace-nowrap transition-all">
                             <Clock className="w-4 h-4 shrink-0" /> Lộ trình & Lịch trình
                         </TabsTrigger>
-                        <TabsTrigger value="feedback" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-white data-[state=active]:text-zinc-950 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-zinc-200/60 text-zinc-500 whitespace-nowrap transition-all">
+                        <TabsTrigger value="feedback" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/60 text-muted-foreground whitespace-nowrap transition-all">
                             <ClipboardCheck className="w-4 h-4 shrink-0" /> Nhật ký xử lý
                         </TabsTrigger>
                         {isFinancialAuthenticated && (
-                            <TabsTrigger value="finance" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-zinc-950 data-[state=active]:text-white text-zinc-500 shadow-sm whitespace-nowrap transition-all">
+                            <TabsTrigger value="finance" className="flex items-center gap-2 py-2.5 px-4 text-[13px] font-semibold rounded-lg data-[state=active]:bg-zinc-950 data-[state=active]:text-white text-muted-foreground shadow-sm whitespace-nowrap transition-all">
                                 <Wallet className="w-4 h-4 shrink-0" /> Báo giá & Pháp lý
                             </TabsTrigger>
                         )}
@@ -302,8 +302,8 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                     {/* Tab 1: Công việc */}
                     <TabsContent value="overview" className="space-y-6 mt-0 focus-visible:outline-none focus-visible:ring-0">
                         {project?.description && (
-                            <div className="bg-white rounded-2xl border border-zinc-200 p-6 shadow-sm">
-                                <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                            <div className="bg-white rounded-md border border-border p-6 shadow-sm">
+                                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3 flex items-center gap-2">
                                     <BookOpen className="w-3.5 h-3.5" /> Mô tả dự án
                                 </h3>
                                 <p className="text-sm text-zinc-700 leading-relaxed whitespace-pre-line font-medium">{project.description}</p>
@@ -313,9 +313,9 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                         <div className="flex items-center justify-between px-2">
                             <div className="flex items-center gap-2">
                                 <Package className="w-4 h-4 text-zinc-800" />
-                                <h3 className="text-lg font-bold text-zinc-950 tracking-tight leading-tight">Hạng mục & Công việc</h3>
+                                <h3 className="text-lg font-bold text-foreground leading-tight">Hạng mục & Công việc</h3>
                             </div>
-                            <span className="text-[13px] font-semibold text-zinc-500 bg-zinc-100 px-3 py-1 rounded-full border border-zinc-200 shadow-sm">
+                            <span className="text-[13px] font-semibold text-muted-foreground bg-muted px-3 py-1 rounded-full border border-border shadow-sm">
                                 {completedItems}/{displayItems.length} hạng mục hoàn thành
                             </span>
                         </div>
@@ -324,9 +324,9 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             {displayItems.length > 0 ? displayItems.map((item: any, idx: number) => (
                                 <WorkItemAccordionCard key={item.id} item={item} idx={idx} />
                             )) : (
-                                <div className="bg-white rounded-2xl border border-zinc-200 border-dashed p-12 text-center">
+                                <div className="bg-white rounded-md border border-border border-dashed p-12 text-center">
                                     <Package className="w-10 h-10 text-zinc-200 mx-auto mb-4" />
-                                    <p className="text-sm text-zinc-500 font-medium">Chưa có hạng mục công việc nào được khởi tạo.</p>
+                                    <p className="text-sm text-muted-foreground font-medium">Chưa có hạng mục công việc nào được khởi tạo.</p>
                                 </div>
                             )}
                         </div>
@@ -357,24 +357,24 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             {/* Stats Row */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 {[
-                                    { label: 'Tổng đầu tư', value: totalInvestment, icon: Wallet, color: 'text-zinc-600', bgColor: 'bg-zinc-100' },
-                                    { label: 'Đã thanh toán', value: totalPaid, icon: CreditCard, color: 'text-zinc-950', bgColor: 'bg-zinc-100' },
-                                    { label: 'Còn lại', value: balanceDue, icon: Banknote, color: 'text-zinc-950', bgColor: 'bg-zinc-100' },
-                                    { label: 'Tiến độ', value: `${projectProgress}%`, icon: Activity, color: 'text-zinc-950', bgColor: 'bg-zinc-100' },
+                                    { label: 'Tổng đầu tư', value: totalInvestment, icon: Wallet, color: 'text-muted-foreground', bgColor: 'bg-muted' },
+                                    { label: 'Đã thanh toán', value: totalPaid, icon: CreditCard, color: 'text-foreground', bgColor: 'bg-muted' },
+                                    { label: 'Còn lại', value: balanceDue, icon: Banknote, color: 'text-foreground', bgColor: 'bg-muted' },
+                                    { label: 'Tiến độ', value: `${projectProgress}%`, icon: Activity, color: 'text-foreground', bgColor: 'bg-muted' },
                                 ].map((stat, i) => (
-                                    <div key={i} className="bg-white p-5 rounded-2xl border border-zinc-200 shadow-sm transition-all hover:shadow-md hover:border-zinc-300">
+                                    <div key={i} className="bg-white p-5 rounded-md border border-border shadow-sm transition-all hover:shadow-md hover:border-input">
                                         <div className="flex items-center gap-3 mb-3">
-                                            <div className={cn("p-1.5 rounded-lg border border-zinc-200/60 shadow-xs", stat.bgColor)}>
+                                            <div className={cn("p-1.5 rounded-lg border border-border/60 shadow-xs", stat.bgColor)}>
                                                 <stat.icon className={cn("w-4 h-4", stat.color)} />
                                             </div>
-                                            <span className="text-[12px] font-bold text-zinc-500 uppercase tracking-widest">{stat.label}</span>
+                                            <span className="text-[12px] font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</span>
                                         </div>
                                         <div className="flex items-baseline gap-1 mt-1">
-                                            <div className="text-xl sm:text-2xl font-bold text-zinc-950 tracking-tighter tabular-nums truncate">
+                                            <div className="text-xl sm:text-2xl font-bold text-foreground tracking-tighter tabular-nums truncate">
                                                 {typeof stat.value === 'number' ? formatCurrency(stat.value).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim() : stat.value}
                                             </div>
                                             {typeof stat.value === 'number' && (
-                                                <div className="text-sm font-bold text-zinc-400">đ</div>
+                                                <div className="text-sm font-bold text-muted-foreground">đ</div>
                                             )}
                                         </div>
                                     </div>
@@ -383,7 +383,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
 
                             <div className="flex items-center gap-2 px-2 mt-2">
                                 <Receipt className="w-5 h-5 text-zinc-800" />
-                                <h3 className="text-lg font-bold text-zinc-950 tracking-tight leading-tight">Chi tiết báo giá & Pháp lý</h3>
+                                <h3 className="text-lg font-bold text-foreground leading-tight">Chi tiết báo giá & Pháp lý</h3>
                             </div>
 
                             <div className="grid gap-6">
@@ -409,18 +409,18 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
 
                 {/* Document Viewer Dialog */}
                 <Dialog open={isViewingDoc} onOpenChange={setIsViewingDoc}>
-                    <DialogContent className="max-w-[95vw] lg:max-w-[1100px] w-full p-0 overflow-hidden bg-zinc-50 border-none rounded-2xl shadow-2xl" showCloseButton={false}>
-                        <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-zinc-200">
+                    <DialogContent className="max-w-[95vw] lg:max-w-[1100px] w-full p-0 overflow-hidden bg-muted border-none rounded-md shadow-2xl" showCloseButton={false}>
+                        <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-border">
                             <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center border border-zinc-200">
-                                    <FileText className="w-4 h-4 text-zinc-900" />
+                                <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center border border-border">
+                                    <FileText className="w-4 h-4 text-foreground" />
                                 </div>
-                                <DialogTitle className="text-sm font-bold text-zinc-900 uppercase tracking-widest">Chi tiết tài liệu</DialogTitle>
+                                <DialogTitle className="text-sm font-bold text-foreground uppercase tracking-widest">Chi tiết tài liệu</DialogTitle>
                             </div>
                             <Button
                                 variant="outline"
                                 onClick={() => setIsViewingDoc(false)}
-                                className="text-xs font-bold text-zinc-700 hover:text-zinc-950 border-zinc-200 bg-white shadow-sm"
+                                className="text-xs font-bold text-zinc-700 hover:text-foreground border-border bg-white shadow-sm"
                             >
                                 Đóng tài liệu
                             </Button>
@@ -431,7 +431,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                 @media (min-width: 1024px) { .portal-doc-viewer > div { padding: 15mm 20mm !important; } }
                             `}</style>
                             <div
-                                className="portal-doc-viewer bg-white shadow-xl border border-zinc-200 text-[#000] mx-auto relative shrink-0 rounded-sm"
+                                className="portal-doc-viewer bg-white shadow-xl border border-border text-[#000] mx-auto relative shrink-0 rounded-sm"
                                 style={{ width: '210mm', minWidth: '210mm', minHeight: '297mm' }}
                                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(selectedDocContent || '') }}
                             />
@@ -451,30 +451,30 @@ function WorkItemAccordionCard({ item, idx }: { item: any; idx: number }) {
     const totalTasks = itemTasks.length
 
     return (
-        <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-sm hover:border-zinc-300 transition-all p-5 group">
+        <div className="bg-white rounded-md border border-border overflow-hidden shadow-sm hover:border-input transition-all p-5 group">
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div className="flex items-start gap-4 flex-1">
-                    <div className="flex shrink-0 items-center justify-center w-10 h-10 rounded-xl bg-zinc-100 text-zinc-500 font-bold border border-zinc-200">
+                    <div className="flex shrink-0 items-center justify-center w-10 h-10 rounded-md bg-muted text-muted-foreground font-bold border border-border">
                         {idx + 1}
                     </div>
                     <div>
                         <div className="flex items-center gap-3 mb-1">
-                            <h4 className="text-base font-bold text-zinc-950 tracking-tight">{item.title}</h4>
+                            <h4 className="text-base font-bold text-foreground">{item.title}</h4>
                             <StatusBadge status={item.status} />
                         </div>
-                        {item.description && <p className="text-[13px] text-zinc-500 leading-relaxed max-w-2xl font-medium">{item.description}</p>}
+                        {item.description && <p className="text-[13px] text-muted-foreground leading-relaxed max-w-2xl font-medium">{item.description}</p>}
                     </div>
                 </div>
 
                 {/* Delivery Links inline at top */}
                 {deliveryLinks.length > 0 && (
                     <div className="flex flex-col gap-2 shrink-0 md:min-w-[200px]">
-                        <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-1">
+                        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1">
                             <Link2 className="w-3 h-3" /> Link Bàn Giao
                         </span>
                         {deliveryLinks.map((link: any, lIdx: number) => (
                             <a key={lIdx} href={link.url} target="_blank"
-                                className="flex items-center gap-2 p-2 rounded-lg border border-zinc-200 bg-zinc-50 hover:bg-white hover:border-zinc-300 transition-all">
+                                className="flex items-center gap-2 p-2 rounded-lg border border-border bg-muted hover:bg-white hover:border-input transition-all">
                                 <ExternalLink className="w-3.5 h-3.5 text-blue-500" />
                                 <span className="text-[12px] font-semibold text-zinc-700 truncate">{link.label}</span>
                             </a>
@@ -484,13 +484,13 @@ function WorkItemAccordionCard({ item, idx }: { item: any; idx: number }) {
             </div>
 
             {/* Todo List Inline */}
-            <div className="mt-6 pt-5 border-t border-zinc-100">
+            <div className="mt-6 pt-5 border-t border-border">
                 <div className="flex items-center justify-between mb-4">
-                    <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                    <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
                         <ListTodo className="w-3.5 h-3.5" /> Danh sách công việc ({completedTasks}/{totalTasks})
                     </p>
                     {totalTasks > 0 && (
-                        <div className="w-32 h-1.5 bg-zinc-100 rounded-full overflow-hidden border border-zinc-200/50">
+                        <div className="w-32 h-1.5 bg-muted rounded-full overflow-hidden border border-border">
                             <div 
                                 className="h-full bg-zinc-900 rounded-full transition-all duration-500" 
                                 style={{ width: `${(completedTasks / totalTasks) * 100}%` }} 
@@ -502,9 +502,9 @@ function WorkItemAccordionCard({ item, idx }: { item: any; idx: number }) {
                 {totalTasks > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                         {itemTasks.map((task: any) => (
-                            <div key={task.id} className="flex items-start gap-3 p-3 rounded-xl border border-zinc-100 bg-zinc-50/50 hover:bg-zinc-50 transition-colors">
+                            <div key={task.id} className="flex items-start gap-3 p-3 rounded-md border border-border bg-muted/50 hover:bg-muted transition-colors">
                                 {task.status === 'completed' ? (
-                                    <CheckCircle className="w-4 h-4 text-zinc-900 mt-0.5 shrink-0" />
+                                    <CheckCircle className="w-4 h-4 text-foreground mt-0.5 shrink-0" />
                                 ) : task.status === 'in_progress' ? (
                                     <Clock className="w-4 h-4 text-blue-500 mt-0.5 shrink-0" />
                                 ) : (
@@ -513,7 +513,7 @@ function WorkItemAccordionCard({ item, idx }: { item: any; idx: number }) {
                                 <div className="min-w-0 flex-1">
                                     <p className={cn(
                                         "text-[13px] font-semibold",
-                                        task.status === 'completed' ? "line-through text-zinc-400" : "text-zinc-800"
+                                        task.status === 'completed' ? "line-through text-muted-foreground" : "text-zinc-800"
                                     )}>
                                         {task.title}
                                     </p>
@@ -522,7 +522,7 @@ function WorkItemAccordionCard({ item, idx }: { item: any; idx: number }) {
                         ))}
                     </div>
                 ) : (
-                    <div className="py-4 text-center text-zinc-400 text-xs font-medium">Lộ trình công việc trống.</div>
+                    <div className="py-4 text-center text-muted-foreground text-xs font-medium">Lộ trình công việc trống.</div>
                 )}
             </div>
         </div>
@@ -541,23 +541,23 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
     const itemMilestones = contractId ? timeline.filter((t: any) => t.contract_id === contractId && (t.type === 'work' || t.type === 'payment')) : []
 
     return (
-        <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-sm hover:border-zinc-300 transition-all">
-            <div className="flex items-center justify-between p-5 border-b border-zinc-100 bg-zinc-50/50">
+        <div className="bg-white rounded-md border border-border overflow-hidden shadow-sm hover:border-input transition-all">
+            <div className="flex items-center justify-between p-5 border-b border-border bg-muted/50">
                 <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-zinc-200 text-zinc-600 text-[13px] font-bold">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-md bg-muted text-muted-foreground text-[13px] font-bold">
                         {idx + 1}
                     </div>
-                    <h4 className="text-[15px] font-bold text-zinc-950 tracking-tight">{item.title}</h4>
+                    <h4 className="text-[15px] font-bold text-foreground">{item.title}</h4>
                 </div>
                 <div className="flex items-baseline gap-1">
-                    <span className="text-[22px] font-bold text-zinc-950 tracking-tighter tabular-nums">{formatCurrency(activeAmount).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim()}</span>
-                    <span className="text-sm font-bold text-zinc-500">đ</span>
+                    <span className="text-[22px] font-bold text-foreground tracking-tighter tabular-nums">{formatCurrency(activeAmount).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim()}</span>
+                    <span className="text-sm font-bold text-muted-foreground">đ</span>
                 </div>
             </div>
 
             {quotationOptions.length > 1 && (
-                <div className="px-5 py-4 border-b border-zinc-100 flex flex-wrap items-center gap-3 bg-white">
-                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest mr-2">Chọn giải pháp mưc phí:</span>
+                <div className="px-5 py-4 border-b border-border flex flex-wrap items-center gap-3 bg-white">
+                    <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mr-2">Chọn giải pháp mưc phí:</span>
                     <div className="flex gap-2">
                         {quotationOptions.map((q: any, qIdx: number) => {
                             const isActive = q.id === (selectedQuotationId || quotation?.id)
@@ -566,10 +566,10 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
                                     key={q.id}
                                     onClick={() => onSelectQuotation?.(q.id)}
                                     className={cn(
-                                        "flex items-center gap-2 px-4 py-2 rounded-xl transition-all border",
+                                        "flex items-center gap-2 px-4 py-2 rounded-md transition-all border",
                                         isActive
                                             ? "bg-zinc-950 border-zinc-950 text-white shadow-md ring-2 ring-zinc-950/20"
-                                            : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
+                                            : "bg-white text-muted-foreground border-border hover:border-input hover:bg-muted"
                                     )}
                                 >
                                     <span className="text-[12px] font-bold uppercase">{q.status === 'accepted' ? 'Đã Chọn' : `PA${qIdx + 1}`}</span>
@@ -585,8 +585,8 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
 
             <div className="flex flex-col lg:flex-row bg-white">
                 {/* Documents linked */}
-                <div className="lg:w-1/2 p-5 border-b lg:border-b-0 lg:border-r border-zinc-100">
-                    <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-4">Hồ sơ pháp lý đính kèm</p>
+                <div className="lg:w-1/2 p-5 border-b lg:border-b-0 lg:border-r border-border">
+                    <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-4">Hồ sơ pháp lý đính kèm</p>
                     <div className="space-y-3">
                         {(() => {
                             const renderedDocs: any[] = []
@@ -617,26 +617,26 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
                                     renderedDocs.push({ title: docTitle, key: d.id, number: d.doc_number || (d.type === 'contract' ? contract.contract_number : ''), status: d.status, icon: FileSignature, docId: d.id, content: d.content })
                                 }
                             }
-                            if (renderedDocs.length === 0) return <div className="text-xs text-zinc-400 py-2">Chưa có chứng từ.</div>
+                            if (renderedDocs.length === 0) return <div className="text-xs text-muted-foreground py-2">Chưa có chứng từ.</div>
 
                             return renderedDocs.map((d, i) => (
-                                <div key={d.key || i} className="flex items-center justify-between p-3 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 hover:shadow-sm transition-all shadow-xs">
+                                <div key={d.key || i} className="flex items-center justify-between p-3 rounded-md border border-border bg-white hover:border-zinc-400 hover:shadow-sm transition-all shadow-xs">
                                     <div className="flex items-center gap-3">
-                                        <div className="p-2 rounded-lg bg-zinc-100 border border-zinc-200/50">
-                                            <d.icon className="w-4 h-4 text-zinc-600" />
+                                        <div className="p-2 rounded-lg bg-muted border border-border">
+                                            <d.icon className="w-4 h-4 text-muted-foreground" />
                                         </div>
                                         <div>
-                                            <p className="text-[12px] font-bold text-zinc-900 tracking-tight">{d.title}</p>
+                                            <p className="text-[12px] font-bold text-foreground">{d.title}</p>
                                             <div className="flex items-center gap-2 mt-0.5">
-                                                <p className="text-[11px] font-bold font-mono text-zinc-500">#{d.number || '---'}</p>
+                                                <p className="text-[11px] font-bold font-mono text-muted-foreground">#{d.number || '---'}</p>
                                                 <StatusBadge status={d.status} />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         {d.link ? (
-                                            <a href={d.link} target="_blank" className="flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-lg border border-zinc-200 hover:bg-zinc-50 transition-colors shadow-xs text-[11px] font-bold text-zinc-700">
-                                                Xem <ExternalLink className="w-3 h-3 text-zinc-500" />
+                                            <a href={d.link} target="_blank" className="flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-lg border border-border hover:bg-muted transition-colors shadow-xs text-[11px] font-bold text-zinc-700">
+                                                Xem <ExternalLink className="w-3 h-3 text-muted-foreground" />
                                             </a>
                                         ) : d.docId ? (
                                             <button onClick={() => d.content ? onViewContractDoc?.(d.content) : onViewDoc?.(d.docId)} className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 text-white rounded-lg shadow-md hover:bg-zinc-800 transition-colors text-[11px] font-bold">
@@ -651,32 +651,32 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
                 </div>
 
                 {/* Payment Milestones */}
-                <div className="lg:w-1/2 p-5 bg-zinc-50/30">
-                    <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <div className="lg:w-1/2 p-5 bg-muted/30">
+                    <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
                         <Wallet className="w-3.5 h-3.5" /> Lộ trình thanh toán
                     </p>
                     {itemMilestones.length > 0 ? (
                         <div className="space-y-2">
                             {itemMilestones.map((m: any, mIdx: number) => (
-                                <div key={m.id} className="flex flex-col gap-2 p-3 rounded-xl border border-zinc-200 bg-white shadow-xs hover:border-zinc-300 transition-all">
+                                <div key={m.id} className="flex flex-col gap-2 p-3 rounded-md border border-border bg-white shadow-xs hover:border-input transition-all">
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-center gap-2.5">
-                                            <div className={cn("w-6 h-6 rounded-md flex items-center justify-center text-[11px] font-bold shrink-0 border", m.status === 'completed' ? "bg-emerald-500 text-white border-emerald-600" : "bg-zinc-100 text-zinc-500 border-zinc-200")}>
+                                            <div className={cn("w-6 h-6 rounded-md flex items-center justify-center text-[11px] font-bold shrink-0 border", m.status === 'completed' ? "bg-emerald-500 text-white border-emerald-600" : "bg-muted text-muted-foreground border-border")}>
                                                 {m.status === 'completed' ? <Check className="w-3.5 h-3.5" /> : mIdx + 1}
                                             </div>
                                             <div>
-                                                <p className={cn("text-[13px] font-bold", m.status === 'completed' ? "text-zinc-400 line-through" : "text-zinc-900")}>
+                                                <p className={cn("text-[13px] font-bold", m.status === 'completed' ? "text-muted-foreground line-through" : "text-foreground")}>
                                                     {m.title}
                                                 </p>
-                                                <p className="text-[11px] text-zinc-400 font-semibold mt-0.5">
-                                                    Hạn: <span className="text-zinc-600">{formatDate(m.date)}</span>
+                                                <p className="text-[11px] text-muted-foreground font-semibold mt-0.5">
+                                                    Hạn: <span className="text-muted-foreground">{formatDate(m.date)}</span>
                                                 </p>
                                             </div>
                                         </div>
                                         {m.amount > 0 && (
-                                            <div className="text-right shrink-0 bg-zinc-50 px-3 py-1.5 rounded-lg border border-zinc-100">
-                                                <span className="text-[13px] font-bold text-zinc-950 tabular-nums">{formatCurrency(m.amount).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim()}</span>
-                                                <span className="text-[10px] text-zinc-500 ml-1 font-bold">VNĐ</span>
+                                            <div className="text-right shrink-0 bg-muted px-3 py-1.5 rounded-lg border border-border">
+                                                <span className="text-[13px] font-bold text-foreground tabular-nums">{formatCurrency(m.amount).replace(/\s*[₫đ]\s*$/g, '').replace(/^[₫đ]\s*/g, '').trim()}</span>
+                                                <span className="text-[10px] text-muted-foreground ml-1 font-bold">VNĐ</span>
                                             </div>
                                         )}
                                     </div>
@@ -684,9 +684,9 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
                             ))}
                         </div>
                     ) : (
-                        <div className="py-8 text-center bg-white rounded-xl border border-zinc-200 border-dashed">
+                        <div className="py-8 text-center bg-white rounded-md border border-border border-dashed">
                             <Receipt className="w-6 h-6 text-zinc-300 mx-auto mb-2" />
-                            <p className="text-xs text-zinc-500 font-medium">Lộ trình thanh toán trống</p>
+                            <p className="text-xs text-muted-foreground font-medium">Lộ trình thanh toán trống</p>
                         </div>
                     )}
                 </div>
@@ -698,43 +698,43 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
 /* ===== Timeline Section ===== */
 function TimelineSection({ timeline }: { timeline: any[] }) {
     if (timeline.length === 0) return (
-        <div className="bg-white rounded-2xl border border-zinc-200 border-dashed p-12 text-center">
+        <div className="bg-white rounded-md border border-border border-dashed p-12 text-center">
             <Clock className="w-10 h-10 text-zinc-200 mx-auto mb-4" />
-            <p className="text-sm text-zinc-500 font-medium">Lộ trình thời gian trống</p>
+            <p className="text-sm text-muted-foreground font-medium">Lộ trình thời gian trống</p>
         </div>
     )
 
     return (
-        <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-sm">
-            <div className="p-6 border-b border-zinc-100">
+        <div className="bg-white rounded-md border border-border overflow-hidden shadow-sm">
+            <div className="p-6 border-b border-border">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center border border-zinc-200">
-                        <Activity className="w-5 h-5 text-zinc-600" />
+                    <div className="w-10 h-10 rounded-md bg-muted flex items-center justify-center border border-border">
+                        <Activity className="w-5 h-5 text-muted-foreground" />
                     </div>
                     <div className="space-y-0.5">
-                        <h3 className="text-lg font-bold text-zinc-950 tracking-tight leading-tight">Biểu đồ thời gian thao tác</h3>
-                        <p className="text-[11px] text-zinc-400 uppercase tracking-widest font-bold">Lịch sử Lộ trình hệ thống</p>
+                        <h3 className="text-lg font-bold text-foreground leading-tight">Biểu đồ thời gian thao tác</h3>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-widest font-bold">Lịch sử Lộ trình hệ thống</p>
                     </div>
                 </div>
             </div>
             <div className="p-6">
-                <div className="relative pl-6 border-l-2 border-zinc-100 ml-2 space-y-8">
+                <div className="relative pl-6 border-l-2 border-border ml-2 space-y-8">
                     {timeline.map((event, eIdx) => (
                         <div key={event.id} className="relative pt-1">
                             {/* Dot */}
                             <div className={cn(
                                 "absolute -left-[29px] top-1.5 h-4 w-4 rounded-full border-[3px] bg-white transition-colors",
-                                event.status === 'completed' ? "border-emerald-500 shadow-[0_0_0_2px_rgba(16,185,129,0.2)]" : "border-zinc-300"
+                                event.status === 'completed' ? "border-emerald-500 shadow-[0_0_0_2px_rgba(16,185,129,0.2)]" : "border-input"
                             )} />
 
                             <div className="flex flex-col md:flex-row md:items-start justify-between gap-2">
                                 <div>
-                                    <h6 className={cn("text-[14px] font-bold tracking-tight", event.status === 'completed' ? "text-zinc-900" : "text-zinc-500")}>
+                                    <h6 className={cn("text-[14px] font-bold ", event.status === 'completed' ? "text-foreground" : "text-muted-foreground")}>
                                         {event.title}
                                     </h6>
-                                    {event.description && <p className="text-[12px] text-zinc-500 mt-1 max-w-lg font-medium leading-relaxed">{event.description}</p>}
+                                    {event.description && <p className="text-[12px] text-muted-foreground mt-1 max-w-lg font-medium leading-relaxed">{event.description}</p>}
                                 </div>
-                                <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 bg-zinc-50 px-2 py-1 rounded-md border border-zinc-100 shrink-0">
+                                <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground bg-muted px-2 py-1 rounded-md border border-border shrink-0">
                                     {formatDate(event.date)}
                                 </span>
                             </div>

@@ -62,17 +62,17 @@ export default async function DealDetailPage({ params }: any) {
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="grid gap-4 sm:grid-cols-3">
-                                <div className="p-4 bg-muted/20 rounded-xl border flex flex-col items-center justify-center text-center">
+                                <div className="p-4 bg-muted/20 rounded-md border flex flex-col items-center justify-center text-center">
                                     <Wallet className="h-5 w-5 mb-2 text-emerald-600" />
                                     <p className="text-xs text-muted-foreground">Ngân sách dự kiến</p>
                                     <p className="text-lg font-bold">{formatCurrency(deal.budget || 0)}</p>
                                 </div>
-                                <div className="p-4 bg-muted/20 rounded-xl border flex flex-col items-center justify-center text-center">
+                                <div className="p-4 bg-muted/20 rounded-md border flex flex-col items-center justify-center text-center">
                                     <TrendingUp className="h-5 w-5 mb-2 text-blue-600" />
                                     <p className="text-xs text-muted-foreground">Mức độ ưu tiên</p>
-                                    <p className="text-lg font-bold ">{deal.priority}</p>
+                                    <p className="text-lg font-bold">{deal.priority}</p>
                                 </div>
-                                <div className="p-4 bg-muted/20 rounded-xl border flex flex-col items-center justify-center text-center">
+                                <div className="p-4 bg-muted/20 rounded-md border flex flex-col items-center justify-center text-center">
                                     <Calendar className="h-5 w-5 mb-2 text-orange-600" />
                                     <p className="text-xs text-muted-foreground">Ngày tạo</p>
                                     <p className="text-lg font-bold">{formatDate(deal.created_at)}</p>
@@ -125,7 +125,7 @@ export default async function DealDetailPage({ params }: any) {
                                     ))}
                                 </div>
                             ) : (
-                                <div className="text-center py-10 border-2 border-dashed rounded-xl">
+                                <div className="text-center py-10 border-2 border-dashed rounded-md">
                                     <FileText className="h-10 w-10 mx-auto mb-3 opacity-20" />
                                     <p className="text-muted-foreground text-sm">Chưa có báo giá nào cho cơ hội này.</p>
                                 </div>
@@ -142,12 +142,12 @@ export default async function DealDetailPage({ params }: any) {
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-1">
-                                <p className="text-xs text-muted-foreground  font-bold ">Phụ trách (Sales)</p>
+                                <p className="text-xs text-muted-foreground font-bold">Phụ trách (Sales)</p>
                                 <p className="text-sm font-medium">{deal.assigned_user?.full_name || "Chưa gán"}</p>
                             </div>
                             <Separator />
                             <div className="space-y-2">
-                                <p className="text-xs text-muted-foreground  font-bold ">Chuyển trạng thái</p>
+                                <p className="text-xs text-muted-foreground font-bold">Chuyển trạng thái</p>
                                 <div className="grid grid-cols-2 gap-2">
                                     <Button variant="outline" size="sm" className="justify-start">
                                         <TrendingUp className="mr-2 h-4 w-4" /> Briefing

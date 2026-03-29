@@ -11,17 +11,17 @@ export default async function DealsPage() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-xl bg-zinc-100 flex items-center justify-center shadow-sm border border-border/50">
-                        <TrendingUp className="h-6 w-6 text-zinc-900" />
+                    <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center shadow-sm border border-border">
+                        <TrendingUp className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-bold text-zinc-950 tracking-tight italic">Cơ hội (Deals)</h1>
+                        <h1 className="text-3xl font-bold text-foreground italic">Cơ hội (Deals)</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý phễu bán hàng (Pipeline) và các cơ hội tiềm năng.
                         </p>
                     </div>
                 </div>
-                <Button asChild className="rounded-xl font-bold shadow-md shadow-zinc-200">
+                <Button asChild className="rounded-md font-bold shadow-sm">
                     <Link href="/deals/new">
                         <Plus className="mr-2 h-4 w-4" />
                         Tạo cơ hội mới

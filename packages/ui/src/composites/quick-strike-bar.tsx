@@ -68,7 +68,7 @@ export function QuickStrikeBar({
           focused
             ? "border-primary shadow-md ring-[3px] ring-primary/10"
             : "border-border shadow-sm",
-          position !== "inline" && "backdrop-blur-xl bg-card/95",
+          position !== "inline" && "bg-card shadow-md",
           disabled && "opacity-50"
         )}
       >

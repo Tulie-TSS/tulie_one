@@ -39,11 +39,11 @@ export function ProjectDocumentationSet({ project, workItems }: ProjectDocumenta
         <Card>
             <CardHeader className="flex flex-row items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-zinc-50 border border-zinc-100 flex items-center justify-center">
-                        <Files className="w-5 h-5 text-zinc-900" />
+                    <div className="w-9 h-9 rounded-md bg-muted border border-border flex items-center justify-center">
+                        <Files className="w-5 h-5 text-foreground" />
                     </div>
                     <div className="space-y-0.5">
-                        <CardTitle className="text-sm font-semibold text-zinc-950 tracking-tight leading-none">Bộ chứng từ dự án</CardTitle>
+                        <CardTitle className="text-sm font-semibold text-foreground leading-none">Bộ chứng từ dự án</CardTitle>
                         <CardDescription className="text-[11px] font-medium">Lộ trình hoàn thiện hồ sơ pháp lý và thủ tục cho toàn bộ dự án.</CardDescription>
                     </div>
                 </div>
@@ -54,12 +54,12 @@ export function ProjectDocumentationSet({ project, workItems }: ProjectDocumenta
             <CardContent className="p-0">
                 <div className="divide-y divide-zinc-50">
                     {allDocs.length === 0 ? (
-                        <div className="py-12 text-center text-zinc-400 text-sm italic">
+                        <div className="py-12 text-center text-muted-foreground text-sm italic">
                             Chưa có chứng từ nào được gán cho các hạng mục dự án.
                         </div>
                     ) : (
                         allDocs.map((doc, idx) => (
-                            <div key={idx} className="flex items-center gap-6 p-4 px-6 hover:bg-zinc-50/50 transition-colors group">
+                            <div key={idx} className="flex items-center gap-6 p-4 px-6 hover:bg-muted/50 transition-colors group">
                                 <div className="flex items-center gap-4 flex-1">
                                     <div className={cn(
                                         "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
@@ -94,10 +94,10 @@ export function ProjectDocumentationSet({ project, workItems }: ProjectDocumenta
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
-                                                className="h-8 w-8 p-0 rounded-lg hover:bg-zinc-100"
+                                                className="h-8 w-8 p-0 rounded-lg hover:bg-muted"
                                                 onClick={() => setViewingDocId(doc.generated_doc_id)}
                                             >
-                                                <Eye className="w-4 h-4 text-zinc-400" />
+                                                <Eye className="w-4 h-4 text-muted-foreground" />
                                             </Button>
                                         )}
                                     </div>

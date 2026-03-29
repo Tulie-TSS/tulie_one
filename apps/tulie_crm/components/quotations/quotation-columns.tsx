@@ -56,12 +56,12 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
                 <div>
                     <Link
                         href={`/quotations/${quotation.id}`}
-                        className="font-bold text-zinc-950 hover:underline tracking-tight italic"
+                        className="font-bold text-foreground hover:underline italic"
                     >
                         {quotation.quotation_number}
                     </Link>
                     {quotation.title && (
-                        <p className="text-xs text-zinc-600 font-medium truncate max-w-[200px]">
+                        <p className="text-xs text-muted-foreground font-medium truncate max-w-[200px]">
                             {quotation.title}
                         </p>
                     )}

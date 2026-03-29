@@ -21,7 +21,7 @@ export default function TemplatesPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {templates.map(tpl => (
-                    <div key={tpl.name} className="p-5 cursor-pointer transition-transform hover:-translate-y-0.5 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
+                    <div key={tpl.name} className="p-5 cursor-pointer transition-transform rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
                         <div className="flex items-center justify-between mb-2">
                             <h3 className="font-semibold" style={{ color: 'var(--color-fg)' }}>{tpl.name}</h3>
                             <span className="px-2 py-0.5 rounded-full" style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-fg-secondary)', fontSize: 'var(--text-xs)' }}>{tpl.category}</span>

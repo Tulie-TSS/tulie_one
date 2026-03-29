@@ -27,8 +27,8 @@ export function ReportCards({ chartData, stats }: ReportCardsProps) {
                 <Card className="cursor-pointer transition-shadow h-full flex flex-col">
                     <CardHeader>
                         <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                                <TrendingUp className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+                            <div className="h-10 w-10 rounded-md bg-muted dark:bg-zinc-800 flex items-center justify-center">
+                                <TrendingUp className="h-5 w-5 text-muted-foreground dark:text-muted-foreground" />
                             </div>
                             <div>
                                 <CardTitle className="text-base font-bold">Báo cáo bán hàng</CardTitle>
@@ -89,8 +89,8 @@ export function ReportCards({ chartData, stats }: ReportCardsProps) {
                 <Card className="cursor-pointer transition-shadow h-full flex flex-col">
                     <CardHeader>
                         <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                                <Users className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+                            <div className="h-10 w-10 rounded-md bg-muted dark:bg-zinc-800 flex items-center justify-center">
+                                <Users className="h-5 w-5 text-muted-foreground dark:text-muted-foreground" />
                             </div>
                             <div>
                                 <CardTitle className="text-base font-bold">Báo cáo khách hàng</CardTitle>
@@ -130,8 +130,8 @@ export function ReportCards({ chartData, stats }: ReportCardsProps) {
                 <Card className="cursor-pointer transition-shadow h-full flex flex-col">
                     <CardHeader>
                         <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                                <Target className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+                            <div className="h-10 w-10 rounded-md bg-muted dark:bg-zinc-800 flex items-center justify-center">
+                                <Target className="h-5 w-5 text-muted-foreground dark:text-muted-foreground" />
                             </div>
                             <div>
                                 <CardTitle className="text-base font-bold">Hiệu suất team</CardTitle>
@@ -143,11 +143,11 @@ export function ReportCards({ chartData, stats }: ReportCardsProps) {
                         <div className="grid grid-cols-2 gap-4 mb-4">
                             <div>
                                 <p className="text-muted-foreground text-xs font-medium">Avg Revenue</p>
-                                <p className="text-2xl font-bold tracking-tight">{formatCurrency(stats.revenue.total / (stats.contracts.active || 1))}</p>
+                                <p className="text-2xl font-bold">{formatCurrency(stats.revenue.total / (stats.contracts.active || 1))}</p>
                             </div>
                             <div>
                                 <p className="text-muted-foreground text-xs font-medium">Conversion</p>
-                                <p className="text-2xl font-bold tracking-tight">{stats.conversion_rate}%</p>
+                                <p className="text-2xl font-bold">{stats.conversion_rate}%</p>
                             </div>
                         </div>
                         <div className="space-y-2 mt-auto">
@@ -170,7 +170,7 @@ export function ReportCards({ chartData, stats }: ReportCardsProps) {
                 <Card className="cursor-pointer transition-all hover:bg-muted/50 h-full flex flex-col overflow-hidden">
                     <CardHeader>
                         <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-xl bg-muted flex items-center justify-center">
+                            <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center">
                                 <Receipt className="h-5 w-5 text-muted-foreground" />
                             </div>
                             <div>
@@ -183,11 +183,11 @@ export function ReportCards({ chartData, stats }: ReportCardsProps) {
                         <div className="grid grid-cols-2 gap-4 mb-4">
                             <div>
                                 <p className="text-muted-foreground text-xs font-medium">Dòng tiền (Paid)</p>
-                                <p className="text-2xl font-bold tracking-tight">{formatCurrency(stats.revenue.total)}</p>
+                                <p className="text-2xl font-bold">{formatCurrency(stats.revenue.total)}</p>
                             </div>
                             <div>
                                 <p className="text-muted-foreground text-xs font-medium">Pending</p>
-                                <p className="text-2xl font-bold tracking-tight text-destructive">{formatCurrency(stats.revenue.change)}</p>
+                                <p className="text-2xl font-bold text-destructive">{formatCurrency(stats.revenue.change)}</p>
                             </div>
                         </div>
                         <div className="h-[60px] w-full mt-auto">
@@ -211,7 +211,7 @@ export function ReportCards({ chartData, stats }: ReportCardsProps) {
             <Card className="h-full flex flex-col overflow-hidden">
                 <CardHeader>
                     <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-xl bg-muted flex items-center justify-center">
+                        <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center">
                             <FileSignature className="h-5 w-5 text-muted-foreground" />
                         </div>
                         <div>
@@ -224,11 +224,11 @@ export function ReportCards({ chartData, stats }: ReportCardsProps) {
                     <div className="grid grid-cols-2 gap-4 mb-4">
                         <div>
                             <p className="text-muted-foreground text-xs font-medium">Đang chạy</p>
-                            <p className="text-2xl font-bold tracking-tight">{stats.contracts.active}</p>
+                            <p className="text-2xl font-bold">{stats.contracts.active}</p>
                         </div>
                         <div>
                             <p className="text-muted-foreground text-xs font-medium">Pending</p>
-                            <p className="text-2xl font-bold tracking-tight text-muted-foreground">{stats.contracts.pending}</p>
+                            <p className="text-2xl font-bold text-muted-foreground">{stats.contracts.pending}</p>
                         </div>
                     </div>
                     <div className="space-y-3 mt-auto">
@@ -246,7 +246,7 @@ export function ReportCards({ chartData, stats }: ReportCardsProps) {
             <Card className="h-full flex flex-col overflow-hidden bg-muted/40">
                 <CardHeader className="pb-2">
                     <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center">
+                        <div className="h-10 w-10 rounded-md bg-primary flex items-center justify-center">
                             <TrendingUp className="h-5 w-5 text-primary-foreground" />
                         </div>
                         <div>
@@ -259,7 +259,7 @@ export function ReportCards({ chartData, stats }: ReportCardsProps) {
                     <div className="flex items-center justify-between py-6">
                         <div>
                             <p className="text-muted-foreground text-xs font-medium mb-2">Điểm tổng quát</p>
-                            <p className="text-4xl font-bold tracking-tight">
+                            <p className="text-4xl font-bold">
                                 {stats.health_score}
                                 <span className="text-lg text-muted-foreground font-medium ml-1">/100</span>
                             </p>

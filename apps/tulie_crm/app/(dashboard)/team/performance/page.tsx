@@ -26,7 +26,7 @@ export default async function TeamPerformancePage() {
         <div className="space-y-6">
             {/* Header */}
             <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
                     <Users className="h-6 w-6 text-primary" />
                 </div>
                 <div>

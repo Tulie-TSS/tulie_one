@@ -64,7 +64,7 @@ export function CustomerTableClient({
         <div className="space-y-4">
             {!hideTabs && (
                 <Tabs defaultValue={defaultTab} className="w-full" onValueChange={(v) => setActiveTab(v as any)}>
-                    <TabsList className="bg-zinc-100/50 p-1 h-11 rounded-xl">
+                    <TabsList className="bg-muted/50 p-1 h-11 rounded-md">
                         <TabsTrigger value="business" className="rounded-lg px-6 h-9 data-[state=active]:bg-white data-[state=active]:shadow-sm">
                             <Building2 className="w-4 h-4 mr-2" />
                             Doanh nghiệp

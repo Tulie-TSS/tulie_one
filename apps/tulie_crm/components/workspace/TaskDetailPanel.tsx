@@ -24,7 +24,7 @@ import {
 import { WorkspaceTask } from '@/types'
 
 const statusOptions = [
-    { value: 'todo', label: 'Cần làm', color: 'bg-zinc-100 text-zinc-700' },
+    { value: 'todo', label: 'Cần làm', color: 'bg-muted text-zinc-700' },
     { value: 'in_progress', label: 'Đang làm', color: 'bg-blue-50 text-blue-700' },
     { value: 'in_review', label: 'Đang review', color: 'bg-amber-100 text-amber-700' },
     { value: 'completed', label: 'Hoàn thành', color: 'bg-emerald-100 text-emerald-700' },
@@ -214,11 +214,7 @@ export function TaskDetailPanel({ task, open, onOpenChange, teamMembers = [] }: 
                                 key={s.value}
                                 type="button"
                                 onClick={() => handleStatusChange(s.value)}
-                                className={`text-[11px] font-medium px-2.5 py-1 rounded-full transition-all ${
-                                    task.status === s.value
-                                        ? s.color + ' ring-2 ring-offset-1 ring-zinc-300'
-                                        : 'bg-muted/50 text-muted-foreground hover:bg-muted'
-                                }`}
+                                className={`text-[11px] font-medium px-2.5 py-1 rounded-full transition-all ${ task.status === s.value ? s.color + ' ring-2 ring-offset-1 ring-zinc-300' : 'bg-muted/50 text-muted-foreground hover:bg-muted' }`}
                             >
                                 {s.label}
                             </button>
@@ -238,11 +234,7 @@ export function TaskDetailPanel({ task, open, onOpenChange, teamMembers = [] }: 
                     {tabs.map(({ key, label, icon: Icon }) => (
                         <button
                             key={key}
-                            className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition-colors ${
-                                tab === key
-                                    ? 'border-foreground text-foreground'
-                                    : 'border-transparent text-muted-foreground hover:text-foreground'
-                            }`}
+                            className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition-colors ${ tab === key ? 'border-foreground text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground' }`}
                             onClick={() => setTab(key)}
                         >
                             <Icon className="h-3.5 w-3.5" />
@@ -444,7 +436,7 @@ export function TaskDetailPanel({ task, open, onOpenChange, teamMembers = [] }: 
                                         {comments.map((comment) => (
                                             <div key={comment.id} className="group">
                                                 <div className="flex items-start gap-2">
-                                                    <div className="h-6 w-6 rounded-full bg-zinc-200 flex items-center justify-center text-[11px] font-medium text-zinc-600 shrink-0 mt-0.5">
+                                                    <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-[11px] font-medium text-muted-foreground shrink-0 mt-0.5">
                                                         {(comment.user?.full_name || '?').charAt(0).toUpperCase()}
                                                     </div>
                                                     <div className="flex-1 min-w-0">

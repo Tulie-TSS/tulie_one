@@ -54,7 +54,7 @@ export const customerColumns: ColumnDef<Customer>[] = [
                 <div className="py-1">
                     <Link
                         href={`/customers/${customer.id}`}
-                        className="text-sm font-bold text-zinc-950 hover:underline tracking-tight italic"
+                        className="text-sm font-bold text-foreground hover:underline italic"
                     >
                         {customer.customer_type === 'individual'
                             ? (customer.representative || 'Chưa đặt tên')

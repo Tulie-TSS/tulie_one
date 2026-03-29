@@ -19,7 +19,7 @@ import type { AgentStatus } from "@/lib/mock-data";
 const statusStyles: Record<AgentStatus, { label: string; className: string }> = {
     active: { label: "Active", className: "bg-emerald-50 text-emerald-600 border-emerald-200 shadow-sm" },
     training: { label: "Training", className: "bg-amber-50 text-amber-600 border-amber-200 shadow-sm animate-pulse" },
-    inactive: { label: "Inactive", className: "bg-zinc-100 text-muted-foreground border-border shadow-sm" },
+    inactive: { label: "Inactive", className: "bg-muted text-muted-foreground border-border shadow-sm" },
 };
 
 const roleLabels: Record<string, string> = {
@@ -35,7 +35,7 @@ const roleColors: Record<string, { bg: string, text: string }> = {
     marketing: { bg: "bg-pink-50 border border-pink-100 shadow-sm", text: "text-pink-600" },
     support: { bg: "bg-emerald-50 border border-emerald-100 shadow-sm", text: "text-emerald-600" },
     analyst: { bg: "bg-amber-50 border border-amber-100 shadow-sm", text: "text-amber-600" },
-    custom: { bg: "bg-zinc-50 border border-border/50 shadow-sm", text: "text-muted-foreground" },
+    custom: { bg: "bg-muted border border-border shadow-sm", text: "text-muted-foreground" },
 };
 
 export default function AgentsPage() {
@@ -53,7 +53,7 @@ export default function AgentsPage() {
                         </p>
                     </div>
                     <Link href="/agents/new">
-                        <Button className="h-9 px-4 bg-primary hover:bg-primary/95 text-primary-foreground shadow-sm shadow-primary/20 text-xs font-semibold gap-1.5 transition-all hover:-translate-y-0.5">
+                        <Button className="h-9 px-4 bg-primary hover:bg-primary/95 text-primary-foreground shadow-sm shadow-primary/20 text-xs font-semibold gap-1.5 transition-all">
                             <Plus className="h-4 w-4" />
                             Create Agent
                         </Button>
@@ -67,10 +67,10 @@ export default function AgentsPage() {
                         const colorClass = roleColors[agent.role] || roleColors.custom;
                         return (
                             <Link key={agent.id} href={`/agents/${agent.id}`}>
-                                <Card className="group transition-all cursor-pointer h-full card-elevated border-transparent hover:border-primary/20 hover:shadow-lg hover:-translate-y-0.5">
+                                <Card className="group transition-all cursor-pointer h-full card-elevated border-transparent hover:border-primary/20 hover:shadow-lg">
                                     <CardContent className="p-5">
                                         <div className="flex items-start gap-4">
-                                            <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${colorClass.bg}`}>
+                                            <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-md ${colorClass.bg}`}>
                                                 <Bot className={`h-5 w-5 ${colorClass.text}`} />
                                             </div>
                                             <div className="flex-1 min-w-0">
@@ -90,7 +90,7 @@ export default function AgentsPage() {
                                                 </p>
 
                                                 {/* stats row */}
-                                                <div className="flex items-center gap-4 mt-4 pt-3 border-t border-border/50">
+                                                <div className="flex items-center gap-4 mt-4 pt-3 border-t border-border">
                                                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                                                         <ClipboardList className="h-3.5 w-3.5" />
                                                         <span>{agent.totalTasks} tasks</span>

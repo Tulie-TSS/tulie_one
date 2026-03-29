@@ -221,10 +221,7 @@ export function AnalyticsClient({ tasks, teamMembers }: AnalyticsClientProps) {
                                         </div>
                                         <div className="h-2 rounded-full bg-muted overflow-hidden">
                                             <div
-                                                className={`h-full rounded-full transition-all ${
-                                                    priority === 'urgent' || priority === 'high' ? 'bg-rose-500' :
-                                                    priority === 'medium' ? 'bg-blue-500' : 'bg-zinc-400'
-                                                }`}
+                                                className={`h-full rounded-full transition-all ${ priority === 'urgent' || priority === 'high' ? 'bg-rose-500' : priority === 'medium' ? 'bg-blue-500' : 'bg-zinc-400' }`}
                                                 style={{ width: `${percent}%` }}
                                             />
                                         </div>
@@ -244,9 +241,7 @@ export function AnalyticsClient({ tasks, teamMembers }: AnalyticsClientProps) {
                                 <div key={i} className="flex-1 flex flex-col items-center gap-1">
                                     <span className="text-[11px] text-muted-foreground font-medium">{week.count}</span>
                                     <div
-                                        className={`w-full rounded-t transition-all ${
-                                            i === weeklyData.length - 1 ? 'bg-blue-500' : 'bg-blue-200'
-                                        }`}
+                                        className={`w-full rounded-t transition-all ${ i === weeklyData.length - 1 ? 'bg-blue-500' : 'bg-blue-200' }`}
                                         style={{ height: `${Math.max((week.count / maxWeekly) * 90, 4)}%` }}
                                     />
                                     <span className="text-[8px] text-muted-foreground">{week.label}</span>
@@ -288,12 +283,10 @@ export function AnalyticsClient({ tasks, teamMembers }: AnalyticsClientProps) {
                         <div className="space-y-2">
                             {memberStats.slice(0, 10).map((member, i) => (
                                 <div key={member.id} className="flex items-center gap-3 py-1.5">
-                                    <span className={`text-sm font-bold w-6 text-center ${
-                                        i === 0 ? 'text-amber-500' : i === 1 ? 'text-zinc-400' : i === 2 ? 'text-amber-700' : 'text-muted-foreground'
-                                    }`}>
+                                    <span className={`text-sm font-bold w-6 text-center ${ i === 0 ? 'text-amber-500' : i === 1 ? 'text-muted-foreground' : i === 2 ? 'text-amber-700' : 'text-muted-foreground' }`}>
                                         {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`}
                                     </span>
-                                    <div className="h-7 w-7 rounded-full bg-zinc-200 flex items-center justify-center text-[11px] font-semibold text-zinc-600 shrink-0">
+                                    <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center text-[11px] font-semibold text-muted-foreground shrink-0">
                                         {member.full_name.charAt(0).toUpperCase()}
                                     </div>
                                     <span className="text-sm font-medium flex-1">{member.full_name}</span>

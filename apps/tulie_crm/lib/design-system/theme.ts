@@ -13,7 +13,7 @@ export const THEME = {
     radius: {
         button: 'rounded-md',        // shadcn Button default
         input: 'rounded-md',         // shadcn Input default
-        card: 'rounded-xl',          // shadcn Card default
+        card: 'rounded-md',          // shadcn Card default
         badge: 'rounded-full',       // shadcn Badge default (pill shape)
         dialog: 'rounded-lg',        // shadcn Dialog default
         dropdown: 'rounded-md',      // shadcn DropdownMenu default
@@ -65,7 +65,7 @@ export const THEME = {
 } as const
 
 // ─── Quick Reference: What NOT to do ──────────────────────────────────────
-// ❌ rounded-2xl on buttons/cards/dropdown items
+// ❌ rounded-md on buttons/cards/dropdown items
 // ❌ font-black (900) in dashboard
 // ❌ uppercase + tracking-widest in dashboard
 // ❌ shadow-xl, shadow-lg on buttons/cards

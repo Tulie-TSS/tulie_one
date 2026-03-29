@@ -109,7 +109,7 @@ export default function OrderPortalClient({ order: initialOrder }: OrderPortalCl
                         <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
                             <Camera className="h-4 w-4 text-primary-foreground" />
                         </div>
-                        <span className="font-semibold text-sm tracking-tight">
+                        <span className="font-semibold text-sm">
                             {brandConfig?.brand_name || 'Tulie Studio'}
                         </span>
                     </div>
@@ -135,7 +135,7 @@ export default function OrderPortalClient({ order: initialOrder }: OrderPortalCl
                             {paymentStatusText}
                         </Badge>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-semibold tracking-tight">
+                    <h1 className="text-xl md:text-2xl font-semibold">
                         Đơn hàng của {order.customer_name}
                     </h1>
                     <p className="text-sm text-muted-foreground">
@@ -347,7 +347,7 @@ export default function OrderPortalClient({ order: initialOrder }: OrderPortalCl
                                     </div>
                                 ) : (
                                     <>
-                                        <div className="bg-muted/30 p-4 rounded-xl inline-block border">
+                                        <div className="bg-muted/30 p-4 rounded-md inline-block border">
                                             <img
                                                 src={qrUrl}
                                                 alt="Payment QR"

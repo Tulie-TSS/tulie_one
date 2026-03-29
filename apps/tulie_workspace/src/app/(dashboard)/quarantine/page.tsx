@@ -62,7 +62,7 @@ export default function QuarantinePage() {
             </div>
 
             {quarantineTasks.length === 0 ? (
-                <div className="p-12 text-center rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                <div className="p-12 text-center rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                     <div className="text-4xl mb-4">✅</div>
                     <h3 className="font-semibold mb-1" style={{ color: 'var(--color-fg)' }}>{t('quarantine.empty')}</h3>
                     <p style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('quarantine.noTriage')}</p>
@@ -70,7 +70,7 @@ export default function QuarantinePage() {
             ) : (
                 <div className="space-y-4">
                     {quarantineTasks.map(task => (
-                        <div key={task.id} className="p-5 rounded-xl" style={{
+                        <div key={task.id} className="p-5 rounded-md" style={{
                             backgroundColor: 'var(--color-bg)',
                             border: '1px solid var(--color-warning)',
                             boxShadow: '0 0 0 1px var(--color-warning-bg)',
@@ -136,7 +136,7 @@ export default function QuarantinePage() {
             {tradeOffTask && (
                 <div className="fixed inset-0 flex items-center justify-center" style={{ zIndex: 1000 }}>
                     <div className="absolute inset-0 bg-black/40" onClick={() => setTradeOffTask(null)} />
-                    <div className="relative w-full max-w-lg mx-4 p-6 rounded-2xl" style={{
+                    <div className="relative w-full max-w-lg mx-4 p-6 rounded-md" style={{
                         backgroundColor: 'var(--color-bg)',
                         boxShadow: 'var(--shadow-lg)',
                         border: '1px solid var(--color-border)',
@@ -220,7 +220,7 @@ export default function QuarantinePage() {
 
             {/* Toast */}
             {toast && (
-                <div className="fixed bottom-20 left-1/2 -translate-x-1/2 px-5 py-3 rounded-xl"
+                <div className="fixed bottom-20 left-1/2 -translate-x-1/2 px-5 py-3 rounded-md"
                     style={{
                         backgroundColor: 'var(--color-fg)',
                         color: 'var(--color-bg)',

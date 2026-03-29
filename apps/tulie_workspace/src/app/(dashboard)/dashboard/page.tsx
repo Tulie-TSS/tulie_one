@@ -25,7 +25,7 @@ export default function DashboardPage() {
             </div>
 
             {quarantineTasks.length > 0 && (
-                <Link href="/quarantine" className="flex items-center gap-3 mb-6 p-4 no-underline rounded-xl"
+                <Link href="/quarantine" className="flex items-center gap-3 mb-6 p-4 no-underline rounded-md"
                     style={{ backgroundColor: 'var(--color-warning-bg)', border: '1px solid var(--color-warning)' }}>
                     <span style={{ fontSize: '20px' }}>⚠️</span>
                     <span className="font-medium" style={{ color: 'var(--color-warning)', fontSize: 'var(--text-sm)' }}>
@@ -41,7 +41,7 @@ export default function DashboardPage() {
                     { label: t('dashboard.quarantine'), value: quarantineTasks.length, color: 'var(--color-warning)' },
                     { label: t('dashboard.completed'), value: doneTasks.length, color: 'var(--color-success)' },
                 ] as const).map(card => (
-                    <div key={card.label} className="p-4 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                    <div key={card.label} className="p-4 rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                         <div style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{card.label}</div>
                         <div className="text-3xl font-bold mt-1" style={{ color: card.color }}>
                             {card.value}
@@ -59,11 +59,11 @@ export default function DashboardPage() {
                     </div>
                     <div className="space-y-3">
                         {doingTasks.length === 0 ? (
-                            <div className="p-8 text-center rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                            <div className="p-8 text-center rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                                 <p style={{ color: 'var(--color-fg-tertiary)' }}>{t('dashboard.noDoingTasks')}</p>
                             </div>
                         ) : doingTasks.map(task => (
-                            <Link key={task.id} href={`/tasks/${task.id}`} className="flex items-center gap-4 p-4 rounded-xl no-underline transition-colors"
+                            <Link key={task.id} href={`/tasks/${task.id}`} className="flex items-center gap-4 p-4 rounded-md no-underline transition-colors"
                                 style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                                 <div className="flex-1">
                                     <div className="font-medium mb-1" style={{ color: 'var(--color-fg)', fontSize: 'var(--text-sm)' }}>{task.title}</div>
@@ -90,7 +90,7 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="space-y-6">
-                    <div className="p-5 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                    <div className="p-5 rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="font-semibold" style={{ color: 'var(--color-fg)', fontSize: 'var(--text-sm)' }}>{t('dashboard.cycleProgress')}</h3>
                             <Link href={`/cycles/${MOCK_CYCLE.id}`} className="no-underline" style={{ color: 'var(--color-info)', fontSize: 'var(--text-xs)' }}>{t('dashboard.details')}</Link>
@@ -110,7 +110,7 @@ export default function DashboardPage() {
                         </div>
                     </div>
 
-                    <div className="p-5 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                    <div className="p-5 rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                         <h3 className="font-semibold mb-3" style={{ color: 'var(--color-fg)', fontSize: 'var(--text-sm)' }}>{t('dashboard.newNotifications')}</h3>
                         <div className="space-y-3">
                             {MOCK_NOTIFICATIONS.filter(n => !n.is_read).map(n => (
@@ -122,7 +122,7 @@ export default function DashboardPage() {
                         </div>
                     </div>
 
-                    <div className="p-5 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                    <div className="p-5 rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                         <div className="flex items-center justify-between mb-3">
                             <h3 className="font-semibold" style={{ color: 'var(--color-fg)', fontSize: 'var(--text-sm)' }}>{t('dashboard.projects')}</h3>
                             <Link href="/projects" className="no-underline" style={{ color: 'var(--color-info)', fontSize: 'var(--text-xs)' }}>{t('dashboard.allProjects')}</Link>

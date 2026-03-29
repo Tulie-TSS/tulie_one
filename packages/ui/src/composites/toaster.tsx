@@ -1,6 +1,6 @@
 "use client"
 
-import { Sonner } from "../components/sonner"
+import { Toaster as Sonner } from "../components/sonner"
 
 function Toaster() {
   return (

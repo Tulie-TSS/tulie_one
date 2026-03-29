@@ -12,22 +12,22 @@ export default function AuthLayout({
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-zinc-950 to-zinc-950 opacity-90 mix-blend-multiply" />
                 
                 <div className="relative z-10 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold text-xl shadow-lg ring-1 ring-white/20">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-primary-foreground font-bold text-xl shadow-lg ring-1 ring-white/20">
                         T
                     </div>
-                    <span className="text-2xl font-bold tracking-tight">Tulie<span className="font-light text-zinc-400">Workforce</span></span>
+                    <span className="text-2xl font-bold">Tulie<span className="font-light text-muted-foreground">Workforce</span></span>
                 </div>
                 
                 <div className="relative z-10 max-w-md">
-                    <h1 className="mb-6 text-4xl font-bold leading-tight tracking-tight text-white">
+                    <h1 className="mb-6 text-4xl font-bold leading-tight text-white">
                         Quản trị hệ thống tinh gọn và quyền lực.
                     </h1>
-                    <p className="text-lg text-zinc-400">
+                    <p className="text-lg text-muted-foreground">
                         Giải pháp tối ưu hoá quy trình, tự động hoá tác vụ và quản lý nhân sự dành riêng cho Agency.
                     </p>
                 </div>
                 
-                <div className="relative z-10 text-sm text-zinc-500 font-medium">
+                <div className="relative z-10 text-sm text-muted-foreground font-medium">
                     © 2026 Tulie Agency. All rights reserved.
                 </div>
             </div>

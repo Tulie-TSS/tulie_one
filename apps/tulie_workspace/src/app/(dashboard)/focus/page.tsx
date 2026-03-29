@@ -50,7 +50,7 @@ export default function FocusPage() {
                 <p style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('focus.selectTask')}</p>
             </div>
             {doingTasks.length === 0 ? (
-                <div className="p-12 text-center rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                <div className="p-12 text-center rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                     <div className="text-4xl mb-4">🎯</div>
                     <h3 className="font-semibold mb-2" style={{ color: 'var(--color-fg)' }}>{t('focus.noDoingTasks')}</h3>
                     <p className="mb-4" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('focus.moveToBoard')}</p>
@@ -62,7 +62,7 @@ export default function FocusPage() {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {doingTasks.map(task => (
-                        <div key={task.id} className="p-5 rounded-xl"
+                        <div key={task.id} className="p-5 rounded-md"
                             style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                             <h3 className="font-semibold mb-2" style={{ color: 'var(--color-fg)' }}>{task.title}</h3>
                             {task.description && <p className="mb-4" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{task.description}</p>}

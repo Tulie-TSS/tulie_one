@@ -38,7 +38,7 @@ function StatCard({
       </div>
     </>
   )
-  const cls = "relative group overflow-hidden rounded-xl border border-border bg-card p-6 shadow-sm hover:shadow-md transition-shadow block"
+  const cls = "relative group overflow-hidden rounded-md border border-border bg-card p-6 shadow-sm hover:shadow-md transition-shadow block"
   return href ? <Link href={href} className={cls}>{content}</Link> : <div className={cls}>{content}</div>
 }
 
@@ -117,7 +117,7 @@ export default async function DashboardPage() {
       {/* Content Grid */}
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Recent invoices */}
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+        <div className="rounded-md border border-border bg-card p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-foreground">Hóa đơn gần đây</h2>
             <Link href="/invoices" className="text-sm text-primary hover:underline">Xem tất cả</Link>
@@ -145,7 +145,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+        <div className="rounded-md border border-border bg-card p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-foreground mb-4">Thao tác nhanh</h2>
           <div className="grid gap-3 grid-cols-2">
             {[
@@ -157,7 +157,7 @@ export default async function DashboardPage() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="group flex items-center gap-3 rounded-xl border border-border p-4 hover:shadow-md hover:border-primary/20 transition-all"
+                className="group flex items-center gap-3 rounded-md border border-border p-4 hover:shadow-md hover:border-primary/20 transition-all"
               >
                 <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${item.color} text-white`}>
                   <item.icon className="h-4 w-4" />

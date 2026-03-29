@@ -17,7 +17,7 @@ export default function ReportsPage() {
         {/* CRM Reports */}
         <Link
           href="/reports/sales"
-          className="group rounded-xl border border-border bg-card p-6 hover:shadow-md hover:border-primary/20 transition-all"
+          className="group rounded-md border border-border bg-card p-6 hover:shadow-md hover:border-primary/20 transition-all"
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10">
@@ -31,7 +31,7 @@ export default function ReportsPage() {
 
         <Link
           href="/reports/customers"
-          className="group rounded-xl border border-border bg-card p-6 hover:shadow-md hover:border-primary/20 transition-all"
+          className="group rounded-md border border-border bg-card p-6 hover:shadow-md hover:border-primary/20 transition-all"
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10">
@@ -45,7 +45,7 @@ export default function ReportsPage() {
 
         <Link
           href="/reports/performance"
-          className="group rounded-xl border border-border bg-card p-6 hover:shadow-md hover:border-primary/20 transition-all"
+          className="group rounded-md border border-border bg-card p-6 hover:shadow-md hover:border-primary/20 transition-all"
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10">
@@ -60,7 +60,7 @@ export default function ReportsPage() {
         {/* ERP Financial Reports */}
         <a
           href="http://localhost:3003/reports"
-          className="group rounded-xl border border-orange-200 dark:border-orange-900/50 bg-orange-50 dark:bg-orange-950/20 p-6 hover:shadow-md transition-all"
+          className="group rounded-md border border-orange-200 dark:border-orange-900/50 bg-orange-50 dark:bg-orange-950/20 p-6 hover:shadow-md transition-all"
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-500/10">

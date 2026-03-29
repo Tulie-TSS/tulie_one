@@ -15,8 +15,8 @@ import { buildVietQrUrl, buildVietQrDeeplink } from '@/lib/utils/vietqr'
 import { toast } from 'sonner'
 
 const STATUS_CONFIG: Record<string, { label: string; bg: string; text: string; dot: string; border: string }> = {
-    'draft': { label: 'Đơn nháp', bg: 'bg-zinc-50', text: 'text-zinc-400', dot: 'bg-zinc-300', border: 'border-zinc-200' },
-    'pending': { label: 'Chờ xử lý', bg: 'bg-zinc-50', text: 'text-zinc-500', dot: 'bg-zinc-400', border: 'border-zinc-200' },
+    'draft': { label: 'Đơn nháp', bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-300', border: 'border-border' },
+    'pending': { label: 'Chờ xử lý', bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-400', border: 'border-border' },
     'editing': { label: 'Đang chỉnh sửa', bg: 'bg-blue-50', text: 'text-blue-600', dot: 'bg-blue-500', border: 'border-blue-200' },
     'edit_done': { label: 'Hoàn thành chỉnh sửa', bg: 'bg-violet-50', text: 'text-violet-600', dot: 'bg-violet-500', border: 'border-violet-200' },
     'waiting_ship': { label: 'Chờ giao hàng', bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-500', border: 'border-amber-200' },
@@ -26,7 +26,7 @@ const STATUS_CONFIG: Record<string, { label: string; bg: string; text: string; d
 }
 
 function StatusBadge({ status }: { status: string }) {
-    const s = STATUS_CONFIG[status] || { label: status, bg: 'bg-zinc-50', text: 'text-zinc-500', dot: 'bg-zinc-400', border: 'border-zinc-200' }
+    const s = STATUS_CONFIG[status] || { label: status, bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-400', border: 'border-border' }
     return (
         <div className={cn("flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border", s.bg, s.border)}>
             <span className={cn("w-1.5 h-1.5 rounded-full", s.dot)} />
@@ -49,25 +49,25 @@ function CopyableField({ value, label, dark }: { value: string; label: string; d
         <button
             onClick={handleCopy}
             className={cn(
-                "w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl transition-all duration-200 group text-left",
+                "w-full flex items-center justify-between gap-3 px-4 py-3 rounded-md transition-all duration-200 group text-left",
                 dark
                     ? "bg-zinc-900 hover:bg-zinc-800 text-white"
-                    : "bg-zinc-50 hover:bg-zinc-100 border border-zinc-200"
+                    : "bg-muted hover:bg-muted border border-border"
             )}
         >
             <div className="min-w-0 flex-1">
-                <p className={cn("text-[11px] font-medium mb-0.5", dark ? "text-zinc-400" : "text-muted-foreground")}>{label}</p>
-                <p className={cn("text-base font-bold font-mono tracking-tight truncate", dark ? "text-white" : "text-zinc-900")}>{value}</p>
+                <p className={cn("text-[11px] font-medium mb-0.5", dark ? "text-muted-foreground" : "text-muted-foreground")}>{label}</p>
+                <p className={cn("text-base font-bold font-mono  truncate", dark ? "text-white" : "text-foreground")}>{value}</p>
             </div>
             <div className={cn(
                 "shrink-0 h-9 w-9 rounded-lg flex items-center justify-center transition-all",
                 dark
                     ? "bg-white/10 group-hover:bg-white/20"
-                    : "bg-white group-hover:bg-zinc-200 shadow-sm"
+                    : "bg-white group-hover:bg-muted shadow-sm"
             )}>
                 {copied
                     ? <Check className={cn("h-4 w-4", dark ? "text-emerald-400" : "text-emerald-600")} />
-                    : <Copy className={cn("h-4 w-4", dark ? "text-zinc-400" : "text-zinc-500")} />
+                    : <Copy className={cn("h-4 w-4", dark ? "text-muted-foreground" : "text-muted-foreground")} />
                 }
             </div>
         </button>
@@ -146,7 +146,7 @@ function PortalPaymentWatcher({ token, remainingAmount }: { token: string; remai
 
     if (paymentDetected) {
         return (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5 flex flex-col items-center gap-3 animate-in fade-in">
+            <div className="bg-emerald-50 border border-emerald-200 rounded-md p-5 flex flex-col items-center gap-3 animate-in fade-in">
                 <div className="h-12 w-12 rounded-full bg-emerald-100 flex items-center justify-center">
                     <CheckCircle2 className="h-7 w-7 text-emerald-600" />
                 </div>
@@ -157,14 +157,14 @@ function PortalPaymentWatcher({ token, remainingAmount }: { token: string; remai
     }
 
     return (
-        <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-5 space-y-4">
+        <div className="bg-white rounded-md border border-border shadow-sm p-5 space-y-4">
             <div className={cn(
                 "flex items-center justify-between p-3 rounded-lg border text-sm",
                 isPolling
                     ? "bg-blue-50 border-blue-200 text-blue-700"
                     : isTimedOut
                         ? "bg-amber-50 border-amber-200 text-amber-700"
-                        : "bg-zinc-50 border-zinc-200 text-zinc-600"
+                        : "bg-muted border-border text-muted-foreground"
             )}>
                 <div className="flex items-center gap-2">
                     {isPolling ? (
@@ -276,14 +276,14 @@ function ShippingInfoForm({ order, token }: { order: any; token: string }) {
     }
 
     return (
-        <div className="bg-white rounded-xl border border-zinc-200 shadow-sm overflow-hidden">
-            <div className="p-5 border-b border-zinc-100 flex items-center justify-between">
+        <div className="bg-white rounded-md border border-border shadow-sm overflow-hidden">
+            <div className="p-5 border-b border-border flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center">
-                        <MapPin className="h-4 w-4 text-zinc-600" />
+                    <div className="w-8 h-8 rounded-md bg-muted border border-border flex items-center justify-center">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
                     </div>
                     <div>
-                        <h3 className="text-sm font-semibold text-zinc-950 tracking-tight">Thông tin nhận hàng</h3>
+                        <h3 className="text-sm font-semibold text-foreground">Thông tin nhận hàng</h3>
                         <p className="text-[11px] font-medium text-muted-foreground">
                             {hasExistingInfo ? 'Thông tin giao hàng của bạn' : 'Điền nếu bạn muốn nhận ảnh in'}
                         </p>
@@ -299,17 +299,17 @@ function ShippingInfoForm({ order, token }: { order: any; token: string }) {
             {/* Collapsed view: show existing info */}
             {hasExistingInfo && !isEditing ? (
                 <div className="p-5 space-y-3">
-                    <div className="bg-zinc-50 rounded-lg p-4 space-y-2 border border-zinc-100">
+                    <div className="bg-muted rounded-lg p-4 space-y-2 border border-border">
                         <div className="flex items-center gap-2 text-sm">
-                            <User className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
-                            <span className="font-semibold text-zinc-900">{form.recipient_name}</span>
+                            <User className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                            <span className="font-semibold text-foreground">{form.recipient_name}</span>
                             {form.recipient_phone && (
-                                <span className="text-zinc-400">· {form.recipient_phone}</span>
+                                <span className="text-muted-foreground">· {form.recipient_phone}</span>
                             )}
                         </div>
                         <div className="flex items-start gap-2 text-sm">
-                            <MapPin className="h-3.5 w-3.5 text-zinc-400 shrink-0 mt-0.5" />
-                            <span className="text-zinc-600">{form.address}</span>
+                            <MapPin className="h-3.5 w-3.5 text-muted-foreground shrink-0 mt-0.5" />
+                            <span className="text-muted-foreground">{form.address}</span>
                         </div>
                     </div>
                     <Button
@@ -327,7 +327,7 @@ function ShippingInfoForm({ order, token }: { order: any; token: string }) {
                     <button
                         type="button"
                         onClick={fillFromCustomer}
-                        className="w-full text-left px-3 py-2 rounded-lg bg-zinc-50 border border-zinc-200 hover:bg-zinc-100 transition-colors text-xs font-medium text-zinc-600 flex items-center gap-2"
+                        className="w-full text-left px-3 py-2 rounded-lg bg-muted border border-border hover:bg-muted transition-colors text-xs font-medium text-muted-foreground flex items-center gap-2"
                     >
                         <User className="h-3.5 w-3.5" />
                         Cùng thông tin khách hàng ({order.customer_name})
@@ -335,7 +335,7 @@ function ShippingInfoForm({ order, token }: { order: any; token: string }) {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-semibold text-zinc-600">Tên người nhận</Label>
+                            <Label className="text-xs font-semibold text-muted-foreground">Tên người nhận</Label>
                             <Input
                                 value={form.recipient_name}
                                 onChange={e => setForm(f => ({ ...f, recipient_name: e.target.value }))}
@@ -344,7 +344,7 @@ function ShippingInfoForm({ order, token }: { order: any; token: string }) {
                             />
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-semibold text-zinc-600">Số điện thoại</Label>
+                            <Label className="text-xs font-semibold text-muted-foreground">Số điện thoại</Label>
                             <Input
                                 value={form.recipient_phone}
                                 onChange={e => setForm(f => ({ ...f, recipient_phone: e.target.value }))}
@@ -355,13 +355,13 @@ function ShippingInfoForm({ order, token }: { order: any; token: string }) {
                     </div>
 
                     <div className="space-y-1.5">
-                        <Label className="text-xs font-semibold text-zinc-600">Địa chỉ giao hàng</Label>
+                        <Label className="text-xs font-semibold text-muted-foreground">Địa chỉ giao hàng</Label>
                         <textarea
                             value={form.address}
                             onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
                             placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố"
                             rows={2}
-                            className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-200 focus:border-zinc-400 resize-none"
+                            className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-zinc-200 focus:border-zinc-400 resize-none"
                         />
                     </div>
 
@@ -418,9 +418,9 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
     const isPaid = order.payment_status === 'paid'
 
     return (
-        <div className="min-h-screen bg-zinc-50/50 font-sans text-zinc-900 pb-20 selection:bg-black selection:text-white">
+        <div className="min-h-screen bg-muted/50 font-sans text-foreground pb-20 selection:bg-black selection:text-white">
             {/* ─── Header ─── */}
-            <div className="bg-white border-b border-zinc-200 py-4 px-4 lg:pt-10 lg:pb-8 lg:px-6">
+            <div className="bg-white border-b border-border py-4 px-4 lg:pt-10 lg:pb-8 lg:px-6">
                 <div className="max-w-5xl mx-auto">
                     {/* Mobile: compact horizontal bar */}
                     <div className="flex items-center gap-3 lg:hidden">
@@ -435,7 +435,7 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                             <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
                                 {brandConfig?.brand_name || 'Tulie Studio'}
                             </p>
-                            <h1 className="text-sm font-semibold text-zinc-900 tracking-tight truncate">{order.order_number}</h1>
+                            <h1 className="text-sm font-semibold text-foreground truncate">{order.order_number}</h1>
                         </div>
                         <StatusBadge status={order.order_status} />
                     </div>
@@ -446,13 +446,13 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                             {brandConfig?.logo_url ? (
                                 <img src={brandConfig.logo_url} alt="Logo" className="h-14 w-auto object-contain grayscale" />
                             ) : (
-                                <div className="h-12 w-12 rounded-xl bg-zinc-900 flex items-center justify-center">
+                                <div className="h-12 w-12 rounded-md bg-zinc-900 flex items-center justify-center">
                                     <Package className="h-6 w-6 text-white" />
                                 </div>
                             )}
-                            <div className="w-px h-10 bg-zinc-200" />
+                            <div className="w-px h-10 bg-muted" />
                             <div>
-                                <h1 className="text-xl font-semibold text-zinc-900 tracking-tight">{order.order_number}</h1>
+                                <h1 className="text-xl font-semibold text-foreground">{order.order_number}</h1>
                                 <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mt-0.5">
                                     {brandConfig?.brand_name || 'Tulie Studio'}
                                 </p>
@@ -470,13 +470,13 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                     {/* ─── LEFT COLUMN: Order Info + Items + Resources ─── */}
                     <div className="flex-1 space-y-6 min-w-0">
                         {/* Order Info */}
-                        <div className="bg-white rounded-xl border border-zinc-200 shadow-sm overflow-hidden">
-                            <div className="p-5 border-b border-zinc-100 flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center">
-                                    <FileText className="h-4 w-4 text-zinc-600" />
+                        <div className="bg-white rounded-md border border-border shadow-sm overflow-hidden">
+                            <div className="p-5 border-b border-border flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-md bg-muted border border-border flex items-center justify-center">
+                                    <FileText className="h-4 w-4 text-muted-foreground" />
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-semibold text-zinc-950 tracking-tight">Thông tin đơn hàng</h3>
+                                    <h3 className="text-sm font-semibold text-foreground">Thông tin đơn hàng</h3>
                                     <p className="text-[11px] font-medium text-muted-foreground">Chi tiết đơn hàng của bạn</p>
                                 </div>
                             </div>
@@ -485,23 +485,23 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                                     <p className="text-[11px] text-muted-foreground font-medium flex items-center gap-1.5">
                                         <User className="h-3 w-3" /> Khách hàng
                                     </p>
-                                    <p className="text-sm font-semibold text-zinc-950">{order.customer_name}</p>
+                                    <p className="text-sm font-semibold text-foreground">{order.customer_name}</p>
                                 </div>
                                 <div className="p-5 space-y-1">
                                     <p className="text-[11px] text-muted-foreground font-medium flex items-center gap-1.5">
                                         <CalendarDays className="h-3 w-3" /> Ngày đặt đơn
                                     </p>
-                                    <p className="text-sm font-semibold text-zinc-950">{order.order_date ? formatDate(order.order_date) : formatDate(order.created_at)}</p>
+                                    <p className="text-sm font-semibold text-foreground">{order.order_date ? formatDate(order.order_date) : formatDate(order.created_at)}</p>
                                 </div>
                             </div>
                             {(order.delivery_date || order.customer_phone) && (
-                                <div className="grid grid-cols-2 divide-x divide-zinc-100 border-t border-zinc-100">
+                                <div className="grid grid-cols-2 divide-x divide-zinc-100 border-t border-border">
                                     {order.delivery_date && (
                                         <div className="p-5 space-y-1">
                                             <p className="text-[11px] text-muted-foreground font-medium flex items-center gap-1.5">
                                                 <Truck className="h-3 w-3" /> Ngày bàn giao
                                             </p>
-                                            <p className="text-sm font-semibold text-zinc-950">{formatDate(order.delivery_date)}</p>
+                                            <p className="text-sm font-semibold text-foreground">{formatDate(order.delivery_date)}</p>
                                         </div>
                                     )}
                                     {order.customer_phone && (
@@ -509,7 +509,7 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                                             <p className="text-[11px] text-muted-foreground font-medium flex items-center gap-1.5">
                                                 <MessageCircle className="h-3 w-3" /> Số điện thoại
                                             </p>
-                                            <p className="text-sm font-semibold text-zinc-950">{order.customer_phone}</p>
+                                            <p className="text-sm font-semibold text-foreground">{order.customer_phone}</p>
                                         </div>
                                     )}
                                 </div>
@@ -517,13 +517,13 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                         </div>
 
                         {/* Order Items + Payment Summary */}
-                        <div className="bg-white rounded-xl border border-zinc-200 shadow-sm overflow-hidden">
-                            <div className="p-5 border-b border-zinc-100 flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center">
-                                    <Package className="h-4 w-4 text-zinc-600" />
+                        <div className="bg-white rounded-md border border-border shadow-sm overflow-hidden">
+                            <div className="p-5 border-b border-border flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-md bg-muted border border-border flex items-center justify-center">
+                                    <Package className="h-4 w-4 text-muted-foreground" />
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-semibold text-zinc-950 tracking-tight">Danh sách sản phẩm / dịch vụ</h3>
+                                    <h3 className="text-sm font-semibold text-foreground">Danh sách sản phẩm / dịch vụ</h3>
                                     <p className="text-[11px] font-medium text-muted-foreground">Các sản phẩm trong đơn hàng</p>
                                 </div>
                             </div>
@@ -532,12 +532,12 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                                     items.map((item: any, i: number) => (
                                         <div key={item.id || i} className="px-5 py-4 flex items-center justify-between gap-4">
                                             <div className="min-w-0 flex-1">
-                                                <p className="text-sm font-semibold text-zinc-900 truncate">{item.product_name}</p>
+                                                <p className="text-sm font-semibold text-foreground truncate">{item.product_name}</p>
                                                 <p className="text-[12px] text-muted-foreground mt-0.5">
                                                     {item.quantity} × {formatCurrency(item.unit_price)}
                                                 </p>
                                             </div>
-                                            <p className="text-sm font-bold text-zinc-900 tabular-nums whitespace-nowrap">
+                                            <p className="text-sm font-bold text-foreground tabular-nums whitespace-nowrap">
                                                 {formatCurrency(item.total_price || item.quantity * item.unit_price)}
                                             </p>
                                         </div>
@@ -545,28 +545,28 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                                 ) : (
                                     <div className="px-5 py-4 flex items-center justify-between gap-4">
                                         <div className="min-w-0 flex-1">
-                                            <p className="text-sm font-semibold text-zinc-900">Dịch vụ Studio</p>
+                                            <p className="text-sm font-semibold text-foreground">Dịch vụ Studio</p>
                                             {order.notes && (
                                                 <p className="text-[12px] text-muted-foreground mt-0.5 line-clamp-2">{order.notes}</p>
                                             )}
                                         </div>
-                                        <p className="text-sm font-bold text-zinc-900 tabular-nums whitespace-nowrap">
+                                        <p className="text-sm font-bold text-foreground tabular-nums whitespace-nowrap">
                                             {formatCurrency(order.total_amount - (order.shipping_fee || 0))}
                                         </p>
                                     </div>
                                 )}
                             </div>
                             {order.shipping_fee > 0 && (
-                                <div className="px-5 py-3 border-t border-zinc-100 flex items-center justify-between bg-zinc-50/50">
+                                <div className="px-5 py-3 border-t border-border flex items-center justify-between bg-muted/50">
                                     <p className="text-sm text-muted-foreground">Phí vận chuyển</p>
                                     <p className="text-sm font-semibold text-zinc-700 tabular-nums">{formatCurrency(order.shipping_fee)}</p>
                                 </div>
                             )}
-                            <div className="border-t border-zinc-200 p-5 space-y-3 bg-zinc-50/30">
+                            <div className="border-t border-border p-5 space-y-3 bg-muted/30">
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm text-muted-foreground">Tổng giá trị</span>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-2xl font-bold text-zinc-950 tracking-tighter tabular-nums">{formatCurrency(order.total_amount).replace(' đ', '')}</span>
+                                        <span className="text-2xl font-bold text-foreground tracking-tighter tabular-nums">{formatCurrency(order.total_amount).replace(' đ', '')}</span>
                                         <span className="text-sm font-semibold text-muted-foreground">đ</span>
                                     </div>
                                 </div>
@@ -580,16 +580,16 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                                     </div>
                                 )}
                                 {!isPaid && remainingAmount > 0 && (
-                                    <div className="border-t border-dashed border-zinc-200 pt-3 flex items-center justify-between">
+                                    <div className="border-t border-dashed border-border pt-3 flex items-center justify-between">
                                         <span className="text-sm font-semibold text-zinc-700">Còn lại</span>
                                         <div className="flex items-baseline gap-1">
-                                            <span className="text-xl font-bold text-zinc-950 tabular-nums">{formatCurrency(remainingAmount).replace(' đ', '')}</span>
+                                            <span className="text-xl font-bold text-foreground tabular-nums">{formatCurrency(remainingAmount).replace(' đ', '')}</span>
                                             <span className="text-sm font-semibold text-muted-foreground">đ</span>
                                         </div>
                                     </div>
                                 )}
                                 {isPaid && (
-                                    <div className="flex items-center justify-center gap-2 py-2 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                    <div className="flex items-center justify-center gap-2 py-2 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100">
                                         <ShieldCheck className="h-5 w-5" />
                                         <span className="text-sm font-bold">Đã hoàn tất thanh toán</span>
                                     </div>
@@ -600,15 +600,15 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                         {order.resource_link && (
                             <div className="space-y-3">
                                 <div className="flex items-center gap-3 px-1">
-                                    <div className="w-8 h-8 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center">
-                                        <Sparkles className="h-4 w-4 text-zinc-600" />
+                                    <div className="w-8 h-8 rounded-md bg-muted border border-border flex items-center justify-center">
+                                        <Sparkles className="h-4 w-4 text-muted-foreground" />
                                     </div>
                                     <div>
-                                        <h3 className="text-sm font-semibold text-zinc-950 tracking-tight">Tài nguyên dự án</h3>
+                                        <h3 className="text-sm font-semibold text-foreground">Tài nguyên dự án</h3>
                                         <p className="text-[11px] font-medium text-muted-foreground">Resources</p>
                                     </div>
                                 </div>
-                                <Button asChild className="w-full h-14 group bg-zinc-950 hover:bg-zinc-800 text-white shadow-lg shadow-black/10 rounded-xl justify-start px-5 border-none transition-all">
+                                <Button asChild className="w-full h-14 group bg-zinc-950 hover:bg-zinc-800 text-white shadow-lg shadow-black/10 rounded-md justify-start px-5 border-none transition-all">
                                     <a href={order.resource_link} target="_blank">
                                         <Download className="mr-3 h-5 w-5 opacity-50" />
                                         <div className="text-left flex-1">
@@ -623,9 +623,9 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
 
                         {/* Tracking Info */}
                         {order.tracking_number && (
-                            <div className="bg-white rounded-xl border border-zinc-200 shadow-sm overflow-hidden">
+                            <div className="bg-white rounded-md border border-border shadow-sm overflow-hidden">
                                 <div className="p-5 flex items-center gap-3">
-                                    <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
+                                    <div className="w-8 h-8 rounded-md bg-blue-50 border border-blue-100 flex items-center justify-center">
                                         <Truck className="h-4 w-4 text-blue-600" />
                                     </div>
                                     <div className="flex-1 min-w-0">
@@ -635,7 +635,7 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                                                 Tra cứu vận đơn →
                                             </a>
                                         ) : (
-                                            <p className="text-sm font-bold text-zinc-900 font-mono tracking-tight">{order.tracking_number}</p>
+                                            <p className="text-sm font-bold text-foreground font-mono">{order.tracking_number}</p>
                                         )}
                                     </div>
                                 </div>
@@ -648,7 +648,7 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
 
                         {/* Notes */}
                         {order.notes && (
-                            <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-5">
+                            <div className="bg-white rounded-md border border-border shadow-sm p-5">
                                 <p className="text-[11px] text-muted-foreground font-medium mb-2 uppercase tracking-wider">Ghi chú</p>
                                 <p className="text-sm text-zinc-700 leading-relaxed whitespace-pre-wrap">{order.notes}</p>
                             </div>
@@ -660,11 +660,11 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                         <div className="lg:w-[380px] shrink-0 space-y-4">
                             <div className="lg:sticky lg:top-8 space-y-4">
                                 <div className="flex items-center gap-3 px-1">
-                                    <div className="w-8 h-8 rounded-xl bg-zinc-900 flex items-center justify-center">
+                                    <div className="w-8 h-8 rounded-md bg-zinc-900 flex items-center justify-center">
                                         <CreditCard className="h-4 w-4 text-white" />
                                     </div>
                                     <div>
-                                        <h3 className="text-sm font-semibold text-zinc-950 tracking-tight">Chuyển khoản thanh toán</h3>
+                                        <h3 className="text-sm font-semibold text-foreground">Chuyển khoản thanh toán</h3>
                                         <p className="text-[11px] font-medium text-muted-foreground">Bank Transfer</p>
                                     </div>
                                 </div>
@@ -673,8 +673,8 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                                 <PortalPaymentWatcher token={token} remainingAmount={remainingAmount} />
 
                                 {/* QR Code Card */}
-                                <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-6 flex flex-col items-center">
-                                    <div className="p-3 bg-white rounded-xl shadow-md border border-zinc-100 mb-4">
+                                <div className="bg-white rounded-md border border-border shadow-sm p-6 flex flex-col items-center">
+                                    <div className="p-3 bg-white rounded-md shadow-md border border-border mb-4">
                                         <img
                                             src={qrUrl}
                                             alt="QR thanh toán"
@@ -688,15 +688,15 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                                 </div>
 
                                 {/* Bank Info Card */}
-                                <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-5 space-y-4">
+                                <div className="bg-white rounded-md border border-border shadow-sm p-5 space-y-4">
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <p className="text-[11px] text-muted-foreground font-medium mb-1">Ngân hàng</p>
-                                            <p className="text-sm font-bold text-zinc-900">{bankInfo.bank_name}</p>
+                                            <p className="text-sm font-bold text-foreground">{bankInfo.bank_name}</p>
                                         </div>
                                         <div className="text-right">
                                             <p className="text-[11px] text-muted-foreground font-medium mb-1">Chủ tài khoản</p>
-                                            <p className="text-sm font-bold text-zinc-900">{bankInfo.account_name}</p>
+                                            <p className="text-sm font-bold text-foreground">{bankInfo.account_name}</p>
                                         </div>
                                     </div>
 
@@ -705,7 +705,7 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
 
                                     <p className="text-[11px] text-muted-foreground text-center leading-relaxed pt-1">
                                         Hệ thống tự động ghi nhận khi giao dịch thành công.
-                                        <br />Vui lòng <span className="font-semibold text-zinc-600">không thay đổi</span> nội dung CK.
+                                        <br />Vui lòng <span className="font-semibold text-muted-foreground">không thay đổi</span> nội dung CK.
                                     </p>
                                 </div>
 
@@ -739,12 +739,12 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                                                 }
                                             }
                                         }}
-                                        className="w-full h-12 rounded-xl text-sm font-bold bg-zinc-950 hover:bg-zinc-800 text-white shadow-lg"
+                                        className="w-full h-12 rounded-md text-sm font-bold bg-zinc-950 hover:bg-zinc-800 text-white shadow-lg"
                                     >
                                         <Smartphone className="mr-2 h-4 w-4" />
                                         Chia sẻ mã QR qua Zalo
                                     </Button>
-                                    <Button asChild variant="outline" className="w-full h-10 rounded-xl border-zinc-200 text-sm font-semibold">
+                                    <Button asChild variant="outline" className="w-full h-10 rounded-md border-border text-sm font-semibold">
                                         <a href={qrUrl} download={`QR_${order.order_number}.png`}>
                                             <Download className="mr-2 h-4 w-4" />
                                             Lưu mã QR vào máy
@@ -758,10 +758,10 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
 
                 {/* ─── Footer ─── */}
                 <div className="text-center space-y-3 pt-4 pb-2">
-                    <div className="h-px bg-zinc-200" />
+                    <div className="h-px bg-muted" />
                     <p className="text-xs text-muted-foreground font-medium">
                         Bạn cần hỗ trợ?{' '}
-                        <a href="https://zalo.me/0979684731" target="_blank" className="font-bold text-zinc-900 hover:underline transition-colors">
+                        <a href="https://zalo.me/0979684731" target="_blank" className="font-bold text-foreground hover:underline transition-colors">
                             Liên hệ Zalo
                         </a>
                     </p>

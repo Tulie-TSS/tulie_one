@@ -245,17 +245,17 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
             {/* Options Switcher (Hero Section above Paper) */}
             {activeOptions.length > 1 && (
                 <div className="max-w-5xl mx-auto mb-10 print:hidden px-4 sm:px-0">
-                    <div className="bg-white/90 backdrop-blur-xl border border-zinc-200/50 p-6 rounded-3xl shadow-2xl overflow-hidden relative group">
+                    <div className="bg-white/90 backdrop-blur-xl border border-border p-6 rounded-3xl shadow-2xl overflow-hidden relative group">
                         <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none group-hover:scale-110 transition-transform duration-700">
                             <Target className="w-40 h-40 text-black rotate-12" />
                         </div>
 
                         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                             <div className="space-y-1.5 text-center md:text-left">
-                                <h3 className="text-2xl font-black tracking-tight text-zinc-950 uppercase italic">
+                                <h3 className="text-2xl font-black text-foreground uppercase italic">
                                     Lựa chọn phương án đầu tư
                                 </h3>
-                                <p className="text-zinc-500 text-sm font-medium">Bản chào giá có {activeOptions.length} lựa chọn phù hợp nhất dành cho bạn.</p>
+                                <p className="text-muted-foreground text-sm font-medium">Bản chào giá có {activeOptions.length} lựa chọn phù hợp nhất dành cho bạn.</p>
                             </div>
 
                             <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 self-center">
@@ -282,10 +282,10 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                 window.scrollTo({ top: 0, behavior: 'smooth' });
                                             }}
                                             className={cn(
-                                                "relative px-6 py-4 rounded-2xl transition-all duration-500 group flex flex-col items-center gap-1",
+                                                "relative px-6 py-4 rounded-md transition-all duration-500 group flex flex-col items-center gap-1",
                                                 isActive
                                                     ? "bg-zinc-950 text-white shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] scale-105"
-                                                    : "bg-white text-zinc-600 hover:bg-zinc-50 border border-zinc-200"
+                                                    : "bg-white text-muted-foreground hover:bg-muted border border-border"
                                             )}
                                         >
                                             <span className="text-[10px] font-black uppercase tracking-widest opacity-60">PHƯƠNG ÁN {idx + 1}</span>
@@ -318,14 +318,14 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
 
             {/* View Mode Toggle */}
             <div className="max-w-[210mm] mx-auto mb-4 flex items-center justify-end gap-2 print:hidden px-4 sm:px-0">
-                <div className="inline-flex items-center rounded-full border border-zinc-200/60 bg-white/80 backdrop-blur-sm shadow-sm p-0.5">
+                <div className="inline-flex items-center rounded-full border border-border/60 bg-white/80 backdrop-blur-sm shadow-sm p-0.5">
                     <button
                         onClick={() => setViewMode('modern')}
                         className={cn(
                             "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-all",
                             viewMode === 'modern'
                                 ? "bg-zinc-900 text-white shadow-sm"
-                                : "text-zinc-500 hover:text-zinc-700"
+                                : "text-muted-foreground hover:text-zinc-700"
                         )}
                     >
                         <Layout className="w-3.5 h-3.5" />
@@ -337,7 +337,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                             "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-all",
                             viewMode === 'basic'
                                 ? "bg-zinc-900 text-white shadow-sm"
-                                : "text-zinc-500 hover:text-zinc-700"
+                                : "text-muted-foreground hover:text-zinc-700"
                         )}
                     >
                         <FileSignature className="w-3.5 h-3.5" />
@@ -431,7 +431,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                             <h3 className="text-[13px] font-semibold text-black mb-2 border-l-4 border-black pl-3 leading-none h-3.5 flex items-center">
                                 Thông tin khách hàng<span className="text-[0.8em] italic font-normal opacity-70">/ Customer</span>
                             </h3>
-                            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col gap-2 text-[12px] sm:text-[13px]">
+                            <div className="bg-slate-50 p-4 rounded-md border border-slate-100 flex flex-col gap-2 text-[12px] sm:text-[13px]">
                                 <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr]">
                                     <span className="text-slate-500 sm:text-slate-700 italic sm:not-italic">Đơn vị<span className="text-[0.8em] italic font-normal opacity-70">/ Company</span>:</span>
                                     <span className="font-semibold text-black">{currentQuotation.customer?.company_name || "N/A"}</span>
@@ -457,7 +457,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                         {hasProposal && proposalSections.length > 0 && (
                             <div className="mb-10">
                                 {/* Proposal Header */}
-                                <div className="relative mb-6 py-4 px-5 rounded-xl text-white overflow-hidden bg-zinc-950"
+                                <div className="relative mb-6 py-4 px-5 rounded-md text-white overflow-hidden bg-zinc-950"
                                     style={{ backgroundImage: "linear-gradient(to right, #09090b, #171717, #404040)", WebkitPrintColorAdjust: 'exact' }}>
                                     {/* Dot pattern as a separate layer for html2canvas compatibility */}
                                     <div className="absolute inset-0 opacity-20 pointer-events-none"
@@ -482,9 +482,9 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                 </div>
 
                                                 {/* Content Card */}
-                                                <div className="rounded-xl border border-slate-200 bg-white overflow-hidden overflow-x-auto">
+                                                <div className="rounded-md border border-slate-200 bg-white overflow-hidden overflow-x-auto">
                                                     {/* Card Header */}
-                                                    <div className="flex items-center gap-2.5 px-4 py-2.5 border-b bg-slate-50 border-slate-100 text-zinc-900"
+                                                    <div className="flex items-center gap-2.5 px-4 py-2.5 border-b bg-slate-50 border-slate-100 text-foreground"
                                                         style={{ WebkitPrintColorAdjust: 'exact' }}>
                                                         <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-zinc-900 text-white shadow-sm"
                                                             style={{ WebkitPrintColorAdjust: 'exact' }}>
@@ -519,7 +519,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                 <span className="text-primary mr-2">{hasProposal ? `${proposalSections.length + 1}.` : ''}</span>
                                 {hasProposal ? 'Kế hoạch đầu tư' : 'Chi tiết dịch vụ'}
                                 {!hasProposal && <span className="text-[0.8em] italic font-normal opacity-70 ml-1">/ Service Details</span>}
-                                {hasProposal && <span className="text-[0.7em] italic font-normal opacity-50 ml-2 tracking-tight">(Investment Plan)</span>}
+                                {hasProposal && <span className="text-[0.7em] italic font-normal opacity-50 ml-2">(Investment Plan)</span>}
                             </h3>
                             <div className="border border-slate-200 rounded-lg overflow-x-auto">
                                 <table className="w-full text-left border-collapse text-[11px] min-w-[900px]">
@@ -609,10 +609,10 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                                     <div className="flex flex-wrap items-center gap-2">
                                                                         <p className="font-semibold text-slate-900 leading-tight">{item.product_name}</p>
                                                                         {item.is_optional && (
-                                                                            <Badge variant="outline" className="text-[9px] h-4 px-1.5 border-zinc-300 bg-zinc-50 text-zinc-600 font-bold">Tùy chọn</Badge>
+                                                                            <Badge variant="outline" className="text-[9px] h-4 px-1.5 border-input bg-muted text-muted-foreground font-bold">Tùy chọn</Badge>
                                                                         )}
                                                                         {isAlternative && (
-                                                                            <Badge variant="outline" className="text-[9px] h-4 px-1.5 border-zinc-300 bg-zinc-100 text-zinc-700 font-bold">
+                                                                            <Badge variant="outline" className="text-[9px] h-4 px-1.5 border-input bg-muted text-zinc-700 font-bold">
                                                                                 {item.alternative_group}
                                                                             </Badge>
                                                                         )}
@@ -661,14 +661,14 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 mt-6">
                                 <div className="hidden sm:block"></div>
-                                <div className="w-full bg-slate-50/50 p-4 rounded-xl border border-dashed border-slate-200 divide-y divide-slate-100">
+                                <div className="w-full bg-slate-50/50 p-4 rounded-md border border-dashed border-slate-200 divide-y divide-slate-100">
                                     <div className="flex justify-between py-1.5 text-[12px]">
                                         <span className="text-slate-500 italic">Tạm tính:</span>
                                         <span className="font-medium text-slate-900">{formatCurrency(subtotalRaw)}</span>
                                     </div>
                                     {totalDiscount > 0 && (
                                         <div className="flex justify-between py-1.5 text-[12px]">
-                                            <span className="text-zinc-500 italic">Chiết khấu:</span>
+                                            <span className="text-muted-foreground italic">Chiết khấu:</span>
                                             <span className="text-zinc-700">-{formatCurrency(totalDiscount)}</span>
                                         </div>
                                     )}
@@ -696,9 +696,9 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                             {/* Footer Section: Notes & Bank Info */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-auto">
                                 {/* Left Column: Notes & Terms */}
-                                <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col gap-4 h-full">
+                                <div className="bg-slate-50 p-4 rounded-md border border-slate-100 flex flex-col gap-4 h-full">
                                     <div>
-                                        <h4 className="font-semibold text-black mb-1.5  text-[12px] ">Ghi chú <span className="text-[0.8em] italic font-normal opacity-70">/ Notes</span>:</h4>
+                                        <h4 className="font-semibold text-black mb-1.5 text-[12px]">Ghi chú <span className="text-[0.8em] italic font-normal opacity-70">/ Notes</span>:</h4>
                                         <div className="text-xs text-black leading-relaxed space-y-1">
                                             {(currentQuotation.notes || brandConfig?.default_notes || 'Báo giá có hiệu lực trong vòng 07 ngày.\nGiá trên chưa bao gồm chi phí mua tên miền & hosting (nếu có).\nNội dung công việc sẽ được mô tả chi tiết trong hợp đồng.').split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
                                                 <div key={i} className="flex gap-2">
@@ -709,7 +709,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                         </div>
                                     </div>
                                     <div className="border-t border-slate-200 pt-3 mt-auto">
-                                        <h4 className="font-semibold text-black mb-1.5  text-[12px] ">Điều khoản thanh toán <span className="text-[0.8em] italic font-normal opacity-70">/ Payment Terms</span>:</h4>
+                                        <h4 className="font-semibold text-black mb-1.5 text-[12px]">Điều khoản thanh toán <span className="text-[0.8em] italic font-normal opacity-70">/ Payment Terms</span>:</h4>
                                         <div className="text-xs text-black leading-relaxed space-y-1">
                                             {(currentQuotation.terms || brandConfig?.default_payment_terms || "50% đặt cọc khi xác nhận báo giá\n50% còn lại thanh toán khi hoàn thành").split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
                                                 <div key={i} className="flex gap-2">
@@ -722,8 +722,8 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                 </div>
 
                                 {/* Right Column: Bank Transfer */}
-                                <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 h-fit">
-                                    <h4 className="font-semibold text-black mb-1.5  text-[12px] ">Thông tin chuyển khoản<span className="text-[0.8em] italic font-normal opacity-70 ml-1 normal-case">/ Bank Transfer</span></h4>
+                                <div className="bg-slate-50 p-4 rounded-md border border-slate-100 h-fit">
+                                    <h4 className="font-semibold text-black mb-1.5 text-[12px]">Thông tin chuyển khoản<span className="text-[0.8em] italic font-normal opacity-70 ml-1 normal-case">/ Bank Transfer</span></h4>
                                     <div className="space-y-2 text-xs">
                                         <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] items-baseline">
                                             <span className="text-slate-500 sm:text-black italic sm:not-italic">Ngân hàng<span className="text-[0.8em] italic opacity-70">/ Bank</span>:</span>
@@ -735,7 +735,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                         </div>
                                         <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] items-baseline">
                                             <span className="text-slate-500 sm:text-black italic sm:not-italic">Chủ TK<span className="text-[0.8em] italic opacity-70">/ Account Name</span>:</span>
-                                            <span className=" font-semibold text-black">{currentQuotation.bank_account_name || brandConfig?.bank_account_name || "Công ty TNHH Tulie"}</span>
+                                            <span className="font-semibold text-black">{currentQuotation.bank_account_name || brandConfig?.bank_account_name || "Công ty TNHH Tulie"}</span>
                                         </div>
                                         {(currentQuotation.bank_branch || brandConfig?.bank_branch) && (
                                             <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] items-baseline">
@@ -756,7 +756,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                             <div className="w-full h-px bg-slate-200 mb-6"></div>
                             <div className="flex justify-between items-center w-full px-2 text-[10px] text-slate-600">
                                 <div className="flex items-center gap-4">
-                                    <span className="font-semibold text-slate-900 ">{brandConfig?.brand_name || "Tulie Agency"}</span>
+                                    <span className="font-semibold text-slate-900">{brandConfig?.brand_name || "Tulie Agency"}</span>
                                     <span className="h-2 w-px bg-slate-200"></span>
                                     <span>{brandConfig?.company_name || "Giải pháp công nghệ số"}</span>
                                 </div>
@@ -774,26 +774,26 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
             {/* History Timeline Panel */}
             {historyItems.length > 0 && (
                 <div className="max-w-5xl mx-auto mt-12 mb-12 print:hidden px-4 sm:px-0">
-                    <div className="bg-white/80 backdrop-blur-md border-[3px] border-zinc-200/50 rounded-[40px] p-10 relative overflow-hidden shadow-2xl">
+                    <div className="bg-white/80 backdrop-blur-md border-[3px] border-border rounded-[40px] p-10 relative overflow-hidden shadow-2xl">
                         <div className="relative z-10 space-y-10">
                             <div className="flex items-center gap-6">
-                                <div className="w-14 h-14 rounded-2xl bg-zinc-950 flex items-center justify-center shadow-lg transform -rotate-3">
+                                <div className="w-14 h-14 rounded-md bg-zinc-950 flex items-center justify-center shadow-lg transform -rotate-3">
                                     <Clock className="w-7 h-7 text-white" />
                                 </div>
                                 <div>
-                                    <h3 className="text-2xl font-black text-zinc-950 tracking-tight uppercase italic">Lịch sử phiên bản</h3>
-                                    <p className="text-zinc-500 text-sm font-medium">Quản lý các bản thảo và xác nhận trước đó của dự án.</p>
+                                    <h3 className="text-2xl font-black text-foreground uppercase italic">Lịch sử phiên bản</h3>
+                                    <p className="text-muted-foreground text-sm font-medium">Quản lý các bản thảo và xác nhận trước đó của dự án.</p>
                                 </div>
                             </div>
 
-                            <div className="relative pl-12 before:absolute before:left-[17px] before:top-4 before:bottom-0 before:w-[3px] before:bg-zinc-100 before:rounded-full">
+                            <div className="relative pl-12 before:absolute before:left-[17px] before:top-4 before:bottom-0 before:w-[3px] before:bg-muted before:rounded-full">
                                 {historyItems.map((item: any) => (
                                     <div key={item.id} className="relative mb-12 last:mb-0 group cursor-pointer" onClick={() => {
                                         setCurrentQuotation(item);
                                         window.scrollTo({ top: 0, behavior: 'smooth' });
                                     }}>
                                         <div className={cn(
-                                            "absolute -left-[45px] top-2 w-[40px] h-[40px] rounded-2xl border-4 border-white z-10 transition-all duration-500 flex items-center justify-center shadow-md group-hover:scale-110",
+                                            "absolute -left-[45px] top-2 w-[40px] h-[40px] rounded-md border-4 border-white z-10 transition-all duration-500 flex items-center justify-center shadow-md group-hover:scale-110",
                                             item.status === 'accepted' ? "bg-zinc-950" :
                                                 item.status === 'rejected' ? "bg-rose-500" : "bg-zinc-400"
                                         )}>
@@ -802,27 +802,27 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                     <FileText className="w-5 h-5 text-white" />}
                                         </div>
 
-                                        <div className="bg-zinc-50/50 hover:bg-zinc-50 border border-zinc-100 rounded-3xl p-6 transition-all duration-300 group-hover:translate-x-2">
+                                        <div className="bg-muted/50 hover:bg-muted border border-border rounded-3xl p-6 transition-all duration-300 group-hover:translate-x-2">
                                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                                 <div className="space-y-2">
                                                     <div className="flex items-center gap-3">
-                                                        <span className="text-lg font-black text-zinc-950 tracking-tighter">#{item.quotation_number}</span>
+                                                        <span className="text-lg font-black text-foreground tracking-tighter">#{item.quotation_number}</span>
                                                         <Badge variant="outline" className={cn(
                                                             "text-[10px] h-5 px-2 font-black uppercase tracking-widest",
-                                                            item.status === 'accepted' ? "bg-zinc-100 text-zinc-900 border-zinc-200" :
-                                                                item.status === 'rejected' ? "bg-rose-50 text-rose-700 border-rose-200" : "bg-zinc-200/50"
+                                                            item.status === 'accepted' ? "bg-muted text-foreground border-border" :
+                                                                item.status === 'rejected' ? "bg-rose-50 text-rose-700 border-rose-200" : "bg-muted/50"
                                                         )}>
                                                             {item.status}
                                                         </Badge>
                                                     </div>
-                                                    <div className="flex items-center gap-2 text-zinc-500 font-bold text-[11px]">
+                                                    <div className="flex items-center gap-2 text-muted-foreground font-bold text-[11px]">
                                                         <Calendar className="w-3 h-3" />
                                                         {formatDate(item.created_at)}
                                                     </div>
                                                 </div>
                                                 <div className="text-right">
-                                                    <p className="text-xl font-black tabular-nums text-zinc-950">{formatCurrency(item.total_amount)}</p>
-                                                    <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest group-hover:text-zinc-600 transition-colors">Xem chi tiết phiên bản này →</span>
+                                                    <p className="text-xl font-black tabular-nums text-foreground">{formatCurrency(item.total_amount)}</p>
+                                                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest group-hover:text-muted-foreground transition-colors">Xem chi tiết phiên bản này →</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -847,7 +847,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                 </span>
                             </div>
                             <div className="flex items-baseline gap-1.5">
-                                <span className="text-[32px] font-bold text-slate-900 tracking-tight leading-none tabular-nums">{new Intl.NumberFormat('vi-VN').format(finalAmount)}</span>
+                                <span className="text-[32px] font-bold text-slate-900 leading-none tabular-nums">{new Intl.NumberFormat('vi-VN').format(finalAmount)}</span>
                                 <span className="text-base font-bold text-slate-400">VND</span>
                             </div>
                         </div>
@@ -1082,7 +1082,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                     
                     .p-4 { padding: 8px !important; }
                     .p-5 { padding: 10px !important; }
-                    .rounded-xl { border-radius: 12px !important; }
+                    .rounded-md { border-radius: 12px !important; }
                     .rounded-lg { border-radius: 8px !important; }
                     
                     .quotation-paper--modern .table-header-gradient, .quotation-paper--modern thead tr {
@@ -1098,59 +1098,59 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                 <DialogContent className="sm:max-w-[500px] rounded-lg p-0 overflow-hidden shadow-lg">
                     <div className="bg-zinc-900 text-white p-8">
                         <DialogHeader>
-                            <DialogTitle className="text-2xl font-bold tracking-tight">Xác nhận chấp nhận báo giá</DialogTitle>
-                            <p className="text-zinc-400 text-[10px] font-bold mt-1">Quotation Approval & Confirmation</p>
+                            <DialogTitle className="text-2xl font-bold">Xác nhận chấp nhận báo giá</DialogTitle>
+                            <p className="text-muted-foreground text-[10px] font-bold mt-1">Quotation Approval & Confirmation</p>
                         </DialogHeader>
                     </div>
                     <div className="p-8 space-y-6">
                         <div className="grid gap-4">
                             <div className="grid gap-2">
-                                <Label htmlFor="name" className="text-[11px] font-bold text-zinc-500">Họ và tên <span className="text-red-500">*</span></Label>
+                                <Label htmlFor="name" className="text-[11px] font-bold text-muted-foreground">Họ và tên <span className="text-red-500">*</span></Label>
                                 <Input
                                     id="name"
                                     value={confirmer.name}
                                     onChange={(e) => setConfirmer({ ...confirmer, name: e.target.value })}
                                     placeholder="Nhập họ tên của bạn"
-                                    className="h-12 rounded-xl bg-zinc-50 border-zinc-200"
+                                    className="h-12 rounded-md bg-muted border-border"
                                 />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="phone" className="text-[11px] font-bold text-zinc-500">Số điện thoại <span className="text-red-500">*</span></Label>
+                                    <Label htmlFor="phone" className="text-[11px] font-bold text-muted-foreground">Số điện thoại <span className="text-red-500">*</span></Label>
                                     <Input
                                         id="phone"
                                         value={confirmer.phone}
                                         onChange={(e) => setConfirmer({ ...confirmer, phone: e.target.value })}
                                         placeholder="VD: 090..."
-                                        className="h-12 rounded-xl bg-zinc-50 border-zinc-200"
+                                        className="h-12 rounded-md bg-muted border-border"
                                     />
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="position" className="text-[11px] font-bold text-zinc-500">Chức vụ</Label>
+                                    <Label htmlFor="position" className="text-[11px] font-bold text-muted-foreground">Chức vụ</Label>
                                     <Input
                                         id="position"
                                         value={confirmer.position}
                                         onChange={(e) => setConfirmer({ ...confirmer, position: e.target.value })}
                                         placeholder="VD: CEO, Manager..."
-                                        className="h-12 rounded-xl bg-zinc-50 border-zinc-200"
+                                        className="h-12 rounded-md bg-muted border-border"
                                     />
                                 </div>
                             </div>
                             <div className="grid gap-2">
-                                <Label htmlFor="email" className="text-[11px] font-bold text-zinc-500">Email</Label>
+                                <Label htmlFor="email" className="text-[11px] font-bold text-muted-foreground">Email</Label>
                                 <Input
                                     id="email"
                                     value={confirmer.email}
                                     onChange={(e) => setConfirmer({ ...confirmer, email: e.target.value })}
                                     placeholder="your@email.com"
-                                    className="h-12 rounded-xl bg-zinc-50 border-zinc-200"
+                                    className="h-12 rounded-md bg-muted border-border"
                                 />
                             </div>
                         </div>
 
                         <div className="flex flex-col gap-3">
                             <Button
-                                className="w-full h-12 bg-black text-white hover:bg-zinc-900 rounded-xl font-bold shadow-xl shadow-black/10 transition-all"
+                                className="w-full h-12 bg-black text-white hover:bg-zinc-900 rounded-md font-bold shadow-xl shadow-black/10 transition-all"
                                 onClick={handleConfirm}
                                 disabled={isSubmitting}
                             >
@@ -1159,7 +1159,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                             </Button>
                             <Button
                                 variant="ghost"
-                                className="w-full h-12 rounded-xl text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-all"
+                                className="w-full h-12 rounded-md text-muted-foreground hover:text-red-500 hover:bg-red-50 transition-all"
                                 onClick={() => setShowConfirm(false)}
                                 disabled={isSubmitting}
                             >
@@ -1175,25 +1175,25 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                 <DialogContent className="sm:max-w-[500px] rounded-lg p-0 overflow-hidden shadow-lg">
                     <div className="bg-red-600 text-white p-8">
                         <DialogHeader>
-                            <DialogTitle className="text-2xl font-bold tracking-tight text-white">Từ chối báo giá</DialogTitle>
+                            <DialogTitle className="text-2xl font-bold text-white">Từ chối báo giá</DialogTitle>
                             <p className="text-red-200 text-[10px] font-bold mt-1">Rejection Reason & Feedback</p>
                         </DialogHeader>
                     </div>
                     <div className="p-8 space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="reason" className="text-[11px] font-bold text-zinc-500">Lý do từ chối <span className="text-red-500">*</span></Label>
+                            <Label htmlFor="reason" className="text-[11px] font-bold text-muted-foreground">Lý do từ chối <span className="text-red-500">*</span></Label>
                             <textarea
                                 id="reason"
                                 value={rejectReason}
                                 onChange={(e) => setRejectReason(e.target.value)}
                                 placeholder="Vui lòng cho chúng tôi biết lý do bạn từ chối báo giá này để chúng tôi có thể cải thiện..."
-                                className="min-h-[120px] w-full rounded-xl bg-zinc-50 border-zinc-200 p-4 text-sm focus:ring-red-500 focus:border-red-500 outline-none border transition-all"
+                                className="min-h-[120px] w-full rounded-md bg-muted border-border p-4 text-sm focus:ring-red-500 focus:border-red-500 outline-none border transition-all"
                             />
                         </div>
 
                         <div className="flex flex-col gap-3">
                             <Button
-                                className="w-full h-12 bg-red-600 text-white hover:bg-red-700 rounded-xl font-bold shadow-xl shadow-red-600/10 transition-all"
+                                className="w-full h-12 bg-red-600 text-white hover:bg-red-700 rounded-md font-bold shadow-xl shadow-red-600/10 transition-all"
                                 onClick={handleRejectSubmit}
                                 disabled={isSubmitting}
                             >
@@ -1202,7 +1202,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                             </Button>
                             <Button
                                 variant="ghost"
-                                className="w-full h-12 rounded-xl text-zinc-400 hover:text-zinc-600 transition-all"
+                                className="w-full h-12 rounded-md text-muted-foreground hover:text-muted-foreground transition-all"
                                 onClick={() => setShowReject(false)}
                                 disabled={isSubmitting}
                             >

@@ -27,7 +27,7 @@ export default async function ContractsPage() {
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
                         <FileSignature className="h-6 w-6 text-primary" />
                     </div>
                     <div>

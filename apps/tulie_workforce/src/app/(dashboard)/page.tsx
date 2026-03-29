@@ -102,7 +102,7 @@ export default function DashboardPage() {
                 {/* ── Page Header ── */}
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-foreground">
+                        <h1 className="text-2xl font-bold text-foreground">
                             Welcome back
                         </h1>
                         <p className="text-muted-foreground mt-1">
@@ -110,7 +110,7 @@ export default function DashboardPage() {
                         </p>
                     </div>
                     <div className="flex items-center gap-3">
-                        <Button variant="outline" className="h-10 border-border bg-white hover:bg-zinc-50 shadow-sm text-sm font-medium">
+                        <Button variant="outline" className="h-10 border-border bg-white hover:bg-muted shadow-sm text-sm font-medium">
                             <Upload className="h-4 w-4 mr-2 text-muted-foreground" />
                             Import Data
                         </Button>
@@ -132,12 +132,12 @@ export default function DashboardPage() {
                                 <CardContent className="p-6 relative z-10">
                                     <div className="flex items-center justify-between">
                                         <p className="text-sm font-semibold text-muted-foreground">{stat.title}</p>
-                                        <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm border border-border/50`}>
+                                        <div className={`flex h-10 w-10 items-center justify-center rounded-md bg-white shadow-sm border border-border`}>
                                             <stat.icon className={`h-5 w-5 ${stat.iconColor}`} />
                                         </div>
                                     </div>
                                     <div className="mt-6 flex items-baseline gap-2">
-                                        <h2 className="text-4xl font-bold tracking-tight text-foreground">
+                                        <h2 className="text-4xl font-bold text-foreground">
                                             {stat.value}
                                         </h2>
                                         {stat.title === "Tasks This Week" && (
@@ -159,7 +159,7 @@ export default function DashboardPage() {
                     {/* Activity Feed (Takes up 2/3 or 3/4) */}
                     <div className="lg:col-span-2 xl:col-span-3 space-y-6">
                         <Card className="card-elevated">
-                            <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                            <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <CardTitle className="flex items-center gap-2 text-lg">
@@ -184,9 +184,9 @@ export default function DashboardPage() {
                                         return (
                                             <div
                                                 key={event.id}
-                                                className="group flex items-start gap-4 p-5 transition-colors hover:bg-zinc-50/50"
+                                                className="group flex items-start gap-4 p-5 transition-colors hover:bg-muted/50"
                                             >
-                                                <div className={`mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border shadow-sm ${colorClass}`}>
+                                                <div className={`mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-md border shadow-sm ${colorClass}`}>
                                                     <Icon className="h-4.5 w-4.5" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
@@ -201,7 +201,7 @@ export default function DashboardPage() {
                                                     </div>
                                                     <div className="flex items-center gap-3 mt-2">
                                                         {event.agentName && (
-                                                            <Badge variant="secondary" className="bg-white border-border/50 text-muted-foreground hover:bg-white shadow-sm font-medium">
+                                                            <Badge variant="secondary" className="bg-white border-border text-muted-foreground hover:bg-white shadow-sm font-medium">
                                                                 <Bot className="mr-1.5 h-3 w-3" />
                                                                 {event.agentName}
                                                             </Badge>
@@ -222,7 +222,7 @@ export default function DashboardPage() {
                                         );
                                     })}
                                 </div>
-                                <div className="border-t border-border/40 bg-zinc-50/50 p-4 text-center">
+                                <div className="border-t border-border/40 bg-muted/50 p-4 text-center">
                                     <Button variant="ghost" className="w-full text-sm font-medium text-primary hover:text-primary/80 hover:bg-primary/5">
                                         View All Logs <ArrowRight className="ml-1.5 h-4 w-4" />
                                     </Button>
@@ -259,7 +259,7 @@ export default function DashboardPage() {
                                 <div className="pt-3 border-t border-white/10">
                                     <p className="text-[13px] text-white/60 mb-1">Estimated Cost (Current Cycle)</p>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-3xl font-bold tracking-tight text-white">
+                                        <span className="text-3xl font-bold text-white">
                                             {formatCost(dashboardStats.totalCost)}
                                         </span>
                                         <span className="text-sm text-white/40 mt-1">USD</span>
@@ -274,7 +274,7 @@ export default function DashboardPage() {
                         </h3>
                         <div className="grid grid-cols-2 gap-3">
                             <Link href="/agents/new" className="block">
-                                <div className="group flex flex-col items-center justify-center gap-3 rounded-2xl border border-border/60 bg-white p-5 text-center shadow-sm transition-all hover:border-indigo-500/30 hover:shadow-md hover:shadow-indigo-500/5">
+                                <div className="group flex flex-col items-center justify-center gap-3 rounded-md border border-border/60 bg-white p-5 text-center shadow-sm transition-all hover:border-indigo-500/30 hover:shadow-md hover:shadow-indigo-500/5">
                                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 transition-transform group-hover:scale-110">
                                         <Bot className="h-6 w-6" />
                                     </div>
@@ -283,7 +283,7 @@ export default function DashboardPage() {
                             </Link>
                             
                             <Link href="/tasks/new" className="block">
-                                <div className="group flex flex-col items-center justify-center gap-3 rounded-2xl border border-border/60 bg-white p-5 text-center shadow-sm transition-all hover:border-emerald-500/30 hover:shadow-md hover:shadow-emerald-500/5">
+                                <div className="group flex flex-col items-center justify-center gap-3 rounded-md border border-border/60 bg-white p-5 text-center shadow-sm transition-all hover:border-emerald-500/30 hover:shadow-md hover:shadow-emerald-500/5">
                                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 transition-transform group-hover:scale-110">
                                         <ClipboardList className="h-6 w-6" />
                                     </div>
@@ -292,7 +292,7 @@ export default function DashboardPage() {
                             </Link>
                             
                             <Link href="/knowledge" className="block">
-                                <div className="group flex flex-col items-center justify-center gap-3 rounded-2xl border border-border/60 bg-white p-5 text-center shadow-sm transition-all hover:border-sky-500/30 hover:shadow-md hover:shadow-sky-500/5">
+                                <div className="group flex flex-col items-center justify-center gap-3 rounded-md border border-border/60 bg-white p-5 text-center shadow-sm transition-all hover:border-sky-500/30 hover:shadow-md hover:shadow-sky-500/5">
                                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-sky-50 text-sky-600 transition-transform group-hover:scale-110">
                                         <Upload className="h-6 w-6" />
                                     </div>
@@ -301,7 +301,7 @@ export default function DashboardPage() {
                             </Link>
                             
                             <Link href="/automations" className="block">
-                                <div className="group flex flex-col items-center justify-center gap-3 rounded-2xl border border-border/60 bg-white p-5 text-center shadow-sm transition-all hover:border-amber-500/30 hover:shadow-md hover:shadow-amber-500/5">
+                                <div className="group flex flex-col items-center justify-center gap-3 rounded-md border border-border/60 bg-white p-5 text-center shadow-sm transition-all hover:border-amber-500/30 hover:shadow-md hover:shadow-amber-500/5">
                                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 text-amber-600 transition-transform group-hover:scale-110">
                                         <Workflow className="h-6 w-6" />
                                     </div>

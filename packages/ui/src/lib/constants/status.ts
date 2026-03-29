@@ -26,8 +26,8 @@ export type SupportTicketPriority = 'low' | 'medium' | 'high' | 'urgent'
 
 // — Reusable color tokens —
 const C = {
-    ghost:     'bg-zinc-100 text-zinc-500 border border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700',
-    outline:   'bg-white text-zinc-600 border border-zinc-200 dark:bg-zinc-900 dark:text-zinc-300 dark:border-zinc-700',
+    ghost:     'bg-muted text-muted-foreground border border-border',
+    outline:   'bg-background text-muted-foreground border border-border',
     blue:      'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
     sky:       'bg-sky-50 text-sky-700 border border-sky-200 dark:bg-sky-950 dark:text-sky-300 dark:border-sky-800',
     emerald:   'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
@@ -35,7 +35,7 @@ const C = {
     danger:    'bg-rose-50 text-rose-700 border border-rose-200 dark:bg-rose-950 dark:text-rose-300 dark:border-rose-800',
     violet:    'bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-950 dark:text-violet-300 dark:border-violet-800',
     orange:    'bg-orange-50 text-orange-700 border border-orange-200 dark:bg-orange-950 dark:text-orange-300 dark:border-orange-800',
-    cancelled: 'bg-zinc-100 text-zinc-400 border border-zinc-200 line-through dark:bg-zinc-800 dark:text-zinc-500 dark:border-zinc-700',
+    cancelled: 'bg-muted text-muted-foreground border border-border line-through',
 } as const
 
 // Customer Status
@@ -128,11 +128,11 @@ export const DEAL_STATUS_LABELS: Record<DealStatus, string> = {
 }
 
 export const DEAL_CHART_COLORS: Record<DealStatus, string> = {
-    new: '#a1a1aa',          // zinc-400
+    new: '#a1a1aa',          // neutral-400
     briefing: '#3b82f6',     // blue-500
     proposal_sent: '#0ea5e9', // sky-500
     closed_won: '#10b981',    // emerald-500
-    closed_lost: '#d4d4d8'    // zinc-300
+    closed_lost: '#d4d4d8'    // neutral-300
 }
 
 export const DEAL_STATUS_COLORS: Record<DealStatus, string> = {
@@ -177,7 +177,7 @@ export const BRAND_LABELS = {
 }
 
 export const BRAND_COLORS = {
-    agency: 'bg-zinc-100 text-zinc-700 border border-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-600',
+    agency: 'bg-muted text-foreground border border-border',
     studio: 'bg-indigo-50 text-indigo-700 border border-indigo-200 dark:bg-indigo-950 dark:text-indigo-300 dark:border-indigo-800',
     academy: 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800',
 }

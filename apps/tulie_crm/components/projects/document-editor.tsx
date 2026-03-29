@@ -77,7 +77,7 @@ export function DocumentEditor({ document: initialDoc, onBack }: DocumentEditorP
             </div>
 
             <Card className="border-none shadow-premium overflow-hidden">
-                <CardHeader className="bg-zinc-50 border-b">
+                <CardHeader className="bg-muted border-b">
                     <CardTitle className="text-md font-bold">{initialDoc.template_name}</CardTitle>
                     <CardDescription>Bạn có thể chỉnh sửa nội dung văn bản này để phù hợp với thỏa thuận riêng cho dự án.</CardDescription>
                 </CardHeader>

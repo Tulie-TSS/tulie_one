@@ -161,7 +161,7 @@ export function PipelineCard({
     <div
       className={cn(
         "rounded-md border border-border bg-card p-3 shadow-sm transition-all",
-        "hover:shadow-md hover:-translate-y-0.5 cursor-pointer",
+        "hover:bg-accent cursor-pointer",
         "animate-[scale-in_200ms_ease-out]",
         className
       )}

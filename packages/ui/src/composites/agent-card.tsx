@@ -90,7 +90,7 @@ export function AgentCard({
     <Card
       className={cn(
         "transition-all",
-        onClick && "cursor-pointer hover:shadow-md hover:-translate-y-0.5",
+        onClick && "cursor-pointer hover:bg-accent",
         status === "disabled" && "opacity-60",
         className
       )}

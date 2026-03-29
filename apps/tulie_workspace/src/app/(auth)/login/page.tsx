@@ -19,7 +19,7 @@ export default function LoginPage() {
     return (
         <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'var(--color-info)', color: 'white' }}>
+                <div className="w-10 h-10 rounded-md flex items-center justify-center" style={{ backgroundColor: 'var(--color-info)', color: 'white' }}>
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                     </svg>
@@ -28,7 +28,7 @@ export default function LoginPage() {
             </div>
             <p className="mb-8" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('app.tagline')}</p>
 
-            <div className="p-8 rounded-2xl" style={{ backgroundColor: 'var(--color-bg)', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--color-border)', maxWidth: '400px', margin: '0 auto' }}>
+            <div className="p-8 rounded-md" style={{ backgroundColor: 'var(--color-bg)', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--color-border)', maxWidth: '400px', margin: '0 auto' }}>
                 <h2 className="text-xl font-semibold mb-6 text-left" style={{ color: 'var(--color-fg)' }}>{t('auth.login')}</h2>
                 <form onSubmit={handleLogin} className="space-y-4">
                     <div className="text-left">

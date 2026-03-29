@@ -118,7 +118,7 @@ export function FocusView({
       </div>
 
       {/* Task title */}
-      <h1 className="text-2xl font-bold text-center tracking-tight mb-2">
+      <h1 className="text-2xl font-bold text-center mb-2">
         {task.title}
       </h1>
 
@@ -147,7 +147,7 @@ export function FocusView({
         <CardContent className="pt-6">
           {/* Elapsed time */}
           <div className="text-center mb-4">
-            <p className="text-4xl font-bold tracking-tight tabular-nums">
+            <p className="text-4xl font-bold tabular-nums">
               {formatDuration(elapsedMinutes)}
             </p>
             <p className="text-xs text-muted-foreground mt-1">Elapsed time</p>

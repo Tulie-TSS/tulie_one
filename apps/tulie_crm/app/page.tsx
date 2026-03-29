@@ -155,8 +155,8 @@ function ConsultationForm() {
                 <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
                     <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <h3 className="text-xl font-bold text-zinc-950">Cảm ơn bạn đã quan tâm!</h3>
-                <p className="text-sm text-zinc-500 max-w-sm mx-auto">
+                <h3 className="text-xl font-bold text-foreground">Cảm ơn bạn đã quan tâm!</h3>
+                <p className="text-sm text-muted-foreground max-w-sm mx-auto">
                     Đội ngũ Tulie Agency sẽ liên hệ bạn trong vòng 24 giờ để tư vấn chi tiết.
                 </p>
             </div>
@@ -167,51 +167,51 @@ function ConsultationForm() {
         <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                    <Label htmlFor="full_name" className="text-xs font-semibold text-zinc-600">Họ tên *</Label>
+                    <Label htmlFor="full_name" className="text-xs font-semibold text-muted-foreground">Họ tên *</Label>
                     <div className="relative">
                         <Input
                             id="full_name"
                             placeholder="Nguyễn Văn A"
                             value={formData.full_name}
                             onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                            className="h-11 rounded-xl pl-10 border-zinc-200"
+                            className="h-11 rounded-md pl-10 border-border"
                             required
                         />
-                        <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                        <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     </div>
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-xs font-semibold text-zinc-600">Số điện thoại *</Label>
+                    <Label htmlFor="phone" className="text-xs font-semibold text-muted-foreground">Số điện thoại *</Label>
                     <div className="relative">
                         <Input
                             id="phone"
                             placeholder="098 888 8888"
                             value={formData.phone}
                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                            className="h-11 rounded-xl pl-10 border-zinc-200"
+                            className="h-11 rounded-md pl-10 border-border"
                             required
                         />
-                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     </div>
                 </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                    <Label htmlFor="company" className="text-xs font-semibold text-zinc-600">Tên công ty</Label>
+                    <Label htmlFor="company" className="text-xs font-semibold text-muted-foreground">Tên công ty</Label>
                     <div className="relative">
                         <Input
                             id="company"
                             placeholder="Công ty ABC"
                             value={formData.company_name}
                             onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
-                            className="h-11 rounded-xl pl-10 border-zinc-200"
+                            className="h-11 rounded-md pl-10 border-border"
                         />
-                        <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                        <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     </div>
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="email" className="text-xs font-semibold text-zinc-600">Email</Label>
+                    <Label htmlFor="email" className="text-xs font-semibold text-muted-foreground">Email</Label>
                     <div className="relative">
                         <Input
                             id="email"
@@ -219,20 +219,20 @@ function ConsultationForm() {
                             placeholder="email@company.com"
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            className="h-11 rounded-xl pl-10 border-zinc-200"
+                            className="h-11 rounded-md pl-10 border-border"
                         />
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     </div>
                 </div>
             </div>
 
             <div className="space-y-2">
-                <Label className="text-xs font-semibold text-zinc-600">Lĩnh vực kinh doanh</Label>
+                <Label className="text-xs font-semibold text-muted-foreground">Lĩnh vực kinh doanh</Label>
                 <Select
                     value={formData.business_type}
                     onValueChange={(v) => setFormData({ ...formData, business_type: v })}
                 >
-                    <SelectTrigger className="h-11 rounded-xl border-zinc-200">
+                    <SelectTrigger className="h-11 rounded-md border-border">
                         <SelectValue placeholder="Chọn lĩnh vực" />
                     </SelectTrigger>
                     <SelectContent>
@@ -244,20 +244,20 @@ function ConsultationForm() {
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="message" className="text-xs font-semibold text-zinc-600">Mô tả nhu cầu</Label>
+                <Label htmlFor="message" className="text-xs font-semibold text-muted-foreground">Mô tả nhu cầu</Label>
                 <Textarea
                     id="message"
                     placeholder="Mô tả ngắn về doanh nghiệp và nhu cầu CRM của bạn..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="min-h-[100px] rounded-xl border-zinc-200 resize-none"
+                    className="min-h-[100px] rounded-md border-border resize-none"
                 />
             </div>
 
             <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 rounded-xl font-bold text-base gap-2 shadow-lg shadow-zinc-200"
+                className="w-full h-12 rounded-md font-bold text-base gap-2 shadow-lg"
             >
                 {loading ? (
                     <><LoadingSpinner size="sm" /> Đang gửi...</>
@@ -266,7 +266,7 @@ function ConsultationForm() {
                 )}
             </Button>
 
-            <p className="text-[11px] text-zinc-400 text-center">
+            <p className="text-[11px] text-muted-foreground text-center">
                 Thông tin của bạn được bảo mật. Chúng tôi sẽ liên hệ trong vòng 24 giờ.
             </p>
         </form>
@@ -275,9 +275,9 @@ function ConsultationForm() {
 
 export default function LandingPage() {
     return (
-        <div className="min-h-screen bg-white text-zinc-900 font-sans selection:bg-zinc-950 selection:text-white">
+        <div className="min-h-screen bg-white text-foreground font-sans selection:bg-zinc-950 selection:text-white">
             {/* ===== NAVBAR ===== */}
-            <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-zinc-100">
+            <header className="sticky top-0 z-50 bg-background border-b border-border">
                 <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-3">
                         <img src="/logo.png" alt="Tulie" className="h-10 w-auto" />
@@ -287,7 +287,7 @@ export default function LandingPage() {
                             <a
                                 key={i}
                                 href={`#${["services", "process", "why", "contact"][i]}`}
-                                className="text-sm font-medium text-zinc-500 hover:text-zinc-950 transition-colors"
+                                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                             >
                                 {label}
                             </a>
@@ -295,12 +295,12 @@ export default function LandingPage() {
                     </nav>
                     <div className="flex items-center gap-3">
                         <Link href="/system-login">
-                            <Button variant="ghost" className="text-sm font-semibold rounded-xl hidden sm:inline-flex">
+                            <Button variant="ghost" className="text-sm font-semibold rounded-md hidden sm:inline-flex">
                                 Đăng nhập
                             </Button>
                         </Link>
                         <a href={ZALO_LINK} target="_blank">
-                            <Button className="rounded-xl font-semibold text-sm shadow-lg shadow-zinc-200 gap-2">
+                            <Button className="rounded-md font-semibold text-sm shadow-lg gap-2">
                                 <MessageCircle className="w-4 h-4" />
                                 <span className="hidden sm:inline">Liên hệ tư vấn</span>
                                 <span className="sm:hidden">Tư vấn</span>
@@ -322,12 +322,12 @@ export default function LandingPage() {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-to-r from-zinc-800/40 via-zinc-600/20 to-zinc-800/40 rounded-full blur-3xl" />
 
                 <div className="relative z-10 max-w-5xl mx-auto px-6 py-32 md:py-44 text-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/10 text-zinc-400 text-xs font-semibold mb-8 backdrop-blur-sm">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/10 text-muted-foreground text-xs font-semibold mb-8 backdrop-blur-sm">
                         <Layers className="w-3.5 h-3.5" />
                         Giải pháp CRM cho doanh nghiệp Việt
                     </div>
 
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] mb-6">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-6">
                         Xây dựng hệ thống
                         <br />
                         <span className="bg-gradient-to-r from-zinc-300 via-white to-zinc-300 bg-clip-text text-transparent">
@@ -336,27 +336,27 @@ export default function LandingPage() {
                         cho doanh nghiệp
                     </h1>
 
-                    <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+                    <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
                         Tulie Agency thiết kế và phát triển hệ thống quản trị khách hàng tùy chỉnh —
                         từ báo giá, hợp đồng, thanh toán đến portal khách hàng — tất cả trong một nền tảng.
                     </p>
 
                     <div className="flex items-center justify-center gap-4 flex-wrap">
                         <a href="#contact">
-                            <Button size="lg" className="rounded-2xl font-bold text-base h-14 px-8 shadow-2xl shadow-white/10 gap-2 bg-white text-zinc-950 hover:bg-zinc-100">
+                            <Button size="lg" className="rounded-md font-bold text-base h-14 px-8 shadow-2xl shadow-white/10 gap-2 bg-white text-foreground hover:bg-muted">
                                 Nhận tư vấn miễn phí
                                 <ArrowRight className="w-4 h-4" />
                             </Button>
                         </a>
                         <Link href="/demo">
-                            <Button size="lg" variant="outline" className="rounded-2xl font-bold text-base h-14 px-8 border-white/20 text-white hover:bg-white/10 bg-transparent">
+                            <Button size="lg" variant="outline" className="rounded-md font-bold text-base h-14 px-8 border-white/20 text-white hover:bg-white/10 bg-transparent">
                                 <Monitor className="w-4 h-4 mr-2" />
                                 Xem hệ thống Demo
                             </Button>
                         </Link>
                     </div>
 
-                    <div className="mt-16 flex items-center justify-center gap-8 text-zinc-500 text-xs font-semibold">
+                    <div className="mt-16 flex items-center justify-center gap-8 text-muted-foreground text-xs font-semibold">
                         {[
                             "Next.js & React",
                             "Supabase Cloud",
@@ -364,7 +364,7 @@ export default function LandingPage() {
                             "SSL & Bảo mật",
                         ].map((t, i) => (
                             <div key={i} className="hidden sm:flex items-center gap-2">
-                                <CheckCircle2 className="w-3.5 h-3.5 text-zinc-600" />
+                                <CheckCircle2 className="w-3.5 h-3.5 text-muted-foreground" />
                                 {t}
                             </div>
                         ))}
@@ -373,16 +373,16 @@ export default function LandingPage() {
             </section>
 
             {/* ===== SERVICES ===== */}
-            <section id="services" className="py-24 md:py-32 bg-zinc-50/50">
+            <section id="services" className="py-24 md:py-32 bg-muted/50">
                 <div className="max-w-6xl mx-auto px-6">
                     <div className="text-center mb-16">
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-600 text-xs font-semibold mb-4">
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted border border-border text-muted-foreground text-xs font-semibold mb-4">
                             Dịch vụ
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-zinc-950 tracking-tight mb-4">
+                        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                             Hệ thống CRM toàn diện
                         </h2>
-                        <p className="text-zinc-500 max-w-xl mx-auto text-base font-medium">
+                        <p className="text-muted-foreground max-w-xl mx-auto text-base font-medium">
                             Mỗi module được thiết kế tỉ mỉ, tối ưu cho quy trình vận hành thực tế của doanh nghiệp Việt Nam.
                         </p>
                     </div>
@@ -391,13 +391,13 @@ export default function LandingPage() {
                         {SERVICES.map((s, i) => (
                             <div
                                 key={i}
-                                className="group bg-white p-8 rounded-2xl border border-zinc-200 hover:border-zinc-300 hover:shadow-lg hover:shadow-zinc-100 transition-all duration-300"
+                                className="group bg-white p-8 rounded-md border border-border hover:border-input hover:shadow-lg hover: transition-all duration-300"
                             >
-                                <div className="w-12 h-12 rounded-xl bg-zinc-950 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <div className="w-12 h-12 rounded-md bg-zinc-950 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                                     <s.icon className="w-5 h-5" />
                                 </div>
-                                <h3 className="text-lg font-bold text-zinc-950 mb-2 tracking-tight">{s.title}</h3>
-                                <p className="text-sm text-zinc-500 leading-relaxed font-medium">{s.desc}</p>
+                                <h3 className="text-lg font-bold text-foreground mb-2">{s.title}</h3>
+                                <p className="text-sm text-muted-foreground leading-relaxed font-medium">{s.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -408,13 +408,13 @@ export default function LandingPage() {
             <section id="process" className="py-24 md:py-32 bg-white">
                 <div className="max-w-6xl mx-auto px-6">
                     <div className="text-center mb-16">
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-600 text-xs font-semibold mb-4">
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted border border-border text-muted-foreground text-xs font-semibold mb-4">
                             Quy trình
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-zinc-950 tracking-tight mb-4">
+                        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                             Từ ý tưởng đến hệ thống hoàn chỉnh
                         </h2>
-                        <p className="text-zinc-500 max-w-xl mx-auto text-base font-medium">
+                        <p className="text-muted-foreground max-w-xl mx-auto text-base font-medium">
                             Quy trình 4 bước rõ ràng, minh bạch — bạn luôn kiểm soát từng giai đoạn.
                         </p>
                     </div>
@@ -423,14 +423,14 @@ export default function LandingPage() {
                         {STEPS.map((step, i) => (
                             <div key={i} className="relative group">
                                 {i < STEPS.length - 1 && (
-                                    <div className="hidden lg:block absolute top-8 left-[calc(100%+0.5rem)] w-[calc(100%-2rem)] h-px bg-zinc-200" />
+                                    <div className="hidden lg:block absolute top-8 left-[calc(100%+0.5rem)] w-[calc(100%-2rem)] h-px bg-muted" />
                                 )}
-                                <div className="bg-zinc-50 rounded-2xl p-8 border border-zinc-100 hover:bg-white hover:border-zinc-200 hover:shadow-lg transition-all duration-300 h-full">
+                                <div className="bg-muted rounded-md p-8 border border-border hover:bg-white hover:border-border hover:shadow-lg transition-all duration-300 h-full">
                                     <div className="text-5xl font-black text-zinc-200 group-hover:text-zinc-300 transition-colors mb-4 tabular-nums">
                                         {step.num}
                                     </div>
-                                    <h3 className="text-lg font-bold text-zinc-950 mb-2 tracking-tight">{step.title}</h3>
-                                    <p className="text-sm text-zinc-500 leading-relaxed font-medium">{step.desc}</p>
+                                    <h3 className="text-lg font-bold text-foreground mb-2">{step.title}</h3>
+                                    <p className="text-sm text-muted-foreground leading-relaxed font-medium">{step.desc}</p>
                                 </div>
                             </div>
                         ))}
@@ -452,7 +452,7 @@ export default function LandingPage() {
                                 <div className="text-4xl md:text-5xl font-black text-white tracking-tighter tabular-nums">
                                     {stat.value}
                                 </div>
-                                <div className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+                                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                                     {stat.label}
                                 </div>
                             </div>
@@ -466,19 +466,19 @@ export default function LandingPage() {
                 <div className="max-w-6xl mx-auto px-6">
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
                         <div>
-                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-600 text-xs font-semibold mb-4">
+                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted border border-border text-muted-foreground text-xs font-semibold mb-4">
                                 Tại sao chọn chúng tôi
                             </div>
-                            <h2 className="text-3xl md:text-4xl font-bold text-zinc-950 tracking-tight mb-4">
+                            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                                 Không chỉ là phần mềm,
                                 <br />
-                                <span className="text-zinc-400">mà là đối tác công nghệ</span>
+                                <span className="text-muted-foreground">mà là đối tác công nghệ</span>
                             </h2>
-                            <p className="text-zinc-500 text-base mb-8 font-medium leading-relaxed">
+                            <p className="text-muted-foreground text-base mb-8 font-medium leading-relaxed">
                                 Tulie Agency không bán sản phẩm đóng gói. Chúng tôi xây dựng hệ thống CRM được tùy chỉnh theo đúng quy trình vận hành của doanh nghiệp bạn — và đồng hành dài hạn để phát triển cùng bạn.
                             </p>
                             <a href="#contact">
-                                <Button className="rounded-xl font-semibold gap-2 h-12 px-6 shadow-lg shadow-zinc-200">
+                                <Button className="rounded-md font-semibold gap-2 h-12 px-6 shadow-lg">
                                     Để lại thông tin tư vấn
                                     <ChevronRight className="w-4 h-4" />
                                 </Button>
@@ -489,13 +489,13 @@ export default function LandingPage() {
                             {ADVANTAGES.map((a, i) => (
                                 <div
                                     key={i}
-                                    className="bg-zinc-50 rounded-2xl p-6 border border-zinc-100 hover:bg-white hover:border-zinc-200 hover:shadow-md transition-all duration-300"
+                                    className="bg-muted rounded-md p-6 border border-border hover:bg-white hover:border-border hover:shadow-md transition-all duration-300"
                                 >
-                                    <div className="w-10 h-10 rounded-xl bg-zinc-950 text-white flex items-center justify-center mb-4">
+                                    <div className="w-10 h-10 rounded-md bg-zinc-950 text-white flex items-center justify-center mb-4">
                                         <a.icon className="w-4 h-4" />
                                     </div>
-                                    <h4 className="text-sm font-bold text-zinc-950 mb-1.5">{a.title}</h4>
-                                    <p className="text-xs text-zinc-500 leading-relaxed font-medium">{a.desc}</p>
+                                    <h4 className="text-sm font-bold text-foreground mb-1.5">{a.title}</h4>
+                                    <p className="text-xs text-muted-foreground leading-relaxed font-medium">{a.desc}</p>
                                 </div>
                             ))}
                         </div>
@@ -504,45 +504,45 @@ export default function LandingPage() {
             </section>
 
             {/* ===== CONSULTATION FORM ===== */}
-            <section id="contact" className="py-24 md:py-32 bg-zinc-50/50">
+            <section id="contact" className="py-24 md:py-32 bg-muted/50">
                 <div className="max-w-6xl mx-auto px-6">
                     <div className="grid lg:grid-cols-2 gap-16 items-start">
                         <div className="space-y-8">
                             <div>
-                                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-600 text-xs font-semibold mb-4">
+                                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted border border-border text-muted-foreground text-xs font-semibold mb-4">
                                     Liên hệ
                                 </div>
-                                <h2 className="text-3xl md:text-4xl font-bold text-zinc-950 tracking-tight mb-4">
+                                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                                     Nhận tư vấn miễn phí
                                 </h2>
-                                <p className="text-zinc-500 text-base font-medium leading-relaxed">
+                                <p className="text-muted-foreground text-base font-medium leading-relaxed">
                                     Để lại thông tin, đội ngũ Tulie Agency sẽ liên hệ tư vấn giải pháp CRM phù hợp nhất cho doanh nghiệp của bạn.
                                 </p>
                             </div>
 
                             <div className="space-y-4">
-                                <a href={ZALO_LINK} target="_blank" className="flex items-center gap-4 p-4 rounded-xl bg-white border border-zinc-200 hover:border-zinc-300 hover:shadow-md transition-all group">
-                                    <div className="w-11 h-11 rounded-xl bg-zinc-950 text-white flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <a href={ZALO_LINK} target="_blank" className="flex items-center gap-4 p-4 rounded-md bg-white border border-border hover:border-input hover:shadow-md transition-all group">
+                                    <div className="w-11 h-11 rounded-md bg-zinc-950 text-white flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                                         <MessageCircle className="w-5 h-5" />
                                     </div>
                                     <div>
-                                        <p className="text-xs font-semibold text-zinc-400">Chat Zalo</p>
-                                        <p className="text-sm font-bold text-zinc-950">{ZALO_PHONE}</p>
+                                        <p className="text-xs font-semibold text-muted-foreground">Chat Zalo</p>
+                                        <p className="text-sm font-bold text-foreground">{ZALO_PHONE}</p>
                                     </div>
                                 </a>
-                                <a href="mailto:hello@tulie.vn" className="flex items-center gap-4 p-4 rounded-xl bg-white border border-zinc-200 hover:border-zinc-300 hover:shadow-md transition-all group">
-                                    <div className="w-11 h-11 rounded-xl bg-zinc-950 text-white flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <a href="mailto:hello@tulie.vn" className="flex items-center gap-4 p-4 rounded-md bg-white border border-border hover:border-input hover:shadow-md transition-all group">
+                                    <div className="w-11 h-11 rounded-md bg-zinc-950 text-white flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                                         <Mail className="w-5 h-5" />
                                     </div>
                                     <div>
-                                        <p className="text-xs font-semibold text-zinc-400">Email</p>
-                                        <p className="text-sm font-bold text-zinc-950">hello@tulie.vn</p>
+                                        <p className="text-xs font-semibold text-muted-foreground">Email</p>
+                                        <p className="text-sm font-bold text-foreground">hello@tulie.vn</p>
                                     </div>
                                 </a>
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-2xl border border-zinc-200 p-8 shadow-sm">
+                        <div className="bg-white rounded-md border border-border p-8 shadow-sm">
                             <ConsultationForm />
                         </div>
                     </div>
@@ -557,7 +557,7 @@ export default function LandingPage() {
                             <img src="/logo.png" alt="Tulie" className="h-7 w-auto invert opacity-70" />
                         </div>
 
-                        <div className="flex items-center gap-6 text-xs text-zinc-500 font-medium">
+                        <div className="flex items-center gap-6 text-xs text-muted-foreground font-medium">
                             <a href={ZALO_LINK} target="_blank" className="hover:text-zinc-300 transition-colors">
                                 Zalo: {ZALO_PHONE}
                             </a>
@@ -573,7 +573,7 @@ export default function LandingPage() {
                     </div>
 
                     <div className="mt-8 pt-6 border-t border-white/5 text-center">
-                        <p className="text-[11px] text-zinc-600 font-medium">
+                        <p className="text-[11px] text-muted-foreground font-medium">
                             © {new Date().getFullYear()} Tulie Agency — Dịch vụ xây dựng hệ thống CRM cho doanh nghiệp
                         </p>
                     </div>

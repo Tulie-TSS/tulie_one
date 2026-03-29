@@ -1,9 +1,9 @@
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="w-full max-w-sm space-y-6 rounded-2xl border border-border bg-card p-8 shadow-lg">
+      <div className="w-full max-w-sm space-y-6 rounded-md border border-border bg-card p-8 shadow-lg">
         <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold text-lg">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-md bg-primary text-primary-foreground font-bold text-lg">
             T
           </div>
           <h1 className="mt-4 text-2xl font-bold text-foreground">Tulie ERP</h1>

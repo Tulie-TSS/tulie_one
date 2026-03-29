@@ -182,8 +182,8 @@ export function HelpdeskClient({ initialTickets, users, customers }: HelpdeskCli
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <Card>
                     <CardContent className="p-4 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-zinc-100 flex items-center justify-center">
-                            <Headphones className="w-5 h-5 text-zinc-600" />
+                        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                            <Headphones className="w-5 h-5 text-muted-foreground" />
                         </div>
                         <div>
                             <p className="text-2xl font-bold">{stats.open}</p>
@@ -193,8 +193,8 @@ export function HelpdeskClient({ initialTickets, users, customers }: HelpdeskCli
                 </Card>
                 <Card>
                     <CardContent className="p-4 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-zinc-100 flex items-center justify-center">
-                            <Clock className="w-5 h-5 text-zinc-600" />
+                        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                            <Clock className="w-5 h-5 text-muted-foreground" />
                         </div>
                         <div>
                             <p className="text-2xl font-bold">{stats.inProgress}</p>
@@ -204,8 +204,8 @@ export function HelpdeskClient({ initialTickets, users, customers }: HelpdeskCli
                 </Card>
                 <Card>
                     <CardContent className="p-4 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-zinc-100 flex items-center justify-center">
-                            <CheckCircle2 className="w-5 h-5 text-zinc-600" />
+                        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                            <CheckCircle2 className="w-5 h-5 text-muted-foreground" />
                         </div>
                         <div>
                             <p className="text-2xl font-bold">{stats.resolved}</p>
@@ -215,8 +215,8 @@ export function HelpdeskClient({ initialTickets, users, customers }: HelpdeskCli
                 </Card>
                 <Card>
                     <CardContent className="p-4 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-zinc-100 flex items-center justify-center">
-                            <AlertTriangle className="w-5 h-5 text-zinc-600" />
+                        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                            <AlertTriangle className="w-5 h-5 text-muted-foreground" />
                         </div>
                         <div>
                             <p className="text-2xl font-bold">{stats.urgent}</p>

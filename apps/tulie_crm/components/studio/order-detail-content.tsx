@@ -159,8 +159,8 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
         <div className="grid gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2 space-y-6">
                 {/* Delivery Links Section */}
-                <Card className="rounded-xl border-zinc-200 shadow-sm overflow-hidden">
-                    <CardHeader className="bg-zinc-50/50 border-b">
+                <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                    <CardHeader className="bg-muted/50 border-b">
                         <div className="flex items-center justify-between">
                             <div className="space-y-1">
                                 <CardTitle className="text-base font-semibold flex items-center gap-2">
@@ -185,7 +185,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                             <div className="flex items-center justify-between">
                                 <Label className="text-sm font-semibold text-zinc-700">Link bàn giao</Label>
                                 {order.resource_link && (
-                                    <Badge variant="outline" className="font-normal text-[11px] bg-zinc-50 py-0 h-5 border-primary/20 text-primary">
+                                    <Badge variant="outline" className="font-normal text-[11px] bg-muted py-0 h-5 border-primary/20 text-primary">
                                         <a href={order.resource_link} target="_blank" className="flex items-center gap-1">
                                             Mở link <ExternalLink className="h-3 w-3" />
                                         </a>
@@ -196,7 +196,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                 placeholder="Dán link Google Drive, Dropbox hoặc folder bàn giao..."
                                 value={links.resource_link}
                                 onChange={(e) => setLinks({ ...links, resource_link: e.target.value })}
-                                className="h-10 border-zinc-200 focus-visible:ring-primary/20 bg-white shadow-none"
+                                className="h-10 border-border focus-visible:ring-primary/20 bg-white shadow-none"
                             />
                             <p className="text-[11px] text-muted-foreground font-normal italic">Chỉ hiển thị sau khi khách thanh toán 100%.</p>
                         </div>
@@ -204,11 +204,11 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
                                 <Label className="text-sm font-semibold text-zinc-700 flex items-center gap-2">
-                                    <Truck className="h-4 w-4 text-zinc-400" />
+                                    <Truck className="h-4 w-4 text-muted-foreground" />
                                     Mã vận đơn / Link tra cứu
                                 </Label>
                                 {order.tracking_number && /^https?:\/\//.test(order.tracking_number) && (
-                                    <Badge variant="outline" className="font-normal text-[11px] bg-zinc-50 py-0 h-5">
+                                    <Badge variant="outline" className="font-normal text-[11px] bg-muted py-0 h-5">
                                         <a href={order.tracking_number} target="_blank" className="flex items-center gap-1 hover:text-primary">
                                             Tra cứu <ExternalLink className="h-3 w-3" />
                                         </a>
@@ -219,7 +219,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                 placeholder="VD: GHTK123456 hoặc https://tracking.ghn.vn/..."
                                 value={links.tracking_number}
                                 onChange={(e) => setLinks({ ...links, tracking_number: e.target.value })}
-                                className="h-10 border-zinc-200 focus-visible:ring-primary/20 bg-white shadow-none"
+                                className="h-10 border-border focus-visible:ring-primary/20 bg-white shadow-none"
                             />
                         </div>
                     </CardContent>
@@ -227,8 +227,8 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
                 {/* Customer Photos & Original Link */}
                 {((order as any).metadata?.photo_urls?.length > 0 || (order as any).metadata?.original_link) && (
-                    <Card className="rounded-xl border-zinc-200 shadow-sm overflow-hidden">
-                        <CardHeader className="bg-zinc-50/50 border-b">
+                    <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                        <CardHeader className="bg-muted/50 border-b">
                             <div className="space-y-1">
                                 <CardTitle className="text-base font-semibold flex items-center gap-2">
                                     <ImageIcon className="h-4 w-4 text-primary" />
@@ -243,7 +243,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
                                 {(order as any).metadata.photo_urls.map((url: string, idx: number) => (
                                     <a key={idx} href={url} target="_blank" rel="noopener noreferrer" className="block">
-                                        <div className="relative aspect-square rounded-lg overflow-hidden border border-zinc-200 bg-zinc-50 hover:ring-2 hover:ring-primary/30 transition-all">
+                                        <div className="relative aspect-square rounded-lg overflow-hidden border border-border bg-muted hover:ring-2 hover:ring-primary/30 transition-all">
                                             <img src={url} alt={`Ảnh ${idx + 1}`} className="w-full h-full object-cover" />
                                             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/40 to-transparent px-2 py-1">
                                                 <p className="text-[11px] text-white font-medium">Ảnh {idx + 1}</p>
@@ -254,10 +254,10 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                             </div>
                             
                             {(order as any).metadata?.original_link && (
-                                <div className={cn("mt-4", (order as any).metadata?.photo_urls?.length > 0 ? "pt-4 border-t border-zinc-100" : "mt-0")}>
+                                <div className={cn("mt-4", (order as any).metadata?.photo_urls?.length > 0 ? "pt-4 border-t border-border" : "mt-0")}>
                                     <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">Link Drive/iCloud</p>
-                                    <div className="flex items-center gap-2 bg-zinc-50 border border-zinc-200 p-3 rounded-lg overflow-hidden group">
-                                        <ExternalLink className="h-4 w-4 text-zinc-400 shrink-0" />
+                                    <div className="flex items-center gap-2 bg-muted border border-border p-3 rounded-lg overflow-hidden group">
+                                        <ExternalLink className="h-4 w-4 text-muted-foreground shrink-0" />
                                         <a href={(order as any).metadata.original_link} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-blue-600 hover:underline truncate">
                                             {(order as any).metadata.original_link}
                                         </a>
@@ -269,8 +269,8 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                 )}
 
                 {/* Product/Service List */}
-                <Card className="rounded-xl border-zinc-200 shadow-sm overflow-hidden">
-                    <CardHeader className="bg-zinc-50/50 border-b">
+                <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                    <CardHeader className="bg-muted/50 border-b">
                         <div className="space-y-1">
                             <CardTitle className="text-base font-semibold flex items-center gap-2">
                                 <FileText className="h-4 w-4 text-primary" />
@@ -282,7 +282,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                     <CardContent className="p-0">
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm text-left">
-                                <thead className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 bg-zinc-50/30 border-b border-zinc-100">
+                                <thead className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground bg-muted/30 border-b border-border">
                                     <tr>
                                         <th className="px-6 py-3 font-bold">STT</th>
                                         <th className="px-6 py-3 font-bold">Tên sản phẩm/dịch vụ</th>
@@ -294,36 +294,36 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                 <tbody className="divide-y divide-zinc-100">
                                     {order.items && order.items.length > 0 ? (
                                         order.items.map((item, index) => (
-                                            <tr key={item.id} className="hover:bg-zinc-50/50 transition-colors">
-                                                <td className="px-6 py-4 font-medium text-zinc-400 text-xs w-12">{index + 1}</td>
+                                            <tr key={item.id} className="hover:bg-muted/50 transition-colors">
+                                                <td className="px-6 py-4 font-medium text-muted-foreground text-xs w-12">{index + 1}</td>
                                                 <td className="px-6 py-4">
-                                                    <div className="font-semibold text-zinc-900 group-hover:text-primary transition-colors">{item.product_name}</div>
+                                                    <div className="font-semibold text-foreground group-hover:text-primary transition-colors">{item.product_name}</div>
                                                     {item.product_id && (
                                                         <div className="text-[11px] text-muted-foreground mt-0.5 font-medium">SKU: {item.product_id.split('-')[0].toUpperCase()}</div>
                                                     )}
                                                 </td>
                                                 <td className="px-6 py-4 text-center font-bold text-zinc-700 tabular-nums">{item.quantity}</td>
-                                                <td className="px-6 py-4 text-right font-medium text-zinc-600 tabular-nums">{formatCurrency(item.unit_price)}</td>
-                                                <td className="px-6 py-4 text-right font-bold text-zinc-900 tabular-nums">{formatCurrency(item.total_price)}</td>
+                                                <td className="px-6 py-4 text-right font-medium text-muted-foreground tabular-nums">{formatCurrency(item.unit_price)}</td>
+                                                <td className="px-6 py-4 text-right font-bold text-foreground tabular-nums">{formatCurrency(item.total_price)}</td>
                                             </tr>
                                         ))
                                     ) : (
                                         <tr>
                                             <td colSpan={5} className="px-6 py-12 text-center">
                                                 <div className="flex flex-col items-center gap-2">
-                                                    <div className="h-10 w-10 rounded-full bg-zinc-50 flex items-center justify-center">
+                                                    <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
                                                         <FileText className="h-5 w-5 text-zinc-200" />
                                                     </div>
-                                                    <p className="text-sm text-zinc-400 font-medium">Chưa có thông tin sản phẩm.</p>
+                                                    <p className="text-sm text-muted-foreground font-medium">Chưa có thông tin sản phẩm.</p>
                                                 </div>
                                             </td>
                                         </tr>
                                     )}
                                 </tbody>
-                                <tfoot className="bg-zinc-50/30 border-t border-zinc-100">
+                                <tfoot className="bg-muted/30 border-t border-border">
                                     <tr>
-                                        <td colSpan={4} className="px-6 py-4 text-right text-[11px] font-bold uppercase tracking-wider text-zinc-500">Tổng cộng</td>
-                                        <td className="px-6 py-4 text-right text-base font-bold text-zinc-950 tabular-nums">
+                                        <td colSpan={4} className="px-6 py-4 text-right text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Tổng cộng</td>
+                                        <td className="px-6 py-4 text-right text-base font-bold text-foreground tabular-nums">
                                             {formatCurrency(order.total_amount)}
                                         </td>
                                     </tr>
@@ -335,8 +335,8 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
                 {/* Info & Notes */}
                 <div className="grid md:grid-cols-2 gap-6">
-                    <Card className="rounded-xl border-zinc-200 shadow-sm overflow-hidden">
-                        <CardHeader className="bg-zinc-50/50 border-b">
+                    <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                        <CardHeader className="bg-muted/50 border-b">
                             <div className="space-y-1">
                                 <CardTitle className="text-base font-semibold flex items-center gap-2">
                                     <Phone className="h-4 w-4 text-primary" />
@@ -347,28 +347,28 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                         </CardHeader>
                         <CardContent className="p-6 space-y-4">
                             <div className="flex items-start gap-4">
-                                <div className="h-9 w-9 rounded-lg bg-zinc-100 flex items-center justify-center shrink-0 border border-zinc-200/50">
-                                    <Phone className="h-4 w-4 text-zinc-500" />
+                                <div className="h-9 w-9 rounded-lg bg-muted flex items-center justify-center shrink-0 border border-border">
+                                    <Phone className="h-4 w-4 text-muted-foreground" />
                                 </div>
                                 <div>
                                     <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">Điện thoại</p>
-                                    <p className="text-sm font-semibold text-zinc-900">{order.customer_phone || 'Chưa cập nhật'}</p>
+                                    <p className="text-sm font-semibold text-foreground">{order.customer_phone || 'Chưa cập nhật'}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">
-                                <div className="h-9 w-9 rounded-lg bg-zinc-100 flex items-center justify-center shrink-0 border border-zinc-200/50">
-                                    <Mail className="h-4 w-4 text-zinc-500" />
+                                <div className="h-9 w-9 rounded-lg bg-muted flex items-center justify-center shrink-0 border border-border">
+                                    <Mail className="h-4 w-4 text-muted-foreground" />
                                 </div>
                                 <div>
                                     <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">Email</p>
-                                    <p className="text-sm font-semibold text-zinc-900 truncate max-w-[180px]">{order.customer_email || 'Chưa cập nhật'}</p>
+                                    <p className="text-sm font-semibold text-foreground truncate max-w-[180px]">{order.customer_email || 'Chưa cập nhật'}</p>
                                 </div>
                             </div>
-                            <Separator className="bg-zinc-100" />
+                            <Separator className="bg-muted" />
                             <div className="space-y-2">
                                 <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Ghi chú nghiệp vụ</p>
-                                <div className="p-3 bg-zinc-50/50 rounded-lg border border-dashed border-zinc-200">
-                                    <p className="text-sm text-zinc-600 leading-relaxed font-normal whitespace-pre-line">
+                                <div className="p-3 bg-muted/50 rounded-lg border border-dashed border-border">
+                                    <p className="text-sm text-muted-foreground leading-relaxed font-normal whitespace-pre-line">
                                         {order.notes || "Không có ghi chú nào từ khách hàng hoặc tư vấn viên."}
                                     </p>
                                 </div>
@@ -399,8 +399,8 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                     </Card>
 
                     {/* Shipping Info Card */}
-                    <Card className="rounded-xl border-zinc-200 shadow-sm overflow-hidden">
-                        <CardHeader className="bg-zinc-50/50 border-b">
+                    <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                        <CardHeader className="bg-muted/50 border-b">
                             <div className="flex items-center justify-between">
                                 <div className="space-y-1">
                                     <CardTitle className="text-base font-semibold flex items-center gap-2">
@@ -487,8 +487,8 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
             <div className="space-y-6">
                 {/* Payment Card */}
-                <Card className="rounded-xl border-zinc-200 shadow-sm overflow-hidden">
-                    <CardHeader className="bg-zinc-50/50 border-b pb-3">
+                <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                    <CardHeader className="bg-muted/50 border-b pb-3">
                         <Badge variant="outline" className="w-fit mb-2 text-[11px] font-bold uppercase tracking-widest px-3 py-1">
                             Thanh toán
                         </Badge>
@@ -506,7 +506,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                     <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
                                         Tiến độ thanh toán
                                     </p>
-                                    <p className="text-2xl font-bold tabular-nums tracking-tight">
+                                    <p className="text-2xl font-bold tabular-nums">
                                         {formatCurrency(order.paid_amount || 0)}
                                         <span className="text-sm font-normal text-muted-foreground"> / {formatCurrency(order.total_amount)}</span>
                                     </p>
@@ -518,7 +518,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                             ? "bg-emerald-100 text-emerald-700 border-emerald-200"
                                             : order.payment_status === 'partial'
                                                 ? "bg-amber-50 text-amber-700 border-amber-200"
-                                                : "bg-zinc-100 text-zinc-600 border-zinc-200"
+                                                : "bg-muted text-muted-foreground border-border"
                                     )}
                                     variant="outline"
                                 >
@@ -527,7 +527,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                             </div>
 
                             {/* Progress Bar */}
-                            <div className="h-2 bg-zinc-100 rounded-full overflow-hidden">
+                            <div className="h-2 bg-muted rounded-full overflow-hidden">
                                 <div
                                     className={cn(
                                         "h-full rounded-full transition-all duration-700 ease-out",
@@ -535,7 +535,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                             ? "bg-emerald-500"
                                             : (order.paid_amount || 0) > 0
                                                 ? "bg-amber-500"
-                                                : "bg-zinc-200"
+                                                : "bg-muted"
                                     )}
                                     style={{ width: `${order.total_amount > 0 ? Math.min(((order.paid_amount || 0) / order.total_amount) * 100, 100) : 0}%` }}
                                 />
@@ -550,7 +550,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
                         {/* Overpayment Warning Banner */}
                         {(order.paid_amount || 0) > order.total_amount && (
-                            <div className="p-4 rounded-xl bg-red-50 border border-red-200 space-y-3">
+                            <div className="p-4 rounded-md bg-red-50 border border-red-200 space-y-3">
                                 <div className="flex items-start gap-3">
                                     <div className="h-8 w-8 rounded-lg bg-red-100 flex items-center justify-center shrink-0">
                                         <AlertTriangle className="h-4 w-4 text-red-600" />
@@ -614,12 +614,12 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                 </div>
 
                                 {/* QR Code */}
-                                <div className="flex flex-col items-center gap-3 p-4 rounded-xl border bg-muted/20">
-                                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-tight text-muted-foreground">
+                                <div className="flex flex-col items-center gap-3 p-4 rounded-md border bg-muted/20">
+                                    <div className="flex items-center gap-2 text-xs font-bold uppercase text-muted-foreground">
                                         <QrCode className="h-4 w-4" />
                                         Mã QR thanh toán nhanh
                                     </div>
-                                    <div className="p-2 bg-white rounded-xl border">
+                                    <div className="p-2 bg-white rounded-md border">
                                         <img src={qrUrl} alt="QR Code" className="w-44 h-auto" />
                                     </div>
                                     <p className="text-[11px] text-muted-foreground text-center leading-relaxed font-medium">
@@ -686,16 +686,16 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
                 {/* Record Payment Section (Manual) */}
                 {remainingAmount > 0 && (
-                    <Card className="rounded-xl border-zinc-200 shadow-sm overflow-hidden">
-                        <CardHeader className="pb-3 bg-zinc-50/30">
+                    <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                        <CardHeader className="pb-3 bg-muted/30">
                             <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                                <History className="h-4 w-4 text-zinc-400" />
+                                <History className="h-4 w-4 text-muted-foreground" />
                                 Thu tiền thực tế (Manual)
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5 space-y-4">
                             <div className="space-y-3">
-                                <Label className="text-xs font-semibold text-zinc-600">Số tiền khách vừa chuyển khoản/tiền mặt (đ)</Label>
+                                <Label className="text-xs font-semibold text-muted-foreground">Số tiền khách vừa chuyển khoản/tiền mặt (đ)</Label>
                                 <div className="relative">
                                     <Input
                                         type="text"
@@ -706,7 +706,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                             const raw = e.target.value.replace(/\./g, '').replace(/[^0-9]/g, '')
                                             setPaymentAmount(raw)
                                         }}
-                                        className="h-12 text-lg font-bold tabular-nums border-zinc-200 focus-visible:ring-emerald-500/20 pl-4 pr-14"
+                                        className="h-12 text-lg font-bold tabular-nums border-border focus-visible:ring-emerald-500/20 pl-4 pr-14"
                                     />
                                     <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-300 pointer-events-none">đ</div>
                                 </div>
@@ -722,11 +722,11 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                 {isRecordingPayment ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="mr-2 h-4 w-4" />}
                                 Ghi nhận & Bắn Telegram
                             </Button>
-                            <div className="flex gap-2 p-3 bg-zinc-50 rounded-lg border border-zinc-100">
+                            <div className="flex gap-2 p-3 bg-muted rounded-lg border border-border">
                                 <div className="h-4 w-4 rounded-full bg-zinc-900 flex items-center justify-center shrink-0 mt-0.5">
                                     <span className="text-[11px] text-white">!</span>
                                 </div>
-                                <p className="text-[11px] text-zinc-500 font-medium leading-normal italic">Hệ thống sẽ ngay lập tức gửi một tin nhắn báo biến động số dư lên Telegram Group của team Tulie Studio.</p>
+                                <p className="text-[11px] text-muted-foreground font-medium leading-normal italic">Hệ thống sẽ ngay lập tức gửi một tin nhắn báo biến động số dư lên Telegram Group của team Tulie Studio.</p>
                             </div>
                         </CardContent>
                     </Card>

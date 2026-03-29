@@ -85,7 +85,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                         </Link>
                     </Button>
                     <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
                             <FileSignature className="h-6 w-6 text-primary" />
                         </div>
                         <div>
@@ -162,10 +162,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                         <CardContent className="space-y-4">
                             {contract.milestones?.map((milestone: any, index: number) => (
                                 <div key={milestone.id} className="flex items-start gap-4">
-                                    <div className={`mt-1 h-8 w-8 rounded-full flex items-center justify-center ${milestone.status === 'completed' ? 'bg-emerald-500 text-white' :
-                                        milestone.status === 'overdue' ? 'bg-rose-500 text-white' :
-                                            'bg-muted text-muted-foreground'
-                                        }`}>
+                                    <div className={`mt-1 h-8 w-8 rounded-full flex items-center justify-center ${milestone.status === 'completed' ? 'bg-emerald-500 text-white' : milestone.status === 'overdue' ? 'bg-rose-500 text-white' : 'bg-muted text-muted-foreground' }`}>
                                         {milestone.status === 'completed' ? (
                                             <CheckCircle className="h-5 w-5" />
                                         ) : milestone.status === 'overdue' ? (

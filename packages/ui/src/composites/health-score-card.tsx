@@ -117,7 +117,7 @@ export function HealthScoreCard({
                 strokeLinecap="round"
                 strokeDasharray={circumference}
                 strokeDashoffset={offset}
-                className={cn(getScoreStroke(clampedScore), "transition-all duration-700 ease-apple")}
+                className={cn(getScoreStroke(clampedScore), "transition-all duration-700 ease-out")}
               />
             </svg>
             {/* Score text */}
@@ -152,7 +152,7 @@ export function HealthScoreCard({
                     <div className="h-1.5 rounded-full bg-muted overflow-hidden">
                       <div
                         className={cn(
-                          "h-full rounded-full transition-all duration-500 ease-apple",
+                          "h-full rounded-full transition-all duration-500 ease-out",
                           barColorMap[item.color || "default"]
                         )}
                         style={{ width: `${Math.min(100, item.score)}%` }}

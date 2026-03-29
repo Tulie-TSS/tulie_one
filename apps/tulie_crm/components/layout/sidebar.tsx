@@ -3,8 +3,18 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils'
-import { Button } from '@repo/ui'
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    SidebarRail,
+} from '@repo/ui'
 import {
     LayoutGrid,
     Users,
@@ -15,8 +25,6 @@ import {
     UserCheck,
     PieChart,
     Settings,
-    ChevronLeft,
-    ChevronRight,
     Files,
     TrendingUp,
     Rocket,
@@ -28,20 +36,9 @@ import {
     Briefcase,
     Bot
 } from 'lucide-react'
-import { useState } from 'react'
 
-interface NavItem {
-    title: string
-    href: string
-    icon: any
-}
-
-interface NavGroup {
-    title: string
-    items: NavItem[]
-}
-
-const navGroups: NavGroup[] = [
+// Using the same navigation items
+const navGroups = [
     {
         title: 'Tulie Agency',
         items: [
@@ -74,172 +71,91 @@ const navGroups: NavGroup[] = [
     }
 ]
 
-export function Sidebar({ className, isMobile }: { className?: string; isMobile?: boolean }) {
+export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     const pathname = usePathname()
-    const [isCollapsed, setIsCollapsed] = useState(false)
 
     return (
-        <aside
-            className={cn(
-                'relative flex flex-col h-full transition-all duration-300 ease-in-out',
-                isMobile ? 'w-full border-none' : (isCollapsed ? 'w-20 border-r' : 'w-72 border-r'),
-                'bg-background',
-                className
-            )}
-        >
-            {/* Logo */}
-            <div className="flex h-16 items-center border-b px-4 transition-all duration-300">
-                <Link href="/" className={cn(
-                    "flex items-center gap-3 transition-all duration-300 ease-in-out overflow-hidden w-full",
-                    isCollapsed ? "justify-center" : "justify-start"
-                )}>
-                    <img
-                        src={isCollapsed ? "/logo-icon.png" : "/logo.png"}
-                        alt="Tulie"
-                        className={cn(
-                            "h-10 w-auto object-contain transition-all duration-300 ease-in-out shrink-0",
-                            isCollapsed ? "h-8" : "h-10"
-                        )}
-                    />
-                    {!isCollapsed && (
-                        <span className="text-xl font-bold whitespace-nowrap opacity-100 transition-opacity duration-300">
-                            Tulie CRM
-                        </span>
-                    )}
-                </Link>
-            </div>
+        <Sidebar collapsible="icon" {...props}>
+            <SidebarHeader>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton size="lg" asChild>
+                            <Link href="/dashboard">
+                                <div className="flex bg-primary text-primary-foreground aspect-square size-8 items-center justify-center rounded-lg">
+                                    <LayoutGrid className="size-4" />
+                                </div>
+                                <div className="grid flex-1 text-left text-sm leading-tight">
+                                    <span className="truncate font-semibold">Tulie CRM</span>
+                                    <span className="truncate text-xs">Agency Edition</span>
+                                </div>
+                            </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarHeader>
 
-            {/* Navigation */}
-            <div className="flex-1 overflow-y-auto pb-6">
-                <nav className="flex flex-col gap-0.5 pt-2 px-2">
-                    {/* Dashboard always at top */}
-                    <div className="space-y-1">
-                        <Link href="/dashboard">
-                            <Button
-                                variant="ghost"
-                                className={cn(
-                                    'w-full justify-start gap-3 h-10 transition-all duration-200 group rounded-xl',
-                                    pathname === '/dashboard' ? 'bg-zinc-100 text-zinc-950 shadow-sm border border-border/50' : 'text-muted-foreground hover:text-zinc-950 hover:bg-zinc-100/50',
-                                    isCollapsed && 'justify-center px-0'
-                                )}
-                            >
-                                <LayoutGrid className={cn(
-                                    "h-4 w-4 shrink-0 transition-colors",
-                                    pathname === '/dashboard' ? "text-zinc-950" : "opacity-70 group-hover:opacity-100"
-                                )} />
-                                {!isCollapsed && <span className={cn("truncate font-medium", pathname === '/dashboard' ? "text-zinc-950" : "text-muted-foreground group-hover:text-zinc-950")}>Dashboard</span>}
-                            </Button>
-                        </Link>
-                    </div>
+            <SidebarContent>
+                <SidebarGroup>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton asChild isActive={pathname === '/dashboard'} tooltip="Dashboard">
+                                <Link href="/dashboard">
+                                    <LayoutGrid />
+                                    <span>Dashboard</span>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarGroup>
 
-                    {navGroups.map((group, idx) => (
-                        <div key={idx} className="flex flex-col">
-                            {!isCollapsed && (
-                                <h4 className="px-3 py-1.5 mt-5 mb-1 text-xs font-bold text-zinc-500 uppercase tracking-wider">
-                                    {group.title}
-                                </h4>
-                            )}
-                            {isCollapsed && (
-                                <div className="h-px bg-zinc-200 mx-2 mt-2 mb-4" />
-                            )}
-                            <div className="flex flex-col gap-0.5">
+                {navGroups.map((group) => (
+                    <SidebarGroup key={group.title}>
+                        <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+                        <SidebarGroupContent>
+                            <SidebarMenu>
                                 {group.items.map((item) => {
-                                    const Icon = item.icon
-                                    // More precise isActive logic:
-                                    // - Exact match always takes precedence.
-                                    // - For sub-path matching, ensure it's not the root path '/'
-                                    //   and that the pathname starts with the item's href followed by a slash,
-                                    //   or if the item's href is '/studio', it only matches exactly '/studio'.
-                                    const isActive = pathname === item.href ||
-                                        (item.href !== '/' && item.href !== '/studio' && pathname.startsWith(item.href + '/'))
-
+                                    const isActive = pathname === item.href || (item.href !== '/' && item.href !== '/studio' && pathname.startsWith(item.href + '/'))
                                     return (
-                                        <Link key={item.href} href={item.href}>
-                                            <Button
-                                                variant="ghost"
-                                                className={cn(
-                                                    'w-full justify-start gap-3 h-10 transition-all duration-200 group rounded-xl',
-                                                    isActive ? 'bg-zinc-100 text-zinc-950 shadow-sm border border-border/50' : 'text-muted-foreground hover:text-zinc-950 hover:bg-zinc-100/50',
-                                                    isCollapsed && 'justify-center px-0'
-                                                )}
-                                            >
-                                                <Icon className={cn(
-                                                    "h-4 w-4 shrink-0 transition-colors",
-                                                    isActive ? "text-zinc-950" : "opacity-70 group-hover:opacity-100"
-                                                )} />
-                                                {!isCollapsed && (
-                                                    <span className={cn(
-                                                        "truncate font-medium",
-                                                        isActive ? "text-zinc-950" : "text-muted-foreground group-hover:text-zinc-950"
-                                                    )}>
-                                                        {item.title}
-                                                    </span>
-                                                )}
-                                            </Button>
-                                        </Link>
+                                        <SidebarMenuItem key={item.title}>
+                                            <SidebarMenuButton asChild isActive={isActive} tooltip={item.title}>
+                                                <Link href={item.href}>
+                                                    <item.icon />
+                                                    <span>{item.title}</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
                                     )
                                 })}
-                            </div>
-                        </div>
-                    ))}
+                            </SidebarMenu>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
+                ))}
 
-                    {/* External Apps */}
-                    <div className="flex flex-col">
-                        {!isCollapsed && (
-                            <h4 className="px-3 py-1.5 mt-5 mb-1 text-xs font-bold text-zinc-500 uppercase tracking-wider">
-                                Ứng dụng khác
-                            </h4>
-                        )}
-                        {isCollapsed && (
-                            <div className="h-px bg-zinc-200 mx-2 mt-2 mb-4" />
-                        )}
-                        <div className="flex flex-col gap-0.5">
+                <SidebarGroup>
+                    <SidebarGroupLabel>Ứng dụng khác</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
                             {[
-                                { title: 'ERP - Tài chính', href: 'http://localhost:3003', icon: DollarSign, color: 'text-orange-400' },
-                                { title: 'Workspace', href: 'http://localhost:3002', icon: Briefcase, color: 'text-purple-400' },
-                                { title: 'Workforce - AI', href: 'http://localhost:3001', icon: Bot, color: 'text-blue-400' },
+                                { title: 'ERP - Tài chính', href: 'http://localhost:3003', icon: DollarSign, color: 'text-orange-500' },
+                                { title: 'Workspace', href: 'http://localhost:3002', icon: Briefcase, color: 'text-purple-500' },
+                                { title: 'Workforce - AI', href: 'http://localhost:3001', icon: Bot, color: 'text-blue-500' },
                             ].map((item) => (
-                                <a key={item.href} href={item.href} target="_blank" rel="noopener">
-                                    <Button
-                                        variant="ghost"
-                                        className={cn(
-                                            'w-full justify-start gap-3 h-10 transition-all duration-200 group rounded-xl text-muted-foreground hover:text-zinc-950 hover:bg-zinc-100/50',
-                                            isCollapsed && 'justify-center px-0'
-                                        )}
-                                    >
-                                        <item.icon className={cn("h-4 w-4 shrink-0", item.color)} />
-                                        {!isCollapsed && (
-                                            <span className="truncate font-medium text-muted-foreground group-hover:text-zinc-950 flex items-center gap-1.5">
-                                                {item.title}
-                                                <ExternalLink className="h-3 w-3 opacity-40" />
-                                            </span>
-                                        )}
-                                    </Button>
-                                </a>
+                                <SidebarMenuItem key={item.title}>
+                                    <SidebarMenuButton asChild tooltip={item.title}>
+                                        <a href={item.href} target="_blank" rel="noopener">
+                                            <item.icon className={item.color} />
+                                            <span>{item.title}</span>
+                                            <ExternalLink className="ml-auto w-4 h-4 opacity-50" />
+                                        </a>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
                             ))}
-                        </div>
-                    </div>
-
-                    {/* Thêm padding dưới cùng để khi cuộn không bị dính đáy */}
-                    <div className="h-20" />
-                </nav>
-            </div>
-
-            {/* Collapse Toggle - Hidden on mobile */}
-            {!isMobile && (
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute -right-3 top-16 -translate-y-1/2 h-6 w-6 rounded-full border bg-background z-10"
-                    onClick={() => setIsCollapsed(!isCollapsed)}
-                >
-                    {isCollapsed ? (
-                        <ChevronRight className="h-4 w-4" />
-                    ) : (
-                        <ChevronLeft className="h-4 w-4" />
-                    )}
-                </Button>
-            )}
-        </aside>
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+            </SidebarContent>
+            
+            <SidebarRail />
+        </Sidebar>
     )
 }

@@ -74,11 +74,11 @@ export default function DemoReports() {
     return (
         <div className="space-y-8">
             <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shadow-sm border border-border/50">
-                    <PieChartIcon className="h-6 w-6 text-zinc-900 dark:text-zinc-100" />
+                <div className="h-12 w-12 rounded-md bg-muted dark:bg-zinc-800 flex items-center justify-center shadow-sm border border-border">
+                    <PieChartIcon className="h-6 w-6 text-foreground dark:text-zinc-100" />
                 </div>
                 <div>
-                    <h1 className="text-3xl font-bold text-zinc-950 dark:text-zinc-50 tracking-tight">Báo cáo</h1>
+                    <h1 className="text-3xl font-bold text-foreground dark:text-zinc-50">Báo cáo</h1>
                     <p className="text-sm font-medium text-muted-foreground mt-1">Phân tích tổng quan hoạt động kinh doanh</p>
                 </div>
             </div>
@@ -93,10 +93,10 @@ export default function DemoReports() {
                     { label: 'Hóa đơn', value: INVOICES.length, icon: Receipt },
                     { label: 'Nhân sự', value: TEAM.length, icon: UserCheck },
                 ].map((kpi, i) => (
-                    <Card key={i} className="rounded-xl border-border/50 text-center">
+                    <Card key={i} className="rounded-md border-border text-center">
                         <CardContent className="pt-6 pb-4">
                             <kpi.icon className="h-5 w-5 text-muted-foreground mx-auto mb-2" />
-                            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{kpi.value}</div>
+                            <div className="text-2xl font-bold text-foreground dark:text-zinc-50">{kpi.value}</div>
                             <p className="text-[10px] font-semibold text-muted-foreground uppercase mt-1">{kpi.label}</p>
                         </CardContent>
                     </Card>
@@ -104,9 +104,9 @@ export default function DemoReports() {
             </div>
 
             {/* Revenue Growth Chart */}
-            <Card className="rounded-xl border-border/50">
+            <Card className="rounded-md border-border">
                 <CardHeader>
-                    <CardTitle className="text-lg font-bold tracking-tight">Tăng trưởng doanh thu theo tháng</CardTitle>
+                    <CardTitle className="text-lg font-bold">Tăng trưởng doanh thu theo tháng</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <ResponsiveContainer width="100%" height={280}>
@@ -127,9 +127,9 @@ export default function DemoReports() {
 
             <div className="grid gap-6 lg:grid-cols-2">
                 {/* Company Health Radar */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Sức khỏe doanh nghiệp</CardTitle>
+                        <CardTitle className="text-lg font-bold">Sức khỏe doanh nghiệp</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={300}>
@@ -144,9 +144,9 @@ export default function DemoReports() {
                 </Card>
 
                 {/* Projects per month */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Số dự án theo tháng</CardTitle>
+                        <CardTitle className="text-lg font-bold">Số dự án theo tháng</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={300}>
@@ -170,9 +170,9 @@ export default function DemoReports() {
 
             <div className="grid gap-6 lg:grid-cols-3">
                 {/* Customer Type Pie */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Loại khách hàng</CardTitle>
+                        <CardTitle className="text-lg font-bold">Loại khách hàng</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={220}>
@@ -188,9 +188,9 @@ export default function DemoReports() {
                 </Card>
 
                 {/* Project Status Pie */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Trạng thái dự án</CardTitle>
+                        <CardTitle className="text-lg font-bold">Trạng thái dự án</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={220}>
@@ -208,9 +208,9 @@ export default function DemoReports() {
                 </Card>
 
                 {/* Invoice Status Pie */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Hóa đơn (theo giá trị)</CardTitle>
+                        <CardTitle className="text-lg font-bold">Hóa đơn (theo giá trị)</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={220}>
@@ -229,9 +229,9 @@ export default function DemoReports() {
             </div>
 
             {/* Designer Performance Bar */}
-            <Card className="rounded-xl border-border/50">
+            <Card className="rounded-md border-border">
                 <CardHeader>
-                    <CardTitle className="text-lg font-bold tracking-tight">Hiệu suất Designer</CardTitle>
+                    <CardTitle className="text-lg font-bold">Hiệu suất Designer</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <ResponsiveContainer width="100%" height={250}>
@@ -249,9 +249,9 @@ export default function DemoReports() {
             </Card>
 
             {/* Business Metrics */}
-            <Card className="rounded-xl border-border/50">
+            <Card className="rounded-md border-border">
                 <CardHeader>
-                    <CardTitle className="text-lg font-bold tracking-tight">Chỉ số kinh doanh</CardTitle>
+                    <CardTitle className="text-lg font-bold">Chỉ số kinh doanh</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                     {[
@@ -261,8 +261,8 @@ export default function DemoReports() {
                         { label: 'Biên lợi nhuận', value: `${Math.round(((totalRevenue - totalExpenses) / totalRevenue) * 100)}%` },
                     ].map((m, i) => (
                         <div key={i} className="flex justify-between items-center py-2 border-b border-border/30 last:border-0">
-                            <span className="text-sm text-zinc-600 dark:text-zinc-400 font-medium">{m.label}</span>
-                            <span className="text-sm font-bold text-zinc-950 dark:text-zinc-50">{m.value}</span>
+                            <span className="text-sm text-muted-foreground dark:text-muted-foreground font-medium">{m.label}</span>
+                            <span className="text-sm font-bold text-foreground dark:text-zinc-50">{m.value}</span>
                         </div>
                     ))}
                 </CardContent>

@@ -55,7 +55,7 @@ export default function DemoDashboard() {
     return (
         <div className="space-y-8">
             <div>
-                <h1 className="text-3xl font-bold text-zinc-950 tracking-tight">Dashboard</h1>
+                <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
                 <p className="text-sm font-medium text-muted-foreground mt-1">Tổng quan hoạt động kinh doanh NovaDeco</p>
             </div>
 
@@ -67,13 +67,13 @@ export default function DemoDashboard() {
                     { label: 'Dự án đang chạy', value: stats.activeProjects.toString(), change: `${stats.completedProjects} hoàn thành`, up: true, icon: Rocket, color: 'text-violet-600' },
                     { label: 'Hóa đơn chờ thu', value: formatCurrency(stats.pendingAmount), change: `${stats.pendingInvoices} hóa đơn`, up: false, icon: Receipt, color: 'text-amber-600' },
                 ].map((s, i) => (
-                    <Card key={i} className="rounded-xl border-border/50">
+                    <Card key={i} className="rounded-md border-border">
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-bold text-muted-foreground tracking-tight">{s.label}</CardTitle>
+                            <CardTitle className="text-sm font-bold text-muted-foreground">{s.label}</CardTitle>
                             <s.icon className={`h-4 w-4 ${s.color}`} />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold text-zinc-900">{s.value}</div>
+                            <div className="text-2xl font-bold text-foreground">{s.value}</div>
                             <div className="flex items-center gap-1 mt-1">
                                 {s.up ? <ArrowUpRight className="h-3 w-3 text-emerald-500" /> : <ArrowDownRight className="h-3 w-3 text-amber-500" />}
                                 <span className={`text-xs font-semibold ${s.up ? 'text-emerald-600' : 'text-amber-600'}`}>{s.change}</span>
@@ -84,9 +84,9 @@ export default function DemoDashboard() {
             </div>
 
             {/* Revenue Bar Chart */}
-            <Card className="rounded-xl border-border/50">
+            <Card className="rounded-md border-border">
                 <CardHeader>
-                    <CardTitle className="text-lg font-bold tracking-tight">Doanh thu & Chi phí 12 tháng</CardTitle>
+                    <CardTitle className="text-lg font-bold">Doanh thu & Chi phí 12 tháng</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <ResponsiveContainer width="100%" height={320}>
@@ -104,9 +104,9 @@ export default function DemoDashboard() {
             </Card>
 
             {/* Area chart - Profit trend */}
-            <Card className="rounded-xl border-border/50">
+            <Card className="rounded-md border-border">
                 <CardHeader>
-                    <CardTitle className="text-lg font-bold tracking-tight">Xu hướng lợi nhuận</CardTitle>
+                    <CardTitle className="text-lg font-bold">Xu hướng lợi nhuận</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <ResponsiveContainer width="100%" height={250}>
@@ -129,9 +129,9 @@ export default function DemoDashboard() {
 
             <div className="grid gap-6 lg:grid-cols-3">
                 {/* Project Status Pie */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Trạng thái dự án</CardTitle>
+                        <CardTitle className="text-lg font-bold">Trạng thái dự án</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={220}>
@@ -147,9 +147,9 @@ export default function DemoDashboard() {
                 </Card>
 
                 {/* Customer Type Pie */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Loại khách hàng</CardTitle>
+                        <CardTitle className="text-lg font-bold">Loại khách hàng</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={220}>
@@ -165,9 +165,9 @@ export default function DemoDashboard() {
                 </Card>
 
                 {/* Quotation Status Pie */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Trạng thái báo giá</CardTitle>
+                        <CardTitle className="text-lg font-bold">Trạng thái báo giá</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={220}>
@@ -184,9 +184,9 @@ export default function DemoDashboard() {
             </div>
 
             {/* Contract Value Line Chart */}
-            <Card className="rounded-xl border-border/50">
+            <Card className="rounded-md border-border">
                 <CardHeader>
-                    <CardTitle className="text-lg font-bold tracking-tight">Giá trị hợp đồng & thu tiền</CardTitle>
+                    <CardTitle className="text-lg font-bold">Giá trị hợp đồng & thu tiền</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <ResponsiveContainer width="100%" height={280}>
@@ -205,19 +205,19 @@ export default function DemoDashboard() {
 
             <div className="grid gap-6 lg:grid-cols-2">
                 {/* Active Projects */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Dự án đang thực hiện</CardTitle>
+                        <CardTitle className="text-lg font-bold">Dự án đang thực hiện</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         {PROJECTS.filter(p => p.status !== 'completed').slice(0, 5).map((p) => (
                             <div key={p.id} className="flex items-center gap-4">
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-semibold text-zinc-950 truncate">{p.name}</p>
+                                    <p className="text-sm font-semibold text-foreground truncate">{p.name}</p>
                                     <p className="text-xs text-muted-foreground">{p.customerName} · {p.designer}</p>
                                 </div>
                                 <div className="text-right shrink-0 flex items-center gap-2">
-                                    <div className="w-20 h-2 bg-zinc-100 rounded-full overflow-hidden">
+                                    <div className="w-20 h-2 bg-muted rounded-full overflow-hidden">
                                         <div className="h-full bg-zinc-900 rounded-full" style={{ width: `${p.progress}%` }} />
                                     </div>
                                     <span className="text-xs font-bold text-zinc-700 w-8 text-right">{p.progress}%</span>
@@ -228,9 +228,9 @@ export default function DemoDashboard() {
                 </Card>
 
                 {/* Invoice Status Chart */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Phân bổ hóa đơn (theo giá trị)</CardTitle>
+                        <CardTitle className="text-lg font-bold">Phân bổ hóa đơn (theo giá trị)</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={200}>

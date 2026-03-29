@@ -44,7 +44,7 @@ export default function TasksPage() {
             <div className="space-y-2">
                 {tasks.map(task => (
                     <Link key={task.id} href={`/tasks/${task.id}`}
-                        className="flex items-center gap-4 p-4 no-underline rounded-xl transition-colors"
+                        className="flex items-center gap-4 p-4 no-underline rounded-md transition-colors"
                         style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                         <span className="px-2 py-0.5 rounded-full flex-shrink-0 font-semibold" style={{
                             backgroundColor: `color-mix(in srgb, ${TASK_STATUS_COLORS[task.status]} 15%, transparent)`,

@@ -173,11 +173,7 @@ export function TimelineClient({ tasks, teamMembers }: TimelineClientProps) {
                                         {dayMarkers.map((marker, i) => (
                                             <div
                                                 key={i}
-                                                className={`flex-1 flex items-end justify-center pb-1 text-[11px] font-medium border-r ${
-                                                    marker.isMonday
-                                                        ? 'text-foreground border-r-zinc-300'
-                                                        : 'text-muted-foreground/40 border-r-zinc-100'
-                                                } ${marker.dayOfWeek === 0 || marker.dayOfWeek === 6 ? 'bg-muted/20' : ''}`}
+                                                className={`flex-1 flex items-end justify-center pb-1 text-[11px] font-medium border-r ${ marker.isMonday ? 'text-foreground border-r-zinc-300' : 'text-muted-foreground/40 border-r-zinc-100' } ${marker.dayOfWeek === 0 || marker.dayOfWeek === 6 ? 'bg-muted/20' : ''}`}
                                             >
                                                 {marker.label}
                                             </div>
@@ -224,11 +220,7 @@ export function TimelineClient({ tasks, teamMembers }: TimelineClientProps) {
                                                 )}
                                                 {/* Task bar */}
                                                 <div
-                                                    className={`absolute top-2 h-[18px] rounded-md transition-all group-hover:brightness-110 ${
-                                                        isOverdue
-                                                            ? 'bg-rose-200 border border-rose-400'
-                                                            : statusColors[task.status] || 'bg-zinc-300'
-                                                    } ${task.status === 'completed' ? 'opacity-40' : 'opacity-80'}`}
+                                                    className={`absolute top-2 h-[18px] rounded-md transition-all group-hover:brightness-110 ${ isOverdue ? 'bg-rose-200 border border-rose-400' : statusColors[task.status] || 'bg-zinc-300' } ${task.status === 'completed' ? 'opacity-40' : 'opacity-80'}`}
                                                     style={{
                                                         left: `${barStartPercent}%`,
                                                         width: `${Math.min(barWidthPercent, 100 - barStartPercent)}%`,
@@ -246,7 +238,7 @@ export function TimelineClient({ tasks, teamMembers }: TimelineClientProps) {
                                                 {/* Assignee dot */}
                                                 {task.assigned_user && barStartPercent + barWidthPercent < 95 && (
                                                     <div
-                                                        className="absolute top-2.5 h-4 w-4 rounded-full bg-zinc-200 flex items-center justify-center text-[7px] font-bold text-zinc-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                        className="absolute top-2.5 h-4 w-4 rounded-full bg-muted flex items-center justify-center text-[7px] font-bold text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity"
                                                         style={{ left: `${Math.min(barStartPercent + barWidthPercent + 0.5, 98)}%` }}
                                                     >
                                                         {((task.assigned_user as any).full_name || '?').charAt(0).toUpperCase()}

@@ -22,7 +22,7 @@ function formatCurrency(amount: number) {
 export function InvoiceList({ invoices }: { invoices: Invoice[] }) {
   if (invoices.length === 0) {
     return (
-      <div className="rounded-xl border border-border bg-card p-12 text-center">
+      <div className="rounded-md border border-border bg-card p-12 text-center">
         <FileText className="mx-auto h-12 w-12 text-muted-foreground/50" />
         <h3 className="mt-4 text-lg font-medium text-foreground">Chưa có hóa đơn nào</h3>
         <p className="mt-2 text-sm text-muted-foreground">Tạo hóa đơn đầu tiên để bắt đầu</p>
@@ -39,22 +39,22 @@ export function InvoiceList({ invoices }: { invoices: Invoice[] }) {
     <div className="space-y-6">
       {/* Stats cards */}
       <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-xl border border-border bg-card p-4">
+        <div className="rounded-md border border-border bg-card p-4">
           <p className="text-sm text-muted-foreground">Đã thu</p>
           <p className="text-xl font-bold text-emerald-600">{formatCurrency(totalRevenue)}</p>
         </div>
-        <div className="rounded-xl border border-border bg-card p-4">
+        <div className="rounded-md border border-border bg-card p-4">
           <p className="text-sm text-muted-foreground">Chờ thanh toán</p>
           <p className="text-xl font-bold text-amber-600">{formatCurrency(totalPending)}</p>
         </div>
-        <div className="rounded-xl border border-border bg-card p-4">
+        <div className="rounded-md border border-border bg-card p-4">
           <p className="text-sm text-muted-foreground">Quá hạn</p>
           <p className="text-xl font-bold text-red-600">{formatCurrency(totalOverdue)}</p>
         </div>
       </div>
 
       {/* Invoice table */}
-      <div className="rounded-xl border border-border bg-card overflow-hidden">
+      <div className="rounded-md border border-border bg-card overflow-hidden">
         <table className="w-full">
           <thead>
             <tr className="border-b border-border bg-muted/50">

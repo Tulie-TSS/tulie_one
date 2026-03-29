@@ -74,7 +74,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
 
                 <TabsContent value="overview" className="space-y-4">
                     <div className="grid gap-6 lg:grid-cols-3">
-                        <Card className="lg:col-span-2 rounded-xl border shadow-sm overflow-hidden">
+                        <Card className="lg:col-span-2 rounded-md border shadow-sm overflow-hidden">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-base font-semibold">Doanh thu vs Chi phí (Triệu VND)</CardTitle>
                             </CardHeader>
@@ -174,7 +174,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                             </CardContent>
                         </Card>
 
-                        <Card className="rounded-xl border shadow-sm overflow-hidden">
+                        <Card className="rounded-md border shadow-sm overflow-hidden">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-base font-semibold">Giao dịch SePay</CardTitle>
                             </CardHeader>
@@ -185,10 +185,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                                     const isMatched = tx.matched_order_id || tx.matched_invoice_id
                                     return (
                                         <div key={tx.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
-                                            <div className={`h-8 w-8 rounded-lg flex items-center justify-center ${isIn
-                                                ? 'bg-emerald-50 text-emerald-600'
-                                                : 'bg-rose-50 text-red-500'
-                                                }`}>
+                                            <div className={`h-8 w-8 rounded-lg flex items-center justify-center ${isIn ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-red-500' }`}>
                                                 {isIn ? (
                                                     <ArrowUpRight className="h-4 w-4" />
                                                 ) : (
@@ -228,7 +225,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                 </TabsContent>
 
                 <TabsContent value="revenue" className="space-y-4">
-                    <Card className="rounded-xl border shadow-sm overflow-hidden">
+                    <Card className="rounded-md border shadow-sm overflow-hidden">
                         <CardHeader className="pb-2">
                             <CardTitle className="text-base font-semibold">Biểu đồ doanh thu 12 tháng qua</CardTitle>
                         </CardHeader>
@@ -276,7 +273,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                     </Card>
 
                     {/* Clickable monthly revenue list */}
-                    <Card className="rounded-xl border shadow-sm overflow-hidden">
+                    <Card className="rounded-md border shadow-sm overflow-hidden">
                         <CardHeader className="pb-2">
                             <CardTitle className="text-base font-semibold">Chi tiết doanh thu theo tháng</CardTitle>
                         </CardHeader>
@@ -298,11 +295,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                                                 key={month.date}
                                                 onClick={() => handleMonthClick(month)}
                                                 disabled={!hasDetails}
-                                                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-left ${
-                                                    hasDetails
-                                                        ? 'hover:bg-blue-50/80 cursor-pointer group'
-                                                        : 'opacity-60 cursor-default'
-                                                }`}
+                                                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-left ${ hasDetails ? 'hover:bg-blue-50/80 cursor-pointer group' : 'opacity-60 cursor-default' }`}
                                             >
                                                 <div className="h-9 w-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
                                                     <span className="text-xs font-bold text-blue-600">{month.date}</span>
@@ -345,7 +338,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                 </TabsContent>
 
                 <TabsContent value="expenses">
-                    <Card className="rounded-xl border shadow-sm overflow-hidden">
+                    <Card className="rounded-md border shadow-sm overflow-hidden">
                         <CardHeader className="pb-2">
                             <CardTitle className="text-base font-semibold">Biểu đồ chi phí 12 tháng qua</CardTitle>
                         </CardHeader>

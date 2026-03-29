@@ -291,11 +291,11 @@ export const Sidebar = () => {
         >
             {/* ── Logo ── */}
             <div className="flex h-[64px] items-center gap-3 px-5 border-b border-border bg-card/50 backdrop-blur-sm">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-md shadow-indigo-500/20">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-gradient-to-br from-indigo-500 to-violet-600 shadow-md shadow-indigo-500/20">
                     <Zap className="h-4.5 w-4.5 text-white" />
                 </div>
                 {!collapsed && (
-                    <span className="text-[17px] font-bold tracking-tight text-foreground">
+                    <span className="text-[17px] font-bold text-foreground">
                         Tulie
                     </span>
                 )}

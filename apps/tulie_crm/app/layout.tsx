@@ -50,7 +50,7 @@ export default function RootLayout({
             toastOptions={{
               unstyled: false,
               classNames: {
-                toast: 'group font-sans rounded-xl shadow-lg border backdrop-blur-sm !bg-background !text-foreground',
+                toast: 'group font-sans rounded-md shadow-lg border backdrop-blur-sm !bg-background !text-foreground',
                 title: 'text-sm font-semibold',
                 description: 'text-xs text-muted-foreground',
                 actionButton: 'bg-primary text-primary-foreground text-xs font-medium rounded-lg px-3 py-1.5',

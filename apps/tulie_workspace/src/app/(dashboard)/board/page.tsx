@@ -41,12 +41,12 @@ export default function BoardPage() {
                             </div>
 
                             {/* Column Body — scrollable */}
-                            <div className="flex-1 overflow-y-auto space-y-2 p-2 rounded-xl" style={{ backgroundColor: 'var(--color-surface)' }}>
+                            <div className="flex-1 overflow-y-auto space-y-2 p-2 rounded-md" style={{ backgroundColor: 'var(--color-surface)' }}>
                                 {tasks.map(task => (
                                     <Link
                                         key={task.id}
                                         href={`/tasks/${task.id}`}
-                                        className="block p-3 no-underline transition-all hover:-translate-y-0.5"
+                                        className="block p-3 no-underline transition-all"
                                         style={{
                                             backgroundColor: 'var(--color-bg)',
                                             borderRadius: 'var(--radius-md)',

@@ -69,7 +69,7 @@ export function StatusBadge({ status, label, entityType = 'none', className, sho
         <Badge
             variant="secondary"
             className={cn(
-                'font-normal tracking-tight whitespace-nowrap px-3 h-6 flex items-center gap-1.5 rounded-full text-[11px]',
+                'font-normal  whitespace-nowrap px-3 h-6 flex items-center gap-1.5 rounded-full text-[11px]',
                 colorClass,
                 className
             )}

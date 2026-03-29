@@ -56,7 +56,7 @@ export function VietQR({
 
     if (!bankId || !accountNo) {
         return (
-            <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-xl bg-muted/20 text-muted-foreground">
+            <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-md bg-muted/20 text-muted-foreground">
                 <p className="text-sm font-medium">Thiếu thông tin tài khoản ngân hàng</p>
                 <p className="text-xs">Vui lòng cấu hình trong phần Cài đặt hệ thống</p>
             </div>
@@ -68,7 +68,7 @@ export function VietQR({
             <div className="relative group">
                 <Card className="overflow-hidden border-2 border-primary/20 shadow-xl bg-white p-2">
                     {isLoading ? (
-                        <div className="flex items-center justify-center bg-zinc-50 rounded-lg" style={{ width: size, height: size }}>
+                        <div className="flex items-center justify-center bg-muted rounded-lg" style={{ width: size, height: size }}>
                             <RefreshCw className="h-8 w-8 text-primary/40 animate-spin" />
                         </div>
                     ) : (
@@ -81,7 +81,7 @@ export function VietQR({
                         />
                     )}
                 </Card>
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/5 rounded-xl pointer-events-none">
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/5 rounded-md pointer-events-none">
                 </div>
             </div>
 

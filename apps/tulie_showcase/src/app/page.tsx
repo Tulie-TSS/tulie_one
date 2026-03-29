@@ -9,7 +9,7 @@ export default function Home() {
     <main className="container mx-auto p-8 max-w-5xl">
       <div className="flex flex-col space-y-8">
         <header>
-          <h1 className="text-4xl font-bold tracking-tight">Tulie Design System</h1>
+          <h1 className="text-4xl font-bold">Tulie Design System</h1>
           <p className="text-muted-foreground mt-2 text-lg">
             A comprehensive component library built on top of Radix UI and TailwindCSS.
           </p>

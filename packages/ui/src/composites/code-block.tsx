@@ -65,25 +65,25 @@ export function CodeBlock({
   return (
     <div
       className={cn(
-        "rounded-lg border border-border bg-zinc-950 text-zinc-100 overflow-hidden",
-        "dark:bg-zinc-900 dark:border-zinc-700",
+        "rounded-lg border border-border bg-[oklch(0.145_0_0)] text-[oklch(0.985_0_0)] overflow-hidden",
+        "dark:bg-[oklch(0.12_0_0)] dark:border-border",
         className
       )}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-zinc-800 bg-zinc-900/50">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-[oklch(0.25_0_0)] bg-[oklch(0.17_0_0)]">
         <div className="flex items-center gap-2">
           {/* Traffic light dots */}
           <div className="flex gap-1.5" aria-hidden="true">
-            <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-            <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-            <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+            <div className="h-2.5 w-2.5 rounded-full bg-[oklch(0.4_0_0)]" />
+            <div className="h-2.5 w-2.5 rounded-full bg-[oklch(0.4_0_0)]" />
+            <div className="h-2.5 w-2.5 rounded-full bg-[oklch(0.4_0_0)]" />
           </div>
           {title && (
-            <span className="text-[11px] font-mono text-zinc-400">{title}</span>
+            <span className="text-[11px] font-mono text-[oklch(0.55_0_0)]">{title}</span>
           )}
           {language && !title && (
-            <span className="text-[11px] font-mono text-zinc-500">{language}</span>
+            <span className="text-[11px] font-mono text-[oklch(0.45_0_0)]">{language}</span>
           )}
         </div>
 
@@ -91,7 +91,7 @@ export function CodeBlock({
           variant="ghost"
           size="icon-sm"
           onClick={handleCopy}
-          className="h-6 w-6 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-700"
+          className="h-6 w-6 text-[oklch(0.55_0_0)] hover:text-[oklch(0.985_0_0)] hover:bg-[oklch(0.35_0_0)]"
           aria-label="Copy code"
         >
           {copied ? (
@@ -114,7 +114,7 @@ export function CodeBlock({
             {lines.map((line, i) => (
               <div key={i} className="flex">
                 {showLineNumbers && (
-                  <span className="select-none text-right w-8 pr-4 text-zinc-600 shrink-0 tabular-nums">
+                  <span className="select-none text-right w-8 pr-4 text-[oklch(0.4_0_0)] shrink-0 tabular-nums">
                     {i + 1}
                   </span>
                 )}

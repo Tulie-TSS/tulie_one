@@ -81,7 +81,7 @@ export function CycleDashboard({
     <Card
       className={cn(
         "transition-all",
-        onClick && "cursor-pointer hover:shadow-md hover:-translate-y-0.5",
+        onClick && "cursor-pointer hover:bg-accent",
         className
       )}
       onClick={onClick}
@@ -134,7 +134,7 @@ export function CycleDashboard({
                 strokeLinecap="round"
                 strokeDasharray={2 * Math.PI * 26}
                 strokeDashoffset={2 * Math.PI * 26 * (1 - completionRate / 100)}
-                className="stroke-primary transition-all duration-700 ease-apple"
+                className="stroke-primary transition-all duration-700 ease-out"
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">

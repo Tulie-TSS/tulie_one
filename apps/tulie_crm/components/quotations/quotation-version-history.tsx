@@ -106,7 +106,7 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
             </SheetTrigger>
             <SheetContent className="w-[460px] sm:w-[520px] p-0 flex flex-col">
                 {/* Header */}
-                <div className="px-6 pt-6 pb-4 border-b border-zinc-100">
+                <div className="px-6 pt-6 pb-4 border-b border-border">
                     <SheetHeader>
                         <SheetTitle className="flex items-center gap-2.5 text-base">
                             <div className="p-1.5 bg-zinc-900 text-white rounded-lg">
@@ -120,7 +120,7 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                             )}
                         </SheetTitle>
                     </SheetHeader>
-                    <p className="text-xs text-zinc-400 mt-2">
+                    <p className="text-xs text-muted-foreground mt-2">
                         Mỗi thay đổi tự động lưu lại. Bấm xem chi tiết hoặc khôi phục bất kỳ phiên bản nào.
                     </p>
                 </div>
@@ -128,16 +128,16 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                 {/* Content */}
                 <div className="flex-1 overflow-y-auto px-6 py-4">
                     {loading ? (
-                        <div className="flex flex-col items-center justify-center py-16 text-zinc-400 text-sm gap-3">
-                            <div className="w-8 h-8 border-2 border-zinc-200 border-t-zinc-600 rounded-full animate-spin" />
+                        <div className="flex flex-col items-center justify-center py-16 text-muted-foreground text-sm gap-3">
+                            <div className="w-8 h-8 border-2 border-border border-t-zinc-600 rounded-full animate-spin" />
                             <span>Đang tải lịch sử...</span>
                         </div>
                     ) : versions.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center py-16 text-zinc-400 text-sm gap-3">
-                            <div className="p-4 bg-zinc-50 rounded-2xl">
+                        <div className="flex flex-col items-center justify-center py-16 text-muted-foreground text-sm gap-3">
+                            <div className="p-4 bg-muted rounded-md">
                                 <Clock className="h-8 w-8 opacity-30" />
                             </div>
-                            <p className="font-medium text-zinc-500">Chưa có phiên bản nào</p>
+                            <p className="font-medium text-muted-foreground">Chưa có phiên bản nào</p>
                             <p className="text-xs text-center max-w-[240px] leading-relaxed">Lịch sử sẽ tự động lưu khi bạn cập nhật báo giá</p>
                         </div>
                     ) : (
@@ -152,10 +152,10 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                                     <div
                                         key={v.id}
                                         className={cn(
-                                            "rounded-xl border transition-all duration-200",
+                                            "rounded-md border transition-all duration-200",
                                             isExpanded
-                                                ? "border-zinc-300 bg-white shadow-sm"
-                                                : "border-zinc-100 bg-zinc-50/50 hover:bg-zinc-50 hover:border-zinc-200"
+                                                ? "border-input bg-white shadow-sm"
+                                                : "border-border bg-muted/50 hover:bg-muted hover:border-border"
                                         )}
                                     >
                                         {/* Version Header */}
@@ -168,7 +168,7 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                                                 "shrink-0 flex items-center justify-center w-10 h-10 rounded-lg font-bold text-sm",
                                                 isLatest
                                                     ? "bg-zinc-900 text-white"
-                                                    : "bg-zinc-100 text-zinc-600"
+                                                    : "bg-muted text-muted-foreground"
                                             )}>
                                                 v{v.version_number}
                                             </div>
@@ -185,7 +185,7 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                                                         </Badge>
                                                     )}
                                                 </div>
-                                                <p className="text-[11px] text-zinc-400 mt-0.5">
+                                                <p className="text-[11px] text-muted-foreground mt-0.5">
                                                     {timeAgo(v.created_at)}
                                                 </p>
                                             </div>
@@ -195,7 +195,7 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                                                 <Button
                                                     variant="ghost"
                                                     size="sm"
-                                                    className="h-8 w-8 p-0 text-zinc-400 hover:text-zinc-700"
+                                                    className="h-8 w-8 p-0 text-muted-foreground hover:text-zinc-700"
                                                     onClick={(e) => { e.stopPropagation(); togglePreview(v.id) }}
                                                 >
                                                     {isExpanded ? <ChevronUp className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -205,37 +205,37 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
 
                                         {/* Expanded Preview */}
                                         {isExpanded && (
-                                            <div className="border-t border-zinc-100">
+                                            <div className="border-t border-border">
                                                 {isLoadingThis ? (
-                                                    <div className="flex items-center justify-center py-8 text-zinc-400 text-xs gap-2">
-                                                        <div className="w-4 h-4 border-2 border-zinc-200 border-t-zinc-500 rounded-full animate-spin" />
+                                                    <div className="flex items-center justify-center py-8 text-muted-foreground text-xs gap-2">
+                                                        <div className="w-4 h-4 border-2 border-border border-t-zinc-500 rounded-full animate-spin" />
                                                         Đang tải...
                                                     </div>
                                                 ) : snapshot ? (
                                                     <div className="p-4 space-y-3">
                                                         {/* Quotation summary */}
                                                         <div className="grid grid-cols-2 gap-2 text-xs">
-                                                            <div className="flex items-center gap-2 p-2.5 bg-zinc-50 rounded-lg">
-                                                                <Hash className="h-3.5 w-3.5 text-zinc-400" />
+                                                            <div className="flex items-center gap-2 p-2.5 bg-muted rounded-lg">
+                                                                <Hash className="h-3.5 w-3.5 text-muted-foreground" />
                                                                 <div>
-                                                                    <p className="text-zinc-400 text-[10px]">Mã báo giá</p>
+                                                                    <p className="text-muted-foreground text-[10px]">Mã báo giá</p>
                                                                     <p className="font-semibold text-zinc-700">{snapshot.quotation_number || '-'}</p>
                                                                 </div>
                                                             </div>
-                                                            <div className="flex items-center gap-2 p-2.5 bg-zinc-50 rounded-lg">
-                                                                <Package className="h-3.5 w-3.5 text-zinc-400" />
+                                                            <div className="flex items-center gap-2 p-2.5 bg-muted rounded-lg">
+                                                                <Package className="h-3.5 w-3.5 text-muted-foreground" />
                                                                 <div>
-                                                                    <p className="text-zinc-400 text-[10px]">Tổng tiền</p>
+                                                                    <p className="text-muted-foreground text-[10px]">Tổng tiền</p>
                                                                     <p className="font-bold text-zinc-800">{formatCurrency(snapshot.total_amount || 0)}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
 
                                                         {snapshot.title && (
-                                                            <div className="flex items-start gap-2 p-2.5 bg-zinc-50 rounded-lg text-xs">
-                                                                <FileText className="h-3.5 w-3.5 text-zinc-400 mt-0.5 shrink-0" />
+                                                            <div className="flex items-start gap-2 p-2.5 bg-muted rounded-lg text-xs">
+                                                                <FileText className="h-3.5 w-3.5 text-muted-foreground mt-0.5 shrink-0" />
                                                                 <div>
-                                                                    <p className="text-zinc-400 text-[10px]">Tiêu đề</p>
+                                                                    <p className="text-muted-foreground text-[10px]">Tiêu đề</p>
                                                                     <p className="font-medium text-zinc-700">{snapshot.title}</p>
                                                                 </div>
                                                             </div>
@@ -244,13 +244,13 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                                                         {/* Items preview */}
                                                         {snapshot.items && snapshot.items.length > 0 && (
                                                             <div>
-                                                                <p className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider mb-1.5">
+                                                                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                                                                     Danh sách hạng mục ({snapshot.items.length})
                                                                 </p>
-                                                                <div className="max-h-[200px] overflow-y-auto rounded-lg border border-zinc-100">
+                                                                <div className="max-h-[200px] overflow-y-auto rounded-lg border border-border">
                                                                     <table className="w-full text-xs">
                                                                         <thead>
-                                                                            <tr className="bg-zinc-50 text-zinc-500">
+                                                                            <tr className="bg-muted text-muted-foreground">
                                                                                 <th className="text-left py-1.5 px-2.5 font-medium">#</th>
                                                                                 <th className="text-left py-1.5 px-2.5 font-medium">Hạng mục</th>
                                                                                 <th className="text-right py-1.5 px-2.5 font-medium">SL</th>
@@ -261,10 +261,10 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                                                                         <tbody>
                                                                             {snapshot.items.map((item: any, i: number) => (
                                                                                 <tr key={i} className="border-t border-zinc-50">
-                                                                                    <td className="py-1.5 px-2.5 text-zinc-400 tabular-nums">{i + 1}</td>
+                                                                                    <td className="py-1.5 px-2.5 text-muted-foreground tabular-nums">{i + 1}</td>
                                                                                     <td className="py-1.5 px-2.5 font-medium text-zinc-700 truncate max-w-[160px]">{item.product_name}</td>
-                                                                                    <td className="py-1.5 px-2.5 text-right tabular-nums text-zinc-500">{item.quantity}</td>
-                                                                                    <td className="py-1.5 px-2.5 text-right tabular-nums text-zinc-500">{formatCurrency(item.unit_price || 0).replace('₫', '')}</td>
+                                                                                    <td className="py-1.5 px-2.5 text-right tabular-nums text-muted-foreground">{item.quantity}</td>
+                                                                                    <td className="py-1.5 px-2.5 text-right tabular-nums text-muted-foreground">{formatCurrency(item.unit_price || 0).replace('₫', '')}</td>
                                                                                     <td className="py-1.5 px-2.5 text-right tabular-nums font-semibold text-zinc-700">{formatCurrency(item.total_price || (item.quantity * item.unit_price) || 0).replace('₫', '')}</td>
                                                                                 </tr>
                                                                             ))}
@@ -286,7 +286,7 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                                                         <Button
                                                             variant="outline"
                                                             size="sm"
-                                                            className="w-full gap-2 text-xs font-medium h-9 border-dashed hover:border-zinc-400 hover:bg-zinc-50"
+                                                            className="w-full gap-2 text-xs font-medium h-9 border-dashed hover:border-zinc-400 hover:bg-muted"
                                                             onClick={() => handleRestore(v.id, v.version_number)}
                                                             disabled={isPending}
                                                         >

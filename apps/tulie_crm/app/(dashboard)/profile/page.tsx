@@ -26,7 +26,7 @@ export default async function ProfilePage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-xl bg-zinc-100 flex items-center justify-center shadow-sm border border-border/50">
+                <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center shadow-sm border border-border">
                     <Avatar className="h-8 w-8">
                         <AvatarImage src={avatarUrl} />
                         <AvatarFallback className="text-[11px] bg-zinc-950 text-white font-bold">
@@ -35,7 +35,7 @@ export default async function ProfilePage() {
                     </Avatar>
                 </div>
                 <div>
-                    <h1 className="text-3xl font-bold text-zinc-950 tracking-tight italic">Hồ sơ cá nhân</h1>
+                    <h1 className="text-3xl font-bold text-foreground italic">Hồ sơ cá nhân</h1>
                     <p className="text-sm font-medium text-muted-foreground mt-1">
                         Quản lý thông tin tài khoản và cấu hình cá nhân của bạn
                     </p>
@@ -44,7 +44,7 @@ export default async function ProfilePage() {
 
             <div className="grid gap-6 md:grid-cols-[300px_1fr]">
                 {/* Profile Card */}
-                <Card className="rounded-xl border-border/50 shadow-sm overflow-hidden h-fit">
+                <Card className="rounded-md border-border shadow-sm overflow-hidden h-fit">
                     <CardHeader className="text-center bg-muted/30 pb-8">
                         <div className="flex justify-center mb-4">
                             <div className="relative">
@@ -56,39 +56,39 @@ export default async function ProfilePage() {
                                 </Avatar>
                             </div>
                         </div>
-                        <CardTitle className="text-xl font-bold text-zinc-950 tracking-tight uppercase italic">{fullName}</CardTitle>
+                        <CardTitle className="text-xl font-bold text-foreground uppercase italic">{fullName}</CardTitle>
                         <CardDescription className="capitalize font-medium text-muted-foreground mt-1">{role}</CardDescription>
                     </CardHeader>
                     <CardContent className="p-6">
-                        <Button className="w-full rounded-xl font-bold shadow-sm" variant="outline">Đổi ảnh đại diện</Button>
+                        <Button className="w-full rounded-md font-bold shadow-sm" variant="outline">Đổi ảnh đại diện</Button>
                     </CardContent>
                 </Card>
 
                 {/* Details */}
-                <Card className="rounded-xl border-border/50 shadow-sm overflow-hidden">
-                    <CardHeader className="bg-muted/30 border-b border-border/50">
-                        <CardTitle className="text-lg font-bold text-zinc-950 tracking-tight italic">Thông tin chi tiết</CardTitle>
+                <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                    <CardHeader className="bg-muted/30 border-b border-border">
+                        <CardTitle className="text-lg font-bold text-foreground italic">Thông tin chi tiết</CardTitle>
                         <CardDescription className="font-medium">Cập nhật thông tin cá nhân của bạn</CardDescription>
                     </CardHeader>
                     <CardContent className="p-8 space-y-6">
                         <div className="grid gap-2">
                             <Label htmlFor="fullname" className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Họ và tên</Label>
-                            <Input id="fullname" defaultValue={fullName} className="h-11 rounded-xl bg-muted/20 border-transparent focus:bg-background transition-all font-medium" />
+                            <Input id="fullname" defaultValue={fullName} className="h-11 rounded-md bg-muted/20 border-transparent focus:bg-background transition-all font-medium" />
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="email" className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Email</Label>
-                            <Input id="email" type="email" defaultValue={email} disabled className="h-11 rounded-xl bg-muted/40 font-medium cursor-not-allowed opacity-70" />
+                            <Input id="email" type="email" defaultValue={email} disabled className="h-11 rounded-md bg-muted/40 font-medium cursor-not-allowed opacity-70" />
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="phone" className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Số điện thoại</Label>
-                            <Input id="phone" type="tel" placeholder="+84 90..." className="h-11 rounded-xl bg-muted/20 border-transparent focus:bg-background transition-all font-medium" />
+                            <Input id="phone" type="tel" placeholder="+84 90..." className="h-11 rounded-md bg-muted/20 border-transparent focus:bg-background transition-all font-medium" />
                         </div>
 
                         <Separator className="my-2 opacity-50" />
 
                         <div className="flex justify-end gap-3 pt-2">
-                            <Button variant="ghost" className="rounded-xl font-bold h-11 px-6">Hủy</Button>
-                            <Button className="rounded-xl font-bold h-11 px-8 shadow-md shadow-zinc-200">Lưu thay đổi</Button>
+                            <Button variant="ghost" className="rounded-md font-bold h-11 px-6">Hủy</Button>
+                            <Button className="rounded-md font-bold h-11 px-8 shadow-sm">Lưu thay đổi</Button>
                         </div>
                     </CardContent>
                 </Card>

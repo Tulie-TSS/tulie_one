@@ -56,7 +56,7 @@ export default function LabPage() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
                         <Layout className="h-6 w-6 text-primary" />
                     </div>
                     <div>
@@ -67,7 +67,7 @@ export default function LabPage() {
                 <Button
                     onClick={handleSync}
                     disabled={isSyncing}
-                    className="bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-900"
+                    className="bg-zinc-900 hover:bg-zinc-800 dark:bg-muted dark:text-foreground"
                 >
                     {isSyncing ? <RefreshCcw className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCcw className="mr-2 h-4 w-4" />}
                     Đồng bộ ngay
@@ -75,10 +75,10 @@ export default function LabPage() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-                <Card className="border-border/50 bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden rounded-xl">
-                    <CardHeader className="bg-muted/30 border-b border-border/50">
+                <Card className="border-border bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden rounded-md">
+                    <CardHeader className="bg-muted/30 border-b border-border">
                         <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                            <Key className="h-4 w-4 text-zinc-500" />
+                            <Key className="h-4 w-4 text-muted-foreground" />
                             Cấu hình kết nôi
                         </CardTitle>
                         <CardDescription>Nhập API Key để kết nối với hệ thống Lab ngoại vi.</CardDescription>
@@ -102,19 +102,19 @@ export default function LabPage() {
                     </CardContent>
                 </Card>
 
-                <Card className="border-border/50 bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden rounded-xl">
-                    <CardHeader className="bg-muted/30 border-b border-border/50">
+                <Card className="border-border bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden rounded-md">
+                    <CardHeader className="bg-muted/30 border-b border-border">
                         <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                            <Database className="h-4 w-4 text-zinc-500" />
+                            <Database className="h-4 w-4 text-muted-foreground" />
                             Trạng thái Lab
                         </CardTitle>
                         <CardDescription>Kiểm tra tình trạng kết nối tới máy chủ trung tâm.</CardDescription>
                     </CardHeader>
                     <CardContent className="pt-6">
                         <div className="space-y-4">
-                            <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800/50">
+                            <div className="flex items-center justify-between p-3 rounded-lg bg-muted dark:bg-zinc-800/50">
                                 <div className="flex items-center gap-3">
-                                    <Globe className="h-4 w-4 text-zinc-500" />
+                                    <Globe className="h-4 w-4 text-muted-foreground" />
                                     <span className="text-sm font-medium">thelab.tulie.vn</span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
@@ -133,7 +133,7 @@ export default function LabPage() {
                                     <span className="font-mono">-- MB</span>
                                 </div>
                                 <div className="pt-4">
-                                    <div className="flex items-center gap-1 text-zinc-600 dark:text-zinc-400">
+                                    <div className="flex items-center gap-1 text-muted-foreground dark:text-muted-foreground">
                                         <TrendingUp className="h-3 w-3" />
                                         <span className="text-xs font-medium">Hiệu suất đồng bộ: 100%</span>
                                     </div>

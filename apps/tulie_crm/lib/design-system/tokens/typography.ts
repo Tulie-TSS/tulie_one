@@ -5,7 +5,7 @@
  * 1. Font family: Inter (already set in layout.tsx)
  * 2. NO uppercase in dashboard UI — ever (except PDF document templates)
  * 3. NO font-black (900) in dashboard UI — max is font-bold (700)
- * 4. NO tracking-widest — use tracking-tight or normal only
+ * 4. NO tracking-widest — use  or normal only
  * 5. NO arbitrary font sizes (text-[9px], text-[10px]) — use Tailwind scale
  * 6. Font weight follows shadcn: medium (500) for labels, semibold (600) for titles
  */
@@ -16,7 +16,7 @@
 
 export const TEXT = {
     // Page-level headings
-    pageTitle: 'text-2xl font-bold tracking-tight',
+    pageTitle: 'text-2xl font-bold ',
     pageDescription: 'text-sm text-muted-foreground',
 
     // Section-level headings (inside a page)
@@ -39,7 +39,7 @@ export const TEXT = {
     label: 'text-sm font-medium',
 
     // Data display
-    statValue: 'text-2xl font-bold tracking-tight',
+    statValue: 'text-2xl font-bold ',
     statLabel: 'text-xs text-muted-foreground',
     statTrend: 'text-xs font-medium',
 
@@ -66,7 +66,7 @@ export const TEXT = {
 //
 // ─── Letter Spacing Reference ───────────────────────────────────────────────
 // ✅ ALLOWED:
-//   tracking-tight   — for large headings, stat values
+//      — for large headings, stat values
 //   tracking-normal  — default, most text
 //
 // ❌ NOT ALLOWED in dashboard:

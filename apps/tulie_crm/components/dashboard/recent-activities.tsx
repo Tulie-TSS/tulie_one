@@ -22,21 +22,21 @@ interface RecentActivitiesProps {
 const getActivityIcon = (type: ActivityLog['action']) => {
     switch (type) {
         case 'create':
-            return <UserPlus className="h-4 w-4 text-zinc-500" />
+            return <UserPlus className="h-4 w-4 text-muted-foreground" />
         case 'update':
-            return <FileCheck className="h-4 w-4 text-zinc-400" />
+            return <FileCheck className="h-4 w-4 text-muted-foreground" />
         case 'delete':
-            return <XCircle className="h-4 w-4 text-zinc-600" />
+            return <XCircle className="h-4 w-4 text-muted-foreground" />
         case 'status_change':
             return <CheckCircle className="h-4 w-4 text-zinc-800 dark:text-zinc-200" />
         default:
-            return <FileText className="h-4 w-4 text-zinc-500" />
+            return <FileText className="h-4 w-4 text-muted-foreground" />
     }
 }
 
 export function RecentActivities({ data }: RecentActivitiesProps) {
     return (
-        <Card className="border-border/50 bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden">
+        <Card className="border-border bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden">
             <CardHeader className="pb-3 text-card-foreground">
                 <CardTitle className="text-xs font-medium text-muted-foreground">Hoạt động gần đây</CardTitle>
             </CardHeader>
@@ -49,7 +49,7 @@ export function RecentActivities({ data }: RecentActivitiesProps) {
                                     key={activity.id}
                                     className="flex items-start gap-4 py-3.5 border-b last:border-0 group transition-all"
                                 >
-                                    <div className="mt-1 h-8 w-8 rounded-md bg-secondary flex items-center justify-center shrink-0 border border-border/50">
+                                    <div className="mt-1 h-8 w-8 rounded-md bg-secondary flex items-center justify-center shrink-0 border border-border">
                                         {getActivityIcon(activity.action)}
                                     </div>
                                     <div className="flex-1 space-y-0.5 min-w-0">

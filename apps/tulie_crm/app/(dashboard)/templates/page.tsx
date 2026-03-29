@@ -125,7 +125,7 @@ export default function TemplatesPage() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
                         <Files className="h-6 w-6 text-primary" />
                     </div>
                     <div>
@@ -144,9 +144,9 @@ export default function TemplatesPage() {
             </div>
 
             {/* Templates List */}
-            <div className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
+            <div className="rounded-md border border-border bg-white shadow-sm overflow-hidden">
                 <Table>
-                    <TableHeader className="bg-zinc-50/50">
+                    <TableHeader className="bg-muted/50">
                         <TableRow className="hover:bg-transparent">
                             <TableHead>Tên mẫu</TableHead>
                             <TableHead className="w-[150px]">Loại</TableHead>
@@ -156,32 +156,32 @@ export default function TemplatesPage() {
                     </TableHeader>
                     <TableBody>
                         {templates.map((template) => (
-                            <TableRow key={template.id} className="hover:bg-zinc-50/50">
+                            <TableRow key={template.id} className="hover:bg-muted/50">
                                 <TableCell>
                                     <div className="flex items-center gap-3">
-                                        <div className="h-9 w-9 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-500 shrink-0 border border-zinc-200/50">
+                                        <div className="h-9 w-9 rounded-lg bg-muted flex items-center justify-center text-muted-foreground shrink-0 border border-border">
                                             {getTypeIcon(template.type)}
                                         </div>
                                         <div>
                                             <Link
                                                 href={`/templates/${template.id}`}
-                                                className="text-sm font-semibold text-zinc-900 hover:text-primary hover:underline"
+                                                className="text-sm font-semibold text-foreground hover:text-primary hover:underline"
                                             >
                                                 {template.name}
                                             </Link>
                                             {template.is_default && (
-                                                <span className="ml-2 text-[10px] text-zinc-400 font-medium uppercase tracking-wider">Mặc định</span>
+                                                <span className="ml-2 text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Mặc định</span>
                                             )}
                                         </div>
                                     </div>
                                 </TableCell>
                                 <TableCell>
-                                    <Badge variant="secondary" className="font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80">
+                                    <Badge variant="secondary" className="font-medium bg-muted text-zinc-700 hover:bg-muted/80">
                                         {getTypeLabel(template.type)}
                                     </Badge>
                                 </TableCell>
                                 <TableCell className="text-center">
-                                    <span className="text-sm font-medium tabular-nums text-zinc-600">{template.variables.length}</span>
+                                    <span className="text-sm font-medium tabular-nums text-muted-foreground">{template.variables.length}</span>
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <div className="flex items-center justify-end gap-1">

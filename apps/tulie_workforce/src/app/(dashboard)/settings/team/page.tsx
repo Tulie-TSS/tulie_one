@@ -112,7 +112,7 @@ export default function TeamPage() {
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
-                                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
+                                <div className="h-12 w-12 rounded-md bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
                                     TA
                                 </div>
                                 <div>
@@ -135,7 +135,7 @@ export default function TeamPage() {
                         const Icon = config.icon;
                         const count = members.filter((m) => m.role === role).length;
                         return (
-                            <div key={role} className="flex items-start gap-3 p-3 rounded-xl bg-accent/30 border border-border/40 transition-colors hover:bg-accent/50">
+                            <div key={role} className="flex items-start gap-3 p-3 rounded-md bg-accent/30 border border-border/40 transition-colors hover:bg-accent/50">
                                 <div className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${config.color}`}>
                                     <Icon className="h-4 w-4" />
                                 </div>
@@ -172,7 +172,7 @@ export default function TeamPage() {
                 </div>
 
                 {showInvite && (
-                    <Card className="mb-6 shadow-none border-2 border-dashed border-primary/20 bg-primary/5 xl:rounded-2xl">
+                    <Card className="mb-6 shadow-none border-2 border-dashed border-primary/20 bg-primary/5 xl:rounded-md">
                         <CardContent className="p-5">
                             <div className="flex flex-col sm:flex-row items-end gap-4">
                                 <div className="flex-1 w-full">

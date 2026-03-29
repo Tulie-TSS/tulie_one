@@ -58,7 +58,7 @@ export const contractColumns: ColumnDef<Contract>[] = [
             return (
                 <Link
                     href={`/contracts/${contract.id}`}
-                    className="font-bold text-zinc-950 hover:underline tracking-tight italic"
+                    className="font-bold text-foreground hover:underline italic"
                 >
                     {contract.contract_number}
                 </Link>

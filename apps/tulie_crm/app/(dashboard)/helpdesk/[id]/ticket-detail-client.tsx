@@ -134,11 +134,11 @@ export function TicketDetailClient({ ticket, users }: TicketDetailClientProps) {
                             ) : (
                                 messages.map(msg => (
                                     <div key={msg.id} className={`flex gap-3 ${msg.sender_type === 'staff' ? '' : 'flex-row-reverse'}`}>
-                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.sender_type === 'staff' ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900' : 'bg-zinc-100 text-zinc-600'}`}>
+                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.sender_type === 'staff' ? 'bg-zinc-900 text-white dark:bg-muted dark:text-foreground' : 'bg-muted text-muted-foreground'}`}>
                                             {msg.sender_type === 'staff' ? <Headphones className="w-4 h-4" /> : <UserIcon className="w-4 h-4" />}
                                         </div>
                                         <div className={`flex-1 max-w-[80%] ${msg.sender_type === 'staff' ? '' : 'text-right'}`}>
-                                            <div className={`rounded-lg p-3 text-sm ${msg.sender_type === 'staff' ? 'bg-zinc-50 dark:bg-zinc-800' : 'bg-blue-50 dark:bg-blue-900/20'}`}>
+                                            <div className={`rounded-lg p-3 text-sm ${msg.sender_type === 'staff' ? 'bg-muted dark:bg-zinc-800' : 'bg-blue-50 dark:bg-blue-900/20'}`}>
                                                 <p className="whitespace-pre-line">{msg.content}</p>
                                             </div>
                                             <p className="text-[11px] text-muted-foreground mt-1">

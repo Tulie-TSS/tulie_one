@@ -534,11 +534,11 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                                 >
                                     {isSigned
                                         ? <CircleCheck className="h-5 w-5 text-green-600" />
-                                        : <Circle className="h-5 w-5 text-zinc-300 hover:text-zinc-500 transition-colors" />
+                                        : <Circle className="h-5 w-5 text-zinc-300 hover:text-muted-foreground transition-colors" />
                                     }
                                 </button>
                             ) : (
-                                <item.icon className="h-4 w-4 text-zinc-500 shrink-0" />
+                                <item.icon className="h-4 w-4 text-muted-foreground shrink-0" />
                             )}
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-1.5">
@@ -571,7 +571,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                                         disabled={isActive}
                                         title={item.isVisible ? "Đang hiện trên Portal — bấm để ẩn" : "Đang ẩn — bấm để hiện trên Portal"}
                                     >
-                                        {item.isVisible ? <Eye className="h-3.5 w-3.5 text-emerald-600" /> : <EyeOff className="h-3.5 w-3.5 text-zinc-400" />}
+                                        {item.isVisible ? <Eye className="h-3.5 w-3.5 text-emerald-600" /> : <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />}
                                     </Button>
                                 )}
                                 <Button

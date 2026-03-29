@@ -41,7 +41,7 @@ import type { AgentStatus, MemoryCategory } from "@/lib/mock-data";
 const statusStyles: Record<AgentStatus, { label: string; className: string }> = {
     active: { label: "Active", className: "bg-emerald-50 text-emerald-600 border-emerald-200 shadow-sm font-semibold px-2.5 py-1 text-[10px]" },
     training: { label: "Training", className: "bg-amber-50 text-amber-600 border-amber-200 shadow-sm font-semibold px-2.5 py-1 text-[10px] animate-pulse" },
-    inactive: { label: "Inactive", className: "bg-zinc-100 text-muted-foreground border-border shadow-sm font-semibold px-2.5 py-1 text-[10px]" },
+    inactive: { label: "Inactive", className: "bg-muted text-muted-foreground border-border shadow-sm font-semibold px-2.5 py-1 text-[10px]" },
 };
 
 const memCategoryMeta: Record<MemoryCategory, { label: string; icon: typeof Brain; color: string }> = {
@@ -109,12 +109,12 @@ export default function AgentDetailPage() {
                 {/* Agent Hero */}
                 <div className="flex items-start justify-between mb-8">
                     <div className="flex items-center gap-5">
-                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-50 border border-indigo-100 shadow-sm">
+                        <div className="flex h-16 w-16 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 shadow-sm">
                             <Bot className="h-8 w-8 text-indigo-600" />
                         </div>
                         <div>
                             <div className="flex items-center gap-3">
-                                <h2 className="text-2xl font-bold tracking-tight text-foreground">
+                                <h2 className="text-2xl font-bold text-foreground">
                                     {agent.name}
                                 </h2>
                                 <Badge variant="outline" className={statusInfo.className}>{statusInfo.label}</Badge>
@@ -127,16 +127,12 @@ export default function AgentDetailPage() {
                 </div>
 
                 {/* Tabs */}
-                <div className="flex w-fit items-center rounded-xl bg-zinc-100/80 p-1 mb-8">
+                <div className="flex w-fit items-center rounded-md bg-muted/80 p-1 mb-8">
                     {tabs.map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`flex items-center gap-1.5 px-4 py-2 text-[13px] font-semibold transition-all duration-200 rounded-lg ${
-                                activeTab === tab.id
-                                    ? "bg-white text-foreground shadow-sm ring-1 ring-border/50"
-                                    : "text-muted-foreground hover:bg-white/50 hover:text-foreground"
-                            }`}
+                            className={`flex items-center gap-1.5 px-4 py-2 text-[13px] font-semibold transition-all duration-200 rounded-lg ${ activeTab === tab.id ? "bg-white text-foreground shadow-sm ring-1 ring-border/50" : "text-muted-foreground hover:bg-white/50 hover:text-foreground" }`}
                         >
                             <tab.icon className="h-4 w-4" />
                             {tab.label}
@@ -155,7 +151,7 @@ export default function AgentDetailPage() {
                                         <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                                         <span className="text-xs font-semibold uppercase tracking-wider">Tasks completed</span>
                                     </div>
-                                    <p className="text-3xl font-bold tracking-tight text-foreground mt-2">{agent.successfulTasks}</p>
+                                    <p className="text-3xl font-bold text-foreground mt-2">{agent.successfulTasks}</p>
                                     <p className="text-xs font-medium text-muted-foreground mt-1">{agent.totalTasks} total assigned</p>
                                 </CardContent>
                             </Card>
@@ -165,7 +161,7 @@ export default function AgentDetailPage() {
                                         <TrendingUp className="h-4 w-4 text-indigo-500" />
                                         <span className="text-xs font-semibold uppercase tracking-wider">Success rate</span>
                                     </div>
-                                    <p className="text-3xl font-bold tracking-tight text-foreground mt-2">{successRate}%</p>
+                                    <p className="text-3xl font-bold text-foreground mt-2">{successRate}%</p>
                                     <p className="text-xs font-medium text-muted-foreground mt-1">{agent.totalTasks - agent.successfulTasks} failed</p>
                                 </CardContent>
                             </Card>
@@ -175,7 +171,7 @@ export default function AgentDetailPage() {
                                         <Zap className="h-4 w-4 text-amber-500" />
                                         <span className="text-xs font-semibold uppercase tracking-wider">Total tokens</span>
                                     </div>
-                                    <p className="text-3xl font-bold tracking-tight text-foreground mt-2">{formatTokens(agent.tokensIn + agent.tokensOut)}</p>
+                                    <p className="text-3xl font-bold text-foreground mt-2">{formatTokens(agent.tokensIn + agent.tokensOut)}</p>
                                     <p className="text-xs font-medium text-muted-foreground mt-1">{formatTokens(agent.tokensIn)} in · {formatTokens(agent.tokensOut)} out</p>
                                 </CardContent>
                             </Card>
@@ -185,7 +181,7 @@ export default function AgentDetailPage() {
                                         <DollarSign className="h-4 w-4 text-rose-500" />
                                         <span className="text-xs font-semibold uppercase tracking-wider">Total cost</span>
                                     </div>
-                                    <p className="text-3xl font-bold tracking-tight text-foreground mt-2">{formatCost(agent.costUsd)}</p>
+                                    <p className="text-3xl font-bold text-foreground mt-2">{formatCost(agent.costUsd)}</p>
                                     <p className="text-xs font-medium text-muted-foreground mt-1">Lifetime spend</p>
                                 </CardContent>
                             </Card>
@@ -193,7 +189,7 @@ export default function AgentDetailPage() {
 
                         {/* Recent Tasks */}
                         <Card className="card-elevated border-transparent">
-                            <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                            <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                                 <CardTitle className="text-[15px] font-bold text-foreground">Recent tasks</CardTitle>
                             </CardHeader>
                             <CardContent className="pt-6">
@@ -203,7 +199,7 @@ export default function AgentDetailPage() {
                                     <div className="space-y-3">
                                         {agentTasks.slice(0, 5).map((task) => (
                                             <Link key={task.id} href={`/tasks/${task.id}`} className="block">
-                                                <div className="flex items-center justify-between p-4 rounded-xl border border-border/40 bg-white hover:border-primary/20 hover:shadow-md transition-all">
+                                                <div className="flex items-center justify-between p-4 rounded-md border border-border/40 bg-white hover:border-primary/20 hover:shadow-md transition-all">
                                                     <div>
                                                         <p className="text-[14px] font-bold text-foreground">{task.title}</p>
                                                         <p className="text-[12px] font-medium text-muted-foreground mt-0.5">
@@ -226,7 +222,7 @@ export default function AgentDetailPage() {
                 {activeTab === "config" && (
                     <div className="space-y-6">
                         <Card className="card-elevated border-transparent">
-                            <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                            <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                                 <CardTitle className="text-[15px] font-bold text-foreground">Model settings</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-5 pt-6">
@@ -238,7 +234,7 @@ export default function AgentDetailPage() {
                                 <div>
                                     <p className="text-[13px] font-semibold text-foreground">Temperature</p>
                                     <div className="flex items-center gap-4 mt-2">
-                                        <div className="flex-1 h-2 bg-zinc-100 rounded-full overflow-hidden border border-border/50">
+                                        <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden border border-border">
                                             <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${agent.temperature * 100}%` }} />
                                         </div>
                                         <span className="text-[13px] font-bold text-foreground w-8">{agent.temperature}</span>
@@ -248,21 +244,21 @@ export default function AgentDetailPage() {
                         </Card>
 
                         <Card className="card-elevated border-transparent">
-                            <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                            <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                                 <CardTitle className="text-[15px] font-bold text-foreground flex items-center gap-2">
                                     <Brain className="h-4.5 w-4.5 text-indigo-500" />
                                     System prompt
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="pt-6">
-                                <div className="rounded-xl bg-zinc-50 border border-border/60 p-5 shadow-inner">
+                                <div className="rounded-md bg-muted border border-border/60 p-5 shadow-inner">
                                     <p className="text-[13px] font-medium leading-relaxed text-muted-foreground whitespace-pre-wrap">{agent.systemPrompt}</p>
                                 </div>
                             </CardContent>
                         </Card>
 
                         <Card className="card-elevated border-transparent">
-                            <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                            <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                                 <CardTitle className="text-[15px] font-bold text-foreground flex items-center gap-2">
                                     <FileText className="h-4.5 w-4.5 text-amber-500" />
                                     Knowledge sources
@@ -277,7 +273,7 @@ export default function AgentDetailPage() {
                                 ) : (
                                     <div className="space-y-3">
                                         {agentDocs.map((doc) => (
-                                            <div key={doc.id} className="flex items-center gap-4 p-3 rounded-xl border border-border/50 bg-white">
+                                            <div key={doc.id} className="flex items-center gap-4 p-3 rounded-md border border-border bg-white">
                                                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 border border-amber-100">
                                                     <FileText className="h-5 w-5 text-amber-600" />
                                                 </div>
@@ -297,7 +293,7 @@ export default function AgentDetailPage() {
 
                 {activeTab === "conversations" && (
                     <Card className="card-elevated border-transparent">
-                        <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                        <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                             <CardTitle className="text-[15px] font-bold text-foreground flex items-center gap-2">
                                 <MessageSquare className="h-4.5 w-4.5 text-sky-500" />
                                 Conversation threads
@@ -310,7 +306,7 @@ export default function AgentDetailPage() {
                             <div className="space-y-3">
                                 {agentTasks.filter(t => t.messages.length > 0).map((task) => (
                                     <Link key={task.id} href={`/tasks/${task.id}`} className="block">
-                                        <div className="p-4 rounded-xl border border-border/50 bg-white hover:border-primary/30 hover:shadow-md transition-all group">
+                                        <div className="p-4 rounded-md border border-border bg-white hover:border-primary/30 hover:shadow-md transition-all group">
                                             <div className="flex items-center justify-between">
                                                 <p className="text-[14px] font-bold text-foreground group-hover:text-primary transition-colors">{task.title}</p>
                                                 <span className="text-[12px] font-medium text-muted-foreground">{timeAgo(task.createdAt)}</span>
@@ -333,20 +329,20 @@ export default function AgentDetailPage() {
                 {activeTab === "usage" && (
                     <div className="space-y-6">
                         <Card className="card-elevated border-transparent">
-                            <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                            <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                                 <CardTitle className="text-[15px] font-bold text-foreground">Token usage &mdash; lifetime</CardTitle>
                             </CardHeader>
                             <CardContent className="pt-6">
                                 <div className="grid grid-cols-3 gap-4">
-                                    <div className="text-center p-4 bg-zinc-50 rounded-xl border border-border/50">
+                                    <div className="text-center p-4 bg-muted rounded-md border border-border">
                                         <p className="text-2xl font-semibold text-foreground">{formatTokens(agent.tokensIn)}</p>
                                         <p className="text-xs text-muted-foreground mt-1">Input tokens</p>
                                     </div>
-                                    <div className="text-center p-4 bg-zinc-50 rounded-xl border border-border/50">
+                                    <div className="text-center p-4 bg-muted rounded-md border border-border">
                                         <p className="text-2xl font-semibold text-foreground">{formatTokens(agent.tokensOut)}</p>
                                         <p className="text-xs text-muted-foreground mt-1 font-medium">Output tokens</p>
                                     </div>
-                                    <div className="text-center p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                                    <div className="text-center p-4 bg-emerald-50 rounded-md border border-emerald-100">
                                         <p className="text-2xl font-semibold text-foreground">{formatCost(agent.costUsd)}</p>
                                         <p className="text-xs text-muted-foreground mt-1">Total cost</p>
                                     </div>
@@ -356,7 +352,7 @@ export default function AgentDetailPage() {
 
                         {/* Per-session breakdown */}
                         <Card className="card-elevated border-transparent">
-                            <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                            <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                                 <CardTitle className="text-[15px] font-bold text-foreground">Per-task breakdown</CardTitle>
                             </CardHeader>
                             <CardContent className="pt-6">
@@ -373,7 +369,7 @@ export default function AgentDetailPage() {
                                         </thead>
                                         <tbody>
                                             {agentTasks.map((task) => (
-                                                <tr key={task.id} className="border-b border-border/50">
+                                                <tr key={task.id} className="border-b border-border">
                                                     <td className="py-2">
                                                         <Link href={`/tasks/${task.id}`} className="text-foreground hover:underline">
                                                             {task.title}
@@ -393,7 +389,7 @@ export default function AgentDetailPage() {
 
                         {/* Daily usage chart (mock bars) */}
                         <Card className="card-elevated border-transparent">
-                            <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                            <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                                 <CardTitle className="text-[15px] font-bold text-foreground">Daily usage (last 7 days)</CardTitle>
                             </CardHeader>
                             <CardContent className="pt-6">
@@ -436,7 +432,7 @@ export default function AgentDetailPage() {
                         </div>
 
                         {/* How it works */}
-                        <Card className="bg-primary/5 border border-dashed border-primary/20 xl:rounded-2xl shadow-none">
+                        <Card className="bg-primary/5 border border-dashed border-primary/20 xl:rounded-md shadow-none">
                             <CardContent className="pt-5 pb-5">
                                 <div className="flex items-start gap-3">
                                     <Lightbulb className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
@@ -457,10 +453,7 @@ export default function AgentDetailPage() {
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setMemFilter("all")}
-                                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${memFilter === "all"
-                                        ? "bg-foreground text-white"
-                                        : "bg-accent text-muted-foreground hover:bg-secondary"
-                                    }`}
+                                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${memFilter === "all" ? "bg-foreground text-white" : "bg-accent text-muted-foreground hover:bg-secondary" }`}
                             >
                                 All ({agentMemories.length})
                             </button>
@@ -471,10 +464,7 @@ export default function AgentDetailPage() {
                                     <button
                                         key={cat}
                                         onClick={() => setMemFilter(cat)}
-                                        className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${memFilter === cat
-                                                ? "bg-foreground text-white"
-                                                : "bg-accent text-muted-foreground hover:bg-secondary"
-                                            }`}
+                                        className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${memFilter === cat ? "bg-foreground text-white" : "bg-accent text-muted-foreground hover:bg-secondary" }`}
                                     >
                                         {meta.label} ({count})
                                     </button>
@@ -488,7 +478,7 @@ export default function AgentDetailPage() {
                                 const meta = memCategoryMeta[mem.category];
                                 const Icon = meta.icon;
                                 return (
-                                    <Card key={mem.id} className="card-elevated border-transparent hover:border-primary/20 hover:-translate-y-0.5 hover:shadow-lg transition-all">
+                                    <Card key={mem.id} className="card-elevated border-transparent hover:border-primary/20 hover:shadow-lg transition-all">
                                         <CardContent className="pt-5 pb-5">
                                             <div className="flex items-start gap-3">
                                                 <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${meta.color}`}>

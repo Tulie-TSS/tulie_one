@@ -22,7 +22,7 @@ export default async function VendorsPage() {
       </div>
 
       {vendors.length === 0 ? (
-        <div className="rounded-xl border border-border bg-card p-12 text-center">
+        <div className="rounded-md border border-border bg-card p-12 text-center">
           <Building2 className="mx-auto h-12 w-12 text-muted-foreground/50" />
           <h3 className="mt-4 text-lg font-medium text-foreground">Chưa có nhà cung cấp nào</h3>
           <p className="mt-2 text-sm text-muted-foreground">Thêm nhà cung cấp đầu tiên</p>
@@ -30,7 +30,7 @@ export default async function VendorsPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {vendors.map((vendor) => (
-            <div key={vendor.id} className="rounded-xl border border-border bg-card p-5 hover:shadow-md transition-shadow">
+            <div key={vendor.id} className="rounded-md border border-border bg-card p-5 hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10">

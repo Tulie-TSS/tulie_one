@@ -41,7 +41,7 @@ export async function AlertsPanel() {
     const alerts = await getSystemAlerts()
 
     return (
-        <Card className="border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden">
+        <Card className="border-border bg-card/50 backdrop-blur-sm overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between pb-3">
                 <CardTitle className="text-xs font-semibold flex items-center gap-2 text-muted-foreground">
                     <AlertTriangle className="h-4 w-4 text-orange-500" />

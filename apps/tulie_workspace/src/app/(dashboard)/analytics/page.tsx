@@ -24,14 +24,14 @@ export default function AnalyticsPage() {
                     { label: t('analytics.inProgress'), value: doingTasks.length, color: 'var(--color-info)' },
                     { label: t('analytics.quickStrikes'), value: MOCK_QUICK_STRIKES.length, color: 'var(--color-warning)' },
                 ].map(c => (
-                    <div key={c.label} className="p-5 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                    <div key={c.label} className="p-5 rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                         <div style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{c.label}</div>
                         <div className="text-3xl font-bold mt-1" style={{ color: c.color }}>{c.value}</div>
                     </div>
                 ))}
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <div className="p-6 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                <div className="p-6 rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                     <h2 className="font-semibold mb-4" style={{ color: 'var(--color-fg)' }}>{t('analytics.statusBreakdown')}</h2>
                     <div className="space-y-3">
                         {Object.entries(statusCounts).map(([status, count]) => (
@@ -49,7 +49,7 @@ export default function AnalyticsPage() {
                         ))}
                     </div>
                 </div>
-                <div className="p-6 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                <div className="p-6 rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                     <h2 className="font-semibold mb-4" style={{ color: 'var(--color-fg)' }}>{t('analytics.wipHeatmap')}</h2>
                     <div className="space-y-4">
                         {makers.map(user => {

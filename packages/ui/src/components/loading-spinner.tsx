@@ -35,7 +35,7 @@ export function LoadingSpinner({
             <span
                 className={cn(
                     sizeMap[size],
-                    'inline-block rounded-full border-zinc-200 border-t-zinc-900 animate-spin',
+                    'inline-block rounded-full border-muted border-t-foreground animate-spin',
                 )}
                 style={{ animationDuration: '0.6s' }}
             />

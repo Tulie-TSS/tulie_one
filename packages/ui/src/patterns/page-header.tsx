@@ -8,7 +8,7 @@ import { cn } from '../lib/utils'
  *
  * Based on shadcn/ui Dashboard example:
  * - Back button (optional) — ghost icon-button, rounded-full
- * - Title — text-2xl font-bold tracking-tight
+ * - Title — text-2xl font-bold
  * - Description (optional) — text-sm text-muted-foreground
  * - Actions slot — right-aligned buttons
  *
@@ -58,7 +58,7 @@ export function PageHeader({
                 )}
                 <div className="space-y-1">
                     <div className="flex items-center gap-3">
-                        <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+                        <h1 className="text-2xl font-bold">{title}</h1>
                         {badge}
                     </div>
                     {description && (

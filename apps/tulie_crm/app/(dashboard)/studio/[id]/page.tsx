@@ -25,12 +25,12 @@ function OrderDetailSkeleton() {
     return (
         <div className="grid gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2 space-y-6">
-                <Skeleton className="h-[400px] w-full rounded-xl" />
-                <Skeleton className="h-[200px] w-full rounded-xl" />
+                <Skeleton className="h-[400px] w-full rounded-md" />
+                <Skeleton className="h-[200px] w-full rounded-md" />
             </div>
             <div className="space-y-6">
-                <Skeleton className="h-[300px] w-full rounded-xl" />
-                <Skeleton className="h-[250px] w-full rounded-xl" />
+                <Skeleton className="h-[300px] w-full rounded-md" />
+                <Skeleton className="h-[250px] w-full rounded-md" />
             </div>
         </div>
     )

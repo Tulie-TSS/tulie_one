@@ -71,7 +71,7 @@ export const dealColumns: ColumnDef<Deal>[] = [
         ),
         cell: ({ row }) => {
             const amount = parseFloat(row.getValue('budget'))
-            return <div className="font-semibold text-zinc-900 dark:text-zinc-100">{formatCurrency(amount)}</div>
+            return <div className="font-semibold text-foreground dark:text-zinc-100">{formatCurrency(amount)}</div>
         },
     },
     {

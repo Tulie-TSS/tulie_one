@@ -26,26 +26,26 @@ export default async function CustomersPage() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-xl bg-zinc-100 flex items-center justify-center shadow-sm border border-border/50">
-                        <Users className="h-6 w-6 text-zinc-900" />
+                    <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center shadow-sm border border-border">
+                        <Users className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-bold text-zinc-950 tracking-tight italic">Khách hàng Agency</h1>
+                        <h1 className="text-3xl font-bold text-foreground italic">Khách hàng Agency</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý danh sách khách hàng và thông tin liên hệ cho Agency
                         </p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Button variant="outline" size="default" className="rounded-xl font-bold shadow-sm border-border/50">
+                    <Button variant="outline" size="default" className="rounded-md font-bold shadow-sm border-border">
                         <Upload className="mr-2 h-4 w-4" />
                         Import
                     </Button>
-                    <Button variant="outline" size="default" className="rounded-xl font-bold shadow-sm border-border/50">
+                    <Button variant="outline" size="default" className="rounded-md font-bold shadow-sm border-border">
                         <Download className="mr-2 h-4 w-4" />
                         Export
                     </Button>
-                    <Button asChild size="default" className="rounded-xl font-bold shadow-md shadow-zinc-200">
+                    <Button asChild size="default" className="rounded-md font-bold shadow-sm">
                         <Link href="/customers/new">
                             <Plus className="mr-2 h-4 w-4" />
                             Thêm khách hàng

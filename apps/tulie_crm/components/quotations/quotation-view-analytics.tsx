@@ -109,21 +109,21 @@ export function QuotationViewAnalytics({ quotationId }: QuotationViewAnalyticsPr
             <CardContent className="space-y-5">
                 {/* Summary Stats */}
                 <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-muted/50 p-4 rounded-xl border border-zinc-100 text-center space-y-1">
-                        <p className="text-3xl font-bold tabular-nums leading-none tracking-tight">{stats.totalViews}</p>
-                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-zinc-100 pt-2 mt-2">Lượt xem</p>
+                    <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
+                        <p className="text-3xl font-bold tabular-nums leading-none">{stats.totalViews}</p>
+                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">Lượt xem</p>
                     </div>
-                    <div className="bg-muted/50 p-4 rounded-xl border border-zinc-100 text-center space-y-1">
-                        <p className="text-3xl font-bold tabular-nums leading-none tracking-tight">{stats.uniqueVisitors}</p>
-                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-zinc-100 pt-2 mt-2">Unique IP</p>
+                    <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
+                        <p className="text-3xl font-bold tabular-nums leading-none">{stats.uniqueVisitors}</p>
+                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">Unique IP</p>
                     </div>
-                    <div className="bg-muted/50 p-4 rounded-xl border border-zinc-100 text-center space-y-1">
-                        <p className="text-lg font-bold tabular-nums leading-none tracking-tight">{formatDuration(stats.avgDuration)}</p>
-                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-zinc-100 pt-2 mt-2">TB thời gian</p>
+                    <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
+                        <p className="text-lg font-bold tabular-nums leading-none">{formatDuration(stats.avgDuration)}</p>
+                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">TB thời gian</p>
                     </div>
-                    <div className="bg-muted/50 p-4 rounded-xl border border-zinc-100 text-center space-y-1">
-                        <p className="text-lg font-bold tabular-nums leading-none tracking-tight">{stats.avgScroll}%</p>
-                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-zinc-100 pt-2 mt-2">TB scroll</p>
+                    <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
+                        <p className="text-lg font-bold tabular-nums leading-none">{stats.avgScroll}%</p>
+                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">TB scroll</p>
                     </div>
                 </div>
 
@@ -160,7 +160,7 @@ export function QuotationViewAnalytics({ quotationId }: QuotationViewAnalyticsPr
                             return (
                                 <div
                                     key={view.id}
-                                    className="bg-zinc-50/50 border border-zinc-100 rounded-xl p-3 hover:bg-zinc-50 transition-colors"
+                                    className="bg-muted/50 border border-border rounded-md p-3 hover:bg-muted transition-colors"
                                 >
                                     <div className="flex items-start justify-between gap-2 mb-2">
                                         <div className="flex items-center gap-2 min-w-0">
@@ -203,7 +203,7 @@ export function QuotationViewAnalytics({ quotationId }: QuotationViewAnalyticsPr
                                         </div>
 
                                         {/* Scroll progress bar */}
-                                        <div className="flex-1 h-1.5 bg-zinc-200 rounded-full overflow-hidden">
+                                        <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
                                             <div
                                                 className="h-full bg-zinc-900 rounded-full transition-all"
                                                 style={{ width: `${view.max_scroll_percent || 0}%` }}

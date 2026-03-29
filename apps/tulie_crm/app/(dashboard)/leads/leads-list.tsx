@@ -120,18 +120,18 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
             {/* Stats */}
             <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
                 {[
-                    { label: 'Tổng leads', value: stats.total, icon: Contact, color: 'text-zinc-600' },
+                    { label: 'Tổng leads', value: stats.total, icon: Contact, color: 'text-muted-foreground' },
                     { label: 'Mới', value: stats.new, icon: UserPlus, color: 'text-blue-600' },
                     { label: 'Đã liên hệ', value: stats.contacted, icon: Phone, color: 'text-amber-600' },
                     { label: 'Tiềm năng', value: stats.qualified, icon: UserCheck, color: 'text-emerald-600' },
                 ].map((s, i) => (
-                    <Card key={i} className="rounded-xl border-border/50">
+                    <Card key={i} className="rounded-md border-border">
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-bold text-muted-foreground tracking-tight">{s.label}</CardTitle>
+                            <CardTitle className="text-sm font-bold text-muted-foreground">{s.label}</CardTitle>
                             <s.icon className={cn("h-4 w-4", s.color)} />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold text-zinc-900">{s.value}</div>
+                            <div className="text-2xl font-bold text-foreground">{s.value}</div>
                         </CardContent>
                     </Card>
                 ))}
@@ -145,11 +145,11 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
                         placeholder="Tìm theo tên, SĐT, email, công ty..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="pl-9 h-10 rounded-xl"
+                        className="pl-9 h-10 rounded-md"
                     />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-full sm:w-48 h-10 rounded-xl">
+                    <SelectTrigger className="w-full sm:w-48 h-10 rounded-md">
                         <SelectValue placeholder="Trạng thái" />
                     </SelectTrigger>
                     <SelectContent>
@@ -162,7 +162,7 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
             </div>
 
             {/* Leads Table */}
-            <div className="bg-white rounded-xl border border-border/50 overflow-hidden">
+            <div className="bg-white rounded-md border border-border overflow-hidden">
                 {filtered.length === 0 ? (
                     <div className="p-12 text-center">
                         <Contact className="w-8 h-8 text-zinc-300 mx-auto mb-3" />
@@ -171,7 +171,7 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
                 ) : (
                     <div className="divide-y divide-border/50">
                         {/* Header */}
-                        <div className="hidden md:grid grid-cols-12 gap-4 px-5 py-3 bg-zinc-50/50 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                        <div className="hidden md:grid grid-cols-12 gap-4 px-5 py-3 bg-muted/50 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                             <div className="col-span-3">Khách hàng</div>
                             <div className="col-span-2">Liên hệ</div>
                             <div className="col-span-2">Công ty</div>
@@ -185,11 +185,11 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
                             return (
                                 <div
                                     key={lead.id}
-                                    className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-5 py-4 hover:bg-zinc-50/50 transition-colors cursor-pointer items-center"
+                                    className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-5 py-4 hover:bg-muted/50 transition-colors cursor-pointer items-center"
                                     onClick={() => { setSelectedLead(lead); setIsDetailOpen(true) }}
                                 >
                                     <div className="col-span-3">
-                                        <p className="text-sm font-semibold text-zinc-950 tracking-tight">{lead.full_name}</p>
+                                        <p className="text-sm font-semibold text-foreground">{lead.full_name}</p>
                                         {lead.business_type && (
                                             <p className="text-[11px] text-muted-foreground mt-0.5">{lead.business_type}</p>
                                         )}
@@ -199,10 +199,10 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
                                         <p className="text-[11px] text-muted-foreground">{formatDate(lead.created_at)}</p>
                                     </div>
                                     <div className="col-span-2">
-                                        <p className="text-xs font-medium text-zinc-600 truncate">{lead.company_name || '—'}</p>
+                                        <p className="text-xs font-medium text-muted-foreground truncate">{lead.company_name || '—'}</p>
                                     </div>
                                     <div className="col-span-2">
-                                         <Badge variant="outline" className="text-[10px] bg-zinc-100 text-zinc-700 font-semibold border-zinc-200">
+                                         <Badge variant="outline" className="text-[10px] bg-muted text-zinc-700 font-semibold border-border">
                                             {lead.source === 'lp_thiet_ke_website' ? 'LP Thiết kế Web' : (lead.source || 'Website Tulie')}
                                         </Badge>
                                     </div>
@@ -249,17 +249,17 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
 
             {/* Detail Dialog */}
             <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-                <DialogContent className="sm:max-w-[500px] rounded-xl p-0 overflow-hidden border-none shadow-xl">
+                <DialogContent className="sm:max-w-[500px] rounded-md p-0 overflow-hidden border-none shadow-xl">
                     {selectedLead && (
                         <>
                             <div className="bg-zinc-950 text-white p-6">
                                 <DialogHeader>
-                                    <DialogTitle className="text-xl font-bold tracking-tight">{selectedLead.full_name}</DialogTitle>
+                                    <DialogTitle className="text-xl font-bold">{selectedLead.full_name}</DialogTitle>
                                     <div className="flex items-center gap-2 mt-2">
                                         <Badge className={cn("text-[11px] font-semibold border-none px-2.5 py-1 rounded-lg", STATUS_CONFIG[selectedLead.status]?.color)}>
                                             {STATUS_CONFIG[selectedLead.status]?.label}
                                         </Badge>
-                                        <span className="text-xs text-zinc-400">{formatDate(selectedLead.created_at)}</span>
+                                        <span className="text-xs text-muted-foreground">{formatDate(selectedLead.created_at)}</span>
                                     </div>
                                 </DialogHeader>
                             </div>
@@ -267,19 +267,19 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
                                         <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Điện thoại</p>
-                                        <p className="text-sm font-semibold text-zinc-950">{selectedLead.phone}</p>
+                                        <p className="text-sm font-semibold text-foreground">{selectedLead.phone}</p>
                                     </div>
                                     <div className="space-y-1">
                                         <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Email</p>
-                                        <p className="text-sm font-semibold text-zinc-950">{selectedLead.email || '—'}</p>
+                                        <p className="text-sm font-semibold text-foreground">{selectedLead.email || '—'}</p>
                                     </div>
                                     <div className="space-y-1">
                                         <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Công ty</p>
-                                        <p className="text-sm font-semibold text-zinc-950">{selectedLead.company_name || '—'}</p>
+                                        <p className="text-sm font-semibold text-foreground">{selectedLead.company_name || '—'}</p>
                                     </div>
                                     <div className="space-y-1">
                                         <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Lĩnh vực</p>
-                                        <p className="text-sm font-semibold text-zinc-950">{selectedLead.business_type || '—'}</p>
+                                        <p className="text-sm font-semibold text-foreground">{selectedLead.business_type || '—'}</p>
                                     </div>
                                     <div className="space-y-1 col-span-2">
                                         <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Nguồn thu thập</p>
@@ -290,7 +290,7 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
                                 {selectedLead.message && (
                                     <div className="space-y-1.5">
                                         <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Nhu cầu</p>
-                                        <div className="p-4 bg-zinc-50 rounded-xl border border-zinc-100">
+                                        <div className="p-4 bg-muted rounded-md border border-border">
                                             <p className="text-sm text-zinc-700 leading-relaxed whitespace-pre-line">{selectedLead.message}</p>
                                         </div>
                                     </div>
@@ -322,7 +322,7 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
                                     <Button
                                         asChild
                                         variant="outline"
-                                        className="flex-1 rounded-xl h-10 gap-2 font-semibold"
+                                        className="flex-1 rounded-md h-10 gap-2 font-semibold"
                                     >
                                         <a href={`tel:${selectedLead.phone}`}>
                                             <Phone className="w-4 h-4" />
@@ -331,7 +331,7 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
                                     </Button>
                                     <Button
                                         asChild
-                                        className="flex-1 rounded-xl h-10 gap-2 font-semibold"
+                                        className="flex-1 rounded-md h-10 gap-2 font-semibold"
                                     >
                                         <a href={`https://zalo.me/${selectedLead.phone.replace(/\D/g, '')}`} target="_blank">
                                             <MessageSquare className="w-4 h-4" />

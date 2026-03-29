@@ -170,7 +170,7 @@ export function PaymentWatcher({
                         ? "bg-blue-50 border-blue-200 text-blue-700"
                         : isTimedOut
                             ? "bg-amber-50 border-amber-200 text-amber-700"
-                            : "bg-zinc-50 border-zinc-200 text-zinc-600"
+                            : "bg-muted border-border text-muted-foreground"
                 )}>
                     <div className="flex items-center gap-2">
                         {isPolling ? (
@@ -221,7 +221,7 @@ export function PaymentWatcher({
                         <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
                             Tiến độ thanh toán
                         </p>
-                        <p className="text-2xl font-bold tabular-nums tracking-tight">
+                        <p className="text-2xl font-bold tabular-nums">
                             {formatCurrency(currentPaid)}
                             <span className="text-sm font-normal text-muted-foreground"> / {formatCurrency(totalAmount)}</span>
                         </p>
@@ -233,7 +233,7 @@ export function PaymentWatcher({
                                 ? "bg-emerald-100 text-emerald-700 border-emerald-200"
                                 : currentStatus === 'partial'
                                     ? "bg-amber-50 text-amber-700 border-amber-200"
-                                    : "bg-zinc-100 text-zinc-600 border-zinc-200"
+                                    : "bg-muted text-muted-foreground border-border"
                         )}
                         variant="outline"
                     >
@@ -242,7 +242,7 @@ export function PaymentWatcher({
                 </div>
 
                 {/* Progress Bar */}
-                <div className="h-2 bg-zinc-100 rounded-full overflow-hidden">
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
                     <div
                         className={cn(
                             "h-full rounded-full transition-all duration-700 ease-out",
@@ -250,7 +250,7 @@ export function PaymentWatcher({
                                 ? "bg-emerald-500"
                                 : progressPercent > 0
                                     ? "bg-amber-500"
-                                    : "bg-zinc-200"
+                                    : "bg-muted"
                         )}
                         style={{ width: `${progressPercent}%` }}
                     />
@@ -318,11 +318,11 @@ export function PaymentWatcher({
 
             {/* Fully Paid Celebration */}
             {isFullyPaid && (
-                <div className="flex flex-col items-center justify-center py-4 space-y-3 bg-emerald-50 rounded-xl border border-emerald-200">
+                <div className="flex flex-col items-center justify-center py-4 space-y-3 bg-emerald-50 rounded-md border border-emerald-200">
                     <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center">
                         <CheckCircle2 className="h-6 w-6 text-emerald-600" />
                     </div>
-                    <p className="text-sm font-bold text-emerald-700 tracking-tight">CÔNG NỢ ĐÃ HOÀN TẤT</p>
+                    <p className="text-sm font-bold text-emerald-700">CÔNG NỢ ĐÃ HOÀN TẤT</p>
                 </div>
             )}
         </div>

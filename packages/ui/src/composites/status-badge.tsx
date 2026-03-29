@@ -69,7 +69,7 @@ export function StatusBadge({ status, label, entityType = 'none', className, sho
         <Badge
             variant="secondary"
             className={cn(
-                'font-normal tracking-tight whitespace-nowrap px-3 h-6 flex items-center gap-1.5 rounded-full text-[11px]',
+                'font-normal whitespace-nowrap px-3 h-6 flex items-center gap-1.5 rounded-full text-[11px]',
                 colorClass,
                 className
             )}
@@ -87,8 +87,8 @@ export function StatusBadge({ status, label, entityType = 'none', className, sho
  * Matches components.html dot colors
  */
 function getDotColor(colorClass: string): string {
-    if (!colorClass) return 'bg-zinc-400'
-    if (colorClass.includes('line-through')) return 'bg-zinc-400'
+    if (!colorClass) return 'bg-muted-foreground'
+    if (colorClass.includes('line-through')) return 'bg-muted-foreground'
     if (colorClass.includes('emerald')) return 'bg-emerald-500'
     if (colorClass.includes('blue-')) return 'bg-blue-500'
     if (colorClass.includes('sky-')) return 'bg-sky-500'
@@ -97,6 +97,6 @@ function getDotColor(colorClass: string): string {
     if (colorClass.includes('violet')) return 'bg-violet-500'
     if (colorClass.includes('orange')) return 'bg-orange-500'
     if (colorClass.includes('indigo')) return 'bg-indigo-500'
-    if (colorClass.includes('border border-zinc')) return 'bg-zinc-500'
-    return 'bg-zinc-400'
+    if (colorClass.includes('border border-')) return 'bg-muted-foreground'
+    return 'bg-muted-foreground'
 }

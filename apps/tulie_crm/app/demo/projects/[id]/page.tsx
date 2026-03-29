@@ -53,7 +53,7 @@ export default function ProjectDetail({ params }: { params: Promise<{ id: string
     return (
         <div className="space-y-6">
             <Link href="/demo/projects">
-                <Button variant="ghost" className="gap-2 text-muted-foreground hover:text-zinc-950 dark:hover:text-zinc-50 -ml-3">
+                <Button variant="ghost" className="gap-2 text-muted-foreground hover:text-foreground dark:hover:text-zinc-50 -ml-3">
                     <ArrowLeft className="h-4 w-4" /> Dự án
                 </Button>
             </Link>
@@ -61,7 +61,7 @@ export default function ProjectDetail({ params }: { params: Promise<{ id: string
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-start gap-4">
                 <div className="flex-1">
-                    <h1 className="text-2xl font-bold text-zinc-950 dark:text-zinc-50 tracking-tight">{project.name}</h1>
+                    <h1 className="text-2xl font-bold text-foreground dark:text-zinc-50">{project.name}</h1>
                     <Link href={`/demo/customers/${project.customer}`} className="text-sm text-blue-600 dark:text-blue-400 hover:underline">
                         {project.customerName}
                     </Link>
@@ -71,7 +71,7 @@ export default function ProjectDetail({ params }: { params: Promise<{ id: string
                 </div>
                 <div className="text-right">
                     <p className="text-xs text-muted-foreground">Giá trị</p>
-                    <p className="text-2xl font-bold text-zinc-950 dark:text-zinc-50">{formatCurrency(project.value)}</p>
+                    <p className="text-2xl font-bold text-foreground dark:text-zinc-50">{formatCurrency(project.value)}</p>
                 </div>
             </div>
 
@@ -83,12 +83,12 @@ export default function ProjectDetail({ params }: { params: Promise<{ id: string
                     { label: 'Bắt đầu', value: project.startDate, icon: Calendar },
                     { label: 'Kết thúc', value: project.endDate, icon: Calendar },
                 ].map((s, i) => (
-                    <Card key={i} className="rounded-xl border-border/50">
+                    <Card key={i} className="rounded-md border-border">
                         <CardContent className="pt-5 pb-4 flex items-center gap-3">
                             <s.icon className="h-4 w-4 text-muted-foreground shrink-0" />
                             <div>
                                 <p className="text-[10px] font-semibold text-muted-foreground uppercase">{s.label}</p>
-                                <p className="text-sm font-bold text-zinc-950 dark:text-zinc-50">{s.value}</p>
+                                <p className="text-sm font-bold text-foreground dark:text-zinc-50">{s.value}</p>
                             </div>
                         </CardContent>
                     </Card>
@@ -96,21 +96,21 @@ export default function ProjectDetail({ params }: { params: Promise<{ id: string
             </div>
 
             {/* Progress bar */}
-            <Card className="rounded-xl border-border/50">
+            <Card className="rounded-md border-border">
                 <CardHeader>
-                    <CardTitle className="text-lg font-bold tracking-tight">Tiến độ chi tiết</CardTitle>
+                    <CardTitle className="text-lg font-bold">Tiến độ chi tiết</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="w-full h-4 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden mb-6">
+                    <div className="w-full h-4 bg-muted dark:bg-zinc-800 rounded-full overflow-hidden mb-6">
                         <div className={`h-full rounded-full transition-all ${project.progress === 100 ? 'bg-emerald-500' : 'bg-zinc-900 dark:bg-zinc-300'}`} style={{ width: `${project.progress}%` }} />
                     </div>
                     <div className="space-y-3">
                         {phases.map((phase, i) => (
                             <div key={i} className="flex items-center gap-3">
-                                <div className={`w-3 h-3 rounded-full shrink-0 ${i < currentPhaseIdx ? 'bg-emerald-500' : i === currentPhaseIdx ? 'bg-blue-500' : 'bg-zinc-200 dark:bg-zinc-700'}`} />
-                                <span className={`text-sm font-medium flex-1 ${i <= currentPhaseIdx ? 'text-zinc-950 dark:text-zinc-50' : 'text-muted-foreground'}`}>{phase.name}</span>
+                                <div className={`w-3 h-3 rounded-full shrink-0 ${i < currentPhaseIdx ? 'bg-emerald-500' : i === currentPhaseIdx ? 'bg-blue-500' : 'bg-muted dark:bg-zinc-700'}`} />
+                                <span className={`text-sm font-medium flex-1 ${i <= currentPhaseIdx ? 'text-foreground dark:text-zinc-50' : 'text-muted-foreground'}`}>{phase.name}</span>
                                 <span className="text-xs text-muted-foreground">{phase.pct}%</span>
-                                <Badge className={`text-[10px] font-semibold border-none px-2 py-0.5 rounded-md ${i < currentPhaseIdx ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' : i === currentPhaseIdx ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' : 'bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400'}`}>
+                                <Badge className={`text-[10px] font-semibold border-none px-2 py-0.5 rounded-md ${i < currentPhaseIdx ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' : i === currentPhaseIdx ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' : 'bg-muted text-muted-foreground dark:bg-zinc-800 dark:text-muted-foreground'}`}>
                                     {i < currentPhaseIdx ? 'Xong' : i === currentPhaseIdx ? 'Đang TH' : 'Chờ'}
                                 </Badge>
                             </div>
@@ -121,9 +121,9 @@ export default function ProjectDetail({ params }: { params: Promise<{ id: string
 
             <div className="grid gap-6 lg:grid-cols-2">
                 {/* Budget Pie */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Ngân sách</CardTitle>
+                        <CardTitle className="text-lg font-bold">Ngân sách</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={220}>
@@ -140,20 +140,20 @@ export default function ProjectDetail({ params }: { params: Promise<{ id: string
                 </Card>
 
                 {/* Invoices */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Hóa đơn liên quan</CardTitle>
+                        <CardTitle className="text-lg font-bold">Hóa đơn liên quan</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-3">
                         {projectInvoices.length === 0 && <p className="text-sm text-muted-foreground">Chưa có hóa đơn</p>}
                         {projectInvoices.map(inv => (
                             <Link key={inv.id} href={`/demo/invoices/${inv.id}`} className="block">
-                                <div className="flex items-center gap-3 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-lg px-2 -mx-2 transition-colors">
+                                <div className="flex items-center gap-3 py-2 hover:bg-muted dark:hover:bg-zinc-800/50 rounded-lg px-2 -mx-2 transition-colors">
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50 truncate">{inv.description}</p>
+                                        <p className="text-sm font-semibold text-foreground dark:text-zinc-50 truncate">{inv.description}</p>
                                         <p className="text-xs text-muted-foreground">{inv.dueDate}</p>
                                     </div>
-                                    <p className="text-sm font-bold text-zinc-950 dark:text-zinc-50">{formatCurrency(inv.amount)}</p>
+                                    <p className="text-sm font-bold text-foreground dark:text-zinc-50">{formatCurrency(inv.amount)}</p>
                                 </div>
                             </Link>
                         ))}

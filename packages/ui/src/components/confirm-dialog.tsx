@@ -88,7 +88,7 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
                             </DialogDescription>
                         </DialogHeader>
                     </div>
-                    <div className="flex items-center justify-end gap-2 px-6 py-4 bg-zinc-50/80 border-t">
+                    <div className="flex items-center justify-end gap-2 px-6 py-4 bg-muted border-t">
                         <Button
                             variant="outline"
                             size="sm"

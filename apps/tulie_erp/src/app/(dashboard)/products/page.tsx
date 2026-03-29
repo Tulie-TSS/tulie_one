@@ -27,13 +27,13 @@ export default async function ProductsPage() {
       </div>
 
       {products.length === 0 ? (
-        <div className="rounded-xl border border-border bg-card p-12 text-center">
+        <div className="rounded-md border border-border bg-card p-12 text-center">
           <Package className="mx-auto h-12 w-12 text-muted-foreground/50" />
           <h3 className="mt-4 text-lg font-medium text-foreground">Chưa có sản phẩm nào</h3>
           <p className="mt-2 text-sm text-muted-foreground">Thêm sản phẩm/dịch vụ đầu tiên</p>
         </div>
       ) : (
-        <div className="rounded-xl border border-border bg-card overflow-hidden">
+        <div className="rounded-md border border-border bg-card overflow-hidden">
           <table className="w-full">
             <thead>
               <tr className="border-b border-border bg-muted/50">

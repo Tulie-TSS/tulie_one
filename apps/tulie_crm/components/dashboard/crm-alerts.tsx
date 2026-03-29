@@ -55,11 +55,11 @@ export function CRMAlerts({ alerts }: CRMAlertsProps) {
             <CardContent className="p-0 flex-1 relative min-h-[300px]">
                 {alerts.length === 0 ? (
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-muted-foreground opacity-70">
-                        <div className="h-12 w-12 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-3">
+                        <div className="h-12 w-12 rounded-full bg-muted dark:bg-zinc-800 flex items-center justify-center mb-3">
                             <span className="text-2xl">🎉</span>
                         </div>
                         <p className="text-sm font-medium">Bạn đã hoàn thành mọi mục tiêu!</p>
-                        <p className="text-[13px] mt-1 text-zinc-500">Mọi cơ hội và hóa đơn đều đang đi đúng hướng.</p>
+                        <p className="text-[13px] mt-1 text-muted-foreground">Mọi cơ hội và hóa đơn đều đang đi đúng hướng.</p>
                     </div>
                 ) : (
                     <ScrollArea className="h-full max-h-[400px]">
@@ -68,7 +68,7 @@ export function CRMAlerts({ alerts }: CRMAlertsProps) {
                                 <Link 
                                     href={alert.link} 
                                     key={alert.id}
-                                    className="flex items-start gap-3 p-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group cursor-pointer"
+                                    className="flex items-start gap-3 p-3 hover:bg-muted dark:hover:bg-zinc-800/50 transition-colors group cursor-pointer"
                                     prefetch={false}
                                 >
                                     <div className={`mt-0.5 shrink-0 flex items-center justify-center h-8 w-8 rounded-full ${getColor(alert.severity)}`}>
@@ -76,11 +76,11 @@ export function CRMAlerts({ alerts }: CRMAlertsProps) {
                                     </div>
                                     <div className="flex flex-col flex-1 min-w-0">
                                         <div className="flex items-center justify-between gap-2">
-                                            <span className="font-semibold text-sm text-zinc-900 dark:text-zinc-100 truncate">
+                                            <span className="font-semibold text-sm text-foreground dark:text-zinc-100 truncate">
                                                 {alert.title}
                                             </span>
                                         </div>
-                                        <p className="text-[13px] mt-0.5 text-zinc-600 dark:text-zinc-400 line-clamp-1">
+                                        <p className="text-[13px] mt-0.5 text-muted-foreground dark:text-muted-foreground line-clamp-1">
                                             {alert.description}
                                         </p>
                                         <span className="text-[11px] font-medium mt-1.5 text-red-500 dark:text-red-400">

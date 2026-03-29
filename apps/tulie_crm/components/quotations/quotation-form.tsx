@@ -666,7 +666,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                             </Link>
                         </Button>
                         <div>
-                            <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
+                            <h1 className="text-3xl font-bold text-foreground">
                                 {quotation ? `Chỉnh sửa ${quotation.quotation_number}` : "Tạo báo giá mới"}
                             </h1>
                             <p className="text-[14px] text-muted-foreground mt-1">
@@ -967,7 +967,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                                     onClick={() => addItemToSection(group.name, group.id)}
                                                     className="font-medium"
                                                 >
-                                                    <span className="h-5 w-5 rounded bg-zinc-100 flex items-center justify-center text-[10px] font-bold text-zinc-500 mr-2 shrink-0">{idx + 1}</span>
+                                                    <span className="h-5 w-5 rounded bg-muted flex items-center justify-center text-[10px] font-bold text-muted-foreground mr-2 shrink-0">{idx + 1}</span>
                                                     <span className="truncate">{group.name || 'Chưa đặt tên'}</span>
                                                 </DropdownMenuItem>
                                             ))}
@@ -983,13 +983,13 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                         </CardHeader>
                         <CardContent className="p-0 overflow-x-auto p-4 space-y-8 bg-white">
                             {sectionGroups.length === 0 ? (
-                                <div className="text-center py-12 border-2 border-dashed rounded-xl bg-white">
+                                <div className="text-center py-12 border-2 border-dashed rounded-md bg-white">
                                     <p className="text-muted-foreground mb-4">Chưa có hạng mục nào cho báo giá này</p>
                                     <Button onClick={addItem}>Bắt đầu bằng cách thêm hạng mục</Button>
                                 </div>
                             ) : (
                                 sectionGroups.map((group, groupIdx) => (
-                                    <div key={groupIdx} className="bg-white rounded-xl shadow-sm border overflow-hidden">
+                                    <div key={groupIdx} className="bg-white rounded-md shadow-sm border overflow-hidden">
                                         {/* Section Header */}
                                         <div className="bg-zinc-950 px-5 py-3 text-white flex flex-col sm:flex-row items-center justify-between gap-2">
                                             <div className="flex items-center gap-3 flex-1 w-full">
@@ -1112,7 +1112,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                                                                         updateItem(item.id!, { product_id: '', product_name: '' })
                                                                                     }}
                                                                                     title="Xóa lựa chọn"
-                                                                                    className="h-7 w-7 shrink-0 text-zinc-400 hover:text-red-500"
+                                                                                    className="h-7 w-7 shrink-0 text-muted-foreground hover:text-red-500"
                                                                                 >
                                                                                     <X className="h-3.5 w-3.5" />
                                                                                 </Button>
@@ -1434,18 +1434,18 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                             <div className="flex-1 flex flex-col sm:flex-row gap-8 w-full md:w-auto">
                                 <div className="space-y-1">
-                                    <p className="text-[11px] text-zinc-400">Tạm tính</p>
+                                    <p className="text-[11px] text-muted-foreground">Tạm tính</p>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-lg font-bold text-zinc-950">{formatNumber(subtotal)}</span>
-                                        <span className="text-xs font-bold text-zinc-950">đ</span>
+                                        <span className="text-lg font-bold text-foreground">{formatNumber(subtotal)}</span>
+                                        <span className="text-xs font-bold text-foreground">đ</span>
                                     </div>
                                 </div>
 
                                 <div className="space-y-1">
-                                    <p className="text-[11px] text-zinc-400">Thuế VAT</p>
+                                    <p className="text-[11px] text-muted-foreground">Thuế VAT</p>
                                     <div className="flex items-center gap-3">
                                         <Select value={vatPercent.toString()} onValueChange={(v) => setVatPercent(parseInt(v))}>
-                                            <SelectTrigger className="w-24 h-9 text-xs font-bold border-zinc-200">
+                                            <SelectTrigger className="w-24 h-9 text-xs font-bold border-border">
                                                 <SelectValue />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -1455,17 +1455,17 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                             </SelectContent>
                                         </Select>
                                         <div className="flex items-baseline gap-1">
-                                            <span className="text-sm font-bold text-zinc-950">{formatNumber(vatAmount)}</span>
-                                            <span className="text-[10px] font-bold text-zinc-950">đ</span>
+                                            <span className="text-sm font-bold text-foreground">{formatNumber(vatAmount)}</span>
+                                            <span className="text-[10px] font-bold text-foreground">đ</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="space-y-1">
-                                    <p className="text-[11px] text-zinc-400">Tổng cộng</p>
+                                    <p className="text-[11px] text-muted-foreground">Tổng cộng</p>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-2xl font-bold text-zinc-950">{formatNumber(totalAmount)}</span>
-                                        <span className="text-sm font-bold text-zinc-950 underline decoration-2">đ</span>
+                                        <span className="text-2xl font-bold text-foreground">{formatNumber(totalAmount)}</span>
+                                        <span className="text-sm font-bold text-foreground underline decoration-2">đ</span>
                                     </div>
                                 </div>
                             </div>
@@ -1474,7 +1474,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                 <Button
                                     variant="ghost"
                                     onClick={() => router.back()}
-                                    className="text-zinc-500 hover:text-zinc-900"
+                                    className="text-muted-foreground hover:text-foreground"
                                 >
                                     Hủy
                                 </Button>
@@ -1588,7 +1588,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
-                            <FileJson className="h-5 w-5 text-zinc-900" />
+                            <FileJson className="h-5 w-5 text-foreground" />
                             Proposal JSON
                         </DialogTitle>
                         <DialogDescription>
@@ -1602,7 +1602,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                     <Button
                                         variant="ghost"
                                         size="sm"
-                                        className="h-7 text-[10px] tracking-tight font-bold"
+                                        className="h-7 text-[10px] font-bold"
                                         onClick={() => {
                                             navigator.clipboard.writeText(importText)
                                             toast.success('Đã copy Proposal JSON')
@@ -1658,7 +1658,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
-                            <FileJson className="h-5 w-5 text-zinc-900" />
+                            <FileJson className="h-5 w-5 text-foreground" />
                             Nhập toàn bộ Báo giá từ JSON
                         </DialogTitle>
                         <DialogDescription>
@@ -1672,7 +1672,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="h-7 text-[10px] tracking-tight font-bold"
+                                    className="h-7 text-[10px] font-bold"
                                     onClick={() => {
                                         navigator.clipboard.writeText(importJsonText)
                                         toast.success('Đã copy JSON')
@@ -1722,7 +1722,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                     )}
                                 />
                                 {jsonPath && (
-                                    <div className="absolute bottom-2 right-4 text-[10px] font-mono text-zinc-400 bg-white/80 backdrop-blur px-2 py-0.5 rounded border border-zinc-100 pointer-events-none">
+                                    <div className="absolute bottom-2 right-4 text-[10px] font-mono text-muted-foreground bg-white/80 backdrop-blur px-2 py-0.5 rounded border border-border pointer-events-none">
                                         Scope: {jsonPath}
                                     </div>
                                 )}

@@ -14,7 +14,7 @@ export default function TeamSettingsPage() {
                 <h1 className="text-2xl font-semibold" style={{ color: 'var(--color-fg)' }}>{t('settings.team')}</h1>
                 <button className="px-4 py-2 font-medium cursor-pointer" style={{ backgroundColor: 'var(--color-info)', color: 'white', borderRadius: 'var(--radius-md)', border: 'none', fontSize: 'var(--text-sm)' }}>{t('settings.inviteMember')}</button>
             </div>
-            <div className="overflow-hidden rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+            <div className="overflow-hidden rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                 <table className="w-full" style={{ fontSize: 'var(--text-sm)' }}>
                     <thead>
                         <tr style={{ borderBottom: '1px solid var(--color-border)' }}>

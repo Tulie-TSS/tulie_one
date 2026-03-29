@@ -80,7 +80,7 @@ export function DealKanban({ deals }: DealKanbanProps) {
                     </div>
 
                     <div className={cn(
-                        "flex-1 rounded-xl bg-muted/30 p-2 space-y-3 transition-colors border-2 border-transparent",
+                        "flex-1 rounded-md bg-muted/30 p-2 space-y-3 transition-colors border-2 border-transparent",
                         isDragging && "border-dashed border-muted-foreground/20"
                     )}>
                         {deals

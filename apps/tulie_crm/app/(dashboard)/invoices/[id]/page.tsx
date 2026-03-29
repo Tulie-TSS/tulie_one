@@ -53,7 +53,7 @@ export default async function InvoiceDetailPage({ params }: any) {
                         </Link>
                     </Button>
                     <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
                             <Banknote className="h-6 w-6 text-primary" />
                         </div>
                         <div>

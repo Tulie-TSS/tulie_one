@@ -64,7 +64,7 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                         </Avatar>
                         <div>
                             <div className="flex items-center gap-3">
-                                <h1 className="text-3xl font-bold tracking-tight">{member.full_name}</h1>
+                                <h1 className="text-3xl font-bold">{member.full_name}</h1>
                                 <Badge variant={member.is_active ? 'default' : 'secondary'} className="rounded-full px-3">
                                     {member.is_active ? 'Hoạt động' : 'Tạm dừng'}
                                 </Badge>
@@ -73,7 +73,7 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                         </div>
                     </div>
                 </div>
-                <Button variant="outline" asChild className="rounded-xl">
+                <Button variant="outline" asChild className="rounded-md">
                     <Link href={`/team/${member.id}/edit`}>
                         <Edit className="mr-2 h-4 w-4" />
                         Chỉnh sửa
@@ -86,25 +86,25 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                 <div className="lg:col-span-2 space-y-6">
                     {/* Performance Metrics */}
                     <div className="grid gap-4 sm:grid-cols-4">
-                        <Card className="rounded-xl shadow-sm border-zinc-200">
+                        <Card className="rounded-md shadow-sm border-border">
                             <CardContent className="pt-6">
                                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Khách hàng</p>
                                 <p className="text-2xl font-bold">{stats.customers}</p>
                             </CardContent>
                         </Card>
-                        <Card className="rounded-xl shadow-sm border-zinc-200">
+                        <Card className="rounded-md shadow-sm border-border">
                             <CardContent className="pt-6">
                                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Hợp đồng</p>
                                 <p className="text-2xl font-bold">{stats.contracts}</p>
                             </CardContent>
                         </Card>
-                        <Card className="rounded-xl shadow-sm border-zinc-200">
+                        <Card className="rounded-md shadow-sm border-border">
                             <CardContent className="pt-6">
                                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Báo giá</p>
                                 <p className="text-2xl font-bold">{stats.quotations}</p>
                             </CardContent>
                         </Card>
-                        <Card className="rounded-xl shadow-sm border-zinc-200">
+                        <Card className="rounded-md shadow-sm border-border">
                             <CardContent className="pt-6">
                                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Tỷ lệ chốt</p>
                                 <p className="text-2xl font-bold">{stats.conversion_rate}%</p>
@@ -113,7 +113,7 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                     </div>
 
                     {/* Target Progress */}
-                    <Card className="rounded-xl shadow-sm border-zinc-200">
+                    <Card className="rounded-md shadow-sm border-border">
                         <CardHeader className="pb-2">
                             <CardTitle className="flex items-center gap-2 text-lg font-bold">
                                 <Target className="h-5 w-5 text-primary" />
@@ -123,7 +123,7 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                         <CardContent className="space-y-6">
                             <div className="flex justify-between items-end">
                                 <div className="space-y-1">
-                                    <p className="text-3xl font-bold tracking-tight">{formatCurrency(stats.revenue)}</p>
+                                    <p className="text-3xl font-bold">{formatCurrency(stats.revenue)}</p>
                                     <p className="text-sm text-muted-foreground font-medium">
                                         Đã đạt được / {formatCurrency(stats.target)} mục tiêu
                                     </p>
@@ -132,8 +132,8 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                                     {progress.toFixed(0)}%
                                 </div>
                             </div>
-                            <Progress value={Math.min(progress, 100)} className="h-3 rounded-full bg-zinc-100" />
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium bg-zinc-50 p-3 rounded-lg border border-zinc-100 italic">
+                            <Progress value={Math.min(progress, 100)} className="h-3 rounded-full bg-muted" />
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium bg-muted p-3 rounded-lg border border-border italic">
                                 <TrendingUp className="h-3.5 w-3.5 text-emerald-500" />
                                 Doanh số được tính dựa trên các hợp đồng đã ký và duyệt thanh toán.
                             </div>
@@ -141,7 +141,7 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                     </Card>
 
                     {/* Recent Activities */}
-                    <Card className="rounded-xl shadow-sm border-zinc-200">
+                    <Card className="rounded-md shadow-sm border-border">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-lg font-bold">
                                 <TrendingUp className="h-5 w-5 text-primary" />
@@ -160,7 +160,7 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                 {/* Sidebar */}
                 <div className="space-y-6">
                     {/* Contact Info */}
-                    <Card className="rounded-xl shadow-sm border-zinc-200">
+                    <Card className="rounded-md shadow-sm border-border">
                         <CardHeader>
                             <CardTitle className="text-lg font-bold">Thông tin liên hệ</CardTitle>
                         </CardHeader>
@@ -171,7 +171,7 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                                 </div>
                                 <div className="space-y-0.5">
                                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Email</p>
-                                    <a href={`mailto:${member.email}`} className="text-sm font-bold hover:underline underline-offset-4 text-zinc-900 break-all">
+                                    <a href={`mailto:${member.email}`} className="text-sm font-bold hover:underline underline-offset-4 text-foreground break-all">
                                         {member.email}
                                     </a>
                                 </div>
@@ -183,7 +183,7 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                                     </div>
                                     <div className="space-y-0.5">
                                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Điện thoại</p>
-                                        <a href={`tel:${member.phone}`} className="text-sm font-bold hover:underline underline-offset-4 text-zinc-900">
+                                        <a href={`tel:${member.phone}`} className="text-sm font-bold hover:underline underline-offset-4 text-foreground">
                                             {member.phone}
                                         </a>
                                     </div>
@@ -195,7 +195,7 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                                 </div>
                                 <div className="space-y-0.5">
                                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Ngày gia nhập</p>
-                                    <p className="text-sm font-bold text-zinc-900">
+                                    <p className="text-sm font-bold text-foreground">
                                         {member.created_at ? new Date(member.created_at).toLocaleDateString('vi-VN') : 'N/A'}
                                     </p>
                                 </div>

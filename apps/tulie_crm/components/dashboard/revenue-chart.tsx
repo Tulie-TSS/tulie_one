@@ -32,7 +32,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
     const hasData = data && data.length > 0 && data.some(d => d.revenue > 0 || d.profit > 0)
 
     return (
-        <Card className="col-span-2 rounded-xl border shadow-sm overflow-hidden">
+        <Card className="col-span-2 rounded-md border shadow-sm overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-base font-semibold">Doanh thu & Lợi nhuận</CardTitle>
                 <Select value={period} onValueChange={setPeriod}>

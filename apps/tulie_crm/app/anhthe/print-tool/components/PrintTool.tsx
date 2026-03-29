@@ -112,7 +112,7 @@ const LAYOUT_COLORS: Record<string, string> = {
   '3.3x4.8': 'bg-rose-100 border-rose-300',
   '4.5x4.5': 'bg-teal-100 border-teal-300',
   '5x5': 'bg-orange-100 border-orange-300',
-  'mix': 'bg-zinc-100 border-zinc-300',
+  'mix': 'bg-muted border-input',
 }
 
 // ═══════════════════════════════════════════════════
@@ -453,16 +453,16 @@ export default function PrintTool() {
   // ═══════════════════════════════════════════════════
 
   return (
-    <div className="min-h-screen bg-zinc-50/50 font-sans text-zinc-900 pb-20 selection:bg-black selection:text-white">
+    <div className="min-h-screen bg-muted/50 font-sans text-foreground pb-20 selection:bg-black selection:text-white">
       {/* Header */}
-      <div className="bg-white border-b border-zinc-200 pt-8 sm:pt-10 pb-6 sm:pb-8 px-4 sm:px-6">
+      <div className="bg-white border-b border-border pt-8 sm:pt-10 pb-6 sm:pb-8 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-4 sm:gap-6">
             <img src="/file/tulie-agency-logo.png" alt="Logo" className="h-10 sm:h-14 w-auto object-contain grayscale" />
-            <div className="w-px h-8 sm:h-10 bg-zinc-200" />
+            <div className="w-px h-8 sm:h-10 bg-muted" />
             <div>
-              <h1 className="text-lg sm:text-xl font-semibold text-zinc-900 tracking-tight">Công cụ in ảnh thẻ</h1>
-              <p className="text-[10px] sm:text-xs text-zinc-400 mt-0.5 font-medium uppercase tracking-wider">Canon Selphy CP1300 — Borderless 10×15 cm</p>
+              <h1 className="text-lg sm:text-xl font-semibold text-foreground">Công cụ in ảnh thẻ</h1>
+              <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium uppercase tracking-wider">Canon Selphy CP1300 — Borderless 10×15 cm</p>
             </div>
           </div>
         </div>
@@ -471,15 +471,15 @@ export default function PrintTool() {
       <main className="max-w-6xl mx-auto px-4 sm:px-6 mt-6 sm:mt-10 space-y-6 sm:space-y-8">
 
         {/* ═══ SECTION 1: Upload ═══ */}
-        <section className="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm">
-          <div className="p-4 sm:p-6 border-b border-zinc-100">
+        <section className="bg-white rounded-md border border-border overflow-hidden shadow-sm">
+          <div className="p-4 sm:p-6 border-b border-border">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-zinc-100 flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 rounded-md bg-muted flex items-center justify-center shrink-0">
                 <Upload className="w-4.5 h-4.5 text-zinc-700" />
               </div>
               <div>
-                <h2 className="text-sm sm:text-base font-bold text-zinc-950 tracking-tight">Tải ảnh lên</h2>
-                <p className="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Chọn ảnh gốc để crop và in</p>
+                <h2 className="text-sm sm:text-base font-bold text-foreground">Tải ảnh lên</h2>
+                <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Chọn ảnh gốc để crop và in</p>
               </div>
             </div>
           </div>
@@ -498,32 +498,32 @@ export default function PrintTool() {
             {!image ? (
               <label
                 htmlFor="photo-upload-input"
-                className="w-full flex flex-col items-center justify-center gap-3 py-12 px-4 rounded-xl border-2 border-dashed border-zinc-200 hover:border-zinc-400 hover:bg-zinc-50/50 active:bg-zinc-100 transition-all cursor-pointer"
+                className="w-full flex flex-col items-center justify-center gap-3 py-12 px-4 rounded-md border-2 border-dashed border-border hover:border-zinc-400 hover:bg-muted/50 active:bg-muted transition-all cursor-pointer"
               >
-                <div className="w-14 h-14 rounded-2xl bg-zinc-100 flex items-center justify-center">
-                  <ImagePlus className="size-7 text-zinc-500" />
+                <div className="w-14 h-14 rounded-md bg-muted flex items-center justify-center">
+                  <ImagePlus className="size-7 text-muted-foreground" />
                 </div>
                 <div className="text-center">
                   <p className="text-sm font-semibold text-zinc-700">Chọn ảnh từ máy tính</p>
-                  <p className="text-xs text-zinc-400 mt-1">JPG, PNG, WebP, HEIC — tối đa 30MB</p>
+                  <p className="text-xs text-muted-foreground mt-1">JPG, PNG, WebP, HEIC — tối đa 30MB</p>
                 </div>
               </label>
             ) : (
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-9 h-9 rounded-lg bg-zinc-100 flex items-center justify-center shrink-0">
-                      <Camera className="size-4 text-zinc-600" />
+                    <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                      <Camera className="size-4 text-muted-foreground" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-zinc-900 truncate">{image.name}</p>
-                      <p className="text-xs text-zinc-400">{image.width}×{image.height}px</p>
+                      <p className="text-sm font-semibold text-foreground truncate">{image.name}</p>
+                      <p className="text-xs text-muted-foreground">{image.width}×{image.height}px</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <label
                       htmlFor="photo-upload-input"
-                      className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors border border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-100 h-8 px-3 cursor-pointer"
+                      className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors border border-border bg-white text-foreground hover:bg-muted h-8 px-3 cursor-pointer"
                     >
                       Đổi ảnh
                     </label>
@@ -544,15 +544,15 @@ export default function PrintTool() {
 
 
             {/* ═══ SECTION 2: Photo Size & Crop ═══ */}
-            <section className="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm">
-              <div className="p-4 sm:p-6 border-b border-zinc-100">
+            <section className="bg-white rounded-md border border-border overflow-hidden shadow-sm">
+              <div className="p-4 sm:p-6 border-b border-border">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-zinc-100 flex items-center justify-center shrink-0">
+                  <div className="w-9 h-9 rounded-md bg-muted flex items-center justify-center shrink-0">
                     <Crop className="w-4.5 h-4.5 text-zinc-700" />
                   </div>
                   <div className="flex-1">
-                    <h2 className="text-sm sm:text-base font-bold text-zinc-950 tracking-tight">Crop ảnh thẻ</h2>
-                    <p className="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Chọn cỡ ảnh và vùng crop</p>
+                    <h2 className="text-sm sm:text-base font-bold text-foreground">Crop ảnh thẻ</h2>
+                    <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Chọn cỡ ảnh và vùng crop</p>
                   </div>
                 </div>
               </div>
@@ -560,7 +560,7 @@ export default function PrintTool() {
               <div className="p-4 sm:p-6 space-y-5">
                 {/* Photo size selector */}
                 <div className="space-y-2">
-                  <Label className="text-xs font-semibold text-zinc-600">Cỡ ảnh thẻ</Label>
+                  <Label className="text-xs font-semibold text-muted-foreground">Cỡ ảnh thẻ</Label>
                   <div className="flex flex-wrap gap-2">
                     {PHOTO_SIZES.map((size) => (
                       <button
@@ -571,14 +571,14 @@ export default function PrintTool() {
                           "px-3 py-2 rounded-lg border text-xs font-medium transition-all",
                           photoSize === size.id
                             ? "border-zinc-900 bg-zinc-900 text-white shadow-sm"
-                            : "border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50",
+                            : "border-border bg-white text-muted-foreground hover:border-input hover:bg-muted",
                         )}
                       >
                         {size.name}
                       </button>
                     ))}
                   </div>
-                  <p className="text-[11px] text-zinc-400">{currentPhotoSize.desc} — tỉ lệ {currentPhotoSize.w}:{currentPhotoSize.h}</p>
+                  <p className="text-[11px] text-muted-foreground">{currentPhotoSize.desc} — tỉ lệ {currentPhotoSize.w}:{currentPhotoSize.h}</p>
                 </div>
 
                 <Separator />
@@ -586,16 +586,16 @@ export default function PrintTool() {
                 {/* Crop mode */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <Label className="text-xs font-semibold text-zinc-600">Chế độ crop</Label>
-                    <div className="flex gap-1 bg-zinc-100 rounded-lg p-0.5">
+                    <Label className="text-xs font-semibold text-muted-foreground">Chế độ crop</Label>
+                    <div className="flex gap-1 bg-muted rounded-lg p-0.5">
                       <button
                         type="button"
                         onClick={() => setCropMode('auto')}
                         className={cn(
                           "px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5",
                           cropMode === 'auto'
-                            ? "bg-white text-zinc-900 shadow-sm"
-                            : "text-zinc-500 hover:text-zinc-700",
+                            ? "bg-white text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-zinc-700",
                         )}
                       >
                         <Scan className="size-3.5" />
@@ -607,8 +607,8 @@ export default function PrintTool() {
                         className={cn(
                           "px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5",
                           cropMode === 'custom'
-                            ? "bg-white text-zinc-900 shadow-sm"
-                            : "text-zinc-500 hover:text-zinc-700",
+                            ? "bg-white text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-zinc-700",
                         )}
                       >
                         <Crop className="size-3.5" />
@@ -618,13 +618,13 @@ export default function PrintTool() {
                   </div>
 
                   {cropMode === 'auto' && (
-                    <p className="text-[11px] text-zinc-400 bg-zinc-50 rounded-lg px-3 py-2 border border-zinc-100">
+                    <p className="text-[11px] text-muted-foreground bg-muted rounded-lg px-3 py-2 border border-border">
                       💡 Auto crop sẽ căn giữa khuôn mặt (nhỉnh lên trên), mặt chiếm ~70% diện tích ảnh — chuẩn visa/hộ chiếu.
                     </p>
                   )}
 
                   {cropMode === 'custom' && (
-                    <p className="text-[11px] text-zinc-400 bg-zinc-50 rounded-lg px-3 py-2 border border-zinc-100">
+                    <p className="text-[11px] text-muted-foreground bg-muted rounded-lg px-3 py-2 border border-border">
                       ✋ Kéo chuột trên ảnh để chọn vùng crop. Tỉ lệ sẽ tự động giữ theo cỡ ảnh đã chọn ({currentPhotoSize.w}:{currentPhotoSize.h}).
                     </p>
                   )}
@@ -634,11 +634,11 @@ export default function PrintTool() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   {/* Source image with crop overlay */}
                   <div className="space-y-2">
-                    <Label className="text-[11px] font-semibold text-zinc-500">Ảnh gốc</Label>
+                    <Label className="text-[11px] font-semibold text-muted-foreground">Ảnh gốc</Label>
                     {image ? (
                     <div
                       ref={cropContainerRef}
-                      className="relative rounded-lg overflow-hidden border border-zinc-200 bg-zinc-100 cursor-crosshair select-none"
+                      className="relative rounded-lg overflow-hidden border border-border bg-muted cursor-crosshair select-none"
                       style={{ aspectRatio: `${image.width}/${image.height}`, maxHeight: 400 }}
                       onMouseDown={handleCropMouseDown}
                       onMouseMove={handleCropMouseMove}
@@ -685,7 +685,7 @@ export default function PrintTool() {
                       )}
                     </div>
                     ) : (
-                      <div className="rounded-lg border border-zinc-200 bg-zinc-50 flex flex-col items-center justify-center py-12 text-zinc-400">
+                      <div className="rounded-lg border border-border bg-muted flex flex-col items-center justify-center py-12 text-muted-foreground">
                         <ImagePlus className="size-8 mb-2 opacity-40" />
                         <p className="text-xs font-medium">Tải ảnh lên để xem</p>
                       </div>
@@ -694,9 +694,9 @@ export default function PrintTool() {
 
                   {/* Cropped preview */}
                   <div className="space-y-2">
-                    <Label className="text-[11px] font-semibold text-zinc-500">Kết quả crop ({currentPhotoSize.name})</Label>
+                    <Label className="text-[11px] font-semibold text-muted-foreground">Kết quả crop ({currentPhotoSize.name})</Label>
                     <div
-                      className="rounded-lg overflow-hidden border border-zinc-200 bg-zinc-100 flex items-center justify-center"
+                      className="rounded-lg overflow-hidden border border-border bg-muted flex items-center justify-center"
                       style={{ aspectRatio: `${currentPhotoSize.w}/${currentPhotoSize.h}`, maxHeight: 400 }}
                     >
                       {croppedDataUrl ? (
@@ -708,7 +708,7 @@ export default function PrintTool() {
                           style={{ filter: buildFilterString(filters) }}
                         />
                       ) : (
-                        <div className="text-center text-zinc-400 p-6">
+                        <div className="text-center text-muted-foreground p-6">
                           <Crop className="size-8 mx-auto mb-2 opacity-50" />
                           <p className="text-xs font-medium">Chưa crop</p>
                         </div>
@@ -720,19 +720,19 @@ export default function PrintTool() {
             </section>
 
             {/* ═══ SECTION 3: Filters ═══ */}
-            <section className="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm">
-              <div className="p-4 sm:p-6 border-b border-zinc-100">
+            <section className="bg-white rounded-md border border-border overflow-hidden shadow-sm">
+              <div className="p-4 sm:p-6 border-b border-border">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-zinc-100 flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 rounded-md bg-muted flex items-center justify-center shrink-0">
                       <Palette className="w-4.5 h-4.5 text-zinc-700" />
                     </div>
                     <div>
-                      <h2 className="text-sm sm:text-base font-bold text-zinc-950 tracking-tight">Chỉnh màu</h2>
-                      <p className="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Chuẩn Canon Selphy CP1300 — dye-sublimation</p>
+                      <h2 className="text-sm sm:text-base font-bold text-foreground">Chỉnh màu</h2>
+                      <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Chuẩn Canon Selphy CP1300 — dye-sublimation</p>
                     </div>
                   </div>
-                  <Button variant="ghost" size="sm" onClick={resetFilters} className="text-xs text-zinc-500">
+                  <Button variant="ghost" size="sm" onClick={resetFilters} className="text-xs text-muted-foreground">
                     <RotateCcw className="size-3.5 mr-1.5" />
                     Reset
                   </Button>
@@ -789,22 +789,22 @@ export default function PrintTool() {
                 </div>
 
                 {/* Filter CSS string preview */}
-                <div className="bg-zinc-50 rounded-lg px-3 py-2 border border-zinc-100">
-                  <p className="text-[10px] font-mono text-zinc-400 break-all">{buildFilterString(filters)}</p>
+                <div className="bg-muted rounded-lg px-3 py-2 border border-border">
+                  <p className="text-[10px] font-mono text-muted-foreground break-all">{buildFilterString(filters)}</p>
                 </div>
               </div>
             </section>
 
             {/* ═══ SECTION 4: Layout & Print Preview ═══ */}
-            <section className="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm">
-              <div className="p-4 sm:p-6 border-b border-zinc-100">
+            <section className="bg-white rounded-md border border-border overflow-hidden shadow-sm">
+              <div className="p-4 sm:p-6 border-b border-border">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-zinc-100 flex items-center justify-center shrink-0">
+                  <div className="w-9 h-9 rounded-md bg-muted flex items-center justify-center shrink-0">
                     <Grid3x3 className="w-4.5 h-4.5 text-zinc-700" />
                   </div>
                   <div>
-                    <h2 className="text-sm sm:text-base font-bold text-zinc-950 tracking-tight">Layout vỉ in</h2>
-                    <p className="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Khổ giấy 10×15 cm — Borderless</p>
+                    <h2 className="text-sm sm:text-base font-bold text-foreground">Layout vỉ in</h2>
+                    <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Khổ giấy 10×15 cm — Borderless</p>
                   </div>
                 </div>
               </div>
@@ -812,7 +812,7 @@ export default function PrintTool() {
               <div className="p-4 sm:p-6 space-y-5">
                 {/* Layout selector */}
                 <div className="space-y-2">
-                  <Label className="text-xs font-semibold text-zinc-600">Chọn kiểu vỉ in</Label>
+                  <Label className="text-xs font-semibold text-muted-foreground">Chọn kiểu vỉ in</Label>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     {Object.values(PRINT_LAYOUTS).map((layout) => (
                       <button
@@ -823,11 +823,11 @@ export default function PrintTool() {
                           "flex flex-col items-start p-3 rounded-lg border text-left transition-all",
                           layoutId === layout.id
                             ? "border-zinc-900 bg-zinc-900 text-white shadow-sm"
-                            : "border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50",
+                            : "border-border bg-white text-muted-foreground hover:border-input hover:bg-muted",
                         )}
                       >
                         <span className="text-xs font-bold">{layout.name}</span>
-                        <span className={cn("text-[10px] mt-0.5", layoutId === layout.id ? "text-zinc-300" : "text-zinc-400")}>
+                        <span className={cn("text-[10px] mt-0.5", layoutId === layout.id ? "text-zinc-300" : "text-muted-foreground")}>
                           {layout.desc} — {layout.count} ảnh
                         </span>
                       </button>
@@ -840,14 +840,14 @@ export default function PrintTool() {
                 {/* Print preview canvas */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <Label className="text-xs font-semibold text-zinc-600">Preview vỉ in</Label>
-                    <span className="text-[10px] font-medium text-zinc-400 bg-zinc-100 px-2 py-0.5 rounded-full">
+                    <Label className="text-xs font-semibold text-muted-foreground">Preview vỉ in</Label>
+                    <span className="text-[10px] font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
                       10 × 15 cm
                     </span>
                   </div>
 
                   <div className="flex justify-center">
-                    <div className="relative border-2 border-zinc-300 rounded-sm bg-white shadow-inner overflow-hidden" style={{ width: PREVIEW_W, height: PREVIEW_H }}>
+                    <div className="relative border-2 border-input rounded-sm bg-white shadow-inner overflow-hidden" style={{ width: PREVIEW_W, height: PREVIEW_H }}>
                       <canvas
                         ref={previewCanvasRef}
                         width={PREVIEW_W}
@@ -860,7 +860,7 @@ export default function PrintTool() {
                           key={i}
                           className={cn(
                             "absolute flex items-center justify-center border text-[9px] font-bold select-none rounded-[2px] pointer-events-none",
-                            !croppedDataUrl && (LAYOUT_COLORS[layoutId] || 'bg-zinc-50 border-zinc-200'),
+                            !croppedDataUrl && (LAYOUT_COLORS[layoutId] || 'bg-muted border-border'),
                           )}
                           style={{
                             left: slot.x * PX_PER_CM,
@@ -875,7 +875,7 @@ export default function PrintTool() {
                       ))}
                     </div>
                   </div>
-                  <p className="text-[11px] text-zinc-400 text-center font-medium">
+                  <p className="text-[11px] text-muted-foreground text-center font-medium">
                     Khổ giấy in 10 × 15 cm — Canon Selphy CP1300 Borderless
                   </p>
                 </div>
@@ -883,14 +883,14 @@ export default function PrintTool() {
             </section>
 
             {/* ═══ SECTION 5: Export ═══ */}
-            <section className="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm sticky bottom-4 z-10">
+            <section className="bg-white rounded-md border border-border overflow-hidden shadow-sm sticky bottom-4 z-10">
               <div className="p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="text-center sm:text-left">
-                    <p className="text-[13px] font-bold text-zinc-950">
+                    <p className="text-[13px] font-bold text-foreground">
                       {currentLayout?.name} — {currentLayout?.count} ảnh/vỉ
                     </p>
-                    <p className="text-[11px] text-zinc-400 mt-0.5">
+                    <p className="text-[11px] text-muted-foreground mt-0.5">
                       Export: {EXPORT_W}×{EXPORT_H}px ({DPI} DPI) · JPEG
                     </p>
                   </div>
@@ -899,7 +899,7 @@ export default function PrintTool() {
                 <Button
                   onClick={handleExport}
                   disabled={!croppedDataUrl || isExporting}
-                  className="h-11 px-8 rounded-xl font-bold text-sm bg-zinc-900 hover:bg-zinc-800 text-white shadow-lg shadow-black/10 transition-all"
+                  className="h-11 px-8 rounded-md font-bold text-sm bg-zinc-900 hover:bg-zinc-800 text-white shadow-lg shadow-black/10 transition-all"
                 >
                   {isExporting ? (
                     <span className="flex items-center gap-2">
@@ -946,11 +946,11 @@ function FilterSlider({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <Label className="text-xs font-medium text-zinc-600">{label}</Label>
+        <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
         <div className="flex items-center gap-2">
           <span className={cn(
             "text-xs font-bold tabular-nums",
-            isDefault ? "text-zinc-400" : "text-zinc-900",
+            isDefault ? "text-muted-foreground" : "text-foreground",
           )}>
             {value}{unit}
           </span>
@@ -958,7 +958,7 @@ function FilterSlider({
             <button
               type="button"
               onClick={() => onChange(defaultValue)}
-              className="text-[10px] text-zinc-400 hover:text-zinc-600 underline transition-colors"
+              className="text-[10px] text-muted-foreground hover:text-muted-foreground underline transition-colors"
             >
               reset
             </button>
@@ -972,13 +972,7 @@ function FilterSlider({
           max={max}
           value={value}
           onChange={(e) => onChange(parseInt(e.target.value))}
-          className="w-full h-1.5 bg-zinc-200 rounded-full appearance-none cursor-pointer
-            [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4
-            [&::-webkit-slider-thumb]:bg-zinc-900 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer
-            [&::-webkit-slider-thumb]:shadow-sm [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white
-            [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-zinc-900
-            [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-2
-            [&::-moz-range-thumb]:border-white"
+          className="w-full h-1.5 bg-muted rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-zinc-900 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-sm [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-zinc-900 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white"
         />
         {/* Default marker line */}
         <div

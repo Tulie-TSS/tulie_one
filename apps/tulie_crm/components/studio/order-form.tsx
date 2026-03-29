@@ -375,15 +375,15 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                         </thead>
                                         <tbody className="divide-y divide-zinc-50 dark:divide-zinc-900/50">
                                             {selectedItems.map((item, index) => (
-                                                <tr key={index} className="hover:bg-zinc-50/30 dark:hover:bg-zinc-900/20 transition-colors">
-                                                    <td className="px-6 py-4 font-semibold text-zinc-900 dark:text-zinc-100">{item.product_name}</td>
+                                                <tr key={index} className="hover:bg-muted/30 dark:hover:bg-zinc-900/20 transition-colors">
+                                                    <td className="px-6 py-4 font-semibold text-foreground dark:text-zinc-100">{item.product_name}</td>
                                                     <td className="px-6 py-4">
                                                         <Input
                                                             type="number"
                                                             min="1"
                                                             value={item.quantity}
                                                             onChange={(e) => updateItemQuantity(index, parseInt(e.target.value) || 1)}
-                                                            className="h-8 w-16 text-center border-zinc-200 dark:border-zinc-700 bg-transparent mx-auto font-bold"
+                                                            className="h-8 w-16 text-center border-border dark:border-zinc-700 bg-transparent mx-auto font-bold"
                                                         />
                                                     </td>
                                                     <td className="px-6 py-4 text-right tabular-nums">
@@ -393,7 +393,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                                             className="h-8 w-28 text-right bg-transparent border-none focus-visible:ring-0 p-0 font-bold ml-auto"
                                                         />
                                                     </td>
-                                                    <td className="px-6 py-4 text-right font-semibold tabular-nums text-zinc-900 dark:text-zinc-100">
+                                                    <td className="px-6 py-4 text-right font-semibold tabular-nums text-foreground dark:text-zinc-100">
                                                         {formatCurrency(item.total_price)}
                                                     </td>
                                                     <td className="px-6 py-4 text-right">
@@ -401,7 +401,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                                             variant="ghost"
                                                             size="icon"
                                                             onClick={() => removeItem(index)}
-                                                            className="h-8 w-8 text-zinc-400 hover:text-red-500 hover:bg-rose-50 transition-all rounded-lg"
+                                                            className="h-8 w-8 text-muted-foreground hover:text-red-500 hover:bg-rose-50 transition-all rounded-lg"
                                                             type="button"
                                                         >
                                                             <Trash2 className="h-4 w-4" />
@@ -410,10 +410,10 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                                 </tr>
                                             ))}
                                         </tbody>
-                                        <tfoot className="bg-zinc-50/30 dark:bg-zinc-900/30 font-bold border-t border-zinc-100 dark:border-zinc-800">
+                                        <tfoot className="bg-muted/30 dark:bg-zinc-900/30 font-bold border-t border-border dark:border-zinc-800">
                                             <tr>
                                                 <td colSpan={3} className="px-6 py-4 text-muted-foreground text-xs font-medium">Tổng cộng tạm tính</td>
-                                                <td className="px-6 py-4 text-right text-lg font-bold text-zinc-900 dark:text-zinc-100 tabular-nums">
+                                                <td className="px-6 py-4 text-right text-lg font-bold text-foreground dark:text-zinc-100 tabular-nums">
                                                     {formatCurrency(formData.total_amount)}
                                                 </td>
                                                 <td></td>
@@ -422,16 +422,16 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                     </table>
                                 </div>
                             ) : (
-                                <div className="text-center py-12 border-2 border-dashed border-zinc-100 dark:border-zinc-800 rounded-xl">
-                                    <div className="bg-zinc-50 dark:bg-zinc-900 h-12 w-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <div className="text-center py-12 border-2 border-dashed border-border dark:border-zinc-800 rounded-md">
+                                    <div className="bg-muted dark:bg-zinc-900 h-12 w-12 rounded-full flex items-center justify-center mx-auto mb-3">
                                         <Plus className="h-6 w-6 text-zinc-300" />
                                     </div>
-                                    <p className="text-zinc-400 text-sm font-medium">Chưa chọn sản phẩm nào cho đơn hàng này.</p>
+                                    <p className="text-muted-foreground text-sm font-medium">Chưa chọn sản phẩm nào cho đơn hàng này.</p>
                                 </div>
                             )}
 
                             {/* Delivery Type Toggle */}
-                            <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 space-y-4">
+                            <div className="pt-4 border-t border-border dark:border-zinc-800 space-y-4">
                                 <div className="space-y-2">
                                     <Label className="text-sm font-medium flex items-center gap-2">
                                         <Truck className="h-4 w-4" /> Loại giao hàng
@@ -508,7 +508,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
 
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
-                                    <Label className="text-sm font-bold tracking-tight">Ghi chú & Điều khoản</Label>
+                                    <Label className="text-sm font-bold">Ghi chú & Điều khoản</Label>
                                     {availableNotes.length > 0 && (
                                         <Select onValueChange={(val) => {
                                             const t = availableNotes.find(x => x.name === val)
@@ -537,7 +537,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                                         placeholder="Ghi chú về gói chụp, yêu cầu của khách hàng..."
                                         rows={3}
-                                        className="rounded-xl resize-none text-xs"
+                                        className="rounded-md resize-none text-xs"
                                     />
                                 </div>
                             </div>
@@ -581,7 +581,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <CreditCard className="h-4 w-4 text-primary" />
-                                        <Label className="text-sm font-bold tracking-tight">Thông tin thanh toán</Label>
+                                        <Label className="text-sm font-bold">Thông tin thanh toán</Label>
                                     </div>
                                     {availableBanks.length > 0 && (
                                         <Select onValueChange={(val) => {
@@ -614,13 +614,13 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                     )}
                                 </div>
                                 {formData.metadata?.bank_info ? (
-                                    <div className="p-3 rounded-lg bg-zinc-50 border border-zinc-100 space-y-1">
-                                        <p className="text-[11px] font-bold text-zinc-900 leading-none">{formData.metadata.bank_info.bank_name}</p>
-                                        <p className="text-xs font-bold text-primary tracking-tight">{formData.metadata.bank_info.account_no}</p>
-                                        <p className="text-[11px] text-zinc-500">{formData.metadata.bank_info.account_name}</p>
+                                    <div className="p-3 rounded-lg bg-muted border border-border space-y-1">
+                                        <p className="text-[11px] font-bold text-foreground leading-none">{formData.metadata.bank_info.bank_name}</p>
+                                        <p className="text-xs font-bold text-primary">{formData.metadata.bank_info.account_no}</p>
+                                        <p className="text-[11px] text-muted-foreground">{formData.metadata.bank_info.account_name}</p>
                                     </div>
                                 ) : (
-                                    <div className="p-3 rounded-lg bg-zinc-50 border border-zinc-100 flex items-center gap-2 text-zinc-500">
+                                    <div className="p-3 rounded-lg bg-muted border border-border flex items-center gap-2 text-muted-foreground">
                                         <AlertCircle className="h-3 w-3" />
                                         <p className="text-[11px]">Đang sử dụng tài khoản mặc định của Studio</p>
                                     </div>
@@ -635,7 +635,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                 <div className="text-right">
                                     <span className="text-muted-foreground text-xs font-medium">Mã đơn</span>
                                     <div className="flex items-center gap-1.5 justify-end">
-                                        <p className="font-mono text-sm font-bold tracking-tight">{orderIdPreview}</p>
+                                        <p className="font-mono text-sm font-bold">{orderIdPreview}</p>
                                         <Button
                                             type="button"
                                             variant="ghost"

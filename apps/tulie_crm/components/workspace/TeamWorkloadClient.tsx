@@ -122,7 +122,7 @@ export function TeamWorkloadClient({ tasks, teamMembers }: TeamWorkloadClientPro
                             {memberData.map(member => (
                                 <div key={member.id} className="flex items-center gap-3">
                                     <div className="w-[120px] shrink-0 flex items-center gap-2">
-                                        <div className="h-7 w-7 rounded-full bg-zinc-200 flex items-center justify-center text-[11px] font-semibold text-zinc-600 shrink-0">
+                                        <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center text-[11px] font-semibold text-muted-foreground shrink-0">
                                             {member.full_name.charAt(0).toUpperCase()}
                                         </div>
                                         <span className="text-xs font-medium truncate">{member.full_name.split(' ').slice(-2).join(' ')}</span>
@@ -182,7 +182,7 @@ export function TeamWorkloadClient({ tasks, teamMembers }: TeamWorkloadClientPro
                     <Card key={member.id}>
                         <CardContent className="p-4">
                             <div className="flex items-center gap-3 mb-3">
-                                <div className="h-8 w-8 rounded-full bg-zinc-200 flex items-center justify-center text-sm font-semibold text-zinc-600">
+                                <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-sm font-semibold text-muted-foreground">
                                     {member.full_name.charAt(0).toUpperCase()}
                                 </div>
                                 <div>
@@ -211,11 +211,7 @@ export function TeamWorkloadClient({ tasks, teamMembers }: TeamWorkloadClientPro
                                                 {task.priority && priorityConfig[task.priority] && (
                                                     <Badge variant={priorityConfig[task.priority].variant} className="text-[11px] px-1 py-0 h-4">{priorityConfig[task.priority].label}</Badge>
                                                 )}
-                                                <span className={`text-[11px] px-1.5 py-0.5 rounded-full ${
-                                                    task.status === 'in_progress' ? 'bg-blue-50 text-blue-700' :
-                                                    task.status === 'in_review' ? 'bg-amber-100 text-amber-700' :
-                                                    'bg-zinc-100 text-zinc-700'
-                                                }`}>{statusLabels[task.status] || task.status}</span>
+                                                <span className={`text-[11px] px-1.5 py-0.5 rounded-full ${ task.status === 'in_progress' ? 'bg-blue-50 text-blue-700' : task.status === 'in_review' ? 'bg-amber-100 text-amber-700' : 'bg-muted text-zinc-700' }`}>{statusLabels[task.status] || task.status}</span>
                                                 {task.due_date && (
                                                     <span className={`text-[11px] shrink-0 ${isOverdue ? 'text-rose-600 font-medium' : 'text-muted-foreground'}`}>
                                                         {new Date(task.due_date).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' })}

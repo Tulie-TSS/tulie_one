@@ -13,7 +13,7 @@ const COLOR = {
   '3.3x4.8': 'bg-rose-100 text-rose-800 border-rose-300',
   '4.5x4.5': 'bg-teal-100 text-teal-800 border-teal-300',
   '5x5':   'bg-orange-100 text-orange-800 border-orange-300',
-  default: 'bg-zinc-100 text-zinc-700 border-zinc-300',
+  default: 'bg-muted text-zinc-700 border-input',
 } as const
 
 function getColor(sizeId: string) {
@@ -126,7 +126,7 @@ export function PrintLayoutPreview({ sizeId }: { sizeId: string }) {
   return (
     <div className="flex flex-col items-center gap-3 py-4">
       <div
-        className="relative border-2 border-zinc-300 bg-white rounded-sm shadow-inner overflow-hidden box-content"
+        className="relative border-2 border-input bg-white rounded-sm shadow-inner overflow-hidden box-content"
         style={{ width: 300, height: 200 }}
       >
         {slots.map((s, i) => (
@@ -142,7 +142,7 @@ export function PrintLayoutPreview({ sizeId }: { sizeId: string }) {
           </div>
         ))}
       </div>
-      <p className="text-[11px] text-zinc-400 font-medium uppercase tracking-widest">
+      <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-widest">
         Khổ giấy in 10 × 15 cm
       </p>
     </div>

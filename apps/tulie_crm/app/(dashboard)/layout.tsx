@@ -1,4 +1,5 @@
-import { Sidebar } from '@/components/layout/sidebar'
+import { SidebarProvider, SidebarInset } from '@repo/ui'
+import { AppSidebar } from '@/components/layout/sidebar'
 import { Header } from '@/components/layout/header'
 
 export const dynamic = 'force-dynamic'
@@ -9,16 +10,14 @@ export default function DashboardLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="flex h-screen overflow-hidden">
-            <div className="hidden lg:flex h-full">
-                <Sidebar />
-            </div>
-            <div className="flex flex-1 flex-col overflow-hidden w-full">
+        <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset className="flex flex-1 flex-col min-w-0 bg-background relative overflow-y-auto w-full md:w-auto">
                 <Header />
-                <main className="flex-1 overflow-y-auto bg-background p-4 sm:p-6">
+                <main className="flex-1 bg-background p-4 sm:p-6">
                     {children}
                 </main>
-            </div>
-        </div>
+            </SidebarInset>
+        </SidebarProvider>
     )
 }

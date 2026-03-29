@@ -17,11 +17,11 @@ export default async function StudioCustomersPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-zinc-100 flex items-center justify-center">
-                        <Camera className="h-6 w-6 text-zinc-900" />
+                    <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center">
+                        <Camera className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-bold text-zinc-950 tracking-tight">Khách hàng Studio</h1>
+                        <h1 className="text-3xl font-bold text-foreground">Khách hàng Studio</h1>
                         <p className="text-[14px] text-muted-foreground">
                             Quản lý danh sách khách hàng cá nhân cho khối Studio
                         </p>

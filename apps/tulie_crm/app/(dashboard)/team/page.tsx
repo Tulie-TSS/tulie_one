@@ -33,7 +33,7 @@ export default async function TeamPage() {
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
                         <UserCheck className="h-6 w-6 text-primary" />
                     </div>
                     <div>
@@ -159,9 +159,7 @@ export default async function TeamPage() {
                                                     </div>
                                                     <div className="h-2 bg-muted rounded-full overflow-hidden">
                                                         <div
-                                                            className={`h-full rounded-full ${progress >= 100 ? 'bg-emerald-500' :
-                                                                progress >= 70 ? 'bg-amber-500' : 'bg-blue-500'
-                                                                }`}
+                                                            className={`h-full rounded-full ${progress >= 100 ? 'bg-emerald-500' : progress >= 70 ? 'bg-amber-500' : 'bg-blue-500' }`}
                                                             style={{ width: `${progress}%` }}
                                                         />
                                                     </div>

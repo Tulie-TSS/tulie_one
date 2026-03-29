@@ -234,7 +234,7 @@ export function GanttChart({
                           <button
                             className={cn(
                               "absolute top-1/2 -translate-y-1/2 rounded-md overflow-hidden cursor-pointer transition-all",
-                              "hover:shadow-md hover:scale-y-110",
+                              "hover:brightness-95",
                               colors.bg
                             )}
                             style={{

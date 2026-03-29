@@ -178,12 +178,12 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             className="h-8 w-auto object-contain grayscale"
                         />
                         <Separator orientation="vertical" className="h-6" />
-                        <h1 className="text-base font-semibold text-foreground tracking-tight ml-2">Customer Portal</h1>
+                        <h1 className="text-base font-semibold text-foreground ml-2">Customer Portal</h1>
                     </div>
                 </nav>
                 <div className="flex items-center gap-4 md:gap-6">
                     <div className="hidden md:flex flex-col items-end">
-                        <span className="text-sm font-semibold tracking-tight">{displayName}</span>
+                        <span className="text-sm font-semibold">{displayName}</span>
                         <div className="flex items-center gap-2">
                              <div className={cn("w-1.5 h-1.5 rounded-full animate-pulse", hasContracts ? "bg-emerald-500" : "bg-muted-foreground")} />
                              <span className="text-[11px] text-muted-foreground font-medium">{projectStatusLabel}</span>
@@ -298,7 +298,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
 
                                 <div>
                                     <div className="flex items-center justify-between mb-4">
-                                        <h2 className="text-xl font-semibold tracking-tight">Hạng mục & Công việc</h2>
+                                        <h2 className="text-xl font-semibold">Hạng mục & Công việc</h2>
                                         <Badge variant="secondary" className="font-normal">{completedItems}/{displayItems.length} hoàn thành</Badge>
                                     </div>
                                     <div className="grid gap-4">
@@ -317,7 +317,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             {/* Tab 2: Gantt & Timeline */}
                             <TabsContent value="gantt" className="space-y-6 mt-0">
                                 <div className="flex items-center justify-between mb-4">
-                                    <h2 className="text-xl font-semibold tracking-tight">Kế hoạch triển khai</h2>
+                                    <h2 className="text-xl font-semibold">Kế hoạch triển khai</h2>
                                 </div>
                                 <ProjectGanttChart tasks={data.tasks || []} />
                                 <TimelineSection timeline={timeline} />
@@ -326,7 +326,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             {/* Tab 3: Feedback & History */}
                             <TabsContent value="feedback" className="space-y-6 mt-0">
                                 <div className="flex items-center justify-between mb-4">
-                                    <h2 className="text-xl font-semibold tracking-tight">Kênh giao tiếp & Phản hồi</h2>
+                                    <h2 className="text-xl font-semibold">Kênh giao tiếp & Phản hồi</h2>
                                 </div>
                                 {project?.id && (
                                     <FeedbackBoard
@@ -337,7 +337,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                     />
                                 )}
                                 <div className="mt-8">
-                                    <h3 className="text-lg font-semibold tracking-tight mb-4">Lịch sử hoạt động</h3>
+                                    <h3 className="text-lg font-semibold mb-4">Lịch sử hoạt động</h3>
                                     <ProjectActivityHistory projectId={project?.id} activities={data.activities} />
                                 </div>
                             </TabsContent>
@@ -346,7 +346,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             {isFinancialAuthenticated && (
                                 <TabsContent value="finance" className="space-y-6 mt-0">
                                     <div className="flex items-center justify-between mb-4">
-                                        <h2 className="text-xl font-semibold tracking-tight">Tài chính & Pháp lý</h2>
+                                        <h2 className="text-xl font-semibold">Tài chính & Pháp lý</h2>
                                     </div>
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                         {[
@@ -361,7 +361,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                                     <stat.icon className="h-4 w-4 text-muted-foreground" />
                                                 </CardHeader>
                                                 <CardContent>
-                                                    <div className="text-2xl font-bold tracking-tight">
+                                                    <div className="text-2xl font-bold">
                                                         {typeof stat.value === 'number' ? formatCurrency(stat.value).replace(/\s*[₫đ]\s*$/g, '').trim() : stat.value}
                                                     </div>
                                                 </CardContent>
@@ -491,7 +491,7 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
                     <CardTitle className="text-base">{item.title}</CardTitle>
                 </div>
                 <div className="flex items-baseline gap-1">
-                    <span className="text-2xl font-bold tracking-tight">{formatCurrency(activeAmount).replace(/\s*[₫đ]\s*$/g, '').trim()}</span>
+                    <span className="text-2xl font-bold">{formatCurrency(activeAmount).replace(/\s*[₫đ]\s*$/g, '').trim()}</span>
                     <span className="text-sm font-medium text-muted-foreground">đ</span>
                 </div>
             </CardHeader>

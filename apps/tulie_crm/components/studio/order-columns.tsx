@@ -207,7 +207,7 @@ export const retailOrderColumns: ColumnDef<RetailOrder>[] = [
                     <Dialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
                         <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader>
-                                <DialogTitle className="font-bold tracking-tight">Xác nhận hủy đơn hàng?</DialogTitle>
+                                <DialogTitle className="font-bold">Xác nhận hủy đơn hàng?</DialogTitle>
                                 <DialogDescription>
                                     Hành động này sẽ chuyển trạng thái đơn hàng <strong>{order.order_number}</strong> thành "Đã hủy".
                                 </DialogDescription>
@@ -229,7 +229,7 @@ export const retailOrderColumns: ColumnDef<RetailOrder>[] = [
                     <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
                         <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader>
-                                <DialogTitle className="font-bold tracking-tight">Xóa đơn hàng vĩnh viễn?</DialogTitle>
+                                <DialogTitle className="font-bold">Xóa đơn hàng vĩnh viễn?</DialogTitle>
                                 <DialogDescription>
                                     Hành động này sẽ xóa đơn hàng <strong>{order.order_number}</strong> khỏi hệ thống và không thể khôi phục.
                                 </DialogDescription>
@@ -254,7 +254,7 @@ export const retailOrderColumns: ColumnDef<RetailOrder>[] = [
                                 <MoreHorizontal className="h-4 w-4" />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-52 rounded-xl shadow-xl border-border/50">
+                        <DropdownMenuContent align="end" className="w-52 rounded-md shadow-xl border-border">
                             <DropdownMenuLabel className="text-xs text-muted-foreground">Thao tác đơn hàng</DropdownMenuLabel>
                             <DropdownMenuItem asChild className="rounded-lg">
                                 <Link href={`/studio/${order.id}`}>

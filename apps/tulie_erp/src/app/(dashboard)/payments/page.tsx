@@ -31,7 +31,7 @@ export default async function PaymentsPage() {
 
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-xl border border-border bg-card p-5">
+        <div className="rounded-md border border-border bg-card p-5">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10">
               <ArrowDownLeft className="h-5 w-5 text-emerald-600" />
@@ -42,7 +42,7 @@ export default async function PaymentsPage() {
             </div>
           </div>
         </div>
-        <div className="rounded-xl border border-border bg-card p-5">
+        <div className="rounded-md border border-border bg-card p-5">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-500/10">
               <ArrowUpRight className="h-5 w-5 text-red-600" />
@@ -53,7 +53,7 @@ export default async function PaymentsPage() {
             </div>
           </div>
         </div>
-        <div className="rounded-xl border border-border bg-card p-5">
+        <div className="rounded-md border border-border bg-card p-5">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10">
               <CreditCard className="h-5 w-5 text-blue-600" />
@@ -68,12 +68,12 @@ export default async function PaymentsPage() {
 
       {/* Payment list */}
       {allPayments.length === 0 ? (
-        <div className="rounded-xl border border-border bg-card p-12 text-center">
+        <div className="rounded-md border border-border bg-card p-12 text-center">
           <CreditCard className="mx-auto h-12 w-12 text-muted-foreground/50" />
           <h3 className="mt-4 text-lg font-medium text-foreground">Chưa có giao dịch nào</h3>
         </div>
       ) : (
-        <div className="rounded-xl border border-border bg-card overflow-hidden">
+        <div className="rounded-md border border-border bg-card overflow-hidden">
           <table className="w-full">
             <thead>
               <tr className="border-b border-border bg-muted/50">

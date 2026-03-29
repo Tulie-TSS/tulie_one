@@ -163,7 +163,7 @@ export default function ApprovalsPage() {
                 {/* Summary */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                     <div>
-                        <h2 className="text-[20px] font-bold tracking-tight text-foreground flex items-center gap-2">
+                        <h2 className="text-[20px] font-bold text-foreground flex items-center gap-2">
                             <Inbox className="h-5.5 w-5.5 text-primary" />
                             Approval inbox
                         </h2>
@@ -171,7 +171,7 @@ export default function ApprovalsPage() {
                             {pendingCount} pending review · {approvals.length} total
                         </p>
                     </div>
-                    <div className="flex w-fit items-center rounded-xl bg-zinc-100/80 p-1">
+                    <div className="flex w-fit items-center rounded-md bg-muted/80 p-1">
                         <div className="pl-3 pr-2 flex items-center justify-center">
                             <Filter className="h-4 w-4 text-muted-foreground" />
                         </div>
@@ -179,10 +179,7 @@ export default function ApprovalsPage() {
                             <button
                                 key={f}
                                 onClick={() => setFilter(f)}
-                                className={`px-3 py-1.5 rounded-lg text-[13px] font-semibold transition-all duration-200 ${filter === f
-                                        ? "bg-white text-foreground shadow-sm ring-1 ring-border/50"
-                                        : "text-muted-foreground hover:bg-white/50 hover:text-foreground"
-                                    }`}
+                                className={`px-3 py-1.5 rounded-lg text-[13px] font-semibold transition-all duration-200 ${filter === f ? "bg-white text-foreground shadow-sm ring-1 ring-border/50" : "text-muted-foreground hover:bg-white/50 hover:text-foreground" }`}
                             >
                                 {f === "all" ? "All" : f === "pending_review" ? "Pending" : f === "changes_requested" ? "Changes" : f.charAt(0).toUpperCase() + f.slice(1)}
                             </button>
@@ -201,7 +198,7 @@ export default function ApprovalsPage() {
                         return (
                             <Card
                                 key={approval.id}
-                                className={`transition-all card-elevated border-transparent ${isPending ? "ring-1 ring-amber-200/50 hover:ring-amber-300 shadow-amber-500/5 hover:-translate-y-0.5" : "hover:border-primary/20 hover:shadow-lg hover:-translate-y-0.5"}`}
+                                className={`transition-all card-elevated border-transparent ${isPending ? "ring-1 ring-amber-200/50 hover:ring-amber-300 shadow-amber-500/5 " : "hover:border-primary/20 hover:shadow-lg "}`}
                             >
                                 <CardContent className="pt-5 pb-4 px-6">
                                     {/* Header Row */}
@@ -218,7 +215,7 @@ export default function ApprovalsPage() {
                                                     <StatusIcon className="h-3.5 w-3.5 mr-1" />
                                                     {status.label}
                                                 </Badge>
-                                                <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-wider bg-zinc-100 border-border text-muted-foreground px-2 py-0.5">
+                                                <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-wider bg-muted border-border text-muted-foreground px-2 py-0.5">
                                                     {approval.priority}
                                                 </Badge>
                                             </div>
@@ -235,7 +232,7 @@ export default function ApprovalsPage() {
                                             {approval.agentName}
                                         </span>
                                         <span className="flex items-center gap-1.5">
-                                            <div className="flex h-5 w-5 items-center justify-center rounded bg-zinc-100 border border-border">
+                                            <div className="flex h-5 w-5 items-center justify-center rounded bg-muted border border-border">
                                                 <User className="h-3 w-3 text-muted-foreground" />
                                             </div>
                                             {approval.createdByName} <span className="text-muted-foreground/60 font-medium">({approval.createdByRole})</span>
@@ -258,7 +255,7 @@ export default function ApprovalsPage() {
                                             {approval.result && (
                                                 <div className="mb-4">
                                                     <p className="text-[12px] font-bold text-muted-foreground uppercase tracking-wider mb-2">AI-generated content</p>
-                                                    <div className="rounded-xl bg-zinc-50 border border-border/60 p-4 shadow-inner">
+                                                    <div className="rounded-md bg-muted border border-border/60 p-4 shadow-inner">
                                                         <p className="text-[13px] font-medium leading-relaxed text-foreground whitespace-pre-wrap">{approval.result}</p>
                                                     </div>
                                                 </div>
@@ -266,7 +263,7 @@ export default function ApprovalsPage() {
 
                                             {/* Existing feedback */}
                                             {approval.feedbackNote && (
-                                                <div className="mb-4 p-3 rounded-xl bg-indigo-50/50 border border-indigo-100/50">
+                                                <div className="mb-4 p-3 rounded-md bg-indigo-50/50 border border-indigo-100/50">
                                                     <p className="text-[11px] font-bold text-indigo-600 uppercase tracking-wider mb-1">Manager feedback</p>
                                                     <p className="text-[13px] font-medium text-indigo-900 leading-relaxed">{approval.feedbackNote}</p>
                                                 </div>
@@ -278,7 +275,7 @@ export default function ApprovalsPage() {
                                                     <div className="flex items-center gap-2">
                                                         <Input
                                                             placeholder="Add feedback or critique for AI to improve..."
-                                                            className="text-[13px] h-10 shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-primary/20 bg-white border-border/60 rounded-xl"
+                                                            className="text-[13px] h-10 shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-primary/20 bg-white border-border/60 rounded-md"
                                                             value={feedbackInputs[approval.id] ?? ""}
                                                             onChange={(e) =>
                                                                 setFeedbackInputs({ ...feedbackInputs, [approval.id]: e.target.value })
@@ -288,7 +285,7 @@ export default function ApprovalsPage() {
                                                     <div className="flex items-center gap-3">
                                                         <Button
                                                             size="sm"
-                                                            className="h-10 px-5 text-[13px] font-bold bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-600/20 text-white transition-all hover:-translate-y-0.5"
+                                                            className="h-10 px-5 text-[13px] font-bold bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-600/20 text-white transition-all"
                                                             onClick={() => handleAction(approval.id, "approve")}
                                                         >
                                                             <CheckCircle2 className="h-4 w-4 mr-1.5" />
@@ -297,7 +294,7 @@ export default function ApprovalsPage() {
                                                         <Button
                                                             size="sm"
                                                             variant="outline"
-                                                            className="h-10 px-5 text-[13px] font-bold bg-white hover:bg-zinc-50 shadow-sm transition-all"
+                                                            className="h-10 px-5 text-[13px] font-bold bg-white hover:bg-muted shadow-sm transition-all"
                                                             onClick={() => handleAction(approval.id, "request_changes")}
                                                         >
                                                             <Send className="h-4 w-4 mr-1.5 text-primary" />

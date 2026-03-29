@@ -27,7 +27,7 @@ export function StatsCard({
     const isNegative = change !== undefined && change < 0
 
     return (
-        <Card className={cn('relative group overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm shadow-sm transition-all duration-300', className)}>
+        <Card className={cn('relative group overflow-hidden border-border bg-card/50 backdrop-blur-sm shadow-sm transition-all duration-300', className)}>
             {/* Decorative gradient background */}
             {gradient && (
                 <div className={cn(
@@ -40,7 +40,7 @@ export function StatsCard({
                     {title}
                 </CardTitle>
                 {icon && (
-                    <div className="h-8 w-8 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-600 dark:text-zinc-400">
+                    <div className="h-8 w-8 rounded-full bg-muted dark:bg-zinc-800 flex items-center justify-center text-muted-foreground dark:text-muted-foreground">
                         {icon}
                     </div>
                 )}

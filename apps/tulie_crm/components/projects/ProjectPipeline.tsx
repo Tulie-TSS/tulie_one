@@ -57,7 +57,7 @@ export default function ProjectPipeline({ pipeline }: ProjectPipelineProps) {
                         const projects = pipeline[stage.key]
                         const Icon = stage.icon
                         return (
-                            <div key={stage.key} className={`rounded-xl p-3 border ${stage.color}`}>
+                            <div key={stage.key} className={`rounded-md p-3 border ${stage.color}`}>
                                 <div className="flex items-center gap-2 mb-2">
                                     <Icon className="h-4 w-4" />
                                     <span className="text-xs font-medium">{stage.label}</span>

@@ -71,7 +71,7 @@ export default async function CustomerDetailPage({ params }: any) {
                     <div className="min-w-0">
                         <h1 className="text-2xl font-bold leading-tight">{customer.company_name}</h1>
                         <div className="flex items-center gap-2 flex-wrap mt-1.5">
-                            <Badge className={`text-xs ${CUSTOMER_STATUS_COLORS[customer.status] || 'bg-zinc-100 text-zinc-600'}`}>
+                            <Badge className={`text-xs ${CUSTOMER_STATUS_COLORS[customer.status] || 'bg-muted text-muted-foreground'}`}>
                                 {CUSTOMER_STATUS_LABELS[customer.status] || customer.status}
                             </Badge>
                             <Badge variant="outline" className="text-xs">
@@ -172,11 +172,11 @@ export default async function CustomerDetailPage({ params }: any) {
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="bg-muted/50 p-4 rounded-xl text-center">
+                            <div className="bg-muted/50 p-4 rounded-md text-center">
                                 <p className="text-2xl font-bold">{quotations.length}</p>
                                 <p className="text-sm text-muted-foreground font-medium mt-1">Báo giá</p>
                             </div>
-                            <div className="bg-muted/50 p-4 rounded-xl text-center">
+                            <div className="bg-muted/50 p-4 rounded-md text-center">
                                 <p className="text-2xl font-bold">{contracts.length}</p>
                                 <p className="text-sm text-muted-foreground font-medium mt-1">Hợp đồng</p>
                             </div>

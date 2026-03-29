@@ -12,7 +12,7 @@ export default function WipSettingsPage() {
             <Link href="/settings" className="inline-flex items-center gap-1 no-underline mb-4" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('settings.backToSettings')}</Link>
             <h1 className="text-2xl font-semibold mb-6" style={{ color: 'var(--color-fg)' }}>{t('settings.wip')}</h1>
             <div className="space-y-6 max-w-2xl">
-                <div className="p-6 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                <div className="p-6 rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                     <h2 className="font-semibold mb-4" style={{ color: 'var(--color-fg)' }}>{t('wip.personalLimit')}</h2>
                     <div className="space-y-4">
                         <div>
@@ -26,7 +26,7 @@ export default function WipSettingsPage() {
                         </div>
                     </div>
                 </div>
-                <div className="p-6 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                <div className="p-6 rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                     <h2 className="font-semibold mb-4" style={{ color: 'var(--color-fg)' }}>{t('wip.hofstadter')}</h2>
                     <div>
                         <label className="block mb-1.5 font-medium" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-fg)' }}>{t('wip.defaultCoeff')}</label>

@@ -199,7 +199,7 @@ export function KanbanCard({
     <div
       className={cn(
         "rounded-md border border-border bg-card p-3 shadow-sm cursor-pointer transition-all",
-        "hover:shadow-md hover:-translate-y-0.5",
+        "hover:bg-accent",
         "animate-[scale-in_150ms_ease-out]",
         className
       )}

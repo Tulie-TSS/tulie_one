@@ -72,7 +72,7 @@ export function StudioBookingForm() {
     return (
         <div className="max-w-3xl mx-auto py-8 px-4">
             <div className="mb-8 text-center">
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-xl bg-primary/10 text-primary mb-4">
+                <div className="inline-flex h-16 w-16 items-center justify-center rounded-md bg-primary/10 text-primary mb-4">
                     <Camera className="h-8 w-8" />
                 </div>
                 <h1 className="text-3xl font-bold mb-2">Đặt in ảnh thẻ online</h1>
@@ -100,7 +100,7 @@ export function StudioBookingForm() {
                 ))}
             </div>
 
-            <div className="bg-card rounded-xl shadow-sm border p-6 md:p-8">
+            <div className="bg-card rounded-md shadow-sm border p-6 md:p-8">
                 {/* STEP 1: Chọn gói */}
                 {step === 1 && (
                     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -117,7 +117,7 @@ export function StudioBookingForm() {
                                     key={pkg.id}
                                     onClick={() => handlePackageSelect(pkg)}
                                     className={cn(
-                                        "relative cursor-pointer rounded-xl border-2 p-4 transition-all hover:border-primary/50",
+                                        "relative cursor-pointer rounded-md border-2 p-4 transition-all hover:border-primary/50",
                                         selectedPackage.id === pkg.id ? "border-primary bg-primary/5" : "border-muted bg-transparent"
                                     )}
                                 >
@@ -163,7 +163,7 @@ export function StudioBookingForm() {
                                 <Label
                                     htmlFor="photo-upload"
                                     className={cn(
-                                        "flex flex-col items-center justify-center min-h-[160px] rounded-xl border-2 border-dashed transition-colors cursor-pointer",
+                                        "flex flex-col items-center justify-center min-h-[160px] rounded-md border-2 border-dashed transition-colors cursor-pointer",
                                         fileName ? "border-primary bg-primary/5" : "border-muted hover:border-primary/50 hover:bg-muted/10 bg-transparent"
                                     )}
                                 >
@@ -210,7 +210,7 @@ export function StudioBookingForm() {
                             <h3 className="font-bold text-lg">Cấu hình in ảnh ({selectedPackage.sheets} vỉ)</h3>
                             <div className="grid sm:grid-cols-2 gap-4">
                                 {Array.from({ length: selectedPackage.sheets }).map((_, i) => (
-                                    <div key={i} className="flex flex-col space-y-2 p-4 rounded-xl border bg-muted/10">
+                                    <div key={i} className="flex flex-col space-y-2 p-4 rounded-md border bg-muted/10">
                                         <Label className="font-semibold">Kích cỡ vỉ {i + 1}</Label>
                                         <Select
                                             value={sheetConfigs[i].size}
@@ -282,7 +282,7 @@ export function StudioBookingForm() {
                             </div>
                         </div>
 
-                        <div className="p-4 rounded-xl border bg-muted/5 space-y-4">
+                        <div className="p-4 rounded-md border bg-muted/5 space-y-4">
                             <div className="flex items-center space-x-2">
                                 <Checkbox
                                     id="need-shipping"
@@ -330,7 +330,7 @@ export function StudioBookingForm() {
 
                         <div className="grid md:grid-cols-2 gap-8">
                             {/* Summary */}
-                            <div className="space-y-6 border rounded-xl p-6 bg-muted/5">
+                            <div className="space-y-6 border rounded-md p-6 bg-muted/5">
                                 <h3 className="font-bold border-b pb-2">Hóa đơn Studio</h3>
 
                                 <div className="space-y-4">
@@ -386,7 +386,7 @@ export function StudioBookingForm() {
                             </div>
 
                             {/* QR Payment */}
-                            <div className="flex flex-col items-center justify-center space-y-4 border rounded-xl p-6 bg-white shrink-0">
+                            <div className="flex flex-col items-center justify-center space-y-4 border rounded-md p-6 bg-white shrink-0">
                                 <div className="p-3 bg-primary/10 rounded-full mb-2">
                                     <QrCode className="h-6 w-6 text-primary" />
                                 </div>

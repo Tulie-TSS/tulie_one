@@ -155,7 +155,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                     <h3 className="text-[13px] font-semibold text-black mb-3 border-l-4 border-black pl-3 flex items-center h-4">
                         Thông tin khách hàng<span className="text-[0.8em] italic font-normal opacity-70 ml-1">/ Customer</span>
                     </h3>
-                    <div className="bg-slate-50 p-6 rounded-xl border border-slate-100 flex flex-col gap-2.5 text-[13px]">
+                    <div className="bg-slate-50 p-6 rounded-md border border-slate-100 flex flex-col gap-2.5 text-[13px]">
                         <div className="grid grid-cols-[140px_1fr]">
                             <span className="text-slate-700">Đơn vị<span className="text-[0.8em] italic font-normal opacity-70 ml-1">/ Company</span>:</span>
                             <span className="font-semibold text-black">{quotation.customer?.company_name || "N/A"}</span>
@@ -174,18 +174,18 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                 {/* PROPOSAL TIMELINE */}
                 {hasProposal && proposalSections.length > 0 && (
                     <div className="mb-12">
-                        <div className="relative mb-8 py-4 px-6 rounded-xl text-white overflow-hidden bg-zinc-950"
+                        <div className="relative mb-8 py-4 px-6 rounded-md text-white overflow-hidden bg-zinc-950"
                             style={{ backgroundImage: "linear-gradient(to right, #09090b, #171717, #262626)", WebkitPrintColorAdjust: 'exact' }}>
                             <div className="absolute inset-0 opacity-20 pointer-events-none"
                                 style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='rgba(255,255,255,1)'/%3E%3C/svg%3E\")" }}>
                             </div>
                             <div className="relative z-10">
-                                <h3 className="text-[16px] font-bold uppercase tracking-tight">Đề xuất giải pháp & Kế hoạch</h3>
+                                <h3 className="text-[16px] font-bold uppercase">Đề xuất giải pháp & Kế hoạch</h3>
                                 <p className="text-[11px] text-zinc-300 mt-0.5 font-medium">Strategic Solution Proposal — {proposalSections.length} Sections</p>
                             </div>
                         </div>
 
-                        <div className="relative pl-10 before:absolute before:left-[13px] before:top-[28px] before:bottom-4 before:w-[2px] before:bg-zinc-200 before:rounded-full">
+                        <div className="relative pl-10 before:absolute before:left-[13px] before:top-[28px] before:bottom-4 before:w-[2px] before:bg-muted before:rounded-full">
                             {proposalSections.map((section, idx) => {
                                 const icon = sectionIcons[section.label] || <Info className="w-4 h-4" />;
                                 return (
@@ -195,8 +195,8 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                             {idx + 1}
                                         </div>
 
-                                        <div className="rounded-xl border border-zinc-200 bg-white shadow-sm">
-                                            <div className="flex items-center gap-3 px-5 py-3 border-b bg-zinc-50/80 border-zinc-100 text-zinc-900">
+                                        <div className="rounded-md border border-border bg-white shadow-sm">
+                                            <div className="flex items-center gap-3 px-5 py-3 border-b bg-muted/80 border-border text-foreground">
                                                 <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900 text-white shadow-sm"
                                                     style={{ WebkitPrintColorAdjust: 'exact' }}>
                                                     {icon}
@@ -205,7 +205,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                                     {section.label}
                                                 </h4>
                                             </div>
-                                            <div className="px-5 py-4 text-[12px] text-zinc-600 leading-relaxed whitespace-pre-line">
+                                            <div className="px-5 py-4 text-[12px] text-muted-foreground leading-relaxed whitespace-pre-line">
                                                 {section.content}
                                             </div>
                                         </div>
@@ -221,10 +221,10 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                     <h3 className="text-[15px] font-bold text-black mb-6 border-l-4 border-black pl-3 flex items-center h-4">
                         <span className="text-black mr-2 font-semibold">{hasProposal ? `${proposalSections.length + 1}.` : ''}</span>
                         {hasProposal ? 'Kế hoạch đầu tư' : 'Chi tiết dịch vụ'}
-                        <span className="text-[0.7em] italic font-normal opacity-50 ml-2 tracking-tight">(Investment Plan)</span>
+                        <span className="text-[0.7em] italic font-normal opacity-50 ml-2">(Investment Plan)</span>
                     </h3>
 
-                    <div className="border border-zinc-200 rounded-xl shadow-sm">
+                    <div className="border border-border rounded-md shadow-sm">
                         <table className="w-full text-left border-collapse text-[11px]">
                             <thead>
                                 <tr className="text-white" style={{ background: "url(\"data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='rgba(255,255,255,0.12)'/%3E%3C/svg%3E\"), linear-gradient(to right, #09090b, #171717, #262626)", WebkitPrintColorAdjust: 'exact' }}>
@@ -245,8 +245,8 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                 {sectionEntries.map(([sectionName, sectionItems], sIdx) => (
                                     <React.Fragment key={sIdx}>
                                         {sectionName && (
-                                            <tr className="bg-zinc-100 border-b border-zinc-200">
-                                                <td colSpan={11} className="px-3 py-2 font-bold text-zinc-900 text-[12px]">
+                                            <tr className="bg-muted border-b border-border">
+                                                <td colSpan={11} className="px-3 py-2 font-bold text-foreground text-[12px]">
                                                     <div className="flex items-center gap-2">
                                                         <span className="flex items-center justify-center w-5 h-5 rounded-md bg-zinc-900 text-white text-[9px] font-bold"
                                                             style={{ WebkitPrintColorAdjust: 'exact' }}>
@@ -269,27 +269,27 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                             const afterVat = afterDiscount + vatAmt;
 
                                             return (
-                                                <tr key={iIdx} className="hover:bg-zinc-50/50">
-                                                    <td colSpan={1} className="w-6 shrink-0 text-center py-3 text-zinc-400 font-bold text-[9px]">
+                                                <tr key={iIdx} className="hover:bg-muted/50">
+                                                    <td colSpan={1} className="w-6 shrink-0 text-center py-3 text-muted-foreground font-bold text-[9px]">
                                                         {sectionName ? `${sIdx + 1}.${iIdx + 1}` : iIdx + 1}
                                                     </td>
                                                     <td className="px-3 align-top py-3">
                                                         <div>
-                                                            <p className="font-bold text-zinc-950 text-[12px] uppercase">{item.product_name || item.name}</p>
+                                                            <p className="font-bold text-foreground text-[12px] uppercase">{item.product_name || item.name}</p>
                                                             {item.description && (
-                                                                <p className="text-zinc-500 text-[10px] mt-1 leading-relaxed whitespace-pre-line border-l-2 border-zinc-100 pl-2 italic overflow-hidden">{item.description}</p>
+                                                                <p className="text-muted-foreground text-[10px] mt-1 leading-relaxed whitespace-pre-line border-l-2 border-border pl-2 italic overflow-hidden">{item.description}</p>
                                                             )}
                                                         </div>
                                                     </td>
-                                                    <td className="px-1 text-center text-zinc-600 align-top py-3 text-[10px]">{item.unit || 'Bộ'}</td>
+                                                    <td className="px-1 text-center text-muted-foreground align-top py-3 text-[10px]">{item.unit || 'Bộ'}</td>
                                                     <td className="px-1 text-center text-zinc-800 font-bold align-top py-3 text-[10px]">{qty}</td>
-                                                    <td className="px-2 text-right text-zinc-600 align-top py-3 text-[10px] tracking-tight tabular-nums">{formatCurrency(unitPrice).replace('₫', '')}</td>
-                                                    <td className="px-1 text-center text-zinc-500 align-top py-3 text-[10px]">{discountPct > 0 ? `${discountPct}%` : '-'}</td>
-                                                    <td className="px-2 text-right text-zinc-500 align-top py-3 text-[10px] tracking-tight tabular-nums">{discountAmt > 0 ? formatCurrency(discountAmt).replace('₫', '') : '-'}</td>
-                                                    <td className="px-2 text-right text-zinc-800 align-top py-3 text-[10px] tracking-tight tabular-nums">{formatCurrency(afterDiscount).replace('₫', '')}</td>
-                                                    <td className="px-1 text-center text-zinc-500 align-top py-3 text-[10px]">{vatRate > 0 ? `${vatRate}%` : '0%'}</td>
-                                                    <td className="px-2 text-right text-zinc-500 align-top py-3 text-[10px] tracking-tight tabular-nums">{vatAmt > 0 ? formatCurrency(vatAmt).replace('₫', '') : '-'}</td>
-                                                    <td className="px-3 text-right font-bold text-zinc-950 align-top py-3 text-[11px] tracking-tight tabular-nums">{formatCurrency(afterVat).replace('₫', '')}</td>
+                                                    <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums">{formatCurrency(unitPrice).replace('₫', '')}</td>
+                                                    <td className="px-1 text-center text-muted-foreground align-top py-3 text-[10px]">{discountPct > 0 ? `${discountPct}%` : '-'}</td>
+                                                    <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums">{discountAmt > 0 ? formatCurrency(discountAmt).replace('₫', '') : '-'}</td>
+                                                    <td className="px-2 text-right text-zinc-800 align-top py-3 text-[10px] tabular-nums">{formatCurrency(afterDiscount).replace('₫', '')}</td>
+                                                    <td className="px-1 text-center text-muted-foreground align-top py-3 text-[10px]">{vatRate > 0 ? `${vatRate}%` : '0%'}</td>
+                                                    <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums">{vatAmt > 0 ? formatCurrency(vatAmt).replace('₫', '') : '-'}</td>
+                                                    <td className="px-3 text-right font-bold text-foreground align-top py-3 text-[11px] tabular-nums">{formatCurrency(afterVat).replace('₫', '')}</td>
                                                 </tr>
                                             );
                                         })}
@@ -300,7 +300,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                     </div>
 
                     <div className="flex justify-end mt-8">
-                        <div className="w-[360px] bg-slate-50 p-6 rounded-xl border border-slate-200/50 space-y-3">
+                        <div className="w-[360px] bg-slate-50 p-6 rounded-md border border-slate-200/50 space-y-3">
                             <div className="flex justify-between text-[13px]">
                                 <span className="text-slate-500 font-medium italic">Tạm tính:</span>
                                 <span className="font-semibold text-slate-950">{formatCurrency(subtotalRaw)}</span>
@@ -334,7 +334,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
 
                 {/* TERMS & BANKING */}
                 <div className="grid grid-cols-2 gap-6 mt-12 pb-12">
-                    <div className="bg-slate-50 p-6 rounded-xl border border-slate-100 flex flex-col gap-6">
+                    <div className="bg-slate-50 p-6 rounded-md border border-slate-100 flex flex-col gap-6">
                         <div>
                             <h4 className="font-bold text-black mb-2.5 text-[13px] uppercase tracking-wide">Ghi chú <span className="text-[0.8em] italic font-normal opacity-70">/ Notes</span></h4>
                             <div className="text-[11px] text-slate-800 space-y-1.5 font-medium">
@@ -359,7 +359,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                         </div>
                     </div>
 
-                    <div className="bg-slate-50 p-6 rounded-xl border border-slate-100 flex flex-col">
+                    <div className="bg-slate-50 p-6 rounded-md border border-slate-100 flex flex-col">
                         <h4 className="font-bold text-black mb-4 text-[13px] uppercase tracking-wide">Thông tin chuyển khoản <span className="text-[0.8em] italic font-normal opacity-70">/ Bank</span></h4>
                         <div className="space-y-4 text-[12px]">
                             <div className="grid grid-cols-[110px_1fr] items-baseline">
@@ -368,7 +368,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                             </div>
                             <div className="grid grid-cols-[110px_1fr] items-baseline">
                                 <span className="text-slate-500 italic">Số tài khoản:</span>
-                                <span className="font-mono font-semibold text-sm text-black tracking-tight">{quotation.bank_account_no || brandConfig?.bank_account_no || "0110163102"}</span>
+                                <span className="font-mono font-semibold text-sm text-black">{quotation.bank_account_no || brandConfig?.bank_account_no || "0110163102"}</span>
                             </div>
                             <div className="grid grid-cols-[110px_1fr] items-baseline">
                                 <span className="text-slate-500 italic">Chủ tài khoản:</span>

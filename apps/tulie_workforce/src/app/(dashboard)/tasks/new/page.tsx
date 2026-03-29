@@ -75,7 +75,7 @@ export default function CreateTaskPage() {
                 <form onSubmit={handleSubmit}>
                     {/* task info */}
                     <Card className="card-elevated border-transparent">
-                        <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-5">
+                        <CardHeader className="border-b border-border/40 bg-muted/50 pb-5">
                             <CardTitle className="text-[16px] font-bold text-foreground flex items-center gap-2">
                                 <ClipboardList className="h-5 w-5 text-indigo-500" />
                                 Task details
@@ -104,7 +104,7 @@ export default function CreateTaskPage() {
                                     placeholder="Provide detailed instructions for the agent..."
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
-                                    className="flex min-h-[120px] w-full rounded-xl border border-border/60 bg-white px-4 py-3 text-[14px] shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+                                    className="flex min-h-[120px] w-full rounded-md border border-border/60 bg-white px-4 py-3 text-[14px] shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
                                     required
                                 />
                             </div>
@@ -113,7 +113,7 @@ export default function CreateTaskPage() {
 
                     {/* agent selection */}
                     <Card className="mt-6 card-elevated border-transparent">
-                        <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-5">
+                        <CardHeader className="border-b border-border/40 bg-muted/50 pb-5">
                             <CardTitle className="text-[16px] font-bold text-foreground flex items-center gap-2">
                                 <Bot className="h-5 w-5 text-emerald-500" />
                                 Assign to agent
@@ -129,12 +129,9 @@ export default function CreateTaskPage() {
                                         key={agent.id}
                                         type="button"
                                         onClick={() => setAgentId(agent.id)}
-                                        className={`flex items-start gap-4 rounded-xl border p-4 text-left transition-all hover:-translate-y-0.5 ${agentId === agent.id
-                                            ? "ring-2 ring-primary shadow-md border-transparent bg-zinc-50/50"
-                                            : "border-transparent card-elevated shadow-sm hover:border-primary/20 hover:shadow-lg bg-white"
-                                            }`}
+                                        className={`flex items-start gap-4 rounded-md border p-4 text-left transition-all ${agentId === agent.id ? "ring-2 ring-primary shadow-md border-transparent bg-muted/50" : "border-transparent card-elevated shadow-sm hover:border-primary/20 hover:shadow-lg bg-white" }`}
                                     >
-                                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100 shadow-sm text-indigo-600">
+                                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 shadow-sm text-indigo-600">
                                             <Bot className="h-5 w-5" />
                                         </div>
                                         <div className="flex-1 min-w-0">
@@ -156,7 +153,7 @@ export default function CreateTaskPage() {
 
                     {/* priority */}
                     <Card className="mt-6 card-elevated border-transparent">
-                        <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-5">
+                        <CardHeader className="border-b border-border/40 bg-muted/50 pb-5">
                             <CardTitle className="text-[16px] font-bold text-foreground">
                                 Priority Level
                             </CardTitle>
@@ -168,10 +165,7 @@ export default function CreateTaskPage() {
                                         key={p}
                                         type="button"
                                         onClick={() => setPriority(p)}
-                                        className={`px-5 py-2.5 rounded-xl text-[13px] font-bold tracking-wide uppercase transition-all shadow-sm ${priority === p
-                                            ? "bg-foreground text-white ring-2 ring-foreground/20"
-                                            : "bg-white border border-border/60 text-muted-foreground hover:bg-zinc-50 hover:text-foreground"
-                                            }`}
+                                        className={`px-5 py-2.5 rounded-md text-[13px] font-bold tracking-wide uppercase transition-all shadow-sm ${priority === p ? "bg-foreground text-white ring-2 ring-foreground/20" : "bg-white border border-border/60 text-muted-foreground hover:bg-muted hover:text-foreground" }`}
                                     >
                                         {p}
                                     </button>
@@ -183,7 +177,7 @@ export default function CreateTaskPage() {
                     {/* submit */}
                     <div className="mt-8 flex items-center justify-end gap-3 pb-12">
                         <Link href="/tasks">
-                            <Button type="button" variant="outline" className="h-10 px-6 font-semibold bg-white hover:bg-zinc-50 shadow-sm">
+                            <Button type="button" variant="outline" className="h-10 px-6 font-semibold bg-white hover:bg-muted shadow-sm">
                                 Cancel
                             </Button>
                         </Link>

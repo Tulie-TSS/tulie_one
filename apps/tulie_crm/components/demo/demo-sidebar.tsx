@@ -61,9 +61,9 @@ export function DemoSidebar() {
             <div className="flex h-16 items-center border-b border-border px-5 justify-between">
                 <Link href="/demo/dashboard" className="flex items-center gap-2.5">
                     <div className="h-8 w-8 rounded-lg bg-zinc-950 dark:bg-white flex items-center justify-center">
-                        <span className="text-white dark:text-zinc-950 font-black text-sm">N</span>
+                        <span className="text-white dark:text-foreground font-black text-sm">N</span>
                     </div>
-                    <span className="text-lg font-bold tracking-tight text-zinc-950 dark:text-zinc-50">NovaDeco</span>
+                    <span className="text-lg font-bold text-foreground dark:text-zinc-50">NovaDeco</span>
                 </Link>
                 <Button
                     variant="ghost"
@@ -83,20 +83,20 @@ export function DemoSidebar() {
                         <Button
                             variant="ghost"
                             className={cn(
-                                'w-full justify-start gap-3 h-10 rounded-xl',
+                                'w-full justify-start gap-3 h-10 rounded-md',
                                 pathname === '/demo/dashboard'
-                                    ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-950 dark:text-zinc-50 shadow-sm border border-border/50'
-                                    : 'text-muted-foreground hover:text-zinc-950 dark:hover:text-zinc-50 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50'
+                                    ? 'bg-muted dark:bg-zinc-800 text-foreground dark:text-zinc-50 shadow-sm border border-border'
+                                    : 'text-muted-foreground hover:text-foreground dark:hover:text-zinc-50 hover:bg-muted/50 dark:hover:bg-zinc-800/50'
                             )}
                         >
                             <LayoutGrid className="h-4 w-4 shrink-0" />
-                            <span className="font-bold tracking-tight">Dashboard</span>
+                            <span className="font-bold">Dashboard</span>
                         </Button>
                     </Link>
 
                     {navGroups.map((group, idx) => (
                         <div key={idx} className="flex flex-col">
-                            <h4 className="px-3 py-1.5 mt-4 text-[11px] font-semibold text-muted-foreground/70 uppercase tracking-tight">
+                            <h4 className="px-3 py-1.5 mt-4 text-[11px] font-semibold text-muted-foreground/70 uppercase">
                                 {group.title}
                             </h4>
                             <div className="flex flex-col gap-0.5">
@@ -108,14 +108,14 @@ export function DemoSidebar() {
                                             <Button
                                                 variant="ghost"
                                                 className={cn(
-                                                    'w-full justify-start gap-3 h-10 rounded-xl',
+                                                    'w-full justify-start gap-3 h-10 rounded-md',
                                                     isActive
-                                                        ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-950 dark:text-zinc-50 shadow-sm border border-border/50'
-                                                        : 'text-muted-foreground hover:text-zinc-950 dark:hover:text-zinc-50 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50'
+                                                        ? 'bg-muted dark:bg-zinc-800 text-foreground dark:text-zinc-50 shadow-sm border border-border'
+                                                        : 'text-muted-foreground hover:text-foreground dark:hover:text-zinc-50 hover:bg-muted/50 dark:hover:bg-zinc-800/50'
                                                 )}
                                             >
-                                                <Icon className={cn("h-4 w-4 shrink-0", isActive ? "text-zinc-950 dark:text-zinc-50" : "opacity-70")} />
-                                                <span className={cn("font-bold tracking-tight", isActive ? "text-zinc-950 dark:text-zinc-50" : "text-muted-foreground")}>{item.title}</span>
+                                                <Icon className={cn("h-4 w-4 shrink-0", isActive ? "text-foreground dark:text-zinc-50" : "opacity-70")} />
+                                                <span className={cn("font-bold ", isActive ? "text-foreground dark:text-zinc-50" : "text-muted-foreground")}>{item.title}</span>
                                             </Button>
                                         </Link>
                                     )
@@ -129,7 +129,7 @@ export function DemoSidebar() {
             {/* Footer */}
             <div className="p-4 border-t border-border">
                 <div className="text-[10px] font-semibold text-muted-foreground text-center">
-                    Powered by <span className="text-zinc-950 dark:text-zinc-50">Tulie CRM</span>
+                    Powered by <span className="text-foreground dark:text-zinc-50">Tulie CRM</span>
                 </div>
             </div>
         </aside>

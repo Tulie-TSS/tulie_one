@@ -86,7 +86,7 @@ export const productColumns: ColumnDef<Product>[] = [
         cell: ({ row }) => {
             const category = row.getValue('category') as string | undefined
             return category ? (
-                <StatusBadge status={category} className="bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400" />
+                <StatusBadge status={category} className="bg-muted text-muted-foreground dark:bg-zinc-800 dark:text-muted-foreground" />
             ) : (
                 <span className="text-muted-foreground">-</span>
             )

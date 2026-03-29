@@ -53,11 +53,11 @@ export default function DemoFinance() {
     return (
         <div className="space-y-8">
             <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shadow-sm border border-border/50">
-                    <Wallet className="h-6 w-6 text-zinc-900 dark:text-zinc-100" />
+                <div className="h-12 w-12 rounded-md bg-muted dark:bg-zinc-800 flex items-center justify-center shadow-sm border border-border">
+                    <Wallet className="h-6 w-6 text-foreground dark:text-zinc-100" />
                 </div>
                 <div>
-                    <h1 className="text-3xl font-bold text-zinc-950 dark:text-zinc-50 tracking-tight">Tài chính</h1>
+                    <h1 className="text-3xl font-bold text-foreground dark:text-zinc-50">Tài chính</h1>
                     <p className="text-sm font-medium text-muted-foreground mt-1">Tổng quan tài chính 12 tháng gần nhất</p>
                 </div>
             </div>
@@ -70,13 +70,13 @@ export default function DemoFinance() {
                     { label: 'Lợi nhuận', value: formatCurrency(profit), sub: `Biên ${profitMargin}%`, color: 'text-blue-600' },
                     { label: 'Công nợ phải thu', value: formatCurrency(receivable), sub: `${pendingInvoices.length} hóa đơn`, color: 'text-amber-600' },
                 ].map((s, i) => (
-                    <Card key={i} className="rounded-xl border-border/50">
+                    <Card key={i} className="rounded-md border-border">
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-bold text-muted-foreground tracking-tight">{s.label}</CardTitle>
+                            <CardTitle className="text-sm font-bold text-muted-foreground">{s.label}</CardTitle>
                             <TrendingUp className={`h-4 w-4 ${s.color}`} />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{s.value}</div>
+                            <div className="text-2xl font-bold text-foreground dark:text-zinc-50">{s.value}</div>
                             <p className="text-xs text-muted-foreground font-medium mt-1">{s.sub}</p>
                         </CardContent>
                     </Card>
@@ -84,9 +84,9 @@ export default function DemoFinance() {
             </div>
 
             {/* Revenue vs Expense Bar + Profit Line */}
-            <Card className="rounded-xl border-border/50">
+            <Card className="rounded-md border-border">
                 <CardHeader>
-                    <CardTitle className="text-lg font-bold tracking-tight">Doanh thu, Chi phí & Lợi nhuận</CardTitle>
+                    <CardTitle className="text-lg font-bold">Doanh thu, Chi phí & Lợi nhuận</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <ResponsiveContainer width="100%" height={350}>
@@ -107,9 +107,9 @@ export default function DemoFinance() {
 
             <div className="grid gap-6 lg:grid-cols-2">
                 {/* Cumulative Revenue Area */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Doanh thu & chi phí tích lũy</CardTitle>
+                        <CardTitle className="text-lg font-bold">Doanh thu & chi phí tích lũy</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={280}>
@@ -137,9 +137,9 @@ export default function DemoFinance() {
                 </Card>
 
                 {/* Invoice Pie */}
-                <Card className="rounded-xl border-border/50">
+                <Card className="rounded-md border-border">
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold tracking-tight">Phân bổ hóa đơn</CardTitle>
+                        <CardTitle className="text-lg font-bold">Phân bổ hóa đơn</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={280}>
@@ -156,9 +156,9 @@ export default function DemoFinance() {
             </div>
 
             {/* Monthly breakdown table */}
-            <Card className="rounded-xl border-border/50">
+            <Card className="rounded-md border-border">
                 <CardHeader>
-                    <CardTitle className="text-lg font-bold tracking-tight">Chi tiết theo tháng</CardTitle>
+                    <CardTitle className="text-lg font-bold">Chi tiết theo tháng</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="overflow-x-auto">
@@ -178,23 +178,23 @@ export default function DemoFinance() {
                                     const p = m.revenue - m.expenses
                                     const margin = Math.round((p / m.revenue) * 100)
                                     return (
-                                        <tr key={i} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
-                                            <td className="py-3 px-2 font-semibold text-zinc-950 dark:text-zinc-50">{m.month}</td>
-                                            <td className="py-3 px-2 text-right font-bold text-zinc-900 dark:text-zinc-100">{formatCurrency(m.revenue)}</td>
-                                            <td className="py-3 px-2 text-right text-zinc-600 dark:text-zinc-400">{formatCurrency(m.expenses)}</td>
+                                        <tr key={i} className="hover:bg-muted dark:hover:bg-zinc-800/50">
+                                            <td className="py-3 px-2 font-semibold text-foreground dark:text-zinc-50">{m.month}</td>
+                                            <td className="py-3 px-2 text-right font-bold text-foreground dark:text-zinc-100">{formatCurrency(m.revenue)}</td>
+                                            <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground">{formatCurrency(m.expenses)}</td>
                                             <td className="py-3 px-2 text-right font-bold text-emerald-700 dark:text-emerald-400">{formatCurrency(p)}</td>
-                                            <td className="py-3 px-2 text-right text-zinc-600 dark:text-zinc-400">{margin}%</td>
-                                            <td className="py-3 px-2 text-right text-zinc-600 dark:text-zinc-400">{m.projects}</td>
+                                            <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground">{margin}%</td>
+                                            <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground">{m.projects}</td>
                                         </tr>
                                     )
                                 })}
-                                <tr className="bg-zinc-50 dark:bg-zinc-800/50 font-bold">
-                                    <td className="py-3 px-2 text-zinc-950 dark:text-zinc-50">Tổng cộng</td>
-                                    <td className="py-3 px-2 text-right text-zinc-900 dark:text-zinc-100">{formatCurrency(totalRevenue)}</td>
-                                    <td className="py-3 px-2 text-right text-zinc-600 dark:text-zinc-400">{formatCurrency(totalExpenses)}</td>
+                                <tr className="bg-muted dark:bg-zinc-800/50 font-bold">
+                                    <td className="py-3 px-2 text-foreground dark:text-zinc-50">Tổng cộng</td>
+                                    <td className="py-3 px-2 text-right text-foreground dark:text-zinc-100">{formatCurrency(totalRevenue)}</td>
+                                    <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground">{formatCurrency(totalExpenses)}</td>
                                     <td className="py-3 px-2 text-right text-emerald-700 dark:text-emerald-400">{formatCurrency(profit)}</td>
-                                    <td className="py-3 px-2 text-right text-zinc-600 dark:text-zinc-400">{profitMargin}%</td>
-                                    <td className="py-3 px-2 text-right text-zinc-600 dark:text-zinc-400">{MONTHLY_REVENUE.reduce((s, m) => s + m.projects, 0)}</td>
+                                    <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground">{profitMargin}%</td>
+                                    <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground">{MONTHLY_REVENUE.reduce((s, m) => s + m.projects, 0)}</td>
                                 </tr>
                             </tbody>
                         </table>

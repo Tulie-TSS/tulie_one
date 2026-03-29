@@ -68,8 +68,8 @@ function SuccessContent() {
     }, [portalReady, portalUrl])
 
     return (
-        <div className="min-h-screen bg-zinc-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-lg border border-zinc-100 max-w-md w-full p-8 text-center space-y-6">
+        <div className="min-h-screen bg-muted flex items-center justify-center p-4">
+            <div className="bg-white rounded-md shadow-lg border border-border max-w-md w-full p-8 text-center space-y-6">
                 {/* Success Icon */}
                 <div className="flex justify-center">
                     <div className="h-16 w-16 rounded-full bg-emerald-50 flex items-center justify-center">
@@ -79,7 +79,7 @@ function SuccessContent() {
 
                 {/* Title */}
                 <div className="space-y-2">
-                    <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+                    <h1 className="text-2xl font-bold text-foreground">
                         Đặt đơn thành công! 🎉
                     </h1>
                     {orderNumber && (
@@ -87,7 +87,7 @@ function SuccessContent() {
                             {orderNumber}
                         </p>
                     )}
-                    <p className="text-sm text-zinc-500 leading-relaxed">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
                         Đơn hàng của bạn đã được tạo thành công.<br />
                         Chúng tôi đang chuẩn bị trang theo dõi đơn hàng...
                     </p>
@@ -97,7 +97,7 @@ function SuccessContent() {
                 {token && (
                     <div className="space-y-3">
                         {checking ? (
-                            <div className="flex items-center justify-center gap-2 text-sm text-zinc-500 py-3">
+                            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-3">
                                 <LoadingSpinner size="sm" />
                                 <span>Đang tải trang theo dõi đơn hàng...</span>
                             </div>
@@ -110,7 +110,7 @@ function SuccessContent() {
                             <div className="space-y-3">
                                 <Link
                                     href={portalUrl!}
-                                    className="flex items-center justify-center gap-2 w-full bg-zinc-900 text-white rounded-xl py-3 px-4 font-semibold text-sm hover:bg-zinc-800 transition-all shadow-sm"
+                                    className="flex items-center justify-center gap-2 w-full bg-zinc-900 text-white rounded-md py-3 px-4 font-semibold text-sm hover:bg-zinc-800 transition-all shadow-sm"
                                 >
                                     <ExternalLink className="h-4 w-4" />
                                     Xem đơn hàng & Thanh toán
@@ -121,7 +121,7 @@ function SuccessContent() {
                                         navigator.clipboard.writeText(fullPortalUrl)
                                         toast.success('Đã copy link theo dõi đơn hàng!')
                                     }}
-                                    className="flex items-center justify-center gap-2 w-full border border-zinc-200 text-zinc-600 rounded-xl py-2.5 px-4 text-xs font-medium hover:bg-zinc-50 transition-all"
+                                    className="flex items-center justify-center gap-2 w-full border border-border text-muted-foreground rounded-md py-2.5 px-4 text-xs font-medium hover:bg-muted transition-all"
                                 >
                                     <Copy className="h-3.5 w-3.5" />
                                     Copy link theo dõi đơn hàng
@@ -132,8 +132,8 @@ function SuccessContent() {
                 )}
 
                 {/* Contact Info */}
-                <div className="pt-4 border-t border-zinc-100">
-                    <p className="text-xs text-zinc-400 leading-relaxed">
+                <div className="pt-4 border-t border-border">
+                    <p className="text-xs text-muted-foreground leading-relaxed">
                         Nếu cần hỗ trợ, vui lòng liên hệ
                     </p>
                     <a href="tel:0979684731" className="inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-700 mt-1 hover:text-primary transition-colors">
@@ -149,7 +149,7 @@ function SuccessContent() {
 export default function OrderSuccessPage() {
     return (
         <Suspense fallback={
-            <div className="min-h-screen bg-zinc-50 flex items-center justify-center">
+            <div className="min-h-screen bg-muted flex items-center justify-center">
                 <LoadingSpinner size="lg" />
             </div>
         }>

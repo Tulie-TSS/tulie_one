@@ -155,7 +155,7 @@ export function AppShell({
           {/* Sidebar */}
           <aside
             className={cn(
-              "flex flex-col border-r border-border bg-sidebar text-sidebar-foreground transition-all duration-300 ease-apple shrink-0",
+              "flex flex-col border-r border-border bg-sidebar text-sidebar-foreground transition-all duration-300 ease-out shrink-0",
               mobile
                 ? cn(
                     "fixed inset-y-0 left-0 z-[var(--z-modal)] w-[240px]",
@@ -176,7 +176,7 @@ export function AppShell({
                 </div>
               )}
               {appName && !collapsed && (
-                <span className="text-sm font-semibold tracking-tight truncate">
+                <span className="text-sm font-semibold truncate">
                   {appName}
                 </span>
               )}

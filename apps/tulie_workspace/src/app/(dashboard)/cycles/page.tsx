@@ -17,7 +17,7 @@ export default function CyclesPage() {
                 <button className="px-4 py-2 font-medium cursor-pointer" style={{ backgroundColor: 'var(--color-info)', color: 'white', borderRadius: 'var(--radius-md)', border: 'none', fontSize: 'var(--text-sm)' }}>{t('cycles.create')}</button>
             </div>
             <div className="space-y-4">
-                <Link href={`/cycles/${MOCK_CYCLE.id}`} className="block p-6 no-underline transition-transform hover:-translate-y-0.5 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '2px solid var(--color-info)', boxShadow: 'var(--shadow-sm)' }}>
+                <Link href={`/cycles/${MOCK_CYCLE.id}`} className="block p-6 no-underline transition-transform rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '2px solid var(--color-info)', boxShadow: 'var(--shadow-sm)' }}>
                     <div className="flex items-center justify-between mb-3">
                         <h3 className="text-lg font-semibold" style={{ color: 'var(--color-fg)' }}>{MOCK_CYCLE.name}</h3>
                         <span className="px-2.5 py-1 rounded-full font-semibold" style={{ backgroundColor: 'var(--color-info-bg)', color: 'var(--color-info)', fontSize: 'var(--text-xs)' }}>{t('cycles.active')}</span>
@@ -39,7 +39,7 @@ export default function CyclesPage() {
                         ))}
                     </div>
                 </Link>
-                <div className="p-6 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                <div className="p-6 rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                     <h3 className="font-semibold mb-4" style={{ color: 'var(--color-fg)' }}>{t('cycles.milestones')}</h3>
                     <div className="space-y-3">
                         {MOCK_MILESTONES.map(ms => (

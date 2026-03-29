@@ -112,7 +112,7 @@ export default function TaskDetailPage() {
                     <div className="lg:col-span-2 space-y-6">
                         {/* Execution Timeline */}
                         <Card className="card-elevated border-transparent">
-                            <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                            <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                                 <CardTitle className="text-[15px] font-bold text-foreground">
                                     Execution timeline
                                 </CardTitle>
@@ -126,21 +126,14 @@ export default function TaskDetailPage() {
                                             <div key={i} className="flex gap-3 pb-6 last:pb-0">
                                                 <div className="flex flex-col items-center">
                                                     <Icon
-                                                        className={`h-5 w-5 shrink-0 ${step.status === "done"
-                                                                ? "text-foreground"
-                                                                : step.status === "current"
-                                                                    ? "text-muted-foreground"
-                                                                    : "text-muted-foreground/60"
-                                                            }`}
+                                                        className={`h-5 w-5 shrink-0 ${step.status === "done" ? "text-foreground" : step.status === "current" ? "text-muted-foreground" : "text-muted-foreground/60" }`}
                                                     />
                                                     {!isLast && (
-                                                        <div className={`w-px flex-1 mt-1 ${step.status === "done" ? "bg-foreground" : "bg-secondary"
-                                                            }`} />
+                                                        <div className={`w-px flex-1 mt-1 ${step.status === "done" ? "bg-foreground" : "bg-secondary" }`} />
                                                     )}
                                                 </div>
                                                 <div className="pb-2">
-                                                    <p className={`text-sm font-medium ${step.status === "upcoming" ? "text-muted-foreground" : "text-foreground"
-                                                        }`}>
+                                                    <p className={`text-sm font-medium ${step.status === "upcoming" ? "text-muted-foreground" : "text-foreground" }`}>
                                                         {step.label}
                                                     </p>
                                                     {step.detail && (
@@ -163,7 +156,7 @@ export default function TaskDetailPage() {
 
                         {/* Plan Review (if applicable) */}
                         {hasPlanReview && planReviewStep?.status === "current" && (
-                            <Card className="card-elevated border-dashed border-2 border-primary/20 bg-primary/5 shadow-none rounded-2xl">
+                            <Card className="card-elevated border-dashed border-2 border-primary/20 bg-primary/5 shadow-none rounded-md">
                                 <CardHeader className="pb-4">
                                     <CardTitle className="text-[15px] font-bold text-foreground">
                                         Review agent plan
@@ -195,7 +188,7 @@ export default function TaskDetailPage() {
                         {/* Conversation */}
                         {task.messages.length > 0 && (
                             <Card className="card-elevated border-transparent">
-                                <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                                <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                                     <CardTitle className="text-[15px] font-bold text-foreground flex items-center gap-2">
                                         <Bot className="h-4.5 w-4.5 text-sky-500" />
                                         Conversation
@@ -205,8 +198,7 @@ export default function TaskDetailPage() {
                                     <div className="space-y-4">
                                         {task.messages.map((msg) => (
                                             <div key={msg.id} className="flex gap-3">
-                                                <div className={`mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${msg.role === "user" ? "bg-secondary" : "bg-foreground"
-                                                    }`}>
+                                                <div className={`mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${msg.role === "user" ? "bg-secondary" : "bg-foreground" }`}>
                                                     {msg.role === "user" ? (
                                                         <User className="h-3.5 w-3.5 text-muted-foreground" />
                                                     ) : (
@@ -244,13 +236,13 @@ export default function TaskDetailPage() {
                         {/* Result */}
                         {task.result && (
                             <Card className="card-elevated border-transparent">
-                                <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                                <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                                     <CardTitle className="text-[15px] font-bold text-foreground">
                                         Result
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="space-y-4 pt-6">
-                                    <div className="rounded-xl bg-zinc-50 border border-border/50 p-5 shadow-inner">
+                                    <div className="rounded-md bg-muted border border-border p-5 shadow-inner">
                                         <p className="text-sm text-foreground">
                                             {task.result.outputText}
                                         </p>
@@ -281,7 +273,7 @@ export default function TaskDetailPage() {
                     {/* Right Column — Cost & Metadata */}
                     <div className="space-y-6">
                         <Card className="card-elevated border-transparent">
-                            <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                            <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                                 <CardTitle className="text-[15px] font-bold text-foreground">
                                     Cost summary
                                 </CardTitle>
@@ -315,7 +307,7 @@ export default function TaskDetailPage() {
                         </Card>
 
                         <Card className="card-elevated border-transparent">
-                            <CardHeader className="border-b border-border/40 bg-zinc-50/50 pb-4">
+                            <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
                                 <CardTitle className="text-[15px] font-bold text-foreground">
                                     Details
                                 </CardTitle>

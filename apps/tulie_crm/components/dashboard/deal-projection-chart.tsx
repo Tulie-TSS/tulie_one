@@ -30,7 +30,7 @@ export function DealProjectionChart({ stats }: DealProjectionChartProps) {
     const hasData = barData.length > 0
 
     return (
-        <Card className="col-span-2 rounded-xl border shadow-sm overflow-hidden">
+        <Card className="col-span-2 rounded-md border shadow-sm overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <div>
                     <CardTitle className="text-base font-semibold">Dự báo doanh thu (Deals Pipeline)</CardTitle>

@@ -84,11 +84,7 @@ export function BoardClient({ tasks, teamMembers }: BoardClientProps) {
 
                             {/* Column Drop Zone */}
                             <div
-                                className={`space-y-2 min-h-[200px] rounded-xl p-2 transition-colors ${
-                                    isDragOver
-                                        ? 'bg-blue-50 border-2 border-dashed border-blue-300'
-                                        : 'bg-muted/30'
-                                }`}
+                                className={`space-y-2 min-h-[200px] rounded-md p-2 transition-colors ${ isDragOver ? 'bg-blue-50 border-2 border-dashed border-blue-300' : 'bg-muted/30' }`}
                                 onDragOver={(e) => handleDragOver(e, col.key)}
                                 onDragLeave={handleDragLeave}
                                 onDrop={(e) => handleDrop(e, col.key)}
@@ -102,9 +98,7 @@ export function BoardClient({ tasks, teamMembers }: BoardClientProps) {
                                 {colTasks.map((task) => (
                                     <Card
                                         key={task.id}
-                                        className={`cursor-pointer hover:shadow-md transition-all ${
-                                            draggedTaskId === task.id ? 'opacity-40' : ''
-                                        }`}
+                                        className={`cursor-pointer hover:shadow-md transition-all ${ draggedTaskId === task.id ? 'opacity-40' : '' }`}
                                         draggable
                                         onDragStart={(e) => handleDragStart(e, task.id)}
                                         onClick={() => openTask(task)}
@@ -120,16 +114,12 @@ export function BoardClient({ tasks, teamMembers }: BoardClientProps) {
                                                 )}
                                                 <div className="flex items-center gap-1.5 ml-auto">
                                                     {task.due_date && (
-                                                        <span className={`text-[11px] ${
-                                                            new Date(task.due_date) < new Date() && task.status !== 'completed'
-                                                                ? 'text-rose-600 font-medium'
-                                                                : 'text-muted-foreground'
-                                                        }`}>
+                                                        <span className={`text-[11px] ${ new Date(task.due_date) < new Date() && task.status !== 'completed' ? 'text-rose-600 font-medium' : 'text-muted-foreground' }`}>
                                                             {new Date(task.due_date).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' })}
                                                         </span>
                                                     )}
                                                     {task.assigned_user && (
-                                                        <div className="h-5 w-5 rounded-full bg-zinc-200 flex items-center justify-center text-[11px] font-medium text-zinc-600" title={(task.assigned_user as any).full_name || ''}>
+                                                        <div className="h-5 w-5 rounded-full bg-muted flex items-center justify-center text-[11px] font-medium text-muted-foreground" title={(task.assigned_user as any).full_name || ''}>
                                                             {((task.assigned_user as any).full_name || '?').charAt(0).toUpperCase()}
                                                         </div>
                                                     )}

@@ -64,7 +64,7 @@ const getNotificationIcon = (type: NotificationType | string) => {
 }
 
 const getNotifSeverityColor = (severity?: string, read?: boolean) => {
-    if (read) return 'bg-zinc-50 dark:bg-zinc-900/50 text-zinc-500 border-zinc-200 dark:border-zinc-800'
+    if (read) return 'bg-muted dark:bg-zinc-900/50 text-muted-foreground border-border dark:border-zinc-800'
     switch (severity) {
         case 'success': return 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
         case 'warning': return 'bg-amber-500/10 text-amber-600 border-amber-500/20'
@@ -102,7 +102,7 @@ export default async function NotificationsPage() {
         <div className="space-y-6 p-4 md:p-8 pt-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
                         <Bell className="h-6 w-6 text-primary" />
                     </div>
                     <div>
@@ -241,7 +241,7 @@ export default async function NotificationsPage() {
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2 mb-0.5">
-                                            <p className={`font-semibold text-sm ${notification.read ? 'text-zinc-500' : ''}`}>
+                                            <p className={`font-semibold text-sm ${notification.read ? 'text-muted-foreground' : ''}`}>
                                                 {notification.title}
                                             </p>
                                             {!notification.read && (

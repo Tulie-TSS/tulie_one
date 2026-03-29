@@ -64,7 +64,7 @@ export { Alert, AlertTitle, AlertDescription } from "./components/alert"
 // Feedback
 export { LoadingSpinner } from "./components/loading-spinner"
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "./components/tooltip"
-export { Sonner } from "./components/sonner"
+export { Toaster as Sonner } from "./components/sonner"
 
 // Overlay / Modal
 export {
@@ -131,7 +131,7 @@ export {
 } from "./components/command"
 
 // Navigation
-export { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/tabs"
+export { Tabs, TabsContent, TabsList, TabsTrigger, tabsListVariants } from "./components/tabs"
 export {
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -147,6 +147,36 @@ export {
   AccordionItem,
   AccordionTrigger,
 } from "./components/accordion"
+export {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupAction,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInput,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSkeleton,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarProvider,
+  SidebarRail,
+  SidebarSeparator,
+  SidebarTrigger,
+  useSidebar,
+} from "./components/sidebar"
+export { Collapsible, CollapsibleTrigger, CollapsibleContent } from "./components/collapsible"
+
+// Hooks
+export { useIsMobile } from "./hooks/use-mobile"
 
 // Composite Inputs
 export { DatePicker } from "./components/date-picker"
@@ -171,7 +201,7 @@ export {
 // Layout
 export {
   AppShell,
-  useSidebar,
+  useSidebar as useAppShellSidebar,
   type NavItem,
   type NavGroup,
   type AppShellUser,

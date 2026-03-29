@@ -40,20 +40,20 @@ export function ProjectActivityHistory({ projectId, activities: initialActivitie
         if (action.includes('update')) return <RefreshCw className="w-3.5 h-3.5 text-amber-500" />
         if (action.includes('delete')) return <Trash2 className="w-3.5 h-3.5 text-red-500" />
         if (action.includes('status')) return <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-        return <Activity className="w-3.5 h-3.5 text-zinc-400" />
+        return <Activity className="w-3.5 h-3.5 text-muted-foreground" />
     }
 
     if (isLoading) return null
 
     return (
-        <Card className="border-zinc-200 shadow-sm overflow-hidden rounded-xl">
+        <Card className="border-border shadow-sm overflow-hidden rounded-md">
             <CardHeader className="py-6 px-6 border-b border-zinc-50">
                 <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-zinc-50 border border-zinc-100 flex items-center justify-center">
-                        <Activity className="w-5 h-5 text-zinc-900" />
+                    <div className="w-9 h-9 rounded-md bg-muted border border-border flex items-center justify-center">
+                        <Activity className="w-5 h-5 text-foreground" />
                     </div>
                     <div className="space-y-0.5">
-                        <CardTitle className="text-base font-semibold text-zinc-900 tracking-tight">Lịch sử hoạt động</CardTitle>
+                        <CardTitle className="text-base font-semibold text-foreground">Lịch sử hoạt động</CardTitle>
                         <CardDescription className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Các thay đổi và cập nhật gần đây trong dự án.</CardDescription>
                     </div>
                 </div>
@@ -63,23 +63,23 @@ export function ProjectActivityHistory({ projectId, activities: initialActivitie
                     <div className="p-6 space-y-6">
                         {activities.length === 0 ? (
                             <div className="text-center py-10">
-                                <p className="text-sm text-zinc-400">Chưa có hoạt động nào được ghi nhận.</p>
+                                <p className="text-sm text-muted-foreground">Chưa có hoạt động nào được ghi nhận.</p>
                             </div>
                         ) : (
                             activities.map((activity, idx) => (
                                 <div key={activity.id} className="relative flex gap-4">
                                     {/* Timeline line */}
                                     {idx !== activities.length - 1 && (
-                                        <div className="absolute left-4 top-8 bottom-0 w-[1px] bg-zinc-100" />
+                                        <div className="absolute left-4 top-8 bottom-0 w-[1px] bg-muted" />
                                     )}
 
-                                    <div className="relative z-10 w-8 h-8 shrink-0 rounded-full bg-white border border-zinc-100 flex items-center justify-center shadow-sm">
+                                    <div className="relative z-10 w-8 h-8 shrink-0 rounded-full bg-white border border-border flex items-center justify-center shadow-sm">
                                         <div className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
                                     </div>
 
                                     <div className="flex-1 space-y-1">
                                         <div className="flex items-center justify-between gap-4">
-                                            <p className="text-[13px] font-semibold text-zinc-900 leading-tight">
+                                            <p className="text-[13px] font-semibold text-foreground leading-tight">
                                                 {activity.user?.full_name || 'Hệ thống'}
                                                 <span className="font-normal text-muted-foreground ml-1">{activity.description}</span>
                                             </p>
@@ -88,7 +88,7 @@ export function ProjectActivityHistory({ projectId, activities: initialActivitie
                                             </span>
                                         </div>
                                         {activity.metadata && (
-                                            <div className="p-2.5 bg-zinc-50 rounded-lg border border-zinc-100/50">
+                                            <div className="p-2.5 bg-muted rounded-lg border border-border/50">
                                                 <p className="text-[11px] text-muted-foreground line-clamp-2 font-medium">{JSON.stringify(activity.metadata)}</p>
                                             </div>
                                         )}

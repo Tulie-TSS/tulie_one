@@ -31,7 +31,7 @@ export default function SearchPage() {
                     <div className="mb-3" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{results.length} {t('search.results')} &ldquo;{query}&rdquo;</div>
                     <div className="space-y-2">
                         {results.map(task => (
-                            <Link key={task.id} href={`/tasks/${task.id}`} className="flex items-center gap-4 p-4 no-underline transition-colors rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                            <Link key={task.id} href={`/tasks/${task.id}`} className="flex items-center gap-4 p-4 no-underline transition-colors rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                                 <span className="px-2 py-0.5 rounded-full flex-shrink-0 font-semibold" style={{ backgroundColor: `color-mix(in srgb, ${TASK_STATUS_COLORS[task.status]} 15%, transparent)`, color: TASK_STATUS_COLORS[task.status], fontSize: 'var(--text-xs)' }}>{t(`status.${task.status}` as const)}</span>
                                 <span className="flex-1 truncate font-medium" style={{ color: 'var(--color-fg)', fontSize: 'var(--text-sm)' }}>{task.title}</span>
                             </Link>

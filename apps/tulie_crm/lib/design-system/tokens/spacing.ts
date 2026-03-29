@@ -16,7 +16,7 @@ export const PAGE = {
 } as const
 
 // ─── Card Layout ─────────────────────────────────────────────────────────────
-// shadcn Card defaults: rounded-xl border py-6, CardContent px-6
+// shadcn Card defaults: rounded-md border py-6, CardContent px-6
 export const CARD = {
     padding: 'p-6',
     headerPadding: 'px-6',

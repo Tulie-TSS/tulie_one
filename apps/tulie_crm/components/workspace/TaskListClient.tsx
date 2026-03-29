@@ -21,11 +21,11 @@ const statusLabels: Record<string, string> = {
 }
 
 const statusColors: Record<string, string> = {
-    todo: 'bg-zinc-100 text-zinc-500',
+    todo: 'bg-muted text-muted-foreground',
     in_progress: 'bg-blue-50 text-blue-700',
     in_review: 'bg-amber-50 text-amber-700',
     completed: 'bg-emerald-50 text-emerald-700',
-    cancelled: 'bg-zinc-100 text-zinc-400 line-through',
+    cancelled: 'bg-muted text-muted-foreground line-through',
 }
 
 const statusDots: Record<string, string> = {
@@ -182,7 +182,7 @@ export function TaskListClient({ tasks, teamMembers }: TaskListClientProps) {
 
                                             {/* Assignee avatar */}
                                             {task.assigned_user && (
-                                                <div className="h-6 w-6 rounded-full bg-zinc-200 flex items-center justify-center text-[11px] font-medium text-zinc-600 shrink-0" title={(task.assigned_user as any).full_name || ''}>
+                                                <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-[11px] font-medium text-muted-foreground shrink-0" title={(task.assigned_user as any).full_name || ''}>
                                                     {((task.assigned_user as any).full_name || '?').charAt(0).toUpperCase()}
                                                 </div>
                                             )}

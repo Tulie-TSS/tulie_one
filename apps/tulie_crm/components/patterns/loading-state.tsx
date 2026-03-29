@@ -78,7 +78,7 @@ export function TableSkeleton({
     className?: string
 }) {
     return (
-        <div className={cn('border rounded-xl overflow-hidden', className)}>
+        <div className={cn('border rounded-md overflow-hidden', className)}>
             {/* Header */}
             <div className="flex items-center gap-4 p-4 border-b bg-muted/30">
                 {Array.from({ length: cols }).map((_, i) => (

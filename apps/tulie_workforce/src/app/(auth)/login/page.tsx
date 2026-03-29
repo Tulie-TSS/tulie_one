@@ -40,7 +40,7 @@ export default function LoginPage() {
     return (
         <Card className="border-0 bg-transparent shadow-none">
             <CardHeader className="space-y-4 px-0 text-left">
-                <CardTitle className="text-3xl font-bold tracking-tight text-foreground">
+                <CardTitle className="text-3xl font-bold text-foreground">
                     Chào mừng trở lại
                 </CardTitle>
                 <CardDescription className="text-base text-muted-foreground">

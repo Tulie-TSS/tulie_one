@@ -105,11 +105,11 @@ export function ProjectTasks({ project, workItems }: ProjectTasksProps) {
         <Card>
             <CardHeader className="flex flex-row items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-zinc-50 border border-zinc-100 flex items-center justify-center">
-                        <ListTodo className="w-5 h-5 text-zinc-900" />
+                    <div className="w-9 h-9 rounded-md bg-muted border border-border flex items-center justify-center">
+                        <ListTodo className="w-5 h-5 text-foreground" />
                     </div>
                     <div className="space-y-0.5">
-                        <CardTitle className="text-sm font-semibold text-zinc-950 tracking-tight leading-none">Danh sách công việc chi tiết (To-do List)</CardTitle>
+                        <CardTitle className="text-sm font-semibold text-foreground leading-none">Danh sách công việc chi tiết (To-do List)</CardTitle>
                         <CardDescription className="text-[11px] font-medium">Quản lý tất cả đầu việc trong dự án, bao gồm các đầu việc thuộc hạng mục (Module).</CardDescription>
                     </div>
                 </div>
@@ -132,7 +132,7 @@ export function ProjectTasks({ project, workItems }: ProjectTasksProps) {
                 )}
                 <div className="space-y-2">
                     {tasks.map((task, index) => (
-                        <div key={task.id} className="grid grid-cols-1 md:grid-cols-12 gap-3 p-3 border rounded-xl items-center bg-card transition-all hover:border-slate-300">
+                        <div key={task.id} className="grid grid-cols-1 md:grid-cols-12 gap-3 p-3 border rounded-md items-center bg-card transition-all hover:border-slate-300">
                             <div className="md:col-span-4 flex items-center gap-3">
                                 <span className="text-[11px] font-bold text-muted-foreground w-4">{index + 1}</span>
                                 <div className="flex-1 space-y-1">
@@ -183,7 +183,7 @@ export function ProjectTasks({ project, workItems }: ProjectTasksProps) {
                             <div className="md:col-span-4 grid grid-cols-2 gap-2">
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <Button variant="outline" className="h-8 justify-start text-left font-normal text-[11px] rounded-lg border-zinc-100">
+                                        <Button variant="outline" className="h-8 justify-start text-left font-normal text-[11px] rounded-lg border-border">
                                             <CalendarIcon className="mr-1.5 h-3 w-3 text-muted-foreground" />
                                             {task.start_date ? format(task.start_date, 'dd/MM') : 'Bắt đầu'}
                                         </Button>
@@ -194,7 +194,7 @@ export function ProjectTasks({ project, workItems }: ProjectTasksProps) {
                                 </Popover>
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <Button variant="outline" className="h-8 justify-start text-left font-normal text-[11px] rounded-lg border-zinc-100">
+                                        <Button variant="outline" className="h-8 justify-start text-left font-normal text-[11px] rounded-lg border-border">
                                             <CalendarIcon className="mr-1.5 h-3 w-3 text-muted-foreground" />
                                             {task.end_date ? format(task.end_date, 'dd/MM') : 'Kết thúc'}
                                         </Button>

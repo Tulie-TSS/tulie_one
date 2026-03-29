@@ -19,7 +19,7 @@ export default function SettingsPage() {
                     { href: '/settings/team', label: t('settings.team'), desc: t('settings.teamDesc'), icon: '👥' },
                     { href: '/settings/wip', label: t('settings.wip'), desc: t('settings.wipDesc'), icon: '🛡️' },
                 ].map(item => (
-                    <Link key={item.href} href={item.href} className="flex items-start gap-4 p-5 no-underline transition-transform hover:-translate-y-0.5 rounded-xl" style={{
+                    <Link key={item.href} href={item.href} className="flex items-start gap-4 p-5 no-underline transition-transform rounded-md" style={{
                         backgroundColor: 'var(--color-bg)',
                         border: item.active ? '2px solid var(--color-info)' : '1px solid var(--color-border)',
                         boxShadow: 'var(--shadow-sm)',
@@ -32,7 +32,7 @@ export default function SettingsPage() {
                     </Link>
                 ))}
             </div>
-            <div className="p-6 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+            <div className="p-6 rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                 <h2 className="font-semibold mb-6" style={{ color: 'var(--color-fg)' }}>{t('settings.general')}</h2>
                 <div className="space-y-5 max-w-xl">
                     <div>

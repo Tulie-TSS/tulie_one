@@ -18,7 +18,7 @@ export default function ProjectsPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {MOCK_PROJECTS.map(p => (
-                    <Link key={p.id} href={`/projects/${p.id}`} className="block p-5 no-underline transition-transform hover:-translate-y-0.5 rounded-xl" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
+                    <Link key={p.id} href={`/projects/${p.id}`} className="block p-5 no-underline transition-transform rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
                         <div className="flex items-center justify-between mb-2">
                             <h3 className="font-semibold" style={{ color: 'var(--color-fg)' }}>{p.name}</h3>
                             <span className="px-2 py-0.5 rounded-full font-semibold" style={{

@@ -89,13 +89,13 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                         </Button>
                     </Link>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">Giao dịch ngân hàng</h1>
+                        <h1 className="text-2xl font-bold">Giao dịch ngân hàng</h1>
                         <p className="text-sm text-muted-foreground">
                             Đồng bộ và kiểm tra giao dịch từ SePay • {total} giao dịch
                         </p>
                     </div>
                 </div>
-                <Button onClick={handleSync} disabled={isSyncing} className="font-bold rounded-xl shadow-md">
+                <Button onClick={handleSync} disabled={isSyncing} className="font-bold rounded-md shadow-md">
                     {isSyncing ? <LoadingSpinner size="sm" className="mr-2" /> : <RefreshCw className="mr-2 h-4 w-4" />}
                     Đồng bộ SePay
                 </Button>
@@ -104,7 +104,7 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
             {/* Sync Result */}
             {syncResult && (
                 <div className={cn(
-                    "p-4 rounded-xl border text-sm font-medium flex items-center gap-3",
+                    "p-4 rounded-md border text-sm font-medium flex items-center gap-3",
                     syncResult.error
                         ? "bg-rose-50 border-rose-200 text-rose-700"
                         : "bg-emerald-50 border-green-200 text-green-700"
@@ -119,7 +119,7 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
             )}
 
             {/* Filters */}
-            <Card className="overflow-hidden rounded-xl border-border/50">
+            <Card className="overflow-hidden rounded-md border-border">
                 <CardContent className="p-4">
                     <div className="flex flex-wrap gap-3 items-end">
                         <div className="flex-1 min-w-[200px]">
@@ -130,12 +130,12 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                     onKeyDown={handleSearchKeyDown}
-                                    className="pl-9 h-10 rounded-xl"
+                                    className="pl-9 h-10 rounded-md"
                                 />
                             </div>
                         </div>
                         <Select value={matchFilter} onValueChange={(v) => { setMatchFilter(v); applyFilters({ matchFilter: v }) }}>
-                            <SelectTrigger className="w-[160px] h-10 rounded-xl">
+                            <SelectTrigger className="w-[160px] h-10 rounded-md">
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -145,7 +145,7 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                             </SelectContent>
                         </Select>
                         <Select value={sourceFilter} onValueChange={(v) => { setSourceFilter(v); applyFilters({ sourceFilter: v }) }}>
-                            <SelectTrigger className="w-[140px] h-10 rounded-xl">
+                            <SelectTrigger className="w-[140px] h-10 rounded-md">
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -156,7 +156,7 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                             </SelectContent>
                         </Select>
                         <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); applyFilters({ typeFilter: v }) }}>
-                            <SelectTrigger className="w-[130px] h-10 rounded-xl">
+                            <SelectTrigger className="w-[130px] h-10 rounded-md">
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -165,7 +165,7 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                                 <SelectItem value="out">Tiền ra</SelectItem>
                             </SelectContent>
                         </Select>
-                        <Button variant="outline" onClick={() => applyFilters()} disabled={isFiltering} className="h-10 rounded-xl font-bold">
+                        <Button variant="outline" onClick={() => applyFilters()} disabled={isFiltering} className="h-10 rounded-md font-bold">
                             {isFiltering ? <LoadingSpinner size="sm" className="mr-2" /> : <Filter className="mr-2 h-4 w-4" />}
                             Lọc
                         </Button>
@@ -174,7 +174,7 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
             </Card>
 
             {/* Table */}
-            <Card className="overflow-hidden rounded-xl border-border/50">
+            <Card className="overflow-hidden rounded-md border-border">
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead className="bg-muted/50 text-xs font-bold text-muted-foreground uppercase tracking-wider border-b">
@@ -274,7 +274,7 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                                                 "text-[11px] font-bold",
                                                 tx.source_system === 'studio' && "text-violet-600 border-violet-200 bg-violet-50",
                                                 tx.source_system === 'lab' && "text-cyan-600 border-cyan-200 bg-cyan-50",
-                                                tx.source_system === 'unknown' && "text-zinc-400 border-zinc-200 bg-zinc-50",
+                                                tx.source_system === 'unknown' && "text-muted-foreground border-border bg-muted",
                                             )}>
                                                 {tx.source_system === 'studio' ? 'Studio' : tx.source_system === 'lab' ? 'Lab' : '—'}
                                             </Badge>

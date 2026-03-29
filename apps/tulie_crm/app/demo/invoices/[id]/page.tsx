@@ -34,36 +34,36 @@ export default function InvoiceDetail({ params }: { params: Promise<{ id: string
     return (
         <div className="space-y-6 max-w-3xl">
             <Link href="/demo/invoices">
-                <Button variant="ghost" className="gap-2 text-muted-foreground hover:text-zinc-950 dark:hover:text-zinc-50 -ml-3">
+                <Button variant="ghost" className="gap-2 text-muted-foreground hover:text-foreground dark:hover:text-zinc-50 -ml-3">
                     <ArrowLeft className="h-4 w-4" /> Hóa đơn
                 </Button>
             </Link>
 
             {/* Invoice card */}
-            <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-border/50 p-8 space-y-8">
+            <div className="bg-white dark:bg-zinc-900 rounded-md border border-border p-8 space-y-8">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                     <div>
                         <div className="flex items-center gap-3 mb-2">
-                            <div className="h-10 w-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                                <FileText className="h-5 w-5 text-zinc-600 dark:text-zinc-300" />
+                            <div className="h-10 w-10 rounded-md bg-muted dark:bg-zinc-800 flex items-center justify-center">
+                                <FileText className="h-5 w-5 text-muted-foreground dark:text-zinc-300" />
                             </div>
                             <div>
                                 <p className="text-xs font-mono font-semibold text-muted-foreground">HÓA ĐƠN #{invoice.id}</p>
-                                <h1 className="text-xl font-bold text-zinc-950 dark:text-zinc-50 tracking-tight">{invoice.description}</h1>
+                                <h1 className="text-xl font-bold text-foreground dark:text-zinc-50">{invoice.description}</h1>
                             </div>
                         </div>
                     </div>
-                    <Badge className={`text-xs font-semibold border-none px-3 py-1.5 rounded-xl flex items-center gap-1.5 ${st.color}`}>
+                    <Badge className={`text-xs font-semibold border-none px-3 py-1.5 rounded-md flex items-center gap-1.5 ${st.color}`}>
                         <StatusIcon className="h-3.5 w-3.5" />
                         {st.label}
                     </Badge>
                 </div>
 
                 {/* Amount */}
-                <div className="text-center py-6 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl">
+                <div className="text-center py-6 bg-muted dark:bg-zinc-800/50 rounded-md">
                     <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Số tiền</p>
-                    <p className="text-4xl font-black text-zinc-950 dark:text-zinc-50">{formatCurrency(invoice.amount)}</p>
+                    <p className="text-4xl font-black text-foreground dark:text-zinc-50">{formatCurrency(invoice.amount)}</p>
                 </div>
 
                 {/* Details grid */}
@@ -78,7 +78,7 @@ export default function InvoiceDetail({ params }: { params: Promise<{ id: string
                                         {invoice.customerName}
                                     </Link>
                                 ) : (
-                                    <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">{invoice.customerName}</p>
+                                    <p className="text-sm font-semibold text-foreground dark:text-zinc-50">{invoice.customerName}</p>
                                 )}
                             </div>
                         </div>
@@ -86,7 +86,7 @@ export default function InvoiceDetail({ params }: { params: Promise<{ id: string
                             <CreditCard className="h-4 w-4 text-muted-foreground shrink-0" />
                             <div>
                                 <p className="text-[10px] font-semibold text-muted-foreground uppercase">Phương thức</p>
-                                <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">Chuyển khoản ngân hàng</p>
+                                <p className="text-sm font-semibold text-foreground dark:text-zinc-50">Chuyển khoản ngân hàng</p>
                             </div>
                         </div>
                     </div>
@@ -95,27 +95,27 @@ export default function InvoiceDetail({ params }: { params: Promise<{ id: string
                             <Calendar className="h-4 w-4 text-muted-foreground shrink-0" />
                             <div>
                                 <p className="text-[10px] font-semibold text-muted-foreground uppercase">Ngày tạo</p>
-                                <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">{invoice.dueDate}</p>
+                                <p className="text-sm font-semibold text-foreground dark:text-zinc-50">{invoice.dueDate}</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
                             <Calendar className="h-4 w-4 text-muted-foreground shrink-0" />
                             <div>
                                 <p className="text-[10px] font-semibold text-muted-foreground uppercase">Ngày thanh toán</p>
-                                <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">{invoice.paidDate || '—'}</p>
+                                <p className="text-sm font-semibold text-foreground dark:text-zinc-50">{invoice.paidDate || '—'}</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Timeline */}
-                <div className="border-t border-border/50 pt-6">
+                <div className="border-t border-border pt-6">
                     <p className="text-xs font-semibold text-muted-foreground uppercase mb-4">Lịch sử</p>
                     <div className="space-y-4">
                         <div className="flex items-start gap-3">
                             <div className="w-2 h-2 rounded-full bg-zinc-400 mt-1.5 shrink-0" />
                             <div>
-                                <p className="text-sm font-medium text-zinc-950 dark:text-zinc-50">Tạo hóa đơn</p>
+                                <p className="text-sm font-medium text-foreground dark:text-zinc-50">Tạo hóa đơn</p>
                                 <p className="text-xs text-muted-foreground">{invoice.dueDate}</p>
                             </div>
                         </div>

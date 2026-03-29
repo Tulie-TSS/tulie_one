@@ -16,7 +16,7 @@ const priorityColors: Record<string, string> = {
 }
 
 const statusDots: Record<string, string> = {
-    todo: 'border-zinc-300',
+    todo: 'border-input',
     in_progress: 'border-blue-500',
     in_review: 'border-amber-500',
     completed: 'border-emerald-500 bg-emerald-500',
@@ -163,21 +163,13 @@ export function CalendarClient({ tasks, teamMembers }: CalendarClientProps) {
                                 return (
                                     <div
                                         key={i}
-                                        className={`min-h-[110px] border-b border-r p-1.5 transition-colors cursor-pointer ${
-                                            day ? (isSelected ? 'bg-blue-50/50' : 'bg-background hover:bg-muted/30') : 'bg-muted/10'
-                                        } ${i % 7 === 6 ? 'border-r-0' : ''} ${isWeekend && day ? 'bg-muted/5' : ''}`}
+                                        className={`min-h-[110px] border-b border-r p-1.5 transition-colors cursor-pointer ${ day ? (isSelected ? 'bg-blue-50/50' : 'bg-background hover:bg-muted/30') : 'bg-muted/10' } ${i % 7 === 6 ? 'border-r-0' : ''} ${isWeekend && day ? 'bg-muted/5' : ''}`}
                                         onClick={() => day && setSelectedDay(day === selectedDay ? null : day)}
                                     >
                                         {day && (
                                             <>
                                                 <div className="flex items-center justify-between">
-                                                    <span className={`text-xs font-medium inline-flex items-center justify-center h-6 w-6 rounded-full transition-colors ${
-                                                        isTodayCell
-                                                            ? 'bg-foreground text-background'
-                                                            : isSelected
-                                                                ? 'bg-blue-50 text-blue-700'
-                                                                : 'text-muted-foreground'
-                                                    }`}>
+                                                    <span className={`text-xs font-medium inline-flex items-center justify-center h-6 w-6 rounded-full transition-colors ${ isTodayCell ? 'bg-foreground text-background' : isSelected ? 'bg-blue-50 text-blue-700' : 'text-muted-foreground' }`}>
                                                         {day}
                                                     </span>
                                                     {dayTasks.length > 0 && (
@@ -190,11 +182,7 @@ export function CalendarClient({ tasks, teamMembers }: CalendarClientProps) {
                                                     {dayTasks.slice(0, 3).map((task) => (
                                                         <div
                                                             key={task.id}
-                                                            className={`flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] truncate cursor-pointer transition-colors ${
-                                                                task.status === 'completed'
-                                                                    ? 'bg-emerald-50 text-emerald-700 line-through opacity-70'
-                                                                    : 'bg-muted/50 hover:bg-muted text-foreground'
-                                                            }`}
+                                                            className={`flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] truncate cursor-pointer transition-colors ${ task.status === 'completed' ? 'bg-emerald-50 text-emerald-700 line-through opacity-70' : 'bg-muted/50 hover:bg-muted text-foreground' }`}
                                                             onClick={(e) => { e.stopPropagation(); openTask(task) }}
                                                         >
                                                             <div className={`h-1.5 w-1.5 rounded-full shrink-0 ${priorityColors[task.priority] || 'bg-zinc-400'}`} />
@@ -250,18 +238,13 @@ export function CalendarClient({ tasks, teamMembers }: CalendarClientProps) {
                                             <span className={`text-sm flex-1 truncate ${task.status === 'completed' ? 'line-through opacity-60' : ''}`}>
                                                 {task.title}
                                             </span>
-                                            <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${
-                                                task.status === 'completed' ? 'bg-emerald-100 text-emerald-700' :
-                                                task.status === 'in_progress' ? 'bg-blue-50 text-blue-700' :
-                                                task.status === 'in_review' ? 'bg-amber-100 text-amber-700' :
-                                                'bg-zinc-100 text-zinc-700'
-                                            }`}>
+                                            <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${ task.status === 'completed' ? 'bg-emerald-100 text-emerald-700' : task.status === 'in_progress' ? 'bg-blue-50 text-blue-700' : task.status === 'in_review' ? 'bg-amber-100 text-amber-700' : 'bg-muted text-zinc-700' }`}>
                                                 {task.status === 'completed' ? 'Xong' :
                                                  task.status === 'in_progress' ? 'Đang làm' :
                                                  task.status === 'in_review' ? 'Review' : 'Cần làm'}
                                             </span>
                                             {task.assigned_user && (
-                                                <div className="h-5 w-5 rounded-full bg-zinc-200 flex items-center justify-center text-[11px] font-medium text-zinc-600 shrink-0">
+                                                <div className="h-5 w-5 rounded-full bg-muted flex items-center justify-center text-[11px] font-medium text-muted-foreground shrink-0">
                                                     {((task.assigned_user as any).full_name || '?').charAt(0).toUpperCase()}
                                                 </div>
                                             )}

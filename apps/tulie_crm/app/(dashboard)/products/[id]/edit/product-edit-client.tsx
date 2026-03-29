@@ -145,7 +145,7 @@ export default function ProductEditClient({ product, categories, units }: Produc
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid gap-6 lg:grid-cols-2">
-                    <Card className="rounded-xl border-zinc-200 shadow-sm">
+                    <Card className="rounded-md border-border shadow-sm">
                         <CardHeader>
                             <CardTitle>Thông tin sản phẩm</CardTitle>
                             <CardDescription>Thông tin cơ bản của sản phẩm/dịch vụ</CardDescription>
@@ -153,18 +153,18 @@ export default function ProductEditClient({ product, categories, units }: Produc
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
                                 <Label>Tên sản phẩm <span className="text-destructive">*</span></Label>
-                                <Input value={name} onChange={(e) => setName(e.target.value)} required className="h-10 border-zinc-200" />
+                                <Input value={name} onChange={(e) => setName(e.target.value)} required className="h-10 border-border" />
                             </div>
 
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label>Mã SKU</Label>
-                                    <Input value={sku} onChange={(e) => setSku(e.target.value)} className="h-10 border-zinc-200" />
+                                    <Input value={sku} onChange={(e) => setSku(e.target.value)} className="h-10 border-border" />
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Danh mục</Label>
                                     <Select value={category} onValueChange={setCategory}>
-                                        <SelectTrigger className="h-10 border-zinc-200">
+                                        <SelectTrigger className="h-10 border-border">
                                             <SelectValue placeholder="Chọn danh mục" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -184,7 +184,7 @@ export default function ProductEditClient({ product, categories, units }: Produc
                             <div className="space-y-2">
                                 <Label>Đơn vị tính <span className="text-destructive">*</span></Label>
                                 <Select value={unit} onValueChange={setUnit}>
-                                    <SelectTrigger className="h-10 border-zinc-200">
+                                    <SelectTrigger className="h-10 border-border">
                                         <SelectValue placeholder="Chọn ĐVT" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -199,7 +199,7 @@ export default function ProductEditClient({ product, categories, units }: Produc
 
                             <div className="space-y-2">
                                 <Label>Mô tả</Label>
-                                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} className="border-zinc-200" />
+                                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} className="border-border" />
                             </div>
 
                             <div className="flex items-center justify-between pt-2">
@@ -213,7 +213,7 @@ export default function ProductEditClient({ product, categories, units }: Produc
                     </Card>
 
                     <div className="space-y-6">
-                        <Card className="rounded-xl border-zinc-200 shadow-sm">
+                        <Card className="rounded-md border-border shadow-sm">
                             <CardHeader>
                                 <CardTitle>Giá & Chi phí</CardTitle>
                                 <CardDescription>Thiết lập giá bán và giá vốn</CardDescription>
@@ -241,7 +241,7 @@ export default function ProductEditClient({ product, categories, units }: Produc
                                     <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-100 mt-2">
                                         <div className="flex items-center justify-between">
                                             <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">Biên lợi nhuận</p>
-                                            <p className="text-2xl font-bold text-emerald-700 tracking-tight">
+                                            <p className="text-2xl font-bold text-emerald-700">
                                                 {(((price - costPrice) / price) * 100).toFixed(1)}%
                                             </p>
                                         </div>
@@ -250,10 +250,10 @@ export default function ProductEditClient({ product, categories, units }: Produc
                             </CardContent>
                         </Card>
 
-                        <Card className="rounded-xl border-zinc-200 shadow-sm">
+                        <Card className="rounded-md border-border shadow-sm">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
-                                    <Files className="h-5 w-5 text-zinc-500" />
+                                    <Files className="h-5 w-5 text-muted-foreground" />
                                     Bộ chứng từ mặc định
                                 </CardTitle>
                                 <CardDescription>Chọn các mẫu giấy tờ tự động tạo khi báo giá dịch vụ này được duyệt</CardDescription>
@@ -263,7 +263,7 @@ export default function ProductEditClient({ product, categories, units }: Produc
                                     {templates.map((template) => (
                                         <div
                                             key={template.id}
-                                            className="flex items-center space-x-3 p-3 rounded-lg border border-zinc-100 hover:bg-zinc-50 transition-colors"
+                                            className="flex items-center space-x-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors"
                                         >
                                             <Checkbox
                                                 id={`template-${template.id}`}

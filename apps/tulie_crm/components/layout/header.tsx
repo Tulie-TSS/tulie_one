@@ -10,15 +10,12 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
+    SidebarTrigger,
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+    Badge
 } from '@repo/ui'
-import {
-    Sheet,
-    SheetContent,
-    SheetTrigger,
-} from "@repo/ui"
-import { Sidebar } from './sidebar'
-import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui'
-import { Badge } from '@repo/ui'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -137,7 +134,7 @@ export function Header() {
                 default: return 'bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400'
             }
         }
-        return 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500'
+        return 'bg-muted dark:bg-zinc-800 text-muted-foreground'
     }
 
     const formatTimeAgo = (dateString: string) => {
@@ -156,24 +153,15 @@ export function Header() {
     return (
         <header className="flex h-16 items-center justify-between border-b bg-background px-4 sm:px-6">
             <div className="flex items-center gap-4">
-                {/* Mobile Menu Toggle */}
-                <Sheet>
-                    <SheetTrigger asChild>
-                        <Button variant="ghost" size="icon" className="lg:hidden">
-                            <Menu className="h-5 w-5" />
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="left" className="p-0 w-72">
-                        <Sidebar isMobile />
-                    </SheetContent>
-                </Sheet>
+                {/* Layout Sidebar Toggle */}
+                <SidebarTrigger className="-ml-1 mr-2" />
 
                 {/* Search - Responsive */}
                 <div className="relative group hidden sm:block">
-                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground group-focus-within:text-zinc-950 transition-colors" />
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground group-focus-within:text-foreground transition-colors" />
                     <Input
                         placeholder="Tìm kiếm thông tin..."
-                        className="w-[200px] md:w-[320px] pl-10 h-10 bg-zinc-100/50 border-transparent rounded-xl focus-visible:bg-white focus-visible:border-border focus-visible:ring-0 transition-all text-sm font-medium"
+                        className="w-[200px] md:w-[320px] pl-10 h-10 bg-muted/50 border-transparent rounded-md focus-visible:bg-white focus-visible:border-border focus-visible:ring-0 transition-all text-sm font-medium"
                     />
                 </div>
                 <Button variant="ghost" size="icon" className="sm:hidden">
@@ -189,7 +177,7 @@ export function Header() {
                         variant="ghost"
                         size="icon"
                         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                        className="relative rounded-full h-9 w-9 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                        className="relative rounded-full h-9 w-9 hover:bg-muted dark:hover:bg-zinc-800 transition-colors"
                         aria-label="Toggle theme"
                     >
                         <Sun className={`h-[18px] w-[18px] text-amber-500 transition-all duration-300 ${theme === 'dark' ? 'opacity-0 rotate-90 scale-0 absolute' : 'opacity-100 rotate-0 scale-100'}`} />
@@ -200,8 +188,8 @@ export function Header() {
                 {/* Notifications — Modern Bell */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="relative rounded-full h-9 w-9 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors group">
-                            <Bell className={`h-[18px] w-[18px] text-zinc-500 transition-colors group-hover:text-zinc-900 dark:group-hover:text-zinc-100 ${unreadCount > 0 ? 'group-hover:animate-[wiggle_0.3s_ease-in-out]' : ''}`} />
+                        <Button variant="ghost" size="icon" className="relative rounded-full h-9 w-9 hover:bg-muted dark:hover:bg-zinc-800 transition-colors group">
+                            <Bell className={`h-[18px] w-[18px] text-muted-foreground transition-colors group-hover:text-foreground dark:group-hover:text-zinc-100 ${unreadCount > 0 ? 'group-hover:animate-[wiggle_0.3s_ease-in-out]' : ''}`} />
                             {unreadCount > 0 && (
                                 <span className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white ring-2 ring-background shadow-sm">
                                     {unreadCount > 9 ? '9+' : unreadCount}
@@ -209,10 +197,10 @@ export function Header() {
                             )}
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-[calc(100vw-2rem)] sm:w-[380px] rounded-xl shadow-xl border-zinc-200/80 dark:border-zinc-700 p-0 overflow-hidden">
-                        <div className="flex items-center justify-between px-4 py-3 bg-zinc-50 dark:bg-zinc-900 border-b">
+                    <DropdownMenuContent align="end" className="w-[calc(100vw-2rem)] sm:w-[380px] rounded-md shadow-xl border-border dark:border-zinc-700 p-0 overflow-hidden">
+                        <div className="flex items-center justify-between px-4 py-3 bg-muted dark:bg-zinc-900 border-b">
                             <div className="flex items-center gap-2">
-                                <span className="text-[15px] font-bold text-zinc-900 dark:text-zinc-100">Thông báo</span>
+                                <span className="text-[15px] font-bold text-foreground dark:text-zinc-100">Thông báo</span>
                                 {unreadCount > 0 && (
                                     <span className="text-[11px] font-bold text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-2 py-0.5 rounded-full">{unreadCount} mới</span>
                                 )}
@@ -231,10 +219,10 @@ export function Header() {
                         <div className="max-h-[380px] overflow-y-auto no-scrollbar">
                             {notifications.length === 0 ? (
                                 <div className="py-12 flex flex-col items-center justify-center">
-                                    <div className="h-12 w-12 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-3">
-                                        <Bell className="h-5 w-5 text-zinc-400" />
+                                    <div className="h-12 w-12 rounded-full bg-muted dark:bg-zinc-800 flex items-center justify-center mb-3">
+                                        <Bell className="h-5 w-5 text-muted-foreground" />
                                     </div>
-                                    <p className="text-[14px] text-zinc-900 dark:text-zinc-100 font-semibold mb-1">Tất cả đã xong!</p>
+                                    <p className="text-[14px] text-foreground dark:text-zinc-100 font-semibold mb-1">Tất cả đã xong!</p>
                                     <p className="text-[13px] text-muted-foreground text-center">Bạn không còn thông báo nào chưa đọc.</p>
                                 </div>
                             ) : (
@@ -242,7 +230,7 @@ export function Header() {
                                     {notifications.map((notification) => (
                                         <DropdownMenuItem
                                             key={notification.id}
-                                            className={`flex items-start gap-3 py-3 px-3 cursor-pointer rounded-lg transition-colors border border-transparent ${!notification.read ? 'bg-blue-50/50 dark:bg-blue-500/5 hover:bg-blue-50 dark:hover:bg-blue-500/10' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50'}`}
+                                            className={`flex items-start gap-3 py-3 px-3 cursor-pointer rounded-lg transition-colors border border-transparent ${!notification.read ? 'bg-blue-50/50 dark:bg-blue-500/5 hover:bg-blue-50 dark:hover:bg-blue-500/10' : 'hover:bg-muted dark:hover:bg-zinc-800/50'}`}
                                             onClick={() => handleNotificationClick(notification)}
                                         >
                                             <div className={`mt-0.5 shrink-0 flex items-center justify-center h-8 w-8 rounded-full ${getNotificationColor(notification)}`}>
@@ -250,7 +238,7 @@ export function Header() {
                                             </div>
                                             <div className="flex flex-col flex-1 w-full relative">
                                                 <div className="flex items-center justify-between gap-2">
-                                                    <span className={`font-semibold text-[13.5px] line-clamp-1 ${!notification.read ? 'text-zinc-900 dark:text-zinc-50' : 'text-zinc-700 dark:text-zinc-300'}`}>
+                                                    <span className={`font-semibold text-[13.5px] line-clamp-1 ${!notification.read ? 'text-foreground dark:text-zinc-50' : 'text-zinc-700 dark:text-zinc-300'}`}>
                                                         {notification.title}
                                                     </span>
                                                     {!notification.read && (
@@ -269,8 +257,8 @@ export function Header() {
                                 </div>
                             )}
                         </div>
-                        <div className="p-2 border-t bg-zinc-50/50 dark:bg-zinc-900/50">
-                            <DropdownMenuItem asChild className="justify-center text-center cursor-pointer py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:bg-zinc-50 dark:hover:bg-zinc-900 shadow-sm transition-all text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 h-9">
+                        <div className="p-2 border-t bg-muted/50 dark:bg-zinc-900/50">
+                            <DropdownMenuItem asChild className="justify-center text-center cursor-pointer py-2.5 rounded-lg border border-border dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:bg-muted dark:hover:bg-zinc-900 shadow-sm transition-all text-[13px] font-semibold text-foreground dark:text-zinc-100 h-9">
                                 <Link href="/notifications" className="w-full">
                                     Xem tất cả thông báo
                                 </Link>
@@ -282,7 +270,7 @@ export function Header() {
                 {/* User Menu */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="flex items-center gap-2 sm:gap-3 px-1.5 sm:px-2 h-11 rounded-xl hover:bg-zinc-100 transition-all border border-transparent hover:border-border/50">
+                        <Button variant="ghost" className="flex items-center gap-2 sm:gap-3 px-1.5 sm:px-2 h-11 rounded-md hover:bg-muted transition-all border border-transparent hover:border-border">
                             <Avatar className="h-8 w-8 ring-2 ring-background shadow-sm">
                                 <AvatarImage src={user?.avatar} />
                                 <AvatarFallback className="bg-zinc-950 text-white text-[10px] font-bold">
@@ -290,10 +278,10 @@ export function Header() {
                                 </AvatarFallback>
                             </Avatar>
                             <div className="hidden xs:flex flex-col items-start text-left">
-                                <span className="text-sm font-bold text-zinc-950 tracking-tight leading-none">{user?.name || 'Đang tải...'}</span>
+                                <span className="text-sm font-bold text-foreground leading-none">{user?.name || 'Đang tải...'}</span>
                                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1 leading-none">{user?.role || 'Admin'}</span>
                             </div>
-                            <ChevronDown className="h-4 w-4 text-zinc-400 hidden sm:block" />
+                            <ChevronDown className="h-4 w-4 text-muted-foreground hidden sm:block" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-56">

@@ -379,7 +379,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         <ListTodo className="w-6 h-6 text-foreground" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-foreground uppercase tracking-tight">Nhật ký xử lý yêu cầu</h2>
+                        <h2 className="text-lg font-bold text-foreground uppercase">Nhật ký xử lý yêu cầu</h2>
                         <div className="text-sm font-medium text-muted-foreground flex items-center gap-2 mt-0.5">
                             <span>Revision & Feedback Log</span>
                             <span className="w-1 h-1 rounded-full bg-zinc-300" />
@@ -410,19 +410,19 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                 <div className="px-6 py-4 flex flex-wrap gap-x-12 gap-y-4">
                     <div>
                         <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Tổng số</p>
-                        <p className="text-2xl font-black tracking-tight text-foreground">{totalCount}</p>
+                        <p className="text-2xl font-black text-foreground">{totalCount}</p>
                     </div>
                     <div>
                         <p className="text-[11px] font-bold text-amber-600 uppercase tracking-wider mb-1">Cần xử lý</p>
-                        <p className="text-2xl font-black tracking-tight text-amber-700">{pendingCount}</p>
+                        <p className="text-2xl font-black text-amber-700">{pendingCount}</p>
                     </div>
                     <div>
                         <p className="text-[11px] font-bold text-blue-600 uppercase tracking-wider mb-1">Đang làm</p>
-                        <p className="text-2xl font-black tracking-tight text-blue-700">{activeCount}</p>
+                        <p className="text-2xl font-black text-blue-700">{activeCount}</p>
                     </div>
                     <div>
                         <p className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider mb-1">Hoàn thành</p>
-                        <p className="text-2xl font-black tracking-tight text-emerald-700">{completedCount}</p>
+                        <p className="text-2xl font-black text-emerald-700">{completedCount}</p>
                     </div>
                 </div>
             </div>
@@ -430,8 +430,8 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
             {/* Form Creation */}
             {showForm && (
                 <div className="p-6 bg-muted border-b border-border">
-                    <div className="max-w-4xl space-y-5 bg-background p-6 rounded-xl border border-border/60 shadow-sm">
-                        <div className="flex items-center gap-2 mb-2 pb-4 border-b border-border/50">
+                    <div className="max-w-4xl space-y-5 bg-background p-6 rounded-md border border-border/60 shadow-sm">
+                        <div className="flex items-center gap-2 mb-2 pb-4 border-b border-border">
                             <MessageSquarePlus className="w-5 h-5 text-foreground" />
                             <h3 className="font-semibold text-foreground">Tạo yêu cầu / Phản hồi mới</h3>
                         </div>
@@ -705,7 +705,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                     </div>
                                                                     
                                                                     {editItemId === item.id ? (
-                                                                        <div className="space-y-4 bg-muted/50 p-4 border border-border rounded-xl shadow-sm">
+                                                                        <div className="space-y-4 bg-muted/50 p-4 border border-border rounded-md shadow-sm">
                                                                             <div>
                                                                                 <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block mb-2">Sửa Tiêu đề</label>
                                                                                 <Input value={editTitle} onChange={e => setEditTitle(e.target.value)} className="h-9 text-sm shadow-sm font-medium" />
@@ -732,7 +732,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
 
                                                                     {/* Attachments Gallery */}
                                                                     {hasAttachments && (
-                                                                        <div className="space-y-2 pt-3 border-t border-border/50">
+                                                                        <div className="space-y-2 pt-3 border-t border-border">
                                                                             <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
                                                                                 <Paperclip className="w-3 h-3" />
                                                                                 Ảnh đính kèm ({item.attachments.length})
@@ -760,13 +760,13 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                 </div>
 
                                                                 {/* Right: Agency Response */}
-                                                                <div className="lg:col-span-5 border-t lg:border-t-0 lg:border-l border-border/50 pt-6 lg:pt-0 lg:pl-8">
+                                                                <div className="lg:col-span-5 border-t lg:border-t-0 lg:border-l border-border pt-6 lg:pt-0 lg:pl-8">
                                                                     <div className="flex items-center gap-2 mb-3">
                                                                         <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center border border-blue-200 shrink-0">
                                                                             <MessageCircle className="w-3 h-3 text-blue-700" />
                                                                         </div>
                                                                         <div>
-                                                                            <p className="text-xs font-bold text-blue-900 uppercase tracking-tight">
+                                                                            <p className="text-xs font-bold text-blue-900 uppercase">
                                                                                 Agency phản hồi
                                                                             </p>
                                                                             {item.responded_at && (
@@ -782,7 +782,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                             <div dangerouslySetInnerHTML={{ __html: item.response_content }} />
                                                                         </div>
                                                                     ) : (
-                                                                        <div className="bg-muted p-4 border border-border/50 border-dashed rounded-lg text-center">
+                                                                        <div className="bg-muted p-4 border border-border border-dashed rounded-lg text-center">
                                                                             <p className="text-xs text-muted-foreground font-medium">Đang chờ phản hồi từ đội ngũ hỗ trợ...</p>
                                                                         </div>
                                                                     )}

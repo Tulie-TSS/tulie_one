@@ -93,7 +93,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
             {/* Main Items Table — flexible widths, nowrap on numbers */}
             <table className="w-full border-collapse border border-black text-[11px] mb-8" style={{ tableLayout: 'auto' }}>
                 <thead>
-                    <tr className="bg-zinc-50 grayscale">
+                    <tr className="bg-muted grayscale">
                         <th className="border border-black py-2 px-1 text-center font-bold text-[10px] whitespace-nowrap">STT<br /><span className="text-[7pt] font-normal opacity-60">No.</span></th>
                         <th className="border border-black py-2 px-3 text-left font-bold uppercase text-[10px]" style={{ width: '100%' }}>
                             Hạng mục & Mô tả chi tiết <br />
@@ -140,7 +140,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                     {sectionEntries.map(([sectionName, sectionItems], sIdx) => (
                         <React.Fragment key={sectionName || sIdx}>
                             {sectionName && (
-                                <tr className="bg-zinc-100">
+                                <tr className="bg-muted">
                                     <td colSpan={11} className="border border-black py-1.5 px-3 font-bold uppercase text-[10px]">
                                         {sectionName}
                                     </td>
@@ -161,7 +161,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                                     <td className="border border-black py-2 px-1 text-center align-top font-bold text-[10px] whitespace-nowrap">{sectionName ? `${sIdx + 1}.${iIdx + 1}` : iIdx + 1}</td>
                                     <td className="border border-black py-2 px-3 align-top">
                                         <p className="font-bold mb-1 uppercase">{item.name || item.product_name}</p>
-                                        {(item.description) && <p className="text-[10px] text-zinc-600 whitespace-pre-line italic leading-relaxed mt-1 pt-1 border-t border-dashed border-zinc-200">{item.description}</p>}
+                                        {(item.description) && <p className="text-[10px] text-muted-foreground whitespace-pre-line italic leading-relaxed mt-1 pt-1 border-t border-dashed border-border">{item.description}</p>}
                                     </td>
                                     <td className="border border-black py-2 px-1 text-center align-top whitespace-nowrap">{item.unit || 'Bộ'}</td>
                                     <td className="border border-black py-2 px-1 text-center align-top font-bold whitespace-nowrap">{qty}</td>
@@ -203,10 +203,10 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                                 </tr>
                                 {totalDiscountAmt > 0 && (
                                     <tr>
-                                        <td colSpan={8} className="border border-black py-2 px-3 text-right font-bold text-[10px] text-zinc-600">Tổng chiết khấu / Total Discount:</td>
+                                        <td colSpan={8} className="border border-black py-2 px-3 text-right font-bold text-[10px] text-muted-foreground">Tổng chiết khấu / Total Discount:</td>
                                         <td className="border border-black py-2 px-1"></td>
                                         <td className="border border-black py-2 px-1"></td>
-                                        <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] text-zinc-600 whitespace-nowrap">-{formatCurrency(totalDiscountAmt).replace('₫', '')}</td>
+                                        <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] text-muted-foreground whitespace-nowrap">-{formatCurrency(totalDiscountAmt).replace('₫', '')}</td>
                                     </tr>
                                 )}
                                 {totalDiscountAmt > 0 && (
@@ -225,7 +225,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                                         <td className="border border-black py-2 px-1"></td>
                                     </tr>
                                 )}
-                                <tr className="bg-zinc-50">
+                                <tr className="bg-muted">
                                     <td colSpan={9} className="border border-black py-3 px-3 text-right font-bold uppercase text-[11px]">Tổng cộng thanh toán / Grand Total:</td>
                                     <td colSpan={2} className="border border-black py-3 px-1 text-right font-bold text-[13px] tabular-nums whitespace-nowrap">{formatCurrency(quotation.total_amount || grandTotal).replace('₫', '')} VND</td>
                                 </tr>
@@ -261,7 +261,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
             </div>
 
             {/* Banking Info Section */}
-            <div className="mb-12 p-5 border border-black bg-zinc-50 grayscale">
+            <div className="mb-12 p-5 border border-black bg-muted grayscale">
                 <h4 className="text-[13px] font-bold uppercase underline mb-4">Thông tin chuyển khoản (Payment Information):</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[12px] ml-4 font-medium">
                     <div className="space-y-2">
@@ -278,15 +278,15 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
             {/* Signature Section */}
             <div className="grid grid-cols-2 gap-10 mt-12 text-center text-[12px]">
                 <div className="space-y-1">
-                    <p className="font-bold uppercase text-zinc-950">Đại diện khách hàng</p>
-                    <p className="italic text-[10px] text-zinc-400">(Ký & ghi rõ họ tên / Customer Signature)</p>
+                    <p className="font-bold uppercase text-foreground">Đại diện khách hàng</p>
+                    <p className="italic text-[10px] text-muted-foreground">(Ký & ghi rõ họ tên / Customer Signature)</p>
                     <div className="h-24"></div>
-                    <div className="h-px w-32 bg-zinc-200 mx-auto" />
+                    <div className="h-px w-32 bg-muted mx-auto" />
                 </div>
                 <div className="space-y-1">
-                    <p className="font-bold uppercase text-zinc-950">Đại diện {brandConfig?.brand_name || "Công ty Tulie"}</p>
+                    <p className="font-bold uppercase text-foreground">Đại diện {brandConfig?.brand_name || "Công ty Tulie"}</p>
 
-                    <p className="italic text-[10px] text-zinc-400">(Ký & đóng dấu / Authorized Signature)</p>
+                    <p className="italic text-[10px] text-muted-foreground">(Ký & đóng dấu / Authorized Signature)</p>
                     <div className="h-28 flex items-center justify-center opacity-10 grayscale">
                         <img src={brandConfig?.logo_url || "/file/tulie-agency-logo.png"} alt="Seal" className="h-16 w-auto" />
                     </div>
@@ -294,7 +294,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
             </div>
 
             {/* Footer Contact */}
-            <div className="mt-auto pt-8 border-t border-zinc-100 text-center text-[9px] text-zinc-400 font-bold uppercase tracking-wider">
+            <div className="mt-auto pt-8 border-t border-border text-center text-[9px] text-muted-foreground font-bold uppercase tracking-wider">
                 {brandConfig?.brand_name || "Tulie Agency"} - Creative Solution & Digital Strategy | Hotline: {brandConfig?.phone || "098.898.4554"} | Website: {brandConfig?.website || "tulie.vn"}
             </div>
         </div>

@@ -62,19 +62,19 @@ const PRINT_SIZES = [
 // Stepper component
 function QtyStepper({ value, onChange, min = 0 }: { value: number; onChange: (v: number) => void; min?: number }) {
   return (
-    <div className="flex items-center border border-zinc-200 rounded-lg bg-white select-none">
+    <div className="flex items-center border border-border rounded-lg bg-white select-none">
       <button
         type="button"
         onClick={() => onChange(Math.max(min, value - 1))}
-        className="px-2.5 py-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-50 rounded-l-lg transition-colors"
+        className="px-2.5 py-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-l-lg transition-colors"
       >
         <MinusIcon className="size-3.5" />
       </button>
-      <span className="w-8 text-center text-sm font-bold text-zinc-900 tabular-nums">{value}</span>
+      <span className="w-8 text-center text-sm font-bold text-foreground tabular-nums">{value}</span>
       <button
         type="button"
         onClick={() => onChange(value + 1)}
-        className="px-2.5 py-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-50 rounded-r-lg transition-colors"
+        className="px-2.5 py-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-r-lg transition-colors"
       >
         <PlusIcon className="size-3.5" />
       </button>
@@ -342,16 +342,16 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50/50 font-sans text-zinc-900 pb-20 selection:bg-black selection:text-white">
+    <div className="min-h-screen bg-muted/50 font-sans text-foreground pb-20 selection:bg-black selection:text-white">
       {/* Header */}
-      <div className="bg-white border-b border-zinc-200 pt-8 sm:pt-10 pb-6 sm:pb-8 px-4 sm:px-6">
+      <div className="bg-white border-b border-border pt-8 sm:pt-10 pb-6 sm:pb-8 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-8">
           <div className="flex items-center gap-4 sm:gap-6">
             <img src="/file/tulie-agency-logo.png" alt="Logo" className="h-10 sm:h-14 w-auto object-contain grayscale" />
-            <div className="w-px h-8 sm:h-10 bg-zinc-200" />
+            <div className="w-px h-8 sm:h-10 bg-muted" />
             <div>
-              <h1 className="text-lg sm:text-xl font-semibold text-zinc-900 tracking-tight">Ảnh thẻ Online</h1>
-              <p className="text-[10px] sm:text-xs text-zinc-400 mt-0.5 font-medium uppercase tracking-wider">ID Photo Service</p>
+              <h1 className="text-lg sm:text-xl font-semibold text-foreground">Ảnh thẻ Online</h1>
+              <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium uppercase tracking-wider">ID Photo Service</p>
             </div>
           </div>
           <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-emerald-50 rounded-full border border-emerald-200">
@@ -365,15 +365,15 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
         <main className="max-w-5xl mx-auto px-4 sm:px-6 mt-6 sm:mt-10 space-y-6 sm:space-y-8">
 
           {/* Section 1: Customer Info */}
-          <section className="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm">
-            <div className="p-4 sm:p-6 border-b border-zinc-100">
+          <section className="bg-white rounded-md border border-border overflow-hidden shadow-sm">
+            <div className="p-4 sm:p-6 border-b border-border">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-zinc-900 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
                   <span className="text-sm font-bold text-white">1</span>
                 </div>
                 <div>
-                  <h2 className="text-sm sm:text-base font-bold text-zinc-950 tracking-tight">Thông tin khách hàng</h2>
-                  <p className="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Nhập thông tin để chúng tôi trao trả kết quả</p>
+                  <h2 className="text-sm sm:text-base font-bold text-foreground">Thông tin khách hàng</h2>
+                  <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Nhập thông tin để chúng tôi trao trả kết quả</p>
                 </div>
               </div>
             </div>
@@ -381,30 +381,30 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
             <div className="p-4 sm:p-6 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="customerName" className="text-xs font-semibold text-zinc-600 uppercase tracking-wider">
+                  <Label htmlFor="customerName" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                     Họ và tên <span className="text-red-500">*</span>
                   </Label>
-                  <Input id="customerName" name="customerName" placeholder="Nguyễn Văn A" required className="h-10 sm:h-11 rounded-lg border-zinc-200 focus:border-zinc-400 placeholder:text-zinc-300" value={customerName} onChange={(e) => setCustomerName(e.target.value)} />
+                  <Input id="customerName" name="customerName" placeholder="Nguyễn Văn A" required className="h-10 sm:h-11 rounded-lg border-border focus:border-zinc-400 placeholder:text-zinc-300" value={customerName} onChange={(e) => setCustomerName(e.target.value)} />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="customerPhone" className="text-xs font-semibold text-zinc-600 uppercase tracking-wider">
+                  <Label htmlFor="customerPhone" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                     Số điện thoại <span className="text-red-500">*</span>
                   </Label>
-                  <Input id="customerPhone" name="customerPhone" type="tel" placeholder="09xx xxx xxx" required className="h-10 sm:h-11 rounded-lg border-zinc-200 focus:border-zinc-400 placeholder:text-zinc-300" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} />
+                  <Input id="customerPhone" name="customerPhone" type="tel" placeholder="09xx xxx xxx" required className="h-10 sm:h-11 rounded-lg border-border focus:border-zinc-400 placeholder:text-zinc-300" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} />
                 </div>
               </div>
 
               {/* Photo section — grouped under one container */}
-              <div className="rounded-xl border border-zinc-200 overflow-hidden">
-                <div className="px-4 py-3 bg-zinc-50 border-b border-zinc-100">
+              <div className="rounded-md border border-border overflow-hidden">
+                <div className="px-4 py-3 bg-muted border-b border-border">
                   <p className="text-xs font-semibold text-zinc-700 flex items-center gap-1.5"><Camera className="size-3.5" /> Ảnh gốc để sửa</p>
-                  <p className="text-[11px] text-zinc-400 mt-0.5">Quý khách có thể tải lên hoặc chèn link ở đây, hoặc gửi ảnh qua Zalo/Messenger cho shop</p>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">Quý khách có thể tải lên hoặc chèn link ở đây, hoặc gửi ảnh qua Zalo/Messenger cho shop</p>
                 </div>
                 <div className="p-4 space-y-4">
                   {/* Link input */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="notes" className="text-[11px] font-medium text-zinc-500">
-                      Link ảnh gốc / Ghi chú <span className="text-zinc-400">(tuỳ chọn)</span>
+                    <Label htmlFor="notes" className="text-[11px] font-medium text-muted-foreground">
+                      Link ảnh gốc / Ghi chú <span className="text-muted-foreground">(tuỳ chọn)</span>
                     </Label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-zinc-300">
@@ -413,7 +413,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                       <Input
                         id="notes"
                         name="notes"
-                        className="pl-9 h-10 sm:h-11 rounded-lg border-zinc-200 focus:border-zinc-400 placeholder:text-zinc-300"
+                        className="pl-9 h-10 sm:h-11 rounded-lg border-border focus:border-zinc-400 placeholder:text-zinc-300"
                         placeholder="Dán link Google Drive hoặc nhập yêu cầu đặc biệt..."
                       />
                     </div>
@@ -421,8 +421,8 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
 
                   {/* Upload zone */}
                   <div className="space-y-2">
-                    <Label className="text-[11px] font-medium text-zinc-500">
-                      Tải ảnh gốc lên <span className="text-zinc-400">(tuỳ chọn)</span>
+                    <Label className="text-[11px] font-medium text-muted-foreground">
+                      Tải ảnh gốc lên <span className="text-muted-foreground">(tuỳ chọn)</span>
                     </Label>
 
                     <input
@@ -439,24 +439,24 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                       onClick={() => fileInputRef.current?.click()}
                       disabled={isUploading}
                       className={cn(
-                        "w-full flex flex-col items-center justify-center gap-2 py-6 px-4 rounded-xl border-2 border-dashed transition-all cursor-pointer",
+                        "w-full flex flex-col items-center justify-center gap-2 py-6 px-4 rounded-md border-2 border-dashed transition-all cursor-pointer",
                         isUploading
-                          ? "border-zinc-300 bg-zinc-50 cursor-wait"
-                          : "border-zinc-200 hover:border-zinc-400 hover:bg-zinc-50/50 active:bg-zinc-100",
+                          ? "border-input bg-muted cursor-wait"
+                          : "border-border hover:border-zinc-400 hover:bg-muted/50 active:bg-muted",
                       )}
                     >
                       {isUploading ? (
                         <LoadingSpinner size="md" />
                       ) : (
-                        <div className="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center">
-                          <ImagePlus className="size-5 text-zinc-500" />
+                        <div className="w-10 h-10 rounded-md bg-muted flex items-center justify-center">
+                          <ImagePlus className="size-5 text-muted-foreground" />
                         </div>
                       )}
                       <div className="text-center">
                         <p className="text-xs font-semibold text-zinc-700">
                           {isUploading ? 'Đang tải lên...' : 'Chụp ảnh hoặc chọn từ thư viện'}
                         </p>
-                        <p className="text-[11px] text-zinc-400 mt-0.5">JPG, PNG, HEIC — tối đa 10MB/ảnh</p>
+                        <p className="text-[11px] text-muted-foreground mt-0.5">JPG, PNG, HEIC — tối đa 10MB/ảnh</p>
                       </div>
                     </button>
 
@@ -464,7 +464,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                     {uploadedFiles.length > 0 && (
                       <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-2">
                         {uploadedFiles.map((file) => (
-                          <div key={file.path} className="relative group rounded-lg overflow-hidden border border-zinc-200 bg-zinc-50 aspect-square">
+                          <div key={file.path} className="relative group rounded-lg overflow-hidden border border-border bg-muted aspect-square">
                             <img src={file.url} alt={file.name} className="w-full h-full object-cover" />
                             <button
                               type="button"
@@ -487,20 +487,20 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
           </section>
 
           {/* Demo Images — Sample Results */}
-          <section className="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm">
-            <div className="p-4 sm:p-6 border-b border-zinc-100">
+          <section className="bg-white rounded-md border border-border overflow-hidden shadow-sm">
+            <div className="p-4 sm:p-6 border-b border-border">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-zinc-100 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-md bg-muted flex items-center justify-center shrink-0">
                   <Sparkles className="w-4.5 h-4.5 text-zinc-700" />
                 </div>
                 <div>
-                  <h2 className="text-sm sm:text-base font-bold text-zinc-950 tracking-tight">Kết quả mẫu</h2>
-                  <p className="text-[11px] sm:text-xs text-zinc-400 mt-0.5">So sánh chất lượng giữa các gói</p>
+                  <h2 className="text-sm sm:text-base font-bold text-foreground">Kết quả mẫu</h2>
+                  <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">So sánh chất lượng giữa các gói</p>
                 </div>
               </div>
             </div>
             <div className="p-4 sm:p-6 space-y-4">
-              <div className="rounded-xl overflow-hidden border border-zinc-100">
+              <div className="rounded-md overflow-hidden border border-border">
                 <img
                   src="/file/anhthe-1.jpg"
                   alt="Kết quả mẫu ảnh thẻ người lớn — so sánh Ảnh gốc, Gói 79k, Gói 199k, Gói 339k"
@@ -508,7 +508,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                   loading="eager"
                 />
               </div>
-              <div className="rounded-xl overflow-hidden border border-zinc-100">
+              <div className="rounded-md overflow-hidden border border-border">
                 <img
                   src="/file/anhthe-2.jpg"
                   alt="Kết quả mẫu ảnh thẻ trẻ em — so sánh Ảnh gốc, Gói 79k, Gói 199k, Gói 339k"
@@ -516,7 +516,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                   loading="eager"
                 />
               </div>
-              <p className="text-[11px] text-zinc-400 text-center font-medium">
+              <p className="text-[11px] text-muted-foreground text-center font-medium">
                 Gói càng cao, ảnh càng được chỉnh sửa kỹ lưỡng hơn — bao gồm ghép tóc, ghép trang phục, chỉnh da cao cấp
               </p>
             </div>
@@ -525,12 +525,12 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
           {/* Section 2: Package Selection — Multi-quantity */}
           <section className="space-y-4 sm:space-y-5">
             <div className="flex items-center gap-3 px-1">
-              <div className="w-9 h-9 rounded-xl bg-zinc-900 flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
                 <span className="text-sm font-bold text-white">2</span>
               </div>
               <div>
-                <h2 className="text-sm sm:text-base font-bold text-zinc-950 tracking-tight">Chọn gói dịch vụ</h2>
-                <p className="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Mỗi gói tương ứng 1 bộ ảnh cho 1 người chụp</p>
+                <h2 className="text-sm sm:text-base font-bold text-foreground">Chọn gói dịch vụ</h2>
+                <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Mỗi gói tương ứng 1 bộ ảnh cho 1 người chụp</p>
               </div>
             </div>
 
@@ -544,10 +544,10 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                   <div
                     key={pkg.id}
                     className={cn(
-                      "bg-white rounded-xl border overflow-hidden shadow-sm transition-all duration-200",
+                      "bg-white rounded-md border overflow-hidden shadow-sm transition-all duration-200",
                       isSelected
                         ? "border-zinc-900 ring-1 ring-zinc-900/10"
-                        : "border-zinc-200 hover:border-zinc-300",
+                        : "border-border hover:border-input",
                     )}
                   >
                     {/* Card header */}
@@ -555,27 +555,27 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex items-start gap-3 flex-1 min-w-0">
                           <div className={cn(
-                            "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all",
-                            isSelected ? "bg-zinc-900 text-white shadow-lg shadow-black/10" : "bg-zinc-100 text-zinc-500",
+                            "w-10 h-10 rounded-md flex items-center justify-center shrink-0 transition-all",
+                            isSelected ? "bg-zinc-900 text-white shadow-lg shadow-black/10" : "bg-muted text-muted-foreground",
                           )}>
                             <Icon className="w-5 h-5" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <h3 className="text-[15px] font-bold text-zinc-950 tracking-tight">{pkg.name}</h3>
+                              <h3 className="text-[15px] font-bold text-foreground">{pkg.name}</h3>
                               {pkg.popular && (
                                 <span className="text-[10px] font-bold uppercase tracking-wider bg-zinc-900 text-white px-2 py-0.5 rounded-full">
                                   Phổ biến
                                 </span>
                               )}
                             </div>
-                            <p className="text-xs text-zinc-500 mt-1 font-medium leading-relaxed">{pkg.desc}</p>
+                            <p className="text-xs text-muted-foreground mt-1 font-medium leading-relaxed">{pkg.desc}</p>
 
                             {/* Features — visible on desktop */}
                             <div className="hidden sm:flex flex-wrap gap-x-4 gap-y-1 mt-3">
                               {pkg.features.map((f, i) => (
-                                <span key={i} className="flex items-center gap-1.5 text-[11px] text-zinc-600 font-medium">
-                                  <CheckCircle2 className="size-3 text-zinc-400 shrink-0" />
+                                <span key={i} className="flex items-center gap-1.5 text-[11px] text-muted-foreground font-medium">
+                                  <CheckCircle2 className="size-3 text-muted-foreground shrink-0" />
                                   {f}
                                 </span>
                               ))}
@@ -587,10 +587,10 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                         <div className="flex flex-col items-end gap-2 shrink-0">
                           <div className="text-right">
                             <div className="flex items-baseline gap-0.5">
-                              <span className="text-lg sm:text-xl font-bold text-zinc-950 tracking-tighter tabular-nums">{new Intl.NumberFormat('vi-VN').format(pkg.price)}</span>
-                              <span className="text-xs font-semibold text-zinc-500">đ</span>
+                              <span className="text-lg sm:text-xl font-bold text-foreground tracking-tighter tabular-nums">{new Intl.NumberFormat('vi-VN').format(pkg.price)}</span>
+                              <span className="text-xs font-semibold text-muted-foreground">đ</span>
                             </div>
-                            <p className="text-[10px] text-zinc-400 font-medium mt-0.5">/ người</p>
+                            <p className="text-[10px] text-muted-foreground font-medium mt-0.5">/ người</p>
                           </div>
                           <QtyStepper
                             value={qty}
@@ -602,8 +602,8 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                       {/* Features — mobile only */}
                       <div className="sm:hidden flex flex-wrap gap-x-4 gap-y-1 mt-3 ml-[52px]">
                         {pkg.features.map((f, i) => (
-                          <span key={i} className="flex items-center gap-1.5 text-[11px] text-zinc-600 font-medium">
-                            <CheckCircle2 className="size-3 text-zinc-400 shrink-0" />
+                          <span key={i} className="flex items-center gap-1.5 text-[11px] text-muted-foreground font-medium">
+                            <CheckCircle2 className="size-3 text-muted-foreground shrink-0" />
                             {f}
                           </span>
                         ))}
@@ -613,16 +613,16 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                     {/* Note field — shown when qty > 0 */}
                     {isSelected && (
                       <div className="px-4 sm:px-5 pb-4 sm:pb-5">
-                        <div className="bg-zinc-50 rounded-lg p-3 border border-zinc-100 space-y-2">
-                          <Label className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">
+                        <div className="bg-muted rounded-lg p-3 border border-border space-y-2">
+                          <Label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                             Ghi chú gói này (size in, yêu cầu đặc biệt…)
                           </Label>
-                          <p className="text-[11px] text-zinc-400 font-normal">Với size in, khách hàng có thể chọn cụ thể ở mục bên dưới</p>
+                          <p className="text-[11px] text-muted-foreground font-normal">Với size in, khách hàng có thể chọn cụ thể ở mục bên dưới</p>
                           <Textarea
                             value={pkgNotes[pkg.id] || ''}
                             onChange={(e) => setPkgNotes(prev => ({ ...prev, [pkg.id]: e.target.value }))}
                             placeholder={`VD: In vỉ 3x4, ghép áo vest xanh đen...`}
-                            className="min-h-[60px] text-xs bg-white border-zinc-200 rounded-lg resize-none placeholder:text-zinc-300"
+                            className="min-h-[60px] text-xs bg-white border-border rounded-lg resize-none placeholder:text-zinc-300"
                             rows={2}
                           />
                         </div>
@@ -637,35 +637,35 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
           {/* Section 3: Print Options */}
           <section className="space-y-4 sm:space-y-5">
             <div className="flex items-center gap-3 px-1">
-              <div className="w-9 h-9 rounded-xl bg-zinc-900 flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
                 <span className="text-sm font-bold text-white">3</span>
               </div>
               <div>
-                <h2 className="text-sm sm:text-base font-bold text-zinc-950 tracking-tight">Dịch vụ In ấn</h2>
-                <p className="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Giấy in chính hãng Canon — độ bền lên tới 100 năm</p>
+                <h2 className="text-sm sm:text-base font-bold text-foreground">Dịch vụ In ấn</h2>
+                <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Giấy in chính hãng Canon — độ bền lên tới 100 năm</p>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm">
+            <div className="bg-white rounded-md border border-border overflow-hidden shadow-sm">
               {/* Toggle */}
               <div className="p-4 sm:p-5 space-y-3">
                 <div className="flex items-center justify-between gap-4">
                   <div className="space-y-0.5">
-                    <p className="text-[13px] font-bold text-zinc-950">
+                    <p className="text-[13px] font-bold text-foreground">
                       Muốn in ảnh cứng
                     </p>
-                    <p className="text-[11px] text-zinc-400 font-medium">
+                    <p className="text-[11px] text-muted-foreground font-medium">
                       {totalFreePrints > 0 ? `Bạn đang được tặng ${totalFreePrints} vỉ miễn phí từ các gói đã chọn` : 'Chọn gói dịch vụ để nhận vỉ in miễn phí'}
                     </p>
                   </div>
                   {/* Segmented toggle: Không / Có */}
-                  <div className="flex shrink-0 rounded-lg border border-zinc-200 overflow-hidden text-xs font-semibold">
+                  <div className="flex shrink-0 rounded-lg border border-border overflow-hidden text-xs font-semibold">
                     <button
                       type="button"
                       onClick={() => setWantPrint(false)}
                       className={cn(
                         "px-3.5 py-1.5 transition-colors",
-                        !wantPrint ? "bg-zinc-900 text-white" : "bg-white text-zinc-500 hover:bg-zinc-50"
+                        !wantPrint ? "bg-zinc-900 text-white" : "bg-white text-muted-foreground hover:bg-muted"
                       )}
                     >
                       Không
@@ -674,8 +674,8 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                       type="button"
                       onClick={() => setWantPrint(true)}
                       className={cn(
-                        "px-3.5 py-1.5 transition-colors border-l border-zinc-200",
-                        wantPrint ? "bg-zinc-900 text-white" : "bg-white text-zinc-500 hover:bg-zinc-50"
+                        "px-3.5 py-1.5 transition-colors border-l border-border",
+                        wantPrint ? "bg-zinc-900 text-white" : "bg-white text-muted-foreground hover:bg-muted"
                       )}
                     >
                       Có
@@ -685,7 +685,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                 <button
                   type="button"
                   onClick={() => setShowLayoutPreview(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-100 border border-zinc-200 text-[11px] font-semibold text-zinc-600 hover:bg-zinc-200 hover:text-zinc-800 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted border border-border text-[11px] font-semibold text-muted-foreground hover:bg-muted hover:text-zinc-800 transition-colors"
                 >
                   <Eye className="size-3.5" />
                   Xem mẫu vỉ ảnh
@@ -695,22 +695,22 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                 <Dialog open={showLayoutPreview} onOpenChange={setShowLayoutPreview}>
                   <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden" showCloseButton={false}>
                     {/* Sticky header with close button */}
-                    <div className="flex items-start justify-between p-4 sm:p-6 pb-3 border-b border-zinc-100">
+                    <div className="flex items-start justify-between p-4 sm:p-6 pb-3 border-b border-border">
                       <div>
                         <DialogTitle className="text-base font-bold">Các kiểu vỉ in ảnh</DialogTitle>
-                        <p className="text-xs text-zinc-400 mt-1">Khổ giấy Canon 10×15 cm — độ bền lên tới 100 năm</p>
+                        <p className="text-xs text-muted-foreground mt-1">Khổ giấy Canon 10×15 cm — độ bền lên tới 100 năm</p>
                       </div>
-                      <DialogClose className="shrink-0 ml-4 w-8 h-8 rounded-full flex items-center justify-center bg-zinc-100 hover:bg-zinc-200 transition-colors">
-                        <X className="size-4 text-zinc-600" />
+                      <DialogClose className="shrink-0 ml-4 w-8 h-8 rounded-full flex items-center justify-center bg-muted hover:bg-muted transition-colors">
+                        <X className="size-4 text-muted-foreground" />
                       </DialogClose>
                     </div>
                     {/* Scrollable content */}
                     <div className="max-h-[70vh] overflow-y-auto p-4 sm:p-6">
                       <div className="grid gap-4 sm:grid-cols-2">
                         {PRINT_SIZES.map(size => (
-                          <div key={size.id} className="rounded-xl border border-zinc-200 overflow-hidden">
-                            <div className="px-3 py-2 border-b border-zinc-100 bg-zinc-50">
-                              <p className="text-xs font-bold text-zinc-900">{size.name}</p>
+                          <div key={size.id} className="rounded-md border border-border overflow-hidden">
+                            <div className="px-3 py-2 border-b border-border bg-muted">
+                              <p className="text-xs font-bold text-foreground">{size.name}</p>
                             </div>
                             <div className="p-2">
                               <PrintLayoutPreview sizeId={size.id} />
@@ -725,12 +725,12 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
 
               {/* Print Options Panel */}
               {wantPrint && (
-                <div className="border-t border-zinc-100 p-4 sm:p-5 space-y-5 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="border-t border-border p-4 sm:p-5 space-y-5 animate-in fade-in slide-in-from-top-2 duration-200">
                   {/* Per-vỉ size selection */}
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <Label className="text-xs font-semibold text-zinc-600 uppercase tracking-wider">Chọn size cho từng vỉ</Label>
-                      <span className="text-[11px] font-bold text-zinc-500 bg-zinc-100 px-2 py-0.5 rounded-full">{totalViSlots} vỉ</span>
+                      <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Chọn size cho từng vỉ</Label>
+                      <span className="text-[11px] font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{totalViSlots} vỉ</span>
                     </div>
 
                     {viSizes.map((sizeId, idx) => (
@@ -743,11 +743,11 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                         )}>
                           {idx + 1}
                         </span>
-                        <span className="text-[10px] text-zinc-400 font-medium shrink-0 min-w-[52px]">
+                        <span className="text-[10px] text-muted-foreground font-medium shrink-0 min-w-[52px]">
                           {viLabels[idx] || ''}
                         </span>
                         <Select value={sizeId} onValueChange={(v) => updateViSize(idx, v)}>
-                          <SelectTrigger className="h-9 rounded-lg border-zinc-200 bg-zinc-50/50 text-xs flex-1">
+                          <SelectTrigger className="h-9 rounded-lg border-border bg-muted/50 text-xs flex-1">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -756,7 +756,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                             ))}
                           </SelectContent>
                         </Select>
-                        <span className="text-[10px] text-zinc-400 font-medium shrink-0 w-16 text-right">
+                        <span className="text-[10px] text-muted-foreground font-medium shrink-0 w-16 text-right">
                           {idx < totalFreePrints ? 'Miễn phí' : `+${new Intl.NumberFormat('vi-VN').format(EXTRA_PRINT_PRICE)}đ`}
                         </span>
                       </div>
@@ -768,14 +768,14 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                         type="button"
                         onClick={() => setExtraViCount(Math.max(0, extraViCount - 1))}
                         disabled={extraViCount === 0}
-                        className="px-2.5 py-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-900 border border-zinc-200 rounded-lg hover:bg-zinc-50 disabled:opacity-30 transition-colors"
+                        className="px-2.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground border border-border rounded-lg hover:bg-muted disabled:opacity-30 transition-colors"
                       >
                         <MinusIcon className="size-3" />
                       </button>
                       <button
                         type="button"
                         onClick={() => setExtraViCount(extraViCount + 1)}
-                        className="px-2.5 py-1.5 text-xs font-semibold text-zinc-600 hover:text-zinc-900 border border-zinc-200 rounded-lg hover:bg-zinc-50 transition-colors flex items-center gap-1"
+                        className="px-2.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground border border-border rounded-lg hover:bg-muted transition-colors flex items-center gap-1"
                       >
                         <PlusIcon className="size-3" />
                         Thêm vỉ ({new Intl.NumberFormat('vi-VN').format(EXTRA_PRINT_PRICE)}đ/vỉ)
@@ -789,10 +789,10 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                     return (
                       <div className="space-y-2">
                         {visibleSizes.map((sizeId, idx) => (
-                          <div key={idx} className="bg-zinc-50 rounded-xl border border-zinc-100 overflow-hidden">
-                            <div className="px-3 py-1.5 bg-zinc-100/50 border-b border-zinc-100 flex items-center gap-2">
-                              <span className="text-[10px] font-bold text-zinc-500">Vỉ {idx + 1}</span>
-                              {viLabels[idx] && <span className="text-[10px] font-medium text-zinc-400">({viLabels[idx]})</span>}
+                          <div key={idx} className="bg-muted rounded-md border border-border overflow-hidden">
+                            <div className="px-3 py-1.5 bg-muted/50 border-b border-border flex items-center gap-2">
+                              <span className="text-[10px] font-bold text-muted-foreground">Vỉ {idx + 1}</span>
+                              {viLabels[idx] && <span className="text-[10px] font-medium text-muted-foreground">({viLabels[idx]})</span>}
                             </div>
                             <PrintLayoutPreview sizeId={sizeId} />
                           </div>
@@ -801,7 +801,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                           <button
                             type="button"
                             onClick={() => setShowAllLayouts(!showAllLayouts)}
-                            className="w-full text-center py-2 text-[11px] font-semibold text-zinc-400 hover:text-zinc-600 transition-colors"
+                            className="w-full text-center py-2 text-[11px] font-semibold text-muted-foreground hover:text-muted-foreground transition-colors"
                           >
                             {showAllLayouts ? '▲ Thu gọn' : `▼ Xem tất cả ${viSizes.length} vỉ`}
                           </button>
@@ -811,34 +811,34 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                   })()}
 
                   {/* Cost breakdown */}
-                  <div className="bg-zinc-50 rounded-lg p-3 sm:p-4 border border-zinc-100 text-[12px] sm:text-[13px] space-y-2">
-                    <div className="flex justify-between items-center text-zinc-500 font-medium">
+                  <div className="bg-muted rounded-lg p-3 sm:p-4 border border-border text-[12px] sm:text-[13px] space-y-2">
+                    <div className="flex justify-between items-center text-muted-foreground font-medium">
                       <span>Vỉ in miễn phí (theo gói)</span>
-                      <span className="font-bold text-zinc-900">{totalFreePrints} vỉ</span>
+                      <span className="font-bold text-foreground">{totalFreePrints} vỉ</span>
                     </div>
-                    <div className="flex justify-between items-center text-zinc-500 font-medium">
+                    <div className="flex justify-between items-center text-muted-foreground font-medium">
                       <span>Vỉ in thêm ({new Intl.NumberFormat('vi-VN').format(EXTRA_PRINT_PRICE)}đ/vỉ)</span>
-                      <span className={cn("font-bold", extraPrints > 0 ? "text-zinc-900" : "text-zinc-400")}>{extraPrints} vỉ</span>
+                      <span className={cn("font-bold", extraPrints > 0 ? "text-foreground" : "text-muted-foreground")}>{extraPrints} vỉ</span>
                     </div>
                     {extraPrints > 0 && (
-                      <div className="flex justify-between items-center text-zinc-500 font-medium">
+                      <div className="flex justify-between items-center text-muted-foreground font-medium">
                         <span>Phí in thêm</span>
-                        <span className="font-bold text-zinc-900">+{new Intl.NumberFormat('vi-VN').format(printExtraCost)}đ</span>
+                        <span className="font-bold text-foreground">+{new Intl.NumberFormat('vi-VN').format(printExtraCost)}đ</span>
                       </div>
                     )}
-                    <div className="flex justify-between items-center text-zinc-500 font-medium">
+                    <div className="flex justify-between items-center text-muted-foreground font-medium">
                       <span>Phí vận chuyển</span>
-                      <span className={cn("font-bold", hasFreeShipping ? "text-emerald-600" : "text-zinc-900")}>
+                      <span className={cn("font-bold", hasFreeShipping ? "text-emerald-600" : "text-foreground")}>
                         {hasFreeShipping ? 'Miễn phí' : `+${new Intl.NumberFormat('vi-VN').format(shippingFee)}đ`}
                       </span>
                     </div>
                   </div>
 
                   {/* Shipping fee — region selector */}
-                  <div className="space-y-3 pt-3 border-t border-zinc-100">
+                  <div className="space-y-3 pt-3 border-t border-border">
                     <div className="flex items-center gap-2">
-                      <Truck className="size-4 text-zinc-500" />
-                      <Label className="text-xs font-semibold text-zinc-600 uppercase tracking-wider">Phí vận chuyển</Label>
+                      <Truck className="size-4 text-muted-foreground" />
+                      <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Phí vận chuyển</Label>
                     </div>
                     {hasFreeShipping ? (
                       <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-emerald-50 border border-emerald-200">
@@ -849,19 +849,19 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                     ) : (
                       <div className="space-y-2">
                         <Select value={shippingRegion} onValueChange={(v: 'hanoi' | 'other') => setShippingRegion(v)}>
-                          <SelectTrigger className="h-10 rounded-lg border-zinc-200 bg-zinc-50/50 text-xs">
+                          <SelectTrigger className="h-10 rounded-lg border-border bg-muted/50 text-xs">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="hanoi">
                               <span className="flex items-center gap-2">
-                                <MapPin className="size-3.5 text-zinc-400" />
+                                <MapPin className="size-3.5 text-muted-foreground" />
                                 Hà Nội — {new Intl.NumberFormat('vi-VN').format(SHIPPING_FEE_HANOI)}đ
                               </span>
                             </SelectItem>
                             <SelectItem value="other">
                               <span className="flex items-center gap-2">
-                                <MapPin className="size-3.5 text-zinc-400" />
+                                <MapPin className="size-3.5 text-muted-foreground" />
                                 Tỉnh/Thành khác — {new Intl.NumberFormat('vi-VN').format(SHIPPING_FEE_OTHER)}đ
                               </span>
                             </SelectItem>
@@ -869,17 +869,17 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                         </Select>
                       </div>
                     )}
-                    <p className="text-[11px] text-zinc-400 leading-relaxed mt-1">
+                    <p className="text-[11px] text-muted-foreground leading-relaxed mt-1">
                       ⏱ Hà Nội: 1–2 ngày · Tỉnh/Thành khác: 2–5 ngày.
                       <br />Có thể chậm hơn trong các dịp lễ, Tết, săn sale.
                     </p>
                   </div>
 
                   {/* Shipping info — inline, no separate toggle */}
-                  <div className="space-y-4 pt-3 border-t border-zinc-100">
+                  <div className="space-y-4 pt-3 border-t border-border">
                     <div className="flex items-center gap-2">
-                      <Package className="size-4 text-zinc-500" />
-                      <Label className="text-xs font-semibold text-zinc-600 uppercase tracking-wider">Thông tin nhận hàng</Label>
+                      <Package className="size-4 text-muted-foreground" />
+                      <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Thông tin nhận hàng</Label>
                     </div>
                     <button
                       type="button"
@@ -899,24 +899,24 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                         "w-full text-left px-3 py-2.5 rounded-lg border transition-all text-xs font-semibold flex items-center gap-2.5",
                         shippingName && shippingPhone
                           ? "bg-zinc-900 border-zinc-900 text-white"
-                          : "bg-white border-zinc-300 text-zinc-700 hover:border-zinc-400 hover:bg-zinc-50 active:bg-zinc-100"
+                          : "bg-white border-input text-zinc-700 hover:border-zinc-400 hover:bg-muted active:bg-muted"
                       )}
                     >
                       <div className={cn(
                         "w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors",
                         shippingName && shippingPhone
                           ? "border-white bg-white"
-                          : "border-zinc-300"
+                          : "border-input"
                       )}>
                         {shippingName && shippingPhone && (
-                          <CheckCircle2 className="size-4 text-zinc-900" />
+                          <CheckCircle2 className="size-4 text-foreground" />
                         )}
                       </div>
                       Cùng thông tin khách hàng bên trên
                     </button>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <Label className="text-xs font-semibold text-zinc-600 uppercase tracking-wider">
+                        <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                           Tên người nhận <span className="text-red-500">*</span>
                         </Label>
                         <Input
@@ -924,11 +924,11 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                           onChange={(e) => setShippingName(e.target.value)}
                           placeholder="Nguyễn Văn B"
                           required={wantPrint}
-                          className="h-10 sm:h-11 rounded-lg border-zinc-200 focus:border-zinc-400 placeholder:text-zinc-300"
+                          className="h-10 sm:h-11 rounded-lg border-border focus:border-zinc-400 placeholder:text-zinc-300"
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <Label className="text-xs font-semibold text-zinc-600 uppercase tracking-wider">
+                        <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                           SĐT người nhận <span className="text-red-500">*</span>
                         </Label>
                         <Input
@@ -937,12 +937,12 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                           type="tel"
                           placeholder="09xx xxx xxx"
                           required={wantPrint}
-                          className="h-10 sm:h-11 rounded-lg border-zinc-200 focus:border-zinc-400 placeholder:text-zinc-300"
+                          className="h-10 sm:h-11 rounded-lg border-border focus:border-zinc-400 placeholder:text-zinc-300"
                         />
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <Label className="text-xs font-semibold text-zinc-600 uppercase tracking-wider">
+                      <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                         Địa chỉ giao hàng <span className="text-red-500">*</span>
                       </Label>
                       <Textarea
@@ -950,7 +950,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                         onChange={(e) => setShippingAddress(e.target.value)}
                         placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố"
                         required={wantPrint}
-                        className="min-h-[70px] text-xs bg-white border-zinc-200 rounded-lg resize-none placeholder:text-zinc-300"
+                        className="min-h-[70px] text-xs bg-white border-border rounded-lg resize-none placeholder:text-zinc-300"
                         rows={2}
                       />
                     </div>
@@ -964,19 +964,19 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
           {isAdmin && (
           <section className="space-y-4 sm:space-y-5">
             <div className="flex items-center gap-3 px-1">
-              <div className="w-9 h-9 rounded-xl bg-zinc-900 flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
                 <span className="text-sm font-bold text-white">4</span>
               </div>
               <div>
-                <h2 className="text-sm sm:text-base font-bold text-zinc-950 tracking-tight">Giảm giá</h2>
-                <p className="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Nhập mã giảm giá hoặc ưu đãi đặc biệt</p>
+                <h2 className="text-sm sm:text-base font-bold text-foreground">Giảm giá</h2>
+                <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Nhập mã giảm giá hoặc ưu đãi đặc biệt</p>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm p-4 sm:p-5">
+            <div className="bg-white rounded-md border border-border overflow-hidden shadow-sm p-4 sm:p-5">
               <div className="flex flex-col sm:flex-row gap-3">
                 {/* Type toggle */}
-                <div className="flex rounded-lg border border-zinc-200 overflow-hidden shrink-0 h-10 sm:h-11">
+                <div className="flex rounded-lg border border-border overflow-hidden shrink-0 h-10 sm:h-11">
                   <button
                     type="button"
                     onClick={() => setDiscountType('amount')}
@@ -984,7 +984,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                       "px-3 sm:px-4 text-xs font-bold transition-all flex items-center gap-1.5",
                       discountType === 'amount'
                         ? "bg-zinc-900 text-white"
-                        : "bg-white text-zinc-500 hover:bg-zinc-50"
+                        : "bg-white text-muted-foreground hover:bg-muted"
                     )}
                   >
                     đ
@@ -996,7 +996,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                       "px-3 sm:px-4 text-xs font-bold transition-all flex items-center gap-1.5",
                       discountType === 'percent'
                         ? "bg-zinc-900 text-white"
-                        : "bg-white text-zinc-500 hover:bg-zinc-50"
+                        : "bg-white text-muted-foreground hover:bg-muted"
                     )}
                   >
                     <Percent className="size-3" />
@@ -1019,7 +1019,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                         setDiscountValue(raw)
                       }
                     }}
-                    className="h-10 sm:h-11 rounded-lg border-zinc-200 focus:border-zinc-400 placeholder:text-zinc-300 pr-14"
+                    className="h-10 sm:h-11 rounded-lg border-border focus:border-zinc-400 placeholder:text-zinc-300 pr-14"
                   />
                   <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-300 pointer-events-none">
                     {discountType === 'amount' ? 'đ' : '%'}
@@ -1044,17 +1044,17 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
           )}
 
           {/* Order Summary + Submit */}
-          <section className="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm sticky bottom-4 z-10">
+          <section className="bg-white rounded-md border border-border overflow-hidden shadow-sm sticky bottom-4 z-10">
             <div className="px-4 py-3 sm:p-6 flex items-center justify-between gap-3">
               <div className="min-w-0">
-                <p className="text-[10px] sm:text-xs font-semibold text-zinc-400 uppercase tracking-widest">Tổng cộng (tạm tính)</p>
+                <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-widest">Tổng cộng (tạm tính)</p>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-xl sm:text-3xl font-bold text-zinc-950 tracking-tighter tabular-nums">
+                  <span className="text-xl sm:text-3xl font-bold text-foreground tracking-tighter tabular-nums">
                     {new Intl.NumberFormat('vi-VN').format(totalPrice)}
                   </span>
-                  <span className="text-xs sm:text-sm font-semibold text-zinc-500">đ</span>
+                  <span className="text-xs sm:text-sm font-semibold text-muted-foreground">đ</span>
                 </div>
-                <p className="text-[10px] sm:text-[11px] text-zinc-400 font-medium truncate">
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground font-medium truncate">
                   {totalPkgCount > 0 ? `${totalPkgCount} gói` : ''}
                   {wantPrint && totalPrintQty > 0 && `${totalPkgCount > 0 ? ' · ' : ''}${totalPrintQty} vỉ in`}
                   {wantPrint && hasFreeShipping && ' · free ship'}
@@ -1067,7 +1067,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                 type="submit"
                 size="lg"
                 disabled={isSubmitting || (totalPkgCount === 0 && !(wantPrint && (totalFreePrints + extraViCount) > 0))}
-                className="shrink-0 rounded-xl font-bold tracking-tight text-[13px] h-11 sm:h-12 px-6 sm:px-10 bg-zinc-900 hover:bg-zinc-800 shadow-lg shadow-black/10 transition-all disabled:opacity-40"
+                className="shrink-0 rounded-md font-bold text-[13px] h-11 sm:h-12 px-6 sm:px-10 bg-zinc-900 hover:bg-zinc-800 shadow-lg shadow-black/10 transition-all disabled:opacity-40"
               >
                 {isSubmitting ? <LoadingSpinner size="sm" className="mr-2" /> : null}
                 {isSubmitting ? 'Đang gửi...' : 'Gửi đơn hàng'}

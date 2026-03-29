@@ -194,7 +194,7 @@ export default async function DashboardPage() {
                                             />
                                         </div>
                                         <div className="flex justify-between items-end mt-1">
-                                            <p className="text-[11px] text-zinc-400 font-medium">{metric.target}</p>
+                                            <p className="text-[11px] text-muted-foreground font-medium">{metric.target}</p>
                                             <p className="text-[11px] text-muted-foreground font-semibold">{metric.value}/{metric.max} điểm</p>
                                         </div>
                                     </div>

@@ -217,16 +217,12 @@ export default function SettingsPage() {
             <Header title="Settings" />
             <div className="max-w-[1600px] mx-auto">
                 {/* Tabs */}
-                <div className="flex flex-wrap items-center gap-1.5 p-1.5 mb-8 bg-zinc-100/80 rounded-2xl w-fit border border-border/40 shadow-inner">
+                <div className="flex flex-wrap items-center gap-1.5 p-1.5 mb-8 bg-muted/80 rounded-md w-fit border border-border/40 shadow-inner">
                     {tabs.map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`flex items-center gap-2 px-5 py-2.5 text-[13px] transition-all duration-200 rounded-xl ${
-                                activeTab === tab.id
-                                    ? "bg-white text-foreground shadow-sm font-bold ring-1 ring-border/50"
-                                    : "text-muted-foreground hover:bg-zinc-200/50 hover:text-foreground font-semibold"
-                            }`}
+                            className={`flex items-center gap-2 px-5 py-2.5 text-[13px] transition-all duration-200 rounded-md ${ activeTab === tab.id ? "bg-white text-foreground shadow-sm font-bold ring-1 ring-border/50" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground font-semibold" }`}
                         >
                             <tab.icon className={`h-4.5 w-4.5 ${activeTab === tab.id ? "text-primary" : "text-muted-foreground"}`} />
                             {tab.label}
@@ -251,16 +247,16 @@ export default function SettingsPage() {
                                     <div className="grid grid-cols-2 gap-5">
                                         <div className="space-y-2">
                                             <Label htmlFor="name" className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Full name</Label>
-                                            <Input id="name" defaultValue="Tung Nguyen" className="h-11 rounded-xl border-border/60 bg-zinc-50/50 text-[14px] font-medium focus:bg-white transition-colors" />
+                                            <Input id="name" defaultValue="Tung Nguyen" className="h-11 rounded-md border-border/60 bg-muted/50 text-[14px] font-medium focus:bg-white transition-colors" />
                                         </div>
                                         <div className="space-y-2">
                                             <Label htmlFor="company" className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Company</Label>
-                                            <Input id="company" defaultValue="Tulie Agency" className="h-11 rounded-xl border-border/60 bg-zinc-50/50 text-[14px] font-medium focus:bg-white transition-colors" />
+                                            <Input id="company" defaultValue="Tulie Agency" className="h-11 rounded-md border-border/60 bg-muted/50 text-[14px] font-medium focus:bg-white transition-colors" />
                                         </div>
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="email" className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Email address</Label>
-                                        <Input id="email" defaultValue="tung@tulie.app" disabled className="h-11 rounded-xl text-[14px] font-medium bg-zinc-100/50 border-border/40 text-muted-foreground" />
+                                        <Input id="email" defaultValue="tung@tulie.app" disabled className="h-11 rounded-md text-[14px] font-medium bg-muted/50 border-border/40 text-muted-foreground" />
                                         <p className="text-[11px] font-semibold text-muted-foreground mt-1.5 flex items-center gap-1.5">
                                             <AlertCircle className="h-3 w-3" />
                                             Email address cannot be changed.
@@ -324,7 +320,7 @@ export default function SettingsPage() {
                                     </CardHeader>
                                     <CardContent className="space-y-6 pt-2">
                                         {providers.map((prov) => (
-                                            <div key={prov.provider} className="space-y-4 p-5 rounded-2xl border border-border/60 bg-zinc-50/30 transition-all hover:bg-white hover:shadow-sm hover:border-border/80">
+                                            <div key={prov.provider} className="space-y-4 p-5 rounded-md border border-border/60 bg-muted/30 transition-all hover:bg-white hover:shadow-sm hover:border-border/80">
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex flex-wrap items-center gap-2.5">
                                                         <Badge variant="outline" className={`text-[11px] font-bold px-2.5 py-0.5 tracking-wide ${providerColors[prov.provider] ?? ""}`}>
@@ -336,7 +332,7 @@ export default function SettingsPage() {
                                                                 Connected
                                                             </Badge>
                                                         ) : (
-                                                            <Badge variant="outline" className="text-[10px] font-bold tracking-wider uppercase gap-1.5 bg-zinc-100 text-muted-foreground border-border/60 px-2 py-0.5">
+                                                            <Badge variant="outline" className="text-[10px] font-bold tracking-wider uppercase gap-1.5 bg-muted text-muted-foreground border-border/60 px-2 py-0.5">
                                                                 <AlertCircle className="h-3.5 w-3.5" />
                                                                 Not config'd
                                                             </Badge>
@@ -408,7 +404,7 @@ export default function SettingsPage() {
                                                         placeholder={`Enter ${prov.label} API key`}
                                                         value={newKeys[prov.provider] ?? ""}
                                                         onChange={(e) => setNewKeys(prev => ({ ...prev, [prov.provider]: e.target.value }))}
-                                                        className="font-mono text-[13px] h-11 rounded-xl border-border/60 bg-white shadow-sm focus:bg-white transition-colors"
+                                                        className="font-mono text-[13px] h-11 rounded-md border-border/60 bg-white shadow-sm focus:bg-white transition-colors"
                                                     />
                                                     <Button
                                                         variant="outline"
@@ -457,7 +453,7 @@ export default function SettingsPage() {
                                                     All available models and their context limits. Click ⭐ to set your default.
                                                 </CardDescription>
                                             </div>
-                                            <Button variant="outline" size="sm" onClick={() => { fetchProviders(); fetchModels(); }} className="h-9 px-4 text-[12px] font-bold shadow-sm rounded-lg hover:bg-zinc-100 border-border/80">
+                                            <Button variant="outline" size="sm" onClick={() => { fetchProviders(); fetchModels(); }} className="h-9 px-4 text-[12px] font-bold shadow-sm rounded-lg hover:bg-muted border-border/80">
                                                 <RefreshCw className="h-4 w-4 mr-2" />
                                                 Refresh Data
                                             </Button>
@@ -486,7 +482,7 @@ export default function SettingsPage() {
                                                         return (
                                                             <tr
                                                                 key={model.modelId}
-                                                                className={`border-b border-border/50 transition-colors ${!provActive ? "opacity-40" : "hover:bg-accent/50"}`}
+                                                                className={`border-b border-border transition-colors ${!provActive ? "opacity-40" : "hover:bg-accent/50"}`}
                                                             >
                                                                 <td className="py-2.5">
                                                                     <div className="flex items-center gap-2">
@@ -531,10 +527,7 @@ export default function SettingsPage() {
                                                                 <td className="py-2.5 text-center">
                                                                     <button
                                                                         onClick={() => handleSetDefault(model.modelId)}
-                                                                        className={`p-1 rounded transition-colors ${isDefault
-                                                                            ? "text-amber-500"
-                                                                            : "text-muted-foreground/60 hover:text-amber-400"
-                                                                        }`}
+                                                                        className={`p-1 rounded transition-colors ${isDefault ? "text-amber-500" : "text-muted-foreground/60 hover:text-amber-400" }`}
                                                                         title={isDefault ? "Model mặc định" : "Đặt làm mặc định"}
                                                                         disabled={!provActive}
                                                                     >
@@ -585,7 +578,7 @@ export default function SettingsPage() {
                                                             <span className="text-[13px] font-semibold text-muted-foreground w-40 shrink-0 truncate group-hover:text-foreground transition-colors">
                                                                 {model.displayName}
                                                             </span>
-                                                            <div className="flex-1 h-6 bg-zinc-100/80 rounded-lg overflow-hidden border border-border/40 shadow-inner block">
+                                                            <div className="flex-1 h-6 bg-muted/80 rounded-lg overflow-hidden border border-border/40 shadow-inner block">
                                                                 <div
                                                                     className={`h-full rounded-md transition-all duration-500 ease-out ${idx === 0 ? "bg-emerald-500 shadow-sm" : idx <= 2 ? "bg-emerald-400 opacity-90" : "bg-muted-foreground/30"}`}
                                                                     style={{ width: `${Math.max(pct, 2)}%` }}
@@ -612,8 +605,8 @@ export default function SettingsPage() {
                             <Card className="card-elevated border-transparent">
                                 <CardContent className="p-6">
                                     <div className="flex items-center gap-2 text-muted-foreground mb-3">
-                                        <div className="p-2 bg-zinc-100 rounded-lg shadow-sm border border-border/40">
-                                            <Zap className="h-4.5 w-4.5 text-zinc-600" />
+                                        <div className="p-2 bg-muted rounded-lg shadow-sm border border-border/40">
+                                            <Zap className="h-4.5 w-4.5 text-muted-foreground" />
                                         </div>
                                         <span className="text-[12px] font-bold uppercase tracking-wider">Total tokens</span>
                                     </div>
@@ -659,9 +652,9 @@ export default function SettingsPage() {
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="pt-2">
-                                <div className="flex items-center justify-center py-16 text-muted-foreground rounded-2xl border-2 border-dashed border-border/40 bg-zinc-50/50">
+                                <div className="flex items-center justify-center py-16 text-muted-foreground rounded-md border-2 border-dashed border-border/40 bg-muted/50">
                                     <div className="text-center space-y-4">
-                                        <div className="flex h-16 w-16 mx-auto items-center justify-center rounded-2xl bg-white shadow-sm border border-border/60">
+                                        <div className="flex h-16 w-16 mx-auto items-center justify-center rounded-md bg-white shadow-sm border border-border/60">
                                             <TrendingUp className="h-8 w-8 text-muted-foreground/50" />
                                         </div>
                                         <div>

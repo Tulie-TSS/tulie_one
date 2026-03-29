@@ -122,7 +122,7 @@ export function BundleSelectorDialog({ isOpen, onOpenChange, workItem, project }
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
-                        <BookOpen className="w-5 h-5 text-zinc-500" />
+                        <BookOpen className="w-5 h-5 text-muted-foreground" />
                         Chọn bộ chứng từ
                     </DialogTitle>
                     <DialogDescription>
@@ -138,11 +138,11 @@ export function BundleSelectorDialog({ isOpen, onOpenChange, workItem, project }
                             {isLoading ? (
                                 <div className="flex flex-col items-center justify-center py-12 gap-3">
                                     <LoadingSpinner size="md" />
-                                    <p className="text-xs text-zinc-400">Đang tải danh sách...</p>
+                                    <p className="text-xs text-muted-foreground">Đang tải danh sách...</p>
                                 </div>
                             ) : bundles.length === 0 ? (
-                                <div className="text-center py-8 border-2 border-dashed border-zinc-100 rounded-xl">
-                                    <p className="text-xs text-zinc-400">Chưa có bộ mẫu nào. Vui lòng tạo trong Cài đặt.</p>
+                                <div className="text-center py-8 border-2 border-dashed border-border rounded-md">
+                                    <p className="text-xs text-muted-foreground">Chưa có bộ mẫu nào. Vui lòng tạo trong Cài đặt.</p>
                                 </div>
                             ) : (
                                 bundles.map((b) => (

@@ -119,7 +119,7 @@ export default function NewQuotationClient({ initialCustomers, initialProducts, 
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">Tạo báo giá mới</h1>
+                        <h1 className="text-3xl font-bold text-foreground">Tạo báo giá mới</h1>
                         <p className="text-[14px] text-muted-foreground">
                             Khởi tạo hồ sơ báo giá mới đa dịch vụ
                         </p>
