@@ -214,10 +214,9 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
 
             {/* Dashboard Main Content Area */}
             <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8 md:pt-10">
-                <div className="mx-auto grid w-full max-w-7xl items-start gap-6 md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr]">
+                <Tabs defaultValue="overview" className="mx-auto grid w-full max-w-7xl items-start gap-6 md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr]">
                     
-                    <Tabs defaultValue="overview" className="col-span-1 md:col-span-2 lg:col-span-3 grid md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr] gap-8">
-                        {/* Sidebar Navigation (TabsList) */}
+                    {/* Sidebar Navigation (TabsList) */}
                         <nav className="flex flex-col gap-2">
                             <TabsList className="flex flex-col h-auto w-full items-start bg-transparent p-0 gap-1">
                                 <TabsTrigger 
@@ -389,7 +388,6 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             )}
                         </div>
                     </Tabs>
-                </div>
 
                 {/* Document Viewer Dialog */}
                 <Dialog open={isViewingDoc} onOpenChange={setIsViewingDoc}>
