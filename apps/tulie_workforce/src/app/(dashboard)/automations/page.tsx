@@ -11,6 +11,7 @@ import {
     CardTitle,
 } from "@repo/ui";
 import { Badge } from "@repo/ui";
+import { StatusBadge } from "@/components/shared/status-badge";
 import { Input } from "@repo/ui";
 import { Label } from "@repo/ui";
 import {
@@ -328,9 +329,7 @@ export default function AutomationsPage() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <Badge variant="outline" className={`text-[10px] px-2.5 py-0.5 ${st.className}`}>
-                                                    {st.label}
-                                                </Badge>
+                                                <StatusBadge status={workflow.status} label={st.label} className="text-[10px]" />
                                             </div>
 
                                             {/* Description */}
@@ -615,9 +614,7 @@ export default function AutomationsPage() {
                                             {isConnected ? "Connected to " + n8nUrl : "Not connected"}
                                         </p>
                                     </div>
-                                    <Badge variant="outline" className={`font-bold border px-2.5 py-0.5 ${isConnected ? "bg-emerald-50 text-emerald-600 border-emerald-200" : "bg-muted text-muted-foreground border-border/60"}`}>
-                                        {isConnected ? "Connected" : "Disconnected"}
-                                    </Badge>
+                                    <StatusBadge status={isConnected ? "active" : "inactive"} label={isConnected ? "Connected" : "Disconnected"} />
                                 </div>
                                 <Button onClick={() => setIsConnected(!isConnected)} className="w-full gap-1.5 h-9 bg-primary text-primary-foreground hover:bg-primary/95 shadow-primary/20">
                                     {isConnected ? (

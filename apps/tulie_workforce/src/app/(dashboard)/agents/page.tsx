@@ -5,6 +5,7 @@ import {
     CardContent,
 } from "@repo/ui";
 import { Badge } from "@repo/ui";
+import { StatusBadge } from "@/components/shared/status-badge";
 import {
     Bot,
     Plus,
@@ -78,9 +79,7 @@ export default function AgentsPage() {
                                                     <h3 className="text-[15px] text-foreground truncate pr-2">
                                                         {agent.name}
                                                     </h3>
-                                                    <Badge variant="outline" className={`shrink-0 text-[10px] font-semibold px-2.5 py-1 ${statusInfo.className}`}>
-                                                        {statusInfo.label}
-                                                    </Badge>
+                                                    <StatusBadge status={agent.status} label={statusInfo.label} />
                                                 </div>
                                                 <p className="text-[11px] font-medium text-muted-foreground mb-3">
                                                     {roleLabels[agent.role]} · {agent.model}

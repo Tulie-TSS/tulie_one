@@ -7,6 +7,7 @@ import { useLocaleStore } from '@/lib/stores/locale-store'
 import type { TaskStatus } from '@/types/database.types'
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { Badge } from '@repo/ui'
+import { StatusBadge } from '@/components/shared/status-badge'
 import { Progress } from '@repo/ui'
 import { AlertCircle, ArrowRight } from 'lucide-react'
 
@@ -80,12 +81,7 @@ export default function DashboardPage() {
                                                 {task.title}
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <Badge variant="secondary" className="text-[10px] font-medium px-1.5 py-0 h-5" style={{
-                                                    backgroundColor: `color-mix(in srgb, ${TASK_STATUS_COLORS[task.status as TaskStatus]} 15%, transparent)`,
-                                                    color: TASK_STATUS_COLORS[task.status as TaskStatus],
-                                                }}>
-                                                    {t(`status.${task.status}` as const)}
-                                                </Badge>
+                                                <StatusBadge status={task.status} label={t(`status.${task.status}` as const)} className="text-[10px] h-5" />
                                                 {task.tags?.map(tag => (
                                                     <Badge key={tag.id} variant="outline" className="text-[10px] font-medium px-1.5 py-0 h-5 border-transparent" style={{ backgroundColor: tag.color + '15', color: tag.color }}>
                                                         {tag.name}

@@ -5,6 +5,9 @@ import Link from 'next/link'
 import { MOCK_TASKS } from '@/lib/mock/data'
 import { useLocaleStore } from '@/lib/stores/locale-store'
 import type { Task } from '@/types/database.types'
+import { Card, CardContent } from '@repo/ui'
+import { Badge } from '@repo/ui'
+import { StatusBadge } from '@/components/shared/status-badge'
 
 export default function QuarantinePage() {
     const { t } = useLocaleStore()
@@ -57,77 +60,68 @@ export default function QuarantinePage() {
     return (
         <div>
             <div className="mb-6">
-                <h1 className="text-2xl font-semibold" style={{ color: 'var(--color-fg)' }}>{t('quarantine.title')}</h1>
-                <p style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('quarantine.subtitle')}</p>
+                <h1 className="text-2xl font-semibold text-foreground">{t('quarantine.title')}</h1>
+                <p className="text-sm text-muted-foreground mt-1">{t('quarantine.subtitle')}</p>
             </div>
 
             {quarantineTasks.length === 0 ? (
-                <div className="p-12 text-center rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
-                    <div className="text-4xl mb-4">✅</div>
-                    <h3 className="font-semibold mb-1" style={{ color: 'var(--color-fg)' }}>{t('quarantine.empty')}</h3>
-                    <p style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('quarantine.noTriage')}</p>
-                </div>
+                <Card className="shadow-sm border-dashed">
+                    <CardContent className="p-12 text-center text-muted-foreground">
+                        <div className="text-4xl mb-4">✅</div>
+                        <h3 className="font-semibold text-foreground mb-1">{t('quarantine.empty')}</h3>
+                        <p className="text-sm text-muted-foreground">{t('quarantine.noTriage')}</p>
+                    </CardContent>
+                </Card>
             ) : (
                 <div className="space-y-4">
                     {quarantineTasks.map(task => (
-                        <div key={task.id} className="p-5 rounded-md" style={{
-                            backgroundColor: 'var(--color-bg)',
-                            border: '1px solid var(--color-warning)',
-                            boxShadow: '0 0 0 1px var(--color-warning-bg)',
-                        }}>
-                            {/* Badges */}
-                            <div className="flex items-center gap-2 mb-2">
-                                <span className="px-2 py-0.5 rounded-full font-semibold" style={{ backgroundColor: 'var(--color-warning-bg)', color: 'var(--color-warning)', fontSize: 'var(--text-xs)' }}>
-                                    {t('status.quarantine')}
-                                </span>
-                                {task.eisenhower_quadrant && (
-                                    <span className="px-2 py-0.5 rounded-full font-semibold" style={{
-                                        fontSize: 'var(--text-xs)',
-                                        backgroundColor: task.eisenhower_quadrant === 'Q1' ? 'var(--color-danger-bg)' : 'var(--color-surface)',
-                                        color: task.eisenhower_quadrant === 'Q1' ? 'var(--color-danger)' : 'var(--color-fg-secondary)',
-                                    }}>
-                                        {task.eisenhower_quadrant}
-                                    </span>
-                                )}
-                                {task.tags?.map(tag => (
-                                    <span key={tag.id} className="px-1.5 py-0.5 rounded" style={{ backgroundColor: tag.color + '15', color: tag.color, fontSize: '10px' }}>{tag.name}</span>
-                                ))}
-                            </div>
-
-                            {/* Title & Description */}
-                            <Link href={`/tasks/${task.id}`} className="no-underline">
-                                <h3 className="text-lg font-semibold mb-1" style={{ color: 'var(--color-fg)' }}>{task.title}</h3>
-                            </Link>
-                            {task.description && (
-                                <p className="mb-4" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{task.description}</p>
-                            )}
-
-                            {/* Actions */}
-                            <div className="flex items-center gap-2 flex-wrap">
-                                <button onClick={() => handleTradeOff(task)}
-                                    className="px-4 py-2 font-medium cursor-pointer"
-                                    style={{ backgroundColor: 'var(--color-info)', color: 'white', borderRadius: 'var(--radius-md)', border: 'none', fontSize: 'var(--text-sm)' }}>
-                                    {t('quarantine.tradeOff')}
-                                </button>
-                                <div className="relative group">
-                                    <button onClick={() => handleDefer(task)}
-                                        className="px-4 py-2 font-medium cursor-pointer"
-                                        style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-fg)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-sm)' }}>
-                                        {t('quarantine.defer')}
-                                    </button>
-                                    {/* Tooltip showing where task goes */}
-                                    <div className="absolute bottom-full left-0 mb-1 px-3 py-1.5 rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                                        style={{ backgroundColor: 'var(--color-fg)', color: 'var(--color-bg)', fontSize: 'var(--text-xs)', boxShadow: 'var(--shadow-md)' }}>
-                                        {getDeferTarget(task)}
-                                    </div>
+                        <Card key={task.id} className="shadow-sm border-amber-500/50 hover:border-amber-500 transition-colors">
+                            <CardContent className="p-6">
+                                {/* Badges */}
+                                <div className="flex items-center gap-2 mb-3">
+                                    <StatusBadge status="quarantine" label={t('status.quarantine')} />
+                                    {task.eisenhower_quadrant && (
+                                        <Badge variant="outline" className={`text-xs ${task.eisenhower_quadrant === 'Q1' ? 'text-destructive border-destructive/50' : 'text-muted-foreground'}`}>
+                                            {task.eisenhower_quadrant}
+                                        </Badge>
+                                    )}
+                                    {task.tags?.map(tag => (
+                                        <Badge key={tag.id} variant="outline" className="text-[10px] py-0 border-transparent" style={{ backgroundColor: tag.color + '15', color: tag.color }}>
+                                            {tag.name}
+                                        </Badge>
+                                    ))}
                                 </div>
-                                <button onClick={() => handleReject(task)}
-                                    className="px-4 py-2 font-medium cursor-pointer"
-                                    style={{ backgroundColor: 'transparent', color: 'var(--color-danger)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-danger)', fontSize: 'var(--text-sm)' }}>
-                                    {t('quarantine.reject')}
-                                </button>
-                            </div>
-                        </div>
+
+                                {/* Title & Description */}
+                                <Link href={`/tasks/${task.id}`} className="block hover:underline">
+                                    <h3 className="text-lg font-semibold text-foreground mb-1">{task.title}</h3>
+                                </Link>
+                                {task.description && (
+                                    <p className="text-sm text-muted-foreground mb-5">{task.description}</p>
+                                )}
+
+                                {/* Actions */}
+                                <div className="flex items-center gap-3 flex-wrap mt-2">
+                                    <button onClick={() => handleTradeOff(task)}
+                                        className="px-4 py-2 font-semibold text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+                                        {t('quarantine.tradeOff')}
+                                    </button>
+                                    <div className="relative group">
+                                        <button onClick={() => handleDefer(task)}
+                                            className="px-4 py-2 font-semibold text-sm rounded-md border border-border bg-background text-foreground hover:bg-muted transition-colors">
+                                            {t('quarantine.defer')}
+                                        </button>
+                                        <div className="absolute bottom-full left-0 mb-2 px-3 py-1.5 rounded-md text-xs font-medium bg-foreground text-background whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md">
+                                            {getDeferTarget(task)}
+                                        </div>
+                                    </div>
+                                    <button onClick={() => handleReject(task)}
+                                        className="px-4 py-2 font-semibold text-sm rounded-md text-destructive border border-destructive/20 hover:bg-destructive/10 transition-colors">
+                                        {t('quarantine.reject')}
+                                    </button>
+                                </div>
+                            </CardContent>
+                        </Card>
                     ))}
                 </div>
             )}

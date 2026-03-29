@@ -5,6 +5,7 @@ import {
     CardContent,
 } from "@repo/ui";
 import { Badge } from "@repo/ui";
+import { StatusBadge } from "@/components/shared/status-badge";
 import { Input } from "@repo/ui";
 import {
     FileText,
@@ -109,9 +110,7 @@ export default function KnowledgePage() {
                                                     {doc.chunkCount || "—"}
                                                 </td>
                                                 <td className="px-5 py-4">
-                                                    <Badge variant="outline" className={`text-[10px] ${statusInfo.className}`}>
-                                                        {statusInfo.label}
-                                                    </Badge>
+                                                    <StatusBadge status={doc.status} label={statusInfo.label} className="text-[10px]" />
                                                 </td>
                                                 <td className="px-5 py-4 text-right text-[12px] font-medium text-muted-foreground">
                                                     {timeAgo(doc.createdAt)}

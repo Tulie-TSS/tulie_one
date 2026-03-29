@@ -10,6 +10,7 @@ import {
     CardTitle,
 } from "@repo/ui";
 import { Badge } from "@repo/ui";
+import { StatusBadge } from "@/components/shared/status-badge";
 import {
     Plus,
     Clock,
@@ -284,10 +285,10 @@ export default function TasksPage() {
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <Badge variant={priorityVariant[task.priority]} className="font-semibold">{task.priority}</Badge>
+                                                    <StatusBadge status={task.priority} />
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <Badge variant={statusVariant[task.status]} className="font-semibold">{statusLabel[task.status]}</Badge>
+                                                    <StatusBadge status={task.status} label={statusLabel[task.status]} />
                                                 </td>
                                                 <td className="px-6 py-4 text-right">
                                                     <div className="flex flex-col items-end">
@@ -344,9 +345,7 @@ export default function TasksPage() {
                                                 <Card className="card-elevated border-transparent hover:border-primary/20 cursor-pointer">
                                                     <CardContent className="p-4">
                                                         <div className="flex justify-between items-start gap-2 mb-2">
-                                                            <Badge variant={priorityVariant[task.priority]} className="text-[10px] px-1.5 py-0">
-                                                                {task.priority}
-                                                            </Badge>
+                                                            <StatusBadge status={task.priority} />
                                                             <span className="text-[10px] text-muted-foreground font-medium flex items-center">
                                                                 <Clock className="mr-1 h-3 w-3" />
                                                                 {timeAgo(task.createdAt).replace(' hours ago', 'h').replace(' days ago', 'd')}
@@ -455,9 +454,7 @@ export default function TasksPage() {
                                                 {task.title}
                                             </Link>
                                             <div className="flex items-center gap-2 mt-1.5">
-                                                <Badge variant={statusVariant[task.status]} className="text-[9px] px-1 py-0 h-4">
-                                                    {statusLabel[task.status]}
-                                                </Badge>
+                                                <StatusBadge status={task.status} label={statusLabel[task.status]} />
                                                 <span className="text-[11px] font-medium text-muted-foreground truncate">{task.agentName}</span>
                                             </div>
                                         </div>

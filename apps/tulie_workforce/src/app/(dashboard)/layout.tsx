@@ -17,7 +17,7 @@ export default function DashboardLayout({
                 <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-background">
                     <SidebarTrigger className="-ml-1" />
                 </header>
-                <main className="flex flex-1 flex-col min-w-0 overflow-auto bg-muted/20">
+                <main className="flex flex-1 flex-col min-w-0 overflow-auto bg-muted/40">
                     <div className="flex-1 px-6 py-6 md:px-10 md:py-8 transition-all">
                         {children}
                     </div>

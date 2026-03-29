@@ -8,6 +8,7 @@ import {
     CardContent,
 } from "@repo/ui";
 import { Badge } from "@repo/ui";
+import { StatusBadge } from "@/components/shared/status-badge";
 import { Input } from "@repo/ui";
 import {
     CheckCircle2,
@@ -211,13 +212,8 @@ export default function ApprovalsPage() {
                                                 >
                                                     {approval.title}
                                                 </button>
-                                                <Badge variant="outline" className={`text-[10px] font-semibold px-2.5 py-1 uppercase tracking-wider ${status.color}`}>
-                                                    <StatusIcon className="h-3.5 w-3.5 mr-1" />
-                                                    {status.label}
-                                                </Badge>
-                                                <Badge variant="outline" className="text-[10px] uppercase tracking-wider bg-muted border-border text-muted-foreground px-2 py-0.5">
-                                                    {approval.priority}
-                                                </Badge>
+                                                <StatusBadge status={approval.approvalStatus} label={status.label} className="text-[10px] uppercase tracking-wider" />
+                                                <StatusBadge status={approval.priority} className="text-[10px] uppercase tracking-wider" />
                                             </div>
                                             <p className="text-[13px] font-medium text-muted-foreground line-clamp-1 leading-relaxed">{approval.description}</p>
                                         </div>

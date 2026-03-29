@@ -11,6 +11,7 @@ import {
     CardTitle,
 } from "@repo/ui";
 import { Badge } from "@repo/ui";
+import { StatusBadge } from "@/components/shared/status-badge";
 import { Separator } from "@repo/ui";
 import {
     Bot,
@@ -117,7 +118,7 @@ export default function AgentDetailPage() {
                                 <h2 className="text-2xl text-foreground">
                                     {agent.name}
                                 </h2>
-                                <Badge variant="outline" className={statusInfo.className}>{statusInfo.label}</Badge>
+                                <StatusBadge status={agent.status} label={statusInfo.label} />
                             </div>
                             <p className="text-[14px] font-medium text-muted-foreground mt-1">
                                 {agent.description}
@@ -206,9 +207,7 @@ export default function AgentDetailPage() {
                                                             {timeAgo(task.createdAt)} · {formatTokens(task.tokensIn + task.tokensOut)} tokens
                                                         </p>
                                                     </div>
-                                                    <Badge variant={task.status === "completed" ? "default" : task.status === "failed" ? "destructive" : "outline"} className={`text-[10px] font-semibold px-2.5 py-1 ${task.status === "completed" ? "bg-emerald-50 text-emerald-600 border-emerald-200 hover:bg-emerald-50" : task.status === "failed" ? "bg-rose-50 text-rose-600 border-rose-200 hover:bg-rose-50" : ""}`}>
-                                                        {task.status.replace("_", " ")}
-                                                    </Badge>
+                                                    <StatusBadge status={task.status} label={task.status.replace("_", " ")} className="text-[10px]" />
                                                 </div>
                                             </Link>
                                         ))}

@@ -214,7 +214,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
 
             {/* Dashboard Main Content Area */}
             <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8 md:pt-10">
-                <Tabs defaultValue="overview" className="mx-auto grid w-full max-w-7xl items-start gap-6 md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr]">
+                <Tabs orientation="vertical" defaultValue="overview" className="mx-auto grid w-full max-w-7xl items-start gap-6 md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr]">
                     
                     {/* Sidebar Navigation (TabsList) */}
                         <nav className="flex flex-col gap-2 sticky top-[88px] h-[calc(100vh-100px)] overflow-y-auto">

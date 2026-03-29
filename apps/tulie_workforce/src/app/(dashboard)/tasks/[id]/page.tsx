@@ -10,6 +10,7 @@ import {
     CardTitle,
 } from "@repo/ui";
 import { Badge } from "@repo/ui";
+import { StatusBadge } from "@/components/shared/status-badge";
 import { Separator } from "@repo/ui";
 import {
     ArrowLeft,
@@ -86,9 +87,7 @@ export default function TaskDetailPage() {
                             <h2 className="text-2xl font-semibold text-foreground">
                                 {task.title}
                             </h2>
-                            <Badge variant={statusVariant[task.status]}>
-                                {task.status.replace("_", " ")}
-                            </Badge>
+                            <StatusBadge status={task.status} label={task.status.replace("_", " ")} />
                         </div>
                         <p className="text-sm text-muted-foreground mt-1">
                             {task.description}
