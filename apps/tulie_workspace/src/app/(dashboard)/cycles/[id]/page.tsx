@@ -34,7 +34,7 @@ export default async function CycleDetailPage({ params }: { params: Promise<{ id
                         <div className="space-y-4">
                             {MOCK_MILESTONES.map(ms => (
                                 <div key={ms.id} className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: ms.completion_rate === 100 ? 'var(--color-success)' : 'var(--color-surface)', color: ms.completion_rate === 100 ? 'white' : 'var(--color-fg)', fontSize: 'var(--text-xs)', fontWeight: 700 }}>{ms.completion_rate === 100 ? '✓' : `${ms.completion_rate}%`}</div>
+                                    <div className="w-10 h-9 rounded-full flex items-center justify-center" style={{ backgroundColor: ms.completion_rate === 100 ? 'var(--color-success)' : 'var(--color-surface)', color: ms.completion_rate === 100 ? 'white' : 'var(--color-fg)', fontSize: 'var(--text-xs)', fontWeight: 700 }}>{ms.completion_rate === 100 ? '✓' : `${ms.completion_rate}%`}</div>
                                     <div className="flex-1">
                                         <div className="font-medium" style={{ color: 'var(--color-fg)', fontSize: 'var(--text-sm)' }}>{ms.name}</div>
                                         <div style={{ color: 'var(--color-fg-tertiary)', fontSize: 'var(--text-xs)' }}>Mục tiêu: {new Date(ms.target_date).toLocaleDateString('vi-VN')}</div>

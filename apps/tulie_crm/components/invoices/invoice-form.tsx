@@ -163,7 +163,7 @@ export function InvoiceForm({ invoice, customers, vendors, contracts, projects =
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Còn lại</Label>
-                                    <div className="h-10 px-3 py-2 bg-muted rounded-md flex items-center font-semibold">
+                                    <div className="px-3 py-2 bg-muted rounded-md flex items-center font-semibold">
                                         {formatCurrency(totalAmount - paidAmount)}
                                     </div>
                                 </div>
@@ -316,7 +316,7 @@ export function InvoiceForm({ invoice, customers, vendors, contracts, projects =
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                                <CalendarIcon className="h-4 w-4" />
                                                 {issueDate ? format(issueDate, 'dd/MM/yyyy') : 'Chọn ngày'}
                                             </Button>
                                         </PopoverTrigger>
@@ -330,7 +330,7 @@ export function InvoiceForm({ invoice, customers, vendors, contracts, projects =
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                                <CalendarIcon className="h-4 w-4" />
                                                 {dueDate ? format(dueDate, 'dd/MM/yyyy') : 'Chọn ngày'}
                                             </Button>
                                         </PopoverTrigger>
@@ -343,7 +343,7 @@ export function InvoiceForm({ invoice, customers, vendors, contracts, projects =
 
                             <Button type="submit" className="w-full mt-4" disabled={isLoading}>
                                 {isLoading && <LoadingSpinner size="sm" className="mr-2" />}
-                                <Save className="mr-2 h-4 w-4" />
+                                <Save className="h-4 w-4" />
                                 Lưu thay đổi
                             </Button>
                         </CardContent>

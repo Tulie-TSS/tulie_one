@@ -96,7 +96,7 @@ export function OrderDetailHeader({ order }: OrderDetailHeaderProps) {
                     variant="ghost"
                     size="icon"
                     asChild
-                    className="h-10 w-10 rounded-full hover:bg-muted shrink-0"
+                    className="w-10 rounded-full hover:bg-muted shrink-0"
                 >
                     <Link href="/studio">
                         <ArrowLeft className="h-5 w-5 text-muted-foreground" />
@@ -104,7 +104,7 @@ export function OrderDetailHeader({ order }: OrderDetailHeaderProps) {
                 </Button>
                 <div>
                     <div className="flex items-center gap-3 mb-1">
-                        <h1 className="text-2xl font-bold text-foreground flex items-center gap-1.5">
+                        <h1 className="text-2xl text-foreground flex items-center gap-1.5">
                             {order.order_number}
                             <button
                                 onClick={() => { navigator.clipboard.writeText(order.order_number); toast.success('Đã copy mã đơn') }}
@@ -141,7 +141,7 @@ export function OrderDetailHeader({ order }: OrderDetailHeaderProps) {
                 <Button
                     variant="outline"
                     size="sm"
-                    className="h-9 rounded-lg font-medium text-xs bg-white border-border hover:border-input shadow-sm transition-all"
+                    className="h-9 rounded-lg font-medium text-xs bg-white border-border hover:border-input transition-all"
                     onClick={() => {
                         navigator.clipboard.writeText(portalUrl)
                         toast.success('Đã copy link Portal cho khách', {
@@ -175,7 +175,7 @@ export function OrderDetailHeader({ order }: OrderDetailHeaderProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-64 rounded-md border-border shadow-lg p-1">
                         <div className="px-3 py-2">
-                            <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
+                            <p className="text-[11px] text-muted-foreground uppercase tracking-widest">
                                 Chuyển trạng thái {isPhysical ? '(có ship)' : '(file mềm)'}
                             </p>
                         </div>
@@ -184,7 +184,7 @@ export function OrderDetailHeader({ order }: OrderDetailHeaderProps) {
                                 key={status}
                                 disabled={status === order.order_status || isUpdatingStatus}
                                 className={cn(
-                                    "rounded-lg h-10 cursor-pointer px-3 flex items-center gap-3",
+                                    "rounded-lg cursor-pointer px-3 flex items-center gap-3",
                                     status === order.order_status && "opacity-50 cursor-default"
                                 )}
                                 onClick={() => handleStatusChange(status)}
@@ -196,9 +196,9 @@ export function OrderDetailHeader({ order }: OrderDetailHeaderProps) {
                         ))}
                         <DropdownMenuSeparator className="bg-muted my-1" />
                         <div className="px-3 py-2">
-                            <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Tác vụ đơn hàng</p>
+                            <p className="text-[11px] text-muted-foreground uppercase tracking-widest">Tác vụ đơn hàng</p>
                         </div>
-                        <DropdownMenuItem asChild className="rounded-lg h-10 cursor-pointer px-3">
+                        <DropdownMenuItem asChild className="rounded-lg cursor-pointer px-3">
                             <Link href={`/studio/${order.id}/edit`} className="flex items-center gap-3 w-full">
                                 <Pencil className="h-4 w-4 text-muted-foreground shrink-0" />
                                 <span className="font-medium text-sm text-left">Chỉnh sửa đơn hàng</span>
@@ -207,7 +207,7 @@ export function OrderDetailHeader({ order }: OrderDetailHeaderProps) {
                         <DropdownMenuSeparator className="bg-muted my-1" />
                         <DropdownMenuItem
                             disabled={order.order_status === 'cancelled' || isUpdatingStatus}
-                            className="text-destructive focus:text-destructive focus:bg-destructive/5 rounded-lg h-10 cursor-pointer px-3 flex items-center gap-3"
+                            className="text-destructive focus:text-destructive focus:bg-destructive/5 rounded-lg cursor-pointer px-3 flex items-center gap-3"
                             onClick={() => handleStatusChange('cancelled')}
                         >
                             <Trash2 className="h-4 w-4 shrink-0" />

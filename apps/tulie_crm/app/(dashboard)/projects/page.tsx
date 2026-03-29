@@ -11,11 +11,11 @@ export default async function ProjectsPage() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
+                    <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
                         <Rocket className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-bold">Dự án</h1>
+                        <h1 className="text-3xl">Dự án</h1>
                         <p className="text-muted-foreground font-normal">
                             Quản lý triển khai và bàn giao dịch vụ cho khách hàng.
                         </p>
@@ -39,8 +39,8 @@ function ProjectSkeleton() {
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <Skeleton className="h-10 w-[300px]" />
-                <Skeleton className="h-10 w-[120px]" />
+                <Skeleton className="w-[300px]" />
+                <Skeleton className="w-[120px]" />
             </div>
             <div className="border rounded-md">
                 <div className="h-12 border-b bg-muted/50" />

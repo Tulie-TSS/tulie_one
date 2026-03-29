@@ -17,9 +17,9 @@ import { mockAgents, timeAgo, formatTokens, formatCost } from "@/lib/mock-data";
 import type { AgentStatus } from "@/lib/mock-data";
 
 const statusStyles: Record<AgentStatus, { label: string; className: string }> = {
-    active: { label: "Active", className: "bg-emerald-50 text-emerald-600 border-emerald-200 shadow-sm" },
-    training: { label: "Training", className: "bg-amber-50 text-amber-600 border-amber-200 shadow-sm animate-pulse" },
-    inactive: { label: "Inactive", className: "bg-muted text-muted-foreground border-border shadow-sm" },
+    active: { label: "Active", className: "bg-emerald-50 text-emerald-600 border-emerald-200" },
+    training: { label: "Training", className: "bg-amber-50 text-amber-600 border-amber-200 animate-pulse" },
+    inactive: { label: "Inactive", className: "bg-muted text-muted-foreground border-border" },
 };
 
 const roleLabels: Record<string, string> = {
@@ -31,11 +31,11 @@ const roleLabels: Record<string, string> = {
 };
 
 const roleColors: Record<string, { bg: string, text: string }> = {
-    developer: { bg: "bg-indigo-50 border border-indigo-100 shadow-sm", text: "text-indigo-600" },
-    marketing: { bg: "bg-pink-50 border border-pink-100 shadow-sm", text: "text-pink-600" },
-    support: { bg: "bg-emerald-50 border border-emerald-100 shadow-sm", text: "text-emerald-600" },
-    analyst: { bg: "bg-amber-50 border border-amber-100 shadow-sm", text: "text-amber-600" },
-    custom: { bg: "bg-muted border border-border shadow-sm", text: "text-muted-foreground" },
+    developer: { bg: "bg-indigo-50 border border-indigo-100", text: "text-indigo-600" },
+    marketing: { bg: "bg-pink-50 border border-pink-100", text: "text-pink-600" },
+    support: { bg: "bg-emerald-50 border border-emerald-100", text: "text-emerald-600" },
+    analyst: { bg: "bg-amber-50 border border-amber-100", text: "text-amber-600" },
+    custom: { bg: "bg-muted border border-border", text: "text-muted-foreground" },
 };
 
 export default function AgentsPage() {
@@ -53,7 +53,7 @@ export default function AgentsPage() {
                         </p>
                     </div>
                     <Link href="/agents/new">
-                        <Button className="h-9 px-4 bg-primary hover:bg-primary/95 text-primary-foreground shadow-sm shadow-primary/20 text-xs font-semibold gap-1.5 transition-all">
+                        <Button className="h-9 px-4 bg-primary hover:bg-primary/95 text-primary-foreground shadow-primary/20 text-xs font-semibold gap-1.5 transition-all">
                             <Plus className="h-4 w-4" />
                             Create Agent
                         </Button>
@@ -75,7 +75,7 @@ export default function AgentsPage() {
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-start justify-between mb-1">
-                                                    <h3 className="text-[15px] font-bold text-foreground truncate pr-2">
+                                                    <h3 className="text-[15px] text-foreground truncate pr-2">
                                                         {agent.name}
                                                     </h3>
                                                     <Badge variant="outline" className={`shrink-0 text-[10px] font-semibold px-2.5 py-1 ${statusInfo.className}`}>

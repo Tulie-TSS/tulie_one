@@ -56,7 +56,7 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
                 <div>
                     <Link
                         href={`/quotations/${quotation.id}`}
-                        className="font-bold text-foreground hover:underline italic"
+                        className="font-bold text-foreground hover:underline"
                     >
                         {quotation.quotation_number}
                     </Link>

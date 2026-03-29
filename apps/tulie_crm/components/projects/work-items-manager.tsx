@@ -221,7 +221,7 @@ export function WorkItemsManager({ project, workItems: initialWorkItems }: WorkI
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <div>
-                    <CardTitle className="text-lg font-bold flex items-center gap-2">
+                    <CardTitle className="text-lg flex items-center gap-2">
                         <Package className="h-5 w-5 text-foreground" />
                         Hạng mục dự án
                     </CardTitle>
@@ -574,7 +574,7 @@ function WorkItemRow({
                         <ArrowDown className="w-3 h-3 text-muted-foreground" />
                     </button>
                 </div>
-                <div className="flex items-center justify-center w-6 h-6 rounded-md bg-zinc-900 text-white text-xs font-bold">
+                <div className="flex items-center justify-center w-6 h-6 rounded-md bg-zinc-900 text-white text-xs">
                     {idx + 1}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -616,13 +616,13 @@ function WorkItemRow({
                 </div>
                 <div className="flex items-center gap-3">
                     {allQuotationIds.length > 0 && (
-                        <Badge variant="secondary" className="font-medium h-7 flex items-center px-2.5 rounded-md border text-muted-foreground shadow-sm">
+                        <Badge variant="secondary" className="font-medium h-7 flex items-center px-2.5 rounded-md border text-muted-foreground">
                             <FileText className="w-3 h-3 mr-1.5" />
                             {allQuotationIds.length} báo giá
                         </Badge>
                     )}
                     {item.contract && (
-                        <Badge variant="secondary" className="font-medium h-7 flex items-center px-2.5 rounded-md border text-muted-foreground shadow-sm">
+                        <Badge variant="secondary" className="font-medium h-7 flex items-center px-2.5 rounded-md border text-muted-foreground">
                             <FileSignature className="w-3 h-3 mr-1.5" />
                             {item.contract.contract_number}
                         </Badge>
@@ -777,7 +777,7 @@ function WorkItemRow({
                                     </div>
                                 ))}
                             </div>
-                            <div className="flex gap-2 p-1 bg-white border border-border rounded-md shadow-sm">
+                            <div className="flex gap-2 p-1 bg-white border border-border rounded-md">
                                 <Input
                                     value={newTaskTitle}
                                     onChange={e => setNewTaskTitle(e.target.value)}
@@ -805,7 +805,7 @@ function WorkItemRow({
                             </h5>
                             <div className="space-y-2">
                                 {deliveryLinks.map((link: any, lIdx: number) => (
-                                    <div key={lIdx} className="flex items-center gap-3 group p-2.5 bg-white border border-border rounded-md shadow-sm group hover:border-input transition-all">
+                                    <div key={lIdx} className="flex items-center gap-3 group p-2.5 bg-white border border-border rounded-md group hover:border-input transition-all">
                                         <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                                             <ExternalLink className="w-4 h-4" />
                                         </div>
@@ -825,7 +825,7 @@ function WorkItemRow({
                                     </div>
                                 ))}
                             </div>
-                            <div className="space-y-2 p-2 bg-white border border-border rounded-md shadow-sm">
+                            <div className="space-y-2 p-2 bg-white border border-border rounded-md">
                                 <div className="flex gap-2">
                                     <Input
                                         value={newLinkLabel}

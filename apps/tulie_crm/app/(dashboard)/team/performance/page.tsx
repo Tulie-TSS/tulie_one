@@ -26,11 +26,11 @@ export default async function TeamPerformancePage() {
         <div className="space-y-6">
             {/* Header */}
             <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
+                <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
                     <Users className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-bold">Hiệu suất đội ngũ</h1>
+                    <h1 className="text-2xl">Hiệu suất đội ngũ</h1>
                     <p className="text-muted-foreground text-sm">
                         Theo dõi tiến độ và khối lượng công việc
                     </p>

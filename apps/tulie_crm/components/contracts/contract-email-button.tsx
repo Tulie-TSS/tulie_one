@@ -18,7 +18,7 @@ export function ContractEmailButton({
     return (
         <>
             <Button variant="outline" onClick={() => setEmailOpen(true)}>
-                <Send className="mr-2 h-4 w-4" />
+                <Send className="h-4 w-4" />
                 Gửi email
             </Button>
 

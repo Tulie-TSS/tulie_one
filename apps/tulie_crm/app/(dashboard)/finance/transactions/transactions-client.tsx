@@ -89,14 +89,14 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                         </Button>
                     </Link>
                     <div>
-                        <h1 className="text-2xl font-bold">Giao dịch ngân hàng</h1>
+                        <h1 className="text-2xl">Giao dịch ngân hàng</h1>
                         <p className="text-sm text-muted-foreground">
                             Đồng bộ và kiểm tra giao dịch từ SePay • {total} giao dịch
                         </p>
                     </div>
                 </div>
-                <Button onClick={handleSync} disabled={isSyncing} className="font-bold rounded-md shadow-md">
-                    {isSyncing ? <LoadingSpinner size="sm" className="mr-2" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+                <Button onClick={handleSync} disabled={isSyncing} className="font-bold rounded-md ">
+                    {isSyncing ? <LoadingSpinner size="sm" className="mr-2" /> : <RefreshCw className="h-4 w-4" />}
                     Đồng bộ SePay
                 </Button>
             </div>
@@ -130,12 +130,12 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                     onKeyDown={handleSearchKeyDown}
-                                    className="pl-9 h-10 rounded-md"
+                                    className="pl-9 rounded-md"
                                 />
                             </div>
                         </div>
                         <Select value={matchFilter} onValueChange={(v) => { setMatchFilter(v); applyFilters({ matchFilter: v }) }}>
-                            <SelectTrigger className="w-[160px] h-10 rounded-md">
+                            <SelectTrigger className="w-[160px] rounded-md">
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -145,7 +145,7 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                             </SelectContent>
                         </Select>
                         <Select value={sourceFilter} onValueChange={(v) => { setSourceFilter(v); applyFilters({ sourceFilter: v }) }}>
-                            <SelectTrigger className="w-[140px] h-10 rounded-md">
+                            <SelectTrigger className="w-[140px] rounded-md">
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -156,7 +156,7 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                             </SelectContent>
                         </Select>
                         <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); applyFilters({ typeFilter: v }) }}>
-                            <SelectTrigger className="w-[130px] h-10 rounded-md">
+                            <SelectTrigger className="w-[130px] rounded-md">
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -165,8 +165,8 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                                 <SelectItem value="out">Tiền ra</SelectItem>
                             </SelectContent>
                         </Select>
-                        <Button variant="outline" onClick={() => applyFilters()} disabled={isFiltering} className="h-10 rounded-md font-bold">
-                            {isFiltering ? <LoadingSpinner size="sm" className="mr-2" /> : <Filter className="mr-2 h-4 w-4" />}
+                        <Button variant="outline" onClick={() => applyFilters()} disabled={isFiltering} className="rounded-md">
+                            {isFiltering ? <LoadingSpinner size="sm" className="mr-2" /> : <Filter className="h-4 w-4" />}
                             Lọc
                         </Button>
                     </div>
@@ -177,7 +177,7 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
             <Card className="overflow-hidden rounded-md border-border">
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
-                        <thead className="bg-muted/50 text-xs font-bold text-muted-foreground uppercase tracking-wider border-b">
+                        <thead className="bg-muted/50 text-xs text-muted-foreground uppercase tracking-wider border-b">
                             <tr>
                                 <th className="px-4 py-3 text-left">Thời gian</th>
                                 <th className="px-4 py-3 text-left">Loại</th>
@@ -219,11 +219,11 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                                         </td>
                                         <td className="px-4 py-3">
                                             {isIn ? (
-                                                <Badge variant="outline" className="text-emerald-600 border-green-200 bg-emerald-50 gap-1 text-[11px] font-bold">
+                                                <Badge variant="outline" className="text-emerald-600 border-green-200 bg-emerald-50 gap-1 text-[11px]">
                                                     <ArrowDownLeft className="h-3 w-3" /> Vào
                                                 </Badge>
                                             ) : (
-                                                <Badge variant="outline" className="text-red-500 border-rose-200 bg-rose-50 gap-1 text-[11px] font-bold">
+                                                <Badge variant="outline" className="text-red-500 border-rose-200 bg-rose-50 gap-1 text-[11px]">
                                                     <ArrowUpRight className="h-3 w-3" /> Ra
                                                 </Badge>
                                             )}
@@ -243,35 +243,35 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                                         </td>
                                         <td className="px-4 py-3 whitespace-nowrap">
                                             {tx.code ? (
-                                                <code className="text-xs font-mono font-bold bg-muted px-2 py-0.5 rounded">{tx.code}</code>
+                                                <code className="text-xs font-mono bg-muted px-2 py-0.5 rounded">{tx.code}</code>
                                             ) : (
-                                                <span className="text-xs text-muted-foreground italic">—</span>
+                                                <span className="text-xs text-muted-foreground">—</span>
                                             )}
                                         </td>
                                         <td className="px-4 py-3 whitespace-nowrap">
                                             {matchedOrder ? (
                                                 <Link href={`/studio/${matchedOrder.id}`} className="group">
-                                                    <Badge variant="secondary" className="text-[11px] font-bold gap-1 bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100 transition-colors">
+                                                    <Badge variant="secondary" className="text-[11px] gap-1 bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100 transition-colors">
                                                         <CheckCircle2 className="h-3 w-3" />
                                                         {matchedOrder.order_number || 'Đơn hàng'}
                                                     </Badge>
                                                 </Link>
                                             ) : matchedInvoice ? (
                                                 <Link href={`/invoices/${matchedInvoice.id}`} className="group">
-                                                    <Badge variant="secondary" className="text-[11px] font-bold gap-1 bg-purple-50 text-purple-600 border-purple-200 hover:bg-purple-100 transition-colors">
+                                                    <Badge variant="secondary" className="text-[11px] gap-1 bg-purple-50 text-purple-600 border-purple-200 hover:bg-purple-100 transition-colors">
                                                         <CheckCircle2 className="h-3 w-3" />
                                                         {matchedInvoice.invoice_number || 'Hóa đơn'}
                                                     </Badge>
                                                 </Link>
                                             ) : (
-                                                <Badge variant="outline" className="text-[11px] font-bold text-amber-600 border-amber-200 bg-amber-50 gap-1">
+                                                <Badge variant="outline" className="text-[11px] text-amber-600 border-amber-200 bg-amber-50 gap-1">
                                                     <XCircle className="h-3 w-3" /> Chưa khớp
                                                 </Badge>
                                             )}
                                         </td>
                                         <td className="px-4 py-3 whitespace-nowrap">
                                             <Badge variant="outline" className={cn(
-                                                "text-[11px] font-bold",
+                                                "text-[11px]",
                                                 tx.source_system === 'studio' && "text-violet-600 border-violet-200 bg-violet-50",
                                                 tx.source_system === 'lab' && "text-cyan-600 border-cyan-200 bg-cyan-50",
                                                 tx.source_system === 'unknown' && "text-muted-foreground border-border bg-muted",
@@ -301,7 +301,7 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                                 size="sm"
                                 disabled={page === 0 || isFiltering}
                                 onClick={() => applyFilters({ page: page - 1 })}
-                                className="h-8 text-xs rounded-lg font-bold"
+                                className="h-8 text-xs rounded-lg"
                             >
                                 Trang trước
                             </Button>
@@ -310,7 +310,7 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                                 size="sm"
                                 disabled={page >= totalPages - 1 || isFiltering}
                                 onClick={() => applyFilters({ page: page + 1 })}
-                                className="h-8 text-xs rounded-lg font-bold"
+                                className="h-8 text-xs rounded-lg"
                             >
                                 Trang sau
                             </Button>

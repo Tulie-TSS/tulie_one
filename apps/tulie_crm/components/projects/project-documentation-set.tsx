@@ -54,7 +54,7 @@ export function ProjectDocumentationSet({ project, workItems }: ProjectDocumenta
             <CardContent className="p-0">
                 <div className="divide-y divide-zinc-50">
                     {allDocs.length === 0 ? (
-                        <div className="py-12 text-center text-muted-foreground text-sm italic">
+                        <div className="py-12 text-center text-muted-foreground text-sm">
                             Chưa có chứng từ nào được gán cho các hạng mục dự án.
                         </div>
                     ) : (
@@ -63,7 +63,7 @@ export function ProjectDocumentationSet({ project, workItems }: ProjectDocumenta
                                 <div className="flex items-center gap-4 flex-1">
                                     <div className={cn(
                                         "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
-                                        doc.status === 'signed' ? "bg-emerald-500 text-white" : "bg-amber-50 text-amber-600 font-bold text-xs"
+                                        doc.status === 'signed' ? "bg-emerald-500 text-white" : "bg-amber-50 text-amber-600 text-xs"
                                     )}>
                                         {doc.status === 'signed' ? <CheckCircle2 className="w-5 h-5" /> : idx + 1}
                                     </div>

@@ -88,11 +88,11 @@ export function ProjectMilestones({ project }: ProjectMilestonesProps) {
                 </div>
                 <div className="flex gap-2">
                     <Button variant="outline" size="sm" onClick={addMilestone}>
-                        <Plus className="mr-2 h-4 w-4" />
+                        <Plus className="h-4 w-4" />
                         Thêm mốc
                     </Button>
                     <Button size="sm" onClick={handleSave} disabled={isLoading}>
-                        {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="mr-2 h-4 w-4" />}
+                        {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4" />}
                         Lưu lịch trình
                     </Button>
                 </div>
@@ -108,7 +108,7 @@ export function ProjectMilestones({ project }: ProjectMilestonesProps) {
                         <div key={m.id} className="p-4 border rounded-lg bg-card hover:shadow-md transition-shadow space-y-3">
                             <div className="flex items-center justify-between gap-4">
                                 <div className="flex-1 flex items-center gap-2">
-                                    <span className="text-xs font-bold text-muted-foreground whitespace-nowrap">#{index + 1}</span>
+                                    <span className="text-xs text-muted-foreground whitespace-nowrap">#{index + 1}</span>
                                     <Input
                                         placeholder="Tiêu đề đầu việc / Đợt thanh toán"
                                         value={m.name}

@@ -33,7 +33,7 @@ export const dealColumns: ColumnDef<Deal>[] = [
                     >
                         {deal.title}
                     </Link>
-                    <span className="text-xs text-muted-foreground italic">
+                    <span className="text-xs text-muted-foreground">
                         {deal.customer?.company_name}
                     </span>
                 </div>

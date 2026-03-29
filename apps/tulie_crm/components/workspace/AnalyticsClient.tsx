@@ -136,7 +136,7 @@ export function AnalyticsClient({ tasks, teamMembers }: AnalyticsClientProps) {
                             <BarChart3 className="h-4 w-4 text-muted-foreground" />
                             <span className="text-xs text-muted-foreground">Tổng task</span>
                         </div>
-                        <p className="text-2xl font-bold">{totalTasks}</p>
+                        <p className="text-2xl">{totalTasks}</p>
                         <p className="text-[11px] text-muted-foreground mt-1">{activeTasks.length} đang hoạt động</p>
                     </CardContent>
                 </Card>
@@ -146,7 +146,7 @@ export function AnalyticsClient({ tasks, teamMembers }: AnalyticsClientProps) {
                             <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                             <span className="text-xs text-muted-foreground">Hoàn thành</span>
                         </div>
-                        <p className="text-2xl font-bold text-emerald-600">{completionRate}%</p>
+                        <p className="text-2xl text-emerald-600">{completionRate}%</p>
                         <p className="text-[11px] text-muted-foreground mt-1">{completedTasks.length}/{totalTasks} tasks</p>
                     </CardContent>
                 </Card>
@@ -156,7 +156,7 @@ export function AnalyticsClient({ tasks, teamMembers }: AnalyticsClientProps) {
                             <Clock className="h-4 w-4 text-blue-500" />
                             <span className="text-xs text-muted-foreground">TB hoàn thành</span>
                         </div>
-                        <p className="text-2xl font-bold text-blue-600">{avgCompletionDays}</p>
+                        <p className="text-2xl text-blue-600">{avgCompletionDays}</p>
                         <p className="text-[11px] text-muted-foreground mt-1">ngày / task</p>
                     </CardContent>
                 </Card>
@@ -166,7 +166,7 @@ export function AnalyticsClient({ tasks, teamMembers }: AnalyticsClientProps) {
                             {monthTrend >= 0 ? <TrendingUp className="h-4 w-4 text-emerald-500" /> : <TrendingDown className="h-4 w-4 text-rose-500" />}
                             <span className="text-xs text-muted-foreground">Tháng này</span>
                         </div>
-                        <p className="text-2xl font-bold">{completedThisMonth}</p>
+                        <p className="text-2xl">{completedThisMonth}</p>
                         <p className={`text-[11px] mt-1 font-medium ${monthTrend >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
                             {monthTrend >= 0 ? '+' : ''}{monthTrend}% so với tháng trước
                         </p>
@@ -283,7 +283,7 @@ export function AnalyticsClient({ tasks, teamMembers }: AnalyticsClientProps) {
                         <div className="space-y-2">
                             {memberStats.slice(0, 10).map((member, i) => (
                                 <div key={member.id} className="flex items-center gap-3 py-1.5">
-                                    <span className={`text-sm font-bold w-6 text-center ${ i === 0 ? 'text-amber-500' : i === 1 ? 'text-muted-foreground' : i === 2 ? 'text-amber-700' : 'text-muted-foreground' }`}>
+                                    <span className={`text-sm w-6 text-center ${ i === 0 ? 'text-amber-500' : i === 1 ? 'text-muted-foreground' : i === 2 ? 'text-amber-700' : 'text-muted-foreground' }`}>
                                         {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`}
                                     </span>
                                     <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center text-[11px] font-semibold text-muted-foreground shrink-0">

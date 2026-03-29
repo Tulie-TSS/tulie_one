@@ -35,7 +35,7 @@ export function ProjectList({ initialData }: ProjectListProps) {
                 </div>
                 <Button asChild>
                     <Link href="/projects/new">
-                        <Plus className="mr-2 h-4 w-4" />
+                        <Plus className="h-4 w-4" />
                         Tạo dự án mới
                     </Link>
                 </Button>

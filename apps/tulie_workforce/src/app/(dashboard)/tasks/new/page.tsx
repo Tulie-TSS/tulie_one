@@ -76,7 +76,7 @@ export default function CreateTaskPage() {
                     {/* task info */}
                     <Card className="card-elevated border-transparent">
                         <CardHeader className="border-b border-border/40 bg-muted/50 pb-5">
-                            <CardTitle className="text-[16px] font-bold text-foreground flex items-center gap-2">
+                            <CardTitle className="text-[16px] text-foreground flex items-center gap-2">
                                 <ClipboardList className="h-5 w-5 text-indigo-500" />
                                 Task details
                             </CardTitle>
@@ -92,7 +92,7 @@ export default function CreateTaskPage() {
                                     placeholder="e.g. Write social media plan"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    className="h-10 shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-primary/20"
+                                    className="h-9 transition-all focus-visible:ring-2 focus-visible:ring-primary/20"
                                     required
                                 />
                             </div>
@@ -104,7 +104,7 @@ export default function CreateTaskPage() {
                                     placeholder="Provide detailed instructions for the agent..."
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
-                                    className="flex min-h-[120px] w-full rounded-md border border-border/60 bg-white px-4 py-3 text-[14px] shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+                                    className="flex min-h-[120px] w-full rounded-md border border-border/60 bg-white px-4 py-3 text-[14px] placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
                                     required
                                 />
                             </div>
@@ -114,7 +114,7 @@ export default function CreateTaskPage() {
                     {/* agent selection */}
                     <Card className="mt-6 card-elevated border-transparent">
                         <CardHeader className="border-b border-border/40 bg-muted/50 pb-5">
-                            <CardTitle className="text-[16px] font-bold text-foreground flex items-center gap-2">
+                            <CardTitle className="text-[16px] text-foreground flex items-center gap-2">
                                 <Bot className="h-5 w-5 text-emerald-500" />
                                 Assign to agent
                             </CardTitle>
@@ -129,13 +129,13 @@ export default function CreateTaskPage() {
                                         key={agent.id}
                                         type="button"
                                         onClick={() => setAgentId(agent.id)}
-                                        className={`flex items-start gap-4 rounded-md border p-4 text-left transition-all ${agentId === agent.id ? "ring-2 ring-primary shadow-md border-transparent bg-muted/50" : "border-transparent card-elevated shadow-sm hover:border-primary/20 hover:shadow-lg bg-white" }`}
+                                        className={`flex items-start gap-4 rounded-md border p-4 text-left transition-all ${agentId === agent.id ? "ring-2 ring-primary border-transparent bg-muted/50" : "border-transparent card-elevated hover:border-primary/20 hover:shadow-lg bg-white" }`}
                                     >
-                                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 shadow-sm text-indigo-600">
+                                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 text-indigo-600">
                                             <Bot className="h-5 w-5" />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-[14px] font-bold text-foreground truncate">
+                                            <p className="text-[14px] text-foreground truncate">
                                                 {agent.name}
                                             </p>
                                             <p className="text-[12px] text-muted-foreground mt-0.5 font-medium">
@@ -154,7 +154,7 @@ export default function CreateTaskPage() {
                     {/* priority */}
                     <Card className="mt-6 card-elevated border-transparent">
                         <CardHeader className="border-b border-border/40 bg-muted/50 pb-5">
-                            <CardTitle className="text-[16px] font-bold text-foreground">
+                            <CardTitle className="text-[16px] text-foreground">
                                 Priority Level
                             </CardTitle>
                         </CardHeader>
@@ -165,7 +165,7 @@ export default function CreateTaskPage() {
                                         key={p}
                                         type="button"
                                         onClick={() => setPriority(p)}
-                                        className={`px-5 py-2.5 rounded-md text-[13px] font-bold tracking-wide uppercase transition-all shadow-sm ${priority === p ? "bg-foreground text-white ring-2 ring-foreground/20" : "bg-white border border-border/60 text-muted-foreground hover:bg-muted hover:text-foreground" }`}
+                                        className={`px-5 py-2.5 rounded-md text-[13px] tracking-wide uppercase transition-all ${priority === p ? "bg-foreground text-white ring-2 ring-foreground/20" : "bg-white border border-border/60 text-muted-foreground hover:bg-muted hover:text-foreground" }`}
                                     >
                                         {p}
                                     </button>
@@ -177,11 +177,11 @@ export default function CreateTaskPage() {
                     {/* submit */}
                     <div className="mt-8 flex items-center justify-end gap-3 pb-12">
                         <Link href="/tasks">
-                            <Button type="button" variant="outline" className="h-10 px-6 font-semibold bg-white hover:bg-muted shadow-sm">
+                            <Button type="button" variant="outline" className="h-9 px-6 font-semibold bg-white hover:bg-muted">
                                 Cancel
                             </Button>
                         </Link>
-                        <Button type="submit" disabled={isLoading || !title || !agentId} className="h-10 px-6 font-bold bg-primary text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/95 transition-all">
+                        <Button type="submit" disabled={isLoading || !title || !agentId} className="h-9 px-6 bg-primary text-primary-foreground shadow-primary/20 hover:bg-primary/95 transition-all">
                             {isLoading ? (
                                 <>
                                     <Loader2 className="h-4 w-4 animate-spin mr-1.5" />

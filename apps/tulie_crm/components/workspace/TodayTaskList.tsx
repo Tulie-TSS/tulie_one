@@ -122,7 +122,7 @@ export default function TodayTaskList({ overview }: TodayTaskListProps) {
             {totalTasks === 0 && upcoming_deadlines.length === 0 && (
                 <Card className="border-emerald-200 bg-emerald-50/50">
                     <CardContent className="py-8 text-center">
-                        <CheckCircle2 className="h-10 w-10 mx-auto mb-3 text-emerald-500" />
+                        <CheckCircle2 className="w-10 mx-auto mb-3 text-emerald-500" />
                         <p className="font-medium text-emerald-800">Không có task nào đang chờ</p>
                         <p className="text-sm text-emerald-600 mt-1">Hãy tạo task mới hoặc kiểm tra dự án</p>
                     </CardContent>

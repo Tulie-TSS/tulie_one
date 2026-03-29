@@ -56,7 +56,7 @@ export default function QuotationPreview({ data, open, onOpenChange }: Quotation
                         >
                             {({ blob, url, loading, error }) => (
                                 <Button disabled={loading} size="sm">
-                                    {loading ? <LoadingSpinner size="sm" className="mr-2" /> : <Download className="mr-2 h-4 w-4" />}
+                                    {loading ? <LoadingSpinner size="sm" className="mr-2" /> : <Download className="h-4 w-4" />}
                                     Tải PDF
                                 </Button>
                             )}
@@ -64,7 +64,7 @@ export default function QuotationPreview({ data, open, onOpenChange }: Quotation
                     </div>
                 </div>
                 <div className="flex-1 bg-muted/20 p-4 overflow-hidden">
-                    <PDFViewer className="w-full h-full rounded-md border shadow-sm" showToolbar={true}>
+                    <PDFViewer className="w-full h-full rounded-md border" showToolbar={true}>
                         <PdfTemplate quotation={previewData} />
                     </PDFViewer>
                 </div>

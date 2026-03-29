@@ -58,7 +58,7 @@ export default function CreateAgentPage() {
                     {/* Basic Info */}
                     <Card className="card-elevated border-transparent">
                         <CardHeader className="border-b border-border/40 bg-muted/50 pb-5">
-                            <CardTitle className="text-[16px] font-bold text-foreground flex items-center gap-2">
+                            <CardTitle className="text-[16px] text-foreground flex items-center gap-2">
                                 <Bot className="h-5 w-5 text-indigo-500" />
                                 Agent details
                             </CardTitle>
@@ -75,7 +75,7 @@ export default function CreateAgentPage() {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     required
-                                    className="h-10 shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-primary/20"
+                                    className="h-9 transition-all focus-visible:ring-2 focus-visible:ring-primary/20"
                                 />
                             </div>
                             <div className="space-y-2.5">
@@ -85,7 +85,7 @@ export default function CreateAgentPage() {
                                     placeholder="What does this agent do?"
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
-                                    className="h-10 shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-primary/20"
+                                    className="h-9 transition-all focus-visible:ring-2 focus-visible:ring-primary/20"
                                 />
                             </div>
                         </CardContent>
@@ -94,7 +94,7 @@ export default function CreateAgentPage() {
                     {/* Template Selection */}
                     <Card className="mt-6 card-elevated border-transparent">
                         <CardHeader className="border-b border-border/40 bg-muted/50 pb-5">
-                            <CardTitle className="text-[16px] font-bold text-foreground">
+                            <CardTitle className="text-[16px] text-foreground">
                                 Choose a template
                             </CardTitle>
                             <CardDescription className="font-medium mt-1.5">
@@ -108,9 +108,9 @@ export default function CreateAgentPage() {
                                         key={template.id}
                                         type="button"
                                         onClick={() => setSelectedTemplate(template.id)}
-                                        className={`flex flex-col items-start rounded-md p-5 text-left transition-all card-elevated border ${selectedTemplate === template.id ? "ring-2 ring-primary shadow-md border-transparent bg-muted/50" : "border-transparent hover:border-primary/20 hover:shadow-lg bg-white" }`}
+                                        className={`flex flex-col items-start rounded-md p-5 text-left transition-all card-elevated border ${selectedTemplate === template.id ? "ring-2 ring-primary border-transparent bg-muted/50" : "border-transparent hover:border-primary/20 hover:shadow-lg bg-white" }`}
                                     >
-                                        <p className="text-[14px] font-bold text-foreground">
+                                        <p className="text-[14px] text-foreground">
                                             {template.name}
                                         </p>
                                         <p className="mt-1.5 text-[12px] font-medium text-muted-foreground leading-relaxed">
@@ -125,7 +125,7 @@ export default function CreateAgentPage() {
                     {/* System Prompt */}
                     <Card className="mt-6 card-elevated border-transparent">
                         <CardHeader className="border-b border-border/40 bg-muted/50 pb-5">
-                            <CardTitle className="text-[16px] font-bold text-foreground">
+                            <CardTitle className="text-[16px] text-foreground">
                                 System prompt
                             </CardTitle>
                             <CardDescription className="font-medium mt-1.5">
@@ -139,7 +139,7 @@ export default function CreateAgentPage() {
                                 placeholder="You are a helpful AI assistant specialized in..."
                                 value={systemPrompt}
                                 onChange={(e) => setSystemPrompt(e.target.value)}
-                                className="flex min-h-[120px] w-full rounded-md border border-border/60 bg-white px-4 py-3 text-[14px] shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50"
+                                className="flex min-h-[120px] w-full rounded-md border border-border/60 bg-white px-4 py-3 text-[14px] placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50"
                             />
                         </CardContent>
                     </Card>
@@ -147,11 +147,11 @@ export default function CreateAgentPage() {
                     {/* Actions */}
                     <div className="mt-8 flex items-center justify-end gap-3 pb-12">
                         <Link href="/agents">
-                            <Button type="button" variant="outline" className="h-10 px-6 font-semibold bg-white hover:bg-muted shadow-sm">
+                            <Button type="button" variant="outline" className="h-9 px-6 font-semibold bg-white hover:bg-muted">
                                 Cancel
                             </Button>
                         </Link>
-                        <Button type="submit" disabled={isLoading || !name} className="h-10 px-6 font-bold bg-primary text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/95 transition-all">
+                        <Button type="submit" disabled={isLoading || !name} className="h-9 px-6 bg-primary text-primary-foreground shadow-primary/20 hover:bg-primary/95 transition-all">
                             {isLoading ? (
                                 <>
                                     <Loader2 className="h-4 w-4 animate-spin mr-1.5" />

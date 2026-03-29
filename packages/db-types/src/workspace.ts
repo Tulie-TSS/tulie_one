@@ -124,6 +124,7 @@ export interface Project {
   contracts?: Contract[]
   brand: Brand
   password_hash?: string
+  financial_password_hash?: string
   created_at: string
   updated_at: string
 }

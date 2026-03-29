@@ -337,7 +337,7 @@ export default function NewCustomerPage() {
                     </Button>
                     <Button type="submit" disabled={isLoading}>
                         {isLoading && <LoadingSpinner size="sm" className="mr-2" />}
-                        <Save className="mr-2 h-4 w-4" />
+                        <Save className="h-4 w-4" />
                         Lưu khách hàng
                     </Button>
                 </div>

@@ -177,7 +177,7 @@ export function CustomerForm({ customer }: CustomerFormProps) {
  size="sm"
  onClick={() => setDeleteDialogOpen(true)}
  >
- <Trash2 className="mr-2 h-4 w-4" />
+ <Trash2 className="h-4 w-4" />
  Xóa khách hàng
  </Button>
  </div>
@@ -332,7 +332,7 @@ export function CustomerForm({ customer }: CustomerFormProps) {
  </Button>
  <Button type="submit" disabled={isLoading}>
  {isLoading && <LoadingSpinner size="sm" className="mr-2" />}
- <Save className="mr-2 h-4 w-4" />
+ <Save className="h-4 w-4" />
  Lưu thay đổi
  </Button>
  </div>

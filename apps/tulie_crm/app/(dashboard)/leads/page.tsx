@@ -8,11 +8,11 @@ export default function LeadsPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center shadow-sm border border-border">
+                <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center border border-border">
                     <Contact className="h-6 w-6 text-foreground" />
                 </div>
                 <div>
-                    <h1 className="text-3xl font-bold text-foreground">Leads</h1>
+                    <h1 className="text-3xl text-foreground">Leads</h1>
                     <p className="text-sm font-medium text-muted-foreground mt-1">Danh sách khách hàng tiềm năng từ Landing Page.</p>
                 </div>
             </div>
@@ -39,10 +39,10 @@ async function LeadsListWrapper() {
 
 function LeadsSkeleton() {
     return (
-        <div className="rounded-md border bg-card p-8 space-y-4">
+        <div className="rounded-md border p-8 space-y-4">
             <div className="flex justify-between items-center mb-6">
-                <Skeleton className="h-10 w-72" />
-                <Skeleton className="h-10 w-48" />
+                <Skeleton className="w-72" />
+                <Skeleton className="w-48" />
             </div>
             {[...Array(5)].map((_, i) => (
                 <Skeleton key={i} className="h-16 w-full" />

@@ -59,7 +59,7 @@ export default async function ProjectDetailPage({ params }: any) {
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="text-3xl font-bold">{project.title}</h1>
+                        <h1 className="text-3xl">{project.title}</h1>
                         <div className="flex items-center gap-2 mt-2">
                             <Badge className={PROJECT_STATUS_COLORS[project.status as keyof typeof PROJECT_STATUS_LABELS] || 'bg-gray-100'}>
                                 {PROJECT_STATUS_LABELS[project.status as keyof typeof PROJECT_STATUS_LABELS] || project.status}
@@ -76,11 +76,12 @@ export default async function ProjectDetailPage({ params }: any) {
                         entityId={project.id}
                         tableName="projects"
                         hasPassword={!!project.password_hash}
+                        hasFinancialPassword={!!project.financial_password_hash}
                     />
                     {portalUrl && (
                         <Button variant="outline" asChild>
                             <Link href={portalUrl} target="_blank">
-                                <Globe className="mr-2 h-4 w-4" />
+                                <Globe className="h-4 w-4" />
                                 Xem Customer Portal
                             </Link>
                         </Button>
@@ -133,7 +134,7 @@ export default async function ProjectDetailPage({ params }: any) {
                             </div>
                             <div className="text-right">
                                 <p className="text-xs text-muted-foreground font-semibold">Tổng giá trị dự án</p>
-                                <p className="text-2xl font-bold">{formatCurrency(projectTotal)}</p>
+                                <p className="text-2xl">{formatCurrency(projectTotal)}</p>
                             </div>
                         </CardHeader>
                         <CardContent className="pt-4">

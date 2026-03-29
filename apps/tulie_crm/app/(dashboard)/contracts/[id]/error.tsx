@@ -37,12 +37,12 @@ export default function ContractDetailError({
                     )}
                     <div className="flex items-center gap-2">
                         <Button onClick={reset} variant="default" size="sm">
-                            <RefreshCw className="mr-2 h-4 w-4" />
+                            <RefreshCw className="h-4 w-4" />
                             Thử lại
                         </Button>
                         <Button variant="outline" size="sm" asChild>
                             <Link href="/contracts">
-                                <ArrowLeft className="mr-2 h-4 w-4" />
+                                <ArrowLeft className="h-4 w-4" />
                                 Về danh sách
                             </Link>
                         </Button>

@@ -66,7 +66,7 @@ export default function NewTemplatePage() {
                     </div>
                 </div>
                 <Button onClick={handleSave} disabled={isSaving}>
-                    {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="mr-2 h-4 w-4" />}
+                    {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4" />}
                     Lưu mẫu
                 </Button>
             </div>

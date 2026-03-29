@@ -38,7 +38,7 @@ export function DealProjectionChart({ stats }: DealProjectionChartProps) {
                 </div>
                 <div className="text-right space-y-1">
                     <p className="text-sm text-muted-foreground mr-4">Tổng tiềm năng</p>
-                    <p className="text-xl font-bold mr-4">{formatCurrency(stats.total_potential)}</p>
+                    <p className="text-xl mr-4">{formatCurrency(stats.total_potential)}</p>
                 </div>
             </CardHeader>
             <CardContent>
@@ -74,9 +74,9 @@ export function DealProjectionChart({ stats }: DealProjectionChartProps) {
                                             if (active && payload && payload.length) {
                                                 const d = payload[0].payload
                                                 return (
-                                                    <div className="rounded-lg border bg-background p-3 shadow-sm">
+                                                    <div className="rounded-lg border bg-background p-3">
                                                         <p className="text-xs font-medium text-muted-foreground mb-1">{d.fullName}</p>
-                                                        <p className="text-sm font-bold">{formatCurrency(d.rawAmount)}</p>
+                                                        <p className="text-sm">{formatCurrency(d.rawAmount)}</p>
                                                     </div>
                                                 )
                                             }

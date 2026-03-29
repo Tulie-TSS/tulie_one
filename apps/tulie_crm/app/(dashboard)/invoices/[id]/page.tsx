@@ -53,7 +53,7 @@ export default async function InvoiceDetailPage({ params }: any) {
                         </Link>
                     </Button>
                     <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
+                        <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
                             <Banknote className="h-6 w-6 text-primary" />
                         </div>
                         <div>
@@ -65,13 +65,13 @@ export default async function InvoiceDetailPage({ params }: any) {
                                     {INVOICE_STATUS_LABELS[invoice.status] || invoice.status}
                                 </Badge>
                             </div>
-                            <h1 className="text-3xl font-bold leading-none">{invoice.customer?.company_name}</h1>
+                            <h1 className="text-3xl leading-none">{invoice.customer?.company_name}</h1>
                         </div>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
                     <Button variant="outline">
-                        <Download className="mr-2 h-4 w-4" />
+                        <Download className="h-4 w-4" />
                         Tải PDF
                     </Button>
                     <InvoiceEmailButton
@@ -84,13 +84,13 @@ export default async function InvoiceDetailPage({ params }: any) {
                     />
                     {!isPaid && (
                         <Button>
-                            <CreditCard className="mr-2 h-4 w-4" />
+                            <CreditCard className="h-4 w-4" />
                             Ghi nhận thanh toán
                         </Button>
                     )}
                     <Button variant="outline" asChild>
                         <Link href={`/invoices/${invoice.id}/edit`}>
-                            <Edit className="mr-2 h-4 w-4" />
+                            <Edit className="h-4 w-4" />
                             Chỉnh sửa
                         </Link>
                     </Button>
@@ -107,7 +107,7 @@ export default async function InvoiceDetailPage({ params }: any) {
                             <div className="flex justify-between mb-8">
                                 <div>
                                     <div className="flex items-center gap-2 mb-2">
-                                        <div className="h-10 w-10 bg-foreground rounded-lg flex items-center justify-center">
+                                        <div className="w-10 bg-foreground rounded-lg flex items-center justify-center">
                                             <span className="text-background font-semibold">T</span>
                                         </div>
                                         <span className="text-xl font-semibold">Tulie Agency</span>
@@ -172,7 +172,7 @@ export default async function InvoiceDetailPage({ params }: any) {
                                         ))}
                                         {(!invoice.items || invoice.items.length === 0) && (
                                             <tr>
-                                                <td colSpan={4} className="p-8 text-center text-muted-foreground italic">Không có hạng mục nào</td>
+                                                <td colSpan={4} className="p-8 text-center text-muted-foreground">Không có hạng mục nào</td>
                                             </tr>
                                         )}
                                     </tbody>
@@ -228,7 +228,7 @@ export default async function InvoiceDetailPage({ params }: any) {
                         <CardContent className="space-y-4">
                             {invoice.payments?.map((payment: any) => (
                                 <div key={payment.id} className="flex items-center gap-4 p-4 rounded-lg border">
-                                    <div className="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                                    <div className="w-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
                                         <CheckCircle className="h-5 w-5 text-green-500" />
                                     </div>
                                     <div className="flex-1">
@@ -243,7 +243,7 @@ export default async function InvoiceDetailPage({ params }: any) {
                                 </div>
                             ))}
                             {(!invoice.payments || invoice.payments.length === 0) && (
-                                <p className="text-sm text-muted-foreground text-center py-8 italic border rounded-lg">Chưa có lịch sử thanh toán</p>
+                                <p className="text-sm text-muted-foreground text-center py-8 border rounded-lg">Chưa có lịch sử thanh toán</p>
                             )}
                         </CardContent>
                     </Card>

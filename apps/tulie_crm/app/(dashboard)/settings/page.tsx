@@ -499,11 +499,11 @@ export default function SettingsPage() {
         <div className="space-y-6">
             {/* Page Header */}
             <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-zinc-950 flex items-center justify-center shadow-lg transition-transform hover:scale-105 duration-300">
+                <div className="h-12 w-12 rounded-md bg-zinc-950 flex items-center justify-center  transition-transform hover:scale-105 duration-300">
                     <Settings className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                    <h1 className="text-3xl font-bold text-foreground">Cài đặt</h1>
+                    <h1 className="text-3xl text-foreground">Cài đặt</h1>
                     <p className="text-[14px] text-muted-foreground font-medium">
                         Quản lý cấu hình hệ thống, thương hiệu và tích hợp.
                     </p>
@@ -515,56 +515,56 @@ export default function SettingsPage() {
                     <TabsList className="flex flex-col h-auto bg-muted/30 p-1.5 space-y-1 items-stretch rounded-md border border-border">
                         <TabsTrigger
                             value="company"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <Building2 className="h-4 w-4" />
                             Thông tin công ty
                         </TabsTrigger>
                         <TabsTrigger
                             value="categories"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <Tag className="h-4 w-4" />
                             Danh mục sản phẩm
                         </TabsTrigger>
                         <TabsTrigger
                             value="units"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <Box className="h-4 w-4" />
                             Đơn vị tính
                         </TabsTrigger>
                         <TabsTrigger
                             value="brands"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <Globe className="h-4 w-4" />
                             Thương hiệu
                         </TabsTrigger>
                         <TabsTrigger
                             value="statuses"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <ListFilter className="h-4 w-4" />
                             Hệ thống Trạng thái
                         </TabsTrigger>
                         <TabsTrigger
                             value="bundles"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <BookOpen className="h-4 w-4" />
                             Bộ chứng từ (Bundle)
                         </TabsTrigger>
                         <TabsTrigger
                             value="bank-accounts"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <CreditCard className="h-4 w-4" />
                             Tài khoản ngân hàng
                         </TabsTrigger>
                         <TabsTrigger
                             value="note-templates"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <FileText className="h-4 w-4" />
                             Mẫu ghi chú / Điều khoản
@@ -576,35 +576,35 @@ export default function SettingsPage() {
 
                         <TabsTrigger
                             value="telegram"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <Send className="h-4 w-4" />
                             Cài đặt Telegram
                         </TabsTrigger>
                         <TabsTrigger
                             value="payment-gateway"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <Wallet className="h-4 w-4" />
                             Cổng thanh toán
                         </TabsTrigger>
                         <TabsTrigger
                             value="academy"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <GraduationCap className="h-4 w-4" />
                             Tulie Academy
                         </TabsTrigger>
                         <TabsTrigger
                             value="mail"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <Mail className="h-4 w-4" />
                             Email SMTP
                         </TabsTrigger>
                         <TabsTrigger
                             value="notifications"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <Bell className="h-4 w-4" />
                             Thông báo
@@ -616,21 +616,21 @@ export default function SettingsPage() {
 
                         <TabsTrigger
                             value="appearance"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <Palette className="h-4 w-4" />
                             Giao diện
                         </TabsTrigger>
                         <TabsTrigger
                             value="security"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <Shield className="h-4 w-4" />
                             Bảo mật
                         </TabsTrigger>
                         <TabsTrigger
                             value="data"
-                            className="justify-start gap-3 px-3 py-2 h-10 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
                             <DatabaseIcon className="h-4 w-4" />
                             Dữ liệu
@@ -642,9 +642,9 @@ export default function SettingsPage() {
 
                     {/* Company Settings */}
                     <TabsContent value="company">
-                        <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                        <Card className="rounded-md border-border overflow-hidden">
                             <CardHeader className="bg-muted/30 border-b border-border">
-                                <CardTitle className="text-xl font-bold">Thông tin công ty</CardTitle>
+                                <CardTitle className="text-xl">Thông tin công ty</CardTitle>
                                 <CardDescription className="text-sm font-medium">
                                     Cập nhật thông tin hiển thị trên báo giá và hóa đơn
                                 </CardDescription>
@@ -733,22 +733,22 @@ export default function SettingsPage() {
                                     </div>
                                     <div className="flex gap-4 p-4 bg-muted/50 rounded-md border border-border">
                                         <div className="space-y-1 flex-1">
-                                            <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Xem trước Logo:</p>
+                                            <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Xem trước Logo:</p>
                                             <div className="h-16 flex items-center bg-white p-3 rounded-md border border-border">
                                                 <img src={companySettings.logo_url} alt="Logo Preview" className="h-full object-contain" />
                                             </div>
                                         </div>
                                         <div className="space-y-1 w-32">
-                                            <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Favicon:</p>
+                                            <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Favicon:</p>
                                             <div className="h-16 w-16 flex items-center justify-center bg-white p-3 rounded-md border border-border">
-                                                <img src={companySettings.favicon_url} alt="Favicon Preview" className="h-10 w-10 object-contain" />
+                                                <img src={companySettings.favicon_url} alt="Favicon Preview" className="w-10 object-contain" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <Separator className="bg-border/50" />
                                 <div className="flex justify-end pt-2">
-                                    <Button onClick={handleSaveCompanySettings} disabled={isSavingCompany} className="rounded-md px-8 font-bold shadow-sm">
+                                    <Button onClick={handleSaveCompanySettings} disabled={isSavingCompany} className="rounded-md px-8">
                                         {isSavingCompany && <LoadingSpinner size="sm" className="mr-2" />}
                                         Lưu thay đổi
                                     </Button>
@@ -759,9 +759,9 @@ export default function SettingsPage() {
 
                     {/* Categories Settings */}
                     <TabsContent value="categories">
-                        <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                        <Card className="rounded-md border-border overflow-hidden">
                             <CardHeader className="bg-muted/30 border-b border-border">
-                                <CardTitle className="text-xl font-bold">Danh mục sản phẩm</CardTitle>
+                                <CardTitle className="text-xl">Danh mục sản phẩm</CardTitle>
                                 <CardDescription className="text-sm font-medium">
                                     Quản lý các nhóm sản phẩm và dịch vụ của bạn
                                 </CardDescription>
@@ -769,7 +769,7 @@ export default function SettingsPage() {
                             <CardContent className="space-y-6 pt-6">
                                 <div className="flex gap-4">
                                     <div className="flex-1 space-y-2">
-                                        <Label htmlFor="new_category" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tên danh mục mới</Label>
+                                        <Label htmlFor="new_category" className="text-xs uppercase tracking-wider text-muted-foreground">Tên danh mục mới</Label>
                                         <Input
                                             id="new_category"
                                             placeholder="Ví dụ: Digital Marketing"
@@ -780,14 +780,14 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="flex items-end">
-                                        <Button onClick={handleAddCategory} disabled={isAddingCategory} className="h-11 rounded-md font-bold px-6">
-                                            <Plus className="mr-2 h-4 w-4" />
+                                        <Button onClick={handleAddCategory} disabled={isAddingCategory} className="h-11 rounded-md px-6">
+                                            <Plus className="h-4 w-4" />
                                             Thêm
                                         </Button>
                                     </div>
                                 </div>
 
-                                <div className="border border-border rounded-md divide-y divide-border/50 overflow-hidden shadow-sm">
+                                <div className="border border-border rounded-md divide-y divide-border/50 overflow-hidden">
                                     {categories.map((category) => (
                                         <div key={category.id} className="flex items-center justify-between p-4 bg-white hover:bg-muted/10 transition-colors">
                                             <span className="font-semibold text-sm text-foreground">{category.name}</span>
@@ -797,7 +797,7 @@ export default function SettingsPage() {
                                         </div>
                                     ))}
                                     {categories.length === 0 && (
-                                        <div className="p-12 text-center text-muted-foreground italic bg-muted/50">
+                                        <div className="p-12 text-center text-muted-foreground bg-muted/50">
                                             <div className="flex flex-col items-center gap-2">
                                                 <Tag className="h-8 w-8 opacity-20" />
                                                 <p className="text-sm">Chưa có danh mục nào được tạo</p>
@@ -811,9 +811,9 @@ export default function SettingsPage() {
 
                     {/* Units Settings */}
                     <TabsContent value="units">
-                        <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                        <Card className="rounded-md border-border overflow-hidden">
                             <CardHeader className="bg-muted/30 border-b border-border">
-                                <CardTitle className="text-xl font-bold">Đơn vị tính (ĐVT)</CardTitle>
+                                <CardTitle className="text-xl">Đơn vị tính (ĐVT)</CardTitle>
                                 <CardDescription className="text-sm font-medium">
                                     Quản lý các đơn vị tính cho sản phẩm và dịch vụ
                                 </CardDescription>
@@ -821,7 +821,7 @@ export default function SettingsPage() {
                             <CardContent className="space-y-6 pt-6">
                                 <div className="flex gap-4">
                                     <div className="flex-1 space-y-2">
-                                        <Label htmlFor="new_unit" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tên đơn vị mới</Label>
+                                        <Label htmlFor="new_unit" className="text-xs uppercase tracking-wider text-muted-foreground">Tên đơn vị mới</Label>
                                         <Input
                                             id="new_unit"
                                             placeholder="Ví dụ: Gói, Giờ, Mét..."
@@ -832,14 +832,14 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="flex items-end">
-                                        <Button onClick={handleAddUnit} disabled={isSavingUnits} className="h-11 rounded-md font-bold px-6">
-                                            <Plus className="mr-2 h-4 w-4" />
+                                        <Button onClick={handleAddUnit} disabled={isSavingUnits} className="h-11 rounded-md px-6">
+                                            <Plus className="h-4 w-4" />
                                             Thêm
                                         </Button>
                                     </div>
                                 </div>
 
-                                <div className="border border-border rounded-md divide-y divide-border/50 overflow-hidden shadow-sm">
+                                <div className="border border-border rounded-md divide-y divide-border/50 overflow-hidden">
                                     {units.map((unit) => (
                                         <div key={unit} className="flex items-center justify-between p-4 bg-white hover:bg-muted/10 transition-colors">
                                             <span className="font-semibold text-sm text-foreground">{unit}</span>
@@ -849,7 +849,7 @@ export default function SettingsPage() {
                                         </div>
                                     ))}
                                     {units.length === 0 && (
-                                        <div className="p-12 text-center text-muted-foreground italic bg-muted/50">
+                                        <div className="p-12 text-center text-muted-foreground bg-muted/50">
                                             <div className="flex flex-col items-center gap-2">
                                                 <Box className="h-8 w-8 opacity-20" />
                                                 <p className="text-sm">Chưa có đơn vị tính nào được cấu hình</p>
@@ -863,9 +863,9 @@ export default function SettingsPage() {
 
                     {/* Brands Settings (New) */}
                     <TabsContent value="brands">
-                        <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                        <Card className="rounded-md border-border overflow-hidden">
                             <CardHeader className="bg-muted/30 border-b border-border">
-                                <CardTitle className="text-xl font-bold">Danh mục Thương hiệu</CardTitle>
+                                <CardTitle className="text-xl">Danh mục Thương hiệu</CardTitle>
                                 <CardDescription className="text-sm font-medium">
                                     Quản lý các thương hiệu con của hệ thống (Tulie Agency, Tulie Studio...)
                                 </CardDescription>
@@ -873,7 +873,7 @@ export default function SettingsPage() {
                             <CardContent className="space-y-6 pt-6">
                                 <div className="flex gap-4">
                                     <div className="flex-1 space-y-2">
-                                        <Label htmlFor="new_brand" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tên thương hiệu mới</Label>
+                                        <Label htmlFor="new_brand" className="text-xs uppercase tracking-wider text-muted-foreground">Tên thương hiệu mới</Label>
                                         <Input
                                             id="new_brand"
                                             placeholder="Ví dụ: Tulie Lab..."
@@ -884,14 +884,14 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="flex items-end">
-                                        <Button onClick={handleAddBrand} disabled={isSavingBrands} className="h-11 rounded-md font-bold px-6">
-                                            <Plus className="mr-2 h-4 w-4" />
+                                        <Button onClick={handleAddBrand} disabled={isSavingBrands} className="h-11 rounded-md px-6">
+                                            <Plus className="h-4 w-4" />
                                             Thêm
                                         </Button>
                                     </div>
                                 </div>
 
-                                <div className="border border-border rounded-md divide-y divide-border/50 overflow-hidden shadow-sm">
+                                <div className="border border-border rounded-md divide-y divide-border/50 overflow-hidden">
                                     {brands.map((brand) => (
                                         <div key={brand} className="flex items-center justify-between p-4 bg-white hover:bg-muted/10 transition-colors">
                                             <span className="font-semibold text-sm text-foreground">{brand}</span>
@@ -901,7 +901,7 @@ export default function SettingsPage() {
                                         </div>
                                     ))}
                                     {brands.length === 0 && (
-                                        <div className="p-12 text-center text-muted-foreground italic bg-muted/50">
+                                        <div className="p-12 text-center text-muted-foreground bg-muted/50">
                                             <div className="flex flex-col items-center gap-2">
                                                 <Globe className="h-8 w-8 opacity-20" />
                                                 <p className="text-sm">Chưa có thương hiệu nào được cấu hình</p>
@@ -916,9 +916,9 @@ export default function SettingsPage() {
                     {/* Statuses Settings */}
                     <TabsContent value="statuses">
                         <div className="grid gap-6">
-                            <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                            <Card className="rounded-md border-border overflow-hidden">
                                 <CardHeader className="bg-muted/30 border-b border-border">
-                                    <CardTitle className="text-xl font-bold">Trạng thái Khách hàng</CardTitle>
+                                    <CardTitle className="text-xl">Trạng thái Khách hàng</CardTitle>
                                     <CardDescription className="text-sm font-medium">Các giai đoạn trong phễu bán hàng Agency</CardDescription>
                                 </CardHeader>
                                 <CardContent className="pt-6">
@@ -927,18 +927,18 @@ export default function SettingsPage() {
                                             <div key={status} className="flex items-center justify-between p-4 border border-border rounded-md hover:bg-muted/20 transition-colors">
                                                 <div className="flex items-center gap-4">
                                                     <StatusBadge entityType="customer" status={status} />
-                                                    <span className="text-xs text-muted-foreground font-medium italic">Quy trình bán hàng tiêu chuẩn</span>
+                                                    <span className="text-xs text-muted-foreground font-medium">Quy trình bán hàng tiêu chuẩn</span>
                                                 </div>
-                                                <Button variant="ghost" size="sm" disabled className="text-xs font-bold text-muted-foreground">Hệ thống</Button>
+                                                <Button variant="ghost" size="sm" disabled className="text-xs text-muted-foreground">Hệ thống</Button>
                                             </div>
                                         ))}
                                     </div>
                                 </CardContent>
                             </Card>
 
-                            <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                            <Card className="rounded-md border-border overflow-hidden">
                                 <CardHeader className="bg-muted/30 border-b border-border">
-                                    <CardTitle className="text-xl font-bold">Trạng thái Báo giá</CardTitle>
+                                    <CardTitle className="text-xl">Trạng thái Báo giá</CardTitle>
                                     <CardDescription className="text-sm font-medium">Quy trình phê duyệt báo giá từ Agency</CardDescription>
                                 </CardHeader>
                                 <CardContent className="pt-6">
@@ -947,9 +947,9 @@ export default function SettingsPage() {
                                             <div key={status} className="flex items-center justify-between p-4 border border-border rounded-md hover:bg-muted/20 transition-colors">
                                                 <div className="flex items-center gap-4">
                                                     <StatusBadge entityType="quotation" status={status} />
-                                                    <span className="text-xs text-muted-foreground font-medium italic">Quy trình duyệt báo giá</span>
+                                                    <span className="text-xs text-muted-foreground font-medium">Quy trình duyệt báo giá</span>
                                                 </div>
-                                                <Button variant="ghost" size="sm" disabled className="text-xs font-bold text-muted-foreground">Hệ thống</Button>
+                                                <Button variant="ghost" size="sm" disabled className="text-xs text-muted-foreground">Hệ thống</Button>
                                             </div>
                                         ))}
                                     </div>
@@ -960,14 +960,14 @@ export default function SettingsPage() {
 
                     {/* Telegram Settings */}
                     <TabsContent value="telegram">
-                        <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                        <Card className="rounded-md border-border overflow-hidden">
                             <CardHeader className="bg-muted/30 border-b border-border">
                                 <div className="flex items-center gap-3">
-                                    <div className="h-10 w-10 rounded-md bg-zinc-950 flex items-center justify-center shadow-md">
+                                    <div className="w-10 rounded-md bg-zinc-950 flex items-center justify-center ">
                                         <Send className="h-5 w-5 text-white" />
                                     </div>
                                     <div>
-                                        <CardTitle className="text-xl font-bold">Cấu hình Telegram Bot</CardTitle>
+                                        <CardTitle className="text-xl">Cấu hình Telegram Bot</CardTitle>
                                         <CardDescription className="text-sm font-medium">
                                             Tích hợp thông báo đơn hàng và thanh toán trực tiếp qua Telegram.
                                         </CardDescription>
@@ -975,9 +975,9 @@ export default function SettingsPage() {
                                 </div>
                             </CardHeader>
                             <CardContent className="space-y-8 pt-6">
-                                <div className="flex items-center justify-between p-5 bg-muted/30 rounded-md border border-border shadow-sm">
+                                <div className="flex items-center justify-between p-5 bg-muted/30 rounded-md border border-border">
                                     <div className="space-y-0.5">
-                                        <Label className="text-base font-bold text-foreground">Kích hoạt thông báo</Label>
+                                        <Label className="text-base text-foreground">Kích hoạt thông báo</Label>
                                         <p className="text-sm text-muted-foreground font-medium">Bật/tắt toàn bộ thông báo gửi đến nhóm hoặc cá nhân.</p>
                                     </div>
                                     <Switch
@@ -1010,7 +1010,7 @@ export default function SettingsPage() {
                                     </div>
                                 </div>
 
-                                <div className="p-5 bg-card rounded-md border shadow-sm">
+                                <div className="p-5 rounded-md border">
                                     <h4 className="text-sm font-medium mb-4">Cấu hình loại thông báo:</h4>
                                     <div className="grid gap-4 sm:grid-cols-2">
                                         {[
@@ -1025,7 +1025,7 @@ export default function SettingsPage() {
                                         ].map((item) => (
                                             <div key={item.key} className="flex flex-col gap-3 p-4 border rounded-md bg-muted dark:bg-zinc-950/50 border-border dark:border-zinc-800">
                                                 <div className="flex items-center justify-between">
-                                                    <Label htmlFor={item.key} className="text-xs font-bold">{item.label}</Label>
+                                                    <Label htmlFor={item.key} className="text-xs">{item.label}</Label>
                                                     <Switch
                                                         id={item.key}
                                                         checked={(telegramConfig as any)[item.key] !== false}
@@ -1047,12 +1047,12 @@ export default function SettingsPage() {
                                     </div>
                                 </div>
 
-                                <div className="p-5 bg-card rounded-md border shadow-sm">
+                                <div className="p-5 rounded-md border">
                                     <h4 className="text-sm font-medium mb-3">Hướng dẫn nhanh:</h4>
                                     <ol className="text-sm space-y-2 text-muted-foreground list-decimal pl-4">
-                                        <li>Tạo bot qua <span className="text-foreground dark:text-zinc-50 font-bold">@BotFather</span> để lấy Token.</li>
-                                        <li>Thêm bot vào nhóm và lấy <span className="text-foreground dark:text-zinc-50 font-bold">Chat ID</span> (Dùng bot @userinfobot hoặc @getidsbot).</li>
-                                        <li>Nhấn <span className="text-foreground dark:text-zinc-50 font-bold">Lưu cấu hình</span> để bắt đầu nhận thông báo.</li>
+                                        <li>Tạo bot qua <span className="text-foreground dark:text-zinc-50">@BotFather</span> để lấy Token.</li>
+                                        <li>Thêm bot vào nhóm và lấy <span className="text-foreground dark:text-zinc-50">Chat ID</span> (Dùng bot @userinfobot hoặc @getidsbot).</li>
+                                        <li>Nhấn <span className="text-foreground dark:text-zinc-50">Lưu cấu hình</span> để bắt đầu nhận thông báo.</li>
                                     </ol>
                                 </div>
 
@@ -1063,10 +1063,10 @@ export default function SettingsPage() {
                                         disabled={isTestingTelegram || !telegramConfig.bot_token || !telegramConfig.chat_id}
                                         className="font-bold h-11 px-6 rounded-md border-input"
                                     >
-                                        {isTestingTelegram ? <LoadingSpinner size="sm" className="mr-2" /> : <Send className="mr-2 h-4 w-4" />}
+                                        {isTestingTelegram ? <LoadingSpinner size="sm" className="mr-2" /> : <Send className="h-4 w-4" />}
                                         Gửi tin nhắn thử
                                     </Button>
-                                    <Button onClick={handleSaveTelegram} disabled={isSavingTelegram} className="font-bold h-11 px-8 rounded-md shadow-sm">
+                                    <Button onClick={handleSaveTelegram} disabled={isSavingTelegram} className="font-bold h-11 px-8 rounded-md">
                                         {isSavingTelegram ? <LoadingSpinner size="sm" className="mr-2" /> : null}
                                         Lưu cấu hình
                                     </Button>
@@ -1077,14 +1077,14 @@ export default function SettingsPage() {
 
                     {/* Payment Gateway Settings */}
                     <TabsContent value="payment-gateway">
-                        <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                        <Card className="rounded-md border-border overflow-hidden">
                             <CardHeader className="bg-muted/30 border-b border-border">
                                 <div className="flex items-center gap-3">
-                                    <div className="h-10 w-10 rounded-md bg-zinc-950 flex items-center justify-center shadow-md">
+                                    <div className="w-10 rounded-md bg-zinc-950 flex items-center justify-center ">
                                         <Wallet className="h-5 w-5 text-white" />
                                     </div>
                                     <div>
-                                        <CardTitle className="text-xl font-bold">Cổng thanh toán</CardTitle>
+                                        <CardTitle className="text-xl">Cổng thanh toán</CardTitle>
                                         <CardDescription className="text-sm font-medium">
                                             Cấu hình SePay API và Webhook để tự động đối soát thanh toán.
                                         </CardDescription>
@@ -1120,7 +1120,7 @@ export default function SettingsPage() {
                                                 type="button"
                                                 variant="outline"
                                                 size="sm"
-                                                className="h-11 px-3 rounded-md border-input text-xs font-bold shrink-0"
+                                                className="h-11 px-3 rounded-md border-input text-xs shrink-0"
                                                 onClick={async () => {
                                                     const secret = Array.from(crypto.getRandomValues(new Uint8Array(32)), b => b.toString(16).padStart(2, '0')).join('')
                                                     const newConfig = { ...telegramConfig, sepay_secret_key: secret }
@@ -1146,7 +1146,7 @@ export default function SettingsPage() {
                                                     type="button"
                                                     variant="outline"
                                                     size="sm"
-                                                    className="h-11 px-3 rounded-md border-input text-xs font-bold shrink-0"
+                                                    className="h-11 px-3 rounded-md border-input text-xs shrink-0"
                                                     onClick={() => {
                                                         navigator.clipboard.writeText(telegramConfig.sepay_secret_key || '')
                                                         toast.success('Đã copy Webhook Secret')
@@ -1169,17 +1169,17 @@ export default function SettingsPage() {
                                         <div className="flex-1 bg-white dark:bg-zinc-950 border border-border dark:border-zinc-800 rounded-md p-3 text-[11px] font-mono break-all opacity-70">
                                             {typeof window !== 'undefined' ? `${window.location.origin}/api/webhooks/sepay` : '...'}
                                         </div>
-                                        <Button size="sm" variant="outline" className="h-10 px-4 rounded-md text-xs font-bold border-input shadow-sm" onClick={() => {
+                                        <Button size="sm" variant="outline" className="px-4 rounded-md text-xs border-input" onClick={() => {
                                             const url = `${window.location.origin}/api/webhooks/sepay`
                                             navigator.clipboard.writeText(url)
                                             toast.success('Đã copy Webhook URL')
                                         }}>Copy</Button>
                                     </div>
-                                    <p className="text-[11px] text-muted-foreground italic leading-relaxed">Cấu hình URL này vào trang Dashboard SePay để tự động khớp tiền và gửi tin nhắn Telegram.</p>
+                                    <p className="text-[11px] text-muted-foreground leading-relaxed">Cấu hình URL này vào trang Dashboard SePay để tự động khớp tiền và gửi tin nhắn Telegram.</p>
                                 </div>
 
                                 <div className="pt-6 border-t border-border flex justify-end">
-                                    <Button onClick={handleSaveTelegram} disabled={isSavingTelegram} className="font-bold h-11 px-8 rounded-md shadow-sm">
+                                    <Button onClick={handleSaveTelegram} disabled={isSavingTelegram} className="font-bold h-11 px-8 rounded-md">
                                         {isSavingTelegram ? <LoadingSpinner size="sm" className="mr-2" /> : null}
                                         Lưu cấu hình
                                     </Button>
@@ -1190,14 +1190,14 @@ export default function SettingsPage() {
 
                     {/* Academy Integration Settings */}
                     <TabsContent value="academy">
-                        <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                        <Card className="rounded-md border-border overflow-hidden">
                             <CardHeader className="bg-muted/30 border-b border-border">
                                 <div className="flex items-center gap-3">
-                                    <div className="h-10 w-10 rounded-md bg-zinc-950 flex items-center justify-center shadow-md">
+                                    <div className="w-10 rounded-md bg-zinc-950 flex items-center justify-center ">
                                         <GraduationCap className="h-5 w-5 text-white" />
                                     </div>
                                     <div>
-                                        <CardTitle className="text-xl font-bold">Tulie Academy</CardTitle>
+                                        <CardTitle className="text-xl">Tulie Academy</CardTitle>
                                         <CardDescription className="text-sm font-medium">
                                             Cấu hình Webhook kết nối hệ thống học tập với CRM.
                                         </CardDescription>
@@ -1222,21 +1222,21 @@ export default function SettingsPage() {
                                                     placeholder="Nhập khóa để Academy xác thực"
                                                     value={telegramConfig.academy_webhook_key || ''}
                                                     onChange={(e) => setTelegramConfig({ ...telegramConfig, academy_webhook_key: e.target.value })}
-                                                    className="h-10 text-xs border-border dark:border-zinc-800 rounded-md"
+                                                    className="text-xs border-border dark:border-zinc-800 rounded-md"
                                                 />
                                             </div>
                                         </div>
-                                        <Button size="sm" variant="outline" className="font-semibold border-input shadow-sm" onClick={() => {
+                                        <Button size="sm" variant="outline" className="font-semibold border-input" onClick={() => {
                                             const url = `${window.location.origin}/api/webhooks/academy`
                                             navigator.clipboard.writeText(url)
                                             toast.success('Đã copy Academy Webhook URL')
                                         }}>Copy</Button>
                                     </div>
-                                    <p className="text-[11px] text-muted-foreground italic leading-relaxed">Dùng khóa này cấu hình vào Tulie Academy để đẩy dữ liệu doanh thu về CRM.</p>
+                                    <p className="text-[11px] text-muted-foreground leading-relaxed">Dùng khóa này cấu hình vào Tulie Academy để đẩy dữ liệu doanh thu về CRM.</p>
                                 </div>
 
                                 <div className="pt-6 border-t border-border flex justify-end">
-                                    <Button onClick={handleSaveTelegram} disabled={isSavingTelegram} className="font-bold h-11 px-8 rounded-md shadow-sm">
+                                    <Button onClick={handleSaveTelegram} disabled={isSavingTelegram} className="font-bold h-11 px-8 rounded-md">
                                         {isSavingTelegram ? <LoadingSpinner size="sm" className="mr-2" /> : null}
                                         Lưu cấu hình
                                     </Button>
@@ -1247,14 +1247,14 @@ export default function SettingsPage() {
 
                     {/* Email SMTP Settings */}
                     <TabsContent value="mail">
-                        <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                        <Card className="rounded-md border-border overflow-hidden">
                             <CardHeader className="bg-muted/30 border-b border-border">
                                 <div className="flex items-center gap-3">
-                                    <div className="h-10 w-10 rounded-md bg-zinc-950 flex items-center justify-center shadow-md">
+                                    <div className="w-10 rounded-md bg-zinc-950 flex items-center justify-center ">
                                         <Mail className="h-5 w-5 text-white" />
                                     </div>
                                     <div>
-                                        <CardTitle className="text-xl font-bold">Email SMTP</CardTitle>
+                                        <CardTitle className="text-xl">Email SMTP</CardTitle>
                                         <CardDescription className="text-sm font-medium">Cấu hình máy chủ gửi email cho khách hàng.</CardDescription>
                                     </div>
                                 </div>
@@ -1262,7 +1262,7 @@ export default function SettingsPage() {
                             <CardContent className="space-y-6 pt-6">
                                 <div className="grid gap-6 sm:grid-cols-2">
                                     <div className="space-y-2">
-                                        <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">SMTP Host</Label>
+                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">SMTP Host</Label>
                                         <Input
                                             placeholder="smtp.gmail.com"
                                             value={smtpConfig.host}
@@ -1271,7 +1271,7 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">SMTP Port</Label>
+                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">SMTP Port</Label>
                                         <Input
                                             placeholder="587"
                                             value={smtpConfig.port}
@@ -1280,7 +1280,7 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">User / Email</Label>
+                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">User / Email</Label>
                                         <Input
                                             placeholder="email@example.com"
                                             value={smtpConfig.user}
@@ -1289,7 +1289,7 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Password / App Password</Label>
+                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">Password / App Password</Label>
                                         <Input
                                             type="password"
                                             placeholder="****************"
@@ -1299,7 +1299,7 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tên người gửi (From Name)</Label>
+                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên người gửi (From Name)</Label>
                                         <Input
                                             placeholder="Tulie CRM"
                                             value={smtpConfig.from_name}
@@ -1308,7 +1308,7 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Email hiển thị (From Email)</Label>
+                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">Email hiển thị (From Email)</Label>
                                         <Input
                                             placeholder="info@tulie.vn"
                                             value={smtpConfig.from_email}
@@ -1318,13 +1318,13 @@ export default function SettingsPage() {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center space-x-3 p-4 border border-border rounded-md bg-muted/30 shadow-sm">
+                                <div className="flex items-center space-x-3 p-4 border border-border rounded-md bg-muted/30">
                                     <Switch
                                         id="smtp_secure"
                                         checked={smtpConfig.secure}
                                         onCheckedChange={val => setSmtpConfig({ ...smtpConfig, secure: val })}
                                     />
-                                    <Label htmlFor="smtp_secure" className="text-sm font-bold text-foreground cursor-pointer">Sử dụng SSL/TLS (Tắt nếu dùng Port 587 STARTTLS)</Label>
+                                    <Label htmlFor="smtp_secure" className="text-sm text-foreground cursor-pointer">Sử dụng SSL/TLS (Tắt nếu dùng Port 587 STARTTLS)</Label>
                                 </div>
 
                                 <div className="pt-6 border-t border-border flex flex-col sm:flex-row gap-4 justify-end">
@@ -1334,10 +1334,10 @@ export default function SettingsPage() {
                                         disabled={isTestingSmtp || !smtpConfig.host || !smtpConfig.user}
                                         className="font-bold h-11 px-6 rounded-md border-input"
                                     >
-                                        {isTestingSmtp ? <LoadingSpinner size="sm" className="mr-2" /> : <Send className="mr-2 h-4 w-4" />}
+                                        {isTestingSmtp ? <LoadingSpinner size="sm" className="mr-2" /> : <Send className="h-4 w-4" />}
                                         Gửi email thử
                                     </Button>
-                                    <Button onClick={handleSaveSmtp} disabled={isSavingSmtp} className="font-bold h-11 px-8 rounded-md shadow-sm">
+                                    <Button onClick={handleSaveSmtp} disabled={isSavingSmtp} className="font-bold h-11 px-8 rounded-md">
                                         {isSavingSmtp ? <LoadingSpinner size="sm" className="mr-2" /> : null}
                                         Lưu cấu hình SMTP
                                     </Button>
@@ -1348,9 +1348,9 @@ export default function SettingsPage() {
 
                     {/* Notification Settings */}
                     <TabsContent value="notifications">
-                        <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                        <Card className="rounded-md border-border overflow-hidden">
                             <CardHeader className="bg-muted/30 border-b border-border">
-                                <CardTitle className="text-xl font-bold">Cài đặt thông báo</CardTitle>
+                                <CardTitle className="text-xl">Cài đặt thông báo</CardTitle>
                                 <CardDescription className="text-sm font-medium">
                                     Quản lý cách bạn nhận thông báo từ hệ thống
                                 </CardDescription>
@@ -1358,8 +1358,8 @@ export default function SettingsPage() {
                             <CardContent className="space-y-0 divide-y divide-border/50">
                                 <div className="flex items-center justify-between py-6">
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-bold text-foreground">Thông báo trong app</Label>
-                                        <p className="text-sm text-muted-foreground font-medium italic">
+                                        <Label className="text-sm text-foreground">Thông báo trong app</Label>
+                                        <p className="text-sm text-muted-foreground font-medium">
                                             Nhận thông báo ngay trong ứng dụng
                                         </p>
                                     </div>
@@ -1367,8 +1367,8 @@ export default function SettingsPage() {
                                 </div>
                                 <div className="flex items-center justify-between py-6">
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-bold text-foreground">Email thông báo</Label>
-                                        <p className="text-sm text-muted-foreground font-medium italic">
+                                        <Label className="text-sm text-foreground">Email thông báo</Label>
+                                        <p className="text-sm text-muted-foreground font-medium">
                                             Nhận email khi có cập nhật quan trọng
                                         </p>
                                     </div>
@@ -1376,8 +1376,8 @@ export default function SettingsPage() {
                                 </div>
                                 <div className="flex items-center justify-between py-6">
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-bold text-foreground">Cảnh báo hóa đơn quá hạn</Label>
-                                        <p className="text-sm text-muted-foreground font-medium italic">
+                                        <Label className="text-sm text-foreground">Cảnh báo hóa đơn quá hạn</Label>
+                                        <p className="text-sm text-muted-foreground font-medium">
                                             Nhận thông báo khi hóa đơn sắp hoặc đã quá hạn
                                         </p>
                                     </div>
@@ -1385,8 +1385,8 @@ export default function SettingsPage() {
                                 </div>
                                 <div className="flex items-center justify-between py-6">
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-bold text-foreground">Báo giá được xem</Label>
-                                        <p className="text-sm text-muted-foreground font-medium italic">
+                                        <Label className="text-sm text-foreground">Báo giá được xem</Label>
+                                        <p className="text-sm text-muted-foreground font-medium">
                                             Thông báo khi khách hàng mở xem báo giá
                                         </p>
                                     </div>
@@ -1398,9 +1398,9 @@ export default function SettingsPage() {
 
                     {/* Appearance Settings */}
                     <TabsContent value="appearance">
-                        <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                        <Card className="rounded-md border-border overflow-hidden">
                             <CardHeader className="bg-muted/30 border-b border-border">
-                                <CardTitle className="text-xl font-bold">Giao diện</CardTitle>
+                                <CardTitle className="text-xl">Giao diện</CardTitle>
                                 <CardDescription className="text-sm font-medium">
                                     Tùy chỉnh giao diện hiển thị của ứng dụng
                                 </CardDescription>
@@ -1408,8 +1408,8 @@ export default function SettingsPage() {
                             <CardContent className="space-y-0 divide-y divide-border/50">
                                 <div className="flex items-center justify-between py-6">
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-bold text-foreground">Chế độ tối</Label>
-                                        <p className="text-sm text-muted-foreground font-medium italic">
+                                        <Label className="text-sm text-foreground">Chế độ tối</Label>
+                                        <p className="text-sm text-muted-foreground font-medium">
                                             Sử dụng giao diện tối để bảo vệ mắt
                                         </p>
                                     </div>
@@ -1424,8 +1424,8 @@ export default function SettingsPage() {
                                 </div>
                                 <div className="flex items-center justify-between py-6">
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-bold text-foreground">Sidebar thu gọn</Label>
-                                        <p className="text-sm text-muted-foreground font-medium italic">
+                                        <Label className="text-sm text-foreground">Sidebar thu gọn</Label>
+                                        <p className="text-sm text-muted-foreground font-medium">
                                             Mặc định thu gọn sidebar
                                         </p>
                                     </div>
@@ -1440,9 +1440,9 @@ export default function SettingsPage() {
 
                     {/* Security Settings */}
                     <TabsContent value="security">
-                        <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                        <Card className="rounded-md border-border overflow-hidden">
                             <CardHeader className="bg-muted/30 border-b border-border">
-                                <CardTitle className="text-xl font-bold">Bảo mật</CardTitle>
+                                <CardTitle className="text-xl">Bảo mật</CardTitle>
                                 <CardDescription className="text-sm font-medium">
                                     Quản lý mật khẩu và bảo mật tài khoản
                                 </CardDescription>
@@ -1450,21 +1450,21 @@ export default function SettingsPage() {
                             <CardContent className="space-y-6 pt-6">
                                 <div className="space-y-5 max-w-lg">
                                     <div className="space-y-2">
-                                        <Label htmlFor="current_password text-xs font-bold uppercase tracking-wider text-muted-foreground">Mật khẩu hiện tại</Label>
+                                        <Label htmlFor="current_password text-xs uppercase tracking-wider text-muted-foreground">Mật khẩu hiện tại</Label>
                                         <Input id="current_password" type="password" className="h-11 rounded-md" />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="new_password text-xs font-bold uppercase tracking-wider text-muted-foreground">Mật khẩu mới</Label>
+                                        <Label htmlFor="new_password text-xs uppercase tracking-wider text-muted-foreground">Mật khẩu mới</Label>
                                         <Input id="new_password" type="password" className="h-11 rounded-md" />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="confirm_password text-xs font-bold uppercase tracking-wider text-muted-foreground">Xác nhận mật khẩu mới</Label>
+                                        <Label htmlFor="confirm_password text-xs uppercase tracking-wider text-muted-foreground">Xác nhận mật khẩu mới</Label>
                                         <Input id="confirm_password" type="password" className="h-11 rounded-md" />
                                     </div>
                                 </div>
                                 <Separator className="bg-border/50" />
                                 <div className="flex justify-end pt-2">
-                                    <Button className="rounded-md px-8 font-bold h-11 shadow-sm">Đổi mật khẩu</Button>
+                                    <Button className="rounded-md px-8 h-11">Đổi mật khẩu</Button>
                                 </div>
                             </CardContent>
                         </Card>
@@ -1472,9 +1472,9 @@ export default function SettingsPage() {
 
                     {/* Data Settings */}
                     <TabsContent value="data">
-                        <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                        <Card className="rounded-md border-border overflow-hidden">
                             <CardHeader className="bg-muted/30 border-b border-border">
-                                <CardTitle className="text-xl font-bold">Quản lý dữ liệu</CardTitle>
+                                <CardTitle className="text-xl">Quản lý dữ liệu</CardTitle>
                                 <CardDescription className="text-sm font-medium">
                                     Xuất và nhập dữ liệu hệ thống linh hoạt
                                 </CardDescription>
@@ -1482,25 +1482,25 @@ export default function SettingsPage() {
                             <CardContent className="divide-y divide-border/50 p-0">
                                 <div className="flex items-center justify-between p-6 hover:bg-muted/10 transition-colors">
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-bold text-foreground">Xuất dữ liệu toàn bộ</Label>
-                                        <p className="text-sm text-muted-foreground font-medium italic">
+                                        <Label className="text-sm text-foreground">Xuất dữ liệu toàn bộ</Label>
+                                        <p className="text-sm text-muted-foreground font-medium">
                                             Tải xuống toàn bộ dữ liệu (Khách hàng, Đơn hàng, v.v.) dưới dạng Excel (.xlsx)
                                         </p>
                                     </div>
-                                    <Button variant="outline" className="h-10 px-6 rounded-md font-bold shadow-sm">
-                                        <DatabaseIcon className="mr-2 h-4 w-4" />
+                                    <Button variant="outline" className="px-6 rounded-md">
+                                        <DatabaseIcon className="h-4 w-4" />
                                         Xuất Excel
                                     </Button>
                                 </div>
                                 <div className="flex items-center justify-between p-6 hover:bg-muted/10 transition-colors">
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-bold text-foreground">Nhập dữ liệu khách hàng</Label>
-                                        <p className="text-sm text-muted-foreground font-medium italic">
+                                        <Label className="text-sm text-foreground">Nhập dữ liệu khách hàng</Label>
+                                        <p className="text-sm text-muted-foreground font-medium">
                                             Hỗ trợ nhập danh sách khách hàng số lượng lớn từ file Excel mẫu
                                         </p>
                                     </div>
-                                    <Button variant="outline" className="h-10 px-6 rounded-md font-bold shadow-sm">
-                                        <Plus className="mr-2 h-4 w-4" />
+                                    <Button variant="outline" className="px-6 rounded-md">
+                                        <Plus className="h-4 w-4" />
                                         Chọn file
                                     </Button>
                                 </div>
@@ -1510,25 +1510,25 @@ export default function SettingsPage() {
 
                     {/* Bundles Settings */}
                     <TabsContent value="bundles">
-                        <Card className="rounded-md shadow-sm border-border overflow-hidden">
+                        <Card className="rounded-md border-border overflow-hidden">
                             <CardHeader className="bg-muted/30 border-b border-border">
-                                <CardTitle className="text-xl font-bold">Bộ chứng từ (Document Bundles)</CardTitle>
+                                <CardTitle className="text-xl">Bộ chứng từ (Document Bundles)</CardTitle>
                                 <CardDescription className="text-sm font-medium">
                                     Thiết lập các nhóm mẫu giấy tờ để tự động hóa quy trình hợp đồng & báo giá.
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-8 pt-6">
-                                <div className="space-y-6 p-6 border border-border rounded-md bg-muted/20 shadow-inner">
+                                <div className="space-y-6 p-6 border border-border rounded-md bg-muted/20 ">
                                     <div className="flex items-center gap-3 mb-2">
-                                        <div className="h-8 w-8 rounded-lg bg-zinc-950 flex items-center justify-center shadow-md">
+                                        <div className="h-8 w-8 rounded-lg bg-zinc-950 flex items-center justify-center ">
                                             <Plus className="h-4 w-4 text-white" />
                                         </div>
-                                        <h4 className="text-base font-bold text-foreground">Thiết lập bộ mẫu mới</h4>
+                                        <h4 className="text-base text-foreground">Thiết lập bộ mẫu mới</h4>
                                     </div>
 
                                     <div className="grid gap-6 md:grid-cols-2">
                                         <div className="space-y-2">
-                                            <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tên bộ chứng từ</Label>
+                                            <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên bộ chứng từ</Label>
                                             <Input
                                                 placeholder="VD: In ấn - Trọng gói"
                                                 value={newBundle.name}
@@ -1537,7 +1537,7 @@ export default function SettingsPage() {
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Mô tả mục đích</Label>
+                                            <Label className="text-xs uppercase tracking-wider text-muted-foreground">Mô tả mục đích</Label>
                                             <Input
                                                 placeholder="Dùng cho các dự án in ấn..."
                                                 value={newBundle.description}
@@ -1547,7 +1547,7 @@ export default function SettingsPage() {
                                         </div>
                                     </div>
                                     <div className="space-y-3">
-                                        <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Chọn các mẫu giấy tờ đi kèm</Label>
+                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">Chọn các mẫu giấy tờ đi kèm</Label>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                             {templates.map(t => (
                                                 <div
@@ -1555,8 +1555,8 @@ export default function SettingsPage() {
                                                     className={cn(
                                                         "group flex items-center gap-3 p-4 rounded-md border transition-all duration-200 select-none cursor-pointer",
                                                         newBundle.templates.includes(t.id)
-                                                            ? "bg-zinc-950 text-white border-zinc-950 shadow-md ring-2 ring-zinc-950 ring-offset-2"
-                                                            : "bg-white border-border hover:border-zinc-400 hover:shadow-sm"
+                                                            ? "bg-zinc-950 text-white border-zinc-950  ring-2 ring-zinc-950 ring-offset-2"
+                                                            : "bg-white border-border hover:border-zinc-400 hover:"
                                                     )}
                                                     onClick={() => {
                                                         const current = newBundle.templates
@@ -1573,13 +1573,13 @@ export default function SettingsPage() {
                                                     )}>
                                                         <FileText className={cn("w-4 h-4", newBundle.templates.includes(t.id) ? "text-white" : "text-muted-foreground")} />
                                                     </div>
-                                                    <span className="text-sm font-bold">{t.name}</span>
+                                                    <span className="text-sm">{t.name}</span>
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
 
-                                    <Button onClick={handleCreateBundle} disabled={isSavingBundle} className="w-full h-12 rounded-md font-bold shadow-lg text-base">
+                                    <Button onClick={handleCreateBundle} disabled={isSavingBundle} className="w-full h-12 rounded-md  text-base">
                                         {isSavingBundle ? <LoadingSpinner size="sm" className="mr-2" /> : <Plus className="mr-2 h-5 w-5" />}
                                         Lưu bộ mẫu chứng từ
                                     </Button>
@@ -1587,15 +1587,15 @@ export default function SettingsPage() {
 
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
-                                        <h4 className="text-base font-bold text-foreground">Danh sách Bộ mẫu hiện có ({bundles.length})</h4>
+                                        <h4 className="text-base text-foreground">Danh sách Bộ mẫu hiện có ({bundles.length})</h4>
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {bundles.map(bundle => (
-                                            <Card key={bundle.id} className="overflow-hidden border-border shadow-sm rounded-md group hover:border-zinc-900/40 hover:shadow-md transition-all duration-300">
+                                            <Card key={bundle.id} className="overflow-hidden border-border rounded-md group hover:border-zinc-900/40 hover: transition-all duration-300">
                                                 <CardHeader className="p-5 bg-muted/30 border-b border-border flex flex-row items-center justify-between space-y-0">
                                                     <div>
-                                                        <CardTitle className="text-base font-bold text-foreground">{bundle.name}</CardTitle>
-                                                        {bundle.description && <CardDescription className="text-xs font-medium mt-0.5 line-clamp-1 italic">{bundle.description}</CardDescription>}
+                                                        <CardTitle className="text-base text-foreground">{bundle.name}</CardTitle>
+                                                        {bundle.description && <CardDescription className="text-xs font-medium mt-0.5 line-clamp-1">{bundle.description}</CardDescription>}
                                                     </div>
                                                     <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-full transition-colors" onClick={() => handleDeleteBundle(bundle.id)}>
                                                         <Trash2 className="h-4 w-4" />
@@ -1606,7 +1606,7 @@ export default function SettingsPage() {
                                                         {bundle.templates.map(tid => {
                                                             const t = templates.find(temp => temp.id === tid)
                                                             return (
-                                                                <Badge key={tid} variant="secondary" className="text-[11px] font-bold px-3 py-1 rounded-lg bg-muted border-transparent text-zinc-700 hover:bg-muted transition-colors">
+                                                                <Badge key={tid} variant="secondary" className="text-[11px] px-3 py-1 rounded-lg bg-muted border-transparent text-zinc-700 hover:bg-muted transition-colors">
                                                                     <FileText className="w-3 h-3 mr-1.5 opacity-60" />
                                                                     {t?.name || tid}
                                                                 </Badge>
@@ -1619,7 +1619,7 @@ export default function SettingsPage() {
                                         {bundles.length === 0 && (
                                             <div className="col-span-full py-16 text-center bg-muted/20 border-2 border-dashed border-border rounded-md">
                                                 <div className="flex flex-col items-center gap-3">
-                                                    <BookOpen className="h-10 w-10 text-zinc-200" />
+                                                    <BookOpen className="w-10 text-zinc-200" />
                                                     <div className="space-y-1">
                                                         <p className="font-bold text-muted-foreground">Chưa có bộ mẫu nào</p>
                                                         <p className="text-sm text-muted-foreground">Hãy tạo bộ mẫu đầu tiên để bắt đầu tự động hóa.</p>
@@ -1636,21 +1636,21 @@ export default function SettingsPage() {
                     <TabsContent value="bank-accounts">
                         <div className="space-y-6">
                             {/* Tài khoản công ty */}
-                            <Card className="rounded-md shadow-sm border-border">
+                            <Card className="rounded-md border-border">
                                 <CardHeader className="bg-muted/30 border-b border-border">
                                     <div className="flex items-center gap-2">
                                         <Building2 className="h-5 w-5 text-muted-foreground" />
                                         <div>
-                                            <CardTitle className="text-xl font-bold">Tài khoản công ty</CardTitle>
+                                            <CardTitle className="text-xl">Tài khoản công ty</CardTitle>
                                             <CardDescription className="text-sm font-medium">Hiển thị khi tạo báo giá B2B (Agency)</CardDescription>
                                         </div>
                                     </div>
                                 </CardHeader>
                                 <CardContent className="space-y-4 pt-6">
                                     {bankAccounts.map((account, index) => account.type !== 'personal' && (
-                                        <div key={index} className="space-y-4 border p-5 rounded-md relative bg-white shadow-sm border-border group">
+                                        <div key={index} className="space-y-4 border p-5 rounded-md relative bg-white border-border group">
                                             <div className="flex items-center justify-between mb-2">
-                                                <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground italic">TK Công ty #{bankAccounts.filter((a, i) => a.type !== 'personal' && i <= index).length}</h4>
+                                                <h4 className="text-xs uppercase tracking-wider text-muted-foreground">TK Công ty #{bankAccounts.filter((a, i) => a.type !== 'personal' && i <= index).length}</h4>
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
@@ -1666,7 +1666,7 @@ export default function SettingsPage() {
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tên ngân hàng</Label>
+                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên ngân hàng</Label>
                                                     <Input
                                                         value={account.bank_name}
                                                         onChange={(e) => {
@@ -1679,7 +1679,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Số tài khoản</Label>
+                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Số tài khoản</Label>
                                                     <Input
                                                         value={account.account_no}
                                                         onChange={(e) => {
@@ -1692,7 +1692,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tên chủ tài khoản</Label>
+                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên chủ tài khoản</Label>
                                                     <Input
                                                         value={account.account_name}
                                                         onChange={(e) => {
@@ -1705,7 +1705,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Chi nhánh</Label>
+                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Chi nhánh</Label>
                                                     <Input
                                                         value={account.bank_branch}
                                                         onChange={(e) => {
@@ -1719,7 +1719,7 @@ export default function SettingsPage() {
                                                 </div>
                                             </div>
                                             <div className="pt-3 border-t border-border/30">
-                                                <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 block">Sử dụng mặc định cho</Label>
+                                                <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-3 block">Sử dụng mặc định cho</Label>
                                                 <div className="flex flex-wrap gap-4">
                                                     {[
                                                         { value: 'quotation', label: 'Báo giá (Agency B2B)' },
@@ -1756,27 +1756,27 @@ export default function SettingsPage() {
                                             setBankAccounts([...bankAccounts, { bank_name: '', account_no: '', account_name: '', bank_branch: '', default_for: [], type: 'company' }])
                                         }}
                                     >
-                                        <Plus className="mr-2 h-4 w-4" /> Thêm tài khoản công ty
+                                        <Plus className="h-4 w-4" /> Thêm tài khoản công ty
                                     </Button>
                                 </CardContent>
                             </Card>
 
                             {/* Tài khoản cá nhân */}
-                            <Card className="rounded-md shadow-sm border-border">
+                            <Card className="rounded-md border-border">
                                 <CardHeader className="bg-muted/30 border-b border-border">
                                     <div className="flex items-center gap-2">
                                         <User className="h-5 w-5 text-muted-foreground" />
                                         <div>
-                                            <CardTitle className="text-xl font-bold">Tài khoản cá nhân</CardTitle>
+                                            <CardTitle className="text-xl">Tài khoản cá nhân</CardTitle>
                                             <CardDescription className="text-sm font-medium">Hiển thị ở Studio B2C và cũng dùng được cho Agency B2B</CardDescription>
                                         </div>
                                     </div>
                                 </CardHeader>
                                 <CardContent className="space-y-4 pt-6">
                                     {bankAccounts.map((account, index) => account.type === 'personal' && (
-                                        <div key={index} className="space-y-4 border p-5 rounded-md relative bg-white shadow-sm border-border group">
+                                        <div key={index} className="space-y-4 border p-5 rounded-md relative bg-white border-border group">
                                             <div className="flex items-center justify-between mb-2">
-                                                <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground italic">TK Cá nhân #{bankAccounts.filter((a, i) => a.type === 'personal' && i <= index).length}</h4>
+                                                <h4 className="text-xs uppercase tracking-wider text-muted-foreground">TK Cá nhân #{bankAccounts.filter((a, i) => a.type === 'personal' && i <= index).length}</h4>
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
@@ -1792,7 +1792,7 @@ export default function SettingsPage() {
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tên ngân hàng</Label>
+                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên ngân hàng</Label>
                                                     <Input
                                                         value={account.bank_name}
                                                         onChange={(e) => {
@@ -1805,7 +1805,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Số tài khoản</Label>
+                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Số tài khoản</Label>
                                                     <Input
                                                         value={account.account_no}
                                                         onChange={(e) => {
@@ -1818,7 +1818,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tên chủ tài khoản</Label>
+                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên chủ tài khoản</Label>
                                                     <Input
                                                         value={account.account_name}
                                                         onChange={(e) => {
@@ -1831,7 +1831,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Chi nhánh</Label>
+                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Chi nhánh</Label>
                                                     <Input
                                                         value={account.bank_branch}
                                                         onChange={(e) => {
@@ -1845,7 +1845,7 @@ export default function SettingsPage() {
                                                 </div>
                                             </div>
                                             <div className="pt-3 border-t border-border/30">
-                                                <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 block">Sử dụng mặc định cho</Label>
+                                                <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-3 block">Sử dụng mặc định cho</Label>
                                                 <div className="flex flex-wrap gap-4">
                                                     {[
                                                         { value: 'retail_order', label: 'Đơn hàng (Studio B2C)' },
@@ -1883,14 +1883,14 @@ export default function SettingsPage() {
                                             setBankAccounts([...bankAccounts, { bank_name: '', account_no: '', account_name: '', bank_branch: '', default_for: [], type: 'personal' }])
                                         }}
                                     >
-                                        <Plus className="mr-2 h-4 w-4" /> Thêm tài khoản cá nhân
+                                        <Plus className="h-4 w-4" /> Thêm tài khoản cá nhân
                                     </Button>
                                 </CardContent>
                             </Card>
 
                             {/* Nút lưu chung */}
                             <div className="flex justify-end">
-                                <Button onClick={() => handleSaveBankAccounts(bankAccounts)} disabled={isSavingBankAccounts} className="rounded-md px-10 font-bold shadow-lg">
+                                <Button onClick={() => handleSaveBankAccounts(bankAccounts)} disabled={isSavingBankAccounts} className="rounded-md px-10 ">
                                     {isSavingBankAccounts && <LoadingSpinner size="sm" className="mr-2" />}
                                     Lưu danh sách
                                 </Button>
@@ -1899,17 +1899,17 @@ export default function SettingsPage() {
                     </TabsContent>
 
                     <TabsContent value="note-templates">
-                        <Card className="rounded-md shadow-sm border-border">
+                        <Card className="rounded-md border-border">
                             <CardHeader className="bg-muted/30 border-b border-border">
-                                <CardTitle className="text-xl font-bold">Mẫu Ghi chú & Điều khoản</CardTitle>
+                                <CardTitle className="text-xl">Mẫu Ghi chú & Điều khoản</CardTitle>
                                 <CardDescription className="text-sm font-medium">Cấu hình các mẫu văn bản cho từng loại dịch vụ để chọn nhanh khi tạo báo giá.</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6 pt-6">
                                 <div className="space-y-6">
                                     {noteTemplates.map((template, index) => (
-                                        <div key={index} className="space-y-4 border p-5 rounded-md relative bg-white shadow-sm border-border group">
+                                        <div key={index} className="space-y-4 border p-5 rounded-md relative bg-white border-border group">
                                             <div className="flex items-center justify-between mb-2">
-                                                <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground italic">Mẫu #{index + 1}</h4>
+                                                <h4 className="text-xs uppercase tracking-wider text-muted-foreground">Mẫu #{index + 1}</h4>
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
@@ -1925,7 +1925,7 @@ export default function SettingsPage() {
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tên mẫu</Label>
+                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên mẫu</Label>
                                                     <Input
                                                         value={template.name}
                                                         onChange={(e) => {
@@ -1938,7 +1938,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Loại dịch vụ (Gợi ý: studio, agency)</Label>
+                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Loại dịch vụ (Gợi ý: studio, agency)</Label>
                                                     <Input
                                                         value={template.service_type}
                                                         onChange={(e) => {
@@ -1952,7 +1952,7 @@ export default function SettingsPage() {
                                                 </div>
                                             </div>
                                             <div className="space-y-2">
-                                                <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Điều khoản thanh toán</Label>
+                                                <Label className="text-xs uppercase tracking-wider text-muted-foreground">Điều khoản thanh toán</Label>
                                                 <Textarea
                                                     value={template.payment_terms}
                                                     onChange={(e) => {
@@ -1965,7 +1965,7 @@ export default function SettingsPage() {
                                                 />
                                             </div>
                                             <div className="space-y-2">
-                                                <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Ghi chú</Label>
+                                                <Label className="text-xs uppercase tracking-wider text-muted-foreground">Ghi chú</Label>
                                                 <Textarea
                                                     value={template.notes}
                                                     onChange={(e) => {
@@ -1986,11 +1986,11 @@ export default function SettingsPage() {
                                             setNoteTemplates([...noteTemplates, { name: '', service_type: '', payment_terms: '', notes: '' }])
                                         }}
                                     >
-                                        <Plus className="mr-2 h-4 w-4" /> Thêm mẫu văn bản
+                                        <Plus className="h-4 w-4" /> Thêm mẫu văn bản
                                     </Button>
                                 </div>
                                 <div className="flex justify-end pt-4">
-                                    <Button onClick={() => handleSaveNoteTemplates(noteTemplates)} disabled={isSavingNoteTemplates} className="rounded-md px-10 font-bold shadow-lg">
+                                    <Button onClick={() => handleSaveNoteTemplates(noteTemplates)} disabled={isSavingNoteTemplates} className="rounded-md px-10 ">
                                         {isSavingNoteTemplates && <LoadingSpinner size="sm" className="mr-2" />}
                                         Lưu danh sách
                                     </Button>

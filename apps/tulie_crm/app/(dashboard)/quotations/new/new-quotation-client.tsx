@@ -119,7 +119,7 @@ export default function NewQuotationClient({ initialCustomers, initialProducts, 
                         </Link>
                     </Button>
                     <div>
-                        <h1 className="text-3xl font-bold text-foreground">Tạo báo giá mới</h1>
+                        <h1 className="text-3xl text-foreground">Tạo báo giá mới</h1>
                         <p className="text-[14px] text-muted-foreground">
                             Khởi tạo hồ sơ báo giá mới đa dịch vụ
                         </p>
@@ -127,15 +127,15 @@ export default function NewQuotationClient({ initialCustomers, initialProducts, 
                 </div>
                 <div className="flex items-center gap-2">
                     <Button variant="outline" onClick={() => setShowPreview(true)} disabled={isLoading} className="font-medium">
-                        <Eye className="mr-2 h-4 w-4" />
+                        <Eye className="h-4 w-4" />
                         Xem trước PDF
                     </Button>
                     <Button variant="outline" onClick={() => handleSave(false)} disabled={isLoading} className="font-medium">
-                        {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="mr-2 h-4 w-4" />}
+                        {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4" />}
                         Lưu nháp
                     </Button>
                     <Button onClick={() => handleSave(true)} disabled={isLoading} className="font-semibold">
-                        {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Send className="mr-2 h-4 w-4" />}
+                        {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Send className="h-4 w-4" />}
                         Lưu & Gửi
                     </Button>
                 </div>

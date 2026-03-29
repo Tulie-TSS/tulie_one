@@ -12,7 +12,7 @@ import { Label } from '@repo/ui' // Added Label import
 
 import { cn } from '@/lib/utils'
 
-export default function PortalPasswordForm({ token, companyName, isModal = false }: { token: string, companyName?: string, isModal?: boolean }) {
+export default function PortalPasswordForm({ token, companyName, isModal = false, type = 'portal' }: { token: string, companyName?: string, isModal?: boolean, type?: 'portal' | 'financial' }) {
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -35,7 +35,7 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
         setError(null)
 
         try {
-            const res = await verifyPortalPassword(token, password)
+            const res = await verifyPortalPassword(token, password, type)
             if (!res.success) {
                 setError(res.error || 'Mật khẩu không đúng')
                 setCaptcha({ a: Math.floor(Math.random() * 10), b: Math.floor(Math.random() * 10) })
@@ -61,7 +61,9 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                     </div>
                     <div className="space-y-1">
                         <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Secure Access</p>
-                        <h1 className="text-2xl font-bold text-foreground">Portal Khách Hàng</h1>
+                        <h1 className="text-2xl font-bold text-foreground">
+                            {type === 'portal' ? 'Portal Khách Hàng' : 'Tài liệu Tài chính'}
+                        </h1>
                     </div>
                 </div>
 
@@ -74,7 +76,7 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                             {companyName ? (
                                 <>Tài liệu bảo mật dành cho <span className="text-foreground font-bold">{companyName}</span>. Vui lòng xác thực quyền truy cập.</>
                             ) : (
-                                'Vui lòng nhập mật khẩu bảo mật để tiếp tục truy cập hồ sơ dự án.'
+                                type === 'portal' ? 'Vui lòng nhập mật khẩu bảo mật để tiếp tục truy cập hồ sơ dự án.' : 'Vui lòng nhập mật khẩu cấp 2 để xem Báo giá, Hợp đồng và Hoá đơn.'
                             )}
                         </CardDescription>
                     </CardHeader>
@@ -134,7 +136,7 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                                 {isLoading ? (
                                     <LoadingSpinner size="sm" className="mr-2" />
                                 ) : null}
-                                {isLoading ? 'Đang xác thực...' : 'Truy cập Portal'}
+                                {isLoading ? 'Đang xác thực...' : type === 'portal' ? 'Truy cập Portal' : 'Mở khoá tài liệu'}
                             </Button>
                         </form>
                     </CardContent>

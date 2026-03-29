@@ -24,7 +24,7 @@ export async function signPortalToken(token: string): Promise<string> {
 const ALLOWED_PASSWORD_TABLES = ['quotations', 'projects', 'contracts'] as const
 type PasswordTable = typeof ALLOWED_PASSWORD_TABLES[number]
 
-export async function setEntityPassword(tableName: string, entityId: string, password: string) {
+export async function setEntityPassword(tableName: string, entityId: string, password: string, type: 'portal' | 'financial' = 'portal') {
     try {
         // SECURITY: Whitelist table names to prevent arbitrary table writes
         if (!ALLOWED_PASSWORD_TABLES.includes(tableName as PasswordTable)) {
@@ -38,7 +38,12 @@ export async function setEntityPassword(tableName: string, entityId: string, pas
             passwordHash = await bcrypt.hash(password, 10)
         }
 
-        const updateData: Record<string, unknown> = { password_hash: passwordHash }
+        const updateData: Record<string, unknown> = {}
+        if (type === 'portal') {
+            updateData.password_hash = passwordHash
+        } else {
+            updateData.financial_password_hash = passwordHash
+        }
 
         const { error } = await supabase
             .from(tableName)
@@ -89,10 +94,10 @@ export async function setQuotationPassword(quotationId: string, password: string
     return setEntityPassword('quotations', quotationId, password)
 }
 
-export async function verifyPortalPassword(token: string, password: string) {
+export async function verifyPortalPassword(token: string, password: string, type: 'portal' | 'financial' = 'portal') {
     try {
         // SECURITY: Brute-force protection
-        const rateCheck = checkPasswordRateLimit(`portal_${token}`)
+        const rateCheck = checkPasswordRateLimit(`portal_${type}_${token}`)
         if (!rateCheck.allowed) {
             return { success: false, error: 'Quá nhiều lần thử. Vui lòng đợi 15 phút.' }
         }
@@ -104,7 +109,7 @@ export async function verifyPortalPassword(token: string, password: string) {
         // 1. Fetch primary quotation and its project data
         const { data: quotation, error } = await supabase
             .from('quotations')
-            .select('password_hash, project_id, project:projects(password_hash)')
+            .select('password_hash, financial_password_hash, project_id, project:projects(password_hash, financial_password_hash)')
             .eq('public_token', token)
             .single()
 
@@ -112,8 +117,13 @@ export async function verifyPortalPassword(token: string, password: string) {
             return { success: false, error: 'Không tìm thấy trang yêu cầu' }
         }
 
-        // Get effective hash (prefer quotation password, fallback to project password)
-        const passwordHash = quotation.password_hash || (quotation.project as any)?.password_hash
+        // Get effective hash depending on type
+        let passwordHash;
+        if (type === 'portal') {
+            passwordHash = quotation.password_hash || (quotation.project as any)?.password_hash
+        } else {
+            passwordHash = quotation.financial_password_hash || (quotation.project as any)?.financial_password_hash
+        }
 
         if (!passwordHash) {
             return { success: true } // No password required
@@ -132,7 +142,9 @@ export async function verifyPortalPassword(token: string, password: string) {
         // Set HMAC-signed secure cookie
         const cookieStore = await cookies()
         const signedValue = await signPortalToken(token)
-        cookieStore.set(`portal_auth_${token}`, signedValue, {
+        const cookieName = type === 'portal' ? `portal_auth_${token}` : `finance_auth_${token}`
+        
+        cookieStore.set(cookieName, signedValue, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',

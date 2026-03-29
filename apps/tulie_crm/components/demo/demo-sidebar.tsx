@@ -63,7 +63,7 @@ export function DemoSidebar() {
                     <div className="h-8 w-8 rounded-lg bg-zinc-950 dark:bg-white flex items-center justify-center">
                         <span className="text-white dark:text-foreground font-black text-sm">N</span>
                     </div>
-                    <span className="text-lg font-bold text-foreground dark:text-zinc-50">NovaDeco</span>
+                    <span className="text-lg text-foreground dark:text-zinc-50">NovaDeco</span>
                 </Link>
                 <Button
                     variant="ghost"
@@ -83,9 +83,9 @@ export function DemoSidebar() {
                         <Button
                             variant="ghost"
                             className={cn(
-                                'w-full justify-start gap-3 h-10 rounded-md',
+                                'w-full justify-start gap-3 rounded-md',
                                 pathname === '/demo/dashboard'
-                                    ? 'bg-muted dark:bg-zinc-800 text-foreground dark:text-zinc-50 shadow-sm border border-border'
+                                    ? 'bg-muted dark:bg-zinc-800 text-foreground dark:text-zinc-50 border border-border'
                                     : 'text-muted-foreground hover:text-foreground dark:hover:text-zinc-50 hover:bg-muted/50 dark:hover:bg-zinc-800/50'
                             )}
                         >
@@ -108,9 +108,9 @@ export function DemoSidebar() {
                                             <Button
                                                 variant="ghost"
                                                 className={cn(
-                                                    'w-full justify-start gap-3 h-10 rounded-md',
+                                                    'w-full justify-start gap-3 rounded-md',
                                                     isActive
-                                                        ? 'bg-muted dark:bg-zinc-800 text-foreground dark:text-zinc-50 shadow-sm border border-border'
+                                                        ? 'bg-muted dark:bg-zinc-800 text-foreground dark:text-zinc-50 border border-border'
                                                         : 'text-muted-foreground hover:text-foreground dark:hover:text-zinc-50 hover:bg-muted/50 dark:hover:bg-zinc-800/50'
                                                 )}
                                             >

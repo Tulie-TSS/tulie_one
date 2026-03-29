@@ -121,10 +121,10 @@ const mockApprovals: Approval[] = [
 ];
 
 const statusConfig: Record<ApprovalStatus, { label: string; color: string; icon: typeof Clock }> = {
-    pending_review: { label: "Pending review", color: "bg-amber-50 text-amber-600 border-amber-200 shadow-sm", icon: Clock },
-    approved: { label: "Approved", color: "bg-emerald-50 text-emerald-600 border-emerald-200 shadow-sm", icon: CheckCircle2 },
-    rejected: { label: "Rejected", color: "bg-rose-50 text-rose-600 border-rose-200 shadow-sm", icon: XCircle },
-    changes_requested: { label: "Changes requested", color: "bg-indigo-50 text-indigo-600 border-indigo-200 shadow-sm", icon: MessageSquare },
+    pending_review: { label: "Pending review", color: "bg-amber-50 text-amber-600 border-amber-200", icon: Clock },
+    approved: { label: "Approved", color: "bg-emerald-50 text-emerald-600 border-emerald-200", icon: CheckCircle2 },
+    rejected: { label: "Rejected", color: "bg-rose-50 text-rose-600 border-rose-200", icon: XCircle },
+    changes_requested: { label: "Changes requested", color: "bg-indigo-50 text-indigo-600 border-indigo-200", icon: MessageSquare },
 };
 
 export default function ApprovalsPage() {
@@ -163,7 +163,7 @@ export default function ApprovalsPage() {
                 {/* Summary */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                     <div>
-                        <h2 className="text-[20px] font-bold text-foreground flex items-center gap-2">
+                        <h2 className="text-[20px] text-foreground flex items-center gap-2">
                             <Inbox className="h-5.5 w-5.5 text-primary" />
                             Approval inbox
                         </h2>
@@ -179,7 +179,7 @@ export default function ApprovalsPage() {
                             <button
                                 key={f}
                                 onClick={() => setFilter(f)}
-                                className={`px-3 py-1.5 rounded-lg text-[13px] font-semibold transition-all duration-200 ${filter === f ? "bg-white text-foreground shadow-sm ring-1 ring-border/50" : "text-muted-foreground hover:bg-white/50 hover:text-foreground" }`}
+                                className={`px-3 py-1.5 rounded-lg text-[13px] font-semibold transition-all duration-200 ${filter === f ? "bg-white text-foreground ring-1 ring-border/50" : "text-muted-foreground hover:bg-white/50 hover:text-foreground" }`}
                             >
                                 {f === "all" ? "All" : f === "pending_review" ? "Pending" : f === "changes_requested" ? "Changes" : f.charAt(0).toUpperCase() + f.slice(1)}
                             </button>
@@ -207,7 +207,7 @@ export default function ApprovalsPage() {
                                             <div className="flex items-center gap-3 mb-1.5">
                                                 <button
                                                     onClick={() => setExpandedId(isExpanded ? null : approval.id)}
-                                                    className="text-[15px] font-bold text-foreground hover:text-primary transition-colors text-left"
+                                                    className="text-[15px] text-foreground hover:text-primary transition-colors text-left"
                                                 >
                                                     {approval.title}
                                                 </button>
@@ -215,7 +215,7 @@ export default function ApprovalsPage() {
                                                     <StatusIcon className="h-3.5 w-3.5 mr-1" />
                                                     {status.label}
                                                 </Badge>
-                                                <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-wider bg-muted border-border text-muted-foreground px-2 py-0.5">
+                                                <Badge variant="outline" className="text-[10px] uppercase tracking-wider bg-muted border-border text-muted-foreground px-2 py-0.5">
                                                     {approval.priority}
                                                 </Badge>
                                             </div>
@@ -254,7 +254,7 @@ export default function ApprovalsPage() {
                                             {/* AI-generated result */}
                                             {approval.result && (
                                                 <div className="mb-4">
-                                                    <p className="text-[12px] font-bold text-muted-foreground uppercase tracking-wider mb-2">AI-generated content</p>
+                                                    <p className="text-[12px] text-muted-foreground uppercase tracking-wider mb-2">AI-generated content</p>
                                                     <div className="rounded-md bg-muted border border-border/60 p-4 shadow-inner">
                                                         <p className="text-[13px] font-medium leading-relaxed text-foreground whitespace-pre-wrap">{approval.result}</p>
                                                     </div>
@@ -264,7 +264,7 @@ export default function ApprovalsPage() {
                                             {/* Existing feedback */}
                                             {approval.feedbackNote && (
                                                 <div className="mb-4 p-3 rounded-md bg-indigo-50/50 border border-indigo-100/50">
-                                                    <p className="text-[11px] font-bold text-indigo-600 uppercase tracking-wider mb-1">Manager feedback</p>
+                                                    <p className="text-[11px] text-indigo-600 uppercase tracking-wider mb-1">Manager feedback</p>
                                                     <p className="text-[13px] font-medium text-indigo-900 leading-relaxed">{approval.feedbackNote}</p>
                                                 </div>
                                             )}
@@ -275,7 +275,7 @@ export default function ApprovalsPage() {
                                                     <div className="flex items-center gap-2">
                                                         <Input
                                                             placeholder="Add feedback or critique for AI to improve..."
-                                                            className="text-[13px] h-10 shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-primary/20 bg-white border-border/60 rounded-md"
+                                                            className="text-[13px] h-9 transition-all focus-visible:ring-2 focus-visible:ring-primary/20 bg-white border-border/60 rounded-md"
                                                             value={feedbackInputs[approval.id] ?? ""}
                                                             onChange={(e) =>
                                                                 setFeedbackInputs({ ...feedbackInputs, [approval.id]: e.target.value })
@@ -285,7 +285,7 @@ export default function ApprovalsPage() {
                                                     <div className="flex items-center gap-3">
                                                         <Button
                                                             size="sm"
-                                                            className="h-10 px-5 text-[13px] font-bold bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-600/20 text-white transition-all"
+                                                            className="h-9 px-5 text-[13px] bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/20 text-white transition-all"
                                                             onClick={() => handleAction(approval.id, "approve")}
                                                         >
                                                             <CheckCircle2 className="h-4 w-4 mr-1.5" />
@@ -294,7 +294,7 @@ export default function ApprovalsPage() {
                                                         <Button
                                                             size="sm"
                                                             variant="outline"
-                                                            className="h-10 px-5 text-[13px] font-bold bg-white hover:bg-muted shadow-sm transition-all"
+                                                            className="h-9 px-5 text-[13px] bg-white hover:bg-muted transition-all"
                                                             onClick={() => handleAction(approval.id, "request_changes")}
                                                         >
                                                             <Send className="h-4 w-4 mr-1.5 text-primary" />
@@ -303,7 +303,7 @@ export default function ApprovalsPage() {
                                                         <Button
                                                             size="sm"
                                                             variant="outline"
-                                                            className="h-10 px-5 text-[13px] font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200 shadow-sm bg-white transition-all ml-auto"
+                                                            className="h-9 px-5 text-[13px] text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200 bg-white transition-all ml-auto"
                                                             onClick={() => handleAction(approval.id, "reject")}
                                                         >
                                                             <XCircle className="h-4 w-4 mr-1.5" />
@@ -331,7 +331,7 @@ export default function ApprovalsPage() {
 
                     {filtered.length === 0 && (
                         <div className="text-center py-12">
-                            <CheckCircle2 className="h-10 w-10 text-muted-foreground/40 mx-auto mb-3" />
+                            <CheckCircle2 className="h-9 w-10 text-muted-foreground/40 mx-auto mb-3" />
                             <p className="text-sm text-muted-foreground">No approvals to review</p>
                             <p className="text-xs text-muted-foreground mt-1">All caught up!</p>
                         </div>

@@ -113,7 +113,7 @@ export function ProjectMetadataForm({ project }: ProjectMetadataFormProps) {
                     {isLoading ? (
                         <LoadingSpinner size="sm" className="mr-2" />
                     ) : (
-                        <Save className="mr-2 h-4 w-4" />
+                        <Save className="h-4 w-4" />
                     )}
                     Lưu thông tin tài nguyên
                 </Button>

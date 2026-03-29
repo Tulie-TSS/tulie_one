@@ -35,12 +35,12 @@ export function CopyButton({ value, variant = 'outline', size = 'sm', className 
         >
             {isCopied ? (
                 <>
-                    <Check className="mr-2 h-4 w-4" />
+                    <Check className="h-4 w-4" />
                     Đã copy
                 </>
             ) : (
                 <>
-                    <Copy className="mr-2 h-4 w-4" />
+                    <Copy className="h-4 w-4" />
                     Copy
                 </>
             )}

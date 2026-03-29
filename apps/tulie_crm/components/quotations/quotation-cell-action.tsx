@@ -141,40 +141,40 @@ export function QuotationCellAction({ data }: QuotationCellActionProps) {
                     <DropdownMenuLabel>Hành động</DropdownMenuLabel>
                     <DropdownMenuItem asChild>
                         <Link href={`/quotations/${data.id}`}>
-                            <Eye className="mr-2 h-4 w-4" />
+                            <Eye className="h-4 w-4" />
                             Xem chi tiết
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <Link href={`/quotations/${data.id}/edit`}>
-                            <Edit className="mr-2 h-4 w-4" />
+                            <Edit className="h-4 w-4" />
                             Chỉnh sửa
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={onDuplicate} disabled={loading}>
-                        <FilePlus className="mr-2 h-4 w-4" />
+                        <FilePlus className="h-4 w-4" />
                         Nhân bản (Duplicate)
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                         <Link href={publicUrl} target="_blank">
-                            <ExternalLink className="mr-2 h-4 w-4" />
+                            <ExternalLink className="h-4 w-4" />
                             Xem trang công khai
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={copyLink}>
-                        <Copy className="mr-2 h-4 w-4" />
+                        <Copy className="h-4 w-4" />
                         Sao chép link
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setEmailOpen(true)}>
-                        <Send className="mr-2 h-4 w-4" />
+                        <Send className="h-4 w-4" />
                         Gửi email
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     {data.status === 'accepted' && (
                         <DropdownMenuItem asChild>
                             <Link href={`/contracts/new?from_quote=${data.id}`}>
-                                <FileSignature className="mr-2 h-4 w-4" />
+                                <FileSignature className="h-4 w-4" />
                                 Tạo hợp đồng
                             </Link>
                         </DropdownMenuItem>
@@ -183,7 +183,7 @@ export function QuotationCellAction({ data }: QuotationCellActionProps) {
                         className="text-destructive font-medium"
                         onClick={() => setOpen(true)}
                     >
-                        <Trash2 className="mr-2 h-4 w-4" />
+                        <Trash2 className="h-4 w-4" />
                         Xóa
                     </DropdownMenuItem>
                 </DropdownMenuContent>

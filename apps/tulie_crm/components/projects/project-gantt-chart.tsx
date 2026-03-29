@@ -33,13 +33,8 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
         const index = timelineDates.findIndex(d => isSameDay(d, now))
         if (index === -1) return null
         
-        const h = now.getHours()
-        const m = now.getMinutes()
-        const s = now.getSeconds()
-        const totalSeconds = h * 3600 + m * 60 + s
-        const fraction = totalSeconds / 86400
-        
-        return ((index + fraction) / daysInView) * 100
+        // Snap to center of the day cell for perfect alignment with header
+        return ((index + 0.5) / daysInView) * 100
     }, [now, timelineDates, daysInView])
 
     const monthSegments = useMemo(() => {
@@ -99,7 +94,7 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
         <Card className="overflow-hidden flex flex-col h-[700px]">
             <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 bg-muted/40 border-b space-y-2 sm:space-y-0 shrink-0">
                 <div className="flex items-center gap-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg border bg-background shrink-0">
+                    <div className="flex w-10 items-center justify-center rounded-lg border bg-background shrink-0">
                         <LayoutGrid className="w-5 h-5 text-muted-foreground" />
                     </div>
                     <div>
@@ -142,8 +137,8 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                         </div>
 
                         {/* Days Row */}
-                        <div className="flex bg-background">
-                            <div className="w-[280px] shrink-0 border-r bg-background p-3 flex items-center shadow-sm z-30 font-medium text-sm">
+                        <div className="flex bg-background border-b border-border">
+                            <div className="w-[280px] shrink-0 border-r bg-background px-4 h-11 flex items-center z-30 font-medium text-xs text-muted-foreground uppercase">
                                 Tên Task
                             </div>
                             <div className="flex-1 flex relative">
@@ -163,7 +158,7 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                                         >
                                             <span className={cn(
                                                 "text-[10px] font-medium tracking-wider uppercase mb-0.5",
-                                                isToday ? "text-primary font-bold" : "text-muted-foreground"
+                                                isToday ? "text-primary" : "text-muted-foreground"
                                             )}>
                                                 {dayOfWeek === '7' ? 'CN' : `T${Number(dayOfWeek) + 1}`}
                                             </span>
@@ -223,7 +218,7 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                                         {style && (
                                             <div
                                                 className={cn(
-                                                    "absolute h-7 rounded shadow-sm hover:shadow-md max-w-full flex items-center px-3 z-[15] transition-all cursor-default border",
+                                                    "absolute h-7 rounded hover:shadow-md max-w-full flex items-center px-3 z-[15] transition-all cursor-default border",
                                                     getStatusColor(task.status),
                                                     task.status === 'completed' || task.status === 'active' || task.status === 'in_progress' ? "text-primary-foreground border-transparent" : "text-foreground bg-background border-border"
                                                 )}
@@ -243,19 +238,19 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
             {/* Footer Legend */}
             <div className="shrink-0 p-4 border-t bg-muted/40 flex flex-wrap items-center justify-center gap-6">
                 <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-sm bg-emerald-500 shadow-sm" />
+                    <div className="w-3 h-3 rounded-sm bg-emerald-500" />
                     <span className="text-xs font-medium text-muted-foreground">Hoàn thành</span>
                 </div>
                 <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-sm bg-blue-500 shadow-sm" />
+                    <div className="w-3 h-3 rounded-sm bg-blue-500" />
                     <span className="text-xs font-medium text-muted-foreground">Đang tiến hành</span>
                 </div>
                 <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-sm bg-destructive shadow-sm" />
+                    <div className="w-3 h-3 rounded-sm bg-destructive" />
                     <span className="text-xs font-medium text-muted-foreground">Bị chặn/Huỷ</span>
                 </div>
                 <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-sm bg-background border border-border shadow-sm" />
+                    <div className="w-3 h-3 rounded-sm bg-background border border-border" />
                     <span className="text-xs font-medium text-muted-foreground">Chưa bắt đầu</span>
                 </div>
             </div>

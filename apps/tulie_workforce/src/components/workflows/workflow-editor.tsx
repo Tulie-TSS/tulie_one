@@ -433,7 +433,7 @@ export function WorkflowEditor({ workflowName = "Telegram → AI → Facebook Po
                                 onMouseDown={(e) => handleNodeMouseDown(e, node.id)}
                             >
                                 <div
-                                    className={`rounded-md border-2 bg-white shadow-sm overflow-hidden transition-all ${ isSelected ? "border-zinc-900 shadow-md" : "border-border hover:border-input hover:shadow-md" }`}
+                                    className={`rounded-md border-2 bg-white overflow-hidden transition-all ${ isSelected ? "border-zinc-900" : "border-border hover:border-input hover:shadow-md" }`}
                                 >
                                     {/* Color strip */}
                                     <div className="h-1" style={{ backgroundColor: node.color }} />

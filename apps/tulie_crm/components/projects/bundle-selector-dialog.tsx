@@ -151,7 +151,7 @@ export function BundleSelectorDialog({ isOpen, onOpenChange, workItem, project }
                                         className={cn(
                                             "relative p-4 rounded-lg border transition-all cursor-pointer group",
                                             selectedBundleId === b.id
-                                                ? "bg-primary border-primary text-primary-foreground shadow-sm"
+                                                ? "bg-primary border-primary text-primary-foreground"
                                                 : "bg-card border-border hover:border-ring"
                                         )}
                                         onClick={() => setSelectedBundleId(b.id)}

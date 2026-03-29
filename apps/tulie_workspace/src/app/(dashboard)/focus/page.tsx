@@ -15,7 +15,7 @@ export default function FocusPage() {
         return (
             <div className="-m-3 md:-m-5 flex items-center justify-center" style={{ height: 'calc(100vh - var(--header-height))', backgroundColor: 'var(--color-bg)' }}>
                 <div className="text-center max-w-lg mx-auto px-6">
-                    <div className="mb-6 text-6xl font-mono font-bold" style={{ color: 'var(--color-fg)' }}>
+                    <div className="mb-6 text-6xl font-mono" style={{ color: 'var(--color-fg)' }}>
                         {isPaused ? '⏸' : '25:00'}
                     </div>
                     <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-fg)' }}>{activeTask.title}</h2>

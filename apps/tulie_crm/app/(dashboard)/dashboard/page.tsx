@@ -151,7 +151,7 @@ export default async function DashboardPage() {
                     <CRMAlerts alerts={crmAlerts} />
 
                     {/* Business Health Card */}
-                    <Card className="shadow-sm">
+                    <Card className="">
                         <CardHeader className="pb-3">
                             <CardTitle className="text-base font-medium">Sức khỏe doanh nghiệp</CardTitle>
                         </CardHeader>
@@ -161,7 +161,7 @@ export default async function DashboardPage() {
                                 <div
                                     className={cn("h-16 w-16 rounded-full flex items-center justify-center border-4 shrink-0", scoreColorClass)}
                                 >
-                                    <span className="text-xl font-bold">
+                                    <span className="text-xl">
                                         {health.score}
                                     </span>
                                 </div>

@@ -38,11 +38,11 @@ export function DealList({ initialData }: DealListProps) {
                 <Tabs value={view} onValueChange={(v: any) => setView(v)}>
                     <TabsList>
                         <TabsTrigger value="list">
-                            <List className="h-4 w-4 mr-2" />
+                            <List className="h-4 w-4" />
                             Danh sách
                         </TabsTrigger>
                         <TabsTrigger value="kanban">
-                            <LayoutGrid className="h-4 w-4 mr-2" />
+                            <LayoutGrid className="h-4 w-4" />
                             Kanban
                         </TabsTrigger>
                     </TabsList>

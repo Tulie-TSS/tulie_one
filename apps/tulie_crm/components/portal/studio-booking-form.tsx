@@ -75,7 +75,7 @@ export function StudioBookingForm() {
                 <div className="inline-flex h-16 w-16 items-center justify-center rounded-md bg-primary/10 text-primary mb-4">
                     <Camera className="h-8 w-8" />
                 </div>
-                <h1 className="text-3xl font-bold mb-2">Đặt in ảnh thẻ online</h1>
+                <h1 className="text-3xl mb-2">Đặt in ảnh thẻ online</h1>
                 <p className="text-muted-foreground font-medium">Nhanh chóng, tiện lợi, nhận ảnh tại nhà.</p>
             </div>
 
@@ -100,12 +100,12 @@ export function StudioBookingForm() {
                 ))}
             </div>
 
-            <div className="bg-card rounded-md shadow-sm border p-6 md:p-8">
+            <div className="bg-card rounded-md border p-6 md:p-8">
                 {/* STEP 1: Chọn gói */}
                 {step === 1 && (
                     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         <div className="space-y-2">
-                            <h2 className="text-xl font-bold flex items-center gap-2">
+                            <h2 className="text-xl flex items-center gap-2">
                                 <Sparkles className="h-5 w-5 text-primary" /> Chọn gói dịch vụ
                             </h2>
                             <p className="text-muted-foreground font-medium text-sm">Vui lòng chọn gói phù hợp với nhu cầu in ấn của bạn.</p>
@@ -127,7 +127,7 @@ export function StudioBookingForm() {
                                         </div>
                                     )}
                                     <h3 className="font-bold text-lg mb-1">{pkg.name}</h3>
-                                    <div className="text-2xl font-bold text-primary mb-2">
+                                    <div className="text-2xl text-primary mb-2">
                                         {formatCurrency(pkg.price)}
                                     </div>
                                     <p className="text-sm font-medium text-muted-foreground mb-4">{pkg.desc}</p>
@@ -150,7 +150,7 @@ export function StudioBookingForm() {
                 {step === 2 && (
                     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         <div className="space-y-2">
-                            <h2 className="text-xl font-bold flex items-center gap-2">
+                            <h2 className="text-xl flex items-center gap-2">
                                 <ImageIcon className="h-5 w-5 text-primary" /> Tùy chỉnh & Tải ảnh
                             </h2>
                             <p className="text-muted-foreground font-medium text-sm">Tải ảnh gốc lên và ghi chú các yêu cầu chỉnh sửa cho Studio sửa theo ý bạn.</p>
@@ -232,7 +232,7 @@ export function StudioBookingForm() {
 
                         <div className="flex justify-between pt-4">
                             <Button variant="outline" onClick={() => setStep(1)} className="font-bold">
-                                <ArrowLeft className="mr-2 h-4 w-4" /> Quay lại
+                                <ArrowLeft className="h-4 w-4" /> Quay lại
                             </Button>
                             <Button onClick={() => setStep(3)} className="font-bold" disabled={!fileName && !isUploading}>
                                 Tiếp tục <ArrowRight className="ml-2 h-4 w-4" />
@@ -245,7 +245,7 @@ export function StudioBookingForm() {
                 {step === 3 && (
                     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         <div className="space-y-2">
-                            <h2 className="text-xl font-bold flex items-center gap-2">
+                            <h2 className="text-xl flex items-center gap-2">
                                 <MapPin className="h-5 w-5 text-primary" /> Thông tin nhận hàng
                             </h2>
                             <p className="text-muted-foreground font-medium text-sm">Điền thông tin để Studio liên hệ duyệt ảnh và gửi bản cứng (nếu có).</p>
@@ -309,7 +309,7 @@ export function StudioBookingForm() {
 
                         <div className="flex justify-between pt-4">
                             <Button variant="outline" onClick={() => setStep(2)} className="font-bold">
-                                <ArrowLeft className="mr-2 h-4 w-4" /> Quay lại
+                                <ArrowLeft className="h-4 w-4" /> Quay lại
                             </Button>
                             <Button onClick={() => setStep(4)} className="font-bold" disabled={!customer.name || !customer.phone || (needShipping && !customer.address)}>
                                 Tiếp tục <ArrowRight className="ml-2 h-4 w-4" />
@@ -322,7 +322,7 @@ export function StudioBookingForm() {
                 {step === 4 && (
                     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         <div className="space-y-2">
-                            <h2 className="text-xl font-bold flex items-center gap-2">
+                            <h2 className="text-xl flex items-center gap-2">
                                 <CreditCard className="h-5 w-5 text-primary" /> Xác nhận & Thanh toán
                             </h2>
                             <p className="text-muted-foreground font-medium text-sm">Kiểm tra thông tin và dùng Ứng dụng Ngân hàng quét mã để thanh toán.</p>
@@ -358,7 +358,7 @@ export function StudioBookingForm() {
 
                                 <div className="border-t pt-4 flex justify-between items-center">
                                     <span className="font-bold text-lg">Tổng cộng</span>
-                                    <span className="text-2xl font-bold text-primary">{formatCurrency(totalAmount)}</span>
+                                    <span className="text-2xl text-primary">{formatCurrency(totalAmount)}</span>
                                 </div>
 
                                 <div className="border-t pt-4 text-sm space-y-2">
@@ -371,7 +371,7 @@ export function StudioBookingForm() {
 
                                 {/* Bank Info */}
                                 <div className="border-t pt-4 space-y-2">
-                                    <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Thông tin chuyển khoản</p>
+                                    <p className="text-xs uppercase tracking-wide text-muted-foreground">Thông tin chuyển khoản</p>
                                     <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-sm">
                                         <span className="text-muted-foreground">Ngân hàng:</span>
                                         <span className="font-bold">Vietinbank</span>
@@ -392,7 +392,7 @@ export function StudioBookingForm() {
                                 </div>
                                 <h3 className="font-bold text-center">Quét mã QR để thanh toán</h3>
                                 <p className="text-sm text-center text-muted-foreground font-medium">Tự động điền tiền và nội dung.</p>
-                                <img src={qrUrl} alt="Payment QR Code" className="w-56 h-56 rounded-lg border shadow-sm mix-blend-multiply" />
+                                <img src={qrUrl} alt="Payment QR Code" className="w-56 h-56 rounded-lg border mix-blend-multiply" />
                                 <p className="text-xs text-center text-muted-foreground font-medium">
                                     Mở app Ngân hàng → Quét QR → Xác nhận chuyển khoản
                                 </p>
@@ -401,7 +401,7 @@ export function StudioBookingForm() {
 
                         <div className="flex justify-between pt-4">
                             <Button variant="outline" onClick={() => setStep(3)} className="font-bold">
-                                <ArrowLeft className="mr-2 h-4 w-4" /> Quay lại sửa
+                                <ArrowLeft className="h-4 w-4" /> Quay lại sửa
                             </Button>
                             <Button size="lg" className="font-bold" onClick={() => window.location.href = '/portal/order/success'}>
                                 Tôi đã chuyển khoản <CheckCircle2 className="ml-2 h-4 w-4" />

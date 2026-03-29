@@ -95,25 +95,25 @@ export function ContractCellAction({ data }: ContractCellActionProps) {
                     <DropdownMenuLabel>Hành động</DropdownMenuLabel>
                     <DropdownMenuItem asChild>
                         <Link href={`/contracts/${data.id}`}>
-                            <Eye className="mr-2 h-4 w-4" />
+                            <Eye className="h-4 w-4" />
                             Xem chi tiết
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <Link href={`/contracts/${data.id}/edit`}>
-                            <Edit className="mr-2 h-4 w-4" />
+                            <Edit className="h-4 w-4" />
                             Chỉnh sửa
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                         <Link href={`/invoices/new?contract=${data.id}`}>
-                            <Receipt className="mr-2 h-4 w-4" />
+                            <Receipt className="h-4 w-4" />
                             Tạo hóa đơn
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        <FileText className="mr-2 h-4 w-4" />
+                        <FileText className="h-4 w-4" />
                         In hợp đồng
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
@@ -121,7 +121,7 @@ export function ContractCellAction({ data }: ContractCellActionProps) {
                         className="text-destructive font-medium"
                         onClick={() => setOpen(true)}
                     >
-                        <Trash2 className="mr-2 h-4 w-4" />
+                        <Trash2 className="h-4 w-4" />
                         Xóa
                     </DropdownMenuItem>
                 </DropdownMenuContent>

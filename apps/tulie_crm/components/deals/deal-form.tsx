@@ -192,7 +192,7 @@ export function DealForm({ customers = [], users = [] }: DealFormProps) {
                             {isLoading ? (
                                 <LoadingSpinner size="sm" className="mr-2" />
                             ) : (
-                                <Save className="mr-2 h-4 w-4" />
+                                <Save className="h-4 w-4" />
                             )}
                             Tạo cơ hội
                         </Button>

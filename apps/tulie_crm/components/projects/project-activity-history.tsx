@@ -46,7 +46,7 @@ export function ProjectActivityHistory({ projectId, activities: initialActivitie
     if (isLoading) return null
 
     return (
-        <Card className="border-border shadow-sm overflow-hidden rounded-md">
+        <Card className="border-border overflow-hidden rounded-md">
             <CardHeader className="py-6 px-6 border-b border-zinc-50">
                 <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-md bg-muted border border-border flex items-center justify-center">
@@ -73,7 +73,7 @@ export function ProjectActivityHistory({ projectId, activities: initialActivitie
                                         <div className="absolute left-4 top-8 bottom-0 w-[1px] bg-muted" />
                                     )}
 
-                                    <div className="relative z-10 w-8 h-8 shrink-0 rounded-full bg-white border border-border flex items-center justify-center shadow-sm">
+                                    <div className="relative z-10 w-8 h-8 shrink-0 rounded-full bg-white border border-border flex items-center justify-center">
                                         <div className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
                                     </div>
 

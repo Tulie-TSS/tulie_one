@@ -80,7 +80,7 @@ export function ContactList({ customerId, initialContacts }: ContactListProps) {
                         <CardTitle>Danh sách liên hệ</CardTitle>
                     </div>
                     <Button size="sm" onClick={handleAdd}>
-                        <Plus className="mr-2 h-4 w-4" />
+                        <Plus className="h-4 w-4" />
                         Thêm
                     </Button>
                 </CardHeader>
@@ -98,7 +98,7 @@ export function ContactList({ customerId, initialContacts }: ContactListProps) {
                                         className="flex items-center justify-between p-4 rounded-lg border hover:bg-accent/5 transition-colors"
                                     >
                                         <div className="flex items-start gap-3">
-                                            <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
+                                            <div className="w-10 rounded-full bg-muted flex items-center justify-center">
                                                 <UserIcon className="h-5 w-5 text-muted-foreground" />
                                             </div>
                                             <div>
@@ -133,14 +133,14 @@ export function ContactList({ customerId, initialContacts }: ContactListProps) {
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
                                                 <DropdownMenuItem onClick={() => handleEdit(contact)}>
-                                                    <Edit className="mr-2 h-4 w-4" />
+                                                    <Edit className="h-4 w-4" />
                                                     Chỉnh sửa
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem
                                                     className="text-destructive focus:text-destructive"
                                                     onClick={() => handleDeleteClick(contact)}
                                                 >
-                                                    <Trash2 className="mr-2 h-4 w-4" />
+                                                    <Trash2 className="h-4 w-4" />
                                                     Xóa
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>

@@ -120,7 +120,7 @@ function ImageLightbox({ src, alt, onClose }: { src: string; alt: string; onClos
         >
             <button
                 onClick={onClose}
-                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+                className="absolute top-4 right-4 w-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
             >
                 <X className="w-5 h-5" />
             </button>
@@ -362,7 +362,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
     const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0
 
     return (
-        <div className="w-full bg-white border border-border shadow-sm rounded-md overflow-hidden font-sans">
+        <div className="w-full bg-white border border-border rounded-md overflow-hidden font-sans">
             {/* Lightbox */}
             {lightboxSrc && (
                 <ImageLightbox src={lightboxSrc} alt="Enlarged" onClose={() => setLightboxSrc(null)} />
@@ -371,11 +371,11 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
             {/* Document Header */}
             <div className="bg-muted/80 border-b border-border px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-white border border-border/60 shadow-sm flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-lg bg-white border border-border/60 flex items-center justify-center shrink-0">
                         <ListTodo className="w-6 h-6 text-foreground" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-foreground uppercase">Nhật ký xử lý yêu cầu</h2>
+                        <h2 className="text-lg text-foreground uppercase">Nhật ký xử lý yêu cầu</h2>
                         <div className="text-sm font-medium text-muted-foreground flex items-center gap-2 mt-0.5">
                             <span>Revision & Feedback Log</span>
                             <span className="w-1 h-1 rounded-full bg-zinc-300" />
@@ -385,7 +385,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                 </div>
                 <Button 
                     onClick={() => setShowForm(!showForm)} 
-                    className="bg-zinc-900 text-white hover:bg-zinc-800 shadow-sm transition-all"
+                    className="bg-zinc-900 text-white hover:bg-zinc-800 transition-all"
                 >
                     <Plus className="w-4 h-4 mr-2" />
                     Thêm yêu cầu mới
@@ -396,27 +396,27 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
             <div className="flex flex-col sm:flex-row border-b border-border divide-y sm:divide-y-0 sm:divide-x divide-zinc-100">
                 <div className="px-6 py-4 flex-1 flex flex-col justify-center">
                     <div className="flex justify-between items-end mb-2">
-                        <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Tiến độ hoàn thành</p>
-                        <span className="text-sm font-bold text-foreground">{Math.round(progressPercent)}%</span>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Tiến độ hoàn thành</p>
+                        <span className="text-sm text-foreground">{Math.round(progressPercent)}%</span>
                     </div>
                     <Progress value={progressPercent} className="h-2 bg-muted" />
                 </div>
                 
                 <div className="px-6 py-4 flex flex-wrap gap-x-12 gap-y-4">
                     <div>
-                        <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Tổng số</p>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Tổng số</p>
                         <p className="text-2xl font-black text-foreground">{totalCount}</p>
                     </div>
                     <div>
-                        <p className="text-[11px] font-bold text-amber-600 uppercase tracking-wider mb-1">Cần xử lý</p>
+                        <p className="text-[11px] text-amber-600 uppercase tracking-wider mb-1">Cần xử lý</p>
                         <p className="text-2xl font-black text-amber-700">{pendingCount}</p>
                     </div>
                     <div>
-                        <p className="text-[11px] font-bold text-blue-600 uppercase tracking-wider mb-1">Đang làm</p>
+                        <p className="text-[11px] text-blue-600 uppercase tracking-wider mb-1">Đang làm</p>
                         <p className="text-2xl font-black text-blue-700">{activeCount}</p>
                     </div>
                     <div>
-                        <p className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider mb-1">Hoàn thành</p>
+                        <p className="text-[11px] text-emerald-600 uppercase tracking-wider mb-1">Hoàn thành</p>
                         <p className="text-2xl font-black text-emerald-700">{completedCount}</p>
                     </div>
                 </div>
@@ -425,25 +425,25 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
             {/* Form Creation */}
             {showForm && (
                 <div className="p-6 bg-muted border-b border-border">
-                    <div className="max-w-4xl space-y-5 bg-white p-6 rounded-md border border-border/60 shadow-sm">
+                    <div className="max-w-4xl space-y-5 bg-white p-6 rounded-md border border-border/60">
                         <div className="flex items-center gap-2 mb-2 pb-4 border-b border-border">
                             <MessageSquarePlus className="w-5 h-5 text-foreground" />
                             <h3 className="font-semibold text-foreground">Tạo yêu cầu / Phản hồi mới</h3>
                         </div>
 
                         <div>
-                            <label className="text-xs font-bold text-zinc-700 mb-2 block uppercase tracking-wider">Tiêu đề yêu cầu <span className="text-rose-500">*</span></label>
+                            <label className="text-xs text-zinc-700 mb-2 block uppercase tracking-wider">Tiêu đề yêu cầu <span className="text-rose-500">*</span></label>
                             <Input
                                 value={newTitle}
                                 onChange={(e) => setNewTitle(e.target.value)}
                                 placeholder="Ghi chú ngắn gọn (ví dụ: Thay đổi màu sắc logo)"
-                                className="h-11 shadow-sm font-medium"
+                                className="h-11 font-medium"
                                 autoFocus
                             />
                         </div>
 
                         <div>
-                            <label className="text-xs font-bold text-zinc-700 mb-2 block uppercase tracking-wider">
+                            <label className="text-xs text-zinc-700 mb-2 block uppercase tracking-wider">
                                 Diễn giải chi tiết
                                 <span className="text-muted-foreground font-medium normal-case tracking-normal ml-2">Hỗ trợ dán ảnh (Ctrl+V)</span>
                             </label>
@@ -453,7 +453,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                 onChange={(e) => setNewContent(e.target.value)}
                                 onPaste={handlePaste}
                                 placeholder="Mô tả cụ thể những gì bạn cần thay đổi hoặc cập nhật..."
-                                className="min-h-[160px] shadow-sm resize-y leading-relaxed"
+                                className="min-h-[160px] resize-y leading-relaxed"
                             />
                         </div>
 
@@ -490,7 +490,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         {/* Attachments preview gallery */}
                         {attachments.length > 0 && (
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-zinc-700 uppercase tracking-wider flex items-center gap-2">
+                                <label className="text-xs text-zinc-700 uppercase tracking-wider flex items-center gap-2">
                                     <Paperclip className="w-3.5 h-3.5" />
                                     Ảnh đính kèm ({attachments.length})
                                 </label>
@@ -498,7 +498,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                     {attachments.map((att, idx) => (
                                         <div
                                             key={idx}
-                                            className="relative group w-24 h-24 rounded-lg overflow-hidden border border-border bg-muted shadow-sm"
+                                            className="relative group w-24 h-24 rounded-lg overflow-hidden border border-border bg-muted"
                                         >
                                             <img
                                                 src={att.url}
@@ -523,7 +523,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
 
                         <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center justify-between pt-2">
                             <div className="flex items-center gap-3">
-                                <span className="text-xs font-bold text-zinc-700 uppercase tracking-wider mr-1">Mức độ:</span>
+                                <span className="text-xs text-zinc-700 uppercase tracking-wider mr-1">Mức độ:</span>
                                 {Object.entries(PRIORITY_CONFIG).map(([key, config]) => (
                                     <button
                                         key={key}
@@ -531,7 +531,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                         className={cn(
                                             "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all border",
                                             newPriority === key
-                                                ? "bg-zinc-900 text-white border-zinc-900 shadow-sm"
+                                                ? "bg-zinc-900 text-white border-zinc-900"
                                                 : "bg-white text-muted-foreground border-border hover:border-input hover:bg-muted"
                                         )}
                                     >
@@ -567,7 +567,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         <ClipboardList className="w-12 h-12 text-zinc-200 mb-4" />
                         <h4 className="text-base font-semibold text-zinc-700 mb-1">Chưa có bản ghi nào</h4>
                         <p className="text-sm text-muted-foreground max-w-sm">Danh sách yêu cầu chỉnh sửa và theo dõi trạng thái sẽ xuất hiện tại đây.</p>
-                        <Button variant="outline" onClick={() => setShowForm(true)} className="mt-6 bg-white shadow-sm font-semibold">
+                        <Button variant="outline" onClick={() => setShowForm(true)} className="mt-6 bg-white font-semibold">
                             Tạo tác vụ đầu tiên
                         </Button>
                     </div>
@@ -576,11 +576,11 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         <Table>
                             <TableHeader className="bg-white">
                                 <TableRow className="hover:bg-transparent border-b-zinc-200">
-                                    <TableHead className="w-[60px] h-12 pl-6 font-bold text-muted-foreground text-[11px] uppercase tracking-wider text-center">STT</TableHead>
-                                    <TableHead className="h-12 font-bold text-muted-foreground text-[11px] uppercase tracking-wider">Nội dung phản hồi / Yêu cầu</TableHead>
-                                    <TableHead className="w-[120px] h-12 font-bold text-muted-foreground text-[11px] uppercase tracking-wider">Mức độ</TableHead>
-                                    <TableHead className="w-[140px] h-12 font-bold text-muted-foreground text-[11px] uppercase tracking-wider">Trạng thái</TableHead>
-                                    <TableHead className="w-[180px] h-12 font-bold text-muted-foreground text-[11px] uppercase tracking-wider">Khởi tạo</TableHead>
+                                    <TableHead className="w-[60px] h-12 pl-6 text-muted-foreground text-[11px] uppercase tracking-wider text-center">STT</TableHead>
+                                    <TableHead className="h-12 text-muted-foreground text-[11px] uppercase tracking-wider">Nội dung phản hồi / Yêu cầu</TableHead>
+                                    <TableHead className="w-[120px] h-12 text-muted-foreground text-[11px] uppercase tracking-wider">Mức độ</TableHead>
+                                    <TableHead className="w-[140px] h-12 text-muted-foreground text-[11px] uppercase tracking-wider">Trạng thái</TableHead>
+                                    <TableHead className="w-[180px] h-12 text-muted-foreground text-[11px] uppercase tracking-wider">Khởi tạo</TableHead>
                                     <TableHead className="w-[80px] pr-6"></TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -603,7 +603,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                 onClick={() => toggleExpand(item.id)}
                                             >
                                                 <TableCell className="pl-6 text-center">
-                                                    <span className="text-xs font-bold text-muted-foreground">#{(items.length - index).toString().padStart(2, '0')}</span>
+                                                    <span className="text-xs text-muted-foreground">#{(items.length - index).toString().padStart(2, '0')}</span>
                                                 </TableCell>
                                                 <TableCell>
                                                     <div className="flex flex-col gap-1 py-1">
@@ -662,7 +662,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                             {isExpanded && (
                                                 <TableRow className="border-b-zinc-200 bg-muted/50 hover:bg-muted/50">
                                                     <TableCell colSpan={6} className="p-0">
-                                                        <div className="px-6 py-6 border-l-2 border-l-primary/30 ml-[25px] mb-4 mt-2 bg-white rounded-r-xl shadow-sm mr-6 border-y border-r border-border/60 overflow-hidden">
+                                                        <div className="px-6 py-6 border-l-2 border-l-primary/30 ml-[25px] mb-4 mt-2 bg-white rounded-r-xl mr-6 border-y border-r border-border/60 overflow-hidden">
                                                             
                                                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                                                                 {/* Left: Original Request */}
@@ -670,7 +670,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                     <div className="flex items-start justify-between gap-4 mb-3">
                                                                         <div className="flex items-center gap-2">
                                                                             <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center border border-border shrink-0">
-                                                                                <span className="text-[10px] font-bold text-muted-foreground">{item.created_by_name.charAt(0)}</span>
+                                                                                <span className="text-[10px] text-muted-foreground">{item.created_by_name.charAt(0)}</span>
                                                                             </div>
                                                                             <div>
                                                                                 <p className="text-xs font-semibold text-foreground">
@@ -689,10 +689,10 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                                     setEditItemId(item.id)
                                                                                     setEditTitle(item.title)
                                                                                     setEditContent(item.content || '')
-                                                                                }} className="h-7 text-xs px-2 shadow-sm bg-white hover:bg-muted border-border text-muted-foreground font-semibold hover:text-foreground transition-colors">
+                                                                                }} className="h-7 text-xs px-2 bg-white hover:bg-muted border-border text-muted-foreground font-semibold hover:text-foreground transition-colors">
                                                                                     <Edit className="w-3 h-3 mr-1.5" /> Sửa
                                                                                 </Button>
-                                                                                <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); handleDelete(item.id); }} disabled={isDeleting === item.id} className="h-7 text-xs px-2 shadow-sm bg-white hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 border-border transition-colors text-muted-foreground font-semibold">
+                                                                                <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); handleDelete(item.id); }} disabled={isDeleting === item.id} className="h-7 text-xs px-2 bg-white hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 border-border transition-colors text-muted-foreground font-semibold">
                                                                                     {isDeleting === item.id ? <Loader2 className="w-3 h-3 mr-1.5 animate-spin" /> : <Trash2 className="w-3 h-3 mr-1.5" />} Xóa
                                                                                 </Button>
                                                                             </div>
@@ -700,14 +700,14 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                     </div>
                                                                     
                                                                     {editItemId === item.id ? (
-                                                                        <div className="space-y-4 bg-muted/50 p-4 border border-border rounded-md shadow-sm">
+                                                                        <div className="space-y-4 bg-muted/50 p-4 border border-border rounded-md">
                                                                             <div>
-                                                                                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block mb-2">Sửa Tiêu đề</label>
-                                                                                <Input value={editTitle} onChange={e => setEditTitle(e.target.value)} className="h-9 text-sm shadow-sm font-medium" />
+                                                                                <label className="text-[11px] text-muted-foreground uppercase tracking-wider block mb-2">Sửa Tiêu đề</label>
+                                                                                <Input value={editTitle} onChange={e => setEditTitle(e.target.value)} className="h-9 text-sm font-medium" />
                                                                             </div>
                                                                             <div>
-                                                                                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block mb-2">Sửa Mô tả chi tiết</label>
-                                                                                <Textarea value={editContent} onChange={e => setEditContent(e.target.value)} className="min-h-[100px] text-sm shadow-sm leading-relaxed" />
+                                                                                <label className="text-[11px] text-muted-foreground uppercase tracking-wider block mb-2">Sửa Mô tả chi tiết</label>
+                                                                                <Textarea value={editContent} onChange={e => setEditContent(e.target.value)} className="min-h-[100px] text-sm leading-relaxed" />
                                                                             </div>
                                                                             <div className="flex items-center gap-2 justify-end pt-2">
                                                                                 <Button variant="ghost" size="sm" onClick={() => setEditItemId(null)} className="h-8 shadow-none font-semibold text-muted-foreground">Hủy</Button>
@@ -722,13 +722,13 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                             dangerouslySetInnerHTML={{ __html: item.content }}
                                                                         />
                                                                     ) : (
-                                                                        <p className="text-[13px] text-muted-foreground italic font-medium">Không có mô tả chi tiết.</p>
+                                                                        <p className="text-[13px] text-muted-foreground font-medium">Không có mô tả chi tiết.</p>
                                                                     )}
 
                                                                     {/* Attachments Gallery */}
                                                                     {hasAttachments && (
                                                                         <div className="space-y-2 pt-3 border-t border-border">
-                                                                            <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                                                                            <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
                                                                                 <Paperclip className="w-3 h-3" />
                                                                                 Ảnh đính kèm ({item.attachments.length})
                                                                             </p>
@@ -736,7 +736,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                                 {item.attachments.map((att, i) => (
                                                                                     <div
                                                                                         key={i}
-                                                                                        className="relative group w-20 h-20 rounded-lg overflow-hidden border border-border bg-muted cursor-zoom-in shadow-sm hover:shadow-md transition-shadow"
+                                                                                        className="relative group w-20 h-20 rounded-lg overflow-hidden border border-border bg-muted cursor-zoom-in hover:shadow-md transition-shadow"
                                                                                         onClick={(e) => { e.stopPropagation(); setLightboxSrc(att.url) }}
                                                                                     >
                                                                                         <img
@@ -761,7 +761,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                             <MessageCircle className="w-3 h-3 text-blue-700" />
                                                                         </div>
                                                                         <div>
-                                                                            <p className="text-xs font-bold text-blue-900 uppercase">
+                                                                            <p className="text-xs text-blue-900 uppercase">
                                                                                 Agency phản hồi
                                                                             </p>
                                                                             {item.responded_at && (

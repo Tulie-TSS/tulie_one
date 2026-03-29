@@ -161,19 +161,19 @@ export const productColumns: ColumnDef<Product>[] = [
                         <DropdownMenuLabel>Hành động</DropdownMenuLabel>
                         <DropdownMenuItem asChild>
                             <Link href={`/products/${product.id}`}>
-                                <Eye className="mr-2 h-4 w-4" />
+                                <Eye className="h-4 w-4" />
                                 Xem chi tiết
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                             <Link href={`/products/${product.id}/edit`}>
-                                <Edit className="mr-2 h-4 w-4" />
+                                <Edit className="h-4 w-4" />
                                 Chỉnh sửa
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-destructive">
-                            <Trash2 className="mr-2 h-4 w-4" />
+                            <Trash2 className="h-4 w-4" />
                             Xóa
                         </DropdownMenuItem>
                     </DropdownMenuContent>

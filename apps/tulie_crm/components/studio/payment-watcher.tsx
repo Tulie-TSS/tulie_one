@@ -218,10 +218,10 @@ export function PaymentWatcher({
             <div className="space-y-3">
                 <div className="flex justify-between items-end">
                     <div>
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                        <p className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">
                             Tiến độ thanh toán
                         </p>
-                        <p className="text-2xl font-bold tabular-nums">
+                        <p className="text-2xl tabular-nums">
                             {formatCurrency(currentPaid)}
                             <span className="text-sm font-normal text-muted-foreground"> / {formatCurrency(totalAmount)}</span>
                         </p>
@@ -268,7 +268,7 @@ export function PaymentWatcher({
                 <>
                     <Separator />
                     <div className="space-y-2">
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                        <p className="text-[11px] uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                             <Zap className="h-3 w-3" />
                             Lịch sử giao dịch ({status.transactions.length})
                         </p>
@@ -319,10 +319,10 @@ export function PaymentWatcher({
             {/* Fully Paid Celebration */}
             {isFullyPaid && (
                 <div className="flex flex-col items-center justify-center py-4 space-y-3 bg-emerald-50 rounded-md border border-emerald-200">
-                    <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center">
+                    <div className="w-10 rounded-full bg-emerald-100 flex items-center justify-center">
                         <CheckCircle2 className="h-6 w-6 text-emerald-600" />
                     </div>
-                    <p className="text-sm font-bold text-emerald-700">CÔNG NỢ ĐÃ HOÀN TẤT</p>
+                    <p className="text-sm text-emerald-700">CÔNG NỢ ĐÃ HOÀN TẤT</p>
                 </div>
             )}
         </div>

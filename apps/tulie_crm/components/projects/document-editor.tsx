@@ -78,7 +78,7 @@ export function DocumentEditor({ document: initialDoc, onBack }: DocumentEditorP
 
             <Card className="border-none shadow-premium overflow-hidden">
                 <CardHeader className="bg-muted border-b">
-                    <CardTitle className="text-md font-bold">{initialDoc.template_name}</CardTitle>
+                    <CardTitle className="text-md">{initialDoc.template_name}</CardTitle>
                     <CardDescription>Bạn có thể chỉnh sửa nội dung văn bản này để phù hợp với thỏa thuận riêng cho dự án.</CardDescription>
                 </CardHeader>
                 <CardContent className="p-0">
@@ -99,7 +99,7 @@ export function DocumentEditor({ document: initialDoc, onBack }: DocumentEditorP
             </Card>
 
             <div className="flex justify-end gap-2 py-4">
-                <p className="text-[11px] text-muted-foreground flex items-center italic">
+                <p className="text-[11px] text-muted-foreground flex items-center">
                     Lưu ý: Nội dung sẽ được cập nhật trực tiếp trên trang Portal của khách hàng sau khi lưu.
                 </p>
             </div>

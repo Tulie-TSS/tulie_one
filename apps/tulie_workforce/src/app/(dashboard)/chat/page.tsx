@@ -174,9 +174,9 @@ export default function ChatPage() {
             <Header title="Chat" />
             <div className="flex -mx-6 md:-mx-10 -mb-6 md:-mb-8 h-[calc(100vh-73px)] bg-[#f8fbfa]">
                 {/* Thread List */}
-                <div className="w-80 border-r border-border/60 bg-white flex flex-col z-10 shadow-sm">
+                <div className="w-80 border-r border-border/60 bg-white flex flex-col z-10">
                     <div className="p-4 border-b border-border/60">
-                        <Button onClick={handleNewThread} className="w-full h-10 text-[13px] font-bold gap-2 bg-primary hover:bg-primary/95 text-white shadow-md shadow-primary/20 transition-transform active:scale-95" size="sm">
+                        <Button onClick={handleNewThread} className="w-full h-9 text-[13px] gap-2 bg-primary hover:bg-primary/95 text-white shadow-primary/20 transition-transform active:scale-95" size="sm">
                             <Plus className="h-4.5 w-4.5" />
                             New chat
                         </Button>
@@ -184,13 +184,13 @@ export default function ChatPage() {
 
                     {/* Agent selector for new threads */}
                     <div className="p-4 border-b border-border/40 bg-muted/30">
-                        <p className="text-[10px] font-bold text-muted-foreground mb-2.5 uppercase tracking-wider">Agent</p>
+                        <p className="text-[10px] text-muted-foreground mb-2.5 uppercase tracking-wider">Agent</p>
                         <div className="flex flex-wrap gap-1.5">
                             {activeAgents.map((agent) => (
                                 <button
                                     key={agent.id}
                                     onClick={() => setSelectedAgentId(agent.id)}
-                                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all duration-200 ${ selectedAgentId === agent.id ? "bg-foreground text-white shadow-sm" : "bg-white border border-border text-muted-foreground hover:border-muted-foreground/30 hover:text-foreground hover:shadow-sm" }`}
+                                    className={`px-2.5 py-1 rounded-md text-[11px] transition-all duration-200 ${ selectedAgentId === agent.id ? "bg-foreground text-white" : "bg-white border border-border text-muted-foreground hover:border-muted-foreground/30 hover:text-foreground hover:shadow-sm" }`}
                                 >
                                     {agent.name}
                                 </button>
@@ -208,12 +208,12 @@ export default function ChatPage() {
                             >
                                 <div className="flex items-start gap-3 mb-1.5">
                                     <MessageSquare className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0 group-hover:text-primary transition-colors" />
-                                    <p className={`text-[13px] font-bold truncate transition-colors ${activeThreadId === thread.id ? "text-primary" : "text-foreground group-hover:text-primary"}`}>
+                                    <p className={`text-[13px] truncate transition-colors ${activeThreadId === thread.id ? "text-primary" : "text-foreground group-hover:text-primary"}`}>
                                         {thread.title}
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2 pl-7">
-                                    <Badge variant="outline" className="text-[9px] font-bold uppercase tracking-wider bg-muted border-border text-muted-foreground px-2">
+                                    <Badge variant="outline" className="text-[9px] uppercase tracking-wider bg-muted border-border text-muted-foreground px-2">
                                         {thread.agentName}
                                     </Badge>
                                     <span className="text-[10px] font-medium text-muted-foreground ml-auto">
@@ -230,16 +230,16 @@ export default function ChatPage() {
                     {activeThread ? (
                         <>
                             {/* Chat header */}
-                            <div className="h-14 border-b border-border/60 bg-white px-6 flex items-center gap-3 shadow-sm z-10 transition-all">
-                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 border border-indigo-100 shadow-sm">
+                            <div className="h-14 border-b border-border/60 bg-white px-6 flex items-center gap-3 z-10 transition-all">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 border border-indigo-100">
                                     <Bot className="h-4.5 w-4.5 text-indigo-600" />
                                 </div>
                                 <div>
-                                    <p className="text-[14px] font-bold text-foreground">
+                                    <p className="text-[14px] text-foreground">
                                         {activeThread.agentName}
                                     </p>
                                 </div>
-                                <Badge variant="outline" className="text-[10px] font-bold ml-auto px-2 bg-muted border-border/60 text-muted-foreground uppercase tracking-wider">
+                                <Badge variant="outline" className="text-[10px] ml-auto px-2 bg-muted border-border/60 text-muted-foreground uppercase tracking-wider">
                                     {activeThread.messages.length} messages
                                 </Badge>
                             </div>
@@ -248,10 +248,10 @@ export default function ChatPage() {
                             <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 space-y-6">
                                 {activeThread.messages.length === 0 && (
                                     <div className="flex flex-col items-center justify-center h-full text-center">
-                                        <div className="flex h-16 w-16 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 shadow-sm mb-5">
+                                        <div className="flex h-16 w-16 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 mb-5">
                                             <Sparkles className="h-8 w-8 text-indigo-600" />
                                         </div>
-                                        <h3 className="text-xl font-bold text-foreground">
+                                        <h3 className="text-xl text-foreground">
                                             Start a conversation
                                         </h3>
                                         <p className="text-[14px] font-medium text-muted-foreground mt-2 max-w-sm leading-relaxed">
@@ -267,12 +267,12 @@ export default function ChatPage() {
                                         className={`flex gap-3 max-w-4xl mx-auto ${ msg.role === "user" ? "justify-end" : "justify-start" }`}
                                     >
                                         {msg.role === "assistant" && (
-                                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 shadow-sm mt-0.5">
+                                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 mt-0.5">
                                                 <Bot className="h-5 w-5 text-indigo-600" />
                                             </div>
                                         )}
                                         <div
-                                            className={`max-w-[85%] sm:max-w-[75%] rounded-md px-5 py-3.5 shadow-sm ${ msg.role === "user" ? "bg-foreground text-white rounded-tr-sm" : "bg-white border border-border/60 rounded-tl-sm" }`}
+                                            className={`max-w-[85%] sm:max-w-[75%] rounded-md px-5 py-3.5 ${ msg.role === "user" ? "bg-foreground text-white rounded-tr-sm" : "bg-white border border-border/60 rounded-tl-sm" }`}
                                         >
                                             <div
                                                 className={`text-[14px] leading-relaxed whitespace-pre-wrap ${ msg.role === "user" ? "text-white font-medium" : "text-foreground font-medium" }`}
@@ -297,11 +297,11 @@ export default function ChatPage() {
                                 {/* Loading state placeholder for syntax parsing */}
                                 {isLoading && (
                                     <div className="flex gap-3 max-w-4xl mx-auto">
-                                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 shadow-sm mt-0.5">
+                                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 mt-0.5">
                                             <Bot className="h-5 w-5 text-indigo-600" />
                                         </div>
-                                        <div className="bg-white border border-border/60 rounded-md rounded-tl-sm px-5 py-3.5 shadow-sm">
-                                            <div className="flex items-center gap-2 text-[13px] font-bold text-muted-foreground">
+                                        <div className="bg-white border border-border/60 rounded-md rounded-tl-sm px-5 py-3.5">
+                                            <div className="flex items-center gap-2 text-[13px] text-muted-foreground">
                                                 <Loader2 className="h-4 w-4 animate-spin text-primary" />
                                                 Thinking...
                                             </div>
@@ -321,13 +321,13 @@ export default function ChatPage() {
                                         onKeyDown={handleKeyDown}
                                         placeholder={`Message ${activeThread.agentName}...`}
                                         rows={1}
-                                        className="flex-1 resize-none py-3.5 pl-5 pr-14 text-[14px] font-medium leading-relaxed bg-white border border-border/60 rounded-md shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 placeholder:text-muted-foreground/70"
+                                        className="flex-1 resize-none py-3.5 pl-5 pr-14 text-[14px] font-medium leading-relaxed bg-white border border-border/60 rounded-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 placeholder:text-muted-foreground/70"
                                     />
                                     <Button
                                         onClick={handleSend}
                                         disabled={!input.trim() || isLoading}
                                         size="icon"
-                                        className="absolute right-2 top-2 h-10 w-10 rounded-md bg-primary hover:bg-primary/95 text-primary-foreground shadow-md shadow-primary/20 transition-all disabled:opacity-50 disabled:hover:translate-y-0"
+                                        className="absolute right-2 top-2 h-9 w-10 rounded-md bg-primary hover:bg-primary/95 text-primary-foreground shadow-primary/20 transition-all disabled:opacity-50 disabled:hover:translate-y-0"
                                     >
                                         <Send className="h-4.5 w-4.5" />
                                     </Button>
@@ -338,9 +338,9 @@ export default function ChatPage() {
                         <div className="flex-1 flex items-center justify-center bg-white">
                             <div className="text-center">
                                 <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-accent mb-6 mx-auto">
-                                    <MessageSquare className="h-10 w-10 text-muted-foreground/60" />
+                                    <MessageSquare className="h-9 w-10 text-muted-foreground/60" />
                                 </div>
-                                <h3 className="text-xl font-bold text-foreground">
+                                <h3 className="text-xl text-foreground">
                                     No conversation selected
                                 </h3>
                                 <p className="text-[14px] font-medium text-muted-foreground mt-2">

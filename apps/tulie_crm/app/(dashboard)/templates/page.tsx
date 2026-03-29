@@ -125,7 +125,7 @@ export default function TemplatesPage() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
+                    <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
                         <Files className="h-6 w-6 text-primary" />
                     </div>
                     <div>
@@ -137,14 +137,14 @@ export default function TemplatesPage() {
                 </div>
                 <Button asChild>
                     <Link href="/templates/new">
-                        <Plus className="mr-2 h-4 w-4" />
+                        <Plus className="h-4 w-4" />
                         Thêm mẫu mới
                     </Link>
                 </Button>
             </div>
 
             {/* Templates List */}
-            <div className="rounded-md border border-border bg-white shadow-sm overflow-hidden">
+            <div className="rounded-md border border-border bg-white overflow-hidden">
                 <Table>
                     <TableHeader className="bg-muted/50">
                         <TableRow className="hover:bg-transparent">
@@ -242,7 +242,7 @@ export default function TemplatesPage() {
                     </p>
                     <Button asChild>
                         <Link href="/templates/new">
-                            <Plus className="mr-2 h-4 w-4" />
+                            <Plus className="h-4 w-4" />
                             Tạo mẫu mới
                         </Link>
                     </Button>

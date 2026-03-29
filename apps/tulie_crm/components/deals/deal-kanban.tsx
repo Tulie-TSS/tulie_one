@@ -92,7 +92,7 @@ export function DealKanban({ deals }: DealKanbanProps) {
                                     onDragStart={(e) => onDragStart(e, deal.id)}
                                     onDragEnd={onDragEnd}
                                     className={cn(
-                                        "bg-background rounded-lg border shadow-sm p-4 space-y-3 cursor-grab active:cursor-grabbing hover:border-primary/50 transition-all group relative",
+                                        "bg-background rounded-lg border p-4 space-y-3 cursor-grab active:cursor-grabbing hover:border-primary/50 transition-all group relative",
                                         isDragging === deal.id && "opacity-50 ring-2 ring-primary ring-offset-2"
                                     )}
                                 >
@@ -121,7 +121,7 @@ export function DealKanban({ deals }: DealKanbanProps) {
                                     </div>
 
                                     <div className="space-y-2">
-                                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground italic">
+                                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                                             <Users className="h-3 w-3 shrink-0" />
                                             <span className="truncate group-hover:text-foreground transition-colors">
                                                 {deal.customer?.company_name}
@@ -143,7 +143,7 @@ export function DealKanban({ deals }: DealKanbanProps) {
                                             <Calendar className="h-3 w-3" />
                                             {new Date(deal.created_at).toLocaleDateString('vi-VN')}
                                         </div>
-                                        <div className="flex items-center gap-1 bg-muted/50 px-1.5 py-0.5 rounded italic">
+                                        <div className="flex items-center gap-1 bg-muted/50 px-1.5 py-0.5 rounded">
                                             {deal.assigned_user?.full_name?.split(' ').pop()}
                                         </div>
                                     </div>
@@ -151,7 +151,7 @@ export function DealKanban({ deals }: DealKanbanProps) {
                             ))}
 
                         {deals.filter(d => d.status === status).length === 0 && (
-                            <div className="h-24 border-2 border-dashed rounded-lg flex items-center justify-center text-muted-foreground/40 text-xs italic">
+                            <div className="h-24 border-2 border-dashed rounded-lg flex items-center justify-center text-muted-foreground/40 text-xs">
                                 Trống
                             </div>
                         )}

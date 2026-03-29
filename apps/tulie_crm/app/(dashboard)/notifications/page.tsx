@@ -102,11 +102,11 @@ export default async function NotificationsPage() {
         <div className="space-y-6 p-4 md:p-8 pt-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
+                    <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
                         <Bell className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold">Thông báo</h1>
+                        <h1 className="text-2xl">Thông báo</h1>
                         <p className="text-muted-foreground">Theo dõi hoạt động hệ thống và các sự kiện quan trọng</p>
                     </div>
                 </div>
@@ -193,7 +193,7 @@ export default async function NotificationsPage() {
                                 <Link
                                     key={alert.id}
                                     href={alert.link}
-                                    className={`flex items-center gap-4 p-4 rounded-lg border transition-all hover:shadow-md ${getSeverityColors(alert.severity)}`}
+                                    className={`flex items-center gap-4 p-4 rounded-lg border transition-all hover: ${getSeverityColors(alert.severity)}`}
                                 >
                                     <div className="shrink-0">
                                         {getAlertIcon(alert.type)}
@@ -234,7 +234,7 @@ export default async function NotificationsPage() {
                                 <Link
                                     key={notification.id}
                                     href={notification.link || '#'}
-                                    className={`flex items-center gap-4 p-4 rounded-lg border transition-all hover:shadow-md ${getNotifSeverityColor(notification.severity, notification.read)}`}
+                                    className={`flex items-center gap-4 p-4 rounded-lg border transition-all hover: ${getNotifSeverityColor(notification.severity, notification.read)}`}
                                 >
                                     <div className="shrink-0">
                                         {getNotificationIcon(notification.type)}

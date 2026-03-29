@@ -159,9 +159,9 @@ const mockWorkflows: N8nWorkflow[] = [
 ];
 
 const statusConfig: Record<WorkflowStatus, { label: string; className: string; icon: typeof CheckCircle2 }> = {
-    active: { label: "Active", className: "bg-emerald-50 text-emerald-600 border-emerald-200 shadow-sm", icon: CheckCircle2 },
-    inactive: { label: "Inactive", className: "bg-muted text-muted-foreground border-border shadow-sm", icon: Pause },
-    error: { label: "Error", className: "bg-rose-50 text-rose-600 border-rose-200 shadow-sm", icon: XCircle },
+    active: { label: "Active", className: "bg-emerald-50 text-emerald-600 border-emerald-200", icon: CheckCircle2 },
+    inactive: { label: "Inactive", className: "bg-muted text-muted-foreground border-border", icon: Pause },
+    error: { label: "Error", className: "bg-rose-50 text-rose-600 border-rose-200", icon: XCircle },
 };
 
 const execStatusStyle: Record<string, string> = {
@@ -221,7 +221,7 @@ export default function AutomationsPage() {
                                 <Workflow className="h-4 w-4 text-indigo-500" />
                                 <span className="text-xs font-semibold uppercase tracking-wider">Total workflows</span>
                             </div>
-                            <p className="text-3xl font-bold text-foreground mt-2">{mockWorkflows.length}</p>
+                            <p className="text-3xl text-foreground mt-2">{mockWorkflows.length}</p>
                             <p className="text-xs font-medium text-muted-foreground mt-1">{activeWorkflows} active</p>
                         </CardContent>
                     </Card>
@@ -231,7 +231,7 @@ export default function AutomationsPage() {
                                 <Play className="h-4 w-4 text-emerald-500" />
                                 <span className="text-xs font-semibold uppercase tracking-wider">Total executions</span>
                             </div>
-                            <p className="text-3xl font-bold text-foreground mt-2">{totalRuns}</p>
+                            <p className="text-3xl text-foreground mt-2">{totalRuns}</p>
                             <p className="text-xs font-medium text-muted-foreground mt-1">All time</p>
                         </CardContent>
                     </Card>
@@ -241,7 +241,7 @@ export default function AutomationsPage() {
                                 <CheckCircle2 className="h-4 w-4 text-amber-500" />
                                 <span className="text-xs font-semibold uppercase tracking-wider">Success rate</span>
                             </div>
-                            <p className="text-3xl font-bold text-foreground mt-2">{avgSuccess}%</p>
+                            <p className="text-3xl text-foreground mt-2">{avgSuccess}%</p>
                             <p className="text-xs font-medium text-muted-foreground mt-1">Average across all</p>
                         </CardContent>
                     </Card>
@@ -251,7 +251,7 @@ export default function AutomationsPage() {
                                 <Link2 className="h-4 w-4 text-sky-500" />
                                 <span className="text-xs font-semibold uppercase tracking-wider">n8n status</span>
                             </div>
-                            <p className="text-3xl font-bold text-foreground mt-2">
+                            <p className="text-3xl text-foreground mt-2">
                                 {isConnected ? "Connected" : "Not connected"}
                             </p>
                             <p className="text-xs font-medium text-muted-foreground mt-1 truncate">{n8nUrl}</p>
@@ -265,7 +265,7 @@ export default function AutomationsPage() {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`flex items-center gap-1.5 px-4 py-2 text-[13px] font-semibold transition-all duration-200 rounded-lg ${ activeTab === tab.id ? "bg-white text-foreground shadow-sm ring-1 ring-border/50" : "text-muted-foreground hover:bg-white/50 hover:text-foreground" }`}
+                            className={`flex items-center gap-1.5 px-4 py-2 text-[13px] font-semibold transition-all duration-200 rounded-lg ${ activeTab === tab.id ? "bg-white text-foreground ring-1 ring-border/50" : "text-muted-foreground hover:bg-white/50 hover:text-foreground" }`}
                         >
                             <tab.icon className="h-4 w-4" />
                             {tab.label}
@@ -287,14 +287,14 @@ export default function AutomationsPage() {
                                 <Button
                                     variant="outline"
                                     onClick={() => window.open(n8nUrl, '_blank')}
-                                    className="gap-1.5 h-9 text-xs font-semibold bg-white hover:bg-muted shadow-sm"
+                                    className="gap-1.5 h-9 text-xs font-semibold bg-white hover:bg-muted"
                                 >
                                     <ExternalLink className="h-3.5 w-3.5" />
                                     Open n8n
                                 </Button>
                                 <Button
                                     onClick={() => setActiveTab("editor")}
-                                    className="gap-1.5 h-9 bg-primary text-primary-foreground shadow-sm hover:bg-primary/95 text-xs font-semibold"
+                                    className="gap-1.5 h-9 bg-primary text-primary-foreground hover:bg-primary/95 text-xs font-semibold"
                                 >
                                     <Plus className="h-3.5 w-3.5" />
                                     Full editor
@@ -310,25 +310,25 @@ export default function AutomationsPage() {
                                 return (
                                     <Card
                                         key={workflow.id}
-                                        className={`cursor-pointer transition-all card-elevated border-transparent hover:border-primary/20 hover:shadow-md ${selectedWorkflow === workflow.id ? "ring-2 ring-primary shadow-md" : ""}`}
+                                        className={`cursor-pointer transition-all card-elevated border-transparent hover:border-primary/20 hover:shadow-md ${selectedWorkflow === workflow.id ? "ring-2 ring-primary" : ""}`}
                                         onClick={() => setSelectedWorkflow(selectedWorkflow === workflow.id ? null : workflow.id)}
                                     >
                                         <CardContent className="pt-5 pb-4">
                                             {/* Header */}
                                             <div className="flex items-start justify-between mb-3">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/5 shadow-sm border border-border">
+                                                    <div className="flex h-9 w-10 items-center justify-center rounded-md bg-primary/5 border border-border">
                                                         <Workflow className="h-5 w-5 text-primary" />
                                                     </div>
                                                     <div>
-                                                        <p className="text-[15px] font-bold text-foreground">{workflow.name}</p>
+                                                        <p className="text-[15px] text-foreground">{workflow.name}</p>
                                                         <div className="flex items-center gap-1.5 mt-0.5">
                                                             <TriggerIcon className="h-3.5 w-3.5 text-muted-foreground" />
                                                             <span className="text-[11px] font-medium text-muted-foreground">{workflow.trigger}</span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <Badge variant="outline" className={`text-[10px] font-bold px-2.5 py-0.5 ${st.className}`}>
+                                                <Badge variant="outline" className={`text-[10px] px-2.5 py-0.5 ${st.className}`}>
                                                     {st.label}
                                                 </Badge>
                                             </div>
@@ -386,7 +386,7 @@ export default function AutomationsPage() {
                         {selected && (
                             <Card className="card-elevated border-transparent">
                                 <CardHeader className="pb-4 border-b border-border/40 bg-muted/50">
-                                    <CardTitle className="text-[15px] font-bold text-foreground flex items-center gap-2">
+                                    <CardTitle className="text-[15px] text-foreground flex items-center gap-2">
                                         <Activity className="h-4.5 w-4.5 text-primary" />
                                         Recent executions — {selected.name}
                                     </CardTitle>
@@ -432,7 +432,7 @@ export default function AutomationsPage() {
                 {/* ─── EXECUTIONS TAB ─── */}
                 {activeTab === "executions" && (
                     <div>
-                        <h3 className="text-lg font-bold text-foreground mb-4">All executions</h3>
+                        <h3 className="text-lg text-foreground mb-4">All executions</h3>
                         <Card className="card-elevated border-transparent overflow-hidden">
                             <CardContent className="p-0">
                                 <table className="w-full text-sm">
@@ -449,7 +449,7 @@ export default function AutomationsPage() {
                                             wf.recentExecutions.map((exec) => (
                                                 <tr key={exec.id} className="group hover:bg-muted/50 transition-colors">
                                                     <td className="py-4 px-6">
-                                                        <p className="text-[14px] font-bold text-foreground">{wf.name}</p>
+                                                        <p className="text-[14px] text-foreground">{wf.name}</p>
                                                         <p className="text-[11px] font-medium text-muted-foreground mt-0.5">{wf.trigger}</p>
                                                     </td>
                                                     <td className="py-4 px-6">
@@ -485,11 +485,11 @@ export default function AutomationsPage() {
                             <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-emerald-500/10 blur-3xl" />
                             <CardContent className="pt-12 pb-12 relative z-10">
                                 <div className="flex flex-col items-center text-center gap-5">
-                                    <div className="flex h-16 w-16 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 shadow-sm">
+                                    <div className="flex h-16 w-16 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100">
                                         <Workflow className="h-8 w-8 text-indigo-600" />
                                     </div>
                                     <div>
-                                        <h3 className="text-2xl font-bold text-foreground">n8n Workflow Editor</h3>
+                                        <h3 className="text-2xl text-foreground">n8n Workflow Editor</h3>
                                         <p className="text-sm font-medium text-muted-foreground mt-2 max-w-md mx-auto leading-relaxed">
                                             Create and manage your automation workflows with the full n8n visual editor
                                         </p>
@@ -497,7 +497,7 @@ export default function AutomationsPage() {
                                     <Button
                                         size="lg"
                                         onClick={() => window.open(n8nUrl, '_blank')}
-                                        className="gap-2 text-[14px] px-8 bg-primary hover:bg-primary/90 text-primary-foreground shadow-md shadow-primary/20 h-11 transition-all"
+                                        className="gap-2 text-[14px] px-8 bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20 h-11 transition-all"
                                     >
                                         <ExternalLink className="h-4.5 w-4.5" />
                                         Open n8n editor
@@ -509,7 +509,7 @@ export default function AutomationsPage() {
 
                         {/* Quick access cards */}
                         <div>
-                            <h4 className="text-[15px] font-bold mb-4">Quick access — jump to workflow</h4>
+                            <h4 className="text-[15px] mb-4">Quick access — jump to workflow</h4>
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                                 {[
                                     { name: "AI Planner", desc: "Campaign planning & timelines" },
@@ -524,11 +524,11 @@ export default function AutomationsPage() {
                                     >
                                         <CardContent className="pt-5 pb-5">
                                             <div className="flex items-center gap-3">
-                                                <div className="flex h-10 w-10 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 shrink-0 shadow-sm">
+                                                <div className="flex h-9 w-10 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 shrink-0">
                                                     <Zap className="h-5 w-5 text-indigo-600" />
                                                 </div>
                                                 <div className="min-w-0">
-                                                    <p className="text-[14px] font-bold truncate">{wf.name}</p>
+                                                    <p className="text-[14px] truncate">{wf.name}</p>
                                                     <p className="text-[11px] font-medium text-muted-foreground truncate leading-relaxed">{wf.desc}</p>
                                                 </div>
                                                 <ExternalLink className="h-4 w-4 text-muted-foreground/30 shrink-0 ml-auto transition-colors group-hover:text-primary" />
@@ -542,7 +542,7 @@ export default function AutomationsPage() {
                         {/* Webhook endpoints */}
                         <Card className="card-elevated border-transparent">
                             <CardHeader className="pb-3 border-b border-border/40 bg-muted/50">
-                                <CardTitle className="text-[15px] font-bold flex items-center gap-2">
+                                <CardTitle className="text-[15px] flex items-center gap-2">
                                     <Zap className="h-4.5 w-4.5 text-amber-500" />
                                     Active webhook endpoints
                                 </CardTitle>
@@ -573,7 +573,7 @@ export default function AutomationsPage() {
                     <div className="space-y-6 max-w-2xl">
                         <Card className="card-elevated border-transparent">
                             <CardHeader className="border-b border-border/40 bg-muted/50">
-                                <CardTitle className="text-[16px] font-bold flex items-center gap-2">
+                                <CardTitle className="text-[16px] flex items-center gap-2">
                                     <Link2 className="h-5 w-5 text-indigo-500" />
                                     n8n Connection
                                 </CardTitle>
@@ -589,7 +589,7 @@ export default function AutomationsPage() {
                                         value={n8nUrl}
                                         onChange={(e) => setN8nUrl(e.target.value)}
                                         placeholder="https://n8n.tulie.vn"
-                                        className="h-10 shadow-sm transition-all focus-within:ring-2 focus-within:ring-primary/20"
+                                        className="h-9 transition-all focus-within:ring-2 focus-within:ring-primary/20"
                                     />
                                     <p className="text-[11px] font-medium text-muted-foreground pl-1">
                                         The URL of your n8n instance (must be accessible from this browser)
@@ -602,7 +602,7 @@ export default function AutomationsPage() {
                                         type="password"
                                         placeholder="n8n_api_..."
                                         disabled
-                                        className="h-10 shadow-sm"
+                                        className="h-10"
                                     />
                                     <p className="text-[11px] font-medium text-muted-foreground pl-1">
                                         Generate in n8n → Settings → API → Create API Key
@@ -610,16 +610,16 @@ export default function AutomationsPage() {
                                 </div>
                                 <div className="flex items-center justify-between rounded-md bg-muted/50 border border-border/60 p-4 mt-2">
                                     <div>
-                                        <p className="text-[14px] font-bold text-foreground">Connection status</p>
+                                        <p className="text-[14px] text-foreground">Connection status</p>
                                         <p className="text-xs font-medium text-muted-foreground mt-0.5">
                                             {isConnected ? "Connected to " + n8nUrl : "Not connected"}
                                         </p>
                                     </div>
-                                    <Badge variant="outline" className={`font-bold border px-2.5 py-0.5 shadow-sm ${isConnected ? "bg-emerald-50 text-emerald-600 border-emerald-200" : "bg-muted text-muted-foreground border-border/60"}`}>
+                                    <Badge variant="outline" className={`font-bold border px-2.5 py-0.5 ${isConnected ? "bg-emerald-50 text-emerald-600 border-emerald-200" : "bg-muted text-muted-foreground border-border/60"}`}>
                                         {isConnected ? "Connected" : "Disconnected"}
                                     </Badge>
                                 </div>
-                                <Button onClick={() => setIsConnected(!isConnected)} className="w-full gap-1.5 h-10 font-bold bg-primary text-primary-foreground hover:bg-primary/95 shadow-md shadow-primary/20">
+                                <Button onClick={() => setIsConnected(!isConnected)} className="w-full gap-1.5 h-9 bg-primary text-primary-foreground hover:bg-primary/95 shadow-primary/20">
                                     {isConnected ? (
                                         <>
                                             <XCircle className="h-4 w-4" />
@@ -637,7 +637,7 @@ export default function AutomationsPage() {
 
                         <Card className="card-elevated border-transparent">
                             <CardHeader className="border-b border-border/40 bg-muted/50">
-                                <CardTitle className="text-[16px] font-bold flex items-center gap-2">
+                                <CardTitle className="text-[16px] flex items-center gap-2">
                                     <Zap className="h-5 w-5 text-amber-500" />
                                     Webhook Configuration
                                 </CardTitle>

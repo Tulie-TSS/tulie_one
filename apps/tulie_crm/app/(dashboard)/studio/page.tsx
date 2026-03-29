@@ -13,17 +13,17 @@ export default async function StudioPage() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center shadow-sm border border-border">
+                    <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center border border-border">
                         <Camera className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold">Đơn hàng Studio</h1>
+                        <h1 className="text-2xl">Đơn hàng Studio</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">Quản lý đơn hàng chụp ảnh cá nhân & Studio.</p>
                     </div>
                 </div>
-                <Button asChild className="rounded-md font-bold shadow-sm">
+                <Button asChild className="rounded-md">
                     <Link href="/studio/new">
-                        <Plus className="mr-2 h-4 w-4" /> Tạo đơn mới
+                        <Plus className="h-4 w-4" /> Tạo đơn mới
                     </Link>
                 </Button>
             </div>
@@ -47,37 +47,37 @@ async function OrderListWrapper() {
         <div className="space-y-6">
             {/* Stats */}
             <div className="grid gap-4 md:grid-cols-3">
-                <Card className="rounded-md border-border shadow-sm">
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">
+                <Card className="rounded-md border-border">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">
                             Đang thực hiện
                         </CardTitle>
                         <Clock className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-foreground">{activeOrders}</div>
+                        <div className="text-2xl font-bold">{activeOrders}</div>
                     </CardContent>
                 </Card>
-                <Card className="rounded-md border-border shadow-sm">
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">
+                <Card className="rounded-md border-border">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">
                             Đã hoàn thành
                         </CardTitle>
                         <CheckCircle className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-foreground">{completedOrders}</div>
+                        <div className="text-2xl font-bold">{completedOrders}</div>
                     </CardContent>
                 </Card>
-                <Card className="rounded-md border-border shadow-sm">
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">
+                <Card className="rounded-md border-border">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">
                             Tổng giá trị
                         </CardTitle>
                         <ShoppingCart className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-foreground">{formatCurrency(totalValue)}</div>
+                        <div className="text-2xl font-bold">{formatCurrency(totalValue)}</div>
                     </CardContent>
                 </Card>
             </div>
@@ -89,10 +89,10 @@ async function OrderListWrapper() {
 
 function OrderListSkeleton() {
     return (
-        <div className="rounded-md border bg-card p-8 space-y-4">
+        <div className="rounded-md border p-8 space-y-4">
             <div className="flex justify-between items-center mb-6">
-                <Skeleton className="h-10 w-72" />
-                <Skeleton className="h-10 w-48" />
+                <Skeleton className="w-72" />
+                <Skeleton className="w-48" />
             </div>
             {[...Array(5)].map((_, i) => (
                 <Skeleton key={i} className="h-16 w-full" />

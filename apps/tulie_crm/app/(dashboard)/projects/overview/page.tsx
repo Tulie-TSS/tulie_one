@@ -61,11 +61,11 @@ export default async function ProjectOverviewPage() {
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
+                    <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
                         <Rocket className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold">Tổng quan Dự án</h1>
+                        <h1 className="text-2xl">Tổng quan Dự án</h1>
                         <p className="text-muted-foreground text-sm">
                             Pipeline, tiến độ, hoá đơn, milestones
                         </p>

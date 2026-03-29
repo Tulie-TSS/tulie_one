@@ -258,7 +258,7 @@ export const retailOrderColumns: ColumnDef<RetailOrder>[] = [
                             <DropdownMenuLabel className="text-xs text-muted-foreground">Thao tác đơn hàng</DropdownMenuLabel>
                             <DropdownMenuItem asChild className="rounded-lg">
                                 <Link href={`/studio/${order.id}`}>
-                                    <Camera className="mr-2 h-4 w-4" /> Chi tiết & Xử lý ảnh
+                                    <Camera className="h-4 w-4" /> Chi tiết & Xử lý ảnh
                                 </Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem
@@ -268,12 +268,12 @@ export const retailOrderColumns: ColumnDef<RetailOrder>[] = [
                                 }}
                                 className="rounded-lg"
                             >
-                                <QrCode className="mr-2 h-4 w-4" /> QR Thanh toán
+                                <QrCode className="h-4 w-4" /> QR Thanh toán
                             </DropdownMenuItem>
                             {order.resource_link && (
                                 <DropdownMenuItem asChild className="rounded-lg">
                                     <a href={order.resource_link} target="_blank" rel="noopener noreferrer">
-                                        <LinkIcon className="mr-2 h-4 w-4" /> Mở Drive ảnh gốc
+                                        <LinkIcon className="h-4 w-4" /> Mở Drive ảnh gốc
                                     </a>
                                 </DropdownMenuItem>
                             )}
@@ -286,11 +286,11 @@ export const retailOrderColumns: ColumnDef<RetailOrder>[] = [
                                 }}
                                 className="rounded-lg"
                             >
-                                <Copy className="mr-2 h-4 w-4" /> Copy Portal Link
+                                <Copy className="h-4 w-4" /> Copy Portal Link
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild className="rounded-lg">
                                 <Link href={`/portal/order/${order.public_token}`} target="_blank">
-                                    <ExternalLink className="mr-2 h-4 w-4" /> Xem Portal (Khách)
+                                    <ExternalLink className="h-4 w-4" /> Xem Portal (Khách)
                                 </Link>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
@@ -299,14 +299,14 @@ export const retailOrderColumns: ColumnDef<RetailOrder>[] = [
                                 onClick={() => setShowCancelDialog(true)}
                                 disabled={order.order_status === 'cancelled'}
                             >
-                                <Trash2 className="mr-2 h-4 w-4" />
+                                <Trash2 className="h-4 w-4" />
                                 Hủy đơn hàng
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 className="text-destructive font-medium rounded-lg"
                                 onClick={() => setShowDeleteDialog(true)}
                             >
-                                <Trash2 className="mr-2 h-4 w-4" />
+                                <Trash2 className="h-4 w-4" />
                                 Xóa đơn hàng
                             </DropdownMenuItem>
                         </DropdownMenuContent>

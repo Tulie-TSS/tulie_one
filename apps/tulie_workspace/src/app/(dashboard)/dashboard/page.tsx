@@ -49,7 +49,7 @@ export default function DashboardPage() {
                             <CardTitle className="text-sm font-medium text-muted-foreground">{card.label}</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className={`text-3xl font-bold ${card.color}`}>
+                            <div className={`text-3xl ${card.color}`}>
                                 {card.value}
                                 {'sub' in card && <span className="text-base font-normal text-muted-foreground ml-1">{card.sub}</span>}
                             </div>

@@ -11,7 +11,7 @@ export default async function StudioDealsPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
+                    <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
                         <TrendingUp className="h-6 w-6 text-primary" />
                     </div>
                     <div>
@@ -23,7 +23,7 @@ export default async function StudioDealsPage() {
                 </div>
                 <Button asChild className="bg-zinc-900 hover:bg-zinc-800 dark:bg-muted dark:text-foreground dark:hover:bg-muted">
                     <Link href="/deals/new?brand=studio">
-                        <Plus className="mr-2 h-4 w-4" />
+                        <Plus className="h-4 w-4" />
                         Tạo cơ hội mới
                     </Link>
                 </Button>
@@ -46,7 +46,7 @@ function DealSkeleton() {
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <Skeleton className="h-10 w-[300px]" />
+                <Skeleton className="w-[300px]" />
             </div>
             <div className="border rounded-md">
                 <div className="h-12 border-b bg-muted/50" />

@@ -74,7 +74,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
 
                 <TabsContent value="overview" className="space-y-4">
                     <div className="grid gap-6 lg:grid-cols-3">
-                        <Card className="lg:col-span-2 rounded-md border shadow-sm overflow-hidden">
+                        <Card className="lg:col-span-2 rounded-md border overflow-hidden">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-base font-semibold">Doanh thu vs Chi phí (Triệu VND)</CardTitle>
                             </CardHeader>
@@ -120,7 +120,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                                                     content={({ active, payload, label }) => {
                                                         if (active && payload && payload.length) {
                                                             return (
-                                                                <div className="rounded-lg border bg-background p-3 shadow-lg">
+                                                                <div className="rounded-lg border bg-background p-3 ">
                                                                     <p className="text-xs font-medium text-muted-foreground mb-2">Tháng {label}</p>
                                                                     <div className="space-y-1">
                                                                         {payload.map((entry, index) => (
@@ -174,7 +174,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                             </CardContent>
                         </Card>
 
-                        <Card className="rounded-md border shadow-sm overflow-hidden">
+                        <Card className="rounded-md border overflow-hidden">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-base font-semibold">Giao dịch SePay</CardTitle>
                             </CardHeader>
@@ -201,9 +201,9 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                                                         {tx.transaction_date ? new Date(tx.transaction_date).toLocaleDateString('vi-VN') : '—'}
                                                     </span>
                                                     {isMatched ? (
-                                                        <span className="inline-flex items-center text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">✓ Khớp</span>
+                                                        <span className="inline-flex items-center text-[10px] text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">✓ Khớp</span>
                                                     ) : (
-                                                        <span className="inline-flex items-center text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">Chưa khớp</span>
+                                                        <span className="inline-flex items-center text-[10px] text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">Chưa khớp</span>
                                                     )}
                                                 </div>
                                             </div>
@@ -225,7 +225,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                 </TabsContent>
 
                 <TabsContent value="revenue" className="space-y-4">
-                    <Card className="rounded-md border shadow-sm overflow-hidden">
+                    <Card className="rounded-md border overflow-hidden">
                         <CardHeader className="pb-2">
                             <CardTitle className="text-base font-semibold">Biểu đồ doanh thu 12 tháng qua</CardTitle>
                         </CardHeader>
@@ -247,9 +247,9 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                                             content={({ active, payload, label }) => {
                                                 if (active && payload && payload.length) {
                                                     return (
-                                                        <div className="rounded-lg border bg-background p-3 shadow-lg">
+                                                        <div className="rounded-lg border bg-background p-3 ">
                                                             <p className="text-xs font-medium text-muted-foreground mb-1">Tháng {label}</p>
-                                                            <p className="text-sm font-bold">{payload[0].value} tr</p>
+                                                            <p className="text-sm">{payload[0].value} tr</p>
                                                         </div>
                                                     )
                                                 }
@@ -273,7 +273,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                     </Card>
 
                     {/* Clickable monthly revenue list */}
-                    <Card className="rounded-md border shadow-sm overflow-hidden">
+                    <Card className="rounded-md border overflow-hidden">
                         <CardHeader className="pb-2">
                             <CardTitle className="text-base font-semibold">Chi tiết doanh thu theo tháng</CardTitle>
                         </CardHeader>
@@ -298,7 +298,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                                                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-left ${ hasDetails ? 'hover:bg-blue-50/80 cursor-pointer group' : 'opacity-60 cursor-default' }`}
                                             >
                                                 <div className="h-9 w-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-                                                    <span className="text-xs font-bold text-blue-600">{month.date}</span>
+                                                    <span className="text-xs text-blue-600">{month.date}</span>
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex items-center gap-1.5 flex-wrap">
@@ -322,7 +322,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                                                         )}
                                                     </div>
                                                 </div>
-                                                <span className="text-sm font-bold text-blue-600 tabular-nums whitespace-nowrap">
+                                                <span className="text-sm text-blue-600 tabular-nums whitespace-nowrap">
                                                     {formatCurrency(month.revenue * 1000000)}
                                                 </span>
                                                 {hasDetails && (
@@ -338,7 +338,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                 </TabsContent>
 
                 <TabsContent value="expenses">
-                    <Card className="rounded-md border shadow-sm overflow-hidden">
+                    <Card className="rounded-md border overflow-hidden">
                         <CardHeader className="pb-2">
                             <CardTitle className="text-base font-semibold">Biểu đồ chi phí 12 tháng qua</CardTitle>
                         </CardHeader>
@@ -360,9 +360,9 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                                             content={({ active, payload, label }) => {
                                                 if (active && payload && payload.length) {
                                                     return (
-                                                        <div className="rounded-lg border bg-background p-3 shadow-lg">
+                                                        <div className="rounded-lg border bg-background p-3 ">
                                                             <p className="text-xs font-medium text-muted-foreground mb-1">Tháng {label}</p>
-                                                            <p className="text-sm font-bold text-red-500">{payload[0].value} tr</p>
+                                                            <p className="text-sm text-red-500">{payload[0].value} tr</p>
                                                         </div>
                                                     )
                                                 }
@@ -437,7 +437,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                                                 <span className="text-sm font-semibold">{config.label}</span>
                                                 <span className="text-xs text-muted-foreground font-medium">({items.length} khoản)</span>
                                             </div>
-                                            <span className={`text-sm font-bold ${config.color}`}>
+                                            <span className={`text-sm ${config.color}`}>
                                                 {formatCurrency(groupTotal)}
                                             </span>
                                         </div>

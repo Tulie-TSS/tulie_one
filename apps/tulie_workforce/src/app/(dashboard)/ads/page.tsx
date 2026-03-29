@@ -64,8 +64,8 @@ export default function AdsPage() {
                 {/* ── Page Header ── */}
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                     <div>
-                        <h1 className="text-2xl font-bold text-foreground flex items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-md shadow-primary/20">
+                        <h1 className="text-2xl text-foreground flex items-center gap-3">
+                            <div className="flex h-9 w-10 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-primary/20">
                                 <Megaphone className="h-5 w-5" />
                             </div>
                             Facebook Ads Manager
@@ -76,10 +76,10 @@ export default function AdsPage() {
                     </div>
                     <div className="flex items-center gap-4">
                         <div className="text-right">
-                            <p className="text-[13px] font-bold text-foreground">{mockAdAccount.name}</p>
+                            <p className="text-[13px] text-foreground">{mockAdAccount.name}</p>
                             <p className="text-[11px] font-medium text-muted-foreground">{mockAdAccount.account_id}</p>
                         </div>
-                        <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-[13px] font-semibold text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/95 transition-all">
+                        <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-[13px] font-semibold text-primary-foreground shadow-primary/20 hover:bg-primary/95 transition-all">
                             <RefreshCw className="h-4 w-4" />
                             Sync Data
                         </button>
@@ -136,7 +136,7 @@ export default function AdsPage() {
                         <button
                             key={tab.key}
                             onClick={() => setSelectedTab(tab.key as typeof selectedTab)}
-                            className={`relative flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13px] font-bold transition-all ${ selectedTab === tab.key ? "bg-white text-primary shadow-sm ring-1 ring-border/50" : "text-muted-foreground hover:bg-white/50 hover:text-foreground" }`}
+                            className={`relative flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13px] transition-all ${ selectedTab === tab.key ? "bg-white text-primary ring-1 ring-border/50" : "text-muted-foreground hover:bg-white/50 hover:text-foreground" }`}
                         >
                             <tab.icon className="h-4 w-4" />
                             {tab.label}
@@ -197,7 +197,7 @@ function StatCard({
             
             <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
-                    <span className="text-[11px] font-bold text-muted-foreground tracking-widest uppercase">
+                    <span className="text-[11px] text-muted-foreground tracking-widest uppercase">
                         {label}
                     </span>
                     <div className={`rounded-md p-2 ${colors[color]}`}>
@@ -205,7 +205,7 @@ function StatCard({
                     </div>
                 </div>
                 <div>
-                    <p className="text-2xl font-bold text-foreground">{value}</p>
+                    <p className="text-2xl text-foreground">{value}</p>
                     <p className="text-[11px] font-medium text-muted-foreground mt-1.5">{sub}</p>
                 </div>
             </div>
@@ -258,9 +258,9 @@ function CampaignCard({
                                 className={`inline-block h-2.5 w-2.5 rounded-full ${c.status === 'active' ? 'animate-pulse-dot shadow-[0_0_8px_rgba(16,185,129,0.5)]' : ''}`}
                                 style={{ backgroundColor: getCampaignStatusColor(c.status) }}
                             />
-                            <h3 className="text-[16px] font-bold text-foreground">{c.name}</h3>
+                            <h3 className="text-[16px] text-foreground">{c.name}</h3>
                         </div>
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted font-bold text-muted-foreground uppercase tracking-widest">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground uppercase tracking-widest">
                             {c.objective.replace("_", " ")}
                         </span>
                     </div>
@@ -273,7 +273,7 @@ function CampaignCard({
                             {c.tags.map((t) => (
                                 <span
                                     key={t}
-                                    className="px-2 py-0.5 rounded-md bg-indigo-50/50 border border-indigo-100 text-indigo-600 text-[10px] font-bold tracking-wide"
+                                    className="px-2 py-0.5 rounded-md bg-indigo-50/50 border border-indigo-100 text-indigo-600 text-[10px] tracking-wide"
                                 >
                                     #{t}
                                 </span>
@@ -285,7 +285,7 @@ function CampaignCard({
                 {/* Right: Toggle */}
                 <button
                     onClick={onToggle}
-                    className={`flex shrink-0 items-center justify-center gap-2 rounded-lg px-4 py-2 text-[12px] font-bold transition-all shadow-sm ${ c.status === "active" ? "bg-amber-100 text-amber-700 hover:bg-amber-200" : c.status === "paused" ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200" : "bg-muted text-muted-foreground cursor-not-allowed" }`}
+                    className={`flex shrink-0 items-center justify-center gap-2 rounded-lg px-4 py-2 text-[12px] transition-all ${ c.status === "active" ? "bg-amber-100 text-amber-700 hover:bg-amber-200" : c.status === "paused" ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200" : "bg-muted text-muted-foreground cursor-not-allowed" }`}
                     disabled={c.status !== "active" && c.status !== "paused"}
                 >
                     {c.status === "active" ? (
@@ -315,13 +315,13 @@ function CampaignCard({
                 <MetricCell label="Results" value={String(c.results)} className="font-bold text-primary" />
                 <MetricCell label="CTR" value={`${c.ctr.toFixed(2)}%`} />
                 <MetricCell label="CPC" value={formatVND(Math.round(c.cpc))} />
-                <MetricCell label="Frequency" value={c.frequency.toFixed(1)} className={c.frequency > 2.5 ? "text-amber-500 font-bold" : ""} />
+                <MetricCell label="Frequency" value={c.frequency.toFixed(1)} className={c.frequency > 2.5 ? "text-amber-500" : ""} />
             </div>
 
             {/* Budget progress bar */}
             {budgetPct !== null && (
                 <div className="mt-5 bg-muted/50 p-3 rounded-lg border border-border">
-                    <div className="flex justify-between items-center text-[11px] font-bold text-muted-foreground mb-2">
+                    <div className="flex justify-between items-center text-[11px] text-muted-foreground mb-2">
                         <span className="uppercase tracking-widest">Ngân sách trọn đời</span>
                         <span>{formatVND(c.spent)} / {formatVND(c.lifetime_budget!)} ({budgetPct}%)</span>
                     </div>
@@ -348,8 +348,8 @@ function MetricCell({
 }) {
     return (
         <div>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/80 mb-1.5">{label}</p>
-            <p className={`text-[15px] font-bold text-foreground ${className}`}>{value}</p>
+            <p className="text-[10px] uppercase tracking-widest text-muted-foreground/80 mb-1.5">{label}</p>
+            <p className={`text-[15px] text-foreground ${className}`}>{value}</p>
         </div>
     );
 }
@@ -393,7 +393,7 @@ function AlertCard({ alert }: { alert: FbAlert }) {
                 <div className={`mt-1.5 h-3 w-3 shrink-0 rounded-full ${severityDot[alert.severity]}`} />
                 <div className="flex-1">
                     <div className="flex sm:items-center flex-col sm:flex-row justify-between mb-2">
-                        <h4 className="text-[14px] font-bold text-foreground">
+                        <h4 className="text-[14px] text-foreground">
                             {alert.campaign_name}
                         </h4>
                         <span className="text-[11px] font-medium text-muted-foreground mt-1 sm:mt-0">
@@ -407,7 +407,7 @@ function AlertCard({ alert }: { alert: FbAlert }) {
                     </div>
                     <p className="text-[13px] text-muted-foreground leading-relaxed">{alert.message}</p>
                     {alert.action_taken && (
-                        <div className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-emerald-50/80 border border-emerald-100 px-2.5 py-1 text-[11px] font-bold text-emerald-600 tracking-wide uppercase">
+                        <div className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-emerald-50/80 border border-emerald-100 px-2.5 py-1 text-[11px] text-emerald-600 tracking-wide uppercase">
                             <CheckCircle2 className="h-3.5 w-3.5" />
                             {alert.action_taken}
                         </div>
@@ -472,18 +472,18 @@ function ActionCard({ action }: { action: FbAgentAction }) {
         <div className="card-elevated p-6">
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                 <div className="flex items-start gap-4">
-                    <div className="rounded-md bg-primary p-2.5 shadow-md shadow-primary/20">
+                    <div className="rounded-md bg-primary p-2.5 shadow-primary/20">
                         <Bot className="h-5 w-5 text-primary-foreground" />
                     </div>
                     <div>
-                        <h4 className="text-[14px] font-bold text-foreground">
+                        <h4 className="text-[14px] text-foreground">
                             {actionLabels[action.action]}
                         </h4>
                         <p className="text-[12px] font-medium text-muted-foreground mt-1">{action.campaign_name}</p>
                     </div>
                 </div>
                 <div
-                    className={`inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest ${style.bg} ${style.text}`}
+                    className={`inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] uppercase tracking-widest ${style.bg} ${style.text}`}
                 >
                     {style.icon}
                     {action.status === "pending_approval"
@@ -501,18 +501,18 @@ function ActionCard({ action }: { action: FbAgentAction }) {
             {/* Approve/Reject buttons for pending */}
             {action.status === "pending_approval" && (
                 <div className="flex flex-wrap gap-2 mt-4 sm:ml-14">
-                    <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-[12px] font-bold text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/95 transition-all">
+                    <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-[12px] text-primary-foreground shadow-primary/20 hover:bg-primary/95 transition-all">
                         <CheckCircle2 className="h-4 w-4" />
                         Phê duyệt
                     </button>
-                    <button className="flex items-center gap-2 rounded-lg bg-white border border-border px-4 py-2 text-[12px] font-bold text-muted-foreground shadow-sm hover:bg-muted hover:text-foreground transition-colors">
+                    <button className="flex items-center gap-2 rounded-lg bg-white border border-border px-4 py-2 text-[12px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
                         <XCircle className="h-4 w-4" />
                         Từ chối
                     </button>
                 </div>
             )}
 
-            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 mt-4 sm:ml-14">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground/60 mt-4 sm:ml-14">
                 {new Date(action.created_at).toLocaleString("vi-VN")}
             </p>
         </div>
@@ -612,11 +612,11 @@ function ContentList() {
     return (
         <div className="space-y-6 mt-4">
             {/* Action Bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-2.5 rounded-md border border-border shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-2.5 rounded-md border border-border">
                 <div className="flex items-center gap-2 px-3">
-                    <span className="text-[13px] font-bold text-muted-foreground">{mockContentPosts.length} bài viết tổng cộng</span>
+                    <span className="text-[13px] text-muted-foreground">{mockContentPosts.length} bài viết tổng cộng</span>
                 </div>
-                <button className="flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-[13px] font-bold text-primary-foreground hover:bg-primary/95 transition-all shadow-md shadow-primary/20 w-fit">
+                <button className="flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-[13px] text-primary-foreground hover:bg-primary/95 transition-all shadow-primary/20 w-fit">
                     <Sparkles className="h-4 w-4" />
                     AI Tạo bài mới
                 </button>
@@ -632,9 +632,9 @@ function ContentList() {
                                 <span className={`flex h-6 w-6 items-center justify-center rounded-md ${config.bg} ${config.text}`}>
                                     {config.icon}
                                 </span>
-                                <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">{config.label}</span>
+                                <span className="text-[11px] uppercase tracking-widest text-muted-foreground">{config.label}</span>
                             </div>
-                            <p className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">{count}</p>
+                            <p className="text-2xl text-foreground group-hover:text-primary transition-colors">{count}</p>
                         </div>
                     );
                 })}
@@ -649,12 +649,12 @@ function ContentList() {
                             <div className="flex flex-col sm:flex-row items-start gap-6">
                                 {/* Thumbnail */}
                                 {post.image_url ? (
-                                    <div className="w-full sm:w-32 h-32 rounded-md overflow-hidden bg-muted flex-shrink-0 border border-border shadow-sm relative">
+                                    <div className="w-full sm:w-32 h-32 rounded-md overflow-hidden bg-muted flex-shrink-0 border border-border relative">
                                         <div className="absolute inset-0 bg-black/10 z-10 opacity-0 group-hover:opacity-100 transition-opacity" />
                                         <img src={post.image_url} alt="" className="w-full h-full object-cover" />
                                     </div>
                                 ) : (
-                                    <div className="w-full sm:w-32 h-32 rounded-md bg-muted border border-border shadow-sm flex items-center justify-center flex-shrink-0">
+                                    <div className="w-full sm:w-32 h-32 rounded-md bg-muted border border-border flex items-center justify-center flex-shrink-0">
                                         <ImagePlus className="h-8 w-8 text-muted-foreground/40" />
                                     </div>
                                 )}
@@ -662,15 +662,15 @@ function ContentList() {
                                 {/* Content */}
                                 <div className="flex-1 min-w-0 w-full relative">
                                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
-                                        <h4 className="text-[16px] font-bold text-foreground group-hover:text-primary transition-colors flex-1">{post.title}</h4>
-                                        <span className={`inline-flex shrink-0 items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold tracking-widest uppercase ${st.bg} ${st.text}`}>
+                                        <h4 className="text-[16px] text-foreground group-hover:text-primary transition-colors flex-1">{post.title}</h4>
+                                        <span className={`inline-flex shrink-0 items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] tracking-widest uppercase ${st.bg} ${st.text}`}>
                                             {st.icon} {st.label}
                                         </span>
                                     </div>
                                     <p className="text-[13px] text-muted-foreground leading-relaxed line-clamp-2 mb-4 pr-0 sm:pr-8">{post.body}</p>
                                     
                                     <div className="flex flex-wrap items-center gap-3">
-                                        <span className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground bg-muted px-2 py-1 rounded-md">{post.category}</span>
+                                        <span className="text-[10px] tracking-widest uppercase text-muted-foreground bg-muted px-2 py-1 rounded-md">{post.category}</span>
                                         <div className="flex gap-1.5">
                                             {post.hashtags.slice(0, 3).map(h => (
                                                 <span key={h} className="text-[11px] font-medium text-primary/80">{h}</span>
@@ -683,31 +683,31 @@ function ContentList() {
                                 <div className="flex flex-wrap sm:flex-col items-center sm:items-end gap-2 shrink-0 pt-4 sm:pt-0 w-full sm:w-auto border-t sm:border-t-0 border-border ml-0 sm:ml-4">
                                     {post.status === "draft" && (
                                         <>
-                                            <button className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-primary/10 px-4 py-2.5 text-[12px] font-bold text-primary hover:bg-primary/20 transition-colors">
+                                            <button className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-primary/10 px-4 py-2.5 text-[12px] text-primary hover:bg-primary/20 transition-colors">
                                                 <Sparkles className="h-3.5 w-3.5" /> Tạo ảnh
                                             </button>
-                                            <button className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-white border border-border px-4 py-2.5 text-[12px] font-bold text-foreground shadow-sm hover:bg-muted transition-colors">
+                                            <button className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-white border border-border px-4 py-2.5 text-[12px] text-foreground hover:bg-muted transition-colors">
                                                 <Send className="h-3.5 w-3.5 text-muted-foreground" /> Gửi duyệt
                                             </button>
                                         </>
                                     )}
                                     {post.status === "pending" && (
                                         <>
-                                            <button className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-[12px] font-bold text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/95 transition-all">
+                                            <button className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-[12px] text-primary-foreground shadow-primary/20 hover:bg-primary/95 transition-all">
                                                 <CheckCircle2 className="h-3.5 w-3.5" /> Duyệt bài
                                             </button>
-                                            <button className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-white border border-border px-4 py-2.5 text-[12px] font-bold text-foreground shadow-sm hover:bg-muted transition-colors">
+                                            <button className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-white border border-border px-4 py-2.5 text-[12px] text-foreground hover:bg-muted transition-colors">
                                                 <XCircle className="h-3.5 w-3.5 text-muted-foreground" /> Từ chối
                                             </button>
                                         </>
                                     )}
                                     {post.status === "approved" && (
-                                        <button className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-[12px] font-bold text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/95 transition-all">
+                                        <button className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-[12px] text-primary-foreground shadow-primary/20 hover:bg-primary/95 transition-all">
                                             <Send className="h-3.5 w-3.5" /> Đăng ngay
                                         </button>
                                     )}
                                     {post.status === "published" && (
-                                        <button className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-primary/10 px-4 py-2.5 text-[12px] font-bold text-primary hover:bg-primary/20 transition-colors">
+                                        <button className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-primary/10 px-4 py-2.5 text-[12px] text-primary hover:bg-primary/20 transition-colors">
                                             <Megaphone className="h-3.5 w-3.5" /> Boost
                                         </button>
                                     )}

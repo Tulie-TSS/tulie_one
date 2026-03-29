@@ -38,9 +38,9 @@ export function ProjectDescriptionForm({ project }: ProjectDescriptionFormProps)
         return (
             <div className="group relative">
                 <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button variant="outline" size="sm" onClick={() => setIsEditing(true)} className="h-8 gap-2 bg-white/80 backdrop-blur-sm border-border shadow-sm rounded-lg hover:shadow-md transition-all">
+                    <Button variant="outline" size="sm" onClick={() => setIsEditing(true)} className="h-8 gap-2 bg-white/80 backdrop-blur-sm border-border rounded-lg hover:shadow-md transition-all">
                         <Edit className="h-3.5 w-3.5 text-muted-foreground" />
-                        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Chỉnh sửa</span>
+                        <span className="text-[11px] text-muted-foreground uppercase tracking-wider">Chỉnh sửa</span>
                     </Button>
                 </div>
                 <div className="text-sm p-4 bg-muted/20 rounded-md border border-dashed whitespace-pre-line leading-relaxed min-h-[100px]">
@@ -60,14 +60,14 @@ export function ProjectDescriptionForm({ project }: ProjectDescriptionFormProps)
             />
             <div className="flex justify-end gap-2">
                 <Button variant="ghost" size="sm" onClick={() => setIsEditing(false)} disabled={isSaving}>
-                    <X className="mr-2 h-4 w-4" />
+                    <X className="h-4 w-4" />
                     Hủy
                 </Button>
                 <Button size="sm" onClick={handleSave} disabled={isSaving}>
                     {isSaving ? (
                         <LoadingSpinner size="sm" className="mr-2" />
                     ) : (
-                        <Save className="mr-2 h-4 w-4" />
+                        <Save className="h-4 w-4" />
                     )}
                     Lưu mô tả
                 </Button>

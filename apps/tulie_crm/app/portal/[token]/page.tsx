@@ -36,22 +36,35 @@ export default async function PublicPortalPage({ params }: Props) {
             notFound()
         }
 
-        // Check for password protection (Quotation password takes precedence, then Project password)
-        const passwordHash = data.quotation.password_hash || data.project?.password_hash
+        // Check for password protection 
+        const portalPasswordHash = data.quotation.password_hash || data.project?.password_hash
+        const financialPasswordHash = data.quotation.financial_password_hash || data.project?.financial_password_hash
 
-        let isAuthenticated = true
-        let hasPassword = false
+        let isPortalAuthenticated = true
+        let isFinancialAuthenticated = true
+        let hasFinancialPassword = !!financialPasswordHash
 
-        if (passwordHash) {
-            hasPassword = true
+        if (portalPasswordHash) {
             const { signPortalToken } = await import('@/lib/supabase/services/portal-actions')
             const cookieStore = await cookies()
             const cookieValue = cookieStore.get(`portal_auth_${token}`)?.value
             const expectedValue = await signPortalToken(token)
-            isAuthenticated = cookieValue === expectedValue
+            isPortalAuthenticated = cookieValue === expectedValue
         }
 
-        return <PortalContent data={data} token={token} isFinancialAuthenticated={isAuthenticated} hasPassword={hasPassword} companyName={data.customer?.company_name} />
+        if (financialPasswordHash) {
+            const { signPortalToken } = await import('@/lib/supabase/services/portal-actions')
+            const cookieStore = await cookies()
+            const cookieValue = cookieStore.get(`finance_auth_${token}`)?.value
+            const expectedValue = await signPortalToken(token)
+            isFinancialAuthenticated = cookieValue === expectedValue
+        }
+
+        if (!isPortalAuthenticated) {
+            return <PortalPasswordForm token={token} companyName={data.customer?.company_name} type="portal" />
+        }
+
+        return <PortalContent data={data} token={token} isFinancialAuthenticated={isFinancialAuthenticated} hasFinancialPassword={hasFinancialPassword} companyName={data.customer?.company_name} />
     } catch (error) {
         console.error('Error rendering portal page:', error)
         return (

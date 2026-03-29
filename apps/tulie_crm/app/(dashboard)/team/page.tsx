@@ -33,11 +33,11 @@ export default async function TeamPage() {
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
+                    <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
                         <UserCheck className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-bold">Nhân sự</h1>
+                        <h1 className="text-3xl">Nhân sự</h1>
                         <p className="text-muted-foreground font-normal">
                             Quản lý team và theo dõi hiệu suất làm việc
                         </p>
@@ -51,7 +51,7 @@ export default async function TeamPage() {
                     </Button>
                     <Button asChild>
                         <Link href="/team/new">
-                            <Plus className="mr-2 h-4 w-4" />
+                            <Plus className="h-4 w-4" />
                             Thêm thành viên
                         </Link>
                     </Button>

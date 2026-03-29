@@ -383,14 +383,14 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                                             min="1"
                                                             value={item.quantity}
                                                             onChange={(e) => updateItemQuantity(index, parseInt(e.target.value) || 1)}
-                                                            className="h-8 w-16 text-center border-border dark:border-zinc-700 bg-transparent mx-auto font-bold"
+                                                            className="h-8 w-16 text-center border-border dark:border-zinc-700 bg-transparent mx-auto"
                                                         />
                                                     </td>
                                                     <td className="px-6 py-4 text-right tabular-nums">
                                                         <PriceInput
                                                             value={item.unit_price}
                                                             onChange={(val) => updateItemPrice(index, val)}
-                                                            className="h-8 w-28 text-right bg-transparent border-none focus-visible:ring-0 p-0 font-bold ml-auto"
+                                                            className="h-8 w-28 text-right bg-transparent border-none focus-visible:ring-0 p-0 ml-auto"
                                                         />
                                                     </td>
                                                     <td className="px-6 py-4 text-right font-semibold tabular-nums text-foreground dark:text-zinc-100">
@@ -410,10 +410,10 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                                 </tr>
                                             ))}
                                         </tbody>
-                                        <tfoot className="bg-muted/30 dark:bg-zinc-900/30 font-bold border-t border-border dark:border-zinc-800">
+                                        <tfoot className="bg-muted/30 dark:bg-zinc-900/30 border-t border-border dark:border-zinc-800">
                                             <tr>
                                                 <td colSpan={3} className="px-6 py-4 text-muted-foreground text-xs font-medium">Tổng cộng tạm tính</td>
-                                                <td className="px-6 py-4 text-right text-lg font-bold text-foreground dark:text-zinc-100 tabular-nums">
+                                                <td className="px-6 py-4 text-right text-lg text-foreground dark:text-zinc-100 tabular-nums">
                                                     {formatCurrency(formData.total_amount)}
                                                 </td>
                                                 <td></td>
@@ -441,7 +441,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                             type="button"
                                             variant={formData.delivery_type === 'digital' ? 'default' : 'outline'}
                                             size="sm"
-                                            className="h-9 text-xs font-bold flex-1"
+                                            className="h-9 text-xs flex-1"
                                             onClick={() => setFormData({ ...formData, delivery_type: 'digital', shipping_fee: 0 })}
                                         >
                                             Chỉ file mềm
@@ -450,7 +450,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                             type="button"
                                             variant={formData.delivery_type === 'physical' ? 'default' : 'outline'}
                                             size="sm"
-                                            className="h-9 text-xs font-bold flex-1"
+                                            className="h-9 text-xs flex-1"
                                             onClick={() => setFormData({ ...formData, delivery_type: 'physical' })}
                                         >
                                             Có ship ảnh in
@@ -508,7 +508,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
 
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
-                                    <Label className="text-sm font-bold">Ghi chú & Điều khoản</Label>
+                                    <Label className="text-sm">Ghi chú & Điều khoản</Label>
                                     {availableNotes.length > 0 && (
                                         <Select onValueChange={(val) => {
                                             const t = availableNotes.find(x => x.name === val)
@@ -555,7 +555,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                         <CardContent className="space-y-6">
                             <div className="space-y-1">
                                 <span className="text-xs font-medium text-muted-foreground">Tổng giá trị đơn hàng</span>
-                                <div className="text-4xl font-bold tabular-nums">{formatCurrency(formData.total_amount)}</div>
+                                <div className="text-4xl tabular-nums">{formatCurrency(formData.total_amount)}</div>
                             </div>
 
                             <div className="space-y-4 bg-muted/50 p-5 rounded-lg border">
@@ -571,9 +571,9 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                         <PriceInput
                                             value={formData.deposit_amount}
                                             onChange={(val) => setFormData({ ...formData, deposit_amount: val })}
-                                            className="h-10 text-lg font-bold"
+                                            className="text-lg"
                                         />
-                                        <p className="text-xs text-muted-foreground italic">Gợi ý: Cọc 30-50% giá trị đơn hàng</p>
+                                        <p className="text-xs text-muted-foreground">Gợi ý: Cọc 30-50% giá trị đơn hàng</p>
                                     </div>
                                 )}
                             </div>
@@ -581,7 +581,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <CreditCard className="h-4 w-4 text-primary" />
-                                        <Label className="text-sm font-bold">Thông tin thanh toán</Label>
+                                        <Label className="text-sm">Thông tin thanh toán</Label>
                                     </div>
                                     {availableBanks.length > 0 && (
                                         <Select onValueChange={(val) => {
@@ -615,8 +615,8 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                 </div>
                                 {formData.metadata?.bank_info ? (
                                     <div className="p-3 rounded-lg bg-muted border border-border space-y-1">
-                                        <p className="text-[11px] font-bold text-foreground leading-none">{formData.metadata.bank_info.bank_name}</p>
-                                        <p className="text-xs font-bold text-primary">{formData.metadata.bank_info.account_no}</p>
+                                        <p className="text-[11px] text-foreground leading-none">{formData.metadata.bank_info.bank_name}</p>
+                                        <p className="text-xs text-primary">{formData.metadata.bank_info.account_no}</p>
                                         <p className="text-[11px] text-muted-foreground">{formData.metadata.bank_info.account_name}</p>
                                     </div>
                                 ) : (
@@ -635,7 +635,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                 <div className="text-right">
                                     <span className="text-muted-foreground text-xs font-medium">Mã đơn</span>
                                     <div className="flex items-center gap-1.5 justify-end">
-                                        <p className="font-mono text-sm font-bold">{orderIdPreview}</p>
+                                        <p className="font-mono text-sm">{orderIdPreview}</p>
                                         <Button
                                             type="button"
                                             variant="ghost"
@@ -658,7 +658,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                         {formData.use_deposit && formData.deposit_amount > 0 && (
                             <Card className="overflow-hidden">
                                 <div className="py-2 px-3 border-b bg-muted/50 text-center">
-                                    <span className="text-xs font-bold text-blue-600">1. Tiền cọc</span>
+                                    <span className="text-xs text-blue-600">1. Tiền cọc</span>
                                 </div>
                                 <div className="p-3">
                                     <img src={depositQrUrl} alt="Deposit QR" className="w-full aspect-square object-contain rounded-md ring-1 ring-border" />
@@ -672,7 +672,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                             !(formData.use_deposit && formData.deposit_amount > 0) && "col-span-2"
                         )}>
                             <div className="py-2 px-3 border-b bg-muted/50 text-center">
-                                <span className="text-xs font-bold text-emerald-600">
+                                <span className="text-xs text-emerald-600">
                                     {formData.use_deposit ? '2. Thanh toán' : 'Thanh toán'}
                                 </span>
                             </div>
@@ -698,7 +698,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                                     value={formData.payment_status}
                                     onValueChange={(val) => setFormData({ ...formData, payment_status: val })}
                                 >
-                                    <SelectTrigger className="h-10 text-sm">
+                                    <SelectTrigger className="text-sm">
                                         <SelectValue placeholder="Trạng thái" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -724,7 +724,7 @@ export function RetailOrderForm({ initialData, isEdit = false }: RetailOrderForm
                             {isLoading ? (
                                 <LoadingSpinner size="sm" className="mr-2" />
                             ) : (
-                                <CheckCircle2 className="mr-2 h-4 w-4" />
+                                <CheckCircle2 className="h-4 w-4" />
                             )}
                             {isEdit ? 'Cập nhật đơn hàng' : 'Xác nhận tạo đơn hàng'}
                         </Button>

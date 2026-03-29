@@ -34,7 +34,7 @@ interface PortalContentProps {
     }
     token: string
     isFinancialAuthenticated?: boolean
-    hasPassword?: boolean
+    hasFinancialPassword?: boolean
     companyName?: string
 }
 
@@ -66,7 +66,7 @@ function StatusBadge({ status }: { status: string }) {
     )
 }
 
-export default function PortalContent({ data, token, isFinancialAuthenticated = false, hasPassword = false, companyName }: PortalContentProps) {
+export default function PortalContent({ data, token, isFinancialAuthenticated = false, hasFinancialPassword = false, companyName }: PortalContentProps) {
     const {
         quotations = [], contracts = [], invoices = [],
         timeline = [], customer, project, brandConfig,
@@ -190,7 +190,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                         </div>
                     </div>
                     {/* Unlock Logic mapped to standard secondary Button/Dialog */}
-                    {hasPassword && !isFinancialAuthenticated && (
+                    {hasFinancialPassword && !isFinancialAuthenticated && (
                         <Dialog open={isUnlockModalOpen} onOpenChange={setIsUnlockModalOpen}>
                             <DialogTrigger asChild>
                                 <Button variant="secondary" size="sm" className="h-8 gap-2 font-medium">
@@ -199,11 +199,11 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                 </Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-md">
-                                <PortalPasswordForm token={token} companyName={companyName} isModal={true} />
+                                <PortalPasswordForm token={token} companyName={companyName} isModal={true} type="financial" />
                             </DialogContent>
                         </Dialog>
                     )}
-                    {isFinancialAuthenticated && hasPassword && (
+                    {isFinancialAuthenticated && hasFinancialPassword && (
                         <Badge variant="outline" className="h-8 gap-1.5 px-3 bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
                             <Lock className="w-3.5 h-3.5 opacity-70" />
                             Đã mở khóa
@@ -217,7 +217,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                 <Tabs defaultValue="overview" className="mx-auto grid w-full max-w-7xl items-start gap-6 md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr]">
                     
                     {/* Sidebar Navigation (TabsList) */}
-                        <nav className="flex flex-col gap-2">
+                        <nav className="flex flex-col gap-2 sticky top-[88px] h-[calc(100vh-100px)] overflow-y-auto">
                             <TabsList className="flex flex-col h-auto w-full items-start bg-transparent p-0 gap-1">
                                 <TabsTrigger 
                                     value="overview" 
@@ -414,8 +414,8 @@ function WorkItemCard({ item, idx }: { item: any; idx: number }) {
     const totalTasks = itemTasks.length
 
     return (
-        <Card>
-            <CardHeader className="flex flex-row items-start justify-between space-y-0 bg-muted/40 pb-4 border-b">
+        <Card className="overflow-hidden p-0">
+            <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4 border-b pt-4 px-6">
                 <div className="flex gap-4 items-start">
                     <div className="flex h-8 w-8 items-center justify-center rounded-md border bg-background text-xs font-semibold shrink-0">
                         {idx + 1}
@@ -480,8 +480,8 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
     const itemMilestones = contractId ? timeline.filter((t: any) => t.contract_id === contractId && (t.type === 'work' || t.type === 'payment')) : []
 
     return (
-        <Card className="overflow-hidden">
-            <CardHeader className="bg-muted/40 border-b flex flex-row items-center justify-between pb-4">
+        <Card className="overflow-hidden p-0">
+            <CardHeader className="border-b flex flex-row items-center justify-between pb-4 pt-4 px-6">
                 <div className="flex items-center gap-3">
                     <div className="flex h-8 w-8 items-center justify-center rounded-md border bg-background text-xs font-semibold">
                         {idx + 1}

@@ -187,9 +187,9 @@ export function DataTable<TData, TValue>({
                             <div key={filter.columnId} className="flex items-center gap-2">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="outline" size="sm" className="h-10 border-dashed bg-background hover:bg-muted/50 transition-colors rounded-md">
+                                        <Button variant="outline" size="sm" className="border-dashed bg-background hover:bg-muted/50 transition-colors rounded-md">
                                             <Plus className="mr-2 h-3.5 w-3.5" />
-                                            <span className="text-xs font-bold">{filter.title}</span>
+                                            <span className="text-xs">{filter.title}</span>
                                             {filterValue.length > 0 && (
                                                 <>
                                                     <Separator orientation="vertical" className="mx-2 h-4" />
@@ -271,9 +271,9 @@ export function DataTable<TData, TValue>({
                                     variant="destructive"
                                     size="sm"
                                     onClick={() => setOpen(true)}
-                                    className="h-10 rounded-md font-bold shadow-sm"
+                                    className="rounded-md"
                                 >
-                                    <Trash2 className="mr-2 h-4 w-4" />
+                                    <Trash2 className="h-4 w-4" />
                                     Xóa ({selectedRows.length})
                                 </Button>
                             )}
@@ -281,9 +281,9 @@ export function DataTable<TData, TValue>({
                             {bulkActions.length > 0 && (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="outline" size="sm" className="h-10 rounded-md font-bold shadow-sm">
+                                        <Button variant="outline" size="sm" className="rounded-md">
                                             Thao tác hàng loạt
-                                            <ChevronDown className="ml-2 h-4 w-4" />
+                                            <ChevronDown className="h-4 w-4" />
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end">
@@ -310,7 +310,7 @@ export function DataTable<TData, TValue>({
 
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="sm" className="h-10 rounded-md font-bold shadow-sm">
+                            <Button variant="outline" size="sm" className="rounded-md">
                                 <SlidersHorizontal className="mr-2 h-3.5 w-3.5" />
                                 Hiển thị
                             </Button>
@@ -341,7 +341,7 @@ export function DataTable<TData, TValue>({
             </div>
 
             {/* Table */}
-            <div className="rounded-md border border-border shadow-sm overflow-hidden bg-card">
+            <div className="rounded-md border border-border overflow-hidden">
                 <div className="overflow-x-auto">
                 <Table>
                     <TableHeader>
@@ -412,8 +412,7 @@ export function DataTable<TData, TValue>({
                     <div className="flex items-center gap-1">
                         <Button
                             variant="outline"
-                            size="icon"
-                            className="h-9 w-9 rounded-md bg-background hover:bg-muted/50 transition-all shadow-sm border-border hidden sm:inline-flex"
+                            className="hidden h-8 w-8 p-0 sm:flex"
                             onClick={() => table.setPageIndex(0)}
                             disabled={!table.getCanPreviousPage()}
                         >
@@ -421,8 +420,7 @@ export function DataTable<TData, TValue>({
                         </Button>
                         <Button
                             variant="outline"
-                            size="icon"
-                            className="h-9 w-9 rounded-md bg-background hover:bg-muted/50 transition-all shadow-sm border-border"
+                            className="h-8 w-8 p-0"
                             onClick={() => table.previousPage()}
                             disabled={!table.getCanPreviousPage()}
                         >
@@ -430,8 +428,7 @@ export function DataTable<TData, TValue>({
                         </Button>
                         <Button
                             variant="outline"
-                            size="icon"
-                            className="h-9 w-9 rounded-md bg-background hover:bg-muted/50 transition-all shadow-sm border-border"
+                            className="h-8 w-8 p-0"
                             onClick={() => table.nextPage()}
                             disabled={!table.getCanNextPage()}
                         >
@@ -439,8 +436,7 @@ export function DataTable<TData, TValue>({
                         </Button>
                         <Button
                             variant="outline"
-                            size="icon"
-                            className="h-9 w-9 rounded-md bg-background hover:bg-muted/50 transition-all shadow-sm border-border hidden sm:inline-flex"
+                            className="hidden h-8 w-8 p-0 sm:flex"
                             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                             disabled={!table.getCanNextPage()}
                         >

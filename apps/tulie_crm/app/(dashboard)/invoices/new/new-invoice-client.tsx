@@ -193,7 +193,7 @@ function NewInvoiceForm({ initialCustomers, initialContracts, initialProjects = 
                                         <Popover>
                                             <PopoverTrigger asChild>
                                                 <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                                    <CalendarIcon className="h-4 w-4" />
                                                     {issueDate ? format(issueDate, 'dd/MM/yyyy', { locale: vi }) : 'Chọn ngày'}
                                                 </Button>
                                             </PopoverTrigger>
@@ -207,7 +207,7 @@ function NewInvoiceForm({ initialCustomers, initialContracts, initialProjects = 
                                         <Popover>
                                             <PopoverTrigger asChild>
                                                 <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                                    <CalendarIcon className="h-4 w-4" />
                                                     {dueDate ? format(dueDate, 'dd/MM/yyyy', { locale: vi }) : 'Chọn ngày'}
                                                 </Button>
                                             </PopoverTrigger>
@@ -307,7 +307,7 @@ function NewInvoiceForm({ initialCustomers, initialContracts, initialProjects = 
                         <div className="flex flex-col gap-2">
                             <Button type="submit" disabled={isLoading} className="w-full">
                                 {isLoading && <LoadingSpinner size="sm" className="mr-2" />}
-                                <Save className="mr-2 h-4 w-4" />
+                                <Save className="h-4 w-4" />
                                 Tạo hoá đơn
                             </Button>
                             <Button type="button" variant="outline" asChild className="w-full">

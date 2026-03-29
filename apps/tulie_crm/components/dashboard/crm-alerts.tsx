@@ -37,7 +37,7 @@ export function CRMAlerts({ alerts }: CRMAlertsProps) {
     }
 
     return (
-        <Card className="h-full shadow-sm">
+        <Card className="h-full">
             <CardHeader className="pb-3 flex flex-row items-center justify-between">
                 <CardTitle className="text-base font-medium flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4 text-amber-500" />

@@ -154,7 +154,7 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                                         className={cn(
                                             "rounded-md border transition-all duration-200",
                                             isExpanded
-                                                ? "border-input bg-white shadow-sm"
+                                                ? "border-input bg-white"
                                                 : "border-border bg-muted/50 hover:bg-muted hover:border-border"
                                         )}
                                     >
@@ -165,7 +165,7 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                                         >
                                             {/* Version badge */}
                                             <div className={cn(
-                                                "shrink-0 flex items-center justify-center w-10 h-10 rounded-lg font-bold text-sm",
+                                                "shrink-0 flex items-center justify-center w-10 rounded-lg text-sm",
                                                 isLatest
                                                     ? "bg-zinc-900 text-white"
                                                     : "bg-muted text-muted-foreground"
@@ -277,7 +277,7 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                                                         {/* Financial summary */}
                                                         <div className="flex items-center justify-between p-3 bg-zinc-900 text-white rounded-lg">
                                                             <span className="text-xs font-medium opacity-70">Tổng thanh toán</span>
-                                                            <span className="text-base font-bold tabular-nums">
+                                                            <span className="text-base tabular-nums">
                                                                 {formatCurrency(snapshot.total_amount || 0)}
                                                             </span>
                                                         </div>

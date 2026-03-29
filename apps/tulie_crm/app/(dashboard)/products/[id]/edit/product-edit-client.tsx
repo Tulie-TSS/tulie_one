@@ -138,14 +138,14 @@ export default function ProductEditClient({ product, categories, units }: Produc
                     disabled={isDeleting || isLoading}
                     className="text-destructive hover:bg-destructive/10 hover:text-destructive rounded-lg h-9"
                 >
-                    {isDeleting ? <LoadingSpinner size="sm" className="mr-2" /> : <Trash2 className="mr-2 h-4 w-4" />}
+                    {isDeleting ? <LoadingSpinner size="sm" className="mr-2" /> : <Trash2 className="h-4 w-4" />}
                     Xóa sản phẩm
                 </Button>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid gap-6 lg:grid-cols-2">
-                    <Card className="rounded-md border-border shadow-sm">
+                    <Card className="rounded-md border-border">
                         <CardHeader>
                             <CardTitle>Thông tin sản phẩm</CardTitle>
                             <CardDescription>Thông tin cơ bản của sản phẩm/dịch vụ</CardDescription>
@@ -153,18 +153,18 @@ export default function ProductEditClient({ product, categories, units }: Produc
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
                                 <Label>Tên sản phẩm <span className="text-destructive">*</span></Label>
-                                <Input value={name} onChange={(e) => setName(e.target.value)} required className="h-10 border-border" />
+                                <Input value={name} onChange={(e) => setName(e.target.value)} required className="border-border" />
                             </div>
 
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label>Mã SKU</Label>
-                                    <Input value={sku} onChange={(e) => setSku(e.target.value)} className="h-10 border-border" />
+                                    <Input value={sku} onChange={(e) => setSku(e.target.value)} className="border-border" />
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Danh mục</Label>
                                     <Select value={category} onValueChange={setCategory}>
-                                        <SelectTrigger className="h-10 border-border">
+                                        <SelectTrigger className="border-border">
                                             <SelectValue placeholder="Chọn danh mục" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -184,7 +184,7 @@ export default function ProductEditClient({ product, categories, units }: Produc
                             <div className="space-y-2">
                                 <Label>Đơn vị tính <span className="text-destructive">*</span></Label>
                                 <Select value={unit} onValueChange={setUnit}>
-                                    <SelectTrigger className="h-10 border-border">
+                                    <SelectTrigger className="border-border">
                                         <SelectValue placeholder="Chọn ĐVT" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -213,7 +213,7 @@ export default function ProductEditClient({ product, categories, units }: Produc
                     </Card>
 
                     <div className="space-y-6">
-                        <Card className="rounded-md border-border shadow-sm">
+                        <Card className="rounded-md border-border">
                             <CardHeader>
                                 <CardTitle>Giá & Chi phí</CardTitle>
                                 <CardDescription>Thiết lập giá bán và giá vốn</CardDescription>
@@ -241,7 +241,7 @@ export default function ProductEditClient({ product, categories, units }: Produc
                                     <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-100 mt-2">
                                         <div className="flex items-center justify-between">
                                             <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">Biên lợi nhuận</p>
-                                            <p className="text-2xl font-bold text-emerald-700">
+                                            <p className="text-2xl text-emerald-700">
                                                 {(((price - costPrice) / price) * 100).toFixed(1)}%
                                             </p>
                                         </div>
@@ -250,7 +250,7 @@ export default function ProductEditClient({ product, categories, units }: Produc
                             </CardContent>
                         </Card>
 
-                        <Card className="rounded-md border-border shadow-sm">
+                        <Card className="rounded-md border-border">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
                                     <Files className="h-5 w-5 text-muted-foreground" />
@@ -296,12 +296,12 @@ export default function ProductEditClient({ product, categories, units }: Produc
                 </div>
 
                 <div className="flex items-center justify-end gap-3 pt-6 border-t">
-                    <Button type="button" variant="outline" asChild className="rounded-lg h-10 px-6 font-medium">
+                    <Button type="button" variant="outline" asChild className="rounded-lg px-6 font-medium">
                         <Link href={`/products/${product.id}`}>Hủy</Link>
                     </Button>
-                    <Button type="submit" disabled={isLoading || isDeleting} className="rounded-lg h-10 px-6 font-medium bg-zinc-900 text-white hover:bg-zinc-800">
+                    <Button type="submit" disabled={isLoading || isDeleting} className="rounded-lg px-6 font-medium bg-zinc-900 text-white hover:bg-zinc-800">
                         {isLoading && <LoadingSpinner size="sm" className="mr-2" />}
-                        <Save className="mr-2 h-4 w-4" />
+                        <Save className="h-4 w-4" />
                         Lưu thay đổi
                     </Button>
                 </div>

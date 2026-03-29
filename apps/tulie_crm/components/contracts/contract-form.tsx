@@ -399,7 +399,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                                <CalendarIcon className="h-4 w-4" />
                                                 {startDate ? format(startDate, 'dd/MM/yyyy', { locale: vi }) : 'Chọn ngày'}
                                             </Button>
                                         </PopoverTrigger>
@@ -413,7 +413,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                                <CalendarIcon className="h-4 w-4" />
                                                 {endDate ? format(endDate, 'dd/MM/yyyy', { locale: vi }) : 'Chọn ngày'}
                                             </Button>
                                         </PopoverTrigger>
@@ -429,7 +429,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                            <CalendarIcon className="mr-2 h-4 w-4" />
+                                            <CalendarIcon className="h-4 w-4" />
                                             {signedDate ? format(signedDate, 'dd/MM/yyyy', { locale: vi }) : 'Chọn ngày ký'}
                                         </Button>
                                     </PopoverTrigger>
@@ -510,7 +510,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                                 <CardDescription>Phân chia các đợt thanh toán</CardDescription>
                             </div>
                             <Button type="button" size="sm" onClick={addMilestone}>
-                                <Plus className="mr-2 h-4 w-4" />
+                                <Plus className="h-4 w-4" />
                                 Thêm
                             </Button>
                         </CardHeader>
@@ -518,12 +518,12 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                             {milestones.map((milestone, index) => {
                                 const isCompleted = milestone.status === 'completed'
                                 return (
-                                <div key={milestone.id} className={`p-4 border rounded-lg space-y-3 ${isCompleted ? 'border-emerald-300 bg-emerald-50/50 dark:bg-emerald-950/20 dark:border-emerald-800' : ''}`}>
+                                <div key={milestone.id} className={`p-4 border rounded-lg space-y-3 ${isCompleted ? 'bg-muted/30' : ''}`}>
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-4">
                                             <span className="font-medium">Đợt {index + 1}</span>
                                             {isCompleted && (
-                                                <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 font-medium">
+                                                <span className="text-xs px-2 py-0.5 rounded bg-secondary text-secondary-foreground font-medium">
                                                     ✓ Đã ghi nhận
                                                 </span>
                                             )}
@@ -631,7 +631,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                                             <Popover>
                                                 <PopoverTrigger asChild>
                                                     <Button variant="outline" className="w-full justify-start text-left font-normal" disabled={isCompleted}>
-                                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                                        <CalendarIcon className="h-4 w-4" />
                                                         {milestone.due_date ? format(milestone.due_date, 'dd/MM/yyyy') : 'Chọn'}
                                                     </Button>
                                                 </PopoverTrigger>
@@ -651,7 +651,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                                             <Popover>
                                                 <PopoverTrigger asChild>
                                                     <Button variant="outline" className="w-full justify-start text-left font-normal border-dashed">
-                                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                                        <CalendarIcon className="h-4 w-4" />
                                                         {milestone.completed_at ? format(milestone.completed_at, 'dd/MM/yyyy') : 'Chưa có'}
                                                     </Button>
                                                 </PopoverTrigger>
@@ -699,7 +699,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                     </Button>
                     <Button type="submit" disabled={isLoading}>
                         {isLoading && <LoadingSpinner size="sm" className="mr-2" />}
-                        <Save className="mr-2 h-4 w-4" />
+                        <Save className="h-4 w-4" />
                         Lưu thay đổi
                     </Button>
                 </div>

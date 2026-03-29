@@ -113,7 +113,7 @@ export default function TaskDetailPage() {
                         {/* Execution Timeline */}
                         <Card className="card-elevated border-transparent">
                             <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
-                                <CardTitle className="text-[15px] font-bold text-foreground">
+                                <CardTitle className="text-[15px] text-foreground">
                                     Execution timeline
                                 </CardTitle>
                             </CardHeader>
@@ -158,7 +158,7 @@ export default function TaskDetailPage() {
                         {hasPlanReview && planReviewStep?.status === "current" && (
                             <Card className="card-elevated border-dashed border-2 border-primary/20 bg-primary/5 shadow-none rounded-md">
                                 <CardHeader className="pb-4">
-                                    <CardTitle className="text-[15px] font-bold text-foreground">
+                                    <CardTitle className="text-[15px] text-foreground">
                                         Review agent plan
                                     </CardTitle>
                                     <CardDescription className="font-medium mt-1">
@@ -189,7 +189,7 @@ export default function TaskDetailPage() {
                         {task.messages.length > 0 && (
                             <Card className="card-elevated border-transparent">
                                 <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
-                                    <CardTitle className="text-[15px] font-bold text-foreground flex items-center gap-2">
+                                    <CardTitle className="text-[15px] text-foreground flex items-center gap-2">
                                         <Bot className="h-4.5 w-4.5 text-sky-500" />
                                         Conversation
                                     </CardTitle>
@@ -237,7 +237,7 @@ export default function TaskDetailPage() {
                         {task.result && (
                             <Card className="card-elevated border-transparent">
                                 <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
-                                    <CardTitle className="text-[15px] font-bold text-foreground">
+                                    <CardTitle className="text-[15px] text-foreground">
                                         Result
                                     </CardTitle>
                                 </CardHeader>
@@ -274,7 +274,7 @@ export default function TaskDetailPage() {
                     <div className="space-y-6">
                         <Card className="card-elevated border-transparent">
                             <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
-                                <CardTitle className="text-[15px] font-bold text-foreground">
+                                <CardTitle className="text-[15px] text-foreground">
                                     Cost summary
                                 </CardTitle>
                             </CardHeader>
@@ -308,7 +308,7 @@ export default function TaskDetailPage() {
 
                         <Card className="card-elevated border-transparent">
                             <CardHeader className="border-b border-border/40 bg-muted/50 pb-4">
-                                <CardTitle className="text-[15px] font-bold text-foreground">
+                                <CardTitle className="text-[15px] text-foreground">
                                     Details
                                 </CardTitle>
                             </CardHeader>

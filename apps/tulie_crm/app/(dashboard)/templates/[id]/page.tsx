@@ -222,7 +222,7 @@ export default function TemplateDetailPage() {
                         In giấy tờ
                     </Button>
                     <Button onClick={handleDownload}>
-                        <Download className="mr-2 h-4 w-4" />
+                        <Download className="h-4 w-4" />
                         Tải HTML
                     </Button>
                 </div>
@@ -335,7 +335,7 @@ export default function TemplateDetailPage() {
                     <CardContent>
                         <iframe
                             srcDoc={`<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{margin:0;padding:20px;font-family:Arial,sans-serif;font-size:10pt;}</style></head><body>${previewHtml}</body></html>`}
-                            className="w-full border rounded-lg bg-white shadow-inner"
+                            className="w-full border rounded-lg bg-white "
                             style={{ minHeight: '600px', maxHeight: 'calc(100vh - 240px)', height: '800px' }}
                             title="Xem trước giấy tờ"
                         />
@@ -355,7 +355,7 @@ export default function TemplateDetailPage() {
                                 In giấy tờ
                             </Button>
                             <Button onClick={handleDownload}>
-                                <Download className="mr-2 h-4 w-4" />
+                                <Download className="h-4 w-4" />
                                 Tải xuống HTML
                             </Button>
                         </div>

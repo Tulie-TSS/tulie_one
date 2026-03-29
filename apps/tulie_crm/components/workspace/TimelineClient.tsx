@@ -238,7 +238,7 @@ export function TimelineClient({ tasks, teamMembers }: TimelineClientProps) {
                                                 {/* Assignee dot */}
                                                 {task.assigned_user && barStartPercent + barWidthPercent < 95 && (
                                                     <div
-                                                        className="absolute top-2.5 h-4 w-4 rounded-full bg-muted flex items-center justify-center text-[7px] font-bold text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+                                                        className="absolute top-2.5 h-4 w-4 rounded-full bg-muted flex items-center justify-center text-[7px] text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity"
                                                         style={{ left: `${Math.min(barStartPercent + barWidthPercent + 0.5, 98)}%` }}
                                                     >
                                                         {((task.assigned_user as any).full_name || '?').charAt(0).toUpperCase()}

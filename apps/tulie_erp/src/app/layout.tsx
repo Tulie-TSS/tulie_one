@@ -39,7 +39,7 @@ export default function RootLayout({
             toastOptions={{
               unstyled: false,
               classNames: {
-                toast: 'group font-sans rounded-md shadow-lg border backdrop-blur-sm !bg-background !text-foreground',
+                toast: 'group font-sans rounded-md border backdrop-blur-sm !bg-background !text-foreground',
                 title: 'text-sm font-semibold',
                 description: 'text-xs text-muted-foreground',
                 success: '!border-emerald-200 !bg-emerald-50 !text-emerald-900 dark:!bg-emerald-950/80 dark:!border-emerald-800 dark:!text-emerald-100',

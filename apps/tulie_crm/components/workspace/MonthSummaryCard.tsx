@@ -29,7 +29,7 @@ export default function MonthSummaryCard({ summary }: MonthSummaryCardProps) {
                 <div className="space-y-3">
                     {/* Completion Rate */}
                     <div className="flex items-baseline justify-between">
-                        <span className="text-2xl font-bold">{completion_rate}%</span>
+                        <span className="text-2xl">{completion_rate}%</span>
                         <span className="text-sm text-muted-foreground">{total} tasks</span>
                     </div>
 

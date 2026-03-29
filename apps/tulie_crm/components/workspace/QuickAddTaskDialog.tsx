@@ -65,7 +65,7 @@ export function QuickAddTaskDialog({ defaultStatus, trigger, teamMembers = [] }:
             <DialogTrigger asChild>
                 {trigger || (
                     <Button size="sm">
-                        <Plus className="h-4 w-4 mr-2" />
+                        <Plus className="h-4 w-4" />
                         Tạo task
                     </Button>
                 )}

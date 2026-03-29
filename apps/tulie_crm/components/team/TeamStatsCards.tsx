@@ -28,7 +28,7 @@ export default function TeamStatsCards({ overview }: TeamStatsCardsProps) {
                                 <Icon className={`h-4 w-4 ${stat.color}`} />
                                 <span className="text-xs text-muted-foreground">{stat.label}</span>
                             </div>
-                            <p className="text-2xl font-bold">{value}</p>
+                            <p className="text-2xl">{value}</p>
                             {stat.key === 'completed_tasks' && (
                                 <p className="text-xs text-muted-foreground">
                                     {overview.overall_completion_rate}% tổng tasks

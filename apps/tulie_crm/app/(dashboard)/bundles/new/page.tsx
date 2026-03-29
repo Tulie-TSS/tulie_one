@@ -181,7 +181,7 @@ export default function NewBundlePage() {
                             <div className="space-y-2">
                                 <Label>Tên bộ hồ sơ</Label>
                                 <input
-                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                     placeholder="VD: Hồ sơ triển khai CRM"
                                     value={bundleName}
                                     onChange={(e) => setBundleName(e.target.value)}
@@ -250,7 +250,7 @@ export default function NewBundlePage() {
                                     <p className="text-sm font-medium mb-2">Tài liệu bao gồm ({selectedTemplateIds.length}):</p>
                                     <div className="flex flex-wrap gap-2">
                                         {selectedTemplateIds.length === 0 && (
-                                            <span className="text-sm text-muted-foreground italic">Chưa chọn tài liệu nào</span>
+                                            <span className="text-sm text-muted-foreground">Chưa chọn tài liệu nào</span>
                                         )}
                                         {selectedTemplateIds.map(id => (
                                             <Badge key={id} variant="outline">
@@ -271,7 +271,7 @@ export default function NewBundlePage() {
                                     disabled={isSaving || !selectedCustomerId || selectedTemplateIds.length === 0}
                                 >
                                     {isSaving && <LoadingSpinner size="sm" className="mr-2" />}
-                                    <LinkIcon className="mr-2 h-4 w-4" />
+                                    <LinkIcon className="h-4 w-4" />
                                     Tạo bộ hồ sơ & Lấy link chia sẻ
                                 </Button>
                             ) : (
@@ -296,7 +296,7 @@ export default function NewBundlePage() {
                                     <div className="flex gap-2">
                                         <Button className="flex-1" variant="outline" asChild>
                                             <Link href={shareUrl} target="_blank">
-                                                <ExternalLink className="mr-2 h-4 w-4" />
+                                                <ExternalLink className="h-4 w-4" />
                                                 Trải nghiệm Portal
                                             </Link>
                                         </Button>

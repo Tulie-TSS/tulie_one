@@ -42,9 +42,9 @@ export function UnlockPortalButton({ customerId, isUnlocked }: UnlockPortalButto
             {isLoading ? (
                 <LoadingSpinner size="sm" className="mr-2" />
             ) : isUnlocked ? (
-                <Lock className="mr-2 h-4 w-4" />
+                <Lock className="h-4 w-4" />
             ) : (
-                <Unlock className="mr-2 h-4 w-4" />
+                <Unlock className="h-4 w-4" />
             )}
             {isUnlocked ? 'Khóa quyền cập nhật' : 'Mở quyền portal'}
         </Button>

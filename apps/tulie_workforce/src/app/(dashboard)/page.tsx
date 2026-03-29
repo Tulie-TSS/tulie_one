@@ -102,11 +102,11 @@ export default function DashboardPage() {
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Button variant="outline" className="h-9 shadow-sm">
+                        <Button variant="outline" className="h-9">
                             <Upload className="h-4 w-4 mr-2" />
                             Import Data
                         </Button>
-                        <Button className="h-9 shadow-sm">
+                        <Button className="h-9">
                             <Plus className="h-4 w-4 mr-2" />
                             New Workflow
                         </Button>
@@ -126,7 +126,7 @@ export default function DashboardPage() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="flex items-center justify-between">
-                                        <div className="text-2xl font-bold">{stat.value}</div>
+                                        <div className="text-2xl">{stat.value}</div>
                                         {stat.title === "Tasks This Week" && (
                                             <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                                         )}
@@ -156,7 +156,7 @@ export default function DashboardPage() {
                                         Real-time logs from all active agents and workflows.
                                     </CardDescription>
                                 </div>
-                                <Badge variant="outline" className="px-2 font-medium flex items-center gap-1.5 bg-card">
+                                <Badge variant="outline" className="px-2 font-medium flex items-center gap-1.5">
                                     <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                                     Online
                                 </Badge>
@@ -243,7 +243,7 @@ export default function DashboardPage() {
                                 <div className="pt-3 border-t border-zinc-900">
                                     <p className="text-xs text-zinc-400 mb-1">Estimated Cost</p>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-2xl font-bold text-zinc-100">
+                                        <span className="text-2xl text-zinc-100">
                                             {formatCost(dashboardStats.totalCost)}
                                         </span>
                                         <span className="text-xs text-zinc-500 font-medium">USD</span>
@@ -253,34 +253,34 @@ export default function DashboardPage() {
                         </Card>
 
                         {/* Quick Action Tiles */}
-                        <Card className="shadow-sm flex flex-col h-full bg-card">
+                        <Card className="shadow-sm flex flex-col h-full">
                             <CardHeader className="pb-3 border-b flex-none">
                                 <CardTitle className="text-base font-medium">Quick Launch</CardTitle>
                             </CardHeader>
                             <CardContent className="p-4 grid grid-cols-2 gap-3 flex-1 content-start">
                                 <Link href="/agents/new" className="block">
-                                    <div className="flex flex-col items-center justify-center gap-2 rounded-md border bg-card p-4 text-center transition-colors hover:bg-muted">
+                                    <div className="flex flex-col items-center justify-center gap-2 rounded-md border p-4 text-center transition-colors hover:bg-muted">
                                         <Bot className="h-5 w-5 text-muted-foreground" />
                                         <span className="text-xs font-medium text-foreground">New Agent</span>
                                     </div>
                                 </Link>
                                 
                                 <Link href="/tasks/new" className="block">
-                                    <div className="flex flex-col items-center justify-center gap-2 rounded-md border bg-card p-4 text-center transition-colors hover:bg-muted">
+                                    <div className="flex flex-col items-center justify-center gap-2 rounded-md border p-4 text-center transition-colors hover:bg-muted">
                                         <ClipboardList className="h-5 w-5 text-muted-foreground" />
                                         <span className="text-xs font-medium text-foreground">Assign Task</span>
                                     </div>
                                 </Link>
                                 
                                 <Link href="/knowledge" className="block">
-                                    <div className="flex flex-col items-center justify-center gap-2 rounded-md border bg-card p-4 text-center transition-colors hover:bg-muted">
+                                    <div className="flex flex-col items-center justify-center gap-2 rounded-md border p-4 text-center transition-colors hover:bg-muted">
                                         <Upload className="h-5 w-5 text-muted-foreground" />
                                         <span className="text-xs font-medium text-foreground">Import Data</span>
                                     </div>
                                 </Link>
                                 
                                 <Link href="/automations" className="block">
-                                    <div className="flex flex-col items-center justify-center gap-2 rounded-md border bg-card p-4 text-center transition-colors hover:bg-muted">
+                                    <div className="flex flex-col items-center justify-center gap-2 rounded-md border p-4 text-center transition-colors hover:bg-muted">
                                         <Workflow className="h-5 w-5 text-muted-foreground" />
                                         <span className="text-xs font-medium text-foreground">Workflow</span>
                                     </div>

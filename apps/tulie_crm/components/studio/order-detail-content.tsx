@@ -159,7 +159,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
         <div className="grid gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2 space-y-6">
                 {/* Delivery Links Section */}
-                <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                <Card className="rounded-md border-border overflow-hidden">
                     <CardHeader className="bg-muted/50 border-b">
                         <div className="flex items-center justify-between">
                             <div className="space-y-1">
@@ -196,9 +196,9 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                 placeholder="Dán link Google Drive, Dropbox hoặc folder bàn giao..."
                                 value={links.resource_link}
                                 onChange={(e) => setLinks({ ...links, resource_link: e.target.value })}
-                                className="h-10 border-border focus-visible:ring-primary/20 bg-white shadow-none"
+                                className="border-border focus-visible:ring-primary/20 bg-white shadow-none"
                             />
-                            <p className="text-[11px] text-muted-foreground font-normal italic">Chỉ hiển thị sau khi khách thanh toán 100%.</p>
+                            <p className="text-[11px] text-muted-foreground font-normal">Chỉ hiển thị sau khi khách thanh toán 100%.</p>
                         </div>
 
                         <div className="space-y-2">
@@ -219,7 +219,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                 placeholder="VD: GHTK123456 hoặc https://tracking.ghn.vn/..."
                                 value={links.tracking_number}
                                 onChange={(e) => setLinks({ ...links, tracking_number: e.target.value })}
-                                className="h-10 border-border focus-visible:ring-primary/20 bg-white shadow-none"
+                                className="border-border focus-visible:ring-primary/20 bg-white shadow-none"
                             />
                         </div>
                     </CardContent>
@@ -227,7 +227,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
                 {/* Customer Photos & Original Link */}
                 {((order as any).metadata?.photo_urls?.length > 0 || (order as any).metadata?.original_link) && (
-                    <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                    <Card className="rounded-md border-border overflow-hidden">
                         <CardHeader className="bg-muted/50 border-b">
                             <div className="space-y-1">
                                 <CardTitle className="text-base font-semibold flex items-center gap-2">
@@ -269,7 +269,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                 )}
 
                 {/* Product/Service List */}
-                <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                <Card className="rounded-md border-border overflow-hidden">
                     <CardHeader className="bg-muted/50 border-b">
                         <div className="space-y-1">
                             <CardTitle className="text-base font-semibold flex items-center gap-2">
@@ -282,13 +282,13 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                     <CardContent className="p-0">
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm text-left">
-                                <thead className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground bg-muted/30 border-b border-border">
+                                <thead className="text-[11px] uppercase tracking-widest text-muted-foreground bg-muted/30 border-b border-border">
                                     <tr>
-                                        <th className="px-6 py-3 font-bold">STT</th>
-                                        <th className="px-6 py-3 font-bold">Tên sản phẩm/dịch vụ</th>
-                                        <th className="px-6 py-3 font-bold text-center">SL</th>
-                                        <th className="px-6 py-3 font-bold text-right">Đơn giá</th>
-                                        <th className="px-6 py-3 font-bold text-right">Thành tiền</th>
+                                        <th className="px-6 py-3">STT</th>
+                                        <th className="px-6 py-3">Tên sản phẩm/dịch vụ</th>
+                                        <th className="px-6 py-3 text-center">SL</th>
+                                        <th className="px-6 py-3 text-right">Đơn giá</th>
+                                        <th className="px-6 py-3 text-right">Thành tiền</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-zinc-100">
@@ -302,16 +302,16 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                                         <div className="text-[11px] text-muted-foreground mt-0.5 font-medium">SKU: {item.product_id.split('-')[0].toUpperCase()}</div>
                                                     )}
                                                 </td>
-                                                <td className="px-6 py-4 text-center font-bold text-zinc-700 tabular-nums">{item.quantity}</td>
+                                                <td className="px-6 py-4 text-center text-zinc-700 tabular-nums">{item.quantity}</td>
                                                 <td className="px-6 py-4 text-right font-medium text-muted-foreground tabular-nums">{formatCurrency(item.unit_price)}</td>
-                                                <td className="px-6 py-4 text-right font-bold text-foreground tabular-nums">{formatCurrency(item.total_price)}</td>
+                                                <td className="px-6 py-4 text-right text-foreground tabular-nums">{formatCurrency(item.total_price)}</td>
                                             </tr>
                                         ))
                                     ) : (
                                         <tr>
                                             <td colSpan={5} className="px-6 py-12 text-center">
                                                 <div className="flex flex-col items-center gap-2">
-                                                    <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
+                                                    <div className="w-10 rounded-full bg-muted flex items-center justify-center">
                                                         <FileText className="h-5 w-5 text-zinc-200" />
                                                     </div>
                                                     <p className="text-sm text-muted-foreground font-medium">Chưa có thông tin sản phẩm.</p>
@@ -322,8 +322,8 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                 </tbody>
                                 <tfoot className="bg-muted/30 border-t border-border">
                                     <tr>
-                                        <td colSpan={4} className="px-6 py-4 text-right text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Tổng cộng</td>
-                                        <td className="px-6 py-4 text-right text-base font-bold text-foreground tabular-nums">
+                                        <td colSpan={4} className="px-6 py-4 text-right text-[11px] uppercase tracking-wider text-muted-foreground">Tổng cộng</td>
+                                        <td className="px-6 py-4 text-right text-base text-foreground tabular-nums">
                                             {formatCurrency(order.total_amount)}
                                         </td>
                                     </tr>
@@ -335,7 +335,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
                 {/* Info & Notes */}
                 <div className="grid md:grid-cols-2 gap-6">
-                    <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                    <Card className="rounded-md border-border overflow-hidden">
                         <CardHeader className="bg-muted/50 border-b">
                             <div className="space-y-1">
                                 <CardTitle className="text-base font-semibold flex items-center gap-2">
@@ -399,7 +399,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                     </Card>
 
                     {/* Shipping Info Card */}
-                    <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                    <Card className="rounded-md border-border overflow-hidden">
                         <CardHeader className="bg-muted/50 border-b">
                             <div className="flex items-center justify-between">
                                 <div className="space-y-1">
@@ -487,12 +487,12 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
             <div className="space-y-6">
                 {/* Payment Card */}
-                <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                <Card className="rounded-md border-border overflow-hidden">
                     <CardHeader className="bg-muted/50 border-b pb-3">
-                        <Badge variant="outline" className="w-fit mb-2 text-[11px] font-bold uppercase tracking-widest px-3 py-1">
+                        <Badge variant="outline" className="w-fit mb-2 text-[11px] uppercase tracking-widest px-3 py-1">
                             Thanh toán
                         </Badge>
-                        <CardTitle className="text-3xl font-bold tracking-tighter tabular-nums">
+                        <CardTitle className="text-3xl tracking-tighter tabular-nums">
                             {formatCurrency(remainingAmount)}
                         </CardTitle>
                         <CardDescription className="font-normal">Công nợ còn phải thu</CardDescription>
@@ -503,10 +503,10 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                         <div className="space-y-3">
                             <div className="flex justify-between items-end">
                                 <div>
-                                    <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">
                                         Tiến độ thanh toán
                                     </p>
-                                    <p className="text-2xl font-bold tabular-nums">
+                                    <p className="text-2xl tabular-nums">
                                         {formatCurrency(order.paid_amount || 0)}
                                         <span className="text-sm font-normal text-muted-foreground"> / {formatCurrency(order.total_amount)}</span>
                                     </p>
@@ -556,7 +556,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                         <AlertTriangle className="h-4 w-4 text-red-600" />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-bold text-red-800">
+                                        <p className="text-sm text-red-800">
                                             Thu thừa {formatCurrency((order.paid_amount || 0) - order.total_amount)}
                                         </p>
                                         <p className="text-xs text-red-600 mt-0.5">
@@ -570,7 +570,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                     disabled={isRecalculating}
                                     size="sm"
                                     variant="outline"
-                                    className="w-full h-9 rounded-lg font-bold text-xs border-red-200 text-red-700 hover:bg-red-100"
+                                    className="w-full h-9 rounded-lg text-xs border-red-200 text-red-700 hover:bg-red-100"
                                 >
                                     {isRecalculating
                                         ? <LoadingSpinner size="sm" className="mr-2" />
@@ -587,7 +587,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
                                 {/* Bank Info */}
                                 <div className="p-3 rounded-lg bg-blue-50/70 border border-blue-100 space-y-1.5">
-                                    <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-blue-600">
+                                    <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest text-blue-600">
                                         <Building2 className="h-3 w-3" />
                                         Thông tin chuyển khoản
                                     </div>
@@ -615,7 +615,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
                                 {/* QR Code */}
                                 <div className="flex flex-col items-center gap-3 p-4 rounded-md border bg-muted/20">
-                                    <div className="flex items-center gap-2 text-xs font-bold uppercase text-muted-foreground">
+                                    <div className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
                                         <QrCode className="h-4 w-4" />
                                         Mã QR thanh toán nhanh
                                     </div>
@@ -631,7 +631,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                 <div className="grid grid-cols-2 gap-2">
                                     <Button
                                         variant="outline"
-                                        className="h-10 rounded-lg font-bold text-xs border-blue-200 text-blue-700 hover:bg-blue-50"
+                                        className="rounded-lg text-xs border-blue-200 text-blue-700 hover:bg-blue-50"
                                         onClick={() => {
                                             const portalUrl = `${window.location.origin}/portal/order/${order.public_token}`
                                             const amount = new Intl.NumberFormat('vi-VN').format(remainingAmount)
@@ -657,7 +657,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                     </Button>
                                     <Button
                                         variant="outline"
-                                        className="h-10 rounded-lg font-bold text-xs border-emerald-200 text-emerald-700 hover:bg-emerald-50"
+                                        className="rounded-lg text-xs border-emerald-200 text-emerald-700 hover:bg-emerald-50"
                                         onClick={async () => {
                                             try {
                                                 const res = await fetch(qrUrl)
@@ -686,7 +686,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
                 {/* Record Payment Section (Manual) */}
                 {remainingAmount > 0 && (
-                    <Card className="rounded-md border-border shadow-sm overflow-hidden">
+                    <Card className="rounded-md border-border overflow-hidden">
                         <CardHeader className="pb-3 bg-muted/30">
                             <CardTitle className="text-sm font-semibold flex items-center gap-2">
                                 <History className="h-4 w-4 text-muted-foreground" />
@@ -706,27 +706,27 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                             const raw = e.target.value.replace(/\./g, '').replace(/[^0-9]/g, '')
                                             setPaymentAmount(raw)
                                         }}
-                                        className="h-12 text-lg font-bold tabular-nums border-border focus-visible:ring-emerald-500/20 pl-4 pr-14"
+                                        className="h-12 text-lg tabular-nums border-border focus-visible:ring-emerald-500/20 pl-4 pr-14"
                                     />
-                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-300 pointer-events-none">đ</div>
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-zinc-300 pointer-events-none">đ</div>
                                 </div>
                             </div>
                             <Button
                                 onClick={handleRecordPayment}
                                 disabled={isRecordingPayment}
                                 className={cn(
-                                    "w-full h-11 rounded-lg font-bold transition-all shadow-sm",
+                                    "w-full h-11 rounded-lg transition-all",
                                     "bg-zinc-900 text-white hover:bg-zinc-800"
                                 )}
                             >
-                                {isRecordingPayment ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="mr-2 h-4 w-4" />}
+                                {isRecordingPayment ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4" />}
                                 Ghi nhận & Bắn Telegram
                             </Button>
                             <div className="flex gap-2 p-3 bg-muted rounded-lg border border-border">
                                 <div className="h-4 w-4 rounded-full bg-zinc-900 flex items-center justify-center shrink-0 mt-0.5">
                                     <span className="text-[11px] text-white">!</span>
                                 </div>
-                                <p className="text-[11px] text-muted-foreground font-medium leading-normal italic">Hệ thống sẽ ngay lập tức gửi một tin nhắn báo biến động số dư lên Telegram Group của team Tulie Studio.</p>
+                                <p className="text-[11px] text-muted-foreground font-medium leading-normal">Hệ thống sẽ ngay lập tức gửi một tin nhắn báo biến động số dư lên Telegram Group của team Tulie Studio.</p>
                             </div>
                         </CardContent>
                     </Card>

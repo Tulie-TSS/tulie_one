@@ -103,6 +103,7 @@ export interface Quotation {
   valid_until: string
   public_token: string
   password_hash?: string
+  financial_password_hash?: string
   viewed_at?: string
   view_count: number
   accepted_at?: string
@@ -186,6 +187,7 @@ export interface Contract {
   project?: Project
   brand: Brand
   password_hash?: string
+  financial_password_hash?: string
   customer_snapshot?: CustomerSnapshot
   created_at: string
   updated_at: string

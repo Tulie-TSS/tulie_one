@@ -87,7 +87,7 @@ export function Header() {
                             <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/>
                         </svg>
                         {unreadCount > 0 && (
-                            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center bg-destructive text-destructive-foreground text-[10px] font-bold">
+                            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center bg-destructive text-destructive-foreground text-[10px]">
                                 {unreadCount}
                             </span>
                         )}
@@ -96,7 +96,7 @@ export function Header() {
                     {/* Notification Panel */}
                     {showNotifications && (
                         <div
-                            className="absolute right-0 top-full mt-2 w-80 overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-lg z-50"
+                            className="absolute right-0 top-full mt-2 w-80 overflow-hidden rounded-md border bg-popover text-popover-foreground z-50"
                         >
                             {/* Panel Header */}
                             <div className="flex items-center justify-between px-4 py-3 border-b">

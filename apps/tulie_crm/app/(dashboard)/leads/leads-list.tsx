@@ -131,13 +131,13 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
                     { label: 'Đã liên hệ', value: stats.contacted, icon: Phone, color: 'text-amber-600' },
                     { label: 'Tiềm năng', value: stats.qualified, icon: UserCheck, color: 'text-emerald-600' },
                 ].map((s, i) => (
-                    <Card key={i} className="shadow-sm">
+                    <Card key={i} className="">
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
                             <CardTitle className="text-sm font-medium">{s.label}</CardTitle>
                             <s.icon className={cn("h-4 w-4", s.color)} />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{s.value}</div>
+                            <div className="text-2xl">{s.value}</div>
                         </CardContent>
                     </Card>
                 ))}
@@ -166,7 +166,7 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
                 </Select>
             </div>
 
-            <div className="rounded-md border bg-card">
+            <div className="rounded-md border">
                 <Table>
                     <TableHeader>
                         <TableRow>

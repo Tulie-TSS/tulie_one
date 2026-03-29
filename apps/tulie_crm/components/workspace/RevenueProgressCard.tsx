@@ -38,7 +38,7 @@ export default function RevenueProgressCard({ progress }: RevenueProgressCardPro
                 <div className="space-y-3">
                     {/* Amount */}
                     <div className="flex items-baseline justify-between">
-                        <span className="text-2xl font-bold">
+                        <span className="text-2xl">
                             {(actual / 1000000).toFixed(1)}M
                         </span>
                         {targetAmount > 0 && (

@@ -33,13 +33,9 @@ export function StatsCard({
             <CardContent>
                 <div className="text-2xl font-bold">{value}</div>
                 {(changeLabel || change !== undefined) && (
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs text-muted-foreground">
                         {change !== undefined && (
-                            <span className={cn(
-                                "font-medium mr-1",
-                                isPositive && "text-emerald-500",
-                                isNegative && "text-red-500"
-                            )}>
+                            <span className="font-medium mr-1">
                                 {isPositive ? '+' : ''}
                                 {Math.abs(change) < 1000 ? `${change.toFixed(1)}%` : change.toLocaleString('vi-VN')}
                             </span>

@@ -37,7 +37,7 @@ export function QuotationEmailButton({
                 </DropdownMenuItem>
             ) : (
                 <Button variant={variant} size={size} onClick={() => setEmailOpen(true)}>
-                    <Send className="mr-2 h-4 w-4" />
+                    <Send className="h-4 w-4" />
                     {showText && 'Gửi email'}
                 </Button>
             )}

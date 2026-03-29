@@ -222,7 +222,7 @@ export default function SettingsPage() {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`flex items-center gap-2 px-5 py-2.5 text-[13px] transition-all duration-200 rounded-md ${ activeTab === tab.id ? "bg-white text-foreground shadow-sm font-bold ring-1 ring-border/50" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground font-semibold" }`}
+                            className={`flex items-center gap-2 px-5 py-2.5 text-[13px] transition-all duration-200 rounded-md ${ activeTab === tab.id ? "bg-white text-foreground ring-1 ring-border/50" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground font-semibold" }`}
                         >
                             <tab.icon className={`h-4.5 w-4.5 ${activeTab === tab.id ? "text-primary" : "text-muted-foreground"}`} />
                             {tab.label}
@@ -236,7 +236,7 @@ export default function SettingsPage() {
                         <div className="space-y-6">
                             <Card className="card-elevated border-transparent">
                                 <CardHeader className="pb-4">
-                                    <CardTitle className="text-xl font-bold text-foreground">
+                                    <CardTitle className="text-xl text-foreground">
                                         Profile information
                                     </CardTitle>
                                     <CardDescription className="text-[13px] font-medium text-muted-foreground mt-1.5">
@@ -246,16 +246,16 @@ export default function SettingsPage() {
                                 <CardContent className="space-y-5 pt-2">
                                     <div className="grid grid-cols-2 gap-5">
                                         <div className="space-y-2">
-                                            <Label htmlFor="name" className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Full name</Label>
+                                            <Label htmlFor="name" className="text-[11px] text-muted-foreground uppercase tracking-wider">Full name</Label>
                                             <Input id="name" defaultValue="Tung Nguyen" className="h-11 rounded-md border-border/60 bg-muted/50 text-[14px] font-medium focus:bg-white transition-colors" />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="company" className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Company</Label>
+                                            <Label htmlFor="company" className="text-[11px] text-muted-foreground uppercase tracking-wider">Company</Label>
                                             <Input id="company" defaultValue="Tulie Agency" className="h-11 rounded-md border-border/60 bg-muted/50 text-[14px] font-medium focus:bg-white transition-colors" />
                                         </div>
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="email" className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Email address</Label>
+                                        <Label htmlFor="email" className="text-[11px] text-muted-foreground uppercase tracking-wider">Email address</Label>
                                         <Input id="email" defaultValue="tung@tulie.app" disabled className="h-11 rounded-md text-[14px] font-medium bg-muted/50 border-border/40 text-muted-foreground" />
                                         <p className="text-[11px] font-semibold text-muted-foreground mt-1.5 flex items-center gap-1.5">
                                             <AlertCircle className="h-3 w-3" />
@@ -263,7 +263,7 @@ export default function SettingsPage() {
                                         </p>
                                     </div>
                                     <div className="flex justify-end pt-2">
-                                        <Button className="h-10 px-5 text-[13px] font-bold shadow-md shadow-primary/20 bg-primary hover:bg-primary/95 text-white transition-transform active:scale-95 gap-2">
+                                        <Button className="h-9 px-5 text-[13px] shadow-primary/20 bg-primary hover:bg-primary/95 text-white transition-transform active:scale-95 gap-2">
                                             <Save className="h-4 w-4" />
                                             Save changes
                                         </Button>
@@ -273,9 +273,9 @@ export default function SettingsPage() {
                         </div>
                         
                         <div className="space-y-6">
-                            <Card className="card-elevated border-rose-100/50 shadow-sm shadow-rose-500/5">
+                            <Card className="card-elevated border-rose-100/50 shadow-rose-500/5">
                                 <CardHeader className="pb-4">
-                                    <CardTitle className="text-xl font-bold text-rose-600 flex items-center gap-2">
+                                    <CardTitle className="text-xl text-rose-600 flex items-center gap-2">
                                         <Trash2 className="h-5 w-5" />
                                         Danger zone
                                     </CardTitle>
@@ -287,7 +287,7 @@ export default function SettingsPage() {
                                     <p className="text-[13px] font-medium text-foreground mb-4 leading-relaxed">
                                         Once you delete your account, there is no going back. Please be certain. All data will be permanently erased.
                                     </p>
-                                    <Button variant="destructive" className="h-10 px-5 text-[13px] font-bold shadow-sm">
+                                    <Button variant="destructive" className="h-9 px-5 text-[13px]">
                                         Delete account
                                     </Button>
                                 </CardContent>
@@ -308,7 +308,7 @@ export default function SettingsPage() {
                                 {/* API Keys Card */}
                                 <Card className="card-elevated border-transparent">
                                     <CardHeader className="pb-4">
-                                        <CardTitle className="text-xl font-bold text-foreground flex items-center gap-2.5">
+                                        <CardTitle className="text-xl text-foreground flex items-center gap-2.5">
                                             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600">
                                                 <Key className="h-4.5 w-4.5" />
                                             </div>
@@ -323,16 +323,16 @@ export default function SettingsPage() {
                                             <div key={prov.provider} className="space-y-4 p-5 rounded-md border border-border/60 bg-muted/30 transition-all hover:bg-white hover:shadow-sm hover:border-border/80">
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex flex-wrap items-center gap-2.5">
-                                                        <Badge variant="outline" className={`text-[11px] font-bold px-2.5 py-0.5 tracking-wide ${providerColors[prov.provider] ?? ""}`}>
+                                                        <Badge variant="outline" className={`text-[11px] px-2.5 py-0.5 tracking-wide ${providerColors[prov.provider] ?? ""}`}>
                                                             {prov.label}
                                                         </Badge>
                                                         {prov.isConfigured ? (
-                                                            <Badge variant="default" className="text-[10px] font-bold tracking-wider uppercase gap-1.5 bg-emerald-50 text-emerald-600 border border-emerald-200 hover:bg-emerald-100/80 px-2 py-0.5">
+                                                            <Badge variant="default" className="text-[10px] tracking-wider uppercase gap-1.5 bg-emerald-50 text-emerald-600 border border-emerald-200 hover:bg-emerald-100/80 px-2 py-0.5">
                                                                 <CheckCircle2 className="h-3.5 w-3.5" />
                                                                 Connected
                                                             </Badge>
                                                         ) : (
-                                                            <Badge variant="outline" className="text-[10px] font-bold tracking-wider uppercase gap-1.5 bg-muted text-muted-foreground border-border/60 px-2 py-0.5">
+                                                            <Badge variant="outline" className="text-[10px] tracking-wider uppercase gap-1.5 bg-muted text-muted-foreground border-border/60 px-2 py-0.5">
                                                                 <AlertCircle className="h-3.5 w-3.5" />
                                                                 Not config'd
                                                             </Badge>
@@ -404,13 +404,13 @@ export default function SettingsPage() {
                                                         placeholder={`Enter ${prov.label} API key`}
                                                         value={newKeys[prov.provider] ?? ""}
                                                         onChange={(e) => setNewKeys(prev => ({ ...prev, [prov.provider]: e.target.value }))}
-                                                        className="font-mono text-[13px] h-11 rounded-md border-border/60 bg-white shadow-sm focus:bg-white transition-colors"
+                                                        className="font-mono text-[13px] h-11 rounded-md border-border/60 bg-white focus:bg-white transition-colors"
                                                     />
                                                     <Button
                                                         variant="outline"
                                                         onClick={() => handleSaveKey(prov.provider)}
                                                         disabled={!newKeys[prov.provider] || saving[prov.provider]}
-                                                        className="h-11 px-5 text-[13px] font-bold shadow-sm"
+                                                        className="h-11 px-5 text-[13px]"
                                                     >
                                                         {saving[prov.provider] ? (
                                                             <Loader2 className="h-4.5 w-4.5 animate-spin mr-2" />
@@ -421,12 +421,12 @@ export default function SettingsPage() {
                                                     </Button>
                                                 </div>
                                                 {prov.isConfigured && prov.keyMasked && (
-                                                    <p className="text-[12px] text-muted-foreground font-mono bg-white inline-block px-3 py-1.5 rounded-lg border border-border/40 shadow-sm">
+                                                    <p className="text-[12px] text-muted-foreground font-mono bg-white inline-block px-3 py-1.5 rounded-lg border border-border/40">
                                                         Current: {prov.keyMasked}
                                                     </p>
                                                 )}
                                                 {prov.testError && (
-                                                    <p className="text-[12px] font-semibold text-rose-600 bg-rose-50 border border-rose-100 px-3 py-1.5 rounded-lg shadow-sm">
+                                                    <p className="text-[12px] font-semibold text-rose-600 bg-rose-50 border border-rose-100 px-3 py-1.5 rounded-lg">
                                                         Error: {prov.testError}
                                                     </p>
                                                 )}
@@ -443,7 +443,7 @@ export default function SettingsPage() {
                                     <CardHeader className="pb-4">
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <CardTitle className="text-xl font-bold text-foreground flex items-center gap-2.5">
+                                                <CardTitle className="text-xl text-foreground flex items-center gap-2.5">
                                                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 border border-amber-100 text-amber-600">
                                                         <Sparkles className="h-4.5 w-4.5" />
                                                     </div>
@@ -453,7 +453,7 @@ export default function SettingsPage() {
                                                     All available models and their context limits. Click ⭐ to set your default.
                                                 </CardDescription>
                                             </div>
-                                            <Button variant="outline" size="sm" onClick={() => { fetchProviders(); fetchModels(); }} className="h-9 px-4 text-[12px] font-bold shadow-sm rounded-lg hover:bg-muted border-border/80">
+                                            <Button variant="outline" size="sm" onClick={() => { fetchProviders(); fetchModels(); }} className="h-9 px-4 text-[12px] rounded-lg hover:bg-muted border-border/80">
                                                 <RefreshCw className="h-4 w-4 mr-2" />
                                                 Refresh Data
                                             </Button>
@@ -546,7 +546,7 @@ export default function SettingsPage() {
                                 {/* Cost Comparison */}
                                 <Card className="card-elevated border-transparent">
                                     <CardHeader className="pb-4">
-                                        <CardTitle className="text-xl font-bold text-foreground flex items-center gap-2.5">
+                                        <CardTitle className="text-xl text-foreground flex items-center gap-2.5">
                                             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-600">
                                                 <DollarSign className="h-4.5 w-4.5" />
                                             </div>
@@ -580,11 +580,11 @@ export default function SettingsPage() {
                                                             </span>
                                                             <div className="flex-1 h-6 bg-muted/80 rounded-lg overflow-hidden border border-border/40 shadow-inner block">
                                                                 <div
-                                                                    className={`h-full rounded-md transition-all duration-500 ease-out ${idx === 0 ? "bg-emerald-500 shadow-sm" : idx <= 2 ? "bg-emerald-400 opacity-90" : "bg-muted-foreground/30"}`}
+                                                                    className={`h-full rounded-md transition-all duration-500 ease-out ${idx === 0 ? "bg-emerald-500" : idx <= 2 ? "bg-emerald-400 opacity-90" : "bg-muted-foreground/30"}`}
                                                                     style={{ width: `${Math.max(pct, 2)}%` }}
                                                                 />
                                                             </div>
-                                                            <span className={`text-[13px] font-bold font-mono w-20 text-right shrink-0 ${idx === 0 ? "text-emerald-600" : "text-muted-foreground"}`}>
+                                                            <span className={`text-[13px] font-mono w-20 text-right shrink-0 ${idx === 0 ? "text-emerald-600" : "text-muted-foreground"}`}>
                                                                 ${cost1k.toFixed(2)}
                                                             </span>
                                                         </div>
@@ -605,36 +605,36 @@ export default function SettingsPage() {
                             <Card className="card-elevated border-transparent">
                                 <CardContent className="p-6">
                                     <div className="flex items-center gap-2 text-muted-foreground mb-3">
-                                        <div className="p-2 bg-muted rounded-lg shadow-sm border border-border/40">
+                                        <div className="p-2 bg-muted rounded-lg border border-border/40">
                                             <Zap className="h-4.5 w-4.5 text-muted-foreground" />
                                         </div>
-                                        <span className="text-[12px] font-bold uppercase tracking-wider">Total tokens</span>
+                                        <span className="text-[12px] uppercase tracking-wider">Total tokens</span>
                                     </div>
-                                    <p className="text-3xl font-bold text-foreground">—</p>
+                                    <p className="text-3xl text-foreground">—</p>
                                     <p className="text-[13px] font-medium text-muted-foreground mt-2">Will appear when processing requests</p>
                                 </CardContent>
                             </Card>
                             <Card className="card-elevated border-transparent">
                                 <CardContent className="p-6">
                                     <div className="flex items-center gap-2 text-muted-foreground mb-3">
-                                        <div className="p-2 bg-emerald-50 rounded-lg shadow-sm border border-emerald-100">
+                                        <div className="p-2 bg-emerald-50 rounded-lg border border-emerald-100">
                                             <DollarSign className="h-4.5 w-4.5 text-emerald-600" />
                                         </div>
-                                        <span className="text-[12px] font-bold uppercase tracking-wider">Total cost</span>
+                                        <span className="text-[12px] uppercase tracking-wider">Total cost</span>
                                     </div>
-                                    <p className="text-3xl font-bold text-foreground">—</p>
+                                    <p className="text-3xl text-foreground">—</p>
                                     <p className="text-[13px] font-medium text-muted-foreground mt-2">Computed from token burn rates</p>
                                 </CardContent>
                             </Card>
                             <Card className="card-elevated border-transparent">
                                 <CardContent className="p-6">
                                     <div className="flex items-center gap-2 text-muted-foreground mb-3">
-                                        <div className="p-2 bg-indigo-50 rounded-lg shadow-sm border border-indigo-100">
+                                        <div className="p-2 bg-indigo-50 rounded-lg border border-indigo-100">
                                             <Bot className="h-4.5 w-4.5 text-indigo-600" />
                                         </div>
-                                        <span className="text-[12px] font-bold uppercase tracking-wider">Active connections</span>
+                                        <span className="text-[12px] uppercase tracking-wider">Active connections</span>
                                     </div>
-                                    <p className="text-3xl font-bold text-foreground">
+                                    <p className="text-3xl text-foreground">
                                         {providers.filter(p => p.isConfigured && p.isActive).length}
                                     </p>
                                     <p className="text-[13px] font-medium text-muted-foreground mt-2">Configured and enabled AI APIs</p>
@@ -644,7 +644,7 @@ export default function SettingsPage() {
 
                         <Card className="card-elevated border-transparent">
                             <CardHeader className="pb-4">
-                                <CardTitle className="text-xl font-bold text-foreground">
+                                <CardTitle className="text-xl text-foreground">
                                     Usage tracking
                                 </CardTitle>
                                 <CardDescription className="text-[13px] font-medium text-muted-foreground mt-1.5">
@@ -654,11 +654,11 @@ export default function SettingsPage() {
                             <CardContent className="pt-2">
                                 <div className="flex items-center justify-center py-16 text-muted-foreground rounded-md border-2 border-dashed border-border/40 bg-muted/50">
                                     <div className="text-center space-y-4">
-                                        <div className="flex h-16 w-16 mx-auto items-center justify-center rounded-md bg-white shadow-sm border border-border/60">
+                                        <div className="flex h-16 w-16 mx-auto items-center justify-center rounded-md bg-white border border-border/60">
                                             <TrendingUp className="h-8 w-8 text-muted-foreground/50" />
                                         </div>
                                         <div>
-                                            <p className="text-[15px] font-bold text-foreground">No telemetry available</p>
+                                            <p className="text-[15px] text-foreground">No telemetry available</p>
                                             <p className="text-[13px] font-medium text-muted-foreground mt-1 max-w-sm">
                                                 Start chatting or trigger an automation to begin seeing usage statistics here.
                                             </p>

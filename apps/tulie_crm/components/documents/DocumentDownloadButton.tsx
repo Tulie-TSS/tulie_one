@@ -73,7 +73,7 @@ export default function DocumentDownloadButton({
                     disabled={loading}
                     className={className}
                 >
-                    {loading ? <LoadingSpinner size="sm" className="mr-2" /> : <Download className="h-4 w-4 mr-2" />}
+                    {loading ? <LoadingSpinner size="sm" className="mr-2" /> : <Download className="h-4 w-4" />}
                     <span>{label}</span>
                 </Button>
             ) : (
@@ -91,7 +91,7 @@ export default function DocumentDownloadButton({
                             {pdfLoading ? (
                                 <LoadingSpinner size="sm" className="mr-2" />
                             ) : (
-                                <Download className="h-4 w-4 mr-2" />
+                                <Download className="h-4 w-4" />
                             )}
                             <span>{label}</span>
                         </Button>

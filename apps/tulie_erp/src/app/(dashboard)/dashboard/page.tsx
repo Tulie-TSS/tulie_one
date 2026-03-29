@@ -29,7 +29,7 @@ function StatCard({
         <Icon className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
+        <div className="text-2xl">{value}</div>
         {(subtitle || href) && (
           <div className="flex items-center justify-between mt-1">
             <p className="text-xs text-muted-foreground">{subtitle}</p>

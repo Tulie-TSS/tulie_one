@@ -26,7 +26,7 @@ export default function AnalyticsPage() {
                 ].map(c => (
                     <div key={c.label} className="p-5 rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                         <div style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{c.label}</div>
-                        <div className="text-3xl font-bold mt-1" style={{ color: c.color }}>{c.value}</div>
+                        <div className="text-3xl mt-1" style={{ color: c.color }}>{c.value}</div>
                     </div>
                 ))}
             </div>

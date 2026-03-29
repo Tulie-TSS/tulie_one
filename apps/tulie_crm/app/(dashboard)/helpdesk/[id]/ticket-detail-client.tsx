@@ -105,7 +105,7 @@ export function TicketDetailClient({ ticket, users }: TicketDetailClientProps) {
                                 {TICKET_PRIORITY_LABELS[ticket.priority]}
                             </Badge>
                         </div>
-                        <h1 className="text-2xl font-bold mt-1">{ticket.title}</h1>
+                        <h1 className="text-2xl mt-1">{ticket.title}</h1>
                     </div>
                 </div>
             </div>

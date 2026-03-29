@@ -108,10 +108,10 @@ const dayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 // ─── Gantt bar colors (Premium palette) ──────────────────
 
 const ganttBarColor: Record<TaskStatus, string> = {
-    completed: "bg-indigo-500 shadow-md shadow-indigo-500/20",
-    in_progress: "bg-emerald-500 shadow-md shadow-emerald-500/20",
+    completed: "bg-indigo-500 shadow-indigo-500/20",
+    in_progress: "bg-emerald-500 shadow-emerald-500/20",
     pending: "bg-zinc-300 text-zinc-700",
-    failed: "bg-destructive shadow-md shadow-destructive/20",
+    failed: "bg-destructive shadow-destructive/20",
     cancelled: "bg-muted text-muted-foreground",
 };
 
@@ -143,7 +143,7 @@ export default function TasksPage() {
                 {/* ── Page Header ── */}
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                     <div>
-                        <h1 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                        <h1 className="text-2xl text-foreground flex items-center gap-3">
                             Task Management
                             <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors border-0">
                                 {activeCount} Active
@@ -155,7 +155,7 @@ export default function TasksPage() {
                     </div>
                     <div className="flex items-center gap-3">
                         <Link href="/tasks/new">
-                            <Button className="h-10 bg-primary text-primary-foreground hover:bg-primary/95 shadow-md shadow-primary/20 text-sm font-medium">
+                            <Button className="h-9 bg-primary text-primary-foreground hover:bg-primary/95 shadow-primary/20 text-sm font-medium">
                                 <Plus className="h-4 w-4 mr-2" />
                                 Assign Task
                             </Button>
@@ -164,7 +164,7 @@ export default function TasksPage() {
                 </div>
 
                 {/* ── Toolbar: Filter tabs + View + Sort ── */}
-                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white p-2 rounded-md border border-border shadow-sm">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white p-2 rounded-md border border-border">
                     {/* Modern Segmented Control for Filters */}
                     <div className="flex gap-1 rounded-lg bg-muted/80 p-1 w-full md:w-auto overflow-x-auto no-scrollbar">
                         {filterTabs.map((tab) => {
@@ -173,7 +173,7 @@ export default function TasksPage() {
                                 <button
                                     key={tab.value}
                                     onClick={() => setFilter(tab.value)}
-                                    className={`relative flex items-center justify-center gap-2 px-4 py-2 rounded-md text-[13px] font-semibold transition-all shrink-0 ${ filter === tab.value ? "bg-white text-foreground shadow-sm ring-1 ring-border/50" : "text-muted-foreground hover:text-foreground hover:bg-white/50" }`}
+                                    className={`relative flex items-center justify-center gap-2 px-4 py-2 rounded-md text-[13px] font-semibold transition-all shrink-0 ${ filter === tab.value ? "bg-white text-foreground ring-1 ring-border/50" : "text-muted-foreground hover:text-foreground hover:bg-white/50" }`}
                                 >
                                     {tab.label}
                                     <span className={`flex h-5 items-center justify-center rounded-full px-1.5 text-[10px] ${ filter === tab.value ? "bg-primary/10 text-primary" : "bg-black/5 text-muted-foreground" }`}>
@@ -191,7 +191,7 @@ export default function TasksPage() {
                             <input 
                                 type="text" 
                                 placeholder="Search tasks..." 
-                                className="h-10 w-64 rounded-lg border border-border bg-muted pl-10 pr-4 text-[13px] outline-none transition-colors focus:border-primary/50 focus:bg-white focus:ring-1 focus:ring-primary/20"
+                                className="h-9 w-64 rounded-lg border border-border bg-muted pl-10 pr-4 text-[13px] outline-none transition-colors focus:border-primary/50 focus:bg-white focus:ring-1 focus:ring-primary/20"
                             />
                         </div>
 
@@ -201,7 +201,7 @@ export default function TasksPage() {
                         <div className="relative">
                             <button
                                 onClick={() => setShowSort(!showSort)}
-                                className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-white text-[13px] font-medium text-foreground hover:bg-muted transition-colors shadow-sm"
+                                className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-white text-[13px] font-medium text-foreground hover:bg-muted transition-colors"
                             >
                                 <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
                                 <span className="hidden sm:inline">Sort: {sortOptions.find((s) => s.value === sortKey)?.label}</span>
@@ -209,7 +209,7 @@ export default function TasksPage() {
                                 <ChevronDown className="h-3 w-3 text-muted-foreground ml-1" />
                             </button>
                             {showSort && (
-                                <div className="absolute right-0 mt-2 w-48 rounded-md border border-border bg-popover shadow-lg z-20 overflow-hidden py-1">
+                                <div className="absolute right-0 mt-2 w-48 rounded-md border border-border bg-popover z-20 overflow-hidden py-1">
                                     {sortOptions.map((opt) => (
                                         <button
                                             key={opt.value}
@@ -228,13 +228,13 @@ export default function TasksPage() {
                         </div>
 
                         {/* View Mode Toggle */}
-                        <div className="flex rounded-lg border border-border p-1 bg-muted shadow-sm">
+                        <div className="flex rounded-lg border border-border p-1 bg-muted">
                             {viewModes.map((v) => (
                                 <button
                                     key={v.value}
                                     onClick={() => setView(v.value)}
                                     title={v.label}
-                                    className={`flex items-center justify-center w-8 h-8 rounded-md transition-all ${ view === v.value ? "bg-white text-primary shadow-sm ring-1 ring-border/50" : "text-muted-foreground hover:text-foreground" }`}
+                                    className={`flex items-center justify-center w-8 h-8 rounded-md transition-all ${ view === v.value ? "bg-white text-primary ring-1 ring-border/50" : "text-muted-foreground hover:text-foreground" }`}
                                 >
                                     <v.icon className={`h-4 w-4 ${view === v.value ? "stroke-[2.5px]" : "stroke-2"}`} />
                                 </button>
@@ -253,12 +253,12 @@ export default function TasksPage() {
                                 <table className="w-full text-sm">
                                     <thead>
                                         <tr className="border-b border-border bg-muted/50">
-                                            <th className="text-left px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Task Overview</th>
-                                            <th className="text-left px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Assigned Agent</th>
-                                            <th className="text-left px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Priority</th>
-                                            <th className="text-left px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Status</th>
-                                            <th className="text-right px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Cost/Tokens</th>
-                                            <th className="text-right px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Timeline</th>
+                                            <th className="text-left px-6 py-4 text-[11px] uppercase tracking-widest text-muted-foreground">Task Overview</th>
+                                            <th className="text-left px-6 py-4 text-[11px] uppercase tracking-widest text-muted-foreground">Assigned Agent</th>
+                                            <th className="text-left px-6 py-4 text-[11px] uppercase tracking-widest text-muted-foreground">Priority</th>
+                                            <th className="text-left px-6 py-4 text-[11px] uppercase tracking-widest text-muted-foreground">Status</th>
+                                            <th className="text-right px-6 py-4 text-[11px] uppercase tracking-widest text-muted-foreground">Cost/Tokens</th>
+                                            <th className="text-right px-6 py-4 text-[11px] uppercase tracking-widest text-muted-foreground">Timeline</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -287,11 +287,11 @@ export default function TasksPage() {
                                                     <Badge variant={priorityVariant[task.priority]} className="font-semibold">{task.priority}</Badge>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <Badge variant={statusVariant[task.status]} className="font-semibold shadow-sm">{statusLabel[task.status]}</Badge>
+                                                    <Badge variant={statusVariant[task.status]} className="font-semibold">{statusLabel[task.status]}</Badge>
                                                 </td>
                                                 <td className="px-6 py-4 text-right">
                                                     <div className="flex flex-col items-end">
-                                                        <span className="text-[13px] font-bold text-foreground">{formatCost(task.costUsd)}</span>
+                                                        <span className="text-[13px] text-foreground">{formatCost(task.costUsd)}</span>
                                                         <span className="text-[11px] text-muted-foreground font-medium">{formatTokens(task.tokensIn + task.tokensOut)} tkns</span>
                                                     </div>
                                                 </td>
@@ -327,9 +327,9 @@ export default function TasksPage() {
                                     <div className="flex items-center justify-between mb-4">
                                         <div className="flex items-center gap-2.5">
                                             <div className={`h-2.5 w-2.5 rounded-full ${col.color}`} />
-                                            <h3 className="text-sm font-bold text-foreground tracking-wide uppercase">{col.title}</h3>
+                                            <h3 className="text-sm text-foreground tracking-wide uppercase">{col.title}</h3>
                                         </div>
-                                        <Badge variant="secondary" className="bg-white px-2 py-0.5 shadow-sm font-bold">
+                                        <Badge variant="secondary" className="bg-white px-2 py-0.5">
                                             {colTasks.length}
                                         </Badge>
                                     </div>
@@ -352,7 +352,7 @@ export default function TasksPage() {
                                                                 {timeAgo(task.createdAt).replace(' hours ago', 'h').replace(' days ago', 'd')}
                                                             </span>
                                                         </div>
-                                                        <p className="text-[13px] font-bold text-foreground leading-snug group-hover:text-primary transition-colors">{task.title}</p>
+                                                        <p className="text-[13px] text-foreground leading-snug group-hover:text-primary transition-colors">{task.title}</p>
                                                         <div className="mt-4 flex items-center gap-2">
                                                             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-indigo-50 border border-indigo-100 text-indigo-600 shrink-0">
                                                                 <Bot className="h-3.5 w-3.5" />
@@ -387,7 +387,7 @@ export default function TasksPage() {
                                             className={`min-h-[600px] ${isToday ? "bg-primary/[0.02]" : "bg-white"}`}
                                         >
                                             <div className={`px-3 py-3 text-center border-b border-border ${isToday ? "bg-primary/5" : ""}`}>
-                                                <p className={`text-[11px] font-bold uppercase tracking-wider ${isToday ? "text-primary" : "text-muted-foreground"}`}>
+                                                <p className={`text-[11px] uppercase tracking-wider ${isToday ? "text-primary" : "text-muted-foreground"}`}>
                                                     {dayLabels[i]}
                                                 </p>
                                                 <p className={`text-2xl mt-0.5 font-light ${isToday ? "text-primary font-medium" : "text-foreground"}`}>
@@ -397,10 +397,10 @@ export default function TasksPage() {
                                             <div className="p-2 space-y-1.5">
                                                 {dayTasks.map((task) => (
                                                     <Link key={task.id} href={`/tasks/${task.id}`} className="block">
-                                                        <div className="px-2 py-2 rounded-lg bg-white border border-border shadow-sm hover:border-primary/40 hover:shadow-md transition-all cursor-pointer group">
+                                                        <div className="px-2 py-2 rounded-lg bg-white border border-border hover:border-primary/40 hover:shadow-md transition-all cursor-pointer group">
                                                             <div className="flex items-center gap-1.5 mb-1">
                                                                 <div className={`h-1.5 w-1.5 rounded-full shrink-0 ${ task.status === 'in_progress' ? 'bg-emerald-500' : task.status === 'completed' ? 'bg-indigo-500' : task.status === 'failed' ? 'bg-destructive' : 'bg-zinc-300' }`} />
-                                                                <p className="text-[11px] font-bold text-foreground truncate group-hover:text-primary">{task.title}</p>
+                                                                <p className="text-[11px] text-foreground truncate group-hover:text-primary">{task.title}</p>
                                                             </div>
                                                             <p className="text-[10px] text-muted-foreground font-medium truncate">{task.agentName}</p>
                                                         </div>
@@ -425,7 +425,7 @@ export default function TasksPage() {
                             {/* Day Headers */}
                             <div className="flex border-b border-border bg-muted/50">
                                 <div className="w-[300px] shrink-0 px-6 py-3 border-r border-border flex flex-col justify-end">
-                                    <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Task Overview</span>
+                                    <span className="text-[11px] uppercase tracking-widest text-muted-foreground">Task Overview</span>
                                 </div>
                                 <div className="flex-1 flex">
                                     {Array.from({ length: 14 }, (_, i) => i + 1).map((d) => (
@@ -451,7 +451,7 @@ export default function TasksPage() {
                                 return (
                                     <div key={task.id} className="flex border-b border-border/40 hover:bg-muted/50 transition-colors group">
                                         <div className="w-[300px] shrink-0 px-6 py-4 border-r border-border">
-                                            <Link href={`/tasks/${task.id}`} className="text-[13px] font-bold text-foreground hover:text-primary transition-colors truncate block">
+                                            <Link href={`/tasks/${task.id}`} className="text-[13px] text-foreground hover:text-primary transition-colors truncate block">
                                                 {task.title}
                                             </Link>
                                             <div className="flex items-center gap-2 mt-1.5">
@@ -473,7 +473,7 @@ export default function TasksPage() {
                                                 className={`absolute top-1/2 -translate-y-1/2 h-8 rounded-lg flex items-center px-3 transition-transform group-hover:scale-[1.02] cursor-pointer ${ganttBarColor[task.status]} ${task.status === 'pending' || task.status === 'cancelled' ? 'border border-border' : 'text-white'}`}
                                                 style={{ left: `calc(${leftPct}% + 8px)`, width: `calc(${widthPct}% - 16px)`, minWidth: '40px' }}
                                             >
-                                                <span className="text-[11px] font-bold tracking-wide truncate">
+                                                <span className="text-[11px] tracking-wide truncate">
                                                     {task.title}
                                                 </span>
                                             </div>

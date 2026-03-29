@@ -172,7 +172,7 @@ export function DataTable<TData, TValue>({
                                 onChange={(event) =>
                                     table.getColumn(searchKey)?.setFilterValue(event.target.value)
                                 }
-                                className="pl-9 w-full sm:w-[250px] lg:w-[350px] bg-muted/30 border-transparent h-10 rounded-md focus-visible:bg-background focus-visible:border-border transition-all"
+                                className="pl-9 w-[250px]"
                             />
                         </div>
                     )}
@@ -187,9 +187,9 @@ export function DataTable<TData, TValue>({
                             <div key={filter.columnId} className="flex items-center gap-2">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="outline" size="sm" className="h-10 border-dashed bg-background hover:bg-muted/50 transition-colors rounded-md">
-                                            <Plus className="mr-2 h-3.5 w-3.5" />
-                                            <span className="text-xs font-bold">{filter.title}</span>
+                                        <Button variant="outline" size="sm" className="h-8 border-dashed">
+                                            <Plus className="h-3.5 w-3.5" />
+                                            <span className="text-xs">{filter.title}</span>
                                             {filterValue.length > 0 && (
                                                 <>
                                                     <Separator orientation="vertical" className="mx-2 h-4" />
@@ -271,9 +271,9 @@ export function DataTable<TData, TValue>({
                                     variant="destructive"
                                     size="sm"
                                     onClick={() => setOpen(true)}
-                                    className="h-10 rounded-md font-bold shadow-sm"
+                                    className="h-8"
                                 >
-                                    <Trash2 className="mr-2 h-4 w-4" />
+                                    <Trash2 className="h-4 w-4" />
                                     Xóa ({selectedRows.length})
                                 </Button>
                             )}
@@ -281,9 +281,9 @@ export function DataTable<TData, TValue>({
                             {bulkActions.length > 0 && (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="outline" size="sm" className="h-10 rounded-md font-bold shadow-sm">
+                                        <Button variant="outline" size="sm" className="h-8">
                                             Thao tác hàng loạt
-                                            <ChevronDown className="ml-2 h-4 w-4" />
+                                            <ChevronDown className="h-4 w-4" />
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end">
@@ -310,8 +310,8 @@ export function DataTable<TData, TValue>({
 
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="sm" className="h-10 rounded-md font-bold shadow-sm">
-                                <SlidersHorizontal className="mr-2 h-3.5 w-3.5" />
+                            <Button variant="outline" size="sm" className="h-8">
+                                <SlidersHorizontal className="h-3.5 w-3.5" />
                                 Hiển thị
                             </Button>
                         </DropdownMenuTrigger>
@@ -341,7 +341,7 @@ export function DataTable<TData, TValue>({
             </div>
 
             {/* Table */}
-            <div className="rounded-md border border-border shadow-sm overflow-hidden bg-card">
+            <div className="rounded-md border border-border overflow-hidden">
                 <div className="overflow-x-auto">
                 <Table>
                     <TableHeader>
@@ -412,38 +412,38 @@ export function DataTable<TData, TValue>({
                     <div className="flex items-center gap-1">
                         <Button
                             variant="outline"
-                            size="icon"
-                            className="h-9 w-9 rounded-md bg-background hover:bg-muted/50 transition-all shadow-sm border-border hidden sm:inline-flex"
+                            className="h-8 w-8 p-0 flex lg:hidden"
                             onClick={() => table.setPageIndex(0)}
                             disabled={!table.getCanPreviousPage()}
                         >
+                            <span className="sr-only">Go to first page</span>
                             <ChevronsLeft className="h-4 w-4" />
                         </Button>
                         <Button
                             variant="outline"
-                            size="icon"
-                            className="h-9 w-9 rounded-md bg-background hover:bg-muted/50 transition-all shadow-sm border-border"
+                            className="h-8 w-8 p-0"
                             onClick={() => table.previousPage()}
                             disabled={!table.getCanPreviousPage()}
                         >
+                            <span className="sr-only">Go to previous page</span>
                             <ChevronLeft className="h-4 w-4" />
                         </Button>
                         <Button
                             variant="outline"
-                            size="icon"
-                            className="h-9 w-9 rounded-md bg-background hover:bg-muted/50 transition-all shadow-sm border-border"
+                            className="h-8 w-8 p-0"
                             onClick={() => table.nextPage()}
                             disabled={!table.getCanNextPage()}
                         >
+                            <span className="sr-only">Go to next page</span>
                             <ChevronRight className="h-4 w-4" />
                         </Button>
                         <Button
                             variant="outline"
-                            size="icon"
-                            className="h-9 w-9 rounded-md bg-background hover:bg-muted/50 transition-all shadow-sm border-border hidden sm:inline-flex"
+                            className="h-8 w-8 p-0 flex lg:hidden"
                             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                             disabled={!table.getCanNextPage()}
                         >
+                            <span className="sr-only">Go to last page</span>
                             <ChevronsRight className="h-4 w-4" />
                         </Button>
                     </div>

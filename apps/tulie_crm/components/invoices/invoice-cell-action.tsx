@@ -114,28 +114,28 @@ export function InvoiceCellAction({ data }: InvoiceCellActionProps) {
                     <DropdownMenuLabel>Hành động</DropdownMenuLabel>
                     <DropdownMenuItem asChild>
                         <Link href={`/invoices/${data.id}`}>
-                            <Eye className="mr-2 h-4 w-4" />
+                            <Eye className="h-4 w-4" />
                             Xem chi tiết
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <Link href={`/invoices/${data.id}/edit`}>
-                            <Edit className="mr-2 h-4 w-4" />
+                            <Edit className="h-4 w-4" />
                             Chỉnh sửa
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => setEmailOpen(true)}>
-                        <Send className="mr-2 h-4 w-4" />
+                        <Send className="h-4 w-4" />
                         Gửi email
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        <Download className="mr-2 h-4 w-4" />
+                        <Download className="h-4 w-4" />
                         Tải PDF
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <Link href={`/finance/payments/new?invoice=${data.id}`}>
-                            <Receipt className="mr-2 h-4 w-4" />
+                            <Receipt className="h-4 w-4" />
                             Ghi nhận thanh toán
                         </Link>
                     </DropdownMenuItem>
@@ -144,7 +144,7 @@ export function InvoiceCellAction({ data }: InvoiceCellActionProps) {
                         className="text-destructive font-medium"
                         onClick={() => setOpen(true)}
                     >
-                        <Trash2 className="mr-2 h-4 w-4" />
+                        <Trash2 className="h-4 w-4" />
                         Xóa
                     </DropdownMenuItem>
                 </DropdownMenuContent>

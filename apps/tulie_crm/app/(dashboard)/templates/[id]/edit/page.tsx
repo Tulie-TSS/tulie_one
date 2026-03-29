@@ -133,7 +133,7 @@ export default function EditTemplatePage() {
                     </div>
                 </div>
                 <Button onClick={handleSave} disabled={isSaving}>
-                    {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="mr-2 h-4 w-4" />}
+                    {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4" />}
                     Lưu thay đổi
                 </Button>
             </div>

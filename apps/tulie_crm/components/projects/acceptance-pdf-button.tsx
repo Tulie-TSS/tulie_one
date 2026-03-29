@@ -24,7 +24,7 @@ export function AcceptancePDFButton({ project, report, customer }: AcceptancePDF
                     {loading ? (
                         <LoadingSpinner size="sm" className="mr-2" />
                     ) : (
-                        <FileDown className="mr-2 h-4 w-4" />
+                        <FileDown className="h-4 w-4" />
                     )}
                     Tải PDF
                 </Button>

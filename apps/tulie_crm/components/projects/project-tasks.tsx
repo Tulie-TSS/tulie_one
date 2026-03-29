@@ -115,11 +115,11 @@ export function ProjectTasks({ project, workItems }: ProjectTasksProps) {
                 </div>
                 <div className="flex gap-2">
                     <Button variant="outline" size="sm" onClick={addTask}>
-                        <Plus className="mr-2 h-4 w-4" />
+                        <Plus className="h-4 w-4" />
                         Thêm việc
                     </Button>
                     <Button size="sm" onClick={handleSave} disabled={isLoading}>
-                        {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="mr-2 h-4 w-4" />}
+                        {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4" />}
                         Lưu công việc
                     </Button>
                 </div>
@@ -134,7 +134,7 @@ export function ProjectTasks({ project, workItems }: ProjectTasksProps) {
                     {tasks.map((task, index) => (
                         <div key={task.id} className="grid grid-cols-1 md:grid-cols-12 gap-3 p-3 border rounded-md items-center bg-card transition-all hover:border-slate-300">
                             <div className="md:col-span-4 flex items-center gap-3">
-                                <span className="text-[11px] font-bold text-muted-foreground w-4">{index + 1}</span>
+                                <span className="text-[11px] text-muted-foreground w-4">{index + 1}</span>
                                 <div className="flex-1 space-y-1">
                                     <Input
                                         placeholder="Tên công việc..."

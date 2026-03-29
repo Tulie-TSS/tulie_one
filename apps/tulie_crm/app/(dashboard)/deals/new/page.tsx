@@ -18,7 +18,7 @@ export default async function NewDealPage() {
                     </Link>
                 </Button>
                 <div>
-                    <h1 className="text-3xl font-bold">Tạo cơ hội mới</h1>
+                    <h1 className="text-3xl">Tạo cơ hội mới</h1>
                     <p className="text-muted-foreground">Nhập thông tin cho cơ hội tiềm năng mới.</p>
                 </div>
             </div>

@@ -25,42 +25,42 @@ export default async function PaymentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Thanh toán</h1>
+        <h1 className="text-2xl text-foreground">Thanh toán</h1>
         <p className="text-muted-foreground">Theo dõi thanh toán và đối soát công nợ</p>
       </div>
 
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-md border border-border bg-card p-5">
+        <div className="rounded-md border border-border p-5">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10">
+            <div className="flex h-9 w-10 items-center justify-center rounded-lg bg-emerald-500/10">
               <ArrowDownLeft className="h-5 w-5 text-emerald-600" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Tổng đã thu</p>
-              <p className="text-xl font-bold text-emerald-600">{formatCurrency(totalReceived)}</p>
+              <p className="text-xl text-emerald-600">{formatCurrency(totalReceived)}</p>
             </div>
           </div>
         </div>
-        <div className="rounded-md border border-border bg-card p-5">
+        <div className="rounded-md border border-border p-5">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-500/10">
+            <div className="flex h-9 w-10 items-center justify-center rounded-lg bg-red-500/10">
               <ArrowUpRight className="h-5 w-5 text-red-600" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Tổng đã chi</p>
-              <p className="text-xl font-bold text-red-600">{formatCurrency(totalPaid)}</p>
+              <p className="text-xl text-red-600">{formatCurrency(totalPaid)}</p>
             </div>
           </div>
         </div>
-        <div className="rounded-md border border-border bg-card p-5">
+        <div className="rounded-md border border-border p-5">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10">
+            <div className="flex h-9 w-10 items-center justify-center rounded-lg bg-blue-500/10">
               <CreditCard className="h-5 w-5 text-blue-600" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Số giao dịch</p>
-              <p className="text-xl font-bold text-foreground">{allPayments.length}</p>
+              <p className="text-xl text-foreground">{allPayments.length}</p>
             </div>
           </div>
         </div>
@@ -68,12 +68,12 @@ export default async function PaymentsPage() {
 
       {/* Payment list */}
       {allPayments.length === 0 ? (
-        <div className="rounded-md border border-border bg-card p-12 text-center">
+        <div className="rounded-md border border-border p-12 text-center">
           <CreditCard className="mx-auto h-12 w-12 text-muted-foreground/50" />
           <h3 className="mt-4 text-lg font-medium text-foreground">Chưa có giao dịch nào</h3>
         </div>
       ) : (
-        <div className="rounded-md border border-border bg-card overflow-hidden">
+        <div className="rounded-md border border-border overflow-hidden">
           <table className="w-full">
             <thead>
               <tr className="border-b border-border bg-muted/50">

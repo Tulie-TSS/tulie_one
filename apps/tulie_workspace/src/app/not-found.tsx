@@ -4,7 +4,7 @@ export default function NotFound() {
     return (
         <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-bg)' }}>
             <div className="text-center max-w-md mx-auto px-6">
-                <div className="text-6xl font-bold mb-4" style={{ color: 'var(--color-fg-tertiary)' }}>404</div>
+                <div className="text-6xl mb-4" style={{ color: 'var(--color-fg-tertiary)' }}>404</div>
                 <h1 className="text-2xl font-semibold mb-2" style={{ color: 'var(--color-fg)' }}>
                     Trang không tồn tại
                 </h1>

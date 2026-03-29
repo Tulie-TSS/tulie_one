@@ -48,7 +48,7 @@ export default function ForgotPasswordPage() {
                     <div className="flex h-12 w-12 items-center justify-center rounded-md bg-primary/10 mb-2">
                         <Mail className="h-6 w-6 text-primary" />
                     </div>
-                    <CardTitle className="text-3xl font-bold text-foreground">
+                    <CardTitle className="text-3xl text-foreground">
                         Kiểm tra email của bạn
                     </CardTitle>
                     <CardDescription className="text-base text-muted-foreground leading-relaxed">
@@ -71,7 +71,7 @@ export default function ForgotPasswordPage() {
     return (
         <Card className="border-0 bg-transparent shadow-none">
             <CardHeader className="space-y-4 px-0 text-left">
-                <CardTitle className="text-3xl font-bold text-foreground">
+                <CardTitle className="text-3xl text-foreground">
                     Khôi phục mật khẩu
                 </CardTitle>
                 <CardDescription className="text-base text-muted-foreground">

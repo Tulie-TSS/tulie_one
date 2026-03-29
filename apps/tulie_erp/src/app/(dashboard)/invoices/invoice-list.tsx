@@ -56,7 +56,7 @@ export function InvoiceList({ invoices }: { invoices: Invoice[] }) {
             <CardTitle className="text-sm font-medium">Đã thu</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-emerald-600">{formatCurrency(totalRevenue)}</p>
+            <p className="text-2xl text-emerald-600">{formatCurrency(totalRevenue)}</p>
           </CardContent>
         </Card>
         <Card className="shadow-sm">
@@ -64,7 +64,7 @@ export function InvoiceList({ invoices }: { invoices: Invoice[] }) {
             <CardTitle className="text-sm font-medium">Chờ thanh toán</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-amber-600">{formatCurrency(totalPending)}</p>
+            <p className="text-2xl text-amber-600">{formatCurrency(totalPending)}</p>
           </CardContent>
         </Card>
         <Card className="shadow-sm">
@@ -72,13 +72,13 @@ export function InvoiceList({ invoices }: { invoices: Invoice[] }) {
             <CardTitle className="text-sm font-medium">Quá hạn</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-destructive">{formatCurrency(totalOverdue)}</p>
+            <p className="text-2xl text-destructive">{formatCurrency(totalOverdue)}</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Invoice table */}
-      <div className="rounded-md border bg-card">
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>

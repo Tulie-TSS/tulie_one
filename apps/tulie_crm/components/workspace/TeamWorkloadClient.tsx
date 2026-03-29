@@ -91,25 +91,25 @@ export function TeamWorkloadClient({ tasks, teamMembers }: TeamWorkloadClientPro
                     <Card>
                         <CardContent className="p-4">
                             <p className="text-xs text-muted-foreground">Thành viên có task</p>
-                            <p className="text-2xl font-bold mt-1">{memberData.length}</p>
+                            <p className="text-2xl mt-1">{memberData.length}</p>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardContent className="p-4">
                             <p className="text-xs text-muted-foreground">Task đang hoạt động</p>
-                            <p className="text-2xl font-bold mt-1 text-blue-600">{totalActive}</p>
+                            <p className="text-2xl mt-1 text-blue-600">{totalActive}</p>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardContent className="p-4">
                             <p className="text-xs text-muted-foreground">Quá hạn</p>
-                            <p className={`text-2xl font-bold mt-1 ${totalOverdue > 0 ? 'text-rose-600' : 'text-emerald-600'}`}>{totalOverdue}</p>
+                            <p className={`text-2xl mt-1 ${totalOverdue > 0 ? 'text-rose-600' : 'text-emerald-600'}`}>{totalOverdue}</p>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardContent className="p-4">
                             <p className="text-xs text-muted-foreground">Chưa giao</p>
-                            <p className={`text-2xl font-bold mt-1 ${unassignedTasks.length > 0 ? 'text-amber-600' : 'text-emerald-600'}`}>{unassignedTasks.length}</p>
+                            <p className={`text-2xl mt-1 ${unassignedTasks.length > 0 ? 'text-amber-600' : 'text-emerald-600'}`}>{unassignedTasks.length}</p>
                         </CardContent>
                     </Card>
                 </div>
@@ -158,7 +158,7 @@ export function TeamWorkloadClient({ tasks, teamMembers }: TeamWorkloadClientPro
                                         {member.totalOverdue > 0 && (
                                             <div className="flex items-center gap-0.5 text-rose-500 ml-1" title={`${member.totalOverdue} quá hạn`}>
                                                 <AlertTriangle className="h-3 w-3" />
-                                                <span className="text-[11px] font-bold">{member.totalOverdue}</span>
+                                                <span className="text-[11px]">{member.totalOverdue}</span>
                                             </div>
                                         )}
                                     </div>

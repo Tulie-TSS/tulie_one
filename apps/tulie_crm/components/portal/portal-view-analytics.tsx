@@ -89,7 +89,7 @@ export function PortalViewAnalytics({ projectId, customerId, portalToken }: Port
             <Card>
                 <CardHeader className="flex flex-row items-center gap-2 pb-3">
                     <Eye className="h-4 w-4 text-muted-foreground" />
-                    <CardTitle className="text-base font-bold">Portal Views</CardTitle>
+                    <CardTitle className="text-base">Portal Views</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground text-center py-4">
@@ -119,7 +119,7 @@ export function PortalViewAnalytics({ projectId, customerId, portalToken }: Port
                 <div className="flex items-center gap-2">
                     <Eye className="h-4 w-4 text-muted-foreground" />
                     <div>
-                        <CardTitle className="text-base font-bold">Portal Views</CardTitle>
+                        <CardTitle className="text-base">Portal Views</CardTitle>
                         <CardDescription className="text-xs">Lịch sử truy cập portal khách hàng</CardDescription>
                     </div>
                 </div>
@@ -128,19 +128,19 @@ export function PortalViewAnalytics({ projectId, customerId, portalToken }: Port
                 {/* Summary */}
                 <div className="grid grid-cols-2 gap-3">
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
-                        <p className="text-3xl font-bold tabular-nums leading-none">{views.length}</p>
+                        <p className="text-3xl tabular-nums leading-none">{views.length}</p>
                         <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">Lượt truy cập</p>
                     </div>
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
-                        <p className="text-3xl font-bold tabular-nums leading-none">{uniqueIps.size}</p>
+                        <p className="text-3xl tabular-nums leading-none">{uniqueIps.size}</p>
                         <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">Unique IP</p>
                     </div>
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
-                        <p className="text-lg font-bold tabular-nums leading-none">{formatDuration(avgDuration)}</p>
+                        <p className="text-lg tabular-nums leading-none">{formatDuration(avgDuration)}</p>
                         <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">TB thời gian</p>
                     </div>
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
-                        <p className="text-lg font-bold tabular-nums leading-none">{avgScroll}%</p>
+                        <p className="text-lg tabular-nums leading-none">{avgScroll}%</p>
                         <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">TB scroll</p>
                     </div>
                 </div>
@@ -180,7 +180,7 @@ export function PortalViewAnalytics({ projectId, customerId, portalToken }: Port
                                 >
                                     <div className="flex items-start justify-between gap-2 mb-2">
                                         <div className="flex items-center gap-2 min-w-0">
-                                            <div className="shrink-0 w-6 h-6 rounded-lg bg-zinc-900 text-white text-[10px] font-bold flex items-center justify-center">
+                                            <div className="shrink-0 w-6 h-6 rounded-lg bg-zinc-900 text-white text-[10px] flex items-center justify-center">
                                                 {views.length - idx}
                                             </div>
                                             <div className="min-w-0">

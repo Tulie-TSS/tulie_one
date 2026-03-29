@@ -254,7 +254,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                                <CalendarIcon className="h-4 w-4" />
                                                 {startDate ? format(startDate, 'dd/MM/yyyy', { locale: vi }) : 'Chọn ngày'}
                                             </Button>
                                         </PopoverTrigger>
@@ -268,7 +268,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                                <CalendarIcon className="h-4 w-4" />
                                                 {endDate ? format(endDate, 'dd/MM/yyyy', { locale: vi }) : 'Chọn ngày'}
                                             </Button>
                                         </PopoverTrigger>
@@ -299,7 +299,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                 <CardDescription>Phân chia các đợt thanh toán</CardDescription>
                             </div>
                             <Button type="button" size="sm" onClick={addMilestone}>
-                                <Plus className="mr-2 h-4 w-4" />
+                                <Plus className="h-4 w-4" />
                                 Thêm
                             </Button>
                         </CardHeader>
@@ -336,8 +336,8 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                                     className="w-[130px]"
                                                 >
                                                     <TabsList className="h-8 p-1 w-full grid grid-cols-2 bg-muted/50 items-center">
-                                                        <TabsTrigger value="percent" className="text-[10px] h-6 px-1.5 data-[state=active]:bg-background data-[state=active]:shadow-sm">Theo %</TabsTrigger>
-                                                        <TabsTrigger value="fixed" className="text-[10px] h-6 px-1.5 data-[state=active]:bg-background data-[state=active]:shadow-sm">Cố định</TabsTrigger>
+                                                        <TabsTrigger value="percent" className="text-[10px] h-6 px-1.5 data-[state=active]:bg-background data-[state=active]:">Theo %</TabsTrigger>
+                                                        <TabsTrigger value="fixed" className="text-[10px] h-6 px-1.5 data-[state=active]:bg-background data-[state=active]:">Cố định</TabsTrigger>
                                                     </TabsList>
                                                 </Tabs>
                                             </div>
@@ -373,7 +373,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                             <Popover>
                                                 <PopoverTrigger asChild>
                                                     <Button variant="outline" className="w-full justify-start text-left font-normal">
-                                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                                        <CalendarIcon className="h-4 w-4" />
                                                         {milestone.due_date ? format(milestone.due_date, 'dd/MM/yyyy') : 'Chọn'}
                                                     </Button>
                                                 </PopoverTrigger>
@@ -412,7 +412,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                     </Button>
                     <Button type="submit" disabled={isLoading}>
                         {isLoading && <LoadingSpinner size="sm" className="mr-2" />}
-                        <Save className="mr-2 h-4 w-4" />
+                        <Save className="h-4 w-4" />
                         Tạo hợp đồng
                     </Button>
                 </div>

@@ -14,7 +14,7 @@ export default async function ProductsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Sản phẩm & Dịch vụ</h1>
+          <h1 className="text-2xl text-foreground">Sản phẩm & Dịch vụ</h1>
           <p className="text-muted-foreground">Quản lý danh mục sản phẩm, dịch vụ và giá</p>
         </div>
         <Link
@@ -27,13 +27,13 @@ export default async function ProductsPage() {
       </div>
 
       {products.length === 0 ? (
-        <div className="rounded-md border border-border bg-card p-12 text-center">
+        <div className="rounded-md border border-border p-12 text-center">
           <Package className="mx-auto h-12 w-12 text-muted-foreground/50" />
           <h3 className="mt-4 text-lg font-medium text-foreground">Chưa có sản phẩm nào</h3>
           <p className="mt-2 text-sm text-muted-foreground">Thêm sản phẩm/dịch vụ đầu tiên</p>
         </div>
       ) : (
-        <div className="rounded-md border border-border bg-card overflow-hidden">
+        <div className="rounded-md border border-border overflow-hidden">
           <table className="w-full">
             <thead>
               <tr className="border-b border-border bg-muted/50">

@@ -84,7 +84,7 @@ export function QuotationViewAnalytics({ quotationId }: QuotationViewAnalyticsPr
             <Card>
                 <CardHeader className="flex flex-row items-center gap-2 pb-3">
                     <Eye className="h-4 w-4 text-muted-foreground" />
-                    <CardTitle className="text-base font-bold">Lịch sử xem</CardTitle>
+                    <CardTitle className="text-base">Lịch sử xem</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground text-center py-4">
@@ -101,7 +101,7 @@ export function QuotationViewAnalytics({ quotationId }: QuotationViewAnalyticsPr
                 <div className="flex items-center gap-2">
                     <Eye className="h-4 w-4 text-muted-foreground" />
                     <div>
-                        <CardTitle className="text-base font-bold">Lịch sử xem</CardTitle>
+                        <CardTitle className="text-base">Lịch sử xem</CardTitle>
                         <CardDescription className="text-xs">Theo dõi hành vi khách hàng khi xem báo giá</CardDescription>
                     </div>
                 </div>
@@ -110,19 +110,19 @@ export function QuotationViewAnalytics({ quotationId }: QuotationViewAnalyticsPr
                 {/* Summary Stats */}
                 <div className="grid grid-cols-2 gap-3">
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
-                        <p className="text-3xl font-bold tabular-nums leading-none">{stats.totalViews}</p>
+                        <p className="text-3xl tabular-nums leading-none">{stats.totalViews}</p>
                         <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">Lượt xem</p>
                     </div>
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
-                        <p className="text-3xl font-bold tabular-nums leading-none">{stats.uniqueVisitors}</p>
+                        <p className="text-3xl tabular-nums leading-none">{stats.uniqueVisitors}</p>
                         <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">Unique IP</p>
                     </div>
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
-                        <p className="text-lg font-bold tabular-nums leading-none">{formatDuration(stats.avgDuration)}</p>
+                        <p className="text-lg tabular-nums leading-none">{formatDuration(stats.avgDuration)}</p>
                         <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">TB thời gian</p>
                     </div>
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
-                        <p className="text-lg font-bold tabular-nums leading-none">{stats.avgScroll}%</p>
+                        <p className="text-lg tabular-nums leading-none">{stats.avgScroll}%</p>
                         <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">TB scroll</p>
                     </div>
                 </div>
@@ -164,7 +164,7 @@ export function QuotationViewAnalytics({ quotationId }: QuotationViewAnalyticsPr
                                 >
                                     <div className="flex items-start justify-between gap-2 mb-2">
                                         <div className="flex items-center gap-2 min-w-0">
-                                            <div className="shrink-0 w-6 h-6 rounded-lg bg-zinc-900 text-white text-[10px] font-bold flex items-center justify-center">
+                                            <div className="shrink-0 w-6 h-6 rounded-lg bg-zinc-900 text-white text-[10px] flex items-center justify-center">
                                                 {views.length - idx}
                                             </div>
                                             <div className="min-w-0">

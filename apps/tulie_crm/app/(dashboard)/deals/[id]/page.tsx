@@ -26,7 +26,7 @@ export default async function DealDetailPage({ params }: any) {
                     </Button>
                     <div>
                         <div className="flex items-center gap-3">
-                            <h1 className="text-3xl font-bold">{deal.title}</h1>
+                            <h1 className="text-3xl">{deal.title}</h1>
                             <Badge className={DEAL_STATUS_COLORS[deal.status as keyof typeof DEAL_STATUS_LABELS] || 'bg-gray-100'}>
                                 {DEAL_STATUS_LABELS[deal.status as keyof typeof DEAL_STATUS_LABELS] || deal.status}
                             </Badge>
@@ -40,13 +40,13 @@ export default async function DealDetailPage({ params }: any) {
                 <div className="flex items-center gap-2">
                     <Button variant="outline" asChild>
                         <Link href={`/deals/${deal.id}/edit`}>
-                            <Edit className="mr-2 h-4 w-4" />
+                            <Edit className="h-4 w-4" />
                             Chỉnh sửa
                         </Link>
                     </Button>
                     <Button asChild>
                         <Link href={`/quotations/new?deal_id=${deal.id}&customer_id=${deal.customer_id}`}>
-                            <Plus className="mr-2 h-4 w-4" />
+                            <Plus className="h-4 w-4" />
                             Tạo báo giá
                         </Link>
                     </Button>
@@ -65,17 +65,17 @@ export default async function DealDetailPage({ params }: any) {
                                 <div className="p-4 bg-muted/20 rounded-md border flex flex-col items-center justify-center text-center">
                                     <Wallet className="h-5 w-5 mb-2 text-emerald-600" />
                                     <p className="text-xs text-muted-foreground">Ngân sách dự kiến</p>
-                                    <p className="text-lg font-bold">{formatCurrency(deal.budget || 0)}</p>
+                                    <p className="text-lg">{formatCurrency(deal.budget || 0)}</p>
                                 </div>
                                 <div className="p-4 bg-muted/20 rounded-md border flex flex-col items-center justify-center text-center">
                                     <TrendingUp className="h-5 w-5 mb-2 text-blue-600" />
                                     <p className="text-xs text-muted-foreground">Mức độ ưu tiên</p>
-                                    <p className="text-lg font-bold">{deal.priority}</p>
+                                    <p className="text-lg">{deal.priority}</p>
                                 </div>
                                 <div className="p-4 bg-muted/20 rounded-md border flex flex-col items-center justify-center text-center">
                                     <Calendar className="h-5 w-5 mb-2 text-orange-600" />
                                     <p className="text-xs text-muted-foreground">Ngày tạo</p>
-                                    <p className="text-lg font-bold">{formatDate(deal.created_at)}</p>
+                                    <p className="text-lg">{formatDate(deal.created_at)}</p>
                                 </div>
                             </div>
                             <Separator />
@@ -97,7 +97,7 @@ export default async function DealDetailPage({ params }: any) {
                             </div>
                             <Button variant="outline" size="sm" asChild>
                                 <Link href={`/quotations/new?deal_id=${deal.id}`}>
-                                    <Plus className="h-4 w-4 mr-2" /> Thêm báo giá
+                                    <Plus className="h-4 w-4" /> Thêm báo giá
                                 </Link>
                             </Button>
                         </CardHeader>
@@ -126,7 +126,7 @@ export default async function DealDetailPage({ params }: any) {
                                 </div>
                             ) : (
                                 <div className="text-center py-10 border-2 border-dashed rounded-md">
-                                    <FileText className="h-10 w-10 mx-auto mb-3 opacity-20" />
+                                    <FileText className="w-10 mx-auto mb-3 opacity-20" />
                                     <p className="text-muted-foreground text-sm">Chưa có báo giá nào cho cơ hội này.</p>
                                 </div>
                             )}
@@ -142,24 +142,24 @@ export default async function DealDetailPage({ params }: any) {
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-1">
-                                <p className="text-xs text-muted-foreground font-bold">Phụ trách (Sales)</p>
+                                <p className="text-xs text-muted-foreground">Phụ trách (Sales)</p>
                                 <p className="text-sm font-medium">{deal.assigned_user?.full_name || "Chưa gán"}</p>
                             </div>
                             <Separator />
                             <div className="space-y-2">
-                                <p className="text-xs text-muted-foreground font-bold">Chuyển trạng thái</p>
+                                <p className="text-xs text-muted-foreground">Chuyển trạng thái</p>
                                 <div className="grid grid-cols-2 gap-2">
                                     <Button variant="outline" size="sm" className="justify-start">
-                                        <TrendingUp className="mr-2 h-4 w-4" /> Briefing
+                                        <TrendingUp className="h-4 w-4" /> Briefing
                                     </Button>
                                     <Button variant="outline" size="sm" className="justify-start">
-                                        <FileText className="mr-2 h-4 w-4" /> Lên báo giá
+                                        <FileText className="h-4 w-4" /> Lên báo giá
                                     </Button>
                                     <Button variant="secondary" size="sm" className="justify-start text-emerald-600 bg-emerald-50 hover:bg-green-100 border-green-200">
-                                        <CheckCircle2 className="mr-2 h-4 w-4" /> Chốt thành công
+                                        <CheckCircle2 className="h-4 w-4" /> Chốt thành công
                                     </Button>
                                     <Button variant="secondary" size="sm" className="justify-start text-rose-600 bg-rose-50 hover:bg-rose-100 border-rose-200">
-                                        <XCircle className="mr-2 h-4 w-4" /> Thất bại
+                                        <XCircle className="h-4 w-4" /> Thất bại
                                     </Button>
                                 </div>
                             </div>
@@ -172,8 +172,8 @@ export default async function DealDetailPage({ params }: any) {
                             <CardTitle className="text-lg opacity-90">Tiềm năng dự án</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-3xl font-bold">{formatCurrency(deal.budget || 0)}</p>
-                            <p className="text-xs opacity-70 mt-1 italic">Dựa trên ngân sách dự kiến của khách hàng.</p>
+                            <p className="text-3xl">{formatCurrency(deal.budget || 0)}</p>
+                            <p className="text-xs opacity-70 mt-1">Dựa trên ngân sách dự kiến của khách hàng.</p>
                         </CardContent>
                     </Card>
                 </div>

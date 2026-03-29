@@ -161,7 +161,7 @@ export function Header() {
                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground group-focus-within:text-foreground transition-colors" />
                     <Input
                         placeholder="Tìm kiếm thông tin..."
-                        className="w-[200px] md:w-[320px] pl-10 h-10 bg-muted/50 border-transparent rounded-md focus-visible:bg-white focus-visible:border-border focus-visible:ring-0 transition-all text-sm font-medium"
+                        className="w-[200px] md:w-[320px] pl-10 bg-muted/50 border-transparent rounded-md focus-visible:bg-white focus-visible:border-border focus-visible:ring-0 transition-all text-sm font-medium"
                     />
                 </div>
                 <Button variant="ghost" size="icon" className="sm:hidden">
@@ -191,7 +191,7 @@ export function Header() {
                         <Button variant="ghost" size="icon" className="relative rounded-full h-9 w-9 hover:bg-muted dark:hover:bg-zinc-800 transition-colors group">
                             <Bell className={`h-[18px] w-[18px] text-muted-foreground transition-colors group-hover:text-foreground dark:group-hover:text-zinc-100 ${unreadCount > 0 ? 'group-hover:animate-[wiggle_0.3s_ease-in-out]' : ''}`} />
                             {unreadCount > 0 && (
-                                <span className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white ring-2 ring-background shadow-sm">
+                                <span className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] text-white ring-2 ring-background">
                                     {unreadCount > 9 ? '9+' : unreadCount}
                                 </span>
                             )}
@@ -200,9 +200,9 @@ export function Header() {
                     <DropdownMenuContent align="end" className="w-[calc(100vw-2rem)] sm:w-[380px] rounded-md shadow-xl border-border dark:border-zinc-700 p-0 overflow-hidden">
                         <div className="flex items-center justify-between px-4 py-3 bg-muted dark:bg-zinc-900 border-b">
                             <div className="flex items-center gap-2">
-                                <span className="text-[15px] font-bold text-foreground dark:text-zinc-100">Thông báo</span>
+                                <span className="text-[15px] text-foreground dark:text-zinc-100">Thông báo</span>
                                 {unreadCount > 0 && (
-                                    <span className="text-[11px] font-bold text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-2 py-0.5 rounded-full">{unreadCount} mới</span>
+                                    <span className="text-[11px] text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-2 py-0.5 rounded-full">{unreadCount} mới</span>
                                 )}
                             </div>
                             {unreadCount > 0 && (
@@ -258,7 +258,7 @@ export function Header() {
                             )}
                         </div>
                         <div className="p-2 border-t bg-muted/50 dark:bg-zinc-900/50">
-                            <DropdownMenuItem asChild className="justify-center text-center cursor-pointer py-2.5 rounded-lg border border-border dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:bg-muted dark:hover:bg-zinc-900 shadow-sm transition-all text-[13px] font-semibold text-foreground dark:text-zinc-100 h-9">
+                            <DropdownMenuItem asChild className="justify-center text-center cursor-pointer py-2.5 rounded-lg border border-border dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:bg-muted dark:hover:bg-zinc-900 transition-all text-[13px] font-semibold text-foreground dark:text-zinc-100 h-9">
                                 <Link href="/notifications" className="w-full">
                                     Xem tất cả thông báo
                                 </Link>
@@ -271,15 +271,15 @@ export function Header() {
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="flex items-center gap-2 sm:gap-3 px-1.5 sm:px-2 h-11 rounded-md hover:bg-muted transition-all border border-transparent hover:border-border">
-                            <Avatar className="h-8 w-8 ring-2 ring-background shadow-sm">
+                            <Avatar className="h-8 w-8 ring-2 ring-background">
                                 <AvatarImage src={user?.avatar} />
-                                <AvatarFallback className="bg-zinc-950 text-white text-[10px] font-bold">
+                                <AvatarFallback className="bg-zinc-950 text-white text-[10px]">
                                     {user?.name?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'TL'}
                                 </AvatarFallback>
                             </Avatar>
                             <div className="hidden xs:flex flex-col items-start text-left">
-                                <span className="text-sm font-bold text-foreground leading-none">{user?.name || 'Đang tải...'}</span>
-                                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1 leading-none">{user?.role || 'Admin'}</span>
+                                <span className="text-sm text-foreground leading-none">{user?.name || 'Đang tải...'}</span>
+                                <span className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1 leading-none">{user?.role || 'Admin'}</span>
                             </div>
                             <ChevronDown className="h-4 w-4 text-muted-foreground hidden sm:block" />
                         </Button>
@@ -289,13 +289,13 @@ export function Header() {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild className="cursor-pointer">
                             <Link href="/profile" className="flex items-center w-full">
-                                <User className="mr-2 h-4 w-4" />
+                                <User className="h-4 w-4" />
                                 Hồ sơ
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild className="cursor-pointer">
                             <Link href="/settings" className="flex items-center w-full">
-                                <Settings className="mr-2 h-4 w-4" />
+                                <Settings className="h-4 w-4" />
                                 Cài đặt
                             </Link>
                         </DropdownMenuItem>
@@ -304,7 +304,7 @@ export function Header() {
                             const { signout } = await import('@/app/(auth)/actions')
                             await signout()
                         }}>
-                            <LogOut className="mr-2 h-4 w-4" />
+                            <LogOut className="h-4 w-4" />
                             Đăng xuất
                         </DropdownMenuItem>
                     </DropdownMenuContent>

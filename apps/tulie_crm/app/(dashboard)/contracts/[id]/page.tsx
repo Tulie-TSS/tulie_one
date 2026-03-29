@@ -85,7 +85,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                         </Link>
                     </Button>
                     <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
+                        <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
                             <FileSignature className="h-6 w-6 text-primary" />
                         </div>
                         <div>
@@ -97,14 +97,14 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                     {CONTRACT_STATUS_LABELS[contract.status as ContractStatus] || contract.status}
                                 </Badge>
                             </div>
-                            <h1 className="text-3xl font-bold leading-none">{contract.customer?.company_name}</h1>
+                            <h1 className="text-3xl leading-none">{contract.customer?.company_name}</h1>
                         </div>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
                     <Button variant="outline" asChild>
                         <Link href={`/invoices/new?contract=${contract.id}`}>
-                            <Receipt className="mr-2 h-4 w-4" />
+                            <Receipt className="h-4 w-4" />
                             Tạo hóa đơn
                         </Link>
                     </Button>
@@ -112,18 +112,19 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                         entityId={contract.id}
                         tableName="contracts"
                         hasPassword={!!contract.password_hash}
+                        hasFinancialPassword={!!contract.financial_password_hash}
                     />
                     <ContractEmailButton contract={contract} />
                     <Button variant="outline" asChild>
                         <Link href={`/contracts/${contract.id}/edit`}>
-                            <Edit className="mr-2 h-4 w-4" />
+                            <Edit className="h-4 w-4" />
                             Chỉnh sửa
                         </Link>
                     </Button>
                     {portalUrl && (
                         <Button variant="outline" asChild>
                             <a href={portalUrl} target="_blank" rel="noopener noreferrer">
-                                <Globe className="mr-2 h-4 w-4" />
+                                <Globe className="h-4 w-4" />
                                 Xem Portal
                             </a>
                         </Button>

@@ -61,7 +61,7 @@ export default function WeeklyTimeline({ overview }: WeeklyTimelineProps) {
                                             : 'bg-muted/30 border'
                                     }`}
                                 >
-                                    <div className={`text-center mb-1 ${day.isToday ? 'text-blue-700 font-bold' : 'text-muted-foreground'}`}>
+                                    <div className={`text-center mb-1 ${day.isToday ? 'text-blue-700' : 'text-muted-foreground'}`}>
                                         <div className="text-xs">{day.dayName}</div>
                                         <div className="text-sm font-medium">{day.dayNum}</div>
                                     </div>

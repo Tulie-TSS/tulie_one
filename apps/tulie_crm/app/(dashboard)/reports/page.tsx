@@ -9,7 +9,7 @@ export default function ReportsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Báo cáo</h1>
+        <h1 className="text-2xl text-foreground">Báo cáo</h1>
         <p className="text-muted-foreground">Chọn loại báo cáo cần xem</p>
       </div>
 
@@ -17,10 +17,10 @@ export default function ReportsPage() {
         {/* CRM Reports */}
         <Link
           href="/reports/sales"
-          className="group rounded-md border border-border bg-card p-6 hover:shadow-md hover:border-primary/20 transition-all"
+          className="group rounded-md border border-border p-6 hover: hover:border-primary/20 transition-all"
         >
           <div className="flex items-center justify-between mb-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10">
+            <div className="flex w-10 items-center justify-center rounded-lg bg-blue-500/10">
               <BarChart3 className="h-5 w-5 text-blue-600" />
             </div>
             <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
@@ -31,10 +31,10 @@ export default function ReportsPage() {
 
         <Link
           href="/reports/customers"
-          className="group rounded-md border border-border bg-card p-6 hover:shadow-md hover:border-primary/20 transition-all"
+          className="group rounded-md border border-border p-6 hover: hover:border-primary/20 transition-all"
         >
           <div className="flex items-center justify-between mb-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10">
+            <div className="flex w-10 items-center justify-center rounded-lg bg-purple-500/10">
               <Users className="h-5 w-5 text-purple-600" />
             </div>
             <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
@@ -45,10 +45,10 @@ export default function ReportsPage() {
 
         <Link
           href="/reports/performance"
-          className="group rounded-md border border-border bg-card p-6 hover:shadow-md hover:border-primary/20 transition-all"
+          className="group rounded-md border border-border p-6 hover: hover:border-primary/20 transition-all"
         >
           <div className="flex items-center justify-between mb-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10">
+            <div className="flex w-10 items-center justify-center rounded-lg bg-emerald-500/10">
               <TrendingUp className="h-5 w-5 text-emerald-600" />
             </div>
             <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
@@ -60,10 +60,10 @@ export default function ReportsPage() {
         {/* ERP Financial Reports */}
         <a
           href="http://localhost:3003/reports"
-          className="group rounded-md border border-orange-200 dark:border-orange-900/50 bg-orange-50 dark:bg-orange-950/20 p-6 hover:shadow-md transition-all"
+          className="group rounded-md border border-orange-200 dark:border-orange-900/50 bg-orange-50 dark:bg-orange-950/20 p-6 hover: transition-all"
         >
           <div className="flex items-center justify-between mb-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-500/10">
+            <div className="flex w-10 items-center justify-center rounded-lg bg-orange-500/10">
               <DollarSign className="h-5 w-5 text-orange-600" />
             </div>
             <ArrowUpRight className="h-4 w-4 text-orange-400 group-hover:text-orange-600" />

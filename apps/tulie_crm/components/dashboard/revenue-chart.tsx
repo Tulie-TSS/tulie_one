@@ -61,44 +61,53 @@ export function RevenueChart({ data }: RevenueChartProps) {
                             <AreaChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#2563eb" stopOpacity={0.12} />
-                                        <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
+                                        <stop offset="5%" stopColor="var(--color-chart-1)" stopOpacity={0.8} />
+                                        <stop offset="95%" stopColor="var(--color-chart-1)" stopOpacity={0.1} />
                                     </linearGradient>
                                     <linearGradient id="profitGrad" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.12} />
-                                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                                        <stop offset="5%" stopColor="var(--color-chart-2)" stopOpacity={0.8} />
+                                        <stop offset="95%" stopColor="var(--color-chart-2)" stopOpacity={0.1} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                                <CartesianGrid vertical={false} stroke="var(--color-border)" />
                                 <XAxis
                                     dataKey="name"
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: '#6b7280', fontSize: 11 }}
-                                    dy={8}
+                                    tick={{ fill: 'var(--color-muted-foreground)', fontSize: 12 }}
+                                    tickMargin={8}
                                 />
                                 <YAxis
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: '#6b7280', fontSize: 11 }}
+                                    tick={{ fill: 'var(--color-muted-foreground)', fontSize: 12 }}
                                     tickFormatter={(value) => value >= 1000000 ? `${(value / 1000000).toFixed(0)}M` : value >= 1000 ? `${(value / 1000).toFixed(0)}K` : value.toString()}
-                                    width={50}
+                                    width={40}
                                 />
                                 <Tooltip
-                                    cursor={{ stroke: '#d1d5db', strokeWidth: 1, strokeDasharray: '4 4' }}
+                                    cursor={{ stroke: 'var(--color-border)', strokeWidth: 1, strokeDasharray: '4 4' }}
+                                    itemStyle={{ fontSize: 13, fontWeight: 500 }}
+                                    labelStyle={{ fontSize: 13, color: 'var(--color-muted-foreground)', marginBottom: 4 }}
+                                    contentStyle={{ 
+                                        borderRadius: 'var(--radius-lg)', 
+                                        border: '1px solid var(--color-border)', 
+                                        backgroundColor: 'var(--color-popover)', 
+                                        color: 'var(--color-popover-foreground)',
+                                        boxShadow: '0px 10px 15px -3px rgba(0,0,0,0.1)'
+                                    }}
                                     content={({ active, payload, label }) => {
                                         if (active && payload && payload.length) {
                                             return (
-                                                <div className="rounded-lg border bg-background p-3 shadow-lg">
-                                                    <p className="text-xs font-medium text-muted-foreground mb-2">Tháng {label}</p>
+                                                <div className="rounded-lg border bg-popover text-popover-foreground p-3 shadow-lg ring-1 ring-border/10">
+                                                    <p className="text-sm font-medium text-muted-foreground mb-2">Tháng {label}</p>
                                                     <div className="space-y-1">
                                                         {payload.map((entry, index) => (
                                                             <div key={index} className="flex items-center justify-between gap-6">
                                                                 <div className="flex items-center gap-2">
-                                                                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: entry.color }} />
-                                                                    <span className="text-xs text-muted-foreground">{entry.name}</span>
+                                                                    <div className="h-2.5 w-2.5 shrink-0 rounded-[2px]" style={{ backgroundColor: entry.color }} />
+                                                                    <span className="text-sm text-foreground">{entry.name}</span>
                                                                 </div>
-                                                                <span className="text-xs font-semibold">{formatCurrency((entry.value as number) * 1000000)}</span>
+                                                                <span className="text-sm font-medium tabular-nums font-mono">{formatCurrency((entry.value as number) * 1000000)}</span>
                                                             </div>
                                                         ))}
                                                     </div>
@@ -114,27 +123,27 @@ export function RevenueChart({ data }: RevenueChartProps) {
                                     height={36}
                                     iconType="circle"
                                     iconSize={8}
-                                    formatter={(value) => <span className="text-xs text-muted-foreground ml-1">{value}</span>}
+                                    wrapperStyle={{ fontSize: 13, fontWeight: 500, color: 'var(--color-foreground)' }}
                                 />
                                 <Area
-                                    type="monotone"
+                                    type="natural"
                                     dataKey="revenue"
                                     name="Doanh thu"
-                                    stroke="#2563eb"
-                                    strokeWidth={2}
+                                    stroke="var(--color-chart-1)"
+                                    strokeWidth={3}
                                     fillOpacity={1}
                                     fill="url(#revenueGrad)"
-                                    activeDot={{ r: 4, strokeWidth: 2, stroke: '#fff' }}
+                                    activeDot={{ r: 5, strokeWidth: 2, stroke: 'var(--color-background)', fill: 'var(--color-chart-1)' }}
                                 />
                                 <Area
-                                    type="monotone"
+                                    type="natural"
                                     dataKey="profit"
                                     name="Lợi nhuận"
-                                    stroke="#10b981"
-                                    strokeWidth={2}
+                                    stroke="var(--color-chart-2)"
+                                    strokeWidth={3}
                                     fillOpacity={1}
                                     fill="url(#profitGrad)"
-                                    activeDot={{ r: 4, strokeWidth: 2, stroke: '#fff' }}
+                                    activeDot={{ r: 5, strokeWidth: 2, stroke: 'var(--color-background)', fill: 'var(--color-chart-2)' }}
                                 />
                             </AreaChart>
                         </ResponsiveContainer>

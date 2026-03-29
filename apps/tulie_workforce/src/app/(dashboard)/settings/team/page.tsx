@@ -112,7 +112,7 @@ export default function TeamPage() {
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
-                                <div className="h-12 w-12 rounded-md bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
+                                <div className="h-12 w-12 rounded-md bg-primary/10 flex items-center justify-center text-primary text-lg">
                                     TA
                                 </div>
                                 <div>
@@ -164,7 +164,7 @@ export default function TeamPage() {
                     <Button 
                         size="sm" 
                         onClick={() => setShowInvite(!showInvite)}
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm rounded-lg"
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg"
                     >
                         <UserPlus className="h-4 w-4 mr-2" />
                         Invite Member
@@ -182,13 +182,13 @@ export default function TeamPage() {
                                         placeholder="colleague@company.com"
                                         value={inviteEmail}
                                         onChange={(e) => setInviteEmail(e.target.value)}
-                                        className="bg-background border-border/60 focus-visible:ring-primary/20 h-10 shadow-sm"
+                                        className="bg-background border-border/60 focus-visible:ring-primary/20 h-10"
                                     />
                                 </div>
                                 <div className="w-full sm:w-48">
                                     <Label className="text-xs font-medium text-foreground mb-1.5 block">Role</Label>
                                     <Select value={inviteRole} onValueChange={(v) => setInviteRole(v as OrgRole)}>
-                                        <SelectTrigger className="bg-background border-border/60 h-10 shadow-sm">
+                                        <SelectTrigger className="bg-background border-border/60 h-10">
                                             <SelectValue />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -201,7 +201,7 @@ export default function TeamPage() {
                                 <Button 
                                     onClick={handleInvite} 
                                     disabled={!inviteEmail}
-                                    className="w-full sm:w-auto h-10 bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 mt-2 sm:mt-0"
+                                    className="w-full sm:w-auto h-9 bg-primary text-primary-foreground hover:bg-primary/90 mt-2 sm:mt-0"
                                 >
                                     <Mail className="h-4 w-4 mr-2" />
                                     Send Invite
@@ -231,7 +231,7 @@ export default function TeamPage() {
                                         <tr key={member.id} className="border-b border-border/40 last:border-0 hover:bg-muted/10 transition-colors">
                                             <td className="py-3 px-5">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-bold ring-1 ring-primary/20">
+                                                    <div className="flex h-9 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-sm ring-1 ring-primary/20">
                                                         {member.name.split(" ").map((n) => n[0]).join("")}
                                                     </div>
                                                     <div className="flex flex-col">
@@ -277,7 +277,7 @@ export default function TeamPage() {
                                                                 <MoreVertical className="h-4 w-4 text-muted-foreground" />
                                                             </Button>
                                                         </DropdownMenuTrigger>
-                                                        <DropdownMenuContent align="end" className="w-40 border-border/60 shadow-sm">
+                                                        <DropdownMenuContent align="end" className="w-40 border-border/60">
                                                             <DropdownMenuItem
                                                                 className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
                                                                 onClick={() => handleRemove(member.id)}

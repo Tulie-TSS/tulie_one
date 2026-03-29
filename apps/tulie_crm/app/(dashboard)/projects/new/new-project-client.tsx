@@ -57,11 +57,11 @@ export default function NewProjectClient({ customers }: { customers: any[] }) {
                     </Link>
                 </Button>
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
+                    <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
                         <Rocket className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-bold">Tạo dự án mới</h1>
+                        <h1 className="text-3xl">Tạo dự án mới</h1>
                         <p className="text-sm text-muted-foreground">Khởi tạo dự án & theo dõi tiến độ triển khai.</p>
                     </div>
                 </div>
@@ -112,7 +112,7 @@ export default function NewProjectClient({ customers }: { customers: any[] }) {
                                 <Link href="/projects">Hủy</Link>
                             </Button>
                             <Button type="submit" disabled={isLoading}>
-                                {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="mr-2 h-4 w-4" />}
+                                {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4" />}
                                 Tạo dự án
                             </Button>
                         </div>

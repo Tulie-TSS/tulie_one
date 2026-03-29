@@ -10,7 +10,7 @@ export default async function InvoicesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Hóa đơn</h1>
+          <h1 className="text-2xl text-foreground">Hóa đơn</h1>
           <p className="text-muted-foreground">Quản lý hóa đơn đầu ra và đầu vào</p>
         </div>
         <Link

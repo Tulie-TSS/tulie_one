@@ -56,7 +56,7 @@ export default function LabPage() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
+                    <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
                         <Layout className="h-6 w-6 text-primary" />
                     </div>
                     <div>
@@ -69,13 +69,13 @@ export default function LabPage() {
                     disabled={isSyncing}
                     className="bg-zinc-900 hover:bg-zinc-800 dark:bg-muted dark:text-foreground"
                 >
-                    {isSyncing ? <RefreshCcw className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCcw className="mr-2 h-4 w-4" />}
+                    {isSyncing ? <RefreshCcw className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCcw className="h-4 w-4" />}
                     Đồng bộ ngay
                 </Button>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-                <Card className="border-border bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden rounded-md">
+                <Card className="border-border/50 backdrop-blur-sm overflow-hidden rounded-md">
                     <CardHeader className="bg-muted/30 border-b border-border">
                         <CardTitle className="text-lg font-semibold flex items-center gap-2">
                             <Key className="h-4 w-4 text-muted-foreground" />
@@ -102,7 +102,7 @@ export default function LabPage() {
                     </CardContent>
                 </Card>
 
-                <Card className="border-border bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden rounded-md">
+                <Card className="border-border/50 backdrop-blur-sm overflow-hidden rounded-md">
                     <CardHeader className="bg-muted/30 border-b border-border">
                         <CardTitle className="text-lg font-semibold flex items-center gap-2">
                             <Database className="h-4 w-4 text-muted-foreground" />
@@ -125,11 +125,11 @@ export default function LabPage() {
 
                             <div className="space-y-2">
                                 <div className="flex justify-between text-xs">
-                                    <span className="text-muted-foreground uppercase font-bold tracking-tighter opacity-50">Lần đồng bộ cuối</span>
+                                    <span className="text-muted-foreground uppercase tracking-tighter opacity-50">Lần đồng bộ cuối</span>
                                     <span className="font-mono">Chưa bao giờ</span>
                                 </div>
                                 <div className="flex justify-between text-xs">
-                                    <span className="text-muted-foreground uppercase font-bold tracking-tighter opacity-50">Dung lượng dữ liệu</span>
+                                    <span className="text-muted-foreground uppercase tracking-tighter opacity-50">Dung lượng dữ liệu</span>
                                     <span className="font-mono">-- MB</span>
                                 </div>
                                 <div className="pt-4">
