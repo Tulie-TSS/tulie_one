@@ -33,12 +33,12 @@ export default async function TeamPage() {
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
-                        <UserCheck className="h-6 w-6 text-primary" />
+                    <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center border border-border">
+                        <UserCheck className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
                         <h1 className="text-3xl">Nhân sự</h1>
-                        <p className="text-muted-foreground font-normal">
+                        <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý team và theo dõi hiệu suất làm việc
                         </p>
                     </div>
@@ -77,7 +77,7 @@ export default async function TeamPage() {
                         <CardTitle className="text-sm font-medium text-muted-foreground">
                             Doanh thu team
                         </CardTitle>
-                        <TrendingUp className="h-4 w-4 text-green-500" />
+                        <TrendingUp className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-semibold">{formatCurrency(totalRevenue)}</div>
@@ -89,7 +89,7 @@ export default async function TeamPage() {
                         <CardTitle className="text-sm font-medium text-muted-foreground">
                             Top performer
                         </CardTitle>
-                        <Trophy className="h-4 w-4 text-yellow-500" />
+                        <Trophy className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-semibold">{topPerformer?.full_name || '-'}</div>

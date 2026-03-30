@@ -103,9 +103,14 @@ export function HelpdeskClient({ initialTickets, users, customers }: HelpdeskCli
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-3xl">Helpdesk</h1>
-                    <p className="text-muted-foreground">Quản lý yêu cầu hỗ trợ từ khách hàng</p>
+                <div className="flex items-center gap-3">
+                    <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center border border-border">
+                        <Headphones className="h-6 w-6 text-foreground" />
+                    </div>
+                    <div>
+                        <h1 className="text-3xl">Helpdesk</h1>
+                        <p className="text-sm font-medium text-muted-foreground mt-1">Quản lý yêu cầu hỗ trợ từ khách hàng</p>
+                    </div>
                 </div>
                 <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
                     <DialogTrigger asChild>
@@ -181,47 +186,39 @@ export function HelpdeskClient({ initialTickets, users, customers }: HelpdeskCli
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <Card>
-                    <CardContent className="p-4 flex items-center gap-3">
-                        <div className="w-10 rounded-lg bg-muted flex items-center justify-center">
-                            <Headphones className="w-5 h-5 text-muted-foreground" />
-                        </div>
-                        <div>
-                            <p className="text-2xl">{stats.open}</p>
-                            <p className="text-xs text-muted-foreground">Mới</p>
-                        </div>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Mới</CardTitle>
+                        <Headphones className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-semibold">{stats.open}</div>
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardContent className="p-4 flex items-center gap-3">
-                        <div className="w-10 rounded-lg bg-muted flex items-center justify-center">
-                            <Clock className="w-5 h-5 text-muted-foreground" />
-                        </div>
-                        <div>
-                            <p className="text-2xl">{stats.inProgress}</p>
-                            <p className="text-xs text-muted-foreground">Đang xử lý</p>
-                        </div>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Đang xử lý</CardTitle>
+                        <Clock className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-semibold">{stats.inProgress}</div>
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardContent className="p-4 flex items-center gap-3">
-                        <div className="w-10 rounded-lg bg-muted flex items-center justify-center">
-                            <CheckCircle2 className="w-5 h-5 text-muted-foreground" />
-                        </div>
-                        <div>
-                            <p className="text-2xl">{stats.resolved}</p>
-                            <p className="text-xs text-muted-foreground">Đã giải quyết</p>
-                        </div>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Đã giải quyết</CardTitle>
+                        <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-semibold">{stats.resolved}</div>
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardContent className="p-4 flex items-center gap-3">
-                        <div className="w-10 rounded-lg bg-muted flex items-center justify-center">
-                            <AlertTriangle className="w-5 h-5 text-muted-foreground" />
-                        </div>
-                        <div>
-                            <p className="text-2xl">{stats.urgent}</p>
-                            <p className="text-xs text-muted-foreground">Quan trọng</p>
-                        </div>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Quan trọng</CardTitle>
+                        <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-semibold">{stats.urgent}</div>
                     </CardContent>
                 </Card>
             </div>

@@ -126,18 +126,18 @@ export function LeadsList({ initialData, stats }: LeadsListProps) {
         <div className="space-y-4">
             <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
                 {[
-                    { label: 'Tổng leads', value: stats.total, icon: Contact, color: 'text-muted-foreground' },
-                    { label: 'Mới', value: stats.new, icon: UserPlus, color: 'text-blue-600' },
-                    { label: 'Đã liên hệ', value: stats.contacted, icon: Phone, color: 'text-amber-600' },
-                    { label: 'Tiềm năng', value: stats.qualified, icon: UserCheck, color: 'text-emerald-600' },
+                    { label: 'Tổng leads', value: stats.total, icon: Contact },
+                    { label: 'Mới', value: stats.new, icon: UserPlus },
+                    { label: 'Đã liên hệ', value: stats.contacted, icon: Phone },
+                    { label: 'Tiềm năng', value: stats.qualified, icon: UserCheck },
                 ].map((s, i) => (
-                    <Card key={i} className="">
+                    <Card key={i}>
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
                             <CardTitle className="text-sm font-medium">{s.label}</CardTitle>
-                            <s.icon className={cn("h-4 w-4", s.color)} />
+                            <s.icon className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl">{s.value}</div>
+                            <div className="text-2xl font-semibold">{s.value}</div>
                         </CardContent>
                     </Card>
                 ))}
