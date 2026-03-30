@@ -733,13 +733,13 @@ export default function SettingsPage() {
                                     </div>
                                     <div className="flex gap-4 p-4 bg-muted/50 rounded-md border border-border">
                                         <div className="space-y-1 flex-1">
-                                            <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Xem trước Logo:</p>
+                                            <p className="text-[11px] text-muted-foreground">Xem trước Logo:</p>
                                             <div className="h-16 flex items-center bg-white p-3 rounded-md border border-border">
                                                 <img src={companySettings.logo_url} alt="Logo Preview" className="h-full object-contain" />
                                             </div>
                                         </div>
                                         <div className="space-y-1 w-32">
-                                            <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Favicon:</p>
+                                            <p className="text-[11px] text-muted-foreground">Favicon:</p>
                                             <div className="h-16 w-16 flex items-center justify-center bg-white p-3 rounded-md border border-border">
                                                 <img src={companySettings.favicon_url} alt="Favicon Preview" className="w-10 object-contain" />
                                             </div>
@@ -769,7 +769,7 @@ export default function SettingsPage() {
                             <CardContent className="space-y-6 pt-6">
                                 <div className="flex gap-4">
                                     <div className="flex-1 space-y-2">
-                                        <Label htmlFor="new_category" className="text-xs uppercase tracking-wider text-muted-foreground">Tên danh mục mới</Label>
+                                        <Label htmlFor="new_category" className="text-xs text-muted-foreground">Tên danh mục mới</Label>
                                         <Input
                                             id="new_category"
                                             placeholder="Ví dụ: Digital Marketing"
@@ -821,7 +821,7 @@ export default function SettingsPage() {
                             <CardContent className="space-y-6 pt-6">
                                 <div className="flex gap-4">
                                     <div className="flex-1 space-y-2">
-                                        <Label htmlFor="new_unit" className="text-xs uppercase tracking-wider text-muted-foreground">Tên đơn vị mới</Label>
+                                        <Label htmlFor="new_unit" className="text-xs text-muted-foreground">Tên đơn vị mới</Label>
                                         <Input
                                             id="new_unit"
                                             placeholder="Ví dụ: Gói, Giờ, Mét..."
@@ -873,7 +873,7 @@ export default function SettingsPage() {
                             <CardContent className="space-y-6 pt-6">
                                 <div className="flex gap-4">
                                     <div className="flex-1 space-y-2">
-                                        <Label htmlFor="new_brand" className="text-xs uppercase tracking-wider text-muted-foreground">Tên thương hiệu mới</Label>
+                                        <Label htmlFor="new_brand" className="text-xs text-muted-foreground">Tên thương hiệu mới</Label>
                                         <Input
                                             id="new_brand"
                                             placeholder="Ví dụ: Tulie Lab..."
@@ -1262,7 +1262,7 @@ export default function SettingsPage() {
                             <CardContent className="space-y-6 pt-6">
                                 <div className="grid gap-6 sm:grid-cols-2">
                                     <div className="space-y-2">
-                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">SMTP Host</Label>
+                                        <Label className="text-xs text-muted-foreground">SMTP Host</Label>
                                         <Input
                                             placeholder="smtp.gmail.com"
                                             value={smtpConfig.host}
@@ -1271,7 +1271,7 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">SMTP Port</Label>
+                                        <Label className="text-xs text-muted-foreground">SMTP Port</Label>
                                         <Input
                                             placeholder="587"
                                             value={smtpConfig.port}
@@ -1280,7 +1280,7 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">User / Email</Label>
+                                        <Label className="text-xs text-muted-foreground">User / Email</Label>
                                         <Input
                                             placeholder="email@example.com"
                                             value={smtpConfig.user}
@@ -1289,7 +1289,7 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">Password / App Password</Label>
+                                        <Label className="text-xs text-muted-foreground">Password / App Password</Label>
                                         <Input
                                             type="password"
                                             placeholder="****************"
@@ -1299,7 +1299,7 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên người gửi (From Name)</Label>
+                                        <Label className="text-xs text-muted-foreground">Tên người gửi (From Name)</Label>
                                         <Input
                                             placeholder="Tulie CRM"
                                             value={smtpConfig.from_name}
@@ -1308,7 +1308,7 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">Email hiển thị (From Email)</Label>
+                                        <Label className="text-xs text-muted-foreground">Email hiển thị (From Email)</Label>
                                         <Input
                                             placeholder="info@tulie.vn"
                                             value={smtpConfig.from_email}
@@ -1450,15 +1450,15 @@ export default function SettingsPage() {
                             <CardContent className="space-y-6 pt-6">
                                 <div className="space-y-5 max-w-lg">
                                     <div className="space-y-2">
-                                        <Label htmlFor="current_password text-xs uppercase tracking-wider text-muted-foreground">Mật khẩu hiện tại</Label>
+                                        <Label htmlFor="current_password text-xs text-muted-foreground">Mật khẩu hiện tại</Label>
                                         <Input id="current_password" type="password" className="h-11 rounded-md" />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="new_password text-xs uppercase tracking-wider text-muted-foreground">Mật khẩu mới</Label>
+                                        <Label htmlFor="new_password text-xs text-muted-foreground">Mật khẩu mới</Label>
                                         <Input id="new_password" type="password" className="h-11 rounded-md" />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="confirm_password text-xs uppercase tracking-wider text-muted-foreground">Xác nhận mật khẩu mới</Label>
+                                        <Label htmlFor="confirm_password text-xs text-muted-foreground">Xác nhận mật khẩu mới</Label>
                                         <Input id="confirm_password" type="password" className="h-11 rounded-md" />
                                     </div>
                                 </div>
@@ -1528,7 +1528,7 @@ export default function SettingsPage() {
 
                                     <div className="grid gap-6 md:grid-cols-2">
                                         <div className="space-y-2">
-                                            <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên bộ chứng từ</Label>
+                                            <Label className="text-xs text-muted-foreground">Tên bộ chứng từ</Label>
                                             <Input
                                                 placeholder="VD: In ấn - Trọng gói"
                                                 value={newBundle.name}
@@ -1537,7 +1537,7 @@ export default function SettingsPage() {
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label className="text-xs uppercase tracking-wider text-muted-foreground">Mô tả mục đích</Label>
+                                            <Label className="text-xs text-muted-foreground">Mô tả mục đích</Label>
                                             <Input
                                                 placeholder="Dùng cho các dự án in ấn..."
                                                 value={newBundle.description}
@@ -1547,7 +1547,7 @@ export default function SettingsPage() {
                                         </div>
                                     </div>
                                     <div className="space-y-3">
-                                        <Label className="text-xs uppercase tracking-wider text-muted-foreground">Chọn các mẫu giấy tờ đi kèm</Label>
+                                        <Label className="text-xs text-muted-foreground">Chọn các mẫu giấy tờ đi kèm</Label>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                             {templates.map(t => (
                                                 <div
@@ -1650,7 +1650,7 @@ export default function SettingsPage() {
                                     {bankAccounts.map((account, index) => account.type !== 'personal' && (
                                         <div key={index} className="space-y-4 border p-5 rounded-md relative bg-white border-border group">
                                             <div className="flex items-center justify-between mb-2">
-                                                <h4 className="text-xs uppercase tracking-wider text-muted-foreground">TK Công ty #{bankAccounts.filter((a, i) => a.type !== 'personal' && i <= index).length}</h4>
+                                                <h4 className="text-xs text-muted-foreground">TK Công ty #{bankAccounts.filter((a, i) => a.type !== 'personal' && i <= index).length}</h4>
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
@@ -1666,7 +1666,7 @@ export default function SettingsPage() {
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên ngân hàng</Label>
+                                                    <Label className="text-xs text-muted-foreground">Tên ngân hàng</Label>
                                                     <Input
                                                         value={account.bank_name}
                                                         onChange={(e) => {
@@ -1679,7 +1679,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Số tài khoản</Label>
+                                                    <Label className="text-xs text-muted-foreground">Số tài khoản</Label>
                                                     <Input
                                                         value={account.account_no}
                                                         onChange={(e) => {
@@ -1692,7 +1692,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên chủ tài khoản</Label>
+                                                    <Label className="text-xs text-muted-foreground">Tên chủ tài khoản</Label>
                                                     <Input
                                                         value={account.account_name}
                                                         onChange={(e) => {
@@ -1705,7 +1705,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Chi nhánh</Label>
+                                                    <Label className="text-xs text-muted-foreground">Chi nhánh</Label>
                                                     <Input
                                                         value={account.bank_branch}
                                                         onChange={(e) => {
@@ -1719,7 +1719,7 @@ export default function SettingsPage() {
                                                 </div>
                                             </div>
                                             <div className="pt-3 border-t border-border/30">
-                                                <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-3 block">Sử dụng mặc định cho</Label>
+                                                <Label className="text-xs text-muted-foreground mb-3 block">Sử dụng mặc định cho</Label>
                                                 <div className="flex flex-wrap gap-4">
                                                     {[
                                                         { value: 'quotation', label: 'Báo giá (Agency B2B)' },
@@ -1776,7 +1776,7 @@ export default function SettingsPage() {
                                     {bankAccounts.map((account, index) => account.type === 'personal' && (
                                         <div key={index} className="space-y-4 border p-5 rounded-md relative bg-white border-border group">
                                             <div className="flex items-center justify-between mb-2">
-                                                <h4 className="text-xs uppercase tracking-wider text-muted-foreground">TK Cá nhân #{bankAccounts.filter((a, i) => a.type === 'personal' && i <= index).length}</h4>
+                                                <h4 className="text-xs text-muted-foreground">TK Cá nhân #{bankAccounts.filter((a, i) => a.type === 'personal' && i <= index).length}</h4>
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
@@ -1792,7 +1792,7 @@ export default function SettingsPage() {
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên ngân hàng</Label>
+                                                    <Label className="text-xs text-muted-foreground">Tên ngân hàng</Label>
                                                     <Input
                                                         value={account.bank_name}
                                                         onChange={(e) => {
@@ -1805,7 +1805,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Số tài khoản</Label>
+                                                    <Label className="text-xs text-muted-foreground">Số tài khoản</Label>
                                                     <Input
                                                         value={account.account_no}
                                                         onChange={(e) => {
@@ -1818,7 +1818,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên chủ tài khoản</Label>
+                                                    <Label className="text-xs text-muted-foreground">Tên chủ tài khoản</Label>
                                                     <Input
                                                         value={account.account_name}
                                                         onChange={(e) => {
@@ -1831,7 +1831,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Chi nhánh</Label>
+                                                    <Label className="text-xs text-muted-foreground">Chi nhánh</Label>
                                                     <Input
                                                         value={account.bank_branch}
                                                         onChange={(e) => {
@@ -1845,7 +1845,7 @@ export default function SettingsPage() {
                                                 </div>
                                             </div>
                                             <div className="pt-3 border-t border-border/30">
-                                                <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-3 block">Sử dụng mặc định cho</Label>
+                                                <Label className="text-xs text-muted-foreground mb-3 block">Sử dụng mặc định cho</Label>
                                                 <div className="flex flex-wrap gap-4">
                                                     {[
                                                         { value: 'retail_order', label: 'Đơn hàng (Studio B2C)' },
@@ -1909,7 +1909,7 @@ export default function SettingsPage() {
                                     {noteTemplates.map((template, index) => (
                                         <div key={index} className="space-y-4 border p-5 rounded-md relative bg-white border-border group">
                                             <div className="flex items-center justify-between mb-2">
-                                                <h4 className="text-xs uppercase tracking-wider text-muted-foreground">Mẫu #{index + 1}</h4>
+                                                <h4 className="text-xs text-muted-foreground">Mẫu #{index + 1}</h4>
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
@@ -1925,7 +1925,7 @@ export default function SettingsPage() {
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Tên mẫu</Label>
+                                                    <Label className="text-xs text-muted-foreground">Tên mẫu</Label>
                                                     <Input
                                                         value={template.name}
                                                         onChange={(e) => {
@@ -1938,7 +1938,7 @@ export default function SettingsPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">Loại dịch vụ (Gợi ý: studio, agency)</Label>
+                                                    <Label className="text-xs text-muted-foreground">Loại dịch vụ (Gợi ý: studio, agency)</Label>
                                                     <Input
                                                         value={template.service_type}
                                                         onChange={(e) => {
@@ -1952,7 +1952,7 @@ export default function SettingsPage() {
                                                 </div>
                                             </div>
                                             <div className="space-y-2">
-                                                <Label className="text-xs uppercase tracking-wider text-muted-foreground">Điều khoản thanh toán</Label>
+                                                <Label className="text-xs text-muted-foreground">Điều khoản thanh toán</Label>
                                                 <Textarea
                                                     value={template.payment_terms}
                                                     onChange={(e) => {
@@ -1965,7 +1965,7 @@ export default function SettingsPage() {
                                                 />
                                             </div>
                                             <div className="space-y-2">
-                                                <Label className="text-xs uppercase tracking-wider text-muted-foreground">Ghi chú</Label>
+                                                <Label className="text-xs text-muted-foreground">Ghi chú</Label>
                                                 <Textarea
                                                     value={template.notes}
                                                     onChange={(e) => {

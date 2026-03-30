@@ -111,19 +111,19 @@ export function QuotationViewAnalytics({ quotationId }: QuotationViewAnalyticsPr
                 <div className="grid grid-cols-2 gap-3">
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
                         <p className="text-3xl tabular-nums leading-none">{stats.totalViews}</p>
-                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">Lượt xem</p>
+                        <p className="text-[10px] font-medium text-muted-foreground border-t border-border pt-2 mt-2">Lượt xem</p>
                     </div>
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
                         <p className="text-3xl tabular-nums leading-none">{stats.uniqueVisitors}</p>
-                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">Unique IP</p>
+                        <p className="text-[10px] font-medium text-muted-foreground border-t border-border pt-2 mt-2">Unique IP</p>
                     </div>
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
                         <p className="text-lg tabular-nums leading-none">{formatDuration(stats.avgDuration)}</p>
-                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">TB thời gian</p>
+                        <p className="text-[10px] font-medium text-muted-foreground border-t border-border pt-2 mt-2">TB thời gian</p>
                     </div>
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
                         <p className="text-lg tabular-nums leading-none">{stats.avgScroll}%</p>
-                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">TB scroll</p>
+                        <p className="text-[10px] font-medium text-muted-foreground border-t border-border pt-2 mt-2">TB scroll</p>
                     </div>
                 </div>
 
@@ -153,7 +153,7 @@ export function QuotationViewAnalytics({ quotationId }: QuotationViewAnalyticsPr
 
                 {/* View Timeline */}
                 <div className="space-y-2">
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Chi tiết lượt xem</p>
+                    <p className="text-xs font-semibold text-muted-foreground">Chi tiết lượt xem</p>
                     <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1">
                         {views.map((view, idx) => {
                             const interactions = (view.interactions as any[]) || []

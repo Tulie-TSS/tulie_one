@@ -452,7 +452,7 @@ export default function LandingPage() {
                                 <div className="text-4xl md:text-5xl font-black text-white tracking-tighter tabular-nums">
                                     {stat.value}
                                 </div>
-                                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                                <div className="text-xs font-semibold text-muted-foreground">
                                     {stat.label}
                                 </div>
                             </div>

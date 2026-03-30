@@ -201,7 +201,10 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                 <div className="flex items-center gap-3">
                     <span className="hidden md:inline text-sm font-medium text-foreground">{displayName}</span>
                     <Badge variant={hasContracts ? 'default' : 'secondary'}>
-                        {hasContracts ? 'Đang triển khai' : 'Chờ triển khai'}
+                        {project?.status === 'in_progress' ? 'Đang thực hiện' 
+                            : project?.status === 'review' ? 'Đang nghiệm thu'
+                            : project?.status === 'completed' ? 'Đã hoàn thành'
+                            : 'Chờ triển khai'}
                     </Badge>
                     {hasFinancialPassword && !isFinancialAuthenticated && (
                         <Dialog open={isUnlockModalOpen} onOpenChange={setIsUnlockModalOpen}>

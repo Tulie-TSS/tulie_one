@@ -92,20 +92,22 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
 
     return (
         <Card className="overflow-hidden flex flex-col h-[700px]">
-            <CardHeader>
-                <CardTitle>Kế hoạch triển khai (Gantt View)</CardTitle>
-                <CardDescription>Trực quan hoá lộ trình dự án</CardDescription>
-                <CardAction>
+            <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4 border-b border-transparent">
+                <div className="space-y-1.5 flex-1 pr-4">
+                    <CardTitle className="text-base font-semibold leading-none tracking-tight">Kế hoạch triển khai (Gantt View)</CardTitle>
+                    <CardDescription className="text-sm text-muted-foreground pt-1">Trực quan hoá lộ trình dự án</CardDescription>
+                </div>
+                <div className="shrink-0">
                     <div className="flex items-center gap-2">
-                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setViewDate(addDays(viewDate, -7))}>
+                        <Button variant="outline" size="icon" className="h-8 w-8 shadow-sm bg-background/50 backdrop-blur-sm" onClick={() => setViewDate(addDays(viewDate, -7))}>
                             <ChevronLeft className="h-4 w-4" />
                         </Button>
-                        <Button variant="outline" className="h-8 text-xs px-3" onClick={() => setViewDate(today)}>Hôm nay</Button>
-                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setViewDate(addDays(viewDate, 7))}>
+                        <Button variant="outline" className="h-8 text-xs px-3 shadow-sm bg-background/50 backdrop-blur-sm font-semibold" onClick={() => setViewDate(today)}>Hôm nay</Button>
+                        <Button variant="outline" size="icon" className="h-8 w-8 shadow-sm bg-background/50 backdrop-blur-sm" onClick={() => setViewDate(addDays(viewDate, 7))}>
                             <ChevronRight className="h-4 w-4" />
                         </Button>
                     </div>
-                </CardAction>
+                </div>
             </CardHeader>
 
             <CardContent className="p-0 flex-1 relative overflow-auto custom-scrollbar">

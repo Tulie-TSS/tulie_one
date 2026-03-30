@@ -152,6 +152,10 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
     const [editContent, setEditContent] = useState('')
     const [isDeleting, setIsDeleting] = useState<string | null>(null)
 
+    // Agency response edit state
+    const [editResponseId, setEditResponseId] = useState<string | null>(null)
+    const [editResponseContent, setEditResponseContent] = useState('')
+
     // New item form state
     const [newTitle, setNewTitle] = useState('')
     const [newContent, setNewContent] = useState('')
@@ -343,6 +347,32 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
         }
     }
 
+    const handleSaveResponse = async (id: string, currentStatus: string) => {
+        setIsSubmitting(true)
+        try {
+            const res = await fetch('/api/portal-feedback', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    id, 
+                    response_content: editResponseContent,
+                    responded_by: 'Agency', // Use standard or dynamic
+                    // Auto-update to processing if it's currently pending
+                    ...(currentStatus === 'pending' ? { status: 'processing' } : {})
+                })
+            })
+            if (res.ok) {
+                toast.success('Đã gửi phản hồi')
+                setEditResponseId(null)
+                await fetchItems()
+            } else throw new Error()
+        } catch {
+            toast.error('Có lỗi xảy ra khi gửi phản hồi')
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
+
     const handleDelete = async (id: string) => {
         if (!confirm('Bạn có chắc chắn muốn xóa yêu cầu này?')) return
         setIsDeleting(id)
@@ -375,18 +405,21 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
             )}
 
             {/* Document Header */}
-            <CardHeader>
-                <CardTitle>Nhật ký xử lý yêu cầu</CardTitle>
-                <CardDescription>Danh sách yêu cầu chỉnh sửa và theo dõi trạng thái</CardDescription>
-                <CardAction>
+            <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4 border-b border-transparent">
+                <div className="space-y-1.5 flex-1 pr-4">
+                    <CardTitle className="text-base font-semibold leading-none tracking-tight">Nhật ký xử lý yêu cầu</CardTitle>
+                    <CardDescription className="text-sm text-muted-foreground pt-1">Danh sách yêu cầu chỉnh sửa và theo dõi trạng thái</CardDescription>
+                </div>
+                <div className="shrink-0 flex items-center">
                     <Button 
                         size="sm"
+                        className="h-8 shadow-sm"
                         onClick={() => setShowForm(!showForm)} 
                     >
-                        <Plus className="w-3.5 h-3.5" />
+                        <Plus className="w-3.5 h-3.5 mr-1.5" />
                         Thêm yêu cầu mới
                     </Button>
-                </CardAction>
+                </div>
             </CardHeader>
 
             <CardContent className="p-0">
@@ -554,7 +587,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
             )}
 
             {/* Content Body */}
-            <div className="border-t border-border">
+            <div>
                 {isLoading ? (
                     <div className="py-20 flex flex-col items-center justify-center text-center">
                         <Clock className="w-8 h-8 text-muted-foreground/50 animate-spin mb-3" />
@@ -753,30 +786,62 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                 </div>
 
                                                                 {/* Right: Agency Response */}
-                                                                <div className="lg:col-span-5 border-t lg:border-t-0 lg:border-l border-border pt-6 lg:pt-0 lg:pl-8">
-                                                                    <div className="flex items-center gap-2 mb-3">
-                                                                        <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center border border-blue-200 shrink-0">
-                                                                            <MessageCircle className="w-3 h-3 text-blue-700" />
-                                                                        </div>
-                                                                        <div>
-                                                                            <p className="text-xs font-medium text-foreground">
-                                                                                Agency phản hồi
-                                                                            </p>
-                                                                            {item.responded_at && (
-                                                                                <p className="text-[10px] text-blue-600/70">
-                                                                                    {new Date(item.responded_at).toLocaleString('vi-VN')}
+                                                                <div className="lg:col-span-5 border-t lg:border-t-0 lg:border-l border-border pt-6 lg:pt-0 lg:pl-8 flex flex-col h-full">
+                                                                    <div className="flex items-center justify-between mb-3">
+                                                                        <div className="flex items-center gap-2">
+                                                                            <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center border border-blue-200 shrink-0">
+                                                                                <MessageCircle className="w-3 h-3 text-blue-700" />
+                                                                            </div>
+                                                                            <div>
+                                                                                <p className="text-xs font-semibold text-foreground">
+                                                                                    Agency phản hồi
                                                                                 </p>
-                                                                            )}
+                                                                                {item.responded_at && (
+                                                                                    <p className="text-[10px] text-blue-600/70 font-medium">
+                                                                                        {new Date(item.responded_at).toLocaleString('vi-VN')}
+                                                                                    </p>
+                                                                                )}
+                                                                            </div>
                                                                         </div>
+                                                                        
+                                                                        {isAdmin && editResponseId !== item.id && (
+                                                                            <Button 
+                                                                                variant="outline" 
+                                                                                size="sm" 
+                                                                                onClick={(e) => { 
+                                                                                    e.stopPropagation(); 
+                                                                                    setEditResponseId(item.id);
+                                                                                    setEditResponseContent(item.response_content || '');
+                                                                                }} 
+                                                                                className="h-7 text-xs px-2 bg-background hover:bg-muted border-border text-muted-foreground font-semibold hover:text-foreground transition-colors"
+                                                                            >
+                                                                                <Edit className="w-3 h-3 mr-1.5" /> {item.response_content ? 'Sửa' : 'Trả lời'}
+                                                                            </Button>
+                                                                        )}
                                                                     </div>
-
-                                                                    {item.response_content ? (
+                                                                    
+                                                                    {editResponseId === item.id ? (
+                                                                        <div className="flex-1 flex flex-col gap-3">
+                                                                            <Textarea 
+                                                                                value={editResponseContent} 
+                                                                                onChange={e => setEditResponseContent(e.target.value)} 
+                                                                                placeholder="Nhập nội dung phản hồi..."
+                                                                                className="flex-1 min-h-[120px] text-[13px] resize-none" 
+                                                                            />
+                                                                            <div className="flex items-center justify-end gap-2">
+                                                                                <Button variant="ghost" size="sm" onClick={() => setEditResponseId(null)} className="h-8 shadow-none font-semibold text-muted-foreground">Hủy</Button>
+                                                                                <Button onClick={() => handleSaveResponse(item.id, item.status)} disabled={isSubmitting} size="sm" className="h-8 shadow-md font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-all">
+                                                                                    {isSubmitting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3 mr-1.5" />} {isSubmitting ? '' : 'Gửi'}
+                                                                                </Button>
+                                                                            </div>
+                                                                        </div>
+                                                                    ) : item.response_content ? (
                                                                         <div className="bg-blue-50/50 p-4 rounded-lg border border-blue-100/50 text-[13px] text-blue-900 leading-relaxed font-medium">
                                                                             <div dangerouslySetInnerHTML={{ __html: item.response_content }} />
                                                                         </div>
                                                                     ) : (
-                                                                        <div className="bg-muted p-4 border border-border border-dashed rounded-lg text-center">
-                                                                            <p className="text-xs text-muted-foreground font-medium">Đang chờ phản hồi từ đội ngũ hỗ trợ...</p>
+                                                                        <div className="bg-muted p-4 border border-border border-dashed rounded-lg flex items-center justify-center flex-1 min-h-[100px]">
+                                                                            <p className="text-xs text-muted-foreground font-medium text-center">Đang chờ phản hồi từ đội ngũ hỗ trợ...</p>
                                                                         </div>
                                                                     )}
                                                                 </div>

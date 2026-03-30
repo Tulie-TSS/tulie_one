@@ -194,7 +194,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                         <div className="w-px h-10 bg-muted" />
                         <div>
                             <h1 className="text-xl font-semibold text-foreground">Customer Portal</h1>
-                            <p className="text-xs text-muted-foreground mt-0.5 font-medium uppercase tracking-wider">Hệ thống giám sát dự án</p>
+                            <p className="text-xs text-muted-foreground mt-0.5 font-medium">Hệ thống giám sát dự án</p>
                         </div>
                     </div>
 
@@ -257,7 +257,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             <div className="bg-zinc-950 text-white p-8 border-b border-zinc-800">
                                 <DialogHeader>
                                     <DialogTitle className="text-2xl font-bold">Cập nhật hồ sơ khách hàng</DialogTitle>
-                                    <p className="text-muted-foreground text-xs mt-1 uppercase tracking-wider font-semibold">Customer Information & Identity</p>
+                                    <p className="text-muted-foreground text-xs mt-1 font-semibold">Customer Information & Identity</p>
                                 </DialogHeader>
                             </div>
                             <div className="p-8 bg-muted">

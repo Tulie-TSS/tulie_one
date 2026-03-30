@@ -218,7 +218,7 @@ export function PaymentWatcher({
             <div className="space-y-3">
                 <div className="flex justify-between items-end">
                     <div>
-                        <p className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">
+                        <p className="text-[11px] text-muted-foreground mb-1">
                             Tiến độ thanh toán
                         </p>
                         <p className="text-2xl tabular-nums">
@@ -268,7 +268,7 @@ export function PaymentWatcher({
                 <>
                     <Separator />
                     <div className="space-y-2">
-                        <p className="text-[11px] uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                        <p className="text-[11px] text-muted-foreground flex items-center gap-1.5">
                             <Zap className="h-3 w-3" />
                             Lịch sử giao dịch ({status.transactions.length})
                         </p>

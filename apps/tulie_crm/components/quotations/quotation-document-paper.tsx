@@ -294,7 +294,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
             </div>
 
             {/* Footer Contact */}
-            <div className="mt-auto pt-8 border-t border-border text-center text-[9px] text-muted-foreground uppercase tracking-wider">
+            <div className="mt-auto pt-8 border-t border-border text-center text-[9px] text-muted-foreground">
                 {brandConfig?.brand_name || "Tulie Agency"} - Creative Solution & Digital Strategy | Hotline: {brandConfig?.phone || "098.898.4554"} | Website: {brandConfig?.website || "tulie.vn"}
             </div>
         </div>

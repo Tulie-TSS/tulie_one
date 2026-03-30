@@ -30,20 +30,25 @@ export async function updateProjectTasks(projectId: string, tasks: any[]) {
         // In a real production app, we'd do incremental updates (upserts).
         // Let's use upsert if IDs are provided.
 
-        const tasksToUpsert = tasks.map(t => ({
-            id: t.id?.startsWith('temp-') ? undefined : t.id,
-            project_id: projectId,
-            milestone_id: t.milestone_id || null,
-            work_item_id: t.work_item_id || null,
-            title: t.title,
-            description: t.description || '',
-            status: t.status || 'todo',
-            priority: t.priority || 'medium',
-            start_date: t.start_date,
-            end_date: t.end_date,
-            assigned_to: t.assigned_to || null,
-            updated_at: new Date().toISOString()
-        }))
+        const tasksToUpsert = tasks.map(t => {
+            const row: any = {
+                project_id: projectId,
+                milestone_id: t.milestone_id || null,
+                work_item_id: t.work_item_id || null,
+                title: t.title,
+                description: t.description || '',
+                status: t.status || 'todo',
+                priority: t.priority || 'medium',
+                start_date: t.start_date,
+                end_date: t.end_date,
+                assigned_to: t.assigned_to || null,
+                updated_at: new Date().toISOString()
+            }
+            if (t.id && !t.id.startsWith('temp-')) {
+                row.id = t.id
+            }
+            return row
+        })
 
         // Separate delete and insert for clean sync if needed, 
         // but let's try a simple approach: if no ID, it's new.
@@ -79,9 +84,9 @@ export async function updateProjectTasks(projectId: string, tasks: any[]) {
             description: `Cập nhật danh sách công việc dự án`
         })
 
-        return true
-    } catch (err) {
+        return { success: true }
+    } catch (err: any) {
         console.error('Error updating project tasks:', err)
-        throw err
+        return { success: false, error: err.message || 'Lỗi cơ sở dữ liệu' }
     }
 }

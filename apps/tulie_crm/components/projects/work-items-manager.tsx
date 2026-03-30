@@ -219,14 +219,16 @@ export function WorkItemsManager({ project, workItems: initialWorkItems }: WorkI
 
     return (
         <Card>
-            <CardHeader>
-                <CardTitle>Hạng mục dự án</CardTitle>
-                <CardDescription>Quản lý các hạng mục, công việc, link bàn giao và chứng từ</CardDescription>
-                <CardAction>
+        <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4 border-b border-transparent">
+                <div className="space-y-1.5 flex-1 pr-4">
+                    <CardTitle className="text-base font-semibold leading-none tracking-tight">Hạng mục dự án</CardTitle>
+                    <CardDescription className="text-sm text-muted-foreground pt-1">Quản lý các hạng mục, công việc, link bàn giao và chứng từ</CardDescription>
+                </div>
+                <div className="shrink-0 flex items-center">
                     <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
                         <DialogTrigger asChild>
-                            <Button size="sm">
-                                <Plus className="h-4 w-4 mr-1" />
+                            <Button size="sm" className="h-8 shadow-sm">
+                                <Plus className="h-3.5 w-3.5 mr-1.5" />
                                 Thêm hạng mục
                             </Button>
                         </DialogTrigger>
@@ -312,7 +314,7 @@ export function WorkItemsManager({ project, workItems: initialWorkItems }: WorkI
                         </div>
                     </DialogContent>
                 </Dialog>
-                </CardAction>
+                </div>
             </CardHeader>
 
             <CardContent className="space-y-3 pt-4">

@@ -36,7 +36,6 @@ interface ProjectSidebarProps {
 export function ProjectSidebar({ project, teamMembers = [] }: ProjectSidebarProps) {
     const router = useRouter()
     const [statusLoading, setStatusLoading] = useState(false)
-    const [reportLoading, setReportLoading] = useState(false)
     const [saving, setSaving] = useState(false)
     const [assignee, setAssignee] = useState(project.assigned_to || '')
     const [startDate, setStartDate] = useState(project.start_date?.split('T')[0] || '')
@@ -83,35 +82,6 @@ export function ProjectSidebar({ project, teamMembers = [] }: ProjectSidebarProp
         }
     }
 
-    const handleCreateReport = async () => {
-        setReportLoading(true)
-        try {
-            const res = await fetch(`/api/projects/${project.id}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'create_acceptance_report' })
-            })
-            const data = await res.json()
-            if (!res.ok) {
-                const errMsg = data?.error || 'Lỗi không xác định'
-                // Check common causes
-                if (errMsg.includes('relation') && errMsg.includes('does not exist')) {
-                    toast.error('Bảng acceptance_reports chưa tồn tại trong database. Cần chạy migration.', { duration: 8000 })
-                } else if (errMsg.includes('permission') || errMsg.includes('RLS')) {
-                    toast.error(`Lỗi quyền truy cập: ${errMsg}`, { duration: 6000 })
-                } else {
-                    toast.error(`Lỗi tạo nghiệm thu: ${errMsg}`, { duration: 6000 })
-                }
-                return
-            }
-            toast.success('Đã tạo biên bản nghiệm thu mới')
-            router.refresh()
-        } catch (error: any) {
-            toast.error(`Lỗi hệ thống: ${error.message || 'Không thể kết nối server'}`, { duration: 6000 })
-        } finally {
-            setReportLoading(false)
-        }
-    }
 
     // Derive deadline
     const deadline = endDate || project.end_date
@@ -268,56 +238,6 @@ export function ProjectSidebar({ project, teamMembers = [] }: ProjectSidebarProp
                         </>
                     )}
                 </CardContent>
-            </Card>
-
-            {/* Acceptance Reports */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Nghiệm thu</CardTitle>
-                    <CardDescription>Biên bản giao nhận và nghiệm thu dự án</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                    {project.acceptance_reports && project.acceptance_reports.length > 0 ? (
-                        <div className="space-y-2">
-                            {project.acceptance_reports.map((report: any) => (
-                                <div key={report.id} className="p-3 border rounded-lg text-sm flex justify-between items-center hover:bg-muted/30 transition-colors">
-                                    <div>
-                                        <p className="font-medium">{report.report_number}</p>
-                                        <p className="text-xs text-muted-foreground">{formatDate(report.created_at)}</p>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Badge variant={report.is_signed ? "default" : "secondary"} className="text-[11px]">
-                                            {report.is_signed ? "Đã ký" : "Chờ ký"}
-                                        </Badge>
-                                        {project.customer && (
-                                            <AcceptancePDFButton
-                                                project={project}
-                                                report={report}
-                                                customer={project.customer}
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p className="text-sm text-muted-foreground text-center py-4">Chưa có biên bản nghiệm thu.</p>
-                    )}
-                    <Button
-                        className="w-full"
-                        variant="outline"
-                        onClick={handleCreateReport}
-                        disabled={reportLoading}
-                    >
-                        {reportLoading ? (
-                            <LoadingSpinner size="sm" className="mr-2" />
-                        ) : (
-                            <Plus className="h-4 w-4" />
-                        )}
-                        Tạo biên bản nghiệm thu mới
-                    </Button>
-                </CardContent>
-            </Card>
         </div>
     )
 }

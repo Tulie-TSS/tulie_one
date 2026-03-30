@@ -81,12 +81,16 @@ export function ProjectTasks({ project, workItems }: ProjectTasksProps) {
                 start_date: t.start_date?.toISOString(),
                 end_date: t.end_date?.toISOString(),
             }))
-            await updateProjectTasks(project.id, dataToSave)
+            const res = await updateProjectTasks(project.id, dataToSave)
+            if (res && typeof res !== 'boolean' && res.error) {
+                toast.error(`Lỗi lưu công việc: ${res.error}`)
+                return;
+            }
             toast.success('Cập nhật danh sách công việc thành công')
             router.refresh()
         } catch (error: any) {
             console.error(error)
-            toast.error(`Lỗi lưu công việc: ${error?.message || 'Thử lại sau'}`)
+            toast.error(`Lỗi hệ thống: ${error?.message || 'Thử lại sau'}`)
         } finally {
             setIsLoading(false)
         }
@@ -103,21 +107,21 @@ export function ProjectTasks({ project, workItems }: ProjectTasksProps) {
 
     return (
         <Card>
-            <CardHeader>
-                <CardTitle>Danh sách công việc chi tiết (To-do List)</CardTitle>
-                <CardDescription>Quản lý tất cả đầu việc trong dự án, bao gồm các đầu việc thuộc hạng mục (Module).</CardDescription>
-                <CardAction>
-                    <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={addTask}>
-                            <Plus className="h-4 w-4" />
-                            Thêm việc
-                        </Button>
-                        <Button size="sm" onClick={handleSave} disabled={isLoading}>
-                            {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4" />}
-                            Lưu công việc
-                        </Button>
-                    </div>
-                </CardAction>
+            <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4 border-b border-transparent">
+                <div className="space-y-1.5 flex-1 pr-4">
+                    <CardTitle className="text-base font-semibold leading-none tracking-tight">Danh sách công việc chi tiết (To-do List)</CardTitle>
+                    <CardDescription className="text-sm text-muted-foreground pt-1">Quản lý tất cả đầu việc trong dự án, bao gồm các đầu việc thuộc hạng mục (Module).</CardDescription>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                    <Button variant="outline" size="sm" onClick={addTask} className="h-8 shadow-none bg-background">
+                        <Plus className="h-3.5 w-3.5 mr-1.5" />
+                        Thêm việc
+                    </Button>
+                    <Button size="sm" onClick={handleSave} disabled={isLoading} className="h-8 shadow-sm">
+                        {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-3.5 w-3.5 mr-1.5" />}
+                        Lưu công việc
+                    </Button>
+                </div>
             </CardHeader>
             <CardContent className="space-y-4">
                 {tasks.length === 0 && (

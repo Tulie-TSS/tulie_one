@@ -432,7 +432,7 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                             </div>
                         )}
                         <div className="flex-1 min-w-0">
-                            <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                            <p className="text-[10px] font-medium text-muted-foreground">
                                 {brandConfig?.brand_name || 'Tulie Studio'}
                             </p>
                             <h1 className="text-sm font-semibold text-foreground truncate">{order.order_number}</h1>
@@ -453,7 +453,7 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                             <div className="w-px h-10 bg-muted" />
                             <div>
                                 <h1 className="text-xl font-semibold text-foreground">{order.order_number}</h1>
-                                <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mt-0.5">
+                                <p className="text-[10px] font-medium text-muted-foreground mt-0.5">
                                     {brandConfig?.brand_name || 'Tulie Studio'}
                                 </p>
                             </div>
@@ -612,7 +612,7 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                                     <a href={order.resource_link} target="_blank">
                                         <Download className="mr-3 h-5 w-5 opacity-50" />
                                         <div className="text-left flex-1">
-                                            <p className="text-[10px] font-medium text-white/50 uppercase tracking-wider">Bàn giao</p>
+                                            <p className="text-[10px] font-medium text-white/50">Bàn giao</p>
                                             <p className="text-[13px] font-bold">Tải ảnh gốc</p>
                                         </div>
                                         <ExternalLink className="ml-auto h-4 w-4 text-white/30 group-hover:text-white transition-colors" />
@@ -629,7 +629,7 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                                         <Truck className="h-4 w-4 text-blue-600" />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Mã vận đơn</p>
+                                        <p className="text-[11px] font-medium text-muted-foreground">Mã vận đơn</p>
                                         {/^https?:\/\//.test(order.tracking_number) ? (
                                             <a href={order.tracking_number} target="_blank" className="text-sm font-bold text-blue-600 hover:underline truncate block">
                                                 Tra cứu vận đơn →
@@ -649,7 +649,7 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                         {/* Notes */}
                         {order.notes && (
                             <div className="bg-white rounded-md border border-border shadow-sm p-5">
-                                <p className="text-[11px] text-muted-foreground font-medium mb-2 uppercase tracking-wider">Ghi chú</p>
+                                <p className="text-[11px] text-muted-foreground font-medium mb-2">Ghi chú</p>
                                 <p className="text-sm text-zinc-700 leading-relaxed whitespace-pre-wrap">{order.notes}</p>
                             </div>
                         )}

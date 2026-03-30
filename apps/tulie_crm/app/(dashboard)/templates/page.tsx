@@ -170,7 +170,7 @@ export default function TemplatesPage() {
                                                 {template.name}
                                             </Link>
                                             {template.is_default && (
-                                                <span className="ml-2 text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Mặc định</span>
+                                                <span className="ml-2 text-[10px] text-muted-foreground font-medium">Mặc định</span>
                                             )}
                                         </div>
                                     </div>

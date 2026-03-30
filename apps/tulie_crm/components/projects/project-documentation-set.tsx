@@ -37,14 +37,16 @@ export function ProjectDocumentationSet({ project, workItems }: ProjectDocumenta
 
     return (
         <Card>
-            <CardHeader>
-                <CardTitle>Bộ chứng từ dự án</CardTitle>
-                <CardDescription>Lộ trình hoàn thiện hồ sơ pháp lý và thủ tục cho toàn bộ dự án.</CardDescription>
-                <CardAction>
-                    <Badge variant="secondary">
+            <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4 border-b border-transparent">
+                <div className="space-y-1.5 flex-1 pr-4">
+                    <CardTitle className="text-base font-semibold leading-none tracking-tight">Bộ chứng từ dự án</CardTitle>
+                    <CardDescription className="text-sm text-muted-foreground pt-1">Lộ trình hoàn thiện hồ sơ pháp lý và thủ tục cho toàn bộ dự án.</CardDescription>
+                </div>
+                <div className="shrink-0">
+                    <Badge variant="secondary" className="shadow-sm">
                         {allDocs.filter(d => d.status === 'signed').length}/{allDocs.length} hoàn thành
                     </Badge>
-                </CardAction>
+                </div>
             </CardHeader>
             <CardContent className="p-0">
                 <div className="divide-y">

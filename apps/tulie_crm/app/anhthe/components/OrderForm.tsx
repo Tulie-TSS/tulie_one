@@ -351,7 +351,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
             <div className="w-px h-8 sm:h-10 bg-muted" />
             <div>
               <h1 className="text-lg sm:text-xl font-semibold text-foreground">Ảnh thẻ Online</h1>
-              <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium uppercase tracking-wider">ID Photo Service</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium">ID Photo Service</p>
             </div>
           </div>
           <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-emerald-50 rounded-full border border-emerald-200">
@@ -381,13 +381,13 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
             <div className="p-4 sm:p-6 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="customerName" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <Label htmlFor="customerName" className="text-xs font-semibold text-muted-foreground">
                     Họ và tên <span className="text-red-500">*</span>
                   </Label>
                   <Input id="customerName" name="customerName" placeholder="Nguyễn Văn A" required className="h-10 sm:h-11 rounded-lg border-border focus:border-zinc-400 placeholder:text-zinc-300" value={customerName} onChange={(e) => setCustomerName(e.target.value)} />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="customerPhone" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <Label htmlFor="customerPhone" className="text-xs font-semibold text-muted-foreground">
                     Số điện thoại <span className="text-red-500">*</span>
                   </Label>
                   <Input id="customerPhone" name="customerPhone" type="tel" placeholder="09xx xxx xxx" required className="h-10 sm:h-11 rounded-lg border-border focus:border-zinc-400 placeholder:text-zinc-300" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} />
@@ -564,7 +564,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                             <div className="flex items-center gap-2 flex-wrap">
                               <h3 className="text-[15px] font-bold text-foreground">{pkg.name}</h3>
                               {pkg.popular && (
-                                <span className="text-[10px] font-bold uppercase tracking-wider bg-zinc-900 text-white px-2 py-0.5 rounded-full">
+                                <span className="text-[10px] font-bold bg-zinc-900 text-white px-2 py-0.5 rounded-full">
                                   Phổ biến
                                 </span>
                               )}
@@ -614,7 +614,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                     {isSelected && (
                       <div className="px-4 sm:px-5 pb-4 sm:pb-5">
                         <div className="bg-muted rounded-lg p-3 border border-border space-y-2">
-                          <Label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                          <Label className="text-[11px] font-semibold text-muted-foreground">
                             Ghi chú gói này (size in, yêu cầu đặc biệt…)
                           </Label>
                           <p className="text-[11px] text-muted-foreground font-normal">Với size in, khách hàng có thể chọn cụ thể ở mục bên dưới</p>
@@ -729,7 +729,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                   {/* Per-vỉ size selection */}
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Chọn size cho từng vỉ</Label>
+                      <Label className="text-xs font-semibold text-muted-foreground">Chọn size cho từng vỉ</Label>
                       <span className="text-[11px] font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{totalViSlots} vỉ</span>
                     </div>
 
@@ -838,7 +838,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                   <div className="space-y-3 pt-3 border-t border-border">
                     <div className="flex items-center gap-2">
                       <Truck className="size-4 text-muted-foreground" />
-                      <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Phí vận chuyển</Label>
+                      <Label className="text-xs font-semibold text-muted-foreground">Phí vận chuyển</Label>
                     </div>
                     {hasFreeShipping ? (
                       <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-emerald-50 border border-emerald-200">
@@ -879,7 +879,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                   <div className="space-y-4 pt-3 border-t border-border">
                     <div className="flex items-center gap-2">
                       <Package className="size-4 text-muted-foreground" />
-                      <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Thông tin nhận hàng</Label>
+                      <Label className="text-xs font-semibold text-muted-foreground">Thông tin nhận hàng</Label>
                     </div>
                     <button
                       type="button"
@@ -916,7 +916,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                     </button>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                        <Label className="text-xs font-semibold text-muted-foreground">
                           Tên người nhận <span className="text-red-500">*</span>
                         </Label>
                         <Input
@@ -928,7 +928,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                        <Label className="text-xs font-semibold text-muted-foreground">
                           SĐT người nhận <span className="text-red-500">*</span>
                         </Label>
                         <Input
@@ -942,7 +942,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      <Label className="text-xs font-semibold text-muted-foreground">
                         Địa chỉ giao hàng <span className="text-red-500">*</span>
                       </Label>
                       <Textarea

@@ -98,9 +98,8 @@ export function SetPasswordDialog({
         try {
             const result = await setEntityPassword(tableName, entityId, passwordToSave, type)
             if (result.success) {
-                toast.success(passwordToSave ? `Đã cài đặt mật khẩu ${type === 'portal' ? 'Portal' : 'Tài chính'} thành công` : `Đã gỡ mật khẩu ${type === 'portal' ? 'Portal' : 'Tài chính'}`)
-                if (type === 'portal') setPortalPassword('')
-                else setFinancialPassword('')
+                toast.success(passwordToSave ? `Đã lưu mật khẩu ${type === 'portal' ? 'Portal' : 'Tài chính'} thành công. Vui lòng copy và gửi cho khách hàng.` : `Đã gỡ mật khẩu ${type === 'portal' ? 'Portal' : 'Tài chính'}`)
+                // Bỏ clear password logic để user có thể bấm nút Copy (view mật khẩu đã thiết lập ở phiên hiện tại)
             } else {
                 toast.error(result.error || 'Có lỗi xảy ra')
             }
@@ -142,7 +141,7 @@ export function SetPasswordDialog({
                 <DialogHeader>
                     <DialogTitle>Thiết lập mật khẩu bảo mật (2 Cấp)</DialogTitle>
                     <DialogDescription>
-                        Quản lý mật khẩu để bảo vệ Portal khách hàng. Bạn có thể khoá toàn bộ thẻ dự án (Cấp 1) hoặc chỉ khoá riêng các tài liệu nhạy cảm như báo giá/hợp đồng (Cấp 2).
+                        Quản lý mật khẩu để bảo vệ Portal khách hàng. Mật khẩu được mã hoá một chiều, bạn chỉ có thể xem và copy ngay tại lúc tạo mới. Nếu quên, hãy tạo mật khẩu mới.
                     </DialogDescription>
                 </DialogHeader>
 

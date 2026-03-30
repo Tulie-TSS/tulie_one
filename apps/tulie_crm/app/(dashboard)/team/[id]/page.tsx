@@ -88,25 +88,25 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                     <div className="grid gap-4 sm:grid-cols-4">
                         <Card className="rounded-md border-border">
                             <CardContent className="pt-6">
-                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Khách hàng</p>
+                                <p className="text-xs font-semibold text-muted-foreground mb-1">Khách hàng</p>
                                 <p className="text-2xl">{stats.customers}</p>
                             </CardContent>
                         </Card>
                         <Card className="rounded-md border-border">
                             <CardContent className="pt-6">
-                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Hợp đồng</p>
+                                <p className="text-xs font-semibold text-muted-foreground mb-1">Hợp đồng</p>
                                 <p className="text-2xl">{stats.contracts}</p>
                             </CardContent>
                         </Card>
                         <Card className="rounded-md border-border">
                             <CardContent className="pt-6">
-                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Báo giá</p>
+                                <p className="text-xs font-semibold text-muted-foreground mb-1">Báo giá</p>
                                 <p className="text-2xl">{stats.quotations}</p>
                             </CardContent>
                         </Card>
                         <Card className="rounded-md border-border">
                             <CardContent className="pt-6">
-                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Tỷ lệ chốt</p>
+                                <p className="text-xs font-semibold text-muted-foreground mb-1">Tỷ lệ chốt</p>
                                 <p className="text-2xl">{stats.conversion_rate}%</p>
                             </CardContent>
                         </Card>
@@ -170,7 +170,7 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                                     <Mail className="h-4 w-4 text-muted-foreground" />
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Email</p>
+                                    <p className="text-xs font-semibold text-muted-foreground">Email</p>
                                     <a href={`mailto:${member.email}`} className="text-sm hover:underline underline-offset-4 text-foreground break-all">
                                         {member.email}
                                     </a>
@@ -182,7 +182,7 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                                         <Phone className="h-4 w-4 text-muted-foreground" />
                                     </div>
                                     <div className="space-y-0.5">
-                                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Điện thoại</p>
+                                        <p className="text-xs font-semibold text-muted-foreground">Điện thoại</p>
                                         <a href={`tel:${member.phone}`} className="text-sm hover:underline underline-offset-4 text-foreground">
                                             {member.phone}
                                         </a>
@@ -194,7 +194,7 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                                     <Calendar className="h-4 w-4 text-muted-foreground" />
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Ngày gia nhập</p>
+                                    <p className="text-xs font-semibold text-muted-foreground">Ngày gia nhập</p>
                                     <p className="text-sm text-foreground">
                                         {member.created_at ? new Date(member.created_at).toLocaleDateString('vi-VN') : 'N/A'}
                                     </p>

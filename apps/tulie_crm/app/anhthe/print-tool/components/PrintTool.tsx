@@ -462,7 +462,7 @@ export default function PrintTool() {
             <div className="w-px h-8 sm:h-10 bg-muted" />
             <div>
               <h1 className="text-lg sm:text-xl font-semibold text-foreground">Công cụ in ảnh thẻ</h1>
-              <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium uppercase tracking-wider">Canon Selphy CP1300 — Borderless 10×15 cm</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium">Canon Selphy CP1300 — Borderless 10×15 cm</p>
             </div>
           </div>
         </div>

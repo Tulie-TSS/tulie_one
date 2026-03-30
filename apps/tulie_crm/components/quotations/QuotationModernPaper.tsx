@@ -229,16 +229,16 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                             <thead>
                                 <tr className="text-white" style={{ background: "url(\"data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='rgba(255,255,255,0.12)'/%3E%3C/svg%3E\"), linear-gradient(to right, #09090b, #171717, #262626)", WebkitPrintColorAdjust: 'exact' }}>
                                     <th className="py-3 px-2 w-6 text-center text-[9px] rounded-tl-lg">#</th>
-                                    <th className="py-3 px-3 w-auto">Hạng mục & Mô tả <br /><span className="text-[8px] font-normal opacity-60 uppercase tracking-wider">Items</span></th>
-                                    <th className="py-3 px-1 text-center w-10">ĐVT <br /><span className="text-[8px] font-normal opacity-60 uppercase tracking-wider">Unit</span></th>
-                                    <th className="py-3 px-1 text-center w-10">SL <br /><span className="text-[8px] font-normal opacity-60 uppercase tracking-wider">Qty</span></th>
-                                    <th className="py-3 px-2 text-right w-16">Đơn giá <br /><span className="text-[8px] font-normal opacity-60 uppercase tracking-wider">Price</span></th>
-                                    <th className="py-3 px-1 text-center w-10 text-[9px]">CK(%)<br /><span className="text-[8px] font-normal opacity-60 uppercase tracking-wider">Disc</span></th>
-                                    <th className="py-3 px-2 text-right w-16">Giảm giá <br /><span className="text-[8px] font-normal opacity-60 uppercase tracking-wider">Discount</span></th>
-                                    <th className="py-3 px-2 text-right w-20">Thành tiền <br /><span className="text-[8px] font-normal opacity-60 uppercase tracking-wider">Amount</span></th>
-                                    <th className="py-3 px-1 text-center w-10 text-[9px]">VAT<br /><span className="text-[8px] font-normal opacity-60 uppercase tracking-wider">(%)</span></th>
-                                    <th className="py-3 px-2 text-right w-16">Tiền VAT <br /><span className="text-[8px] font-normal opacity-60 uppercase tracking-wider">VAT Amt</span></th>
-                                    <th className="py-3 px-3 text-right w-20 rounded-tr-lg">Tổng cộng <br /><span className="text-[8px] font-normal opacity-60 uppercase tracking-wider">Total</span></th>
+                                    <th className="py-3 px-3 w-auto">Hạng mục & Mô tả <br /><span className="text-[8px] font-normal opacity-60">Items</span></th>
+                                    <th className="py-3 px-1 text-center w-10">ĐVT <br /><span className="text-[8px] font-normal opacity-60">Unit</span></th>
+                                    <th className="py-3 px-1 text-center w-10">SL <br /><span className="text-[8px] font-normal opacity-60">Qty</span></th>
+                                    <th className="py-3 px-2 text-right w-16">Đơn giá <br /><span className="text-[8px] font-normal opacity-60">Price</span></th>
+                                    <th className="py-3 px-1 text-center w-10 text-[9px]">CK(%)<br /><span className="text-[8px] font-normal opacity-60">Disc</span></th>
+                                    <th className="py-3 px-2 text-right w-16">Giảm giá <br /><span className="text-[8px] font-normal opacity-60">Discount</span></th>
+                                    <th className="py-3 px-2 text-right w-20">Thành tiền <br /><span className="text-[8px] font-normal opacity-60">Amount</span></th>
+                                    <th className="py-3 px-1 text-center w-10 text-[9px]">VAT<br /><span className="text-[8px] font-normal opacity-60">(%)</span></th>
+                                    <th className="py-3 px-2 text-right w-16">Tiền VAT <br /><span className="text-[8px] font-normal opacity-60">VAT Amt</span></th>
+                                    <th className="py-3 px-3 text-right w-20 rounded-tr-lg">Tổng cộng <br /><span className="text-[8px] font-normal opacity-60">Total</span></th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">

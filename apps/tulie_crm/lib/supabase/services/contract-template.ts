@@ -338,8 +338,7 @@ export const contractTemplate = `
       <td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold; font-size:9pt; white-space:nowrap;">{{total_amount_number}} VND</td>
     </tr>
     <tr>
-      <td style="border:1px solid #000; padding:4px;" colspan="3">Số tiền viết bằng chữ</td>
-      <td style="border:1px solid #000; padding:4px;" colspan="8"><em>{{amount_in_words}}</em></td>
+      <td style="border:1px solid #000; padding:4px;" colspan="11">Số tiền viết bằng chữ: <em>{{amount_in_words}}</em></td>
     </tr>
   </table>
 

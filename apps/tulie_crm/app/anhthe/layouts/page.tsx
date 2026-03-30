@@ -22,7 +22,7 @@ export default function PrintLayoutsPage() {
             <div className="w-px h-8 sm:h-10 bg-muted" />
             <div>
               <h1 className="text-lg sm:text-xl font-semibold text-foreground">Các kiểu vỉ in ảnh</h1>
-              <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium uppercase tracking-wider">Print Layout Catalog — Khổ giấy 10×15 cm</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium">Print Layout Catalog — Khổ giấy 10×15 cm</p>
             </div>
           </div>
         </div>

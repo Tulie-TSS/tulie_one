@@ -240,7 +240,7 @@ export default function ProductEditClient({ product, categories, units }: Produc
                                 {price > 0 && costPrice > 0 && (
                                     <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-100 mt-2">
                                         <div className="flex items-center justify-between">
-                                            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">Biên lợi nhuận</p>
+                                            <p className="text-xs font-semibold text-emerald-700">Biên lợi nhuận</p>
                                             <p className="text-2xl text-emerald-700">
                                                 {(((price - costPrice) / price) * 100).toFixed(1)}%
                                             </p>

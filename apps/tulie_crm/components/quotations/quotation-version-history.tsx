@@ -245,7 +245,7 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
                                                         {/* Items preview */}
                                                         {snapshot.items && snapshot.items.length > 0 && (
                                                             <div>
-                                                                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                                                                <p className="text-[10px] font-semibold text-muted-foreground mb-1.5">
                                                                     Danh sách hạng mục ({snapshot.items.length})
                                                                 </p>
                                                                 <div className="max-h-[200px] overflow-y-auto rounded-lg border border-border">

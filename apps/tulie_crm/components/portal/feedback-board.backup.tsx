@@ -396,7 +396,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
             <div className="flex flex-col sm:flex-row border-b border-border divide-y sm:divide-y-0 sm:divide-x divide-zinc-100">
                 <div className="px-6 py-4 flex-1 flex flex-col justify-center">
                     <div className="flex justify-between items-end mb-2">
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Tiến độ hoàn thành</p>
+                        <p className="text-[11px] text-muted-foreground">Tiến độ hoàn thành</p>
                         <span className="text-sm text-foreground">{Math.round(progressPercent)}%</span>
                     </div>
                     <Progress value={progressPercent} className="h-2 bg-muted" />
@@ -404,19 +404,19 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                 
                 <div className="px-6 py-4 flex flex-wrap gap-x-12 gap-y-4">
                     <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Tổng số</p>
+                        <p className="text-[11px] text-muted-foreground mb-1">Tổng số</p>
                         <p className="text-2xl font-black text-foreground">{totalCount}</p>
                     </div>
                     <div>
-                        <p className="text-[11px] text-amber-600 uppercase tracking-wider mb-1">Cần xử lý</p>
+                        <p className="text-[11px] text-amber-600 mb-1">Cần xử lý</p>
                         <p className="text-2xl font-black text-amber-700">{pendingCount}</p>
                     </div>
                     <div>
-                        <p className="text-[11px] text-blue-600 uppercase tracking-wider mb-1">Đang làm</p>
+                        <p className="text-[11px] text-blue-600 mb-1">Đang làm</p>
                         <p className="text-2xl font-black text-blue-700">{activeCount}</p>
                     </div>
                     <div>
-                        <p className="text-[11px] text-emerald-600 uppercase tracking-wider mb-1">Hoàn thành</p>
+                        <p className="text-[11px] text-emerald-600 mb-1">Hoàn thành</p>
                         <p className="text-2xl font-black text-emerald-700">{completedCount}</p>
                     </div>
                 </div>
@@ -432,7 +432,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         </div>
 
                         <div>
-                            <label className="text-xs text-zinc-700 mb-2 block uppercase tracking-wider">Tiêu đề yêu cầu <span className="text-rose-500">*</span></label>
+                            <label className="text-xs text-zinc-700 mb-2 block">Tiêu đề yêu cầu <span className="text-rose-500">*</span></label>
                             <Input
                                 value={newTitle}
                                 onChange={(e) => setNewTitle(e.target.value)}
@@ -443,7 +443,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         </div>
 
                         <div>
-                            <label className="text-xs text-zinc-700 mb-2 block uppercase tracking-wider">
+                            <label className="text-xs text-zinc-700 mb-2 block">
                                 Diễn giải chi tiết
                                 <span className="text-muted-foreground font-medium normal-case tracking-normal ml-2">Hỗ trợ dán ảnh (Ctrl+V)</span>
                             </label>
@@ -490,7 +490,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         {/* Attachments preview gallery */}
                         {attachments.length > 0 && (
                             <div className="space-y-2">
-                                <label className="text-xs text-zinc-700 uppercase tracking-wider flex items-center gap-2">
+                                <label className="text-xs text-zinc-700 flex items-center gap-2">
                                     <Paperclip className="w-3.5 h-3.5" />
                                     Ảnh đính kèm ({attachments.length})
                                 </label>
@@ -523,7 +523,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
 
                         <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center justify-between pt-2">
                             <div className="flex items-center gap-3">
-                                <span className="text-xs text-zinc-700 uppercase tracking-wider mr-1">Mức độ:</span>
+                                <span className="text-xs text-zinc-700 mr-1">Mức độ:</span>
                                 {Object.entries(PRIORITY_CONFIG).map(([key, config]) => (
                                     <button
                                         key={key}
@@ -576,11 +576,11 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         <Table>
                             <TableHeader className="bg-white">
                                 <TableRow className="hover:bg-transparent border-b-zinc-200">
-                                    <TableHead className="w-[60px] h-12 pl-6 text-muted-foreground text-[11px] uppercase tracking-wider text-center">STT</TableHead>
-                                    <TableHead className="h-12 text-muted-foreground text-[11px] uppercase tracking-wider">Nội dung phản hồi / Yêu cầu</TableHead>
-                                    <TableHead className="w-[120px] h-12 text-muted-foreground text-[11px] uppercase tracking-wider">Mức độ</TableHead>
-                                    <TableHead className="w-[140px] h-12 text-muted-foreground text-[11px] uppercase tracking-wider">Trạng thái</TableHead>
-                                    <TableHead className="w-[180px] h-12 text-muted-foreground text-[11px] uppercase tracking-wider">Khởi tạo</TableHead>
+                                    <TableHead className="w-[60px] h-12 pl-6 text-muted-foreground text-[11px] text-center">STT</TableHead>
+                                    <TableHead className="h-12 text-muted-foreground text-[11px]">Nội dung phản hồi / Yêu cầu</TableHead>
+                                    <TableHead className="w-[120px] h-12 text-muted-foreground text-[11px]">Mức độ</TableHead>
+                                    <TableHead className="w-[140px] h-12 text-muted-foreground text-[11px]">Trạng thái</TableHead>
+                                    <TableHead className="w-[180px] h-12 text-muted-foreground text-[11px]">Khởi tạo</TableHead>
                                     <TableHead className="w-[80px] pr-6"></TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -702,11 +702,11 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                     {editItemId === item.id ? (
                                                                         <div className="space-y-4 bg-muted/50 p-4 border border-border rounded-md">
                                                                             <div>
-                                                                                <label className="text-[11px] text-muted-foreground uppercase tracking-wider block mb-2">Sửa Tiêu đề</label>
+                                                                                <label className="text-[11px] text-muted-foreground block mb-2">Sửa Tiêu đề</label>
                                                                                 <Input value={editTitle} onChange={e => setEditTitle(e.target.value)} className="h-9 text-sm font-medium" />
                                                                             </div>
                                                                             <div>
-                                                                                <label className="text-[11px] text-muted-foreground uppercase tracking-wider block mb-2">Sửa Mô tả chi tiết</label>
+                                                                                <label className="text-[11px] text-muted-foreground block mb-2">Sửa Mô tả chi tiết</label>
                                                                                 <Textarea value={editContent} onChange={e => setEditContent(e.target.value)} className="min-h-[100px] text-sm leading-relaxed" />
                                                                             </div>
                                                                             <div className="flex items-center gap-2 justify-end pt-2">
@@ -728,7 +728,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                     {/* Attachments Gallery */}
                                                                     {hasAttachments && (
                                                                         <div className="space-y-2 pt-3 border-t border-border">
-                                                                            <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                                                                            <p className="text-[11px] text-muted-foreground flex items-center gap-1.5">
                                                                                 <Paperclip className="w-3 h-3" />
                                                                                 Ảnh đính kèm ({item.attachments.length})
                                                                             </p>

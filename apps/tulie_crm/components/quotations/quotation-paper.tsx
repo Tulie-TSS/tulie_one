@@ -166,7 +166,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                                                 {idx === 0 ? <FileText size={18} /> : <Box size={18} />}
                                             </div>
                                             <div className="text-center">
-                                                <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Bước 1</p>
+                                                <p className="text-[10px] text-muted-foreground">Bước 1</p>
                                                 <h4 className="text-[13px] text-foreground uppercase">Báo giá & Đề xuất</h4>
                                             </div>
                                         </div>
@@ -184,7 +184,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                                                 <FilePenLine size={18} />
                                             </div>
                                             <div className="text-center">
-                                                <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Bước 2</p>
+                                                <p className="text-[10px] text-muted-foreground">Bước 2</p>
                                                 <h4 className="text-[12px] text-foreground uppercase">Hợp đồng kinh tế</h4>
                                             </div>
                                         </div>
@@ -200,7 +200,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                                                 <UserCheck size={18} />
                                             </div>
                                             <div className="text-center">
-                                                <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Bước 3</p>
+                                                <p className="text-[10px] text-muted-foreground">Bước 3</p>
                                                 <h4 className="text-[12px] text-foreground uppercase">Bàn giao</h4>
                                             </div>
                                         </div>
@@ -216,7 +216,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
             )}
 
             <div className="mt-12 pt-4 border-t border-slate-100">
-                <h3 className="text-[12px] text-black mb-4 border-l-4 border-black pl-3 uppercase tracking-wider">
+                <h3 className="text-[12px] text-black mb-4 border-l-4 border-black pl-3">
                     {hasProposal ? 'Kế hoạch đầu tư' : 'Chi tiết dịch vụ'} / <span className="text-slate-400 font-normal">Investment Plan</span>
                 </h3>
                 <div className="rounded-md overflow-hidden border border-slate-200 relative">

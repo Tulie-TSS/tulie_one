@@ -959,7 +959,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end" className="w-56">
-                                            <DropdownMenuLabel className="text-[10px] uppercase tracking-wider text-muted-foreground">Thêm vào phần</DropdownMenuLabel>
+                                            <DropdownMenuLabel className="text-[10px] text-muted-foreground">Thêm vào phần</DropdownMenuLabel>
                                             <DropdownMenuSeparator />
                                             {sectionGroups.map((group, idx) => (
                                                 <DropdownMenuItem
@@ -1365,7 +1365,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                     <SelectContent>
                                         {availableBanks.filter(b => b.type !== 'personal').length > 0 && (
                                             <SelectGroup>
-                                                <SelectLabel className="text-xs uppercase tracking-wider text-muted-foreground">TK Công ty</SelectLabel>
+                                                <SelectLabel className="text-xs text-muted-foreground">TK Công ty</SelectLabel>
                                                 {availableBanks.filter(b => b.type !== 'personal').map(b => (
                                                     <SelectItem key={b.account_no} value={b.account_no}>
                                                         {b.bank_name} - {b.account_no}
@@ -1375,7 +1375,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                         )}
                                         {availableBanks.filter(b => b.type === 'personal').length > 0 && (
                                             <SelectGroup>
-                                                <SelectLabel className="text-xs uppercase tracking-wider text-muted-foreground">TK Cá nhân</SelectLabel>
+                                                <SelectLabel className="text-xs text-muted-foreground">TK Cá nhân</SelectLabel>
                                                 {availableBanks.filter(b => b.type === 'personal').map(b => (
                                                     <SelectItem key={b.account_no} value={b.account_no}>
                                                         {b.bank_name} - {b.account_no}

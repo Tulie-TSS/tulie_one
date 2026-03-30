@@ -5,7 +5,6 @@ import { notFound } from 'next/navigation'
 import { Button } from '@repo/ui'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
 import { Badge } from '@repo/ui'
-import { Separator } from '@repo/ui'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { ArrowLeft, Globe, Layout, FileCheck } from 'lucide-react'
@@ -15,7 +14,7 @@ import { ProjectMetadataForm } from '@/components/projects/project-metadata-form
 import { ProjectTasks } from '@/components/projects/project-tasks'
 import { ProjectSidebar } from '@/components/projects/project-sidebar'
 import { WorkItemsManager } from '@/components/projects/work-items-manager'
-import { FileText as FileTextIcon, Receipt, ArrowUpRight, Lock } from 'lucide-react'
+import { FileText as FileTextIcon, Lock } from 'lucide-react'
 import { ProjectDescriptionForm } from '@/components/projects/project-description-form'
 import { SetPasswordDialog } from '@/components/shared/set-password-dialog'
 import { DeleteProjectButton } from '@/components/projects/delete-project-button'
@@ -111,104 +110,6 @@ export default async function ProjectDetailPage({ params }: any) {
                     {/* Documentation Set (Bộ chứng từ dự án) */}
                     <ProjectDocumentationSet project={project} workItems={workItems} />
 
-                    {/* Financial Documents Section (Quotations & Contracts) */}
-                    <Card>
-                        <CardHeader className="border-b">
-                            <CardTitle>Tài chính & Pháp lý</CardTitle>
-                            <CardDescription>Quản lý báo giá và hợp đồng liên quan đến dự án</CardDescription>
-                            <div className="col-start-2 row-span-2 row-start-1 self-start justify-self-end text-right">
-                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Tổng giá trị</p>
-                                <p className="text-xl font-semibold tabular-nums leading-none">{formatCurrency(projectTotal).replace(/\s*[₫đ]\s*$/g, '').trim()} <span className="text-sm font-medium text-muted-foreground">đ</span></p>
-                            </div>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-6">
-                                {/* Quotations List */}
-                                <div>
-                                    <div className="flex items-center justify-between mb-3">
-                                        <h4 className="text-sm font-semibold flex items-center gap-2">
-                                            <FileTextIcon className="h-4 w-4 text-muted-foreground" />
-                                            Danh sách Báo giá
-                                        </h4>
-                                        <Badge variant="outline" className="text-[11px]">{quotations.length} bản</Badge>
-                                    </div>
-                                    <div className="grid gap-2">
-                                        {quotations.length > 0 ? quotations.map((q: any) => (
-                                            <Link
-                                                key={q.id}
-                                                href={`/quotations/${q.id}?from=/projects/${id}`}
-                                                className="group flex items-center justify-between p-3 border rounded-md hover:border-slate-300 hover:bg-muted/30 transition-all cursor-pointer"
-                                            >
-                                                <div className="flex items-center gap-3">
-                                                    <div className="p-2 bg-muted rounded-lg group-hover:bg-muted/80 transition-colors">
-                                                        <FileTextIcon className="h-4 w-4 text-muted-foreground" />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-sm font-semibold">{q.quotation_number}</p>
-                                                        <p className="text-[11px] text-muted-foreground">{formatDate(q.created_at)}</p>
-                                                    </div>
-                                                </div>
-                                                <div className="text-right flex items-center gap-4">
-                                                    <div>
-                                                        <p className="text-sm font-semibold">{formatCurrency(q.total_amount)}</p>
-                                                        <Badge variant="secondary" className="text-[11px] h-4 px-1 opacity-80">
-                                                            {q.status}
-                                                        </Badge>
-                                                    </div>
-                                                    <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-                                                </div>
-                                            </Link>
-                                        )) : (
-                                            <p className="text-xs text-muted-foreground text-center py-2">Chưa có báo giá nào.</p>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <Separator className="opacity-50" />
-
-                                {/* Contracts List */}
-                                <div>
-                                    <div className="flex items-center justify-between mb-3">
-                                        <h4 className="text-sm font-semibold flex items-center gap-2">
-                                            <FileCheck className="h-4 w-4 text-muted-foreground" />
-                                            Danh sách Hợp đồng / Đơn hàng
-                                        </h4>
-                                        <Badge variant="outline" className="text-[11px]">{contracts.length} bản</Badge>
-                                    </div>
-                                    <div className="grid gap-2">
-                                        {contracts.length > 0 ? contracts.map((c: any) => (
-                                            <Link
-                                                key={c.id}
-                                                href={`/contracts/${c.id}?from=/projects/${id}`}
-                                                className="group flex items-center justify-between p-3 border rounded-md hover:border-slate-300 hover:bg-muted/30 transition-all font-sans cursor-pointer"
-                                            >
-                                                <div className="flex items-center gap-3">
-                                                    <div className="p-2 bg-muted rounded-lg group-hover:bg-muted/80 transition-colors">
-                                                        <FileCheck className="h-4 w-4 text-muted-foreground" />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-sm font-semibold">{c.contract_number}</p>
-                                                        <p className="text-[11px] text-muted-foreground">{formatDate(c.created_at)}</p>
-                                                    </div>
-                                                </div>
-                                                <div className="text-right flex items-center gap-4">
-                                                    <div>
-                                                        <p className="text-sm font-semibold">{formatCurrency(c.total_amount)}</p>
-                                                        <Badge variant="secondary" className="text-[11px] h-4 px-1 opacity-80">
-                                                            {c.status}
-                                                        </Badge>
-                                                    </div>
-                                                    <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-                                                </div>
-                                            </Link>
-                                        )) : (
-                                            <p className="text-xs text-muted-foreground text-center py-2">Chưa có hợp đồng nào.</p>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
 
                     {/* Detailed Tasks */}
                     <ProjectTasks project={project} workItems={workItems} />

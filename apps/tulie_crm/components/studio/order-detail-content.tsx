@@ -256,7 +256,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                             
                             {(order as any).metadata?.original_link && (
                                 <div className={cn("mt-4", (order as any).metadata?.photo_urls?.length > 0 ? "pt-4 border-t border-border" : "mt-0")}>
-                                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">Link Drive/iCloud</p>
+                                    <p className="text-[11px] font-semibold text-muted-foreground mb-2">Link Drive/iCloud</p>
                                     <div className="flex items-center gap-2 bg-muted border border-border p-3 rounded-lg overflow-hidden group">
                                         <ExternalLink className="h-4 w-4 text-muted-foreground shrink-0" />
                                         <a href={(order as any).metadata.original_link} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-blue-600 hover:underline truncate">
@@ -321,7 +321,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                         </TableRow>
                                     )}
                                     <TableRow className="bg-muted/30 border-t">
-                                        <TableCell colSpan={4} className="text-right text-[11px] uppercase tracking-wider text-muted-foreground">Tổng cộng</TableCell>
+                                        <TableCell colSpan={4} className="text-right text-[11px] text-muted-foreground">Tổng cộng</TableCell>
                                         <TableCell className="text-right text-base tabular-nums">
                                             {formatCurrency(order.total_amount)}
                                         </TableCell>
@@ -350,7 +350,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                     <Phone className="h-4 w-4 text-muted-foreground" />
                                 </div>
                                 <div>
-                                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">Điện thoại</p>
+                                    <p className="text-[11px] font-semibold text-muted-foreground mb-0.5">Điện thoại</p>
                                     <p className="text-sm font-semibold text-foreground">{order.customer_phone || 'Chưa cập nhật'}</p>
                                 </div>
                             </div>
@@ -359,13 +359,13 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                     <Mail className="h-4 w-4 text-muted-foreground" />
                                 </div>
                                 <div>
-                                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">Email</p>
+                                    <p className="text-[11px] font-semibold text-muted-foreground mb-0.5">Email</p>
                                     <p className="text-sm font-semibold text-foreground truncate max-w-[180px]">{order.customer_email || 'Chưa cập nhật'}</p>
                                 </div>
                             </div>
                             <Separator className="bg-muted" />
                             <div className="space-y-2">
-                                <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Ghi chú nghiệp vụ</p>
+                                <p className="text-[11px] font-semibold text-muted-foreground">Ghi chú nghiệp vụ</p>
                                 <div className="p-3 bg-muted/50 rounded-lg border border-dashed border-border">
                                     <p className="text-sm text-muted-foreground leading-relaxed font-normal whitespace-pre-line">
                                         {order.notes || "Không có ghi chú nào từ khách hàng hoặc tư vấn viên."}
@@ -383,7 +383,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                 const viLabels = (order as any).metadata?.vi_labels || []
                                 return (
                                     <div className="space-y-2 mt-3">
-                                        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Printer className="size-3" /> Kích thước in từng vỉ</p>
+                                        <p className="text-[11px] font-semibold text-muted-foreground flex items-center gap-1"><Printer className="size-3" /> Kích thước in từng vỉ</p>
                                         <div className="flex flex-wrap gap-2">
                                             {(order as any).metadata.vi_sizes.map((sizeId: string, idx: number) => (
                                                 <div key={idx} className="px-2.5 py-1.5 rounded-lg bg-blue-50 border border-blue-100 text-xs font-semibold text-blue-700">
@@ -432,7 +432,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                         <CardContent className="p-6 space-y-3">
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="space-y-1">
-                                    <Label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Người nhận</Label>
+                                    <Label className="text-[11px] font-semibold text-muted-foreground">Người nhận</Label>
                                     <Input
                                         value={shippingInfo.recipient_name}
                                         onChange={e => setShippingInfo({ ...shippingInfo, recipient_name: e.target.value })}
@@ -441,7 +441,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <Label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">SĐT nhận hàng</Label>
+                                    <Label className="text-[11px] font-semibold text-muted-foreground">SĐT nhận hàng</Label>
                                     <Input
                                         value={shippingInfo.recipient_phone}
                                         onChange={e => setShippingInfo({ ...shippingInfo, recipient_phone: e.target.value })}
@@ -452,7 +452,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                             </div>
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="space-y-1">
-                                    <Label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Tỉnh / TP</Label>
+                                    <Label className="text-[11px] font-semibold text-muted-foreground">Tỉnh / TP</Label>
                                     <Input
                                         value={shippingInfo.province}
                                         onChange={e => setShippingInfo({ ...shippingInfo, province: e.target.value })}
@@ -461,7 +461,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <Label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Phường / Xã</Label>
+                                    <Label className="text-[11px] font-semibold text-muted-foreground">Phường / Xã</Label>
                                     <Input
                                         value={shippingInfo.ward}
                                         onChange={e => setShippingInfo({ ...shippingInfo, ward: e.target.value })}
@@ -471,7 +471,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                 </div>
                             </div>
                             <div className="space-y-1">
-                                <Label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Địa chỉ chi tiết</Label>
+                                <Label className="text-[11px] font-semibold text-muted-foreground">Địa chỉ chi tiết</Label>
                                 <Input
                                     value={shippingInfo.address}
                                     onChange={e => setShippingInfo({ ...shippingInfo, address: e.target.value })}
@@ -502,7 +502,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                         <div className="space-y-3">
                             <div className="flex justify-between items-end">
                                 <div>
-                                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">
+                                    <p className="text-[11px] text-muted-foreground mb-1">
                                         Tiến độ thanh toán
                                     </p>
                                     <p className="text-2xl tabular-nums">

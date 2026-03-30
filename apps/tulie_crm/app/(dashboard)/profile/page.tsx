@@ -72,15 +72,15 @@ export default async function ProfilePage() {
                     </CardHeader>
                     <CardContent className="p-8 space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="fullname" className="text-[11px] uppercase tracking-wider text-muted-foreground">Họ và tên</Label>
+                            <Label htmlFor="fullname" className="text-[11px] text-muted-foreground">Họ và tên</Label>
                             <Input id="fullname" defaultValue={fullName} className="h-11 rounded-md bg-muted/20 border-transparent focus:bg-background transition-all font-medium" />
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="email" className="text-[11px] uppercase tracking-wider text-muted-foreground">Email</Label>
+                            <Label htmlFor="email" className="text-[11px] text-muted-foreground">Email</Label>
                             <Input id="email" type="email" defaultValue={email} disabled className="h-11 rounded-md bg-muted/40 font-medium cursor-not-allowed opacity-70" />
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="phone" className="text-[11px] uppercase tracking-wider text-muted-foreground">Số điện thoại</Label>
+                            <Label htmlFor="phone" className="text-[11px] text-muted-foreground">Số điện thoại</Label>
                             <Input id="phone" type="tel" placeholder="+84 90..." className="h-11 rounded-md bg-muted/20 border-transparent focus:bg-background transition-all font-medium" />
                         </div>
 

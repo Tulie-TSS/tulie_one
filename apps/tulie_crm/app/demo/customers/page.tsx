@@ -19,7 +19,7 @@ export default function DemoCustomers() {
             </div>
 
             <div className="bg-white dark:bg-zinc-900 rounded-md border border-border overflow-hidden">
-                <div className="hidden md:grid grid-cols-12 gap-4 px-5 py-3 bg-muted/50 dark:bg-zinc-800/50 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                <div className="hidden md:grid grid-cols-12 gap-4 px-5 py-3 bg-muted/50 dark:bg-zinc-800/50 text-[11px] font-semibold text-muted-foreground">
                     <div className="col-span-1">Mã</div>
                     <div className="col-span-3">Khách hàng</div>
                     <div className="col-span-2">Liên hệ</div>

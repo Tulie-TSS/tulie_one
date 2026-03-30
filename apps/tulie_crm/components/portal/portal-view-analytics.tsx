@@ -129,19 +129,19 @@ export function PortalViewAnalytics({ projectId, customerId, portalToken }: Port
                 <div className="grid grid-cols-2 gap-3">
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
                         <p className="text-3xl tabular-nums leading-none">{views.length}</p>
-                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">Lượt truy cập</p>
+                        <p className="text-[10px] font-medium text-muted-foreground border-t border-border pt-2 mt-2">Lượt truy cập</p>
                     </div>
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
                         <p className="text-3xl tabular-nums leading-none">{uniqueIps.size}</p>
-                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">Unique IP</p>
+                        <p className="text-[10px] font-medium text-muted-foreground border-t border-border pt-2 mt-2">Unique IP</p>
                     </div>
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
                         <p className="text-lg tabular-nums leading-none">{formatDuration(avgDuration)}</p>
-                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">TB thời gian</p>
+                        <p className="text-[10px] font-medium text-muted-foreground border-t border-border pt-2 mt-2">TB thời gian</p>
                     </div>
                     <div className="bg-muted/50 p-4 rounded-md border border-border text-center space-y-1">
                         <p className="text-lg tabular-nums leading-none">{avgScroll}%</p>
-                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider border-t border-border pt-2 mt-2">TB scroll</p>
+                        <p className="text-[10px] font-medium text-muted-foreground border-t border-border pt-2 mt-2">TB scroll</p>
                     </div>
                 </div>
 
@@ -168,7 +168,7 @@ export function PortalViewAnalytics({ projectId, customerId, portalToken }: Port
 
                 {/* Timeline */}
                 <div className="space-y-2">
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Chi tiết truy cập</p>
+                    <p className="text-xs font-semibold text-muted-foreground">Chi tiết truy cập</p>
                     <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1">
                         {views.map((view, idx) => {
                             const interactions = (view.interactions as any[]) || []
