@@ -90,8 +90,8 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                                 </Alert>
                             )}
                             
-                            <div className="space-y-5">
-                                <div className="space-y-2">
+                            <div className="space-y-4">
+                                <div className="space-y-1.5">
                                     <Label htmlFor="password">Mật khẩu truy cập</Label>
                                     <div className="relative group">
                                         <Input
@@ -109,7 +109,7 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                                     </div>
                                 </div>
 
-                                <div className="space-y-2">
+                                <div className="space-y-1.5">
                                     <div className="flex items-center justify-between">
                                         <Label htmlFor="captcha">Xác thực con người</Label>
                                         <Badge variant="secondary" className="font-mono">

@@ -226,19 +226,20 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                                     </tr>
                                 )}
                                 <tr className="bg-muted">
-                                    <td colSpan={9} className="border border-black py-3 px-3 text-right uppercase text-[11px]">Tổng cộng thanh toán / Grand Total:</td>
-                                    <td colSpan={2} className="border border-black py-3 px-1 text-right text-[13px] tabular-nums whitespace-nowrap">{formatCurrency(quotation.total_amount || grandTotal).replace('₫', '')} VND</td>
+                                    <td colSpan={9} className="border border-black py-3 px-3 text-right uppercase text-[11px] font-bold">Tổng cộng thanh toán / Grand Total:</td>
+                                    <td colSpan={2} className="border border-black py-3 px-1 text-right text-[13px] tabular-nums whitespace-nowrap font-bold">{formatCurrency(quotation.total_amount || grandTotal).replace('₫', '')} VND</td>
+                                </tr>
+                                <tr>
+                                    <td colSpan={11} className="border border-black py-3 px-3 text-[11px] font-medium">
+                                        <span className="font-bold underline uppercase mr-1">Bằng chữ:</span> 
+                                        <span className="first-letter:uppercase">{readNumberToWords(quotation.total_amount || grandTotal)} đồng./.</span>
+                                    </td>
                                 </tr>
                             </>
                         );
                     })()}
                 </tbody>
             </table>
-
-            {/* Amount in words */}
-            <div className="mb-10 text-[12px] font-medium">
-                <span className="font-bold underline uppercase">Bằng chữ:</span> {readNumberToWords(quotation.total_amount || 0)}
-            </div>
 
             {/* Terms & Conditions / Notes */}
             <div className="mb-8 space-y-4">

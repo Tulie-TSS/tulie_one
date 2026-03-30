@@ -80,9 +80,9 @@ export default function QuotePasswordForm({ token, customerName }: { token: stri
                                 </Alert>
                             )}
                             
-                            <div className="space-y-5">
-                                <div className="space-y-2">
-                                    <Label htmlFor="password" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Mật khẩu truy cập</Label>
+                            <div className="space-y-4">
+                                <div className="space-y-1.5">
+                                    <Label htmlFor="password">Mật khẩu truy cập</Label>
                                     <div className="relative group">
                                         <Input
                                             id="password"
@@ -90,7 +90,7 @@ export default function QuotePasswordForm({ token, customerName }: { token: stri
                                             placeholder="••••••••"
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
-                                            className="h-12 px-4 rounded-md border-border focus:ring-zinc-950 focus:border-zinc-950 transition-all font-mono"
+                                            className="h-10 px-4 rounded-md border-border focus:ring-zinc-950 focus:border-zinc-950 transition-all font-mono"
                                             required
                                         />
                                         <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-focus-within:opacity-100 transition-opacity">
@@ -99,10 +99,10 @@ export default function QuotePasswordForm({ token, customerName }: { token: stri
                                     </div>
                                 </div>
 
-                                <div className="space-y-2">
-                                    <div className="flex items-center justify-between ml-1">
-                                        <Label htmlFor="captcha" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Xác thực con người</Label>
-                                        <span className="text-[10px] font-bold text-foreground bg-muted px-2 py-0.5 rounded-md border border-border">
+                                <div className="space-y-1.5">
+                                    <div className="flex items-center justify-between">
+                                        <Label htmlFor="captcha">Xác thực con người</Label>
+                                        <span className="text-[12px] font-medium text-foreground bg-muted px-2 py-0.5 rounded-md border border-border">
                                             {captcha.a} + {captcha.b} = ?
                                         </span>
                                     </div>
@@ -112,7 +112,7 @@ export default function QuotePasswordForm({ token, customerName }: { token: stri
                                         placeholder="Kết quả..."
                                         value={captchaValue}
                                         onChange={(e) => setCaptchaValue(e.target.value)}
-                                        className="h-12 px-4 rounded-md border-border focus:ring-zinc-950 focus:border-zinc-950 transition-all font-medium"
+                                        className="h-10 px-4 rounded-md border-border focus:ring-zinc-950 focus:border-zinc-950 transition-all font-medium"
                                         required
                                     />
                                 </div>

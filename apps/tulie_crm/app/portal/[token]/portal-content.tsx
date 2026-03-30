@@ -166,7 +166,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
             .reduce((sum: number, q: any) => sum + (q.total_amount || 0), 0)
     }, [quotations, selectedQuotationMap])
 
-    const totalPaid = invoices.filter((inv: any) => inv.status === 'paid').reduce((sum: any, inv: any) => sum + (inv.total_amount || 0), 0)
+    const totalPaid = timeline.filter((t: any) => t.status === 'completed').reduce((sum: number, t: any) => sum + (t.amount || 0), 0)
     const balanceDue = totalInvestment - totalPaid
     const completedItems = workItems.filter((w: any) => w.status === 'accepted').length
     const projectProgress = workItems.length > 0
@@ -242,7 +242,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                 <TabsTrigger
                                     key={item.value}
                                     value={item.value}
-                                    className="w-full justify-start gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:ring-0"
+                                    className="w-full justify-start gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground !shadow-none data-[state=active]:ring-0"
                                 >
                                     <item.icon className="w-4 h-4 shrink-0" />
                                     <span className="truncate">{item.label}</span>
@@ -253,7 +253,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                     <Separator className="my-2" />
                                     <TabsTrigger
                                         value="finance"
-                                        className="w-full justify-start gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:ring-0"
+                                        className="w-full justify-start gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground !shadow-none data-[state=active]:ring-0"
                                     >
                                         <Wallet className="w-4 h-4 shrink-0" />
                                         <span className="truncate">Tài chính & Pháp lý</span>
@@ -384,6 +384,11 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                             onViewDoc={handleViewDoc}
                                         />
                                     ))}
+                                </div>
+                                
+                                <div className="space-y-4">
+                                    <h3 className="text-lg font-semibold">Vòng đời dự án</h3>
+                                    <TimelineSection timeline={timeline} />
                                 </div>
                             </TabsContent>
                         )}
@@ -527,7 +532,7 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
                         <h4 className="text-sm font-medium flex items-center gap-2">
                             <FileSignature className="w-4 h-4 text-muted-foreground" /> Pháp lý & Chứng từ
                         </h4>
-                        <div className="rounded-lg ring-1 ring-foreground/10 overflow-hidden">
+                        <div className="rounded-md border overflow-hidden">
                             <Table>
                                 <TableHeader>
                                     <TableRow>
@@ -606,7 +611,7 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
                         <h4 className="text-sm font-medium flex items-center gap-2">
                             <CreditCard className="w-4 h-4 text-muted-foreground" /> Kế hoạch thanh toán
                         </h4>
-                        <div className="rounded-lg ring-1 ring-foreground/10 overflow-hidden">
+                        <div className="rounded-md border overflow-hidden">
                             <Table>
                                 <TableHeader>
                                     <TableRow>
@@ -652,8 +657,8 @@ function TimelineSection({ timeline }: { timeline: any[] }) {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Dòng chảy sự kiện</CardTitle>
-                <CardDescription>Các thao tác hệ thống tự động ghi nhận theo thời gian thực</CardDescription>
+                <CardTitle>Vòng đời dự án</CardTitle>
+                <CardDescription>Các thao tác hệ thống ghi nhận từ khi khởi tạo tới lúc kết thúc dự án</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="space-y-4">
