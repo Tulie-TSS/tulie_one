@@ -285,7 +285,7 @@ export default function AffiliateCalculatorPage() {
                                         ))}
                                     </TableBody>
                                 </Table>
-                                <p className="text-xs text-muted-foreground mt-3">Chưa bao gồm thưởng tier bonus và thưởng tiền mặt theo mốc doanh số tháng.</p>
+                                <p className="text-xs text-muted-foreground mt-3">Đã bao gồm hoa hồng cơ bản, tier bonus và thưởng tiền mặt cộng dồn. Chưa trừ 10% thuế TNCN.</p>
                             </CardContent>
                         </Card>
                     </div>
