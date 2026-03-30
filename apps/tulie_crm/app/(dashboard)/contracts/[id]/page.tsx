@@ -126,62 +126,66 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
             <div className="space-y-6 flex flex-col pb-12">
                 {/* Contract Info merged card */}
                 <Card>
-                    <CardHeader className="border-b">
+                    <CardHeader>
                         <CardTitle>Thông tin hợp đồng</CardTitle>
                     </CardHeader>
-                    <CardContent className="pt-6 grid gap-8 md:grid-cols-3">
+                    <CardContent className="grid gap-8 md:grid-cols-3">
                         {/* Khách hàng */}
-                        <div>
-                            <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                        <div className="space-y-4">
+                            <h4 className="text-sm font-semibold flex items-center gap-2 text-foreground">
                                 <Building2 className="w-4 h-4 text-muted-foreground" />
                                 Khách hàng
                             </h4>
-                            <Link href={`/customers/${contract.customer?.id}`} className="font-medium hover:underline block">
-                                {contract.customer?.company_name}
-                            </Link>
-                            <p className="text-sm text-muted-foreground mt-1">{contract.customer?.email}</p>
-                            <p className="text-sm text-muted-foreground">{contract.customer?.phone}</p>
+                            <div className="space-y-1.5 text-sm">
+                                <Link href={`/customers/${contract.customer?.id}`} className="font-medium text-primary hover:underline block leading-tight">
+                                    {contract.customer?.company_name}
+                                </Link>
+                                {contract.customer?.email && <p className="text-muted-foreground">{contract.customer.email}</p>}
+                                {contract.customer?.phone && <p className="text-muted-foreground">{contract.customer.phone}</p>}
+                            </div>
                         </div>
+
                         {/* Thời gian */}
-                        <div>
-                            <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                        <div className="space-y-4">
+                            <h4 className="text-sm font-semibold flex items-center gap-2 text-foreground">
                                 <Calendar className="w-4 h-4 text-muted-foreground" />
                                 Thời gian
                             </h4>
-                            <div className="space-y-2 text-sm">
-                                <div className="flex justify-between gap-4">
+                            <div className="space-y-2.5 text-sm">
+                                <div className="flex items-center justify-between gap-4 border-b pb-2.5">
                                     <span className="text-muted-foreground">Ngày ký</span>
                                     <span className="font-medium">{contract.signed_date ? formatDate(contract.signed_date) : 'Chưa ký'}</span>
                                 </div>
-                                <div className="flex justify-between gap-4">
+                                <div className="flex items-center justify-between gap-4 border-b pb-2.5">
                                     <span className="text-muted-foreground">Bắt đầu</span>
                                     <span className="font-medium">{formatDate(contract.start_date)}</span>
                                 </div>
-                                <div className="flex justify-between gap-4">
+                                <div className="flex items-center justify-between gap-4">
                                     <span className="text-muted-foreground">Kết thúc</span>
                                     <span className="font-medium">{contract.end_date ? formatDate(contract.end_date) : 'Không xác định'}</span>
                                 </div>
                             </div>
                         </div>
+
                         {/* Thông tin khác */}
-                        <div>
-                            <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                        <div className="space-y-4">
+                            <h4 className="text-sm font-semibold flex items-center gap-2 text-foreground">
                                 <FileText className="w-4 h-4 text-muted-foreground" />
                                 Thông tin khác
                             </h4>
-                            <div className="space-y-3">
+                            <div className="space-y-2.5 text-sm">
                                 {contract.quotation && (
-                                    <div>
-                                        <p className="text-xs text-muted-foreground mb-1">Báo giá gốc</p>
-                                        <Link href={`/quotations/${contract.quotation.id}`} className="font-medium hover:underline text-sm">
+                                    <div className="flex justify-between items-center gap-4 border-b pb-2.5">
+                                        <span className="text-muted-foreground">Báo giá gốc</span>
+                                        <Link href={`/quotations/${contract.quotation.id}`} className="font-medium text-primary hover:underline">
                                             {contract.quotation.quotation_number}
                                         </Link>
                                     </div>
                                 )}
                                 {contract.creator && (
-                                    <div>
-                                        <p className="text-xs text-muted-foreground mb-1">Người phụ trách</p>
-                                        <p className="text-sm font-medium">{contract.creator.full_name}</p>
+                                    <div className="flex justify-between items-center gap-4">
+                                        <span className="text-muted-foreground">Người phụ trách</span>
+                                        <span className="font-medium">{contract.creator.full_name}</span>
                                     </div>
                                 )}
                             </div>
@@ -280,21 +284,21 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                     </CardHeader>
                     <CardContent className="grid gap-6 md:grid-cols-2">
                         {contract.description && (
-                            <div>
-                                <h4 className="font-medium text-sm mb-2">Mô tả dự án</h4>
-                                <p className="text-sm text-muted-foreground">{contract.description}</p>
+                            <div className="rounded-lg border bg-muted/30 p-4 space-y-2">
+                                <h4 className="font-semibold text-sm text-foreground">Mô tả dự án</h4>
+                                <p className="text-sm text-muted-foreground leading-relaxed">{contract.description}</p>
                             </div>
                         )}
                         {contract.terms && (
-                            <div>
-                                <h4 className="font-medium text-sm mb-2">Điều khoản hợp đồng</h4>
-                                <p className="text-sm text-muted-foreground whitespace-pre-line">{contract.terms}</p>
+                            <div className="rounded-lg border bg-muted/30 p-4 space-y-2">
+                                <h4 className="font-semibold text-sm text-foreground">Điều khoản hợp đồng</h4>
+                                <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{contract.terms}</p>
                             </div>
                         )}
                         {(contract as any).notes && (
-                            <div>
-                                <h4 className="font-medium text-sm mb-2">Ghi chú hợp đồng</h4>
-                                <p className="text-sm text-muted-foreground whitespace-pre-line">{(contract as any).notes}</p>
+                            <div className="rounded-lg border bg-muted/30 p-4 space-y-2 md:col-span-2">
+                                <h4 className="font-semibold text-sm text-foreground">Ghi chú hợp đồng</h4>
+                                <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{(contract as any).notes}</p>
                             </div>
                         )}
                     </CardContent>
