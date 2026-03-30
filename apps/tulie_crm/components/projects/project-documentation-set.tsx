@@ -7,7 +7,7 @@ import { CheckCircle2, Eye } from 'lucide-react'
 import { Project, ProjectWorkItem } from '@/types'
 import { formatDate } from '@/lib/utils/format'
 import { cn } from '@/lib/utils'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { DocumentEditorDialog } from './document-editor-dialog'
 
 interface ProjectDocumentationSetProps {
@@ -17,6 +17,20 @@ interface ProjectDocumentationSetProps {
 
 export function ProjectDocumentationSet({ project, workItems }: ProjectDocumentationSetProps) {
     const [viewingDocId, setViewingDocId] = useState<string | null>(null)
+    const [realDocs, setRealDocs] = useState<any[]>([])
+
+    // Fetch real contract documents to synchronize status
+    useEffect(() => {
+        const contracts = project.contracts || []
+        if (contracts.length === 0) return
+        
+        Promise.all(contracts.map((c: any) => 
+            fetch(`/api/contracts/${c.id}/documents`).then(r => r.ok ? r.json() : { documents: [] })
+        )).then(results => {
+            const flattened = results.flatMap(r => r.documents || [])
+            setRealDocs(flattened)
+        }).catch(err => console.error("Error fetching docs", err))
+    }, [project.contracts])
 
     // Aggregate docs from all work items
     const allDocs = useMemo(() => {
@@ -24,8 +38,26 @@ export function ProjectDocumentationSet({ project, workItems }: ProjectDocumenta
         workItems.forEach(item => {
             if (item.required_documents) {
                 (item.required_documents as any[]).forEach(doc => {
+                    const matchingDocs = realDocs.filter(rd => 
+                        (doc.type && rd.type === doc.type) || 
+                        (doc.title && rd.title === doc.title)
+                    )
+                    
+                    const priorityMap: Record<string, number> = { signed: 4, sent: 3, pending: 2, draft: 1 }
+                    let highestDoc = matchingDocs[0]
+                    matchingDocs.forEach(md => {
+                        if ((priorityMap[md.status] || 0) > (priorityMap[highestDoc?.status] || 0)) {
+                            highestDoc = md
+                        }
+                    })
+
+                    const realDocStatus = highestDoc ? highestDoc.status : doc.status
+                    const realDocId = highestDoc ? highestDoc.id : doc.generated_doc_id
+
                     docs.push({
                         ...doc,
+                        status: realDocStatus,
+                        generated_doc_id: realDocId,
                         workItemTitle: item.title,
                         workItemId: item.id
                     })
@@ -33,7 +65,7 @@ export function ProjectDocumentationSet({ project, workItems }: ProjectDocumenta
             }
         })
         return docs
-    }, [workItems])
+    }, [workItems, realDocs])
 
     return (
         <Card>

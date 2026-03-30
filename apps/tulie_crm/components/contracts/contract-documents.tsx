@@ -331,19 +331,21 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
 
     return (
         <Card>
-            <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-base">
-                    <FileText className="h-5 w-5" />
-                    Bộ giấy tờ
-                </CardTitle>
-                <div className="flex items-center justify-between">
-                    <p className="text-xs text-muted-foreground">
-                        Xuất giấy tờ từ dữ liệu hợp đồng — tự động điền thông tin
-                    </p>
+            <CardHeader className="pb-4 border-b bg-muted/20">
+                <div className="flex items-start justify-between gap-4">
+                    <div className="space-y-1.5">
+                        <CardTitle className="flex items-center gap-2 text-base">
+                            <FileText className="h-5 w-5" />
+                            Bộ giấy tờ
+                        </CardTitle>
+                        <p className="text-xs text-muted-foreground">
+                            Xuất giấy tờ từ dữ liệu hợp đồng — tự động điền thông tin
+                        </p>
+                    </div>
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="h-7 text-xs gap-1"
+                        className="h-8 text-xs gap-1 shrink-0"
                         onClick={handleRegenerate}
                         disabled={regenerating}
                     >
@@ -352,7 +354,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                     </Button>
                 </div>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-4 pt-6">
                 {/* Warning for missing data */}
                 {missingDocFields.length > 0 && (
                     <Alert className="bg-amber-50 border-amber-200">

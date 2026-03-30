@@ -198,17 +198,17 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
 
                 {/* Payment Progress & Milestones merged */}
                 <Card>
-                    <CardHeader>
-                        <CardTitle>Thanh toán & Milestone</CardTitle>
+                    <CardHeader className="border-b bg-muted/20">
+                        <CardTitle className="text-base">Thanh toán & Milestone</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-8">
+                    <CardContent className="space-y-8 pt-6">
                         {/* Payment Progress */}
                         <div className="space-y-4">
                             <div className="flex justify-between font-semibold text-sm">
                                 <span>Đã thanh toán: {formatCurrency(paidAmount)}</span>
                                 <span>Tổng giá trị: {formatCurrency(contract.total_amount)}</span>
                             </div>
-                            <Progress value={progress} className="h-3" />
+                            <Progress value={progress} className="h-2" />
                             <p className="text-center text-sm text-muted-foreground font-medium">
                                 {progress.toFixed(0)}% hoàn thành
                             </p>
@@ -279,10 +279,10 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
 
                 {/* Terms & Details */}
                 <Card>
-                    <CardHeader>
-                        <CardTitle>Chi tiết & Điều khoản</CardTitle>
+                    <CardHeader className="border-b bg-muted/20">
+                        <CardTitle className="text-base">Chi tiết & Điều khoản</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid gap-6 md:grid-cols-2">
+                    <CardContent className="grid gap-6 md:grid-cols-2 pt-6">
                         {contract.description && (
                             <div className="rounded-lg border bg-muted/30 p-4 space-y-2">
                                 <h4 className="font-semibold text-sm text-foreground">Mô tả dự án</h4>
