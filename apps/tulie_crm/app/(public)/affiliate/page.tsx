@@ -45,6 +45,8 @@ const FAQS = [
     { q: 'Có giới hạn số lượng hợp đồng không?', a: 'Không giới hạn. Doanh số càng cao, mức thưởng càng lớn.' },
     { q: 'Hoa hồng được thanh toán qua kênh nào?', a: 'Chuyển khoản ngân hàng hoặc ví điện tử theo thỏa thuận.' },
     { q: 'Thời điểm nhận hoa hồng?', a: 'Trong vòng 7 ngày làm việc sau khi hợp đồng được xác nhận hoàn tất.' },
+    { q: 'Cần ký hợp đồng gì không?', a: 'Đối tác sẽ ký Hợp đồng CTV chính thức với công ty trước khi bắt đầu hợp tác.' },
+    { q: 'Thuế thu nhập cá nhân?', a: 'Công ty khấu trừ 10% thuế TNCN theo quy định pháp luật trước khi thanh toán hoa hồng.' },
 ]
 
 const PRODUCTS = [
@@ -125,7 +127,9 @@ export default function AffiliateCalculatorPage() {
     const bonusPct = currentTier.bonusPct
     const baseEarning = amount * (baseRate / 100)
     const bonusEarning = amount * (bonusPct / 100)
-    const totalEarning = baseEarning + bonusEarning + cashReward
+    const grossEarning = baseEarning + bonusEarning + cashReward
+    const taxAmount = grossEarning * 0.1
+    const totalEarning = grossEarning - taxAmount
 
     return (
         <div className="min-h-screen bg-muted/30 py-12 px-4 sm:px-6">
@@ -229,8 +233,17 @@ export default function AffiliateCalculatorPage() {
                                     </div>
                                 )}
                                 <Separator />
+                                <div className="flex justify-between items-center text-sm">
+                                    <span className="font-medium">Tổng trước thuế</span>
+                                    <span className="font-medium tabular-nums">{formatCurrency(grossEarning)}</span>
+                                </div>
+                                <div className="flex justify-between items-center text-sm">
+                                    <span className="text-muted-foreground">Thuế TNCN (10%)</span>
+                                    <span className="font-medium tabular-nums text-muted-foreground">−{formatCurrency(taxAmount)}</span>
+                                </div>
+                                <Separator />
                                 <div className="flex justify-between items-center pt-2">
-                                    <span className="font-medium">Tổng tiền thực nhận</span>
+                                    <span className="font-medium">Thực nhận sau thuế</span>
                                     <span className="text-2xl font-bold tabular-nums text-primary">{formatCurrency(totalEarning)}</span>
                                 </div>
                                 <Button size="lg" className="w-full mt-2">
