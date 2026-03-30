@@ -84,12 +84,12 @@ const PRODUCTS = [
     },
 ]
 
-// Max earnings: 20% base + tier bonus + cash milestone
+// Max earnings: 20% base + tier bonus + cumulative cash milestones
 const COMMISSION_EXAMPLES = [
     { deal: 10_000_000, earning: 10_000_000 * 0.20 },
     { deal: 20_000_000, earning: 20_000_000 * 0.20 },
     { deal: 50_000_000, earning: 50_000_000 * (0.20 + 0.03) + 3_000_000 },
-    { deal: 100_000_000, earning: 100_000_000 * (0.20 + 0.05) + 5_000_000 },
+    { deal: 100_000_000, earning: 100_000_000 * (0.20 + 0.05) + 3_000_000 + 5_000_000 },
 ]
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
@@ -120,7 +120,7 @@ export default function AffiliateCalculatorPage() {
     const cashReward = useMemo(() => {
         let reward = 0
         for (const m of CASH_MILESTONES) {
-            if (amount >= m.target) reward = m.reward
+            if (amount >= m.target) reward += m.reward
         }
         return reward
     }, [amount])
@@ -362,7 +362,7 @@ export default function AffiliateCalculatorPage() {
                                     <Gift className="w-5 h-5 text-primary" />
                                     Thưởng tiền mặt
                                 </CardTitle>
-                                <CardDescription>Thưởng bổ sung khi đạt các mốc doanh số theo tháng.</CardDescription>
+                                <CardDescription>Thưởng cộng dồn — đạt mốc nào nhận mốc đó. VD: đạt 200 triệu sẽ nhận thưởng mốc 50 + 100 + 200 triệu.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Table>
