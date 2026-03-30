@@ -17,7 +17,7 @@ export default async function DashboardLayout({
     if (user) {
         const { data: dbUser } = await supabase.from('users').select('role').eq('id', user.id).single()
         if (dbUser?.role === 'partner') {
-            redirect('/partner/dashboard')
+            redirect('/partner')
         }
     }
 
