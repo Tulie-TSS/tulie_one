@@ -479,6 +479,23 @@ export async function generateDocument(
                 variables.contract_items_table = itemsRowsHtml
                 variables.quotation_items_table = itemsRowsHtml
 
+                // Build delivery items table (simplified: STT, Name, Unit, Qty, Notes)
+                let deliveryRowsHtml = ''
+                let deliveryIdx = 0
+                sectionEntries.forEach(([sectionName, sectionItems]) => {
+                    sectionItems.forEach((item: any) => {
+                        deliveryIdx++
+                        deliveryRowsHtml += `<tr>
+                            <td style="border:1px solid #000; padding:5px; text-align:center;">${deliveryIdx}</td>
+                            <td style="border:1px solid #000; padding:5px;" colspan="3">${item.product_name}</td>
+                            <td style="border:1px solid #000; padding:5px; text-align:center;">${item.unit || 'Gói'}</td>
+                            <td style="border:1px solid #000; padding:5px; text-align:center;">${item.quantity || 1}</td>
+                            <td style="border:1px solid #000; padding:5px;" colspan="2"></td>
+                        </tr>`
+                    })
+                })
+                variables.delivery_items_table = deliveryRowsHtml
+
                 // Summary totals
                 const subtotalAfterDiscount = grossTotal - totalDiscountAmt
                 const overallDiscountAmount = contract.quotation?.discount_amount ?? 0
@@ -512,6 +529,7 @@ export async function generateDocument(
             } else {
                 variables.contract_items_table = ''
                 variables.quotation_items_table = ''
+                variables.delivery_items_table = ''
             }
 
             // Payment terms from milestones

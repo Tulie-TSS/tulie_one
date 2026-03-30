@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@repo/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardAction } from '@repo/ui'
 import { Button } from '@repo/ui'
 import { Input } from '@repo/ui'
 import { Label } from '@repo/ui'
@@ -103,26 +103,21 @@ export function ProjectTasks({ project, workItems }: ProjectTasksProps) {
 
     return (
         <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-md bg-muted border border-border flex items-center justify-center">
-                        <ListTodo className="w-5 h-5 text-foreground" />
+            <CardHeader>
+                <CardTitle>Danh sách công việc chi tiết (To-do List)</CardTitle>
+                <CardDescription>Quản lý tất cả đầu việc trong dự án, bao gồm các đầu việc thuộc hạng mục (Module).</CardDescription>
+                <CardAction>
+                    <div className="flex gap-2">
+                        <Button variant="outline" size="sm" onClick={addTask}>
+                            <Plus className="h-4 w-4" />
+                            Thêm việc
+                        </Button>
+                        <Button size="sm" onClick={handleSave} disabled={isLoading}>
+                            {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4" />}
+                            Lưu công việc
+                        </Button>
                     </div>
-                    <div className="space-y-0.5">
-                        <CardTitle className="text-sm font-semibold text-foreground leading-none">Danh sách công việc chi tiết (To-do List)</CardTitle>
-                        <CardDescription className="text-[11px] font-medium">Quản lý tất cả đầu việc trong dự án, bao gồm các đầu việc thuộc hạng mục (Module).</CardDescription>
-                    </div>
-                </div>
-                <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={addTask}>
-                        <Plus className="h-4 w-4" />
-                        Thêm việc
-                    </Button>
-                    <Button size="sm" onClick={handleSave} disabled={isLoading}>
-                        {isLoading ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4" />}
-                        Lưu công việc
-                    </Button>
-                </div>
+                </CardAction>
             </CardHeader>
             <CardContent className="space-y-4">
                 {tasks.length === 0 && (

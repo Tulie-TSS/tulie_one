@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, ScrollArea, Badge } from '@repo/ui'
+import { Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, Button, ScrollArea, Badge } from '@repo/ui'
 import { format, differenceInDays, startOfDay, addDays, isSameDay } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, LayoutGrid } from 'lucide-react'
@@ -92,21 +92,20 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
 
     return (
         <Card className="overflow-hidden flex flex-col h-[700px]">
-            <CardHeader className="flex flex-row items-center border-b px-6 py-4 space-y-0 shrink-0">
-                <div className="flex items-center gap-2">
-                    <LayoutGrid className="h-4 w-4 text-muted-foreground" />
-                    <CardTitle className="text-sm font-semibold text-foreground">Kế hoạch triển khai (Gantt View)</CardTitle>
-                    <span className="text-xs text-muted-foreground hidden sm:inline-flex ml-2">Trực quan hoá lộ trình dự án</span>
-                </div>
-                <div className="ml-auto flex items-center gap-2">
-                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setViewDate(addDays(viewDate, -7))}>
-                        <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <Button variant="outline" className="h-8 text-xs px-3" onClick={() => setViewDate(today)}>Hôm nay</Button>
-                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setViewDate(addDays(viewDate, 7))}>
-                        <ChevronRight className="h-4 w-4" />
-                    </Button>
-                </div>
+            <CardHeader>
+                <CardTitle>Kế hoạch triển khai (Gantt View)</CardTitle>
+                <CardDescription>Trực quan hoá lộ trình dự án</CardDescription>
+                <CardAction>
+                    <div className="flex items-center gap-2">
+                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setViewDate(addDays(viewDate, -7))}>
+                            <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                        <Button variant="outline" className="h-8 text-xs px-3" onClick={() => setViewDate(today)}>Hôm nay</Button>
+                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setViewDate(addDays(viewDate, 7))}>
+                            <ChevronRight className="h-4 w-4" />
+                        </Button>
+                    </div>
+                </CardAction>
             </CardHeader>
 
             <CardContent className="p-0 flex-1 relative overflow-auto custom-scrollbar">

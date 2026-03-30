@@ -4,7 +4,7 @@ import { useState, useTransition, useMemo } from 'react'
 import { Button } from '@repo/ui'
 import { Input } from '@repo/ui'
 import { Badge } from '@repo/ui'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardAction } from '@repo/ui'
 import {
     Dialog,
     DialogContent,
@@ -219,24 +219,21 @@ export function WorkItemsManager({ project, workItems: initialWorkItems }: WorkI
 
     return (
         <Card>
-            <CardHeader className="flex flex-row items-center border-b px-6 py-4 space-y-0 text-foreground">
-                <div className="flex items-center gap-2">
-                    <Package className="w-4 h-4 text-muted-foreground" />
-                    <CardTitle className="text-base font-semibold">Hạng mục dự án</CardTitle>
-                    <span className="text-xs ml-2 text-muted-foreground font-normal hidden lg:inline-flex">Quản lý các hạng mục, công việc, link bàn giao và chứng từ</span>
-                </div>
-
-                <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
-                    <DialogTrigger asChild>
-                        <Button size="sm">
-                            <Plus className="h-4 w-4 mr-1" />
-                            Thêm hạng mục
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[500px]">
-                        <DialogHeader>
-                            <DialogTitle>Thêm hạng mục mới</DialogTitle>
-                        </DialogHeader>
+            <CardHeader>
+                <CardTitle>Hạng mục dự án</CardTitle>
+                <CardDescription>Quản lý các hạng mục, công việc, link bàn giao và chứng từ</CardDescription>
+                <CardAction>
+                    <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+                        <DialogTrigger asChild>
+                            <Button size="sm">
+                                <Plus className="h-4 w-4 mr-1" />
+                                Thêm hạng mục
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[500px]">
+                            <DialogHeader>
+                                <DialogTitle>Thêm hạng mục mới</DialogTitle>
+                            </DialogHeader>
                         <div className="grid gap-4 py-4">
                             <div className="grid gap-2">
                                 <Label>Tên hạng mục *</Label>
@@ -315,6 +312,7 @@ export function WorkItemsManager({ project, workItems: initialWorkItems }: WorkI
                         </div>
                     </DialogContent>
                 </Dialog>
+                </CardAction>
             </CardHeader>
 
             <CardContent className="space-y-3 pt-4">

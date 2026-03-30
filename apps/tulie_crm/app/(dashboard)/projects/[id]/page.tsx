@@ -87,8 +87,8 @@ export default async function ProjectDetailPage({ params }: any) {
                 </div>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-3">
-                <div className="lg:col-span-2 space-y-6">
+            <div className="space-y-6">
+                <div className="space-y-6">
                     {/* Work Items Manager */}
                     <WorkItemsManager project={project} workItems={workItems} />
 
@@ -225,13 +225,13 @@ export default async function ProjectDetailPage({ params }: any) {
                     </Card>
                 </div>
 
-                {/* Sidebar - client component with status, PM, dates, acceptance reports */}
-                <div className="space-y-6">
+                {/* Sidebar components - full width below */}
+                <div className="grid gap-6 md:grid-cols-2">
                     <ProjectSidebar project={project} teamMembers={teamMembers} />
                     <PortalViewAnalytics projectId={project.id} />
-                    <FeedbackBoard projectId={project.id} customerId={project.customer_id} customerName="Agency Admin" isAdmin={true} />
-                    <ProjectActivityHistory projectId={project.id} />
                 </div>
+                <FeedbackBoard projectId={project.id} customerId={project.customer_id} customerName="Agency Admin" isAdmin={true} />
+                <ProjectActivityHistory projectId={project.id} />
             </div>
         </div>
     )

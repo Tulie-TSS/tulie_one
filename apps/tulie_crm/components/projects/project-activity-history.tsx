@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@repo/ui'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardAction } from '@repo/ui'
 import { ScrollArea } from '@repo/ui'
 import { Activity, Clock, User, MessageSquare, FileText, CheckCircle2, AlertCircle } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
@@ -46,15 +46,10 @@ export function ProjectActivityHistory({ projectId, activities: initialActivitie
     if (isLoading) return null
 
     return (
-        <Card className="border-border overflow-hidden rounded-md">
-            <CardHeader className="flex flex-row items-center border-b px-6 py-4 space-y-0">
-                <div className="flex items-center gap-2">
-                    <Activity className="h-4 w-4 text-muted-foreground" />
-                    <CardTitle className="text-sm font-semibold text-foreground">Lịch sử hoạt động</CardTitle>
-                </div>
-                <div className="ml-auto flex items-center gap-4 text-sm">
-                    <span className="text-xs text-muted-foreground hidden sm:inline-flex">Các thay đổi và cập nhật gần đây trong dự án</span>
-                </div>
+        <Card>
+            <CardHeader>
+                <CardTitle>Lịch sử hoạt động</CardTitle>
+                <CardDescription>Các thay đổi và cập nhật gần đây trong dự án</CardDescription>
             </CardHeader>
             <CardContent className="p-0">
                 <ScrollArea className="h-[350px]">
