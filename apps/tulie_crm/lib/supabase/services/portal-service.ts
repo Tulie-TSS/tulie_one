@@ -310,6 +310,8 @@ export async function getPortalDataByToken(token: string) {
                         status: m.status === 'completed' ? 'completed' :
                             (new Date(m.due_date) < new Date() ? 'overdue' : 'upcoming'),
                         is_late: m.status === 'completed' && m.completed_at && new Date(m.completed_at) > new Date(m.due_date),
+                        amount: m.amount,
+                        amount_type: m.amount_type,
                         contract_id: c.id,
                         quotation_id: c.quotation_id
                     })
@@ -328,7 +330,9 @@ export async function getPortalDataByToken(token: string) {
                 planned_date: m.due_date,
                 status: m.status === 'completed' ? 'completed' :
                     (new Date(m.due_date) < new Date() ? 'overdue' : 'upcoming'),
-                is_late: m.status === 'completed' && m.completed_at && new Date(m.completed_at) > new Date(m.due_date)
+                is_late: m.status === 'completed' && m.completed_at && new Date(m.completed_at) > new Date(m.due_date),
+                amount: m.amount,
+                amount_type: m.amount_type
             })
         })
 

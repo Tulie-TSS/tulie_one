@@ -385,9 +385,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                         />
                                     ))}
                                 </div>
-                                
-                                <div className="space-y-4">
-                                    <h3 className="text-lg font-semibold">Vòng đời dự án</h3>
+                                <div className="mt-6">
                                     <TimelineSection timeline={timeline} />
                                 </div>
                             </TabsContent>
