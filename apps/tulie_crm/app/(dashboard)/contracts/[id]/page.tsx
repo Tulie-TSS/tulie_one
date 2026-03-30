@@ -4,6 +4,7 @@ import { Button } from '@repo/ui'
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { Separator } from '@repo/ui'
 import { Progress } from '@repo/ui'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@repo/ui'
 import {
     formatCurrency, formatDate
 } from '@/lib/utils/format'
@@ -193,10 +194,10 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
 
                 {/* Payment Progress & Milestones merged */}
                 <Card>
-                    <CardHeader className="border-b">
+                    <CardHeader>
                         <CardTitle>Thanh toán & Milestone</CardTitle>
                     </CardHeader>
-                    <CardContent className="pt-6 space-y-8">
+                    <CardContent className="space-y-8">
                         {/* Payment Progress */}
                         <div className="space-y-4 max-w-2xl">
                             <div className="flex justify-between font-semibold text-sm">
@@ -213,36 +214,57 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
 
                         {/* Milestones */}
                         <div className="space-y-4">
-                            <h4 className="text-sm font-medium mb-4 text-foreground">Các đợt thanh toán ({contract.milestones?.length || 0})</h4>
-                            <div className="grid gap-6 md:grid-cols-2">
-                                {contract.milestones?.map((milestone: any, index: number) => (
-                                    <div key={milestone.id} className="flex items-start gap-4">
-                                        <div className={`mt-1 h-8 w-8 rounded-full flex items-center justify-center shrink-0 ${milestone.status === 'completed' ? 'bg-primary text-primary-foreground' : milestone.status === 'overdue' ? 'bg-destructive text-destructive-foreground' : 'bg-muted text-muted-foreground' }`}>
-                                            {milestone.status === 'completed' ? (
-                                                <CheckCircle className="h-5 w-5" />
-                                            ) : milestone.status === 'overdue' ? (
-                                                <AlertTriangle className="h-5 w-5" />
-                                            ) : (
-                                                <span className="text-sm font-medium">{index + 1}</span>
-                                            )}
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="flex flex-col gap-1 mb-1">
-                                                <p className="font-medium text-sm leading-tight">{milestone.name}</p>
-                                                <span className="font-semibold text-sm">{formatCurrency(milestone.amount)}</span>
-                                            </div>
-                                            <div className="flex flex-col text-xs text-muted-foreground gap-1 mt-2">
-                                                <span>Hạn: {formatDate(milestone.due_date)}</span>
-                                                {milestone.completed_at && (
-                                                    <span className="font-medium text-emerald-600 dark:text-emerald-500">Đã thanh toán {formatDate(milestone.completed_at)}</span>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                                {(!contract.milestones || contract.milestones.length === 0) && (
-                                    <p className="text-sm text-muted-foreground py-4">Chưa thiết lập milestone thanh toán</p>
-                                )}
+                            <h4 className="text-sm font-medium text-foreground">Các đợt thanh toán ({contract.milestones?.length || 0})</h4>
+                            <div className="rounded-md border overflow-hidden">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow className="bg-muted/50">
+                                            <TableHead className="w-[60px] text-center">TT</TableHead>
+                                            <TableHead>Giai đoạn</TableHead>
+                                            <TableHead className="text-right">Số tiền</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {contract.milestones?.map((milestone: any, index: number) => (
+                                            <TableRow key={milestone.id}>
+                                                <TableCell className="text-center">
+                                                    {milestone.status === 'completed' ? (
+                                                        <CheckCircle className="h-4 w-4 mx-auto text-emerald-600" />
+                                                    ) : milestone.status === 'overdue' ? (
+                                                        <AlertTriangle className="h-4 w-4 mx-auto text-destructive" />
+                                                    ) : (
+                                                        <span className="text-xs text-muted-foreground font-medium">{index + 1}</span>
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <div className="flex flex-col gap-1">
+                                                        <span className={`font-medium text-sm ${milestone.status === 'completed' ? 'text-emerald-800' : ''}`}>
+                                                            {milestone.name}
+                                                        </span>
+                                                        <span className="text-xs text-muted-foreground flex items-center gap-1.5">
+                                                            Hạn: {formatDate(milestone.due_date)}
+                                                            {milestone.completed_at && (
+                                                                <span className="text-emerald-600 font-medium">• Đã thanh toán {formatDate(milestone.completed_at)}</span>
+                                                            )}
+                                                        </span>
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell className="text-right">
+                                                    <span className={`font-semibold tabular-nums text-sm ${milestone.status === 'completed' ? 'text-emerald-700' : ''}`}>
+                                                        {milestone.amount ? formatCurrency(milestone.amount).replace(/\s*[₫đ]\s*$/g, '').trim() : '0'} <sup className="text-[10px] text-muted-foreground font-normal">đ</sup>
+                                                    </span>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                        {(!contract.milestones || contract.milestones.length === 0) && (
+                                            <TableRow>
+                                                <TableCell colSpan={3} className="text-center text-sm text-muted-foreground py-6">
+                                                    Chưa thiết lập milestone thanh toán
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
                             </div>
                         </div>
                     </CardContent>
@@ -253,10 +275,10 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
 
                 {/* Terms & Details */}
                 <Card>
-                    <CardHeader className="border-b">
+                    <CardHeader>
                         <CardTitle>Chi tiết & Điều khoản</CardTitle>
                     </CardHeader>
-                    <CardContent className="pt-6 grid gap-6 md:grid-cols-2">
+                    <CardContent className="grid gap-6 md:grid-cols-2">
                         {contract.description && (
                             <div>
                                 <h4 className="font-medium text-sm mb-2">Mô tả dự án</h4>
