@@ -75,30 +75,28 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="icon" asChild className="rounded-full hover:bg-muted/80">
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                <div className="flex items-start gap-4">
+                    <Button variant="ghost" size="icon" asChild className="rounded-full hover:bg-muted/80 shrink-0 mt-1">
                         <Link href={backHref}>
                             <ArrowLeft className="h-5 w-5" />
                         </Link>
                     </Button>
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
-                            <FileSignature className="h-6 w-6 text-primary" />
-                        </div>
-                        <div>
-                            <div className="flex items-center gap-3 mb-1">
-                                <div className="px-2 py-0.5 rounded-md border bg-muted font-medium h-6 flex items-center text-xs">
-                                    {contract.contract_number}
-                                </div>
-                                <StatusBadge status={contract.status} entityType="contract" />
+                    <div className="space-y-2">
+                        <div className="flex items-center gap-3 flex-wrap">
+                            <h1 className="text-2xl font-bold tracking-tight text-foreground">{contract.customer?.company_name}</h1>
+                            <div className="px-2.5 py-0.5 rounded-md border bg-muted/50 font-medium text-xs flex items-center">
+                                {contract.contract_number}
                             </div>
-                            <h1 className="text-2xl font-semibold tracking-tight">{contract.customer?.company_name}</h1>
+                            <StatusBadge status={contract.status} entityType="contract" />
                         </div>
+                        <p className="text-sm text-muted-foreground flex items-center gap-2">
+                            <FileSignature className="h-4 w-4" />
+                            Chi tiết hợp đồng kinh tế
+                        </p>
                     </div>
                 </div>
-                <div className="flex items-center gap-2">
-
+                <div className="flex items-center gap-2 flex-wrap shrink-0">
                     <SetPasswordDialog
                         entityId={contract.id}
                         tableName="contracts"
@@ -106,16 +104,16 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                         hasFinancialPassword={!!contract.financial_password_hash}
                     />
                     <ContractEmailButton contract={contract} />
-                    <Button variant="outline" asChild>
+                    <Button variant="outline" size="sm" asChild>
                         <Link href={`/contracts/${contract.id}/edit`}>
-                            <Edit className="h-4 w-4" />
+                            <Edit className="h-4 w-4 mr-2" />
                             Chỉnh sửa
                         </Link>
                     </Button>
                     {portalUrl && (
-                        <Button variant="outline" asChild>
+                        <Button variant="outline" size="sm" asChild>
                             <a href={portalUrl} target="_blank" rel="noopener noreferrer">
-                                <Globe className="h-4 w-4" />
+                                <Globe className="h-4 w-4 mr-2" />
                                 Xem Portal
                             </a>
                         </Button>
@@ -126,22 +124,31 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
             <div className="space-y-6 flex flex-col pb-12">
                 {/* Contract Info merged card */}
                 <Card>
-                    <CardHeader>
-                        <CardTitle>Thông tin hợp đồng</CardTitle>
+                    <CardHeader className="border-b bg-muted/20 pb-4">
+                        <CardTitle className="text-base text-foreground">Thông tin cơ bản</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid gap-8 md:grid-cols-3">
+                    <CardContent className="grid gap-x-8 gap-y-6 md:grid-cols-2 lg:grid-cols-3 pt-6">
                         {/* Khách hàng */}
                         <div className="space-y-4">
                             <h4 className="text-sm font-semibold flex items-center gap-2 text-foreground">
                                 <Building2 className="w-4 h-4 text-muted-foreground" />
                                 Khách hàng
                             </h4>
-                            <div className="space-y-1.5 text-sm">
-                                <Link href={`/customers/${contract.customer?.id}`} className="font-medium text-primary hover:underline block leading-tight">
-                                    {contract.customer?.company_name}
-                                </Link>
-                                {contract.customer?.email && <p className="text-muted-foreground">{contract.customer.email}</p>}
-                                {contract.customer?.phone && <p className="text-muted-foreground">{contract.customer.phone}</p>}
+                            <div className="space-y-2.5 text-sm">
+                                <div className="flex justify-between items-start gap-4 border-b pb-2.5">
+                                    <span className="text-muted-foreground shrink-0 mt-0.5">Công ty</span>
+                                    <Link href={`/customers/${contract.customer?.id}`} className="font-medium text-primary hover:underline text-right leading-tight break-words max-w-[200px]">
+                                        {contract.customer?.company_name}
+                                    </Link>
+                                </div>
+                                <div className="flex justify-between items-center gap-4 border-b pb-2.5">
+                                    <span className="text-muted-foreground shrink-0">Email</span>
+                                    <span className="font-medium text-right truncate">{contract.customer?.email || '—'}</span>
+                                </div>
+                                <div className="flex justify-between items-center gap-4">
+                                    <span className="text-muted-foreground shrink-0">Số ĐT</span>
+                                    <span className="font-medium text-right">{contract.customer?.phone || '—'}</span>
+                                </div>
                             </div>
                         </div>
 
@@ -175,19 +182,19 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                             </h4>
                             <div className="space-y-2.5 text-sm">
                                 {contract.quotation && (
-                                    <div className="flex justify-between items-center gap-4 border-b pb-2.5">
-                                        <span className="text-muted-foreground">Báo giá gốc</span>
-                                        <Link href={`/quotations/${contract.quotation.id}`} className="font-medium text-primary hover:underline">
+                                    <div className="flex justify-between items-start gap-4 border-b pb-2.5">
+                                        <span className="text-muted-foreground shrink-0 mt-0.5">Báo giá gốc</span>
+                                        <Link href={`/quotations/${contract.quotation.id}`} className="font-medium text-primary hover:underline text-right break-words max-w-[150px]">
                                             {contract.quotation.quotation_number}
                                         </Link>
                                     </div>
                                 )}
-                                {contract.creator && (
-                                    <div className="flex justify-between items-center gap-4">
-                                        <span className="text-muted-foreground">Người phụ trách</span>
-                                        <span className="font-medium">{contract.creator.full_name}</span>
-                                    </div>
-                                )}
+                                <div className="flex justify-between items-center gap-4">
+                                    <span className="text-muted-foreground shrink-0">Phụ trách</span>
+                                    <span className="font-medium text-right truncate">
+                                        {contract.creator ? contract.creator.full_name : 'Hệ thống'}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </CardContent>
