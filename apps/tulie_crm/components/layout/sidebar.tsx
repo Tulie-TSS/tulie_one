@@ -49,7 +49,7 @@ const navGroups = [
             { title: 'Hợp đồng', href: '/contracts', icon: FilePenLine },
             { title: 'Đơn hàng', href: '/orders', icon: ShoppingCart },
             { title: 'Dự án', href: '/projects', icon: Rocket },
-            { title: 'Theo dõi hoá đơn', href: '/invoices', icon: Banknote },
+
             { title: 'Helpdesk', href: '/helpdesk', icon: Headphones },
         ]
     },

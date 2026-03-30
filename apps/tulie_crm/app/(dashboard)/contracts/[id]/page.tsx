@@ -97,12 +97,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Button variant="outline" asChild>
-                        <Link href={`/invoices/new?contract=${contract.id}`}>
-                            <Receipt className="h-4 w-4" />
-                            Tạo hóa đơn
-                        </Link>
-                    </Button>
+
                     <SetPasswordDialog
                         entityId={contract.id}
                         tableName="contracts"
@@ -127,166 +122,161 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                 </div>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-3">
-                {/* Main Content */}
-                <div className="lg:col-span-2 space-y-6">
-                    {/* Lifecycle Timeline */}
-                    <ContractLifecycle contract={contract} />
-
-                    {/* Payment Progress */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Tiến độ thanh toán</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="flex justify-between text-sm">
-                                <span>Đã thanh toán: {formatCurrency(paidAmount)}</span>
-                                <span>Tổng giá trị: {formatCurrency(contract.total_amount)}</span>
-                            </div>
-                            <Progress value={progress} className="h-3" />
-                            <p className="text-center text-sm text-muted-foreground">
-                                {progress.toFixed(0)}% hoàn thành
-                            </p>
-                        </CardContent>
-                    </Card>
-
-                    {/* Milestones */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Milestone thanh toán</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            {contract.milestones?.map((milestone: any, index: number) => (
-                                <div key={milestone.id} className="flex items-start gap-4">
-                                    <div className={`mt-1 h-8 w-8 rounded-full flex items-center justify-center ${milestone.status === 'completed' ? 'bg-primary text-primary-foreground' : milestone.status === 'overdue' ? 'bg-destructive text-destructive-foreground' : 'bg-muted text-muted-foreground' }`}>
-                                        {milestone.status === 'completed' ? (
-                                            <CheckCircle className="h-5 w-5" />
-                                        ) : milestone.status === 'overdue' ? (
-                                            <AlertTriangle className="h-5 w-5" />
-                                        ) : (
-                                            <span className="text-sm font-medium">{index + 1}</span>
-                                        )}
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="flex items-center justify-between">
-                                            <p className="font-medium">{milestone.name}</p>
-                                            <span className="font-medium">{formatCurrency(milestone.amount)}</span>
-                                        </div>
-                                        <div className="flex items-center justify-between text-sm text-muted-foreground">
-                                            <span>Hạn: {formatDate(milestone.due_date)}</span>
-                                            {milestone.completed_at && (
-                                                <span className="font-medium">Đã thanh toán {formatDate(milestone.completed_at)}</span>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                            {(!contract.milestones || contract.milestones.length === 0) && (
-                                <p className="text-sm text-muted-foreground text-center py-4">Chưa thiết lập milestone thanh toán</p>
-                            )}
-                        </CardContent>
-                    </Card>
-
-                    {/* Terms & Details */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Chi tiết & Điều khoản</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            {contract.description && (
-                                <div>
-                                    <h4 className="font-medium mb-1">Mô tả dự án</h4>
-                                    <p className="text-sm text-muted-foreground">{contract.description}</p>
-                                </div>
-                            )}
-                            {contract.terms && (
-                                <div>
-                                    <h4 className="font-medium mb-1">Điều khoản hợp đồng</h4>
-                                    <p className="text-sm text-muted-foreground whitespace-pre-line">{contract.terms}</p>
-                                </div>
-                            )}
-                            {(contract as any).notes && (
-                                <div>
-                                    <h4 className="font-medium mb-1">Ghi chú hợp đồng</h4>
-                                    <p className="text-sm text-muted-foreground whitespace-pre-line">{(contract as any).notes}</p>
-                                </div>
-                            )}
-                        </CardContent>
-                    </Card>
-                </div>
-
-                {/* Sidebar */}
-                <div className="space-y-6">
-                    {/* Customer Info */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <Building2 className="h-5 w-5" />
+            <div className="space-y-6 flex flex-col pb-12">
+                {/* Contract Info merged card */}
+                <Card>
+                    <CardHeader className="border-b">
+                        <CardTitle>Thông tin hợp đồng</CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-6 grid gap-8 md:grid-cols-3">
+                        {/* Khách hàng */}
+                        <div>
+                            <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                                <Building2 className="w-4 h-4 text-muted-foreground" />
                                 Khách hàng
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <Link href={`/customers/${contract.customer?.id}`} className="font-medium hover:underline">
+                            </h4>
+                            <Link href={`/customers/${contract.customer?.id}`} className="font-medium hover:underline block">
                                 {contract.customer?.company_name}
                             </Link>
                             <p className="text-sm text-muted-foreground mt-1">{contract.customer?.email}</p>
                             <p className="text-sm text-muted-foreground">{contract.customer?.phone}</p>
-                        </CardContent>
-                    </Card>
-
-                    {/* Timeline */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <Calendar className="h-5 w-5" />
+                        </div>
+                        {/* Thời gian */}
+                        <div>
+                            <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                                <Calendar className="w-4 h-4 text-muted-foreground" />
                                 Thời gian
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-3">
-                            <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">Ngày ký</span>
-                                <span className="font-medium">{contract.signed_date ? formatDate(contract.signed_date) : 'Chưa ký'}</span>
+                            </h4>
+                            <div className="space-y-2 text-sm">
+                                <div className="flex justify-between gap-4">
+                                    <span className="text-muted-foreground">Ngày ký</span>
+                                    <span className="font-medium">{contract.signed_date ? formatDate(contract.signed_date) : 'Chưa ký'}</span>
+                                </div>
+                                <div className="flex justify-between gap-4">
+                                    <span className="text-muted-foreground">Bắt đầu</span>
+                                    <span className="font-medium">{formatDate(contract.start_date)}</span>
+                                </div>
+                                <div className="flex justify-between gap-4">
+                                    <span className="text-muted-foreground">Kết thúc</span>
+                                    <span className="font-medium">{contract.end_date ? formatDate(contract.end_date) : 'Không xác định'}</span>
+                                </div>
                             </div>
-                            <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">Bắt đầu</span>
-                                <span className="font-medium">{formatDate(contract.start_date)}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">Kết thúc</span>
-                                <span className="font-medium">{contract.end_date ? formatDate(contract.end_date) : 'Không xác định'}</span>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Related Quote & Creator */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <FileText className="h-5 w-5" />
+                        </div>
+                        {/* Thông tin khác */}
+                        <div>
+                            <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                                <FileText className="w-4 h-4 text-muted-foreground" />
                                 Thông tin khác
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            {contract.quotation && (
-                                <div>
-                                    <p className="text-xs text-muted-foreground mb-1">Báo giá gốc</p>
-                                    <Link href={`/quotations/${contract.quotation.id}`} className="font-medium hover:underline">
-                                        {contract.quotation.quotation_number}
-                                    </Link>
-                                </div>
-                            )}
-                            {contract.creator && (
-                                <div>
-                                    <p className="text-xs text-muted-foreground mb-1">Người phụ trách</p>
-                                    <p className="font-medium">{contract.creator.full_name}</p>
-                                </div>
-                            )}
-                        </CardContent>
-                    </Card>
+                            </h4>
+                            <div className="space-y-3">
+                                {contract.quotation && (
+                                    <div>
+                                        <p className="text-xs text-muted-foreground mb-1">Báo giá gốc</p>
+                                        <Link href={`/quotations/${contract.quotation.id}`} className="font-medium hover:underline text-sm">
+                                            {contract.quotation.quotation_number}
+                                        </Link>
+                                    </div>
+                                )}
+                                {contract.creator && (
+                                    <div>
+                                        <p className="text-xs text-muted-foreground mb-1">Người phụ trách</p>
+                                        <p className="text-sm font-medium">{contract.creator.full_name}</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
 
-                    {/* Document Templates */}
-                    <ContractDocuments contract={contract} />
-                </div>
+                {/* Lifecycle Timeline */}
+                <ContractLifecycle contract={contract} />
+
+                {/* Payment Progress & Milestones merged */}
+                <Card>
+                    <CardHeader className="border-b">
+                        <CardTitle>Thanh toán & Milestone</CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-6 space-y-8">
+                        {/* Payment Progress */}
+                        <div className="space-y-4 max-w-2xl">
+                            <div className="flex justify-between font-semibold text-sm">
+                                <span>Đã thanh toán: {formatCurrency(paidAmount)}</span>
+                                <span>Tổng giá trị: {formatCurrency(contract.total_amount)}</span>
+                            </div>
+                            <Progress value={progress} className="h-3" />
+                            <p className="text-center text-sm text-muted-foreground font-medium">
+                                {progress.toFixed(0)}% hoàn thành
+                            </p>
+                        </div>
+                        
+                        <Separator />
+
+                        {/* Milestones */}
+                        <div className="space-y-4">
+                            <h4 className="text-sm font-medium mb-4 text-foreground">Các đợt thanh toán ({contract.milestones?.length || 0})</h4>
+                            <div className="grid gap-6 md:grid-cols-2">
+                                {contract.milestones?.map((milestone: any, index: number) => (
+                                    <div key={milestone.id} className="flex items-start gap-4">
+                                        <div className={`mt-1 h-8 w-8 rounded-full flex items-center justify-center shrink-0 ${milestone.status === 'completed' ? 'bg-primary text-primary-foreground' : milestone.status === 'overdue' ? 'bg-destructive text-destructive-foreground' : 'bg-muted text-muted-foreground' }`}>
+                                            {milestone.status === 'completed' ? (
+                                                <CheckCircle className="h-5 w-5" />
+                                            ) : milestone.status === 'overdue' ? (
+                                                <AlertTriangle className="h-5 w-5" />
+                                            ) : (
+                                                <span className="text-sm font-medium">{index + 1}</span>
+                                            )}
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="flex flex-col gap-1 mb-1">
+                                                <p className="font-medium text-sm leading-tight">{milestone.name}</p>
+                                                <span className="font-semibold text-sm">{formatCurrency(milestone.amount)}</span>
+                                            </div>
+                                            <div className="flex flex-col text-xs text-muted-foreground gap-1 mt-2">
+                                                <span>Hạn: {formatDate(milestone.due_date)}</span>
+                                                {milestone.completed_at && (
+                                                    <span className="font-medium text-emerald-600 dark:text-emerald-500">Đã thanh toán {formatDate(milestone.completed_at)}</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                                {(!contract.milestones || contract.milestones.length === 0) && (
+                                    <p className="text-sm text-muted-foreground py-4">Chưa thiết lập milestone thanh toán</p>
+                                )}
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Document Templates */}
+                <ContractDocuments contract={contract} />
+
+                {/* Terms & Details */}
+                <Card>
+                    <CardHeader className="border-b">
+                        <CardTitle>Chi tiết & Điều khoản</CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-6 grid gap-6 md:grid-cols-2">
+                        {contract.description && (
+                            <div>
+                                <h4 className="font-medium text-sm mb-2">Mô tả dự án</h4>
+                                <p className="text-sm text-muted-foreground">{contract.description}</p>
+                            </div>
+                        )}
+                        {contract.terms && (
+                            <div>
+                                <h4 className="font-medium text-sm mb-2">Điều khoản hợp đồng</h4>
+                                <p className="text-sm text-muted-foreground whitespace-pre-line">{contract.terms}</p>
+                            </div>
+                        )}
+                        {(contract as any).notes && (
+                            <div>
+                                <h4 className="font-medium text-sm mb-2">Ghi chú hợp đồng</h4>
+                                <p className="text-sm text-muted-foreground whitespace-pre-line">{(contract as any).notes}</p>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
             </div>
         </div>
     )
