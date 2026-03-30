@@ -22,8 +22,8 @@ export default function QuotationPreview({ data, open, onOpenChange }: Quotation
     const [companyInfo, setCompanyInfo] = useState({
         name: "TULIE AGENCY",
         address: "123 Đường ABC, Quận XYZ, TP.HCM",
-        phone: "090 123 4567",
-        email: "hello@tulie.app",
+        phone: "098 898 4554",
+        email: "lienhe@tulie.vn",
         tax_code: "0123456789",
         website: "tulie.app"
     })

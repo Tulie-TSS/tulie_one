@@ -265,15 +265,15 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                         <div className="flex bg-background rounded-md border shadow-sm px-4 py-2.5 text-sm font-medium items-center gap-3 shrink-0">
                             <Headset className="w-4 h-4 text-primary shrink-0" />
                             <div className="flex items-center gap-2.5">
-                                <span className="text-muted-foreground text-xs font-semibold uppercase tracking-wider hidden sm:inline">Hỗ trợ 24/7:</span>
-                                <a href="tel:0981999999" className="hover:text-primary hover:underline transition-colors flex items-center gap-1">
+                                <span className="text-muted-foreground text-xs font-medium hidden sm:inline">Hỗ trợ 24/7:</span>
+                                <a href="tel:0988984554" className="hover:text-primary hover:underline transition-colors flex items-center gap-1">
                                     <Phone className="w-3.5 h-3.5 text-muted-foreground hidden sm:block" />
-                                    098 199 9999
+                                    098 898 4554
                                 </a>
                                 <span className="text-muted-foreground/30">|</span>
-                                <a href="mailto:hello@tulie.app" className="hover:text-primary hover:underline transition-colors flex items-center gap-1">
+                                <a href="mailto:lienhe@tulie.vn" className="hover:text-primary hover:underline transition-colors flex items-center gap-1">
                                     <Mail className="w-3.5 h-3.5 text-muted-foreground hidden sm:block" />
-                                    hello@tulie.app
+                                    lienhe@tulie.vn
                                 </a>
                             </div>
                         </div>

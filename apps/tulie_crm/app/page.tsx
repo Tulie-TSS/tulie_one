@@ -530,13 +530,13 @@ export default function LandingPage() {
                                         <p className="text-sm font-bold text-foreground">{ZALO_PHONE}</p>
                                     </div>
                                 </a>
-                                <a href="mailto:hello@tulie.vn" className="flex items-center gap-4 p-4 rounded-md bg-white border border-border hover:border-input hover:shadow-md transition-all group">
+                                <a href="mailto:lienhe@tulie.vn" className="flex items-center gap-4 p-4 rounded-md bg-white border border-border hover:border-input hover:shadow-md transition-all group">
                                     <div className="w-11 h-11 rounded-md bg-zinc-950 text-white flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                                         <Mail className="w-5 h-5" />
                                     </div>
                                     <div>
                                         <p className="text-xs font-semibold text-muted-foreground">Email</p>
-                                        <p className="text-sm font-bold text-foreground">hello@tulie.vn</p>
+                                        <p className="text-sm font-bold text-foreground">lienhe@tulie.vn</p>
                                     </div>
                                 </a>
                             </div>
@@ -562,8 +562,8 @@ export default function LandingPage() {
                                 Zalo: {ZALO_PHONE}
                             </a>
                             <span className="w-px h-3 bg-zinc-800" />
-                            <a href="mailto:hello@tulie.vn" className="hover:text-zinc-300 transition-colors">
-                                hello@tulie.vn
+                            <a href="mailto:lienhe@tulie.vn" className="hover:text-zinc-300 transition-colors">
+                                lienhe@tulie.vn
                             </a>
                             <span className="w-px h-3 bg-zinc-800" />
                             <Link href="/system-login" className="hover:text-zinc-300 transition-colors">

@@ -113,7 +113,7 @@ export default async function InvoiceDetailPage({ params }: any) {
                                     </div>
                                     <p className="text-sm text-muted-foreground">
                                         123 ABC Street, District 1, HCMC<br />
-                                        contact@tulie.app | 0901234567
+                                        lienhe@tulie.vn | 098 898 4554
                                     </p>
                                 </div>
                                 <div className="text-right">

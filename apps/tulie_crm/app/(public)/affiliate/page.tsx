@@ -14,9 +14,9 @@ import { cn } from '@/lib/utils'
 // ── Data Constants ──────────────────────────────────────────────────────────
 
 const ROLES = [
-    { value: 'lead_only', label: 'Chỉ bắn Lead', rate: 7, desc: 'Kết nối khách hàng, Tulie tư vấn và chốt sale.' },
-    { value: 'consult_close', label: 'Tư vấn + Chốt cùng', rate: 15, desc: 'Phối hợp cùng team Sales Tulie để chốt.' },
-    { value: 'full_close', label: 'Chốt full', rate: 20, desc: 'Tự tư vấn, đàm phán và mang hợp đồng về.' },
+    { value: 'lead_only', label: 'Giới thiệu khách hàng', rate: 7, desc: 'Cung cấp thông tin khách hàng tiềm năng, Tulie chịu trách nhiệm tư vấn và chốt hợp đồng.' },
+    { value: 'consult_close', label: 'Tư vấn & phối hợp', rate: 15, desc: 'Tham gia tư vấn khách hàng và phối hợp cùng đội ngũ Tulie để hoàn tất hợp đồng.' },
+    { value: 'full_close', label: 'Tự chốt hợp đồng', rate: 20, desc: 'Chủ động toàn bộ quy trình tư vấn và đàm phán cho đến khi ký kết hợp đồng.' },
 ] as const
 
 const BONUS_TIERS = [
@@ -34,16 +34,16 @@ const CASH_MILESTONES = [
 ] as const
 
 const STEPS = [
-    { step: '1', title: 'Giới thiệu khách', desc: 'Gửi thông tin khách hàng tiềm năng cho Tulie.' },
-    { step: '2', title: 'Tulie xử lý', desc: 'Team Sales tư vấn, đàm phán và chốt hợp đồng.' },
-    { step: '3', title: 'Nhận hoa hồng', desc: 'Deal chốt xong, hoa hồng thanh toán trong 7 ngày.' },
+    { step: '1', title: 'Giới thiệu khách hàng', desc: 'Gửi thông tin khách hàng tiềm năng đến Tulie qua Hotline hoặc Zalo.' },
+    { step: '2', title: 'Tulie tiếp nhận & xử lý', desc: 'Đội ngũ chuyên môn tư vấn, đàm phán và hoàn tất hợp đồng với khách hàng.' },
+    { step: '3', title: 'Nhận hoa hồng', desc: 'Sau khi hợp đồng được xác nhận, hoa hồng được thanh toán trong vòng 7 ngày làm việc.' },
 ]
 
 const FAQS = [
-    { q: 'Có cần bỏ vốn không?', a: 'Không. Bạn chỉ cần giới thiệu khách hàng.' },
-    { q: 'Giới hạn số deal?', a: 'Không giới hạn. Càng nhiều deal, thưởng càng cao.' },
-    { q: 'Thanh toán qua kênh nào?', a: 'Chuyển khoản ngân hàng hoặc ví điện tử.' },
-    { q: 'Khi nào nhận tiền?', a: 'Trong vòng 7 ngày sau khi Deal được xác nhận.' },
+    { q: 'Có cần đầu tư vốn ban đầu không?', a: 'Không. Đối tác chỉ cần giới thiệu khách hàng tiềm năng.' },
+    { q: 'Có giới hạn số lượng hợp đồng không?', a: 'Không giới hạn. Doanh số càng cao, mức thưởng càng lớn.' },
+    { q: 'Hoa hồng được thanh toán qua kênh nào?', a: 'Chuyển khoản ngân hàng hoặc ví điện tử theo thỏa thuận.' },
+    { q: 'Thời điểm nhận hoa hồng?', a: 'Trong vòng 7 ngày làm việc sau khi hợp đồng được xác nhận hoàn tất.' },
 ]
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
@@ -97,7 +97,7 @@ export default function AffiliateCalculatorPage() {
                         Công cụ tính Chiết khấu Đối tác
                     </h1>
                     <p className="text-muted-foreground max-w-xl mx-auto">
-                        Mô phỏng thu nhập thực tế khi trở thành Đối tác kinh doanh của Tulie.
+                        Mô phỏng thu nhập dự kiến khi trở thành Đối tác phát triển kinh doanh của Tulie.
                     </p>
                 </div>
 
@@ -202,7 +202,7 @@ export default function AffiliateCalculatorPage() {
                                     <ArrowRight className="w-4 h-4 ml-2" />
                                 </Button>
                                 <p className="text-xs text-center text-muted-foreground">
-                                    Đây là công cụ ước tính. Thu nhập thực tế có thể thay đổi tùy quy mô dự án.
+                                    Đây là công cụ ước tính. Thu nhập thực tế có thể thay đổi tùy theo quy mô và đàm phán cụ thể.
                                 </p>
                             </CardContent>
                         </Card>
@@ -215,7 +215,7 @@ export default function AffiliateCalculatorPage() {
                         <Card>
                             <CardHeader>
                                 <CardTitle>Quy trình làm việc</CardTitle>
-                                <CardDescription>3 bước đơn giản để nhận hoa hồng.</CardDescription>
+                                <CardDescription>Quy trình hợp tác đơn giản, minh bạch.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <ol className="space-y-4">
@@ -241,7 +241,7 @@ export default function AffiliateCalculatorPage() {
                                     <Trophy className="w-5 h-5 text-primary" />
                                     Bảng tier hoa hồng bonus
                                 </CardTitle>
-                                <CardDescription>Tổng hoa hồng = Base + Bonus.</CardDescription>
+                                <CardDescription>Càng đạt nhiều doanh số, tỷ lệ hoa hồng càng cao.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Table>
@@ -284,7 +284,7 @@ export default function AffiliateCalculatorPage() {
                                     <Gift className="w-5 h-5 text-primary" />
                                     Thưởng tiền mặt
                                 </CardTitle>
-                                <CardDescription>Thưởng nóng khi đạt mốc doanh số tháng.</CardDescription>
+                                <CardDescription>Thưởng bổ sung khi đạt các mốc doanh số theo tháng.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Table>
@@ -338,17 +338,17 @@ export default function AffiliateCalculatorPage() {
                                 <CardTitle>Liên hệ hợp tác</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-3">
-                                <a href="tel:0981999999" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
+                                <a href="tel:0988984554" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
                                     <Phone className="w-4 h-4 text-muted-foreground" />
-                                    <span>098 199 9999</span>
+                                    <span>098 898 4554</span>
                                 </a>
-                                <a href="mailto:hello@tulie.app" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
+                                <a href="mailto:lienhe@tulie.vn" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
                                     <Mail className="w-4 h-4 text-muted-foreground" />
-                                    <span>hello@tulie.app</span>
+                                    <span>lienhe@tulie.vn</span>
                                 </a>
-                                <a href="https://zalo.me/0981999999" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
+                                <a href="https://zalo.me/0988984554" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
                                     <MessageCircle className="w-4 h-4 text-muted-foreground" />
-                                    <span>Zalo: 098 199 9999</span>
+                                    <span>Zalo: 098 898 4554</span>
                                 </a>
                             </CardContent>
                         </Card>

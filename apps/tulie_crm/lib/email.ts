@@ -39,7 +39,7 @@ export async function sendEmail({ to, subject, html, replyTo }: SendEmailOptions
             to: Array.isArray(to) ? to : [to],
             subject,
             html,
-            replyTo: replyTo || 'hello@tulie.app',
+            replyTo: replyTo || 'lienhe@tulie.vn',
         })
 
         if (error) {
@@ -134,7 +134,7 @@ export function quotationEmailTemplate({
             </div>
             <div class="footer">
                 <p>© ${new Date().getFullYear()} Tulie Agency. All rights reserved.</p>
-                <p>Hotline: 090 123 4567 | Email: <a href="mailto:hello@tulie.app">hello@tulie.app</a></p>
+                <p>Hotline: 098 898 4554 | Email: <a href="mailto:lienhe@tulie.vn">lienhe@tulie.vn</a></p>
             </div>
         </div>
     </body>
@@ -215,7 +215,7 @@ export function invoiceEmailTemplate({
             </div>
             <div class="footer">
                 <p>© ${new Date().getFullYear()} Tulie Agency. All rights reserved.</p>
-                <p>Hotline: 090 123 4567 | Email: <a href="mailto:hello@tulie.app">hello@tulie.app</a></p>
+                <p>Hotline: 098 898 4554 | Email: <a href="mailto:lienhe@tulie.vn">lienhe@tulie.vn</a></p>
             </div>
         </div>
     </body>
@@ -301,7 +301,7 @@ export function contractEmailTemplate({
             </div>
             <div class="footer">
                 <p>© ${new Date().getFullYear()} Tulie Agency. All rights reserved.</p>
-                <p>Hotline: 090 123 4567 | Email: <a href="mailto:hello@tulie.app">hello@tulie.app</a></p>
+                <p>Hotline: 098 898 4554 | Email: <a href="mailto:lienhe@tulie.vn">lienhe@tulie.vn</a></p>
             </div>
         </div>
     </body>
@@ -360,7 +360,7 @@ export function notificationEmailTemplate({
             </div>
             <div class="footer">
                 <p>© ${new Date().getFullYear()} Tulie Agency. All rights reserved.</p>
-                <p>Hotline: 090 123 4567 | Email: <a href="mailto:hello@tulie.app">hello@tulie.app</a></p>
+                <p>Hotline: 098 898 4554 | Email: <a href="mailto:lienhe@tulie.vn">lienhe@tulie.vn</a></p>
             </div>
         </div>
     </body>
