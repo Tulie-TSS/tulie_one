@@ -331,14 +331,16 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                     </Card>
                                 )}
 
-                                <div className="flex items-center justify-between pt-2">
-                                    <h2 className="text-lg font-bold">Hạng mục công việc</h2>
-                                    <Badge variant="secondary" className="px-3 py-1 bg-white">{completedItems}/{displayItems.length} hoàn thành</Badge>
-                                </div>
+                                {displayItems.length > 1 && (
+                                    <div className="flex items-center justify-between pt-2">
+                                        <h2 className="text-lg font-bold">Hạng mục công việc</h2>
+                                        <Badge variant="secondary" className="px-3 py-1 bg-white">{completedItems}/{displayItems.length} hoàn thành</Badge>
+                                    </div>
+                                )}
 
-                                <div className="grid gap-3 sm:grid-cols-2">
+                                <div className={cn("grid gap-3", displayItems.length > 1 ? "sm:grid-cols-2" : "grid-cols-1")}>
                                     {displayItems.length > 0 ? displayItems.map((item: any, idx: number) => (
-                                        <WorkItemCard key={item.id} item={item} idx={idx} />
+                                        <WorkItemCard key={item.id} item={item} idx={idx} isSingle={displayItems.length === 1} projectName={project?.name} />
                                     )) : (
                                         <Card className="col-span-full">
                                             <CardContent className="flex flex-col items-center justify-center py-16 text-center bg-white">
@@ -401,6 +403,8 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                             key={item.id}
                                             item={item}
                                             idx={idx}
+                                            isSingle={displayItems.length === 1}
+                                            projectName={project?.name}
                                             token={token}
                                             quotationOptions={getQuotationOptionsForItem(item)}
                                             selectedQuotationId={selectedQuotationMap[item.id]}
@@ -445,7 +449,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
    WorkItemCard — Overview Tab
    ================================================================ */
 
-function WorkItemCard({ item, idx }: { item: any; idx: number }) {
+function WorkItemCard({ item, idx, isSingle, projectName }: { item: any; idx: number; isSingle?: boolean; projectName?: string }) {
     const deliveryLinks = item.delivery_links || []
     const itemTasks = item.tasks || []
     const completedTasks = itemTasks.filter((t: any) => t.status === 'completed').length
@@ -455,8 +459,8 @@ function WorkItemCard({ item, idx }: { item: any; idx: number }) {
         <Card>
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                    <span className="text-muted-foreground font-mono text-xs tabular-nums">{idx + 1}.</span>
-                    {item.title}
+                    {!isSingle && <span className="text-muted-foreground font-mono text-xs tabular-nums">{idx + 1}.</span>}
+                    {isSingle ? `Triển khai: ${item.contract?.name || projectName || item.title}` : item.title}
                 </CardTitle>
                 {item.description && <CardDescription className="line-clamp-1">{item.description}</CardDescription>}
                 <CardAction>
@@ -505,7 +509,7 @@ function WorkItemCard({ item, idx }: { item: any; idx: number }) {
    FinancialItemCard — Finance Tab
    ================================================================ */
 
-function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQuotationId, onSelectQuotation, timeline = [], contracts = [], onViewContractDoc, onViewDoc }: any) {
+function FinancialItemCard({ item, idx, token, isSingle, projectName, quotationOptions = [], selectedQuotationId, onSelectQuotation, timeline = [], contracts = [], onViewContractDoc, onViewDoc }: any) {
     const quotation = item.quotation
     const contract = item.contract
     const activeQuotation = quotationOptions.length > 1
@@ -519,8 +523,8 @@ function FinancialItemCard({ item, idx, token, quotationOptions = [], selectedQu
         <Card>
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                    <span className="text-muted-foreground font-mono text-xs tabular-nums">{idx + 1}.</span>
-                    {item.title}
+                    {!isSingle && <span className="text-muted-foreground font-mono text-xs tabular-nums">{idx + 1}.</span>}
+                    {isSingle ? `Chi phí: ${item.contract?.name || projectName || item.title}` : item.title}
                 </CardTitle>
                 <CardAction>
                     <div className="flex items-baseline gap-1">
