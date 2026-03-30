@@ -84,11 +84,12 @@ const PRODUCTS = [
     },
 ]
 
+// Max earnings: 20% base + tier bonus + cash milestone
 const COMMISSION_EXAMPLES = [
-    { deal: 10_000_000, rate: 15 },
-    { deal: 20_000_000, rate: 15 },
-    { deal: 50_000_000, rate: 15 },
-    { deal: 80_000_000, rate: 15 },
+    { deal: 10_000_000, earning: 10_000_000 * 0.20 },
+    { deal: 20_000_000, earning: 20_000_000 * 0.20 },
+    { deal: 50_000_000, earning: 50_000_000 * (0.20 + 0.03) + 3_000_000 },
+    { deal: 100_000_000, earning: 100_000_000 * (0.20 + 0.05) + 5_000_000 },
 ]
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
@@ -263,14 +264,14 @@ export default function AffiliateCalculatorPage() {
                                     <DollarSign className="w-5 h-5 text-primary" />
                                     Bạn sẽ kiếm được bao nhiêu?
                                 </CardTitle>
-                                <CardDescription>Ví dụ hoa hồng với vai trò Tư vấn & phối hợp (15%).</CardDescription>
+                                <CardDescription>Thu nhập tối đa với vai trò Tự chốt hợp đồng (20%), đã bao gồm bonus tier và thưởng tiền mặt.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
                                             <TableHead>Giá trị hợp đồng</TableHead>
-                                            <TableHead className="text-right">Hoa hồng nhận được</TableHead>
+                                            <TableHead className="text-right">Thu nhập tối đa</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -278,7 +279,7 @@ export default function AffiliateCalculatorPage() {
                                             <TableRow key={i}>
                                                 <TableCell className="font-medium">{formatCurrency(ex.deal)}</TableCell>
                                                 <TableCell className="text-right font-semibold tabular-nums text-primary">
-                                                    {formatCurrency(ex.deal * ex.rate / 100)}
+                                                    {formatCurrency(ex.earning)}
                                                 </TableCell>
                                             </TableRow>
                                         ))}
