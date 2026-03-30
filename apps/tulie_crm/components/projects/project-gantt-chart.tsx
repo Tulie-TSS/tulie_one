@@ -92,18 +92,18 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
 
     return (
         <Card className="overflow-hidden flex flex-col h-[700px]">
-            <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4 border-b border-transparent">
-                <div className="space-y-1.5 flex-1 pr-4">
-                    <CardTitle className="text-base font-semibold leading-none tracking-tight">Kế hoạch triển khai (Gantt View)</CardTitle>
-                    <CardDescription className="text-sm text-muted-foreground pt-1">Trực quan hoá lộ trình dự án</CardDescription>
+            <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4">
+                <div className="space-y-1">
+                    <CardTitle className="text-lg font-semibold leading-none tracking-tight">Kế hoạch triển khai (Gantt View)</CardTitle>
+                    <CardDescription className="text-sm text-muted-foreground">Trực quan hoá lộ trình dự án</CardDescription>
                 </div>
                 <div className="shrink-0">
-                    <div className="flex items-center gap-2">
-                        <Button variant="outline" size="icon" className="h-8 w-8 shadow-sm bg-background/50 backdrop-blur-sm" onClick={() => setViewDate(addDays(viewDate, -7))}>
+                    <div className="flex items-center gap-1">
+                        <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => setViewDate(addDays(viewDate, -7))}>
                             <ChevronLeft className="h-4 w-4" />
                         </Button>
-                        <Button variant="outline" className="h-8 text-xs px-3 shadow-sm bg-background/50 backdrop-blur-sm font-semibold" onClick={() => setViewDate(today)}>Hôm nay</Button>
-                        <Button variant="outline" size="icon" className="h-8 w-8 shadow-sm bg-background/50 backdrop-blur-sm" onClick={() => setViewDate(addDays(viewDate, 7))}>
+                        <Button variant="outline" size="sm" className="h-7 text-xs font-medium" onClick={() => setViewDate(today)}>Hôm nay</Button>
+                        <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => setViewDate(addDays(viewDate, 7))}>
                             <ChevronRight className="h-4 w-4" />
                         </Button>
                     </div>
@@ -114,17 +114,17 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                 <div className="min-w-[1000px] h-full flex flex-col relative w-full">
                     
                     {/* Gantt Header - Months & Days */}
-                    <div className="bg-muted w-full z-20 sticky top-0 border-b">
+                    <div className="bg-background w-full z-20 sticky top-0 border-b shadow-sm">
                         {/* Month Row */}
-                        <div className="flex border-b border-border">
-                            <div className="w-[280px] shrink-0 bg-muted border-r font-medium text-xs text-muted-foreground uppercase flex items-center px-4">
+                        <div className="flex border-b border-border/50">
+                            <div className="w-[280px] shrink-0 bg-muted/30 border-r border-border/50 font-semibold text-xs tracking-wider text-muted-foreground uppercase flex items-center px-4">
                                 Đầu việc
                             </div>
                             <div className="flex-1 flex overflow-hidden">
                                 {monthSegments.map((seg, i) => (
                                     <div 
                                         key={i} 
-                                        className="py-1.5 px-4 border-r text-xs font-semibold text-muted-foreground text-center"
+                                        className="py-1.5 px-4 border-r border-border/50 text-xs font-semibold text-muted-foreground text-center bg-muted/10"
                                         style={{ width: `${(100 / daysInView) * seg.count}%` }}
                                     >
                                         <span className="capitalize">{seg.label}</span>
@@ -134,8 +134,8 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                         </div>
 
                         {/* Days Row */}
-                        <div className="flex bg-background border-b border-border">
-                            <div className="w-[280px] shrink-0 border-r bg-background px-4 h-11 flex items-center z-30 font-medium text-xs text-muted-foreground uppercase">
+                        <div className="flex bg-background">
+                            <div className="w-[280px] shrink-0 border-r border-border/50 bg-muted/30 px-4 h-11 flex items-center z-30 font-semibold text-xs tracking-wider text-muted-foreground uppercase">
                                 Tên Task
                             </div>
                             <div className="flex-1 flex relative">
@@ -148,19 +148,19 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                                         <div
                                             key={i}
                                             className={cn(
-                                                "p-2 text-center border-r flex flex-col items-center justify-center min-h-[50px] transition-colors relative",
-                                                isToday ? "bg-primary/5" : isWeekend ? "bg-muted/30" : "bg-transparent"
+                                                "p-2 text-center border-r border-border/50 flex flex-col items-center justify-center min-h-[44px] transition-colors relative",
+                                                isToday ? "bg-primary/5" : isWeekend ? "bg-muted/20" : "bg-transparent"
                                             )}
                                             style={{ width: `${100 / daysInView}%` }}
                                         >
                                             <span className={cn(
-                                                "text-[10px] font-bold tracking-wider uppercase mb-0.5",
+                                                "text-[10px] font-semibold tracking-wider uppercase mb-0.5",
                                                 isToday ? "text-primary" : "text-muted-foreground"
                                             )}>
                                                 {dayOfWeek === '7' ? 'CN' : `T${Number(dayOfWeek) + 1}`}
                                             </span>
                                             <span className={cn(
-                                                "text-sm font-bold tabular-nums leading-none",
+                                                "text-sm font-semibold tabular-nums leading-none",
                                                 isToday ? "text-primary" : "text-foreground"
                                             )}>
                                                 {format(date, 'dd')}
@@ -173,21 +173,21 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                     </div>
 
                     {/* Gantt Body / Rows */}
-                    <div className="divide-y relative h-max">
+                    <div className="divide-y border-b relative h-max">
                         {/* Red "Today" Line connecting body vertically */}
                         {todayLinePosition !== null && (
                             <div
-                                className="absolute top-0 bottom-0 w-[2px] bg-primary/40 z-10 pointer-events-none"
+                                className="absolute top-0 bottom-0 w-0 border-l-[2px] border-dashed border-primary/50 z-10 pointer-events-none"
                                 style={{
                                     left: `calc(280px + ${todayLinePosition} * calc(100% - 280px) / 100)`
                                 }}
                             >
-                                <div className="absolute top-0 -left-[5px] w-3 h-3 rounded-full bg-primary border-2 border-background shadow-xs" />
+                                <div className="absolute -top-1.5 -left-[5px] w-2 h-2 rounded-full bg-primary" />
                             </div>
                         )}
 
                         {tasks.length === 0 ? (
-                            <div className="flex items-center justify-center py-16 text-muted-foreground text-sm">
+                            <div className="flex items-center justify-center py-20 text-muted-foreground text-sm relative z-20 bg-background/80">
                                 Chưa có dữ liệu lịch trình cho các task.
                             </div>
                         ) : tasks.map((task) => {
@@ -195,7 +195,7 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                             return (
                                 <div key={task.id} className="flex hover:bg-muted/50 transition-colors h-[50px]">
                                     {/* Locked Left Column */}
-                                    <div className="w-[280px] shrink-0 px-4 py-3 border-r flex items-center bg-background z-20 group-hover:bg-muted/50">
+                                    <div className="w-[280px] shrink-0 px-4 py-3 border-r border-border/50 flex items-center bg-muted/5 z-20 group-hover:bg-muted/50">
                                         <p className="text-sm font-medium text-foreground truncate" title={task.title}>{task.title}</p>
                                     </div>
                                     
@@ -204,7 +204,7 @@ export function ProjectGanttChart({ tasks }: ProjectGanttChartProps) {
                                         {/* Background Grid Lines matching the header logic */}
                                         <div className="absolute inset-0 flex">
                                             {Array.from({ length: daysInView }).map((_, i) => (
-                                                <div key={i} className="border-r last:border-r-0" style={{ width: `${100 / daysInView}%` }} />
+                                                <div key={i} className="border-r border-border/30 last:border-r-0" style={{ width: `${100 / daysInView}%` }} />
                                             ))}
                                         </div>
 
