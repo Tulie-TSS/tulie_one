@@ -236,12 +236,12 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                 >
                     {/* ===== Top Navigation ===== */}
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <TabsList className="w-full justify-start h-11 p-1 bg-background border shadow-sm md:w-fit overflow-x-auto shrink-0 scrollbar-none">
+                        <TabsList className="w-full md:w-fit justify-start overflow-x-auto scrollbar-none">
                             {navItems.map(item => (
                                 <TabsTrigger
                                     key={item.value}
                                     value={item.value}
-                                    className="gap-2 px-5 py-2 font-medium"
+                                    className="gap-2 font-medium"
                                 >
                                     <item.icon className="w-4 h-4 shrink-0" />
                                     <span className="whitespace-nowrap">{item.label}</span>
@@ -249,10 +249,9 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             ))}
                             {isFinancialAuthenticated && (
                                 <>
-                                    <div className="w-px h-5 bg-border mx-1 hidden md:block" />
                                     <TabsTrigger
                                         value="finance"
-                                        className="gap-2 px-5 py-2 font-medium"
+                                        className="gap-2 font-medium"
                                     >
                                         <Wallet className="w-4 h-4 shrink-0" />
                                         <span className="whitespace-nowrap">Tài chính & Pháp lý</span>
@@ -262,17 +261,17 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                         </TabsList>
 
                         {/* Contact Info Block */}
-                        <div className="flex bg-background rounded-md border shadow-sm px-4 py-2.5 text-sm font-medium items-center gap-3 shrink-0">
-                            <Headset className="w-4 h-4 text-primary shrink-0" />
+                        <div className="flex items-center gap-4 text-sm font-medium text-muted-foreground shrink-0 px-2">
+                            <Headset className="w-4 h-4 shrink-0" />
                             <div className="flex items-center gap-2.5">
-                                <span className="text-muted-foreground text-xs font-medium hidden sm:inline">Hỗ trợ 24/7:</span>
-                                <a href="tel:0988984554" className="hover:text-primary hover:underline transition-colors flex items-center gap-1">
-                                    <Phone className="w-3.5 h-3.5 text-muted-foreground hidden sm:block" />
+                                <span className="hidden sm:inline">Hỗ trợ 24/7:</span>
+                                <a href="tel:0988984554" className="hover:text-foreground hover:underline transition-colors flex items-center gap-1">
+                                    <Phone className="w-3.5 h-3.5 hidden sm:block" />
                                     098 898 4554
                                 </a>
-                                <span className="text-muted-foreground/30">|</span>
-                                <a href="mailto:lienhe@tulie.vn" className="hover:text-primary hover:underline transition-colors flex items-center gap-1">
-                                    <Mail className="w-3.5 h-3.5 text-muted-foreground hidden sm:block" />
+                                <span>|</span>
+                                <a href="mailto:lienhe@tulie.vn" className="hover:text-foreground hover:underline transition-colors flex items-center gap-1">
+                                    <Mail className="w-3.5 h-3.5 hidden sm:block" />
                                     lienhe@tulie.vn
                                 </a>
                             </div>

@@ -184,7 +184,7 @@ export function PartnerRegistrationForm() {
                     <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px] p-0 overflow-hidden flex flex-col h-[90vh] sm:h-auto sm:max-h-[90vh]">
+            <DialogContent className="sm:max-w-[600px] p-0 flex flex-col h-[90vh] sm:h-auto sm:max-h-[90vh]">
                 <div className="px-6 py-4 border-b shrink-0">
                     <DialogTitle className="text-xl">Đăng ký Đối tác Kinh doanh</DialogTitle>
                     <DialogDescription>
@@ -205,8 +205,8 @@ export function PartnerRegistrationForm() {
                     </div>
                 </div>
 
-                <ScrollArea className="flex-1 px-6 py-4">
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <ScrollArea className="flex-1">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-6 py-4">
                         
                         {/* ─── STEP 1 ──────────────────────────────── */}
                         <div className={step === 1 ? 'block space-y-4' : 'hidden'}>

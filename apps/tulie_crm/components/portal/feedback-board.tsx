@@ -607,9 +607,9 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         </Button>
                     </div>
                 ) : (
-                    <div className="mt-4 border rounded-md bg-white shadow-sm flex flex-col divide-y divide-border">
+                    <div className="flex flex-col border-t divide-y divide-border">
                         {/* List Header */}
-                        <div className="bg-muted/50 px-5 py-3 flex items-center justify-between text-sm font-medium text-muted-foreground">
+                        <div className="bg-muted/30 px-6 py-3 flex items-center justify-between text-sm font-medium text-muted-foreground">
                             <span>{pendingCount} cần xử lý • {completedCount} hoàn thành</span>
                         </div>
                         

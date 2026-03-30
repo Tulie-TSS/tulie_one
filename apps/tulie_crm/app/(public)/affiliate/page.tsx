@@ -8,7 +8,7 @@ import {
     Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
     Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from '@repo/ui'
-import { Calculator, ArrowRight, CheckCircle2, TrendingUp, Gift, Trophy, Phone, Mail, MessageCircle, Globe, Layers, Rocket, Building2, DollarSign } from 'lucide-react'
+import { Calculator, ArrowRight, CheckCircle2, TrendingUp, Gift, Trophy, Phone, Mail, MessageCircle, Globe, Layers, Rocket, Building2, DollarSign, Headset } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils/format'
 import { cn } from '@/lib/utils'
 import { PartnerRegistrationForm } from './components/partner-registration-form'
@@ -173,7 +173,10 @@ export default function AffiliateCalculatorPage() {
                         {/* Input */}
                         <Card>
                             <CardHeader>
-                                <CardTitle>Thông số dự án</CardTitle>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Calculator className="w-5 h-5 text-primary" />
+                                    Thông số dự án
+                                </CardTitle>
                                 <CardDescription>Nhập giá trị hợp đồng và chọn vai trò của bạn.</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">
@@ -308,7 +311,10 @@ export default function AffiliateCalculatorPage() {
                         {/* Quy trình */}
                         <Card>
                             <CardHeader>
-                                <CardTitle>Quy trình hợp tác</CardTitle>
+                                <CardTitle className="flex items-center gap-2">
+                                    <CheckCircle2 className="w-5 h-5 text-primary" />
+                                    Quy trình hợp tác
+                                </CardTitle>
                                 <CardDescription>Đơn giản, minh bạch, hiệu quả.</CardDescription>
                             </CardHeader>
                             <CardContent>
@@ -409,7 +415,10 @@ export default function AffiliateCalculatorPage() {
                         {/* FAQ */}
                         <Card>
                             <CardHeader>
-                                <CardTitle>Câu hỏi thường gặp</CardTitle>
+                                <CardTitle className="flex items-center gap-2">
+                                    <MessageCircle className="w-5 h-5 text-primary" />
+                                    Câu hỏi thường gặp
+                                </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 {FAQS.map((f, i) => (
@@ -425,7 +434,10 @@ export default function AffiliateCalculatorPage() {
                         {/* Liên hệ */}
                         <Card>
                             <CardHeader>
-                                <CardTitle>Liên hệ hợp tác</CardTitle>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Headset className="w-5 h-5 text-primary" />
+                                    Liên hệ hợp tác
+                                </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-3">
                                 <a href="tel:0988984554" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">

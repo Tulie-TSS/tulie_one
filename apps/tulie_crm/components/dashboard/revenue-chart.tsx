@@ -61,12 +61,12 @@ export function RevenueChart({ data }: RevenueChartProps) {
                             <AreaChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="var(--color-chart-1)" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="var(--color-chart-1)" stopOpacity={0.1} />
+                                        <stop offset="5%" stopColor="#2563eb" stopOpacity={0.4} />
+                                        <stop offset="95%" stopColor="#2563eb" stopOpacity={0.0} />
                                     </linearGradient>
                                     <linearGradient id="profitGrad" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="var(--color-chart-2)" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="var(--color-chart-2)" stopOpacity={0.1} />
+                                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
+                                        <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
                                     </linearGradient>
                                 </defs>
                                 <CartesianGrid vertical={false} stroke="var(--color-border)" />
@@ -126,24 +126,24 @@ export function RevenueChart({ data }: RevenueChartProps) {
                                     wrapperStyle={{ fontSize: 13, fontWeight: 500, color: 'var(--color-foreground)' }}
                                 />
                                 <Area
-                                    type="natural"
+                                    type="monotone"
                                     dataKey="revenue"
                                     name="Doanh thu"
-                                    stroke="var(--color-chart-1)"
+                                    stroke="#2563eb"
                                     strokeWidth={3}
                                     fillOpacity={1}
                                     fill="url(#revenueGrad)"
-                                    activeDot={{ r: 5, strokeWidth: 2, stroke: 'var(--color-background)', fill: 'var(--color-chart-1)' }}
+                                    activeDot={{ r: 6, strokeWidth: 0, fill: '#2563eb' }}
                                 />
                                 <Area
-                                    type="natural"
+                                    type="monotone"
                                     dataKey="profit"
                                     name="Lợi nhuận"
-                                    stroke="var(--color-chart-2)"
+                                    stroke="#10b981"
                                     strokeWidth={3}
                                     fillOpacity={1}
                                     fill="url(#profitGrad)"
-                                    activeDot={{ r: 5, strokeWidth: 2, stroke: 'var(--color-background)', fill: 'var(--color-chart-2)' }}
+                                    activeDot={{ r: 6, strokeWidth: 0, fill: '#10b981' }}
                                 />
                             </AreaChart>
                         </ResponsiveContainer>

@@ -511,9 +511,9 @@ export default function SettingsPage() {
                 </div>
             </div>
 
-            <Tabs defaultValue="company" onValueChange={loadTabData} className="flex flex-col lg:flex-row gap-8">
-                <aside className="lg:w-64 space-y-4">
-                    <TabsList className="flex flex-col h-auto bg-muted/30 p-1.5 space-y-1 items-stretch rounded-md border border-border">
+            <Tabs orientation="vertical" defaultValue="company" onValueChange={loadTabData} className="flex flex-col lg:flex-row gap-8">
+                <aside className="lg:w-64 shrink-0 space-y-4">
+                    <TabsList className="flex flex-col h-auto bg-muted/30 p-1.5 space-y-1 items-stretch rounded-xl border border-border">
                         <TabsTrigger
                             value="company"
                             className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
