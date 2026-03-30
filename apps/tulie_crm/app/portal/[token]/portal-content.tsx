@@ -236,7 +236,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                 >
                     {/* ===== Top Navigation ===== */}
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <TabsList className="w-full md:w-fit justify-start overflow-x-auto scrollbar-none">
+                        <TabsList className="w-full md:w-fit justify-start border bg-muted/20">
                             {navItems.map(item => (
                                 <TabsTrigger
                                     key={item.value}
@@ -683,19 +683,19 @@ function TimelineSection({ timeline }: { timeline: any[] }) {
                 <CardDescription>Các thao tác hệ thống ghi nhận từ khi khởi tạo tới lúc kết thúc dự án</CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-0">
                     {timeline.map((event, i) => (
-                        <div key={event.id} className="flex gap-3 text-sm">
-                            <div className="mt-1 flex flex-col items-center">
+                        <div key={event.id} className="relative flex gap-4 text-sm pb-6">
+                            {i !== timeline.length - 1 && (
+                                <div className="absolute top-3 bottom-0 left-[5px] w-px bg-border" />
+                            )}
+                            <div className="relative mt-1 shrink-0">
                                 <div className={cn(
-                                    "h-2 w-2 rounded-full",
-                                    event.status === 'completed' ? "bg-primary" : "bg-muted-foreground/30"
+                                    "h-3 w-3 rounded-full border-2 bg-background z-10",
+                                    event.status === 'completed' ? "border-primary" : "border-muted-foreground/30"
                                 )} />
-                                {i !== timeline.length - 1 && (
-                                    <div className="w-px flex-1 bg-border mt-1" />
-                                )}
                             </div>
-                            <div className="flex-1 pb-4">
+                            <div className="flex-1">
                                 <div className="flex items-center justify-between gap-4">
                                     <p className={cn(
                                         "font-medium leading-none",
@@ -706,7 +706,7 @@ function TimelineSection({ timeline }: { timeline: any[] }) {
                                     </span>
                                 </div>
                                 {event.description && (
-                                    <p className="text-xs text-muted-foreground mt-1">{event.description}</p>
+                                    <p className="text-xs text-muted-foreground mt-1.5">{event.description}</p>
                                 )}
                             </div>
                         </div>

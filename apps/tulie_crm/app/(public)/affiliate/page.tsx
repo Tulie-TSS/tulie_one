@@ -180,23 +180,23 @@ export default function AffiliateCalculatorPage() {
                                 <CardDescription>Nhập giá trị hợp đồng và chọn vai trò của bạn.</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">
-                                <div className="space-y-2">
-                                    <Label htmlFor="budget">Doanh số khách hàng (VNĐ)</Label>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="budget">Doanh số khách hàng (VND)</Label>
                                     <div className="relative">
                                         <Input
                                             id="budget"
                                             value={amountStr}
                                             onChange={(e) => setAmountStr(formatInput(e.target.value))}
-                                            className="text-lg font-semibold tabular-nums pr-14"
+                                            className="text-lg font-semibold tabular-nums pr-12"
                                             placeholder="VD: 50,000,000"
                                         />
-                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">VNĐ</span>
+                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-muted-foreground">đ</span>
                                     </div>
                                 </div>
                                 <Separator />
-                                <div className="space-y-2">
+                                <div className="grid gap-3">
                                     <Label>Vai trò của bạn</Label>
-                                    <RadioGroup value={role} onValueChange={setRole} className="space-y-2">
+                                    <RadioGroup value={role} onValueChange={setRole} className="grid gap-2">
                                         {ROLES.map((r) => (
                                             <label
                                                 key={r.value}

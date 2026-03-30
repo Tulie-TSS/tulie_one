@@ -154,7 +154,7 @@ export default async function PartnerDashboardPage() {
                                     <h4 className={`text-xs font-semibold mb-1 ${isAchieved ? 'text-primary' : 'text-muted-foreground'}`}>{tier.label}</h4>
                                     <div className="text-[11px] text-muted-foreground mb-1">Mốc {tier.revenue / 1000000}Tr</div>
                                     <Badge variant={isAchieved ? 'default' : 'secondary'} className={`text-[10px] uppercase font-bold ${isAchieved ? 'bg-amber-500 text-white hover:bg-amber-600' : ''}`}>
-                                        +{tier.bonus / 1000000}Tr VNĐ
+                                        +{tier.bonus / 1000000}Tr VND
                                     </Badge>
                                 </div>
                             )
