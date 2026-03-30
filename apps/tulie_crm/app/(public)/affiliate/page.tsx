@@ -218,8 +218,8 @@ export default function AffiliateCalculatorPage() {
                                 </div>
                                 <Separator />
                                 <div className="flex justify-between items-center text-sm">
-                                    <span className="text-muted-foreground">Hoa hồng cơ bản ({baseRate}%)</span>
-                                    <span className="font-medium tabular-nums">{formatCurrency(baseEarning)}</span>
+                                    <span className="text-emerald-600">Hoa hồng cơ bản ({baseRate}%)</span>
+                                    <span className="font-medium tabular-nums text-emerald-600">{formatCurrency(baseEarning)}</span>
                                 </div>
                                 {bonusPct > 0 && (
                                     <div className="flex justify-between items-center text-sm">
