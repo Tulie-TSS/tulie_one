@@ -43,6 +43,9 @@ import {
     ZoomIn,
     Edit,
     Trash2,
+    ArrowDown,
+    ArrowRight,
+    ArrowUp,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -80,27 +83,27 @@ interface FeedbackBoardProps {
     isAdmin?: boolean
 }
 
-const STATUS_CONFIG: Record<string, { label: string; icon: typeof Circle; bg: string; text: string; dot: string; border: string }> = {
-    pending:          { label: 'Chờ phản hồi', icon: Clock,       bg: 'bg-amber-50',    text: 'text-amber-700',   dot: 'bg-amber-500',   border: 'border-amber-200' },
-    in_progress:      { label: 'Đang xử lý',   icon: RotateCcw,   bg: 'bg-blue-50',     text: 'text-blue-700',    dot: 'bg-blue-500',    border: 'border-blue-200' },
-    completed:        { label: 'Hoàn thành',    icon: CheckCircle2, bg: 'bg-emerald-50',  text: 'text-emerald-700', dot: 'bg-emerald-500', border: 'border-emerald-200' },
-    on_hold:          { label: 'Tạm dừng',      icon: Pause,       bg: 'bg-muted',     text: 'text-muted-foreground',    dot: 'bg-zinc-400',    border: 'border-border' },
-    cancelled:        { label: 'Đã hủy',        icon: XCircle,     bg: 'bg-rose-50',     text: 'text-rose-700',    dot: 'bg-rose-500',    border: 'border-rose-200' },
-    revision_needed:  { label: 'Cần chỉnh sửa', icon: RotateCcw,   bg: 'bg-orange-50',   text: 'text-orange-700',  dot: 'bg-orange-500',  border: 'border-orange-200' },
+const STATUS_CONFIG: Record<string, { label: string; icon: typeof Circle; colorClass: string }> = {
+    pending:          { label: 'Chờ phản hồi', icon: Clock,        colorClass: 'text-amber-500' },
+    in_progress:      { label: 'Đang xử lý',   icon: RotateCcw,    colorClass: 'text-blue-500' },
+    completed:        { label: 'Hoàn thành',    icon: CheckCircle2,  colorClass: 'text-emerald-500' },
+    on_hold:          { label: 'Tạm dừng',      icon: Pause,        colorClass: 'text-muted-foreground' },
+    cancelled:        { label: 'Đã hủy',        icon: XCircle,      colorClass: 'text-rose-500' },
+    revision_needed:  { label: 'Cần chỉnh sửa', icon: RotateCcw,    colorClass: 'text-orange-500' },
 }
 
-const PRIORITY_CONFIG: Record<string, { label: string; color: string; indicator: string }> = {
-    low:    { label: 'Thấp',   color: 'text-muted-foreground', indicator: 'bg-zinc-400' },
-    normal: { label: 'Bình thường', color: 'text-foreground/80', indicator: 'bg-zinc-500' },
-    high:   { label: 'Cao',    color: 'text-orange-600', indicator: 'bg-orange-500' },
-    urgent: { label: 'Gấp',   color: 'text-rose-600', indicator: 'bg-rose-500' },
+const PRIORITY_CONFIG: Record<string, { label: string; colorClass: string; icon: typeof ArrowDown }> = {
+    low:    { label: 'Thấp',   colorClass: 'text-muted-foreground', icon: ArrowDown },
+    normal: { label: 'Bình thường', colorClass: 'text-muted-foreground', icon: ArrowRight },
+    high:   { label: 'Cao',    colorClass: 'text-orange-500', icon: ArrowUp },
+    urgent: { label: 'Gấp',   colorClass: 'text-rose-500', icon: ArrowUp },
 }
 
 function StatusBadge({ status }: { status: string }) {
     const s = STATUS_CONFIG[status] || STATUS_CONFIG.pending
     return (
-        <Badge variant="outline" className={cn("gap-1.5 px-2 py-0.5 font-medium", s.bg, s.border, s.text)}>
-            <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", s.dot)} />
+        <Badge variant={status === 'completed' ? 'secondary' : 'outline'} className="gap-1.5 px-2 py-0.5 font-normal text-foreground">
+            <s.icon className={cn("w-3.5 h-3.5", s.colorClass)} />
             {s.label}
         </Badge>
     )
@@ -561,13 +564,13 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                         key={key}
                                         onClick={() => setNewPriority(key)}
                                         className={cn(
-                                            "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all border",
+                                            "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all border",
                                             newPriority === key
-                                                ? "bg-primary text-primary-foreground border-zinc-900"
-                                                : "bg-background text-muted-foreground border-border hover:border-ring hover:bg-muted"
+                                                ? "bg-muted text-foreground border-border shadow-sm"
+                                                : "bg-background text-muted-foreground border-transparent hover:bg-muted"
                                         )}
                                     >
-                                        {newPriority === key && <span className={cn("w-1.5 h-1.5 rounded-full", "bg-current")} />}
+                                        <config.icon className={cn("w-3.5 h-3.5", newPriority === key ? config.colorClass : "text-muted-foreground")} />
                                         {config.label}
                                     </button>
                                 ))}
@@ -663,8 +666,8 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                 </TableCell>
                                                 <TableCell>
                                                     <div className="flex items-center gap-1.5">
-                                                        <span className={cn("w-1.5 h-1.5 rounded-full", priorityConf.indicator)} />
-                                                        <span className={cn("text-[12px] font-semibold", priorityConf.color)}>{priorityConf.label}</span>
+                                                        <priorityConf.icon className={cn("w-3.5 h-3.5", priorityConf.colorClass)} />
+                                                        <span className={cn("text-[13px] font-medium text-muted-foreground", priorityConf.colorClass)}>{priorityConf.label}</span>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell>
