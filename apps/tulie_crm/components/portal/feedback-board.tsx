@@ -159,6 +159,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
     // Agency response edit state
     const [editResponseId, setEditResponseId] = useState<string | null>(null)
     const [editResponseContent, setEditResponseContent] = useState('')
+    const [editResponseStatus, setEditResponseStatus] = useState('in_progress')
 
     // New item form state
     const [newTitle, setNewTitle] = useState('')
@@ -351,7 +352,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
         }
     }
 
-    const handleSaveResponse = async (id: string, currentStatus: string) => {
+    const handleSaveResponse = async (id: string) => {
         setIsSubmitting(true)
         try {
             const res = await fetch('/api/portal-feedback', {
@@ -361,8 +362,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                     id, 
                     response_content: editResponseContent,
                     responded_by: 'Agency', // Use standard or dynamic
-                    // Auto-update to processing if it's currently pending
-                    ...(currentStatus === 'pending' ? { status: 'processing' } : {})
+                    status: editResponseStatus
                 })
             })
             if (res.ok) {
@@ -815,6 +815,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                                     e.stopPropagation(); 
                                                                                     setEditResponseId(item.id);
                                                                                     setEditResponseContent(item.response_content || '');
+                                                                                    setEditResponseStatus(item.status === 'pending' ? 'in_progress' : item.status);
                                                                                 }} 
                                                                                 className="h-7 text-xs px-2 bg-background hover:bg-muted border-border text-muted-foreground font-semibold hover:text-foreground transition-colors"
                                                                             >
@@ -831,11 +832,25 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                                 placeholder="Nhập nội dung phản hồi..."
                                                                                 className="flex-1 min-h-[120px] text-[13px] resize-none" 
                                                                             />
-                                                                            <div className="flex items-center justify-end gap-2">
-                                                                                <Button variant="ghost" size="sm" onClick={() => setEditResponseId(null)} className="h-8 shadow-none font-semibold text-muted-foreground">Hủy</Button>
-                                                                                <Button onClick={() => handleSaveResponse(item.id, item.status)} disabled={isSubmitting} size="sm" className="h-8 shadow-md font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-all">
-                                                                                    {isSubmitting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3 mr-1.5" />} {isSubmitting ? '' : 'Gửi'}
-                                                                                </Button>
+                                                                            <div className="flex items-center justify-between gap-2">
+                                                                                <div className="flex items-center gap-2">
+                                                                                    <span className="text-xs font-medium text-muted-foreground hidden sm:inline-block">Trạng thái:</span>
+                                                                                    <select
+                                                                                        value={editResponseStatus}
+                                                                                        onChange={e => setEditResponseStatus(e.target.value)}
+                                                                                        className="h-8 rounded-md border border-input bg-background px-3 text-xs font-medium text-foreground sm:min-w-[140px] focus:outline-none focus:ring-1 focus:ring-ring"
+                                                                                    >
+                                                                                        {Object.entries(STATUS_CONFIG).map(([key, config]) => (
+                                                                                            <option key={key} value={key}>{config.label}</option>
+                                                                                        ))}
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div className="flex items-center gap-2">
+                                                                                    <Button variant="ghost" size="sm" onClick={() => setEditResponseId(null)} className="h-8 shadow-none font-semibold text-muted-foreground">Hủy</Button>
+                                                                                    <Button onClick={() => handleSaveResponse(item.id)} disabled={isSubmitting} size="sm" className="h-8 shadow-md font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-all">
+                                                                                        {isSubmitting ? <Loader2 className="w-3 h-3 animate-spin mr-1.5" /> : <Send className="w-3 h-3 mr-1.5" />} {isSubmitting ? 'Đ.gửi...' : 'Gửi'}
+                                                                                    </Button>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     ) : item.response_content ? (
