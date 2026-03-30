@@ -508,7 +508,7 @@ export default function AffiliateCalculatorPage() {
                             <Accordion type="single" collapsible className="w-full">
                                 {PRODUCTS.map((p, i) => (
                                     <AccordionItem key={i} value={`product-${i}`}>
-                                        <AccordionTrigger>
+                                        <AccordionTrigger className="hover:no-underline">
                                             <div className="flex items-center gap-3">
                                                 <span className="font-medium">{p.name}</span>
                                                 <Badge variant="outline">{p.price}</Badge>
