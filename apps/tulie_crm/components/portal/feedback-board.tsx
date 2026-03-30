@@ -607,7 +607,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         </Button>
                     </div>
                 ) : (
-                    <div className="overflow-x-auto">
+                    <div className="rounded-md border overflow-hidden mt-4 bg-white shadow-sm">
                         <Table>
                             <TableHeader>
                                 <TableRow>
