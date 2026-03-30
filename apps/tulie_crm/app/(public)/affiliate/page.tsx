@@ -368,7 +368,7 @@ export default function AffiliateCalculatorPage() {
                                     <Gift className="w-5 h-5 text-primary" />
                                     Thưởng tiền mặt
                                 </CardTitle>
-                                <CardDescription>Thưởng cộng dồn — đạt mốc nào nhận mốc đó. VD: đạt 200 triệu sẽ nhận thưởng mốc 50 + 100 + 200 triệu.</CardDescription>
+                                <CardDescription>Thưởng cộng dồn — đạt mốc nào nhận mốc đó. VD: đạt 200 triệu sẽ nhận thưởng mốc 50 + 100 + 150 + 200 triệu.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Table>
