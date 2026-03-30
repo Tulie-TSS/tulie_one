@@ -607,12 +607,12 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-[60px] pl-6 text-center">STT</TableHead>
+                                    <TableHead className="w-[60px] text-center">STT</TableHead>
                                     <TableHead>Nội dung phản hồi / Yêu cầu</TableHead>
                                     <TableHead className="w-[120px]">Mức độ</TableHead>
                                     <TableHead className="w-[140px]">Trạng thái</TableHead>
                                     <TableHead className="w-[180px]">Khởi tạo</TableHead>
-                                    <TableHead className="w-[80px] pr-6"></TableHead>
+                                    <TableHead className="w-[80px]"></TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -627,19 +627,19 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                             {/* Main Row */}
                                             <TableRow 
                                                 className={cn(
-                                                    "group cursor-pointer transition-colors border-b-zinc-100", 
-                                                    isExpanded ? "bg-muted/50 hover:bg-muted/80" : "hover:bg-muted",
-                                                    isCompleted && !isExpanded ? "opacity-60 bg-muted/30" : ""
+                                                    "group cursor-pointer", 
+                                                    isExpanded && "bg-muted/50",
+                                                    isCompleted && !isExpanded && "opacity-60"
                                                 )}
                                                 onClick={() => toggleExpand(item.id)}
                                             >
-                                                <TableCell className="pl-6 text-center">
-                                                    <span className="text-xs text-muted-foreground">#{(items.length - index).toString().padStart(2, '0')}</span>
+                                                <TableCell className="text-center">
+                                                    <span className="text-xs text-muted-foreground font-medium">#{(items.length - index).toString().padStart(2, '0')}</span>
                                                 </TableCell>
                                                 <TableCell>
                                                     <div className="flex flex-col gap-1 py-1">
                                                         <span className={cn(
-                                                            "font-semibold text-[13px] line-clamp-2",
+                                                            "font-medium text-sm line-clamp-2",
                                                             isCompleted ? "line-through text-muted-foreground" : "text-foreground"
                                                         )}>
                                                             {item.title}
@@ -675,7 +675,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                         <span className="text-muted-foreground truncate max-w-[140px]">bởi {item.created_by_name}</span>
                                                     </div>
                                                 </TableCell>
-                                                <TableCell className="pr-6 text-right">
+                                                <TableCell className="text-right">
                                                     <Button 
                                                         variant="ghost" 
                                                         size="sm" 
@@ -691,11 +691,10 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
 
                                             {/* Expanded Detail Row */}
                                             {isExpanded && (
-                                                <TableRow className="border-b-zinc-200 bg-muted/50 hover:bg-muted/50">
-                                                    <TableCell colSpan={6} className="p-0">
-                                                        <div className="px-6 py-6 border-l-2 border-l-primary/30 ml-[25px] mb-4 mt-2 bg-background rounded-r-xl mr-6 border-y border-r border-border/60 overflow-hidden">
-                                                            
-                                                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                                                <TableRow className="bg-muted/30">
+                                                    <TableCell colSpan={6} className="p-0 border-b">
+                                                        <div className="p-4 md:p-6 lg:px-8 border-t border-border/50">
+                                                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-background rounded-lg border p-6 shadow-sm">
                                                                 {/* Left: Original Request */}
                                                                 <div className="lg:col-span-7 space-y-4">
                                                                     <div className="flex items-start justify-between gap-4 mb-3">
@@ -846,7 +845,6 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                     )}
                                                                 </div>
                                                             </div>
-
                                                         </div>
                                                     </TableCell>
                                                 </TableRow>
