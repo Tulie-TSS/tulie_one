@@ -23,9 +23,10 @@ import {
     SelectContent,
     SelectItem,
     SelectTrigger,
-    SelectValue
+    SelectValue,
+    FileUpload,
+    UploadFile
 } from '@repo/ui'
-import { FileUpload, UploadFile } from '@repo/ui/src/patterns/file-upload'
 import { toast } from 'sonner'
 import { ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react'
 
@@ -44,7 +45,7 @@ export function PartnerRegistrationForm() {
     const [pdfFile, setPdfFile] = React.useState<UploadFile | null>(null)
 
     const form = useForm<FormData>({
-        resolver: zodResolver(createPartnerRegistrationSchema),
+        resolver: zodResolver(createPartnerRegistrationSchema) as any,
         defaultValues: {
             full_name: '',
             phone: '',
@@ -261,7 +262,7 @@ export function PartnerRegistrationForm() {
                                         placeholder="Kéo thả hoặc nhấn để chọn file PDF CCCD"
                                         description="Bản scan PDF có bản quyền/watermark của ứng dụng VNeID (khuyên dùng)"
                                         onUpload={uploadFile}
-                                        onFilesChange={(files) => setPdfFile(files[0] || null)}
+                                        onFilesChange={(files: any) => setPdfFile(files[0] || null)}
                                         value={pdfFile ? [pdfFile] : []}
                                     />
                                 ) : (
@@ -273,7 +274,7 @@ export function PartnerRegistrationForm() {
                                             placeholder="Mặt trước CCCD"
                                             description="Ảnh chụp rõ net, không bị cắt góc"
                                             onUpload={uploadFile}
-                                            onFilesChange={(files) => setFrontFile(files[0] || null)}
+                                            onFilesChange={(files: any) => setFrontFile(files[0] || null)}
                                             value={frontFile ? [frontFile] : []}
                                         />
                                         <FileUpload
@@ -283,7 +284,7 @@ export function PartnerRegistrationForm() {
                                             placeholder="Mặt sau CCCD"
                                             description="Bao gồm thông tin đặc điểm nhận dạng"
                                             onUpload={uploadFile}
-                                            onFilesChange={(files) => setBackFile(files[0] || null)}
+                                            onFilesChange={(files: any) => setBackFile(files[0] || null)}
                                             value={backFile ? [backFile] : []}
                                         />
                                     </div>
@@ -350,7 +351,7 @@ export function PartnerRegistrationForm() {
                             <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>
                     ) : (
-                        <Button type="button" onClick={form.handleSubmit(onSubmit)} disabled={isSubmitting}>
+                        <Button type="button" onClick={form.handleSubmit(onSubmit) as any} disabled={isSubmitting}>
                             {isSubmitting ? 'Đang gửi...' : 'Hoàn tất Đăng ký'}
                             {!isSubmitting && <CheckCircle2 className="w-4 h-4 ml-2" />}
                         </Button>
