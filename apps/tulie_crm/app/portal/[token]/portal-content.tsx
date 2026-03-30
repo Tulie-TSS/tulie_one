@@ -395,10 +395,10 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
 
                 {/* Document Viewer Dialog */}
                 <Dialog open={isViewingDoc} onOpenChange={setIsViewingDoc}>
-                    <DialogContent className="max-w-5xl h-[90vh] p-0 flex flex-col" showCloseButton={true}>
-                        <div className="px-4 py-4 flex-1 overflow-auto bg-muted/40 flex items-center justify-center">
+                    <DialogContent className="max-w-5xl sm:max-w-5xl h-[90vh] p-0 flex flex-col" showCloseButton={true}>
+                        <div className="px-4 py-4 flex-1 overflow-auto bg-muted/40 flex">
                             <div
-                                className="bg-white shadow-xl ring-1 ring-foreground/10 text-black mx-auto relative rounded-md my-4 p-12"
+                                className="bg-white shadow-xl ring-1 ring-foreground/10 text-black m-auto relative rounded-md p-12 shrink-0"
                                 style={{ width: '210mm', minHeight: '297mm' }}
                                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(selectedDocContent || '') }}
                             />
