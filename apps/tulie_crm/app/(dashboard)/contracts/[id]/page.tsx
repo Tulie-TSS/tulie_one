@@ -100,7 +100,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                         <Button variant="outline" size="sm" asChild>
                             <a href={portalUrl} target="_blank" rel="noopener noreferrer">
                                 <Globe className="h-4 w-4 mr-2" />
-                                Xem Portal
+                                Mở Portal Dự Án
                             </a>
                         </Button>
                     )}

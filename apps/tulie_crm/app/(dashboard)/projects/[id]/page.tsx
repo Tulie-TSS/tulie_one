@@ -79,7 +79,7 @@ export default async function ProjectDetailPage({ params }: any) {
                         <Button variant="outline" asChild>
                             <Link href={portalUrl} target="_blank">
                                 <Globe className="h-4 w-4" />
-                                Xem Customer Portal
+                                Mở Portal Dự Án
                             </Link>
                         </Button>
                     )}

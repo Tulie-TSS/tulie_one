@@ -215,7 +215,7 @@ export default function QuotationDetailPage() {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-64">
-                                <DropdownMenuLabel>Link & Portal công khai</DropdownMenuLabel>
+                                <DropdownMenuLabel>Truy cập Portal Khách Hàng</DropdownMenuLabel>
                                 <DropdownMenuSeparator className="my-1.5 opacity-50" />
 
                                 {!quotation.public_token ? (
@@ -225,42 +225,22 @@ export default function QuotationDetailPage() {
                                 ) : (
                                     <>
                                         <DropdownMenuItem asChild className="rounded-md px-4 py-2 text-sm font-medium text-zinc-700 cursor-pointer">
-                                            <Link href={portalUrl || '#'} target="_blank">
-                                                <Layout className="h-4 w-4 mr-3 opacity-50" />
-                                                Mở Portal khách hàng
-                                            </Link>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem
-                                            onClick={() => {
-                                                if (portalUrl) {
-                                                    navigator.clipboard.writeText(portalUrl)
-                                                    toast.success('Đã sao chép link portal')
-                                                }
-                                            }}
-                                            className="rounded-md px-4 py-2 text-sm font-medium text-zinc-700 cursor-pointer"
-                                        >
-                                            <Copy className="h-4 w-4 mr-3 opacity-50" />
-                                            Sao chép link portal
-                                        </DropdownMenuItem>
-
-                                        <DropdownMenuSeparator className="my-2 opacity-50" />
-                                        <DropdownMenuItem asChild className="rounded-md px-4 py-2 text-sm font-medium text-zinc-700 cursor-pointer">
                                             <Link href={publicUrl || '#'} target="_blank">
                                                 <ExternalLink className="h-4 w-4 mr-3 opacity-50" />
-                                                Mở Link báo giá
+                                                Mở Portal Báo Giá
                                             </Link>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem
                                             onClick={() => {
                                                 if (publicUrl) {
                                                     navigator.clipboard.writeText(publicUrl)
-                                                    toast.success('Đã sao chép link báo giá')
+                                                    toast.success('Đã sao chép link Portal Báo Giá')
                                                 }
                                             }}
                                             className="rounded-md px-4 py-2 text-sm font-medium text-zinc-700 cursor-pointer"
                                         >
                                             <Copy className="h-4 w-4 mr-3 opacity-50" />
-                                            Sao chép link báo giá
+                                            Copy link Portal Báo Giá
                                         </DropdownMenuItem>
                                     </>
                                 )}

@@ -159,12 +159,12 @@ export function QuotationCellAction({ data }: QuotationCellActionProps) {
                     <DropdownMenuItem asChild>
                         <Link href={publicUrl} target="_blank">
                             <ExternalLink className="h-4 w-4" />
-                            Xem trang công khai
+                            Mở Portal Báo Giá
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={copyLink}>
                         <Copy className="h-4 w-4" />
-                        Sao chép link
+                        Copy link Portal Báo Giá
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setEmailOpen(true)}>
                         <Send className="h-4 w-4" />
