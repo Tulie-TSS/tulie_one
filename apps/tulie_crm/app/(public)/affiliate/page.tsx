@@ -15,8 +15,8 @@ import { cn } from '@/lib/utils'
 // ── Data Constants ──────────────────────────────────────────────────────────
 
 const ROLES = [
-    { value: 'lead_only', label: 'Giới thiệu khách hàng', rate: 7, desc: 'Cung cấp thông tin khách hàng tiềm năng, Tulie chịu trách nhiệm tư vấn và chốt hợp đồng.' },
-    { value: 'consult_close', label: 'Tư vấn & phối hợp', rate: 15, desc: 'Tham gia tư vấn khách hàng và phối hợp cùng đội ngũ Tulie để hoàn tất hợp đồng.' },
+    { value: 'lead_only', label: 'Giới thiệu khách hàng', rate: 7, desc: 'Cung cấp thông tin khách hàng tiềm năng, Công ty chịu trách nhiệm tư vấn và chốt hợp đồng.' },
+    { value: 'consult_close', label: 'Tư vấn & phối hợp', rate: 15, desc: 'Tham gia tư vấn khách hàng và phối hợp cùng đội ngũ Công ty để hoàn tất hợp đồng.' },
     { value: 'full_close', label: 'Tự chốt hợp đồng', rate: 20, desc: 'Chủ động toàn bộ quy trình tư vấn và đàm phán cho đến khi ký kết hợp đồng.' },
 ] as const
 
@@ -37,8 +37,8 @@ const CASH_MILESTONES = [
 ] as const
 
 const STEPS = [
-    { step: '1', title: 'Giới thiệu khách hàng', desc: 'Gửi thông tin khách hàng tiềm năng đến Tulie qua Hotline hoặc Zalo.' },
-    { step: '2', title: 'Tulie tiếp nhận & xử lý', desc: 'Đội ngũ chuyên môn tư vấn, đàm phán và hoàn tất hợp đồng với khách hàng.' },
+    { step: '1', title: 'Giới thiệu khách hàng', desc: 'Gửi thông tin khách hàng tiềm năng đến Công ty qua Hotline hoặc Zalo.' },
+    { step: '2', title: 'Công ty tiếp nhận & xử lý', desc: 'Đội ngũ chuyên môn tư vấn, đàm phán và hoàn tất hợp đồng với khách hàng.' },
     { step: '3', title: 'Nhận hoa hồng', desc: 'Sau khi hợp đồng được xác nhận, hoa hồng được thanh toán trong vòng 7 ngày làm việc.' },
 ]
 
@@ -148,10 +148,10 @@ export default function AffiliateCalculatorPage() {
                         <Calculator className="w-6 h-6 text-primary" />
                     </div>
                     <h1 className="text-3xl font-bold tracking-tight">
-                        Công cụ tính Chiết khấu Đối tác
+                        Chương trình Đối tác Kinh doanh
                     </h1>
                     <p className="text-muted-foreground max-w-xl mx-auto">
-                        Mô phỏng thu nhập dự kiến khi trở thành Đối tác phát triển kinh doanh của Tulie.
+                        Ước tính thu nhập khi giới thiệu khách hàng sử dụng dịch vụ thiết kế Website & Landing Page.
                     </p>
                 </div>
 
@@ -389,8 +389,8 @@ export default function AffiliateCalculatorPage() {
                                                             {m.label}
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell className="text-right font-medium tabular-nums">
-                                                        {formatCurrency(m.reward)}
+                                                    <TableCell className="text-right font-medium tabular-nums text-emerald-600">
+                                                        +{formatCurrency(m.reward)}
                                                     </TableCell>
                                                 </TableRow>
                                             )
@@ -474,34 +474,38 @@ export default function AffiliateCalculatorPage() {
 
                         {/* Gợi ý nhanh */}
                         <div>
-                            <p className="text-sm font-medium mb-3">Gợi ý tư vấn theo nhu cầu khách hàng</p>
+                            <p className="text-sm font-medium mb-3">Nhận diện nhu cầu — gợi ý gói phù hợp</p>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div className="flex items-start gap-2.5 rounded-md border p-3">
                                     <Rocket className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                                     <div>
-                                        <p className="text-sm font-medium">Khách cần chạy quảng cáo</p>
+                                        <p className="text-sm font-medium">Đang chạy quảng cáo, cần trang chốt đơn</p>
                                         <p className="text-xs text-muted-foreground">→ Landing Page (2 – 8 triệu)</p>
+                                        <p className="text-xs text-muted-foreground italic">VD: Spa, phòng khám, khóa học online</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-2.5 rounded-md border p-3">
                                     <Globe className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                                     <div>
-                                        <p className="text-sm font-medium">Khách cần website cơ bản</p>
-                                        <p className="text-xs text-muted-foreground">→ Website cơ bản (10 – 15 triệu)</p>
+                                        <p className="text-sm font-medium">Cần web giới thiệu doanh nghiệp</p>
+                                        <p className="text-xs text-muted-foreground">→ Website cơ bản (8 – 20 triệu)</p>
+                                        <p className="text-xs text-muted-foreground italic">VD: Nha khoa, luật sư, nội thất</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-2.5 rounded-md border p-3">
                                     <TrendingUp className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                                     <div>
-                                        <p className="text-sm font-medium">Khách cần SEO / Marketing</p>
-                                        <p className="text-xs text-muted-foreground">→ Website tiêu chuẩn (25 – 40 triệu)</p>
+                                        <p className="text-sm font-medium">Cần hệ thống SEO & Marketing online</p>
+                                        <p className="text-xs text-muted-foreground">→ Website tiêu chuẩn (20 – 50 triệu)</p>
+                                        <p className="text-xs text-muted-foreground italic">VD: Chuỗi nhà hàng, du lịch, giáo dục</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-2.5 rounded-md border p-3">
                                     <Building2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                                     <div>
-                                        <p className="text-sm font-medium">Khách muốn xây hệ thống</p>
-                                        <p className="text-xs text-muted-foreground">→ Website chuyên nghiệp (50 triệu+)</p>
+                                        <p className="text-sm font-medium">Cần web tích hợp hệ thống quản trị</p>
+                                        <p className="text-xs text-muted-foreground">→ Website chuyên nghiệp (50 – 100 triệu)</p>
+                                        <p className="text-xs text-muted-foreground italic">VD: BĐS, startup, tập đoàn, sàn TMĐT</p>
                                     </div>
                                 </div>
                             </div>
@@ -567,6 +571,12 @@ export default function AffiliateCalculatorPage() {
 
                     </CardContent>
                 </Card>
+
+                {/* ── Policy Footer ──────────────────────────────────── */}
+                <div className="text-center text-xs text-muted-foreground space-y-1 pt-4">
+                    <p>Chính sách hoa hồng áp dụng từ ngày 01/03/2026 cho đến khi có thông báo thay đổi chính thức từ Công ty.</p>
+                    <p>Hotline: 098 898 4554 · Email: lienhe@tulie.vn</p>
+                </div>
 
             </div>
         </div>
