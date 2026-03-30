@@ -238,6 +238,7 @@ export function ProjectSidebar({ project, teamMembers = [] }: ProjectSidebarProp
                         </>
                     )}
                 </CardContent>
+            </Card>
         </div>
     )
 }
