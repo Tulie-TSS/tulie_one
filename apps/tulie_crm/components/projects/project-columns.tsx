@@ -2,6 +2,7 @@
 
 import { Project } from '@/types'
 import { ColumnDef } from '@tanstack/react-table'
+import { Badge } from '@repo/ui'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { formatDate } from '@/lib/utils/format'
 import { DataTableColumnHeader } from '@/components/shared/data-table-column-header'
@@ -63,15 +64,13 @@ export const projectColumns: ColumnDef<Project>[] = [
                 <div className="flex items-center gap-2">
                     <span className="text-sm font-semibold tabular-nums">{stats.total}</span>
                     {allSigned ? (
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        <Badge variant="outline" className="text-[10px] leading-none px-1.5 py-0.5 bg-green-50/50 text-green-700 border-green-200">
                             Đủ hồ sơ
-                        </span>
+                        </Badge>
                     ) : (
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                        <Badge variant="secondary" className="text-[10px] leading-none px-1.5 py-0.5 pointer-events-none">
                             {stats.visible} hiện
-                        </span>
+                        </Badge>
                     )}
                 </div>
             )

@@ -76,6 +76,9 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
         docStatus?: string
     }
 
+    // priority values for document statuses to determine which to show when duplicates exist
+    const priorityMap: Record<string, number> = { signed: 4, sent: 3, pending: 2, draft: 1 }
+
 
     const DOC_META: Record<string, { label: string; description: string; icon: any }> = {
         contract: { label: 'Hợp đồng kinh tế', description: 'Hợp đồng ký kết giữa 2 bên với đầy đủ điều khoản pháp lý', icon: FileText },
@@ -89,11 +92,22 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
 
     const docItems: DocItem[] = (() => {
         if (dbDocs.length > 0) {
-            // Deduplicate DB documents to prevent showing duplicates caused by race conditions
             const uniqueDocsMap = new Map<string, any>()
             for (const doc of dbDocs) {
-                const key = `${doc.type}:${doc.milestone_id || 'none'}`
-                uniqueDocsMap.set(key, doc)
+                const num = doc.doc_number || doc.type
+                const key = `${doc.milestone_id || 'none'}-${num}`
+                
+                const currentPriority = priorityMap[doc.status] || 0
+                
+                if (!uniqueDocsMap.has(key)) {
+                    uniqueDocsMap.set(key, doc)
+                } else {
+                    const existingDoc = uniqueDocsMap.get(key)
+                    const existingPriority = priorityMap[existingDoc.status] || 0
+                    if (currentPriority > existingPriority) {
+                        uniqueDocsMap.set(key, doc)
+                    }
+                }
             }
             const uniqueDbDocs = Array.from(uniqueDocsMap.values())
 
