@@ -693,20 +693,22 @@ function TimelineSection({ timeline }: { timeline: any[] }) {
                 <div className="space-y-0">
                     {timeline.map((event, i) => (
                         <div key={event.id} className="relative flex gap-4 text-sm pb-6">
+                            {/* Đường line kết nối xuống nốt tiếp theo */}
                             {i !== timeline.length - 1 && (
-                                <div className="absolute top-3 bottom-0 left-[5px] w-px bg-border" />
+                                <div className="absolute top-[10px] bottom-[-10px] left-[5px] w-px bg-border" />
                             )}
-                            <div className="relative mt-1 shrink-0">
+                            {/* Nốt trạng thái */}
+                            <div className="relative mt-1 shrink-0 z-10">
                                 <div className={cn(
-                                    "h-3 w-3 rounded-full border-2 bg-background z-10",
-                                    event.status === 'completed' ? "border-primary" : "border-muted-foreground/30"
+                                    "h-3 w-3 rounded-full border-2 ring-[4px] ring-background transition-colors",
+                                    event.status === 'completed' ? "border-primary bg-primary" : "border-muted-foreground/30 bg-background"
                                 )} />
                             </div>
                             <div className="flex-1">
                                 <div className="flex items-center justify-between gap-4">
                                     <p className={cn(
                                         "font-medium leading-none",
-                                        event.status === 'completed' ? "text-foreground" : "text-muted-foreground"
+                                        event.status === 'completed' ? "text-foreground font-semibold" : "text-muted-foreground"
                                     )}>{event.title}</p>
                                     <span className="text-xs text-muted-foreground tabular-nums shrink-0">
                                         {formatDate(event.date)}
