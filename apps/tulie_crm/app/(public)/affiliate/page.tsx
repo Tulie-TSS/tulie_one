@@ -57,36 +57,44 @@ const PRODUCTS = [
         price: '2 – 8 triệu',
         target: 'Chạy quảng cáo, bán 1 sản phẩm / dịch vụ',
         pages: '1 trang',
-        features: ['Hero section (banner + CTA)', 'Giới thiệu sản phẩm / dịch vụ', 'Lợi ích / USP', 'Feedback khách hàng', 'Form đăng ký / nhận lead', 'Tích hợp Messenger / Zalo', 'Tracking (Facebook Pixel, Google Analytics)'],
+        simpleExplain: 'Giống như một tờ rơi số — khách xem xong là đăng ký / liên hệ ngay. Không cần nhiều trang, chỉ cần 1 trang chốt đơn.',
+        howToSell: '“Anh/chị đang chạy quảng cáo thì cần 1 trang web để khách bấm vào là đăng ký ngay. Chỉ 2–8 triệu, làm xong trong 3–5 ngày.”',
+        features: ['Banner + nút kêu gọi hành động (CTA)', 'Giới thiệu sản phẩm / dịch vụ', 'Lợi ích nổi bật (USP)', 'Feedback khách hàng', 'Form đăng ký / nhận lead', 'Tích hợp Messenger / Zalo', 'Tracking quảng cáo (Facebook Pixel, Google)'],
         customers: ['Chủ spa, thẩm mỹ viện', 'Người bán khóa học online', 'Cửa hàng bán lẻ đang chạy ads', 'Freelancer cần trang giới thiệu dịch vụ', 'Nhà hàng, quán cà phê mới khai trương'],
-        insight: 'Giải pháp chốt đơn nhanh – chạy quảng cáo ngay lập tức',
+        insight: 'Sản phẩm dễ bán nhất — giá thấp, làm nhanh, ai cũng cần khi chạy ads',
     },
     {
         name: 'Website cơ bản',
         price: '8 – 20 triệu',
         target: 'Doanh nghiệp nhỏ, cá nhân, freelancer',
         pages: '4 – 7 trang',
-        features: ['Trang chủ, Giới thiệu, Dịch vụ, Blog, Liên hệ', 'Responsive mobile', 'Form liên hệ', 'SEO cơ bản', 'CMS đơn giản (chỉnh sửa nội dung)', 'Tích hợp chat (Zalo, Messenger)'],
-        customers: ['Văn phòng luật sư, kế toán', 'Phòng khám tư nhân, nha khoa', 'Công ty nội thất, xây dựng nhỏ', 'Trung tâm dạy học, gia sư', 'Cửa hàng thời trang, mỹ phẩm'],
-        insight: 'Website chuyên nghiệp giúp khách hàng tin tưởng thương hiệu',
+        simpleExplain: 'Website đầy đủ cho doanh nghiệp: Trang chủ, Giới thiệu, Dịch vụ, Liên hệ. Giống như một văn phòng trên mạng — khách hàng search Google là thấy.',
+        howToSell: '“Doanh nghiệp anh/chị chưa có website thì khách hàng search không thấy. Làm 1 web cơ bản 8–20 triệu là có địa chỉ chuyên nghiệp trên Google rồi.”',
+        features: ['Trang chủ, Giới thiệu, Dịch vụ, Blog, Liên hệ', 'Hiển thị đẹp trên điện thoại', 'Form liên hệ', 'SEO cơ bản (xuất hiện trên Google)', 'Tự chỉnh sửa nội dung', 'Tích hợp chat Zalo, Messenger'],
+        customers: ['Văn phòng luật sư, kế toán', 'Phòng khám, nha khoa', 'Công ty nội thất, xây dựng nhỏ', 'Trung tâm dạy học, gia sư', 'Cửa hàng thời trang, mỹ phẩm'],
+        insight: 'Nhu cầu phổ biến nhất — hầu như doanh nghiệp nhỏ nào cũng cần',
     },
     {
         name: 'Website tiêu chuẩn',
         price: '20 – 50 triệu',
         target: 'Doanh nghiệp SME, có chiến lược Marketing / SEO',
         pages: '8 – 20 trang',
-        features: ['CMS đầy đủ (quản lý bài viết, dịch vụ)', 'Blog SEO', 'Landing page riêng cho từng dịch vụ', 'Tối ưu tốc độ (Core Web Vitals)', 'Tracking nâng cao (GA4, Pixel)', 'Form nâng cao (multi-step)', 'Phân quyền người dùng', 'Email automation cơ bản'],
-        customers: ['Chuỗi cửa hàng, nhà hàng nhiều chi nhánh', 'Công ty dịch vụ tài chính, bảo hiểm', 'Công ty du lịch, lữ hành', 'Thương hiệu thực phẩm, đồ uống', 'Trung tâm đào tạo, giáo dục'],
-        insight: 'Website để mở rộng marketing & chiến lược SEO dài hạn',
+        simpleExplain: 'Website chuyên sâu cho marketing: viết bài SEO lên top Google, landing page riêng cho từng dịch vụ, hệ thống quản lý nội dung chuyên nghiệp.',
+        howToSell: '“Anh/chị muốn khách hàng tự tìm đến qua Google không cần chạy ads thì cần web có SEO và blog. Đầu tư 20–50 triệu nhưng tiết kiệm hàng chục triệu ads mỗi tháng.”',
+        features: ['Quản lý bài viết, dịch vụ dễ dàng', 'Blog SEO (lên top Google)', 'Landing page riêng cho từng dịch vụ', 'Tốc độ tải nhanh (Core Web Vitals)', 'Tracking nâng cao (GA4, Pixel)', 'Form liên hệ nhiều bước', 'Phân quyền người dùng', 'Email tự động'],
+        customers: ['Chuỗi cửa hàng, nhà hàng nhiều chi nhánh', 'Công ty tài chính, bảo hiểm', 'Công ty du lịch, lữ hành', 'Thương hiệu thực phẩm, đồ uống', 'Trung tâm đào tạo, giáo dục'],
+        insight: 'Deal giá trị cao — khách hàng hiểu rõ giá trị của marketing online',
     },
     {
         name: 'Website chuyên nghiệp',
         price: '50 – 100 triệu',
         target: 'Công ty lớn, startup, thương hiệu quy mô',
         pages: '20+ trang / dynamic',
-        features: ['Thiết kế UI/UX riêng theo brand', 'CMS nâng cao', 'Dashboard quản trị', 'Tích hợp API (CRM, ERP, thanh toán)', 'Đa ngôn ngữ', 'Tối ưu SEO kỹ thuật', 'Bảo mật cao', 'Hiệu suất cao (SSR, caching)'],
-        customers: ['Công ty bất động sản', 'Startup gọi vốn cần web chiến lược', 'Tập đoàn, công ty đa quốc gia', 'Bệnh viện, hệ thống y tế', 'Sàn thương mại điện tử, membership'],
-        insight: 'Website trở thành hệ thống vận hành & tăng trưởng doanh nghiệp',
+        simpleExplain: 'Website như một hệ thống quản lý: có dashboard, tích hợp CRM, đa ngôn ngữ, bảo mật cao. Dành cho công ty muốn web là công cụ kinh doanh chứ không chỉ là trang giới thiệu.',
+        howToSell: '“Công ty anh/chị đang lớn, cần web không chỉ đẹp mà còn quản lý được khách hàng, đơn hàng, nhân sự. Đầu tư 50–100 triệu cho cả một hệ thống vận hành.”',
+        features: ['Thiết kế UI/UX riêng theo brand', 'Hệ thống quản trị nâng cao', 'Dashboard báo cáo', 'Tích hợp API (CRM, ERP, thanh toán)', 'Đa ngôn ngữ', 'SEO kỹ thuật chuyên sâu', 'Bảo mật cao', 'Tốc độ vượt trội'],
+        customers: ['Công ty bất động sản', 'Startup gọi vốn', 'Tập đoàn, công ty quốc tế', 'Bệnh viện, hệ thống y tế', 'Sàn thương mại điện tử'],
+        insight: 'Deal lớn nhất — hoa hồng cao nhất, phù hợp với khách hàng doanh nghiệp',
     },
 ]
 
@@ -110,7 +118,7 @@ function formatInput(val: string) {
 
 export default function AffiliateCalculatorPage() {
     const [amountStr, setAmountStr] = useState('100,000,000')
-    const [role, setRole] = useState('lead_only')
+    const [role, setRole] = useState('full_close')
 
     const amount = parseInt(amountStr.replace(/\D/g, '')) || 0
     const selectedRole = ROLES.find(r => r.value === role) ?? ROLES[0]
@@ -527,6 +535,15 @@ export default function AffiliateCalculatorPage() {
                                         </AccordionTrigger>
                                         <AccordionContent>
                                             <div className="space-y-4 pt-2">
+                                                {/* Giải thích đơn giản */}
+                                                <p className="text-sm leading-relaxed">{p.simpleExplain}</p>
+
+                                                {/* Mẫu câu bán hàng */}
+                                                <div className="rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 p-3">
+                                                    <p className="text-xs font-medium text-emerald-700 dark:text-emerald-400 mb-1">💬 Mẫu câu tư vấn</p>
+                                                    <p className="text-sm italic text-emerald-800 dark:text-emerald-300">{p.howToSell}</p>
+                                                </div>
+
                                                 <div className="grid grid-cols-2 gap-4 text-sm">
                                                     <div>
                                                         <p className="text-muted-foreground">Đối tượng</p>
