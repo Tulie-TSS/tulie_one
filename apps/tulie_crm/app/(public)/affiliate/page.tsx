@@ -32,6 +32,8 @@ const CASH_MILESTONES = [
     { target: 100_000_000, label: '100 triệu', reward: 2_000_000 },
     { target: 150_000_000, label: '150 triệu', reward: 3_000_000 },
     { target: 200_000_000, label: '200 triệu', reward: 5_000_000 },
+    { target: 250_000_000, label: '250 triệu', reward: 7_000_000 },
+    { target: 300_000_000, label: '300 triệu', reward: 10_000_000 },
 ] as const
 
 const STEPS = [
@@ -56,6 +58,7 @@ const PRODUCTS = [
         target: 'Chạy quảng cáo, bán 1 sản phẩm / dịch vụ',
         pages: '1 trang',
         features: ['Hero section (banner + CTA)', 'Giới thiệu sản phẩm / dịch vụ', 'Lợi ích / USP', 'Feedback khách hàng', 'Form đăng ký / nhận lead', 'Tích hợp Messenger / Zalo', 'Tracking (Facebook Pixel, Google Analytics)'],
+        customers: ['Chủ spa, thẩm mỹ viện', 'Người bán khóa học online', 'Cửa hàng bán lẻ đang chạy ads', 'Freelancer cần trang giới thiệu dịch vụ', 'Nhà hàng, quán cà phê mới khai trương'],
         insight: 'Giải pháp chốt đơn nhanh – chạy quảng cáo ngay lập tức',
     },
     {
@@ -64,6 +67,7 @@ const PRODUCTS = [
         target: 'Doanh nghiệp nhỏ, cá nhân, freelancer',
         pages: '4 – 7 trang',
         features: ['Trang chủ, Giới thiệu, Dịch vụ, Blog, Liên hệ', 'Responsive mobile', 'Form liên hệ', 'SEO cơ bản', 'CMS đơn giản (chỉnh sửa nội dung)', 'Tích hợp chat (Zalo, Messenger)'],
+        customers: ['Văn phòng luật sư, kế toán', 'Phòng khám tư nhân, nha khoa', 'Công ty nội thất, xây dựng nhỏ', 'Trung tâm dạy học, gia sư', 'Cửa hàng thời trang, mỹ phẩm'],
         insight: 'Website chuyên nghiệp giúp khách hàng tin tưởng thương hiệu',
     },
     {
@@ -72,6 +76,7 @@ const PRODUCTS = [
         target: 'Doanh nghiệp SME, có chiến lược Marketing / SEO',
         pages: '8 – 20 trang',
         features: ['CMS đầy đủ (quản lý bài viết, dịch vụ)', 'Blog SEO', 'Landing page riêng cho từng dịch vụ', 'Tối ưu tốc độ (Core Web Vitals)', 'Tracking nâng cao (GA4, Pixel)', 'Form nâng cao (multi-step)', 'Phân quyền người dùng', 'Email automation cơ bản'],
+        customers: ['Chuỗi cửa hàng, nhà hàng nhiều chi nhánh', 'Công ty dịch vụ tài chính, bảo hiểm', 'Công ty du lịch, lữ hành', 'Thương hiệu thực phẩm, đồ uống', 'Trung tâm đào tạo, giáo dục'],
         insight: 'Website để mở rộng marketing & chiến lược SEO dài hạn',
     },
     {
@@ -80,6 +85,7 @@ const PRODUCTS = [
         target: 'Công ty lớn, startup, thương hiệu quy mô',
         pages: '20+ trang / dynamic',
         features: ['Thiết kế UI/UX riêng theo brand', 'CMS nâng cao', 'Dashboard quản trị', 'Tích hợp API (CRM, ERP, thanh toán)', 'Đa ngôn ngữ', 'Tối ưu SEO kỹ thuật', 'Bảo mật cao', 'Hiệu suất cao (SSR, caching)'],
+        customers: ['Công ty bất động sản', 'Startup gọi vốn cần web chiến lược', 'Tập đoàn, công ty đa quốc gia', 'Bệnh viện, hệ thống y tế', 'Sàn thương mại điện tử, membership'],
         insight: 'Website trở thành hệ thống vận hành & tăng trưởng doanh nghiệp',
     },
 ]
@@ -534,6 +540,17 @@ export default function AffiliateCalculatorPage() {
                                                             <li key={fi} className="flex items-start gap-2 text-sm">
                                                                 <CheckCircle2 className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
                                                                 {f}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm text-muted-foreground mb-2">Khách hàng tiềm năng</p>
+                                                    <ul className="space-y-1.5">
+                                                        {p.customers.map((c, ci) => (
+                                                            <li key={ci} className="flex items-start gap-2 text-sm">
+                                                                <span className="text-muted-foreground mt-0.5 shrink-0">•</span>
+                                                                {c}
                                                             </li>
                                                         ))}
                                                     </ul>
