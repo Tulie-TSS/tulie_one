@@ -21,13 +21,15 @@ const TIERS = [
 
 export default function AffiliateCalculatorPage() {
     const [amountStr, setAmountStr] = useState("100,000,000")
-    const [role, setRole] = useState<'lead_only' | 'full_close'>('lead_only')
+    const [role, setRole] = useState<'lead_only' | 'consult_close' | 'full_close'>('lead_only')
     
     // Parse the input amount
     const amount = parseInt(amountStr.replace(/\D/g, '')) || 0
 
     // Base calculation
-    const baseRate = role === 'lead_only' ? 7 : 20
+    let baseRate = 7
+    if (role === 'consult_close') baseRate = 15
+    if (role === 'full_close') baseRate = 20
     const baseCommission = (amount * baseRate) / 100
 
     // Gamification state
@@ -77,7 +79,7 @@ export default function AffiliateCalculatorPage() {
                     <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
                         <Calculator className="w-8 h-8 text-primary" />
                     </div>
-                    <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+                    <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
                         Công cụ tính Chiết khấu Đối tác
                     </h1>
                     <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -113,35 +115,50 @@ export default function AffiliateCalculatorPage() {
 
                                 <div className="space-y-3">
                                     <Label className="text-base font-semibold">Vai trò của bạn</Label>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                         <div 
                                             className={cn(
                                                 "border-2 rounded-xl p-4 cursor-pointer transition-all",
-                                                role === 'lead_only' ? "border-primary bg-primary/5" : "border-muted hover:border-primary/50"
+                                                role === 'lead_only' ? "border-primary bg-primary/5 shadow-md" : "border-muted hover:border-primary/50 text-muted-foreground hover:text-foreground"
                                             )}
                                             onClick={() => setRole('lead_only')}
                                         >
                                             <div className="flex justify-between items-start mb-2">
-                                                <h3 className="font-semibold text-foreground">Giới thiệu Lead</h3>
+                                                <h3 className={cn("font-semibold", role === 'lead_only' ? "text-foreground" : "")}>Chỉ bắn Lead</h3>
                                                 {role === 'lead_only' && <CheckCircle2 className="w-5 h-5 text-primary" />}
                                             </div>
-                                            <p className="text-sm text-muted-foreground">Chỉ cần kết nối số điện thoại, Tulie sẽ tư vấn và chốt sale.</p>
-                                            <div className="mt-3 text-lg font-bold text-primary">Hoa hồng {role === 'lead_only' ? '7%' : '7%'}</div>
+                                            <p className="text-xs">Chỉ kết nối khách, Tulie tư vấn.</p>
+                                            <div className="mt-4 text-lg font-bold text-primary">7%</div>
                                         </div>
 
                                         <div 
                                             className={cn(
                                                 "border-2 rounded-xl p-4 cursor-pointer transition-all",
-                                                role === 'full_close' ? "border-primary bg-primary/5" : "border-muted hover:border-primary/50"
+                                                role === 'consult_close' ? "border-primary bg-primary/5 shadow-md" : "border-muted hover:border-primary/50 text-muted-foreground hover:text-foreground"
+                                            )}
+                                            onClick={() => setRole('consult_close')}
+                                        >
+                                            <div className="flex justify-between items-start mb-2">
+                                                <h3 className={cn("font-semibold", role === 'consult_close' ? "text-foreground" : "")}>Tư vấn + Chốt</h3>
+                                                {role === 'consult_close' && <CheckCircle2 className="w-5 h-5 text-primary" />}
+                                            </div>
+                                            <p className="text-xs">Phối hợp cùng team Sales Tulie.</p>
+                                            <div className="mt-4 text-lg font-bold text-primary">15%</div>
+                                        </div>
+
+                                        <div 
+                                            className={cn(
+                                                "border-2 rounded-xl p-4 cursor-pointer transition-all",
+                                                role === 'full_close' ? "border-primary bg-primary/5 shadow-md" : "border-muted hover:border-primary/50 text-muted-foreground hover:text-foreground"
                                             )}
                                             onClick={() => setRole('full_close')}
                                         >
                                             <div className="flex justify-between items-start mb-2">
-                                                <h3 className="font-semibold text-foreground">Tự chốt Hợp đồng</h3>
+                                                <h3 className={cn("font-semibold", role === 'full_close' ? "text-foreground" : "")}>Chốt Full</h3>
                                                 {role === 'full_close' && <CheckCircle2 className="w-5 h-5 text-primary" />}
                                             </div>
-                                            <p className="text-sm text-muted-foreground">Bạn tự tư vấn, đàm phán và mang hợp đồng về.</p>
-                                            <div className="mt-3 text-lg font-bold text-primary">Hoa hồng {role === 'full_close' ? '20%' : '20%'}</div>
+                                            <p className="text-xs">Tự đàm phán mang Hợp đồng về.</p>
+                                            <div className="mt-4 text-lg font-bold text-primary">20%</div>
                                         </div>
                                     </div>
                                 </div>
@@ -225,16 +242,16 @@ export default function AffiliateCalculatorPage() {
                         </Card>
                     </div>
 
-                    {/* Results Sidebar */}
                     <div className="space-y-6">
-                        <Card className="border-4 border-primary/10 shadow-xl overflow-hidden sticky top-6">
-                            <div className="bg-primary px-6 py-4 text-primary-foreground">
-                                <h2 className="font-semibold flex items-center gap-2">
-                                    <Zap className="w-5 h-5" />
-                                    TỔNG THU NHẬP
-                                </h2>
-                            </div>
-                            <CardContent className="p-6 space-y-6">
+                        <Card className="sticky top-6">
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Zap className="w-5 h-5 text-primary" />
+                                    Tổng thu nhập
+                                </CardTitle>
+                                <CardDescription>Phân tích chi tiết các khoản hoa hồng dự kiến nhận được.</CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-6">
                                 <div className="space-y-4">
                                     <div className="flex justify-between items-center text-sm">
                                         <span className="text-muted-foreground">Doanh thu dự kiến</span>
@@ -261,14 +278,14 @@ export default function AffiliateCalculatorPage() {
 
                                 <div className="pt-4 border-t whitespace-nowrap">
                                     <div className="text-sm text-muted-foreground mb-1 text-center">Tổng tiền thực nhận</div>
-                                    <div className="text-4xl font-black text-center text-primary tabular-nums tracking-tight">
+                                    <div className="text-3xl font-bold text-center text-primary tabular-nums">
                                         {formatCurrency(totalEarning)}
                                     </div>
                                 </div>
 
-                                <Button size="lg" className="w-full text-base font-semibold h-14 mt-4 shadow-lg shadow-primary/25 cursor-pointer">
+                                <Button size="lg" className="w-full mt-4">
                                     Đăng ký trở thành Đối tác
-                                    <ArrowRight className="w-5 h-5 ml-2" />
+                                    <ArrowRight className="w-4 h-4 ml-2" />
                                 </Button>
                                 
                                 <p className="text-xs text-center text-muted-foreground">

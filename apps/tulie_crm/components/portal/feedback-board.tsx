@@ -431,28 +431,28 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                 <div className="flex flex-col sm:flex-row border-b divide-y sm:divide-y-0 sm:divide-x bg-muted/20">
                     <div className="px-6 py-4 flex-1 flex flex-col justify-center">
                         <div className="flex justify-between items-end mb-2">
-                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Tiến độ hoàn thành</p>
-                            <span className="text-sm font-bold text-primary">{Math.round(progressPercent)}%</span>
+                            <p className="text-sm font-medium text-muted-foreground">Tiến độ hoàn thành</p>
+                            <span className="text-sm font-semibold text-primary">{Math.round(progressPercent)}%</span>
                         </div>
                         <Progress value={progressPercent} className="h-2" />
                     </div>
                 
                     <div className="px-6 py-4 flex flex-wrap sm:flex-nowrap items-center justify-between gap-6 sm:gap-8 shrink-0">
                         <div className="text-center flex-1 sm:flex-none">
-                            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mb-1">Tổng cộng</p>
-                            <p className="text-xl font-bold text-foreground">{totalCount}</p>
+                            <p className="text-xs text-muted-foreground mb-1">Tổng cộng</p>
+                            <p className="text-xl font-semibold text-foreground">{totalCount}</p>
                         </div>
                         <div className="text-center flex-1 sm:flex-none">
-                            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mb-1">Cần xử lý</p>
-                            <p className="text-xl font-bold text-amber-500">{pendingCount}</p>
+                            <p className="text-xs text-muted-foreground mb-1">Cần xử lý</p>
+                            <p className="text-xl font-semibold text-amber-500">{pendingCount}</p>
                         </div>
                         <div className="text-center flex-1 sm:flex-none">
-                            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mb-1">Đang làm</p>
-                            <p className="text-xl font-bold text-blue-500">{activeCount}</p>
+                            <p className="text-xs text-muted-foreground mb-1">Đang làm</p>
+                            <p className="text-xl font-semibold text-blue-500">{activeCount}</p>
                         </div>
                         <div className="text-center flex-1 sm:flex-none">
-                            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mb-1">Hoàn thành</p>
-                            <p className="text-xl font-bold text-emerald-500">{completedCount}</p>
+                            <p className="text-xs text-muted-foreground mb-1">Hoàn thành</p>
+                            <p className="text-xl font-semibold text-emerald-500">{completedCount}</p>
                         </div>
                     </div>
                 </div>
@@ -609,8 +609,8 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                 ) : (
                     <div className="mt-4 border rounded-md bg-white shadow-sm flex flex-col divide-y divide-border">
                         {/* List Header */}
-                        <div className="bg-muted/50 px-5 py-3 flex items-center justify-between text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                            <span>{pendingCount} CẦN XỬ LÝ • {completedCount} HOÀN THÀNH</span>
+                        <div className="bg-muted/50 px-5 py-3 flex items-center justify-between text-sm font-medium text-muted-foreground">
+                            <span>{pendingCount} cần xử lý • {completedCount} hoàn thành</span>
                         </div>
                         
                         <div className="flex flex-col divide-y divide-border">

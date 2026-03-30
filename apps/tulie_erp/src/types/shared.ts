@@ -4,7 +4,7 @@ export type UserRole =
   | 'ceo' | 'creative_director' | 'account_manager' | 'account_executive'
   | 'project_manager' | 'designer' | 'copywriter' | 'social_media'
   | 'media_buyer' | 'photographer' | 'video_editor' | 'accountant'
-  | 'hr_admin' | 'intern' | 'admin' | 'leader' | 'staff'
+  | 'hr_admin' | 'intern' | 'admin' | 'leader' | 'staff' | 'partner'
 
 export type UserDepartment = 'management' | 'creative' | 'sales' | 'marketing' | 'studio' | 'finance' | 'admin' | 'operations'
 
