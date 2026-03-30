@@ -11,6 +11,7 @@ import {
 import { Calculator, ArrowRight, CheckCircle2, TrendingUp, Gift, Trophy, Phone, Mail, MessageCircle, Globe, Layers, Rocket, Building2, DollarSign } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils/format'
 import { cn } from '@/lib/utils'
+import { PartnerRegistrationForm } from './components/partner-registration-form'
 
 // ── Data Constants ──────────────────────────────────────────────────────────
 
@@ -261,11 +262,8 @@ export default function AffiliateCalculatorPage() {
                                     <span className="font-medium">Thực nhận sau thuế</span>
                                     <span className="text-2xl font-bold tabular-nums text-primary">{formatCurrency(totalEarning)}</span>
                                 </div>
-                                <Button size="lg" className="w-full mt-2">
-                                    Đăng ký trở thành Đối tác
-                                    <ArrowRight className="w-4 h-4 ml-2" />
-                                </Button>
-                                <p className="text-xs text-center text-muted-foreground">
+                                <PartnerRegistrationForm />
+                                <p className="text-xs text-center text-muted-foreground mt-4">
                                     Đây là công cụ ước tính. Thu nhập thực tế có thể thay đổi tùy theo quy mô và đàm phán cụ thể.
                                 </p>
                             </CardContent>
@@ -278,7 +276,7 @@ export default function AffiliateCalculatorPage() {
                                     <DollarSign className="w-5 h-5 text-primary" />
                                     Bạn sẽ kiếm được bao nhiêu?
                                 </CardTitle>
-                                <CardDescription>Thu nhập tối đa với vai trò Tự chốt hợp đồng (20%), đã bao gồm bonus tier và thưởng tiền mặt.</CardDescription>
+                                <CardDescription>Thu nhập tối đa với vai trò Tự chốt hợp đồng (20%), đã bao gồm thưởng theo mức doanh số và thưởng tiền mặt.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Table>
@@ -299,7 +297,7 @@ export default function AffiliateCalculatorPage() {
                                         ))}
                                     </TableBody>
                                 </Table>
-                                <p className="text-xs text-muted-foreground mt-3">Đã bao gồm hoa hồng cơ bản, tier bonus và thưởng tiền mặt cộng dồn. Chưa trừ 10% thuế TNCN.</p>
+                                <p className="text-xs text-muted-foreground mt-3">Đã bao gồm hoa hồng cơ bản, thưởng theo mức doanh số và thưởng tiền mặt cộng dồn. Chưa trừ 10% thuế TNCN.</p>
                             </CardContent>
                         </Card>
                     </div>
@@ -335,7 +333,7 @@ export default function AffiliateCalculatorPage() {
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
                                     <Trophy className="w-5 h-5 text-primary" />
-                                    Bảng tier hoa hồng bonus
+                                    Bảng mức thưởng theo doanh số
                                 </CardTitle>
                                 <CardDescription>Càng đạt nhiều doanh số, tỷ lệ hoa hồng càng cao. Tổng hoa hồng = Base + Bonus.</CardDescription>
                             </CardHeader>
@@ -344,7 +342,7 @@ export default function AffiliateCalculatorPage() {
                                     <TableHeader>
                                         <TableRow>
                                             <TableHead>Doanh thu tháng</TableHead>
-                                            <TableHead className="text-right">Bonus</TableHead>
+                                            <TableHead className="text-right">Thưởng thêm</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>

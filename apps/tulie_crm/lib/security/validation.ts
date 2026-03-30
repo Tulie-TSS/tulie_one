@@ -68,6 +68,30 @@ export const updateLeadSchema = z.object({
     notes: z.string().max(5000).optional(),
 })
 
+/** POST /api/partner-register */
+export const createPartnerRegistrationSchema = z.object({
+    full_name: z.string().min(2, 'Họ tên là bắt buộc').max(200),
+    phone: phoneSchema,
+    email: emailSchema.optional().or(z.literal('')),
+    address: z.string().max(500).optional(),
+    
+    // CCCD: PDF hoặc ảnh 2 mặt
+    id_card_type: z.enum(['images', 'pdf']).default('images'),
+    id_card_front_url: z.string().url().optional(),
+    id_card_back_url: z.string().url().optional(),
+    id_card_pdf_url: z.string().url().optional(),
+    
+    // Ngân hàng
+    bank_account_number: z.string().max(30).optional(),
+    bank_account_name: z.string().max(200).optional(),
+    bank_name: z.string().max(200).optional(),
+    
+    preferred_role: z.enum(['lead_only', 'consult_close', 'full_close']).default('lead_only'),
+    experience: z.string().max(2000).optional(),
+    referral_source: z.string().max(200).optional(),
+    note: z.string().max(2000).optional(),
+})
+
 /** POST /api/send-email */
 export const sendEmailSchema = z.object({
     type: z.enum(['quotation', 'invoice', 'contract', 'notification']),

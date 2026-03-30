@@ -225,3 +225,41 @@ export async function formatNewLead(lead: any) {
 <i>Vào hệ thống CRM để chốt sales ngay! 🚀</i>`
     return fillTemplate(tpl, vars).trim()
 }
+
+export async function formatNewPartnerRegistration(reg: any) {
+    const config = await getTelegramConfig()
+    
+    // Map roles
+    const roleMap: Record<string, string> = {
+        'lead_only': 'Giới thiệu khách',
+        'consult_close': 'Tư vấn & Chốt',
+        'full_close': 'Tự chốt hợp đồng'
+    }
+    const mappedRole = roleMap[reg.preferred_role] || reg.preferred_role
+    
+    // Check CCCD
+    const hasCCCD = (reg.id_card_front_url && reg.id_card_back_url) || reg.id_card_pdf_url 
+        ? '✅ Đã upload' 
+        : '❌ Chưa có'
+        
+    const vars = {
+        full_name: reg.full_name || 'N/A',
+        phone: reg.phone || 'N/A',
+        preferred_role: mappedRole,
+        bank_name: reg.bank_name || 'N/A',
+        bank_account_number: reg.bank_account_number || 'N/A',
+        cccd_status: hasCCCD
+    }
+    
+    const tpl = (config as any)?.template_new_partner || `
+<b>🤝 ĐĂNG KÝ ĐỐI TÁC MỚI</b>
+━━━━━━━━━━━━━━━━━━
+👤 Họ tên: <b>{full_name}</b>
+📞 SĐT: <code>{phone}</code>
+🎯 Vai trò: <b>{preferred_role}</b>
+🏦 Ngân hàng: {bank_name} - {bank_account_number}
+📋 CCCD: {cccd_status}
+━━━━━━━━━━━━━━━━━━
+<i>Vào CRM Settings để duyệt! 🚀</i>`
+    return fillTemplate(tpl, vars).trim()
+}

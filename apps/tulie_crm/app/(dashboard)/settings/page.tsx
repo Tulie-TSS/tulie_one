@@ -48,6 +48,7 @@ import {
 } from '@/lib/supabase/services/document-template-service'
 import { DocumentBundle, DocumentTemplate } from '@/types'
 import { StatusBadge } from '@/components/shared/status-badge'
+import { PartnerRegistrationsTab } from '@/components/settings/partner-registrations-tab'
 
 export default function SettingsPage() {
     const { confirm: confirmDialog } = useConfirm()
@@ -521,6 +522,13 @@ export default function SettingsPage() {
                             Thông tin công ty
                         </TabsTrigger>
                         <TabsTrigger
+                            value="partner-registrations"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
+                        >
+                            <User className="h-4 w-4" />
+                            Đơn đăng ký CTV
+                        </TabsTrigger>
+                        <TabsTrigger
                             value="categories"
                             className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-white/50 transition-all font-semibold border-none"
                         >
@@ -755,6 +763,11 @@ export default function SettingsPage() {
                                 </div>
                             </CardContent>
                         </Card>
+                    </TabsContent>
+
+                    {/* Partner Registrations */}
+                    <TabsContent value="partner-registrations">
+                        <PartnerRegistrationsTab />
                     </TabsContent>
 
                     {/* Categories Settings */}
