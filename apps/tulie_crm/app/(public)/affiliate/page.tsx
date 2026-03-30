@@ -6,8 +6,9 @@ import {
     Input, Label, Button, Badge, Separator,
     RadioGroup, RadioGroupItem,
     Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
+    Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from '@repo/ui'
-import { Calculator, ArrowRight, CheckCircle2, TrendingUp, Gift, Trophy, Phone, Mail, MessageCircle } from 'lucide-react'
+import { Calculator, ArrowRight, CheckCircle2, TrendingUp, Gift, Trophy, Phone, Mail, MessageCircle, Globe, Layers, Rocket, Building2, DollarSign } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils/format'
 import { cn } from '@/lib/utils'
 
@@ -21,13 +22,13 @@ const ROLES = [
 
 const BONUS_TIERS = [
     { min: 0, max: 50_000_000, label: '< 50 triệu', bonusPct: 0 },
-    { min: 50_000_000, max: 100_000_000, label: '50 – 100 triệu', bonusPct: 2 },
+    { min: 50_000_000, max: 100_000_000, label: '50 – 100 triệu', bonusPct: 3 },
     { min: 100_000_000, max: 200_000_000, label: '100 – 200 triệu', bonusPct: 5 },
-    { min: 200_000_000, max: Infinity, label: '> 200 triệu', bonusPct: 7 },
+    { min: 200_000_000, max: Infinity, label: '> 200 triệu', bonusPct: 8 },
 ] as const
 
 const CASH_MILESTONES = [
-    { target: 50_000_000, label: '50 triệu', reward: 2_000_000 },
+    { target: 50_000_000, label: '50 triệu', reward: 3_000_000 },
     { target: 100_000_000, label: '100 triệu', reward: 5_000_000 },
     { target: 200_000_000, label: '200 triệu', reward: 12_000_000 },
     { target: 300_000_000, label: '300 triệu', reward: 20_000_000 },
@@ -44,6 +45,48 @@ const FAQS = [
     { q: 'Có giới hạn số lượng hợp đồng không?', a: 'Không giới hạn. Doanh số càng cao, mức thưởng càng lớn.' },
     { q: 'Hoa hồng được thanh toán qua kênh nào?', a: 'Chuyển khoản ngân hàng hoặc ví điện tử theo thỏa thuận.' },
     { q: 'Thời điểm nhận hoa hồng?', a: 'Trong vòng 7 ngày làm việc sau khi hợp đồng được xác nhận hoàn tất.' },
+]
+
+const PRODUCTS = [
+    {
+        name: 'Landing Page',
+        price: '2 – 8 triệu',
+        target: 'Chạy quảng cáo, bán 1 sản phẩm / dịch vụ',
+        pages: '1 trang',
+        features: ['Hero section (banner + CTA)', 'Giới thiệu sản phẩm / dịch vụ', 'Lợi ích / USP', 'Feedback khách hàng', 'Form đăng ký / nhận lead', 'Tích hợp Messenger / Zalo', 'Tracking (Facebook Pixel, Google Analytics)'],
+        insight: 'Giải pháp chốt đơn nhanh – chạy quảng cáo ngay lập tức',
+    },
+    {
+        name: 'Website cơ bản',
+        price: '8 – 20 triệu',
+        target: 'Doanh nghiệp nhỏ, cá nhân, freelancer',
+        pages: '4 – 7 trang',
+        features: ['Trang chủ, Giới thiệu, Dịch vụ, Blog, Liên hệ', 'Responsive mobile', 'Form liên hệ', 'SEO cơ bản', 'CMS đơn giản (chỉnh sửa nội dung)', 'Tích hợp chat (Zalo, Messenger)'],
+        insight: 'Website chuyên nghiệp giúp khách hàng tin tưởng thương hiệu',
+    },
+    {
+        name: 'Website tiêu chuẩn',
+        price: '20 – 50 triệu',
+        target: 'Doanh nghiệp SME, có chiến lược Marketing / SEO',
+        pages: '8 – 20 trang',
+        features: ['CMS đầy đủ (quản lý bài viết, dịch vụ)', 'Blog SEO', 'Landing page riêng cho từng dịch vụ', 'Tối ưu tốc độ (Core Web Vitals)', 'Tracking nâng cao (GA4, Pixel)', 'Form nâng cao (multi-step)', 'Phân quyền người dùng', 'Email automation cơ bản'],
+        insight: 'Website để mở rộng marketing & chiến lược SEO dài hạn',
+    },
+    {
+        name: 'Website chuyên nghiệp',
+        price: '50 – 100 triệu',
+        target: 'Công ty lớn, startup, thương hiệu quy mô',
+        pages: '20+ trang / dynamic',
+        features: ['Thiết kế UI/UX riêng theo brand', 'CMS nâng cao', 'Dashboard quản trị', 'Tích hợp API (CRM, ERP, thanh toán)', 'Đa ngôn ngữ', 'Tối ưu SEO kỹ thuật', 'Bảo mật cao', 'Hiệu suất cao (SSR, caching)'],
+        insight: 'Website trở thành hệ thống vận hành & tăng trưởng doanh nghiệp',
+    },
+]
+
+const COMMISSION_EXAMPLES = [
+    { deal: 10_000_000, rate: 15 },
+    { deal: 20_000_000, rate: 15 },
+    { deal: 50_000_000, rate: 15 },
+    { deal: 80_000_000, rate: 15 },
 ]
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
@@ -101,13 +144,13 @@ export default function AffiliateCalculatorPage() {
                     </p>
                 </div>
 
-                {/* ── 2-Column Layout (Desktop) / 1-Column (Mobile) ── */}
+                {/* ── 2-Column Layout ───────────────────────────────── */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-                    {/* ═══ LEFT COLUMN: Calculator ═══════════════════ */}
+                    {/* ═══ LEFT: Calculator ══════════════════════════ */}
                     <div className="space-y-6">
 
-                        {/* Input Card */}
+                        {/* Input */}
                         <Card>
                             <CardHeader>
                                 <CardTitle>Thông số dự án</CardTitle>
@@ -124,14 +167,10 @@ export default function AffiliateCalculatorPage() {
                                             className="text-lg font-semibold tabular-nums pr-14"
                                             placeholder="VD: 50,000,000"
                                         />
-                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-                                            VNĐ
-                                        </span>
+                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">VNĐ</span>
                                     </div>
                                 </div>
-
                                 <Separator />
-
                                 <div className="space-y-3">
                                     <Label>Vai trò của bạn</Label>
                                     <RadioGroup value={role} onValueChange={setRole} className="space-y-2">
@@ -141,9 +180,7 @@ export default function AffiliateCalculatorPage() {
                                                 htmlFor={r.value}
                                                 className={cn(
                                                     "flex items-center gap-3 rounded-md border p-4 cursor-pointer transition-colors",
-                                                    role === r.value
-                                                        ? "border-primary bg-primary/5"
-                                                        : "hover:bg-muted/50"
+                                                    role === r.value ? "border-primary bg-primary/5" : "hover:bg-muted/50"
                                                 )}
                                             >
                                                 <RadioGroupItem value={r.value} id={r.value} />
@@ -161,7 +198,7 @@ export default function AffiliateCalculatorPage() {
                             </CardContent>
                         </Card>
 
-                        {/* Results Card */}
+                        {/* Results */}
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
@@ -187,7 +224,7 @@ export default function AffiliateCalculatorPage() {
                                 )}
                                 {cashReward > 0 && (
                                     <div className="flex justify-between items-center text-sm">
-                                        <span className="text-emerald-600">Thưởng nóng (tiền mặt)</span>
+                                        <span className="text-emerald-600">Thưởng tiền mặt</span>
                                         <span className="font-medium tabular-nums text-emerald-600">+{formatCurrency(cashReward)}</span>
                                     </div>
                                 )}
@@ -196,7 +233,6 @@ export default function AffiliateCalculatorPage() {
                                     <span className="font-medium">Tổng tiền thực nhận</span>
                                     <span className="text-2xl font-bold tabular-nums text-primary">{formatCurrency(totalEarning)}</span>
                                 </div>
-
                                 <Button size="lg" className="w-full mt-2">
                                     Đăng ký trở thành Đối tác
                                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -206,16 +242,48 @@ export default function AffiliateCalculatorPage() {
                                 </p>
                             </CardContent>
                         </Card>
+
+                        {/* Commission Examples */}
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <DollarSign className="w-5 h-5 text-primary" />
+                                    Bạn sẽ kiếm được bao nhiêu?
+                                </CardTitle>
+                                <CardDescription>Ví dụ hoa hồng với vai trò Tư vấn & phối hợp (15%).</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Giá trị hợp đồng</TableHead>
+                                            <TableHead className="text-right">Hoa hồng nhận được</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {COMMISSION_EXAMPLES.map((ex, i) => (
+                                            <TableRow key={i}>
+                                                <TableCell className="font-medium">{formatCurrency(ex.deal)}</TableCell>
+                                                <TableCell className="text-right font-semibold tabular-nums text-primary">
+                                                    {formatCurrency(ex.deal * ex.rate / 100)}
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                                <p className="text-xs text-muted-foreground mt-3">Chưa bao gồm thưởng tier bonus và thưởng tiền mặt theo mốc doanh số tháng.</p>
+                            </CardContent>
+                        </Card>
                     </div>
 
-                    {/* ═══ RIGHT COLUMN: Information ═════════════════ */}
+                    {/* ═══ RIGHT: Information ════════════════════════ */}
                     <div className="space-y-6">
 
                         {/* Quy trình */}
                         <Card>
                             <CardHeader>
-                                <CardTitle>Quy trình làm việc</CardTitle>
-                                <CardDescription>Quy trình hợp tác đơn giản, minh bạch.</CardDescription>
+                                <CardTitle>Quy trình hợp tác</CardTitle>
+                                <CardDescription>Đơn giản, minh bạch, hiệu quả.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <ol className="space-y-4">
@@ -241,7 +309,7 @@ export default function AffiliateCalculatorPage() {
                                     <Trophy className="w-5 h-5 text-primary" />
                                     Bảng tier hoa hồng bonus
                                 </CardTitle>
-                                <CardDescription>Càng đạt nhiều doanh số, tỷ lệ hoa hồng càng cao.</CardDescription>
+                                <CardDescription>Càng đạt nhiều doanh số, tỷ lệ hoa hồng càng cao. Tổng hoa hồng = Base + Bonus.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Table>
@@ -263,11 +331,7 @@ export default function AffiliateCalculatorPage() {
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="text-right tabular-nums">
-                                                        {tier.bonusPct === 0 ? (
-                                                            <span className="text-muted-foreground">0%</span>
-                                                        ) : (
-                                                            <Badge variant="secondary">+{tier.bonusPct}%</Badge>
-                                                        )}
+                                                        <Badge variant="secondary">{tier.bonusPct === 0 ? '0%' : `+${tier.bonusPct}%`}</Badge>
                                                     </TableCell>
                                                 </TableRow>
                                             )
@@ -352,9 +416,127 @@ export default function AffiliateCalculatorPage() {
                                 </a>
                             </CardContent>
                         </Card>
-
                     </div>
                 </div>
+
+                {/* ── Full-Width: Sản phẩm Tulie ────────────────────── */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Layers className="w-5 h-5 text-primary" />
+                            Sản phẩm & Dịch vụ của Tulie
+                        </CardTitle>
+                        <CardDescription>Tổng quan các gói dịch vụ để Đối tác dễ dàng tư vấn khách hàng.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+
+                        {/* Overview Table */}
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Gói dịch vụ</TableHead>
+                                    <TableHead>Mức giá</TableHead>
+                                    <TableHead className="hidden sm:table-cell">Định vị</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {PRODUCTS.map((p, i) => (
+                                    <TableRow key={i}>
+                                        <TableCell className="font-medium">{p.name}</TableCell>
+                                        <TableCell className="tabular-nums">{p.price}</TableCell>
+                                        <TableCell className="hidden sm:table-cell text-muted-foreground">{p.target}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+
+                        <Separator />
+
+                        {/* Gợi ý nhanh */}
+                        <div>
+                            <p className="text-sm font-medium mb-3">Gợi ý tư vấn theo nhu cầu khách hàng</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div className="flex items-start gap-2.5 rounded-md border p-3">
+                                    <Rocket className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                                    <div>
+                                        <p className="text-sm font-medium">Khách cần chạy quảng cáo</p>
+                                        <p className="text-xs text-muted-foreground">→ Landing Page (2 – 8 triệu)</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-2.5 rounded-md border p-3">
+                                    <Globe className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                                    <div>
+                                        <p className="text-sm font-medium">Khách cần website cơ bản</p>
+                                        <p className="text-xs text-muted-foreground">→ Website cơ bản (10 – 15 triệu)</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-2.5 rounded-md border p-3">
+                                    <TrendingUp className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                                    <div>
+                                        <p className="text-sm font-medium">Khách cần SEO / Marketing</p>
+                                        <p className="text-xs text-muted-foreground">→ Website tiêu chuẩn (25 – 40 triệu)</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-2.5 rounded-md border p-3">
+                                    <Building2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                                    <div>
+                                        <p className="text-sm font-medium">Khách muốn xây hệ thống</p>
+                                        <p className="text-xs text-muted-foreground">→ Website chuyên nghiệp (50 triệu+)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <Separator />
+
+                        {/* Detail Accordion */}
+                        <div>
+                            <p className="text-sm font-medium mb-3">Chi tiết từng gói dịch vụ</p>
+                            <Accordion type="single" collapsible className="w-full">
+                                {PRODUCTS.map((p, i) => (
+                                    <AccordionItem key={i} value={`product-${i}`}>
+                                        <AccordionTrigger>
+                                            <div className="flex items-center gap-3">
+                                                <span className="font-medium">{p.name}</span>
+                                                <Badge variant="outline">{p.price}</Badge>
+                                            </div>
+                                        </AccordionTrigger>
+                                        <AccordionContent>
+                                            <div className="space-y-4 pt-2">
+                                                <div className="grid grid-cols-2 gap-4 text-sm">
+                                                    <div>
+                                                        <p className="text-muted-foreground">Đối tượng</p>
+                                                        <p className="font-medium">{p.target}</p>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-muted-foreground">Quy mô</p>
+                                                        <p className="font-medium">{p.pages}</p>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm text-muted-foreground mb-2">Tính năng bao gồm</p>
+                                                    <ul className="space-y-1.5">
+                                                        {p.features.map((f, fi) => (
+                                                            <li key={fi} className="flex items-start gap-2 text-sm">
+                                                                <CheckCircle2 className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
+                                                                {f}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                                <div className="rounded-md bg-primary/5 border border-primary/10 p-3">
+                                                    <p className="text-sm font-medium text-primary">{p.insight}</p>
+                                                </div>
+                                            </div>
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                ))}
+                            </Accordion>
+                        </div>
+
+                    </CardContent>
+                </Card>
+
             </div>
         </div>
     )
