@@ -188,15 +188,22 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
     return (
         <div className="flex min-h-screen w-full flex-col bg-muted/40">
             {/* ===== Header — clean shadcn nav bar ===== */}
-            <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b bg-background px-4 md:px-6">
-                <div className="flex items-center gap-3 flex-1">
+            <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+                <div className="flex items-center gap-4 flex-1">
                     <img
                         src={brandConfig?.logo_url || "/file/tulie-agency-logo.png"}
                         alt="Logo"
-                        className="h-7 w-auto object-contain"
+                        className="h-9 w-auto object-contain"
                     />
-                    <Separator orientation="vertical" className="h-5" />
-                    <span className="text-sm font-medium text-foreground">Customer Portal</span>
+                    <Separator orientation="vertical" className="h-8" />
+                    <div className="flex flex-col">
+                        <span className="text-[1.125rem] font-bold tracking-tight text-foreground leading-none">
+                            Customer Portal
+                        </span>
+                        <span className="text-[0.65rem] uppercase font-medium tracking-wider text-muted-foreground mt-1">
+                            Cổng thông tin Khách hàng
+                        </span>
+                    </div>
                 </div>
                 <div className="flex items-center gap-3">
                     <span className="hidden md:inline text-sm font-medium text-foreground">{displayName}</span>
