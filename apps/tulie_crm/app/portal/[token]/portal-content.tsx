@@ -13,6 +13,7 @@ import {
     CheckCircle2, Clock, FileText, CheckCircle, Circle,
     ExternalLink, Package, ClipboardCheck, ListTodo,
     Wallet, CreditCard, FileSignature, Lock, BookOpen, Eye,
+    Headset, Mail, Phone, GanttChartSquare
 } from 'lucide-react'
 import { getGeneratedDocumentById } from '@/lib/supabase/services/document-template-service'
 import { toast } from 'sonner'
@@ -178,10 +179,9 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
     const hasContracts = contracts.length > 0
     const displayName = companyName || customer?.company_name || customer?.full_name || 'Khách hàng'
 
-    /* ===== Sidebar nav items ===== */
+    /* ===== Top nav items ===== */
     const navItems = [
-        { value: 'overview', label: 'Tổng quan dự án', icon: ListTodo },
-        { value: 'gantt', label: 'Lộ trình triển khai', icon: Clock },
+        { value: 'progress', label: 'Tiến độ dự án', icon: GanttChartSquare },
         { value: 'feedback', label: 'Nhật ký xử lý', icon: ClipboardCheck },
     ]
 
@@ -231,39 +231,56 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
             {/* ===== Main Layout ===== */}
             <main className="flex-1 p-4 md:p-6 lg:p-8">
                 <Tabs
-                    orientation="vertical"
-                    defaultValue="overview"
-                    className="mx-auto grid w-full max-w-7xl gap-6 md:grid-cols-[200px_1fr] lg:grid-cols-[220px_1fr]"
+                    defaultValue="progress"
+                    className="mx-auto w-full max-w-[1400px] flex flex-col gap-6"
                 >
-                    {/* ===== Sidebar nav ===== */}
-                    <nav className="flex flex-col gap-1 sticky top-[72px] h-fit">
-                        <TabsList className="flex flex-col h-auto w-full bg-transparent p-0 gap-0.5">
+                    {/* ===== Top Navigation ===== */}
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <TabsList className="w-full justify-start h-11 p-1 bg-background border shadow-sm md:w-fit overflow-x-auto shrink-0 scrollbar-none">
                             {navItems.map(item => (
                                 <TabsTrigger
                                     key={item.value}
                                     value={item.value}
-                                    className="w-full justify-start gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground !shadow-none data-[state=active]:ring-0"
+                                    className="gap-2 px-5 py-2 font-medium"
                                 >
                                     <item.icon className="w-4 h-4 shrink-0" />
-                                    <span className="truncate">{item.label}</span>
+                                    <span className="whitespace-nowrap">{item.label}</span>
                                 </TabsTrigger>
                             ))}
                             {isFinancialAuthenticated && (
                                 <>
-                                    <Separator className="my-2" />
+                                    <div className="w-px h-5 bg-border mx-1 hidden md:block" />
                                     <TabsTrigger
                                         value="finance"
-                                        className="w-full justify-start gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground !shadow-none data-[state=active]:ring-0"
+                                        className="gap-2 px-5 py-2 font-medium"
                                     >
                                         <Wallet className="w-4 h-4 shrink-0" />
-                                        <span className="truncate">Tài chính & Pháp lý</span>
+                                        <span className="whitespace-nowrap">Tài chính & Pháp lý</span>
                                     </TabsTrigger>
                                 </>
                             )}
                         </TabsList>
 
-                        {/* Customer info incomplete CTA */}
-                        {!isCustomerInfoComplete(customer) && (
+                        {/* Contact Info Block */}
+                        <div className="flex bg-background rounded-md border shadow-sm px-4 py-2.5 text-sm font-medium items-center gap-3 shrink-0">
+                            <Headset className="w-4 h-4 text-primary shrink-0" />
+                            <div className="flex items-center gap-2.5">
+                                <span className="text-muted-foreground text-xs font-semibold uppercase tracking-wider hidden sm:inline">Hỗ trợ 24/7:</span>
+                                <a href="tel:0981999999" className="hover:text-primary hover:underline transition-colors flex items-center gap-1">
+                                    <Phone className="w-3.5 h-3.5 text-muted-foreground hidden sm:block" />
+                                    098 199 9999
+                                </a>
+                                <span className="text-muted-foreground/30">|</span>
+                                <a href="mailto:hello@tulie.app" className="hover:text-primary hover:underline transition-colors flex items-center gap-1">
+                                    <Mail className="w-3.5 h-3.5 text-muted-foreground hidden sm:block" />
+                                    hello@tulie.app
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Customer info incomplete CTA */}
+                    {!isCustomerInfoComplete(customer) && (
                             <Card className="mt-4">
                                 <CardHeader>
                                     <CardTitle>Hồ sơ chưa hoàn thiện</CardTitle>
@@ -289,47 +306,51 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                 </CardFooter>
                             </Card>
                         )}
-                    </nav>
 
                     {/* ===== Tab Content ===== */}
                     <div className="min-w-0 space-y-6">
 
-                        {/* Tab: Overview */}
-                        <TabsContent value="overview" className="mt-0 space-y-4">
-                            {project?.description && (
-                                <Card>
-                                    <CardHeader>
-                                        <CardTitle>Mô tả dự án</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{project.description}</p>
-                                    </CardContent>
-                                </Card>
-                            )}
-
-                            <div className="flex items-center justify-between">
-                                <h2 className="text-base font-medium">Hạng mục công việc</h2>
-                                <Badge variant="secondary">{completedItems}/{displayItems.length} hoàn thành</Badge>
-                            </div>
-
-                            <div className="grid gap-3">
-                                {displayItems.length > 0 ? displayItems.map((item: any, idx: number) => (
-                                    <WorkItemCard key={item.id} item={item} idx={idx} />
-                                )) : (
-                                    <Card>
-                                        <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-                                            <Package className="w-8 h-8 text-muted-foreground/40 mb-3" />
-                                            <p className="text-sm text-muted-foreground">Chưa có hạng mục công việc nào.</p>
+                        {/* Tab: Progress (Overview + Gantt) */}
+                        <TabsContent value="progress" className="mt-0 space-y-6">
+                            {/* Danh sách hạng mục */}
+                            <div className="space-y-4">
+                                {project?.description && (
+                                    <Card className="bg-gradient-to-br from-muted/50 to-transparent">
+                                        <CardHeader>
+                                            <CardTitle className="text-sm font-semibold text-muted-foreground">Mô tả dự án</CardTitle>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-line">{project.description}</p>
                                         </CardContent>
                                     </Card>
                                 )}
-                            </div>
-                        </TabsContent>
 
-                        {/* Tab: Gantt & Timeline */}
-                        <TabsContent value="gantt" className="mt-0 space-y-4">
-                            <ProjectGanttChart tasks={data.tasks || []} />
-                            <TimelineSection timeline={timeline} />
+                                <div className="flex items-center justify-between pt-2">
+                                    <h2 className="text-lg font-bold">Hạng mục công việc</h2>
+                                    <Badge variant="secondary" className="px-3 py-1 bg-white">{completedItems}/{displayItems.length} hoàn thành</Badge>
+                                </div>
+
+                                <div className="grid gap-3 sm:grid-cols-2">
+                                    {displayItems.length > 0 ? displayItems.map((item: any, idx: number) => (
+                                        <WorkItemCard key={item.id} item={item} idx={idx} />
+                                    )) : (
+                                        <Card className="col-span-full">
+                                            <CardContent className="flex flex-col items-center justify-center py-16 text-center bg-white">
+                                                <Package className="w-12 h-12 text-muted-foreground/30 mb-4" />
+                                                <p className="text-sm font-medium text-muted-foreground">Chưa có hạng mục công việc nào được định nghĩa.</p>
+                                            </CardContent>
+                                        </Card>
+                                    )}
+                                </div>
+                            </div>
+
+                            <Separator className="my-8" />
+
+                            {/* Gantt Chart Lộ trình */}
+                            <div className="space-y-4">
+                                <h2 className="text-lg font-bold">Lộ trình triển khai</h2>
+                                <ProjectGanttChart tasks={data.tasks || []} />
+                            </div>
                         </TabsContent>
 
                         {/* Tab: Feedback & History */}

@@ -428,34 +428,34 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
 
             <CardContent className="p-0">
                 {/* Statistics Banner */}
-                <div className="flex flex-col sm:flex-row border-b divide-y sm:divide-y-0 sm:divide-x">
-                <div className="px-6 py-4 flex-1 flex flex-col justify-center">
-                    <div className="flex justify-between items-end mb-2">
-                        <p className="text-xs text-muted-foreground">Tiến độ hoàn thành</p>
-                        <span className="text-sm font-medium text-foreground">{Math.round(progressPercent)}%</span>
+                <div className="flex flex-col sm:flex-row border-b divide-y sm:divide-y-0 sm:divide-x bg-muted/20">
+                    <div className="px-6 py-4 flex-1 flex flex-col justify-center">
+                        <div className="flex justify-between items-end mb-2">
+                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Tiến độ hoàn thành</p>
+                            <span className="text-sm font-bold text-primary">{Math.round(progressPercent)}%</span>
+                        </div>
+                        <Progress value={progressPercent} className="h-2" />
                     </div>
-                    <Progress value={progressPercent} className="h-2" />
-                </div>
                 
-                <div className="px-6 py-4 flex flex-wrap gap-x-12 gap-y-4">
-                    <div>
-                        <p className="text-xs text-muted-foreground mb-1">Tổng số</p>
-                        <p className="text-2xl font-semibold text-foreground">{totalCount}</p>
-                    </div>
-                    <div>
-                        <p className="text-xs text-muted-foreground mb-1">Cần xử lý</p>
-                        <p className="text-2xl font-semibold text-foreground">{pendingCount}</p>
-                    </div>
-                    <div>
-                        <p className="text-xs text-muted-foreground mb-1">Đang làm</p>
-                        <p className="text-2xl font-semibold text-foreground">{activeCount}</p>
-                    </div>
-                    <div>
-                        <p className="text-xs text-muted-foreground mb-1">Hoàn thành</p>
-                        <p className="text-2xl font-semibold text-foreground">{completedCount}</p>
+                    <div className="px-6 py-4 flex flex-wrap sm:flex-nowrap items-center justify-between gap-6 sm:gap-8 shrink-0">
+                        <div className="text-center flex-1 sm:flex-none">
+                            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mb-1">Tổng cộng</p>
+                            <p className="text-xl font-bold text-foreground">{totalCount}</p>
+                        </div>
+                        <div className="text-center flex-1 sm:flex-none">
+                            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mb-1">Cần xử lý</p>
+                            <p className="text-xl font-bold text-amber-500">{pendingCount}</p>
+                        </div>
+                        <div className="text-center flex-1 sm:flex-none">
+                            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mb-1">Đang làm</p>
+                            <p className="text-xl font-bold text-blue-500">{activeCount}</p>
+                        </div>
+                        <div className="text-center flex-1 sm:flex-none">
+                            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mb-1">Hoàn thành</p>
+                            <p className="text-xl font-bold text-emerald-500">{completedCount}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
             {/* Form Creation */}
             {showForm && (
@@ -607,98 +607,70 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         </Button>
                     </div>
                 ) : (
-                    <div className="rounded-md border overflow-hidden mt-4 bg-white shadow-sm">
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="w-[60px] text-center">STT</TableHead>
-                                    <TableHead>Nội dung phản hồi / Yêu cầu</TableHead>
-                                    <TableHead className="w-[120px]">Mức độ</TableHead>
-                                    <TableHead className="w-[140px]">Trạng thái</TableHead>
-                                    <TableHead className="w-[180px]">Khởi tạo</TableHead>
-                                    <TableHead className="w-[80px]"></TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {items.map((item, index) => {
-                                    const isExpanded = expandedIds.has(item.id)
-                                    const isCompleted = item.status === 'completed'
-                                    const priorityConf = PRIORITY_CONFIG[item.priority] || PRIORITY_CONFIG.normal
-                                    const hasAttachments = item.attachments && item.attachments.length > 0
-                                    
-                                    return (
-                                        <React.Fragment key={item.id}>
-                                            {/* Main Row */}
-                                            <TableRow 
-                                                className={cn(
-                                                    "group cursor-pointer", 
-                                                    isExpanded && "bg-muted/50",
-                                                    isCompleted && !isExpanded && "opacity-60"
-                                                )}
-                                                onClick={() => toggleExpand(item.id)}
-                                            >
-                                                <TableCell className="text-center">
-                                                    <span className="text-xs text-muted-foreground font-medium">#{(items.length - index).toString().padStart(2, '0')}</span>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <div className="flex flex-col gap-1 py-1">
-                                                        <span className={cn(
-                                                            "font-medium text-sm line-clamp-2",
-                                                            isCompleted ? "line-through text-muted-foreground" : "text-foreground"
-                                                        )}>
-                                                            {item.title}
-                                                        </span>
-                                                        <div className="flex items-center gap-3">
-                                                            {item.response_content && !isExpanded && (
-                                                                <div className="flex items-center gap-1.5 text-[11px] text-blue-600 font-medium">
-                                                                    <MessageCircle className="w-3.5 h-3.5" />
-                                                                    Đã có phản hồi từ {item.responded_by || 'Agency'}
-                                                                </div>
-                                                            )}
-                                                            {hasAttachments && !isExpanded && (
-                                                                <div className="flex items-center gap-1 text-[11px] text-muted-foreground font-medium">
-                                                                    <ImageIcon className="w-3.5 h-3.5" />
-                                                                    {item.attachments.length} ảnh
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <div className="flex items-center gap-1.5">
-                                                        <priorityConf.icon className={cn("w-3.5 h-3.5", priorityConf.colorClass)} />
-                                                        <span className={cn("text-[13px] font-medium text-muted-foreground", priorityConf.colorClass)}>{priorityConf.label}</span>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <StatusBadge status={item.status} />
-                                                </TableCell>
-                                                <TableCell>
-                                                    <div className="flex flex-col text-[11px]">
-                                                        <span className="font-semibold text-foreground/80">{formatTimeAgo(item.created_at)}</span>
-                                                        <span className="text-muted-foreground truncate max-w-[140px]">bởi {item.created_by_name}</span>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell className="text-right">
-                                                    <Button 
-                                                        variant="ghost" 
-                                                        size="sm" 
-                                                        className={cn(
-                                                            "w-8 h-8 p-0 shrink-0 text-muted-foreground group-hover:text-foreground transition-transform",
-                                                            isExpanded && "rotate-180 bg-secondary/50/50 text-foreground"
+                    <div className="mt-4 border rounded-md bg-white shadow-sm flex flex-col divide-y divide-border">
+                        {/* List Header */}
+                        <div className="bg-muted/50 px-5 py-3 flex items-center justify-between text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            <span>{pendingCount} CẦN XỬ LÝ • {completedCount} HOÀN THÀNH</span>
+                        </div>
+                        
+                        <div className="flex flex-col divide-y divide-border">
+                            {items.map((item, index) => {
+                                const isExpanded = expandedIds.has(item.id)
+                                const isCompleted = item.status === 'completed'
+                                const priorityConf = PRIORITY_CONFIG[item.priority] || PRIORITY_CONFIG.normal
+                                const hasAttachments = item.attachments && item.attachments.length > 0
+                                const sConfig = STATUS_CONFIG[item.status] || STATUS_CONFIG.pending
+                                
+                                return (
+                                    <div key={item.id} className={cn("group flex flex-col transition-colors", isExpanded ? "bg-muted/30" : "hover:bg-muted/50", isCompleted && !isExpanded && "opacity-75")}>
+                                        {/* Main Row */}
+                                        <div 
+                                            className="flex items-start sm:items-center gap-4 px-5 py-4 cursor-pointer"
+                                            onClick={() => toggleExpand(item.id)}
+                                        >
+                                            <div className="shrink-0 mt-0.5 sm:mt-0">
+                                                <sConfig.icon className={cn("w-5 h-5", sConfig.colorClass)} />
+                                            </div>
+                                            
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-1.5">
+                                                    <span className={cn("font-medium text-[15px] truncate", isCompleted && "text-muted-foreground line-through")}>
+                                                        {item.title}
+                                                    </span>
+                                                    <div className="flex items-center gap-2 shrink-0">
+                                                        <Badge variant="outline" className={cn("text-[10px] uppercase font-bold px-1.5 py-0", priorityConf.colorClass)}>
+                                                            {priorityConf.label}
+                                                        </Badge>
+                                                        <Badge variant={isCompleted ? "secondary" : "outline"} className={cn("text-[10px] uppercase px-1.5 py-0 font-semibold", sConfig.colorClass)}>
+                                                            {sConfig.label}
+                                                        </Badge>
+                                                        {hasAttachments && (
+                                                            <div className="flex items-center gap-1 text-[11px] text-muted-foreground font-medium bg-muted px-1.5 rounded-sm h-5">
+                                                                <Paperclip className="w-3 h-3" /> {item.attachments.length}
+                                                            </div>
                                                         )}
-                                                    >
-                                                        <ChevronDown className="w-4 h-4" />
-                                                    </Button>
-                                                </TableCell>
-                                            </TableRow>
+                                                        {item.response_content && (
+                                                            <div className="flex items-center gap-1 text-[11px] text-blue-600 font-medium bg-blue-50 px-1.5 rounded-sm h-5">
+                                                                <MessageCircle className="w-3 h-3" /> 1
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                                    <span>#{item.id.substring(0,8)} • mở lúc {formatTimeAgo(item.created_at)} bởi <span className="font-semibold text-foreground/80">{item.created_by_name}</span></span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="shrink-0 text-muted-foreground">
+                                                <ChevronDown className={cn("w-5 h-5 transition-transform", isExpanded && "rotate-180 text-foreground")} />
+                                            </div>
+                                        </div>
 
-                                            {/* Expanded Detail Row */}
-                                            {isExpanded && (
-                                                <TableRow className="bg-muted/30">
-                                                    <TableCell colSpan={6} className="p-0 border-b">
-                                                        <div className="p-4 md:p-6 lg:px-8 border-t border-border/50">
-                                                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-background rounded-md border border-border/60 p-6">
+                                        {/* Expanded Detail Row */}
+                                        {isExpanded && (
+                                            <div className="px-0 sm:px-5 pb-5">
+                                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-8 bg-background rounded-lg border border-border/60 p-5 shadow-sm">
                                                                 {/* Left: Original Request */}
                                                                 <div className="lg:col-span-7 space-y-4">
                                                                     <div className="flex items-start justify-between gap-4 mb-3">
@@ -864,15 +836,12 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                     )}
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </TableCell>
-                                                </TableRow>
-                                            )}
-                                        </React.Fragment>
-                                    )
-                                })}
-                            </TableBody>
-                        </Table>
+                                            </div>
+                                        )}
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 )}
             </div>

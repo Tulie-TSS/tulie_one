@@ -20,6 +20,8 @@ export const ROLES = {
     ADMIN: 'admin' as UserRole,
     LEADER: 'leader' as UserRole,
     STAFF: 'staff' as UserRole,
+    // Partner
+    PARTNER: 'partner' as UserRole,
 } as const
 
 export const ROLE_LABELS: Record<UserRole, string> = {
@@ -41,6 +43,8 @@ export const ROLE_LABELS: Record<UserRole, string> = {
     admin: 'Admin (legacy)',
     leader: 'Leader (legacy)',
     staff: 'Staff (legacy)',
+    // Partner
+    partner: 'Đối tác / CTV',
 }
 
 export const ROLE_COLORS: Record<UserRole, string> = {
@@ -62,4 +66,6 @@ export const ROLE_COLORS: Record<UserRole, string> = {
     admin: 'bg-black text-white',
     leader: 'bg-gray-800 text-white',
     staff: 'bg-gray-600 text-white',
+    // Partner
+    partner: 'bg-orange-500 text-white',
 }
