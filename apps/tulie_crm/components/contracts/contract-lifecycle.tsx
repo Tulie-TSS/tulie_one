@@ -80,7 +80,28 @@ function getLifecycleSteps(contract: Contract, project?: Project | null): Lifecy
 
         milestones.forEach((ms, index) => {
             const isCompletedMS = ms.status === 'completed'
+            const isLastMilestone = index === milestones.length - 1
             
+            // Tự động chèn bước "Triển khai dự án" ngay trước milestone cuối cùng (thường là nghiệm thu/quyết toán)
+            if (isLastMilestone) {
+                let execStatus: 'completed' | 'active' | 'upcoming' = 'upcoming'
+                if (isCompletedMS || isCompleted) {
+                    execStatus = 'completed'
+                } else if (!hasActiveFound && contractStarted) {
+                    execStatus = 'active'
+                    hasActiveFound = true
+                }
+
+                steps.push({
+                    id: 'execution_auto',
+                    label: `${currentStepNum}. Triển khai dự án`,
+                    description: 'Thực hiện dịch vụ/sản phẩm theo hợp đồng',
+                    status: execStatus,
+                    link: contract.project_id ? `/projects/${contract.project_id}` : undefined,
+                })
+                currentStepNum++
+            }
+
             let stepStatus: 'completed' | 'active' | 'upcoming' = 'upcoming'
             if (isCompletedMS || isCompleted) {
                 stepStatus = 'completed'
@@ -93,7 +114,7 @@ function getLifecycleSteps(contract: Contract, project?: Project | null): Lifecy
             steps.push({
                 id: `milestone_${(ms as any).id || index}`,
                 label: `${currentStepNum}. ${(ms as any).name || `Giai đoạn ${index + 1}`}`,
-                description: isPayment ? `Thanh toán theo hợp đồng: ${new Intl.NumberFormat('vi-VN').format((ms as any).amount)} đ` : 'Triển khai và nghiệm thu dự án',
+                description: isPayment ? `Thanh toán theo hợp đồng: ${new Intl.NumberFormat('vi-VN').format((ms as any).amount)} đ` : 'Nghiệm thu tiến độ',
                 status: stepStatus,
                 date: (ms as any).completed_at || (ms as any).due_date,
                 document: isPayment ? 'Đề nghị thanh toán' : 'Biên bản giao nhận',
