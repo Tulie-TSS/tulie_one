@@ -46,7 +46,7 @@ export default async function ProjectDetailPage({ params }: any) {
     const contractTotal = contracts.reduce((sum: number, c: any) => sum + (c.total_amount || 0), 0)
     const projectTotal = contractTotal > 0 ? contractTotal : (acceptedTotal > 0 ? acceptedTotal : allQuoteTotal)
 
-    const portalUrl = quotations.length > 0 ? `/portal/${quotations[0].public_token}` : null
+    const portalUrl = contracts.length > 0 && contracts[0].public_token ? `/portal/${contracts[0].public_token}` : null
 
     return (
         <div className="space-y-6">

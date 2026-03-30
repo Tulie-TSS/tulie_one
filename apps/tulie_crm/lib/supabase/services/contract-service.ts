@@ -5,6 +5,7 @@ import { Contract, ContractMilestone } from '@/types'
 import { revalidatePath } from 'next/cache'
 import { logActivity, logDestructiveAction } from './activity-service'
 import { generateDocumentBundle } from './document-template-service'
+import { v4 as uuidv4 } from 'uuid'
 
 export async function getContracts(customerId?: string, type?: 'contract' | 'order', brand?: string) {
     try {
@@ -76,10 +77,13 @@ export async function createContract(contract: Partial<Contract>, milestones: Pa
         }
     }
 
+    // Generate public_token
+    const publicToken = 'ct_' + uuidv4().replace(/-/g, '')
+    
     // 1. Insert contract
     const { data: contractData, error: contractError } = await supabase
         .from('contracts')
-        .insert([contract])
+        .insert([{ ...contract, public_token: publicToken }])
         .select()
         .single()
 
@@ -420,6 +424,7 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
                 brand: quotation.brand,
                 project_id: quotation.project_id,
                 customer_snapshot: customerSnapshot,
+                public_token: 'ct_' + uuidv4().replace(/-/g, '')
             }])
             .select()
             .single()

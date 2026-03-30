@@ -164,12 +164,14 @@ export async function getQuotationByToken(token: string) {
 
         const quotation = data as Quotation;
 
-        // Fetch sibling quotations for the same deal if deal_id exists
-        if (quotation.deal_id) {
+        // Fetch sibling quotations for the same deal (or project if no deal)
+        if (quotation.deal_id || quotation.project_id) {
+            const queryField = quotation.deal_id ? 'deal_id' : 'project_id'
+            const queryValue = quotation.deal_id || quotation.project_id
             const { data: siblings } = await supabase
                 .from('quotations')
                 .select('*, items:quotation_items(*)')
-                .eq('deal_id', quotation.deal_id)
+                .eq(queryField, queryValue)
                 .order('created_at', { ascending: false });
             
             if (siblings) {

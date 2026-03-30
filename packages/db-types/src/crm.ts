@@ -186,6 +186,7 @@ export interface Contract {
   project_id?: string
   project?: Project
   brand: Brand
+  public_token?: string
   password_hash?: string
   financial_password_hash?: string
   customer_snapshot?: CustomerSnapshot

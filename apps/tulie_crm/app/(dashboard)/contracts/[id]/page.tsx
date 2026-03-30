@@ -55,22 +55,8 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
 
     const progress = contract.total_amount > 0 ? (paidAmount / contract.total_amount) * 100 : 0
 
-    // Get portal URL via linked project's quotation
-    let portalUrl: string | null = null
-    if (contract.project_id) {
-        try {
-            const supabase = await createClient()
-            const { data: quotation } = await supabase
-                .from('quotations')
-                .select('public_token')
-                .eq('project_id', contract.project_id)
-                .limit(1)
-                .maybeSingle()
-            if (quotation?.public_token) {
-                portalUrl = `/portal/${quotation.public_token}`
-            }
-        } catch {}
-    }
+    // Get portal URL via contract's public_token
+    const portalUrl: string | null = contract.public_token ? `/portal/${contract.public_token}` : null
 
     return (
         <div className="space-y-6">

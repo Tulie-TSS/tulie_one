@@ -12,8 +12,6 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@repo/db-types": "*",
-    "@repo/ui": "*",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-avatar": "^1.1.11",
     "@radix-ui/react-checkbox": "^1.3.3",
@@ -31,6 +29,8 @@
     "@radix-ui/react-tabs": "^1.1.13",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@react-pdf/renderer": "^4.3.2",
+    "@repo/db-types": "*",
+    "@repo/ui": "*",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.90.1",
     "@tanstack/react-table": "^8.21.3",
