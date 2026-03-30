@@ -698,7 +698,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                 <TableRow className="bg-muted/30">
                                                     <TableCell colSpan={6} className="p-0 border-b">
                                                         <div className="p-4 md:p-6 lg:px-8 border-t border-border/50">
-                                                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-background rounded-lg border p-6 shadow-sm">
+                                                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-background rounded-md border border-border/60 p-6">
                                                                 {/* Left: Original Request */}
                                                                 <div className="lg:col-span-7 space-y-4">
                                                                     <div className="flex items-start justify-between gap-4 mb-3">

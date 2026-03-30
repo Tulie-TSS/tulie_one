@@ -242,7 +242,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                 <TabsTrigger
                                     key={item.value}
                                     value={item.value}
-                                    className="w-full justify-start gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-primary"
+                                    className="w-full justify-start gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:ring-0"
                                 >
                                     <item.icon className="w-4 h-4 shrink-0" />
                                     <span className="truncate">{item.label}</span>
@@ -253,7 +253,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                     <Separator className="my-2" />
                                     <TabsTrigger
                                         value="finance"
-                                        className="w-full justify-start gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-primary"
+                                        className="w-full justify-start gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:ring-0"
                                     >
                                         <Wallet className="w-4 h-4 shrink-0" />
                                         <span className="truncate">Tài chính & Pháp lý</span>
