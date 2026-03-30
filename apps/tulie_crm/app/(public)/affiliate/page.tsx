@@ -29,10 +29,10 @@ const BONUS_TIERS = [
 
 const CASH_MILESTONES = [
     { target: 50_000_000, label: '50 triệu', reward: 3_000_000 },
-    { target: 100_000_000, label: '100 triệu', reward: 2_000_000 },
-    { target: 150_000_000, label: '150 triệu', reward: 3_000_000 },
-    { target: 200_000_000, label: '200 triệu', reward: 5_000_000 },
-    { target: 250_000_000, label: '250 triệu', reward: 7_000_000 },
+    { target: 100_000_000, label: '100 triệu', reward: 4_000_000 },
+    { target: 150_000_000, label: '150 triệu', reward: 5_000_000 },
+    { target: 200_000_000, label: '200 triệu', reward: 7_000_000 },
+    { target: 250_000_000, label: '250 triệu', reward: 8_000_000 },
     { target: 300_000_000, label: '300 triệu', reward: 10_000_000 },
 ] as const
 
@@ -95,7 +95,7 @@ const COMMISSION_EXAMPLES = [
     { deal: 10_000_000, earning: 10_000_000 * 0.20 },
     { deal: 20_000_000, earning: 20_000_000 * 0.20 },
     { deal: 50_000_000, earning: 50_000_000 * (0.20 + 0.03) + 3_000_000 },
-    { deal: 100_000_000, earning: 100_000_000 * (0.20 + 0.05) + 3_000_000 + 2_000_000 },
+    { deal: 100_000_000, earning: 100_000_000 * (0.20 + 0.05) + 3_000_000 + 4_000_000 },
 ]
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
