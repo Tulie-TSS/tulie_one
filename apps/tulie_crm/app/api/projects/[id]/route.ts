@@ -30,7 +30,7 @@ export async function PATCH(req: NextRequest, { params }: any) {
         return NextResponse.json({ success: true })
     } catch (error: any) {
         console.error('Error updating project:', error)
-        return NextResponse.json({ error: 'Failed to update project' }, { status: 500 })
+        return NextResponse.json({ error: error.message || 'Failed to update project' }, { status: 500 })
     }
 }
 

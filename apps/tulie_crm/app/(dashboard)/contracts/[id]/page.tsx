@@ -203,7 +203,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                     </CardHeader>
                     <CardContent className="space-y-8">
                         {/* Payment Progress */}
-                        <div className="space-y-4 max-w-2xl">
+                        <div className="space-y-4">
                             <div className="flex justify-between font-semibold text-sm">
                                 <span>Đã thanh toán: {formatCurrency(paidAmount)}</span>
                                 <span>Tổng giá trị: {formatCurrency(contract.total_amount)}</span>
@@ -233,7 +233,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                             <TableRow key={milestone.id}>
                                                 <TableCell className="text-center">
                                                     {milestone.status === 'completed' ? (
-                                                        <CheckCircle className="h-4 w-4 mx-auto text-emerald-600" />
+                                                        <CheckCircle className="h-4 w-4 mx-auto text-primary" />
                                                     ) : milestone.status === 'overdue' ? (
                                                         <AlertTriangle className="h-4 w-4 mx-auto text-destructive" />
                                                     ) : (
@@ -242,19 +242,19 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                                 </TableCell>
                                                 <TableCell>
                                                     <div className="flex flex-col gap-1">
-                                                        <span className={`font-medium text-sm ${milestone.status === 'completed' ? 'text-emerald-800' : ''}`}>
+                                                        <span className="font-medium text-sm text-foreground">
                                                             {milestone.name}
                                                         </span>
                                                         <span className="text-xs text-muted-foreground flex items-center gap-1.5">
                                                             Hạn: {formatDate(milestone.due_date)}
                                                             {milestone.completed_at && (
-                                                                <span className="text-emerald-600 font-medium">• Đã thanh toán {formatDate(milestone.completed_at)}</span>
+                                                                <span className="text-muted-foreground font-medium">• Đã thanh toán {formatDate(milestone.completed_at)}</span>
                                                             )}
                                                         </span>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="text-right">
-                                                    <span className={`font-semibold tabular-nums text-sm ${milestone.status === 'completed' ? 'text-emerald-700' : ''}`}>
+                                                    <span className="font-semibold tabular-nums text-sm text-foreground">
                                                         {milestone.amount ? formatCurrency(milestone.amount).replace(/\s*[₫đ]\s*$/g, '').trim() : '0'} <sup className="text-[10px] text-muted-foreground font-normal">đ</sup>
                                                     </span>
                                                 </TableCell>

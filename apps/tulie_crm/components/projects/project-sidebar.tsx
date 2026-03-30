@@ -49,11 +49,14 @@ export function ProjectSidebar({ project, teamMembers = [] }: ProjectSidebarProp
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: newStatus })
             })
-            if (!res.ok) throw new Error('Failed')
+            if (!res.ok) {
+                const data = await res.json().catch(() => ({}))
+                throw new Error(data.error || 'Lỗi hệ thống')
+            }
             toast.success('Đã cập nhật trạng thái dự án')
             router.refresh()
         } catch (err: any) {
-            toast.error(`Lỗi cập nhật trạng thái: ${err?.message || 'Thử lại sau'}`)
+            toast.error(`Lỗi cập nhật trạng thái: ${err.message}`)
         } finally {
             setStatusLoading(false)
         }
