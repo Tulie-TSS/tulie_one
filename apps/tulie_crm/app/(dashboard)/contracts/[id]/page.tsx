@@ -205,6 +205,12 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                     <p className="text-sm text-muted-foreground whitespace-pre-line">{contract.terms}</p>
                                 </div>
                             )}
+                            {(contract as any).notes && (
+                                <div>
+                                    <h4 className="font-medium mb-1">Ghi chú hợp đồng</h4>
+                                    <p className="text-sm text-muted-foreground whitespace-pre-line">{(contract as any).notes}</p>
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
                 </div>

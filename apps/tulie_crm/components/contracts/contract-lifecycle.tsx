@@ -124,7 +124,7 @@ export function ContractLifecycle({ contract, project }: ContractLifecycleProps)
         : steps.every(s => s.status === 'completed') ? 100 : 0
 
     return (
-        <Card className="rounded-md border">
+        <Card>
             <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                     <CardTitle className="text-base font-semibold flex items-center gap-2">
@@ -161,7 +161,7 @@ export function ContractLifecycle({ contract, project }: ContractLifecycleProps)
 
                             <div className={cn(
                                 "flex items-start gap-3 py-2 px-2 rounded-lg transition-colors",
-                                isActive && "bg-primary/5"
+                                isActive && "bg-muted/50"
                             )}>
                                 {/* Status icon */}
                                 <div className={cn(

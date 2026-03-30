@@ -17,6 +17,7 @@ import {
     CardDescription,
     CardAction,
     CardContent,
+    Badge,
 } from '@repo/ui'
 import { Progress } from '@repo/ui'
 import {
@@ -98,10 +99,10 @@ const PRIORITY_CONFIG: Record<string, { label: string; color: string; indicator:
 function StatusBadge({ status }: { status: string }) {
     const s = STATUS_CONFIG[status] || STATUS_CONFIG.pending
     return (
-        <div className={cn("inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md border", s.bg, s.border)}>
+        <Badge variant="outline" className={cn("gap-1.5 px-2 py-0.5 font-medium", s.bg, s.border, s.text)}>
             <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", s.dot)} />
-            <span className={cn("text-[11px] font-semibold tracking-wide whitespace-nowrap", s.text)}>{s.label}</span>
-        </div>
+            {s.label}
+        </Badge>
     )
 }
 

@@ -8,7 +8,7 @@ import { Lock, AlertCircle } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import { verifyPortalPassword } from '@/lib/supabase/services/portal-actions'
 import { Alert, AlertDescription } from '@repo/ui'
-import { Label } from '@repo/ui' // Added Label import
+import { Label, Badge } from '@repo/ui' // Added Label and Badge import
 
 import { cn } from '@/lib/utils'
 
@@ -60,8 +60,8 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                         <Lock className="h-6 w-6 text-white" />
                     </div>
                     <div className="space-y-1">
-                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Secure Access</p>
-                        <h1 className="text-2xl font-bold text-foreground">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Secure Access</p>
+                        <h1 className="text-2xl font-bold tracking-tight text-foreground">
                             {type === 'portal' ? 'Portal Khách Hàng' : 'Tài liệu Tài chính'}
                         </h1>
                     </div>
@@ -92,7 +92,7 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                             
                             <div className="space-y-5">
                                 <div className="space-y-2">
-                                    <Label htmlFor="password" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Mật khẩu truy cập</Label>
+                                    <Label htmlFor="password">Mật khẩu truy cập</Label>
                                     <div className="relative group">
                                         <Input
                                             id="password"
@@ -100,7 +100,7 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                                             placeholder="••••••••"
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
-                                            className="h-12 px-4 rounded-md border-border focus:ring-zinc-950 focus:border-zinc-950 transition-all font-mono"
+                                            className="font-mono"
                                             required
                                         />
                                         <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-focus-within:opacity-100 transition-opacity">
@@ -110,11 +110,11 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                                 </div>
 
                                 <div className="space-y-2">
-                                    <div className="flex items-center justify-between ml-1">
-                                        <Label htmlFor="captcha" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Xác thực con người</Label>
-                                        <span className="text-[10px] font-bold text-foreground bg-muted px-2 py-0.5 rounded-md border border-border">
+                                    <div className="flex items-center justify-between">
+                                        <Label htmlFor="captcha">Xác thực con người</Label>
+                                        <Badge variant="secondary" className="font-mono">
                                             {captcha.a} + {captcha.b} = ?
-                                        </span>
+                                        </Badge>
                                     </div>
                                     <Input
                                         id="captcha"
@@ -122,7 +122,7 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                                         placeholder="Kết quả..."
                                         value={captchaValue}
                                         onChange={(e) => setCaptchaValue(e.target.value)}
-                                        className="h-12 px-4 rounded-md border-border focus:ring-zinc-950 focus:border-zinc-950 transition-all font-medium"
+                                        className="font-mono"
                                         required
                                     />
                                 </div>
@@ -130,7 +130,7 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
 
                             <Button
                                 type="submit"
-                                className="w-full h-12 text-[11px] font-bold uppercase tracking-widest rounded-md bg-zinc-950 hover:bg-zinc-800 text-white transition-all active:scale-[0.97] shadow-xl shadow-zinc-950/10 mt-2"
+                                className="w-full mt-4"
                                 disabled={isLoading || !password || !captchaValue}
                             >
                                 {isLoading ? (

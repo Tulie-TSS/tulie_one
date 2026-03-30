@@ -59,19 +59,10 @@ export const projectColumns: ColumnDef<Project>[] = [
             if (!stats || stats.total === 0) {
                 return <span className="text-xs text-muted-foreground">-</span>
             }
-            const allSigned = stats.signed === stats.total
             return (
                 <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold tabular-nums">{stats.total}</span>
-                    {allSigned ? (
-                        <Badge variant="outline" className="text-[10px] leading-none px-1.5 py-0.5 bg-green-50/50 text-green-700 border-green-200">
-                            Đủ hồ sơ
-                        </Badge>
-                    ) : (
-                        <Badge variant="secondary" className="text-[10px] leading-none px-1.5 py-0.5 pointer-events-none">
-                            {stats.visible} hiện
-                        </Badge>
-                    )}
+                    <span className="text-sm font-semibold tabular-nums">{stats.visible}</span>
+                    <span className="text-xs text-muted-foreground">hiện</span>
                 </div>
             )
         }
