@@ -70,48 +70,85 @@ function getLifecycleSteps(contract: Contract, project?: Project | null): Lifecy
             date: contract.signed_date || contract.start_date,
             document: docLabel,
             documentType: docType,
-        },
-        {
-            id: 'payment1',
-            label: '4. Thanh toán đợt 1',
-            description: 'Tạm ứng theo điều khoản hợp đồng',
-            status: ms1Done ? 'completed' : (hasSignedDate || isActive) ? 'active' : 'upcoming',
-            date: ms1?.completed_at || ms1?.due_date,
-            document: 'Đề nghị thanh toán',
-            documentType: 'payment_request',
-        },
-        {
-            id: 'execution',
-            label: '5. Triển khai',
-            description: 'Thực hiện dịch vụ/sản phẩm theo hợp đồng',
-            status: ms2Done ? 'completed' : ms1Done ? 'active' : 'upcoming',
-            date: ms2?.due_date,
-            link: contract.project_id ? `/projects/${contract.project_id}` : undefined,
-        },
-        {
-            id: 'delivery',
-            label: '6. Nghiệm thu & Bàn giao',
-            description: 'Xác nhận kết quả và bàn giao cho khách hàng',
-            status: ms3Done ? 'completed' : ms2Done ? 'active' : 'upcoming',
-            date: ms3?.due_date,
-            document: 'Biên bản giao nhận',
-            documentType: 'delivery_minutes',
-        },
-        {
-            id: 'payment2',
-            label: '7. Thanh toán đợt cuối',
-            description: 'Quyết toán theo hợp đồng',
-            status: isCompleted ? 'completed' : ms3Done ? 'active' : 'upcoming',
-            document: 'Đề nghị thanh toán',
-            documentType: 'payment_request',
-        },
-        {
-            id: 'close',
-            label: '8. Kết thúc dự án',
-            description: 'Đóng hợp đồng và dự án',
-            status: isCompleted ? 'completed' : 'upcoming',
-        },
+        }
     ]
+
+    let currentStepNum = 4
+    if (milestones && milestones.length > 0) {
+        let hasActiveFound = false
+        const contractStarted = hasSignedDate || isActive || isCompleted
+
+        milestones.forEach((ms, index) => {
+            const isCompletedMS = ms.status === 'completed'
+            
+            let stepStatus: 'completed' | 'active' | 'upcoming' = 'upcoming'
+            if (isCompletedMS || isCompleted) {
+                stepStatus = 'completed'
+            } else if (!hasActiveFound && contractStarted) {
+                stepStatus = 'active'
+                hasActiveFound = true
+            }
+
+            const isPayment = (ms as any).amount > 0
+            steps.push({
+                id: `milestone_${(ms as any).id || index}`,
+                label: `${currentStepNum}. ${(ms as any).name || `Giai đoạn ${index + 1}`}`,
+                description: isPayment ? `Thanh toán theo hợp đồng: ${new Intl.NumberFormat('vi-VN').format((ms as any).amount)} đ` : 'Triển khai và nghiệm thu dự án',
+                status: stepStatus,
+                date: (ms as any).completed_at || (ms as any).due_date,
+                document: isPayment ? 'Đề nghị thanh toán' : 'Biên bản giao nhận',
+                documentType: isPayment ? `payment_request&milestone=${index}` : 'delivery_minutes',
+                link: contract.project_id ? `/projects/${contract.project_id}` : undefined,
+            })
+            currentStepNum++
+        })
+    } else {
+        // Fallback for legacy contracts without milestones
+        steps.push(
+            {
+                id: 'payment1',
+                label: '4. Thanh toán đợt 1',
+                description: 'Tạm ứng theo điều khoản hợp đồng',
+                status: ms1Done ? 'completed' : (hasSignedDate || isActive) ? 'active' : 'upcoming',
+                date: ms1?.completed_at || ms1?.due_date,
+                document: 'Đề nghị thanh toán',
+                documentType: 'payment_request',
+            },
+            {
+                id: 'execution',
+                label: '5. Triển khai',
+                description: 'Thực hiện dịch vụ/sản phẩm theo hợp đồng',
+                status: ms2Done ? 'completed' : ms1Done ? 'active' : 'upcoming',
+                date: ms2?.due_date,
+                link: contract.project_id ? `/projects/${contract.project_id}` : undefined,
+            },
+            {
+                id: 'delivery',
+                label: '6. Nghiệm thu & Bàn giao',
+                description: 'Xác nhận kết quả và bàn giao cho khách hàng',
+                status: ms3Done ? 'completed' : ms2Done ? 'active' : 'upcoming',
+                date: ms3?.due_date,
+                document: 'Biên bản giao nhận',
+                documentType: 'delivery_minutes',
+            },
+            {
+                id: 'payment2',
+                label: '7. Thanh toán đợt cuối',
+                description: 'Quyết toán theo hợp đồng',
+                status: isCompleted ? 'completed' : ms3Done ? 'active' : 'upcoming',
+                document: 'Đề nghị thanh toán',
+                documentType: 'payment_request',
+            }
+        )
+        currentStepNum = 8
+    }
+
+    steps.push({
+        id: 'close',
+        label: `${currentStepNum}. Kết thúc dự án`,
+        description: 'Đóng hợp đồng và dự án',
+        status: isCompleted ? 'completed' : 'upcoming',
+    })
 
     return steps
 }

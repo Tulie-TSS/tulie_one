@@ -17,6 +17,7 @@ export async function GET(
         const { id: contractId } = await params
         const url = new URL(request.url)
         const type = url.searchParams.get('type') || 'contract'
+        const milestoneIndex = url.searchParams.get('milestone')
 
         // Find template
         const templates = await getDocumentTemplates()
@@ -38,11 +39,17 @@ export async function GET(
             return new Response('Contract not found', { status: 404 })
         }
 
+        const additionalVariables: Record<string, string> = {}
+        if (milestoneIndex) {
+            additionalVariables.milestone_index = milestoneIndex
+        }
+
         // Generate document
         const result = await generateDocument(
             template.id,
             contract.customer_id,
-            contractId
+            contractId,
+            additionalVariables
         )
 
         const html = result.content || ''

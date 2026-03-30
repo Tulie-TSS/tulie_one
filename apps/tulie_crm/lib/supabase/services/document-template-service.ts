@@ -547,16 +547,47 @@ export async function generateDocument(
 
                     // For payment request: use first pending milestone or total
                     if (!additionalVariables?.payment_amount) {
-                        const pendingMilestone = paymentMilestones.find((m: any) => m.status === 'pending') || paymentMilestones[0]
+                        let pendingMilestone = paymentMilestones.find((m: any) => m.status === 'pending') || paymentMilestones[0]
+                        if (additionalVariables?.milestone_index !== undefined) {
+                            const rawIdx = parseInt(additionalVariables.milestone_index as string, 10)
+                            if (!isNaN(rawIdx) && contract.milestones[rawIdx]) {
+                                pendingMilestone = contract.milestones[rawIdx]
+                            }
+                        }
+
                         if (pendingMilestone) {
                             const pct = totalAmount > 0 ? Math.round((pendingMilestone.amount / totalAmount) * 100) : 0
                             variables.payment_amount = new Intl.NumberFormat('vi-VN').format(pendingMilestone.amount) + ' VND'
                             variables.payment_percentage = `${pct}%`
+                            
                             // Only overwrite amount_in_words if this is a payment request
                             if (template.type === 'payment_request') {
                                 if (!variables.amount_in_words || variables.amount_in_words === readNumberToWords(totalAmount)) {
                                     variables.amount_in_words = readNumberToWords(pendingMilestone.amount)
                                 }
+                            }
+
+                            // Dynamic variables for generic milestone info
+                            const mName = pendingMilestone.name || 'Thanh toán'
+                            const mNameLower = mName.toLowerCase()
+                            const isDeposit = mNameLower.includes('cọc') || mNameLower.includes('tạm ứng') || mNameLower.includes('lần 1') || mNameLower.includes('đợt 1')
+                            
+                            let milestoneReason: string
+                            if (isDeposit) {
+                                milestoneReason = `Theo điều khoản thanh toán tại Điều 2 của Hợp đồng, Bên sử dụng dịch vụ thanh toán đặt cọc cho Bên cung cấp dịch vụ để triển khai dự án.`
+                            } else {
+                                const deliveryDate = pendingMilestone.due_date 
+                                    ? parseLocalDateString(pendingMilestone.due_date).toLocaleDateString('vi-VN') 
+                                    : ''
+                                milestoneReason = deliveryDate
+                                    ? `Căn cứ Biên bản bàn giao và nghiệm thu ngày ${deliveryDate}, hai bên xác nhận Bên cung cấp dịch vụ đã hoàn thành đầy đủ phạm vi công việc quy định tại Hợp đồng.`
+                                    : `Căn cứ Biên bản bàn giao và nghiệm thu, hai bên xác nhận Bên cung cấp dịch vụ đã hoàn thành đầy đủ phạm vi công việc quy định tại Hợp đồng.`
+                            }
+
+                            if (!variables.milestone_name) variables.milestone_name = mName
+                            if (!variables.milestone_reason) variables.milestone_reason = milestoneReason
+                            if (!variables.milestone_due_date && pendingMilestone.due_date) {
+                                variables.milestone_due_date = parseLocalDateString(pendingMilestone.due_date).toLocaleDateString('vi-VN')
                             }
                         }
                     }
