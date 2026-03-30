@@ -71,6 +71,10 @@ export interface Deal {
   created_by: string
   creator?: User
   quotations?: Quotation[]
+  partner_id?: string
+  partner?: User
+  partner_role?: 'lead_only' | 'consult_close' | 'full_close'
+  partner_commission?: number
   brand: Brand
   created_at: string
   updated_at: string

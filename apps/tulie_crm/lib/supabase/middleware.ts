@@ -50,7 +50,7 @@ export async function updateSession(request: NextRequest) {
             '/invoices', '/products', '/finance', '/team', '/reports',
             '/settings', '/studio', '/helpdesk', '/templates', '/bundles',
             '/leads', '/deals', '/projects', '/profile', '/workspace',
-            '/demo', '/dev',
+            '/demo', '/dev', '/partner'
         ]
         const isProtectedPath = protectedPaths.some(path =>
             request.nextUrl.pathname.startsWith(path)
