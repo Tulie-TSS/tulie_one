@@ -180,34 +180,27 @@ export default function QuotationDetailPage() {
             <div className="print:hidden space-y-6">
                 {/* Header Actions */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                    <div className="flex items-center gap-5">
-                        <Button variant="ghost" size="icon" asChild className="rounded-full">
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+                        <Button variant="outline" size="icon" asChild className="h-9 w-9 shrink-0">
                             <Link href={backHref}>
-                                <ArrowLeft className="h-5 w-5" />
+                                <ArrowLeft className="h-4 w-4" />
                             </Link>
                         </Button>
-                        <div className="flex items-center gap-5">
-                            <div className="h-14 w-14 rounded-md bg-zinc-950 flex items-center justify-center  transition-transform hover:scale-105 duration-300">
-                                <FileText className="h-7 w-7 text-white" />
-                            </div>
-                            <div className="space-y-1.5">
-                                <div className="flex items-center gap-2">
-                                    <div className="px-3 h-6 rounded-full border border-border bg-white text-foreground text-[11px] flex items-center hover:bg-muted transition-colors">
-                                        {quotation.quotation_number}
-                                    </div>
-                                    <StatusBadge entityType="quotation" status={quotation.status} />
-                                    {quotation.is_primary && (
-                                        <Badge variant="default" className="h-[22px] px-2 rounded-sm text-[11px] bg-emerald-500 hover:bg-emerald-600 text-white font-medium border-0">Chính</Badge>
-                                    )}
-                                </div>
-                                <h1 className="text-3xl leading-none text-foreground">{quotation.customer?.company_name}</h1>
-                                {(quotation.title || quotation.version_name) && (
-                                    <p className="text-sm font-medium text-muted-foreground mt-0.5">
-                                        {quotation.version_name ? <span className="text-foreground font-semibold mr-1.5">{quotation.version_name}</span> : null}
-                                        {quotation.title ? (quotation.version_name ? ` - ${quotation.title}` : quotation.title) : null}
-                                    </p>
+                        <div className="space-y-1.5">
+                            <div className="flex items-center gap-2">
+                                <Badge variant="outline" className="text-[11px] font-mono">{quotation.quotation_number}</Badge>
+                                <StatusBadge entityType="quotation" status={quotation.status} />
+                                {quotation.is_primary && (
+                                    <Badge className="bg-emerald-500 hover:bg-emerald-600 text-white border-0">Chính</Badge>
                                 )}
                             </div>
+                            <h1 className="text-2xl font-bold tracking-tight">{quotation.customer?.company_name}</h1>
+                            {(quotation.title || quotation.version_name) && (
+                                <p className="text-sm text-muted-foreground flex items-center gap-1.5">
+                                    {quotation.version_name ? <span className="font-semibold text-foreground">{quotation.version_name}</span> : null}
+                                    {quotation.title ? (quotation.version_name ? <span>&bull; {quotation.title}</span> : quotation.title) : null}
+                                </p>
+                            )}
                         </div>
                     </div>
 
@@ -298,31 +291,33 @@ export default function QuotationDetailPage() {
                     <div className="grid gap-8 lg:grid-cols-3">
                         <div className="lg:col-span-2 space-y-6">
                             {/* Customer Info Card */}
-                            <Card>
-                                <CardHeader className="flex flex-row items-center gap-2 pb-2">
-                                    <Building2 className="h-4 w-4 text-muted-foreground" />
-                                    <CardTitle className="text-base">Thông tin khách hàng</CardTitle>
+                            <Card className="shadow-sm">
+                                <CardHeader className="pb-4 border-b bg-muted/30">
+                                    <div className="flex items-center gap-2">
+                                        <Building2 className="h-4 w-4 text-muted-foreground" />
+                                        <CardTitle className="text-base font-semibold">Thông tin khách hàng</CardTitle>
+                                    </div>
                                 </CardHeader>
-                                <CardContent className="pt-6 pb-8">
-                                    <div className="grid gap-10 sm:grid-cols-2">
-                                        <div className="space-y-6">
+                                <CardContent className="pt-6">
+                                    <div className="grid gap-6 sm:grid-cols-2">
+                                        <div className="space-y-5">
                                             <div>
-                                                <p className="text-xs font-medium text-muted-foreground mb-2">Đơn vị</p>
-                                                <p className="font-bold text-2xl leading-tight">{quotation.customer?.company_name}</p>
+                                                <p className="text-xs font-medium text-muted-foreground mb-1.5">Đơn vị</p>
+                                                <p className="font-semibold text-lg leading-tight text-foreground">{quotation.customer?.company_name}</p>
                                             </div>
                                             <div>
-                                                <p className="text-xs font-medium text-muted-foreground mb-2">Địa chỉ</p>
-                                                <p className="text-sm font-medium leading-relaxed max-w-sm">{quotation.customer?.address || 'N/A'}</p>
+                                                <p className="text-xs font-medium text-muted-foreground mb-1.5">Địa chỉ</p>
+                                                <p className="text-sm leading-relaxed text-foreground">{quotation.customer?.address || 'N/A'}</p>
                                             </div>
                                         </div>
-                                        <div className="space-y-4 pt-2">
-                                            <div className="flex justify-between items-center py-3 border-b border-border">
-                                                <span className="text-xs font-medium text-muted-foreground">Email tiếp nhận</span>
-                                                <span className="text-sm">{quotation.customer?.email || 'N/A'}</span>
+                                        <div className="space-y-5">
+                                            <div>
+                                                <p className="text-xs font-medium text-muted-foreground mb-1.5">Email tiếp nhận</p>
+                                                <p className="text-sm font-medium text-foreground">{quotation.customer?.email || 'N/A'}</p>
                                             </div>
-                                            <div className="flex justify-between items-center py-3 border-b border-border">
-                                                <span className="text-xs font-medium text-muted-foreground">Hotline liên hệ</span>
-                                                <span className="text-sm">{quotation.customer?.phone || 'N/A'}</span>
+                                            <div>
+                                                <p className="text-xs font-medium text-muted-foreground mb-1.5">Hotline liên hệ</p>
+                                                <p className="text-sm font-medium text-foreground">{quotation.customer?.phone || 'N/A'}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -516,25 +511,29 @@ export default function QuotationDetailPage() {
 
                             {/* Terms & Notes */}
                             <div className="grid gap-6 sm:grid-cols-2">
-                                <Card>
-                                    <CardHeader className="flex flex-row items-center gap-2 pb-3">
-                                        <BookOpen className="h-4 w-4 text-muted-foreground" />
-                                        <CardTitle className="text-base">Điều khoản thanh toán</CardTitle>
+                                <Card className="shadow-sm">
+                                    <CardHeader className="pb-4 border-b bg-muted/30">
+                                        <div className="flex items-center gap-2">
+                                            <BookOpen className="h-4 w-4 text-muted-foreground" />
+                                            <CardTitle className="text-base font-semibold">Điều khoản thanh toán</CardTitle>
+                                        </div>
                                     </CardHeader>
-                                    <CardContent>
-                                        <div className="text-sm text-muted-foreground leading-relaxed font-medium whitespace-pre-line bg-muted/50 p-4 rounded-lg border border-border">
+                                    <CardContent className="pt-6">
+                                        <div className="text-sm text-foreground leading-relaxed whitespace-pre-line bg-slate-50 dark:bg-zinc-900/50 p-5 rounded-lg border border-slate-100 dark:border-zinc-800">
                                             {quotation.terms || 'Chưa có thông tin điều khoản.'}
                                         </div>
                                     </CardContent>
                                 </Card>
 
-                                <Card>
-                                    <CardHeader className="flex flex-row items-center gap-2 pb-3">
-                                        <Info className="h-4 w-4 text-muted-foreground" />
-                                        <CardTitle className="text-base">Ghi chú bổ sung</CardTitle>
+                                <Card className="shadow-sm">
+                                    <CardHeader className="pb-4 border-b bg-muted/30">
+                                        <div className="flex items-center gap-2">
+                                            <Info className="h-4 w-4 text-muted-foreground" />
+                                            <CardTitle className="text-base font-semibold">Ghi chú bổ sung</CardTitle>
+                                        </div>
                                     </CardHeader>
-                                    <CardContent>
-                                        <div className="text-sm text-muted-foreground leading-relaxed font-medium whitespace-pre-line bg-muted/50 p-4 rounded-lg border border-border">
+                                    <CardContent className="pt-6">
+                                        <div className="text-sm text-foreground leading-relaxed whitespace-pre-line bg-slate-50 dark:bg-zinc-900/50 p-5 rounded-lg border border-slate-100 dark:border-zinc-800">
                                             {quotation.notes || 'Không có ghi chú nào.'}
                                         </div>
                                     </CardContent>
@@ -544,36 +543,33 @@ export default function QuotationDetailPage() {
 
                         <div className="space-y-6">
                             {/* Combined Status Card */}
-                            <Card>
-                                <CardContent className="p-6">
-                                    <div className="grid grid-cols-2 gap-4 mb-8">
-                                        <div className="bg-muted/50 p-6 rounded-md border border-border text-center space-y-1 flex flex-col justify-center min-h-[100px]">
-                                            <p className="text-4xl tabular-nums leading-none">{stats?.totalViews ?? quotation.view_count ?? 0}</p>
-                                            <p className="text-xs font-medium text-muted-foreground border-t border-border pt-3 mt-3 mx-2">Lượt xem</p>
+                            <Card className="shadow-sm">
+                                <CardHeader className="pb-4 border-b bg-muted/30">
+                                    <CardTitle className="text-base font-semibold">Khái quát</CardTitle>
+                                </CardHeader>
+                                <CardContent className="p-6 pt-6">
+                                    <div className="grid grid-cols-2 gap-4 mb-6">
+                                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-slate-50 border border-slate-100 dark:bg-zinc-900/50 dark:border-zinc-800">
+                                            <p className="text-3xl font-bold tracking-tight text-foreground">{stats?.totalViews ?? quotation.view_count ?? 0}</p>
+                                            <p className="text-xs font-medium text-muted-foreground mt-1.5 uppercase tracking-wider">Lượt xem</p>
                                         </div>
-                                        <div className="bg-muted/50 p-6 rounded-md border border-border text-center space-y-1 flex flex-col justify-center min-h-[100px]">
-                                            <p className="text-xs leading-tight mt-1">
+                                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-slate-50 border border-slate-100 dark:bg-zinc-900/50 dark:border-zinc-800">
+                                            <p className="text-sm font-bold text-foreground mt-1">
                                                 {quotation.valid_until ? formatDate(quotation.valid_until) : 'N/A'}
                                             </p>
-                                            <p className="text-xs font-medium text-muted-foreground border-t border-border pt-3 mt-3 mx-2">Ngày hết hạn</p>
+                                            <p className="text-xs font-medium text-muted-foreground mt-1.5 uppercase tracking-wider">Ngày hết hạn</p>
                                         </div>
                                     </div>
 
-                                    <div className="space-y-4 relative pl-3 border-l pb-1">
-                                        <div className="flex items-start gap-3">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-foreground mt-1.5" />
-                                            <div className="space-y-0.5">
-                                                <p className="text-xs font-medium">Khởi tạo báo giá</p>
-                                                <p className="text-xs text-muted-foreground">{formatDate(quotation.created_at)}</p>
-                                            </div>
+                                    <div className="space-y-3 pt-4 border-t border-border">
+                                        <div className="flex justify-between items-center text-sm">
+                                            <span className="text-muted-foreground font-medium">Khởi tạo:</span>
+                                            <span className="font-semibold">{formatDate(quotation.created_at)}</span>
                                         </div>
                                         {quotation.updated_at !== quotation.created_at && (
-                                            <div className="flex items-start gap-3">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-1.5" />
-                                                <div className="space-y-0.5">
-                                                    <p className="text-xs font-medium text-muted-foreground">Cập nhật cuối</p>
-                                                    <p className="text-xs text-muted-foreground">{formatDate(quotation.updated_at)}</p>
-                                                </div>
+                                            <div className="flex justify-between items-center text-sm">
+                                                <span className="text-muted-foreground font-medium">Cập nhật:</span>
+                                                <span className="font-semibold">{formatDate(quotation.updated_at)}</span>
                                             </div>
                                         )}
                                     </div>
@@ -584,33 +580,33 @@ export default function QuotationDetailPage() {
                             <QuotationViewAnalytics quotationId={quotation.id} />
 
                             {/* Payment Details Card */}
-                            <Card>
-                                <CardHeader className="flex flex-row items-center justify-between pb-4">
+                            <Card className="shadow-sm">
+                                <CardHeader className="pb-4 border-b bg-muted/30 flex flex-row items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <CreditCard className="h-4 w-4 text-muted-foreground" />
-                                        <CardTitle className="text-base">Thông tin thanh toán</CardTitle>
+                                        <CardTitle className="text-base font-semibold">Thông tin thanh toán</CardTitle>
                                     </div>
-                                    <Globe className="h-4 w-4 text-muted-foreground" />
+                                    <Globe className="h-4 w-4 text-muted-foreground opacity-50" />
                                 </CardHeader>
-                                <CardContent className="space-y-6 pt-2">
-                                    <div className="space-y-1">
+                                <CardContent className="space-y-6 pt-6">
+                                    <div className="space-y-1.5">
                                         <p className="text-xs font-medium text-muted-foreground">Đơn vị thụ hưởng</p>
-                                        <p className="font-bold text-sm">{quotation.bank_account_name || brandConfig?.bank_account_name || "CÔNG TY TNHH TULIE"}</p>
+                                        <p className="font-bold text-sm text-foreground">{quotation.bank_account_name || brandConfig?.bank_account_name || "CÔNG TY TNHH TULIE"}</p>
                                     </div>
-                                    <div className="space-y-1">
+                                    <div className="space-y-1.5">
                                         <p className="text-xs font-medium text-muted-foreground">Số tài khoản chính</p>
                                         <p className="font-bold text-2xl tracking-tighter text-foreground font-mono select-all">
                                             {quotation.bank_account_no || brandConfig?.bank_account_no || "0110163102"}
                                         </p>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-6 pt-2">
-                                        <div className="space-y-1">
+                                    <div className="grid grid-cols-2 gap-6 pt-3 border-t border-slate-100 dark:border-zinc-800">
+                                        <div className="space-y-1.5">
                                             <p className="text-xs font-medium text-muted-foreground">Ngân hàng</p>
-                                            <p className="font-bold text-sm">{quotation.bank_name || brandConfig?.bank_name || "MB BANK"}</p>
+                                            <p className="font-bold text-sm text-foreground">{quotation.bank_name || brandConfig?.bank_name || "MB BANK"}</p>
                                         </div>
-                                        <div className="space-y-1">
+                                        <div className="space-y-1.5">
                                             <p className="text-xs font-medium text-muted-foreground">Chi nhánh</p>
-                                            <p className="font-bold text-sm">{quotation.bank_branch || brandConfig?.bank_branch || "VIỆT NAM"}</p>
+                                            <p className="font-bold text-sm text-foreground">{quotation.bank_branch || brandConfig?.bank_branch || "VIỆT NAM"}</p>
                                         </div>
                                     </div>
                                 </CardContent>
