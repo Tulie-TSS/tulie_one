@@ -34,7 +34,8 @@ import {
     ExternalLink,
     DollarSign,
     Briefcase,
-    Bot
+    Bot,
+    Handshake
 } from 'lucide-react'
 
 // Using the same navigation items
@@ -64,6 +65,7 @@ const navGroups = [
         title: 'Hệ thống',
         items: [
             { title: 'Nhân sự', href: '/team', icon: UserCheck },
+            { title: 'Đối tác (CTV)', href: '/team/partners', icon: Handshake },
             { title: 'Mẫu giấy tờ', href: '/templates', icon: Files },
             { title: 'Báo cáo', href: '/reports', icon: PieChart },
             { title: 'Cài đặt', href: '/settings', icon: Settings },
