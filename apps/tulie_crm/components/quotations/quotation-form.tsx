@@ -83,6 +83,8 @@ export function QuotationForm({ quotation, customers, products, units, projects,
     const [customerId, setCustomerId] = useState(quotation?.customer_id || initialCustomerId || '')
     const [projectId, setProjectId] = useState(quotation?.project_id || '')
     const [title, setTitle] = useState(quotation?.title || '')
+    const [versionName, setVersionName] = useState(quotation?.version_name || '')
+    const [isPrimary, setIsPrimary] = useState(quotation?.is_primary ?? true)
     const [quotationNumber, setQuotationNumber] = useState(quotation?.quotation_number || `BG-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}${String(new Date().getDate()).padStart(2, '0')}-${Math.floor(Math.random() * 1000)}`)
     const [isAddSectionOpen, setIsAddSectionOpen] = useState(false)
     const [newSectionName, setNewSectionName] = useState('')
@@ -414,6 +416,8 @@ export function QuotationForm({ quotation, customers, products, units, projects,
     const handleExportJson = () => {
         const exportData = {
             title,
+            version_name: versionName,
+            is_primary: isPrimary,
             quotation_number: quotationNumber,
             vat_percent: vatPercent,
             validity_days: validityDays,
@@ -463,6 +467,8 @@ export function QuotationForm({ quotation, customers, products, units, projects,
             let count = 0
 
             if (data.title) { setTitle(data.title); count++ }
+            if (data.version_name) { setVersionName(data.version_name); count++ }
+            if (typeof data.is_primary === 'boolean') { setIsPrimary(data.is_primary); count++ }
             if (data.quotation_number) { setQuotationNumber(data.quotation_number); count++ }
             if (data.type) { setType(data.type); count++ }
             if (data.vat_percent !== undefined) { setVatPercent(data.vat_percent); count++ }
@@ -571,6 +577,8 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 customer_id: customerId,
                 customer: currentCustomer,
                 title,
+                version_name: versionName,
+                is_primary: isPrimary,
                 terms,
                 notes,
                 vat_percent: vatPercent,
@@ -609,6 +617,8 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 quotation_number: quotationNumber,
                 customer_id: customerId || null,
                 title,
+                version_name: versionName,
+                is_primary: isPrimary,
                 terms: terms || null,
                 notes: notes || null,
                 vat_percent: vatPercent,
@@ -744,9 +754,26 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                     </div>
                                 </RadioGroup>
                             </div>
-                            <div className="space-y-2">
-                                <Label>Tiêu đề</Label>
-                                <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label>Tiêu đề</Label>
+                                    <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>Phiên bản / Phương án (Tuỳ chọn)</Label>
+                                    <Input value={versionName} onChange={(e) => setVersionName(e.target.value)} placeholder="VD: Option 1 - Cơ bản" />
+                                </div>
+                            </div>
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 bg-secondary/10 p-3 rounded-md border border-border mt-2">
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox 
+                                        id="is-primary" 
+                                        checked={isPrimary} 
+                                        onCheckedChange={(checked) => setIsPrimary(checked as boolean)} 
+                                    />
+                                    <Label htmlFor="is-primary" className="font-semibold cursor-pointer text-sm">Báo giá chính</Label>
+                                </div>
+                                <p className="text-xs text-muted-foreground m-0">Chỉ báo giá chính mới được cộng vào tổng giá trị cơ hội/dòng tiền (Pipeline).</p>
                             </div>
                             <div className="space-y-2">
                                 <Label>Mã báo giá</Label>

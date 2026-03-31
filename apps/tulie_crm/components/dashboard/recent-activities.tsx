@@ -40,9 +40,9 @@ export function RecentActivities({ data }: RecentActivitiesProps) {
             <CardHeader className="pb-3">
                 <CardTitle className="text-base font-medium">Hoạt động gần đây</CardTitle>
             </CardHeader>
-            <CardContent className="px-0">
-                <ScrollArea className="h-[300px]">
-                    <div className="space-y-4 px-6 pb-4">
+            <CardContent className="px-0 pb-0">
+                <ScrollArea className="h-[340px]">
+                    <div className="flex flex-col gap-4 px-6 pb-6">
                         {data.length > 0 ? (
                             data.map((activity) => (
                                 <div

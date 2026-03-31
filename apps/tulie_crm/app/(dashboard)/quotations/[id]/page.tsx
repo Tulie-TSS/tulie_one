@@ -196,10 +196,16 @@ export default function QuotationDetailPage() {
                                         {quotation.quotation_number}
                                     </div>
                                     <StatusBadge entityType="quotation" status={quotation.status} />
+                                    {quotation.is_primary && (
+                                        <Badge variant="default" className="h-[22px] px-2 rounded-sm text-[11px] bg-emerald-500 hover:bg-emerald-600 text-white font-medium border-0">Chính</Badge>
+                                    )}
                                 </div>
                                 <h1 className="text-3xl leading-none text-foreground">{quotation.customer?.company_name}</h1>
-                                {quotation.title && (
-                                    <p className="text-sm font-medium text-muted-foreground mt-0.5">{quotation.title}</p>
+                                {(quotation.title || quotation.version_name) && (
+                                    <p className="text-sm font-medium text-muted-foreground mt-0.5">
+                                        {quotation.version_name ? <span className="text-foreground font-semibold mr-1.5">{quotation.version_name}</span> : null}
+                                        {quotation.title ? (quotation.version_name ? ` - ${quotation.title}` : quotation.title) : null}
+                                    </p>
                                 )}
                             </div>
                         </div>
@@ -207,6 +213,16 @@ export default function QuotationDetailPage() {
 
                     <div className="flex flex-wrap items-center gap-3">
                         <QuotationVersionHistory quotationId={id} />
+                        
+                        {quotation.public_token && (
+                            <Button variant="outline" size="default" asChild className="font-medium text-blue-600 border-blue-200 hover:bg-blue-50 dark:hover:bg-blue-950">
+                                <Link href={publicUrl || '#'} target="_blank" className="flex items-center gap-2">
+                                    <ExternalLink className="h-4 w-4" />
+                                    Mở Portal báo giá
+                                </Link>
+                            </Button>
+                        )}
+
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="outline" size="default" className="gap-2 font-medium">

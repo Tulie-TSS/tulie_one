@@ -85,7 +85,19 @@ export function QuotationCellAction({ data }: QuotationCellActionProps) {
     }
 
     return (
-        <>
+        <div className="flex items-center justify-end gap-1.5">
+            <Button 
+                variant="outline" 
+                size="icon" 
+                className="h-8 w-8 text-blue-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 border-border/60 shrink-0" 
+                title="Mở Portal Báo Giá"
+                asChild
+            >
+                <Link href={publicUrl} target="_blank">
+                    <ExternalLink className="h-4 w-4" />
+                </Link>
+            </Button>
+
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent>
                     <DialogHeader>
@@ -132,7 +144,7 @@ export function QuotationCellAction({ data }: QuotationCellActionProps) {
 
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-8 w-8 p-0" disabled={loading}>
+                    <Button variant="ghost" className="h-8 w-8 p-0 shrink-0" disabled={loading}>
                         <span className="sr-only">Mở menu</span>
                         <MoreHorizontal className="h-4 w-4" />
                     </Button>
@@ -188,6 +200,6 @@ export function QuotationCellAction({ data }: QuotationCellActionProps) {
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-        </>
+        </div>
     )
 }

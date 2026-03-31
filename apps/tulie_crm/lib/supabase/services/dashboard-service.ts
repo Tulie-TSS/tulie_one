@@ -362,6 +362,7 @@ export async function getDealStats() {
             .select('status, total_amount, deal_id')
             .in('status', ['sent', 'viewed', 'accepted'])
             .is('deal_id', null)
+            .eq('is_primary', true)
 
         if (dError) throw dError
         if (qError) throw qError

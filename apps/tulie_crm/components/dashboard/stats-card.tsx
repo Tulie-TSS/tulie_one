@@ -1,12 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardAction, CardFooter, Badge } from '@repo/ui'
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
-
-/**
- * StatsCard — follows shadcn/ui dashboard-01 section-cards.tsx pattern.
- *
- * Uses CardDescription for label, CardTitle for value,
- * CardAction+Badge for trend, CardFooter for description.
- */
 
 interface StatsCardProps {
     title: string
@@ -28,42 +21,41 @@ export function StatsCard({
     const isPercentage = change !== undefined && Math.abs(change) < 1000
 
     return (
-        <Card className={`@container/card ${className || ''}`}>
-            <CardHeader>
-                <CardDescription>{title}</CardDescription>
-                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                    {value}
-                </CardTitle>
-                {change !== undefined && isPercentage && (
-                    <CardAction>
-                        <Badge variant="outline">
-                            {isPositive ? <TrendingUp /> : isNegative ? <TrendingDown /> : <Minus />}
-                            {isPositive ? '+' : ''}{change.toFixed(1)}%
-                        </Badge>
-                    </CardAction>
-                )}
+        <Card className={className}>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{title}</CardTitle>
             </CardHeader>
-            {(changeLabel || (change !== undefined && !isPercentage)) && (
-                <CardFooter className="flex-col items-start gap-1.5 text-sm">
-                    {change !== undefined && isPercentage && (
-                        <div className="line-clamp-1 flex gap-2 font-medium">
-                            {isPositive ? 'Tăng trưởng trong kỳ' : isNegative ? 'Sụt giảm trong kỳ' : 'Ổn định trong kỳ'}
-                            {isPositive ? <TrendingUp className="size-4" /> : isNegative ? <TrendingDown className="size-4" /> : <Minus className="size-4" />}
-                        </div>
-                    )}
-                    {change !== undefined && !isPercentage && (
-                        <div className="line-clamp-1 flex gap-2 font-medium">
-                            {isPositive ? '+' : ''}{change.toLocaleString('vi-VN')} đ
-                            {isPositive ? <TrendingUp className="size-4" /> : isNegative ? <TrendingDown className="size-4" /> : null}
-                        </div>
-                    )}
-                    {changeLabel && (
-                        <div className="text-muted-foreground">
-                            {changeLabel}
-                        </div>
-                    )}
-                </CardFooter>
-            )}
+            <CardContent>
+                <div className="text-2xl font-bold tabular-nums">{value}</div>
+                {change !== undefined ? (
+                    <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1.5">
+                        {isPercentage && (
+                            <>
+                                {isPositive ? <TrendingUp className="size-3.5 text-emerald-500" /> : isNegative ? <TrendingDown className="size-3.5 text-red-500" /> : <Minus className="size-3.5 text-muted-foreground" />}
+                                <span className={isPositive ? 'text-emerald-500 font-medium' : isNegative ? 'text-red-500 font-medium' : 'text-muted-foreground font-medium'}>
+                                    {isPositive ? '+' : ''}{change.toFixed(1)}%
+                                </span>
+                            </>
+                        )}
+                        {!isPercentage && (
+                            <>
+                                {isPositive ? <TrendingUp className="size-3.5 text-emerald-500" /> : isNegative ? <TrendingDown className="size-3.5 text-red-500" /> : <Minus className="size-3.5 text-muted-foreground" />}
+                                <span className={isPositive ? 'text-emerald-500 font-medium' : isNegative ? 'text-red-500 font-medium' : 'text-muted-foreground font-medium'}>
+                                    {isPositive ? '+' : ''}{change.toLocaleString('vi-VN')} đ
+                                </span>
+                            </>
+                        )}
+                        <span className="text-muted-foreground/80 line-clamp-1 flex-1">
+                            {changeLabel || (isPercentage ? (isPositive ? 'Tăng trưởng trong kỳ' : isNegative ? 'Sụt giảm trong kỳ' : 'Ổn định') : '')}
+                        </span>
+                    </p>
+                ) : (
+                    <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1.5 opacity-0 pointer-events-none select-none">
+                        <Minus className="size-3.5" />
+                        <span>Placeholder</span>
+                    </p>
+                )}
+            </CardContent>
         </Card>
     )
 }

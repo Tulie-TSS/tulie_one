@@ -95,6 +95,8 @@ export interface Quotation {
   proposal_content?: any
 
   title?: string
+  version_name?: string
+  is_primary?: boolean
   description?: string
   terms?: string
   notes?: string

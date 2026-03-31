@@ -52,19 +52,33 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
         cell: ({ row }) => {
             const quotation = row.original
             return (
-                <div>
-                    <Link
-                        href={`/quotations/${quotation.id}`}
-                        className="font-bold text-foreground hover:underline"
-                    >
-                        {quotation.quotation_number}
-                    </Link>
-                    {quotation.title && (
+                <div className="flex flex-col items-start gap-1 py-1">
+                    <div className="flex items-center gap-2">
+                        <Link
+                            href={`/quotations/${quotation.id}`}
+                            className="font-bold text-foreground hover:underline"
+                        >
+                            {quotation.quotation_number}
+                        </Link>
+                        {quotation.is_primary && (
+                            <Badge variant="default" className="h-[18px] px-1.5 rounded-sm text-[10px] bg-emerald-500 hover:bg-emerald-600 text-white font-medium border-0">Chính</Badge>
+                        )}
+                    </div>
+                    {quotation.version_name ? (
+                        <p className="text-[12px] text-foreground font-semibold truncate max-w-[200px]">
+                            {quotation.version_name}
+                        </p>
+                    ) : quotation.title && (
                         <p className="text-xs text-muted-foreground font-medium truncate max-w-[200px]">
                             {quotation.title}
                         </p>
                     )}
-                    <p className="text-xs text-muted-foreground">
+                    {quotation.title && quotation.version_name && (
+                        <p className="text-[11px] text-muted-foreground/80 truncate max-w-[200px]">
+                            {quotation.title}
+                        </p>
+                    )}
+                    <p className="text-[11px] text-muted-foreground">
                         {formatDate(quotation.created_at)}
                     </p>
                 </div>
