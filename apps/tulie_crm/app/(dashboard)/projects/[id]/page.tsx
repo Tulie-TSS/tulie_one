@@ -24,6 +24,7 @@ import { ProjectActivityHistory } from '@/components/projects/project-activity-h
 import { getProjectTasks } from '@/lib/supabase/services/task-service'
 import { PortalViewAnalytics } from '@/components/portal/portal-view-analytics'
 import { FeedbackBoard } from '@/components/portal/feedback-board'
+import { EntityPipelineTracker } from '@/components/shared/entity-pipeline-tracker'
 
 export default async function ProjectDetailPage({ params }: any) {
     const { id } = await params
@@ -85,6 +86,8 @@ export default async function ProjectDetailPage({ params }: any) {
                     )}
                 </div>
             </div>
+
+            <EntityPipelineTracker entityType="project" entityId={id} />
 
             <div className="space-y-6">
                 <div className="space-y-6">

@@ -29,6 +29,8 @@ import { SetPasswordDialog } from '@/components/shared/set-password-dialog'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { createClient } from '@/lib/supabase/server'
 
+import { EntityPipelineTracker } from '@/components/shared/entity-pipeline-tracker'
+
 export async function generateMetadata({ params }: any): Promise<Metadata> {
     const { id } = await params
     const contract = await getContractById(id)
@@ -106,6 +108,8 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                     )}
                 </div>
             </div>
+
+            <EntityPipelineTracker entityType="contract" entityId={id} />
 
             <div className="space-y-6 flex flex-col pb-12">
                 {/* Contract Info merged card */}

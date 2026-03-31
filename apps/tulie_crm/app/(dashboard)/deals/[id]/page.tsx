@@ -9,6 +9,8 @@ import { StatusBadge } from '@/components/shared/status-badge'
 import { ArrowLeft, Edit, ExternalLink, Plus, FileText, TrendingUp, Users, Wallet, Calendar, CheckCircle2, XCircle } from 'lucide-react'
 import Link from 'next/link'
 
+import { EntityPipelineTracker } from '@/components/shared/entity-pipeline-tracker'
+
 export default async function DealDetailPage({ params }: any) {
     const { id } = await params
     const deal = await getDealById(id)
@@ -50,6 +52,8 @@ export default async function DealDetailPage({ params }: any) {
                     </Button>
                 </div>
             </div>
+
+            <EntityPipelineTracker entityType="deal" entityId={id} />
 
             <div className="grid gap-6 lg:grid-cols-3">
                 <div className="lg:col-span-2 space-y-6">

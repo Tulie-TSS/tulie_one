@@ -62,6 +62,7 @@ import { useParams, useSearchParams } from 'next/navigation'
 
 import { StatusBadge } from '@/components/shared/status-badge'
 import { QuotationVersionHistory } from '@/components/quotations/quotation-version-history'
+import { EntityPipelineTracker } from '@/components/shared/entity-pipeline-tracker'
 
 export default function QuotationDetailPage() {
     const params = useParams()
@@ -271,6 +272,8 @@ export default function QuotationDetailPage() {
                         )}
                     </div>
                 </div>
+
+                <EntityPipelineTracker entityType="quotation" entityId={id} />
 
                 <div className="pt-2">
                     <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'data' | 'preview')} className="w-full">
