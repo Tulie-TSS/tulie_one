@@ -244,25 +244,32 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
         <div className="quotation-page min-h-screen bg-gray-100 py-8 pb-32 font-sans text-slate-800">
             {/* Options Switcher (Hero Section above Paper) */}
             {activeOptions.length > 1 && (
-                <div className="max-w-5xl mx-auto mb-10 print:hidden px-4 sm:px-0">
-                    <div className="bg-white/90 backdrop-blur-xl border border-border p-6 rounded-3xl shadow-2xl overflow-hidden relative group">
-                        <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none group-hover:scale-110 transition-transform duration-700">
-                            <Target className="w-40 h-40 text-black rotate-12" />
-                        </div>
-
-                        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                            <div className="space-y-1.5 text-center md:text-left">
-                                <h3 className="text-2xl font-black text-foreground uppercase italic">
-                                    Lựa chọn phương án đầu tư
-                                </h3>
-                                <p className="text-muted-foreground text-sm font-medium">Bản chào giá có {activeOptions.length} lựa chọn phù hợp nhất dành cho bạn.</p>
+                <div className="max-w-[210mm] mx-auto mb-10 print:hidden px-4 sm:px-0">
+                    <div className="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-slate-200 overflow-hidden relative">
+                        {/* Decorative background element */}
+                        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-slate-50 to-transparent pointer-events-none" />
+                        
+                        <div className="p-8 relative z-10">
+                            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+                                <div className="space-y-2 max-w-[450px]">
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-600 mb-2">
+                                        <Lightbulb className="w-3.5 h-3.5" />
+                                        <span>Đề xuất giải pháp</span>
+                                    </div>
+                                    <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">
+                                        Lựa chọn phương án đầu tư
+                                    </h3>
+                                    <p className="text-slate-500 text-sm leading-relaxed">
+                                        Dựa trên yêu cầu, chúng tôi đề xuất <b className="text-slate-800">{activeOptions.length} phương án tối ưu</b>. Vui lòng bấm chọn một danh mục bên dưới để xem báo giá chi tiết.
+                                    </p>
+                                </div>
                             </div>
 
-                            <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 self-center">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {activeOptions.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()).map((opt: any, idx: number) => {
                                     const isActive = currentQuotation.id === opt.id;
                                     return (
-                                        <button
+                                        <div
                                             key={opt.id}
                                             onClick={() => {
                                                 setCurrentQuotation(opt);
@@ -279,21 +286,66 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                     });
                                                     return init;
                                                 });
-                                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                                
+                                                // Smooth scroll down to the paper content slightly
+                                                setTimeout(() => {
+                                                    const paperElement = document.getElementById('quotation-paper-wrapper');
+                                                    if (paperElement) {
+                                                        const y = paperElement.getBoundingClientRect().top + window.scrollY - 20;
+                                                        window.scrollTo({ top: y, behavior: 'smooth' });
+                                                    }
+                                                }, 100);
                                             }}
                                             className={cn(
-                                                "relative px-6 py-4 rounded-md transition-all duration-500 group flex flex-col items-center gap-1",
+                                                "relative p-5 rounded-2xl cursor-pointer transition-all duration-300 border flex flex-col justify-between h-full group",
                                                 isActive
-                                                    ? "bg-zinc-950 text-white shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] scale-105"
-                                                    : "bg-white text-muted-foreground hover:bg-muted border border-border"
+                                                    ? "bg-zinc-950 border-zinc-900 shadow-[0_12px_24px_rgba(0,0,0,0.15)] scale-[1.02] z-10"
+                                                    : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50 hover:-translate-y-1 hover:shadow-lg"
                                             )}
                                         >
-                                            <span className="text-[10px] font-black uppercase tracking-widest opacity-60">PHƯƠNG ÁN {idx + 1}</span>
-                                            <span className="text-lg font-bold tabular-nums">{formatCurrency(opt.total_amount)}</span>
                                             {isActive && (
-                                                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 bg-zinc-950 rotate-45 rounded-sm" />
+                                                <div className="absolute -top-3 right-5 px-3 py-1 bg-[#10b981] text-white text-[9px] uppercase font-[800] tracking-wider rounded-full shadow-md z-20 flex items-center gap-1">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                                                    Đang xem
+                                                </div>
                                             )}
-                                        </button>
+                                            
+                                            <div>
+                                                <div className="flex items-center justify-between mb-4">
+                                                    <span className={cn("text-[10px] font-bold uppercase tracking-widest", isActive ? "text-zinc-400" : "text-slate-500")}>
+                                                        Phương án {idx + 1}
+                                                    </span>
+                                                    <div className={cn("w-7 h-7 rounded-full flex items-center justify-center transition-colors", isActive ? "bg-[#10b981]" : "bg-slate-100 group-hover:bg-slate-200 border border-slate-200")}>
+                                                        {isActive ? (
+                                                            <Check className="w-4 h-4 text-white stroke-[3]" />
+                                                        ) : (
+                                                            <div className="w-2.5 h-2.5 rounded-full bg-slate-300" />
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                
+                                                <h4 className={cn("text-[17px] font-bold mb-2 leading-snug tracking-tight", isActive ? "text-white" : "text-slate-900")}>
+                                                    {opt.title || `Gói tùy chọn ${idx + 1}`}
+                                                </h4>
+                                                {opt.notes && (
+                                                    <p className={cn("text-[13px] line-clamp-2 leading-relaxed opacity-80", isActive ? "text-zinc-400" : "text-slate-500")}>
+                                                        {opt.notes.split('\n')[0]}
+                                                    </p>
+                                                )}
+                                            </div>
+
+                                            <div className="mt-6 pt-4 border-t border-dashed" style={{ borderColor: isActive ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }}>
+                                                <div className={cn("text-[11px] mb-1 font-semibold uppercase tracking-wider", isActive ? "text-zinc-400" : "text-slate-400")}>Tổng ngân sách</div>
+                                                <div className={cn("text-2xl font-black tabular-nums tracking-tight", isActive ? "text-white" : "text-zinc-900")}>
+                                                    {formatCurrency(opt.total_amount)}
+                                                </div>
+                                                {(opt.discount_amount > 0) && (
+                                                    <div className={cn("mt-1.5 inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-md", isActive ? "bg-[#10b981]/10 text-[#10b981]" : "bg-rose-50 text-rose-600")}>
+                                                        Tiết kiệm {formatCurrency(opt.discount_amount)}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
                                     );
                                 })}
                             </div>
@@ -301,6 +353,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                     </div>
                 </div>
             )}
+            
             {/* Global print style enforcement */}
             <style dangerouslySetInnerHTML={{
                 __html: `
@@ -317,31 +370,31 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
             `}} />
 
             {/* View Mode Toggle */}
-            <div className="max-w-[210mm] mx-auto mb-4 flex items-center justify-end gap-2 print:hidden px-4 sm:px-0">
-                <div className="inline-flex items-center rounded-full border border-border/60 bg-white/80 backdrop-blur-sm shadow-sm p-0.5">
+            <div id="quotation-paper-wrapper" className="max-w-[210mm] mx-auto mb-4 flex items-center justify-end gap-2 print:hidden px-4 sm:px-0">
+                <div className="inline-flex items-center rounded-full border border-border/80 bg-white/90 backdrop-blur-md shadow-sm p-1">
                     <button
                         onClick={() => setViewMode('modern')}
                         className={cn(
-                            "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-all",
+                            "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all",
                             viewMode === 'modern'
-                                ? "bg-zinc-900 text-white shadow-sm"
-                                : "text-muted-foreground hover:text-zinc-700"
+                                ? "bg-zinc-900 text-white shadow-md"
+                                : "text-slate-500 hover:text-slate-900 hover:bg-slate-100"
                         )}
                     >
                         <Layout className="w-3.5 h-3.5" />
-                        Chế độ xem
+                        Chế độ xem Web
                     </button>
                     <button
                         onClick={() => setViewMode('basic')}
                         className={cn(
-                            "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-all",
+                            "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all",
                             viewMode === 'basic'
-                                ? "bg-zinc-900 text-white shadow-sm"
-                                : "text-muted-foreground hover:text-zinc-700"
+                                ? "bg-zinc-900 text-white shadow-md"
+                                : "text-slate-500 hover:text-slate-900 hover:bg-slate-100"
                         )}
                     >
                         <FileSignature className="w-3.5 h-3.5" />
-                        Chế độ in
+                        Bản in PDF
                     </button>
                 </div>
             </div>
