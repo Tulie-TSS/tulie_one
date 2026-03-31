@@ -2,19 +2,19 @@
 
 import { useState, useMemo, useRef, useCallback, useEffect } from 'react'
 import { submitPhotoOrder } from '../actions'
-import { Button } from '@repo/ui'
-import { Input } from '@repo/ui'
-import { Label } from '@repo/ui'
-import { Switch } from '@repo/ui'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui'
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from '@repo/ui'
+import { 
+  Button, Input, Label, Switch, Textarea,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle,
+  Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter,
+  Badge, Separator,
+  LoadingSpinner
+} from '@repo/ui'
 import { Camera, CheckCircle2, Eye, ImagePlus, Link2, MapPin, MinusIcon, Package, Percent, PlusIcon, Printer, Sparkles, Star, Tag, Truck, Upload, User, X } from 'lucide-react'
-import { LoadingSpinner } from '@repo/ui'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { PrintLayoutPreview } from './PrintLayoutPreview'
 import { cn } from '@/lib/utils'
-import { Textarea } from '@repo/ui'
 import { createClient } from '@/lib/supabase/client'
 import type { Product } from '@/types'
 
@@ -354,10 +354,10 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
               <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium">ID Photo Service</p>
             </div>
           </div>
-          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-emerald-50 rounded-full border border-emerald-200">
+          <Badge variant="outline" className="hidden sm:inline-flex bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-50 py-1 gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            <span className="text-[11px] font-normal text-emerald-700">Đang nhận đơn</span>
-          </div>
+            Đang nhận đơn
+          </Badge>
         </div>
       </div>
 
@@ -365,20 +365,18 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
         <main className="max-w-5xl mx-auto px-4 sm:px-6 mt-6 sm:mt-10 space-y-6 sm:space-y-8">
 
           {/* Section 1: Customer Info */}
-          <section className="bg-white rounded-md border border-border overflow-hidden shadow-sm">
-            <div className="p-4 sm:p-6 border-b border-border">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
-                  <span className="text-sm font-bold text-white">1</span>
-                </div>
-                <div>
-                  <h2 className="text-sm sm:text-base font-bold text-foreground">Thông tin khách hàng</h2>
-                  <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Nhập thông tin để chúng tôi trao trả kết quả</p>
-                </div>
+          <Card>
+            <CardHeader className="flex flex-row items-center gap-3 space-y-0 px-4 sm:px-6 py-4 sm:py-5 border-b border-border">
+              <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
+                <span className="text-sm font-bold text-white">1</span>
               </div>
-            </div>
+              <div>
+                <CardTitle className="text-sm sm:text-base font-bold">Thông tin khách hàng</CardTitle>
+                <CardDescription className="text-[11px] sm:text-xs mt-0.5">Nhập thông tin để chúng tôi trao trả kết quả</CardDescription>
+              </div>
+            </CardHeader>
 
-            <div className="p-4 sm:p-6 space-y-4">
+            <CardContent className="p-4 sm:p-6 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <Label htmlFor="customerName" className="text-xs font-semibold text-muted-foreground">
@@ -483,23 +481,21 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </CardContent>
+          </Card>
 
           {/* Demo Images — Sample Results */}
-          <section className="bg-white rounded-md border border-border overflow-hidden shadow-sm">
-            <div className="p-4 sm:p-6 border-b border-border">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-md bg-muted flex items-center justify-center shrink-0">
-                  <Sparkles className="w-4.5 h-4.5 text-zinc-700" />
-                </div>
-                <div>
-                  <h2 className="text-sm sm:text-base font-bold text-foreground">Kết quả mẫu</h2>
-                  <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">So sánh chất lượng giữa các gói</p>
-                </div>
+          <Card>
+            <CardHeader className="flex flex-row items-center gap-3 space-y-0 px-4 sm:px-6 py-4 sm:py-5 border-b border-border">
+              <div className="w-9 h-9 rounded-md bg-muted flex items-center justify-center shrink-0">
+                <Sparkles className="w-4.5 h-4.5 text-zinc-700" />
               </div>
-            </div>
-            <div className="p-4 sm:p-6 space-y-4">
+              <div>
+                <CardTitle className="text-sm sm:text-base font-bold">Kết quả mẫu</CardTitle>
+                <CardDescription className="text-[11px] sm:text-xs mt-0.5">So sánh chất lượng giữa các gói</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="p-4 sm:p-6 space-y-4">
               <div className="rounded-md overflow-hidden border border-border">
                 <img
                   src="/file/anhthe-1.jpg"
@@ -519,35 +515,35 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
               <p className="text-[11px] text-muted-foreground text-center font-medium">
                 Gói càng cao, ảnh càng được chỉnh sửa kỹ lưỡng hơn — bao gồm ghép tóc, ghép trang phục, chỉnh da cao cấp
               </p>
-            </div>
-          </section>
+            </CardContent>
+          </Card>
 
           {/* Section 2: Package Selection — Multi-quantity */}
-          <section className="space-y-4 sm:space-y-5">
-            <div className="flex items-center gap-3 px-1">
+          <Card className="bg-transparent border-0 shadow-none ring-0 p-0">
+            <CardHeader className="flex flex-row items-center gap-3 space-y-0 px-1 py-0 mb-4 sm:mb-5">
               <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
                 <span className="text-sm font-bold text-white">2</span>
               </div>
               <div>
-                <h2 className="text-sm sm:text-base font-bold text-foreground">Chọn gói dịch vụ</h2>
-                <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Mỗi gói tương ứng 1 bộ ảnh cho 1 người chụp</p>
+                <CardTitle className="text-sm sm:text-base font-bold">Chọn gói dịch vụ</CardTitle>
+                <CardDescription className="text-[11px] sm:text-xs mt-0.5">Mỗi gói tương ứng 1 bộ ảnh cho 1 người chụp</CardDescription>
               </div>
-            </div>
+            </CardHeader>
 
-            <div className="grid gap-4">
+            <CardContent className="p-0 grid gap-4">
               {PACKAGES.map(pkg => {
                 const qty = pkgQuantities[pkg.id] || 0
                 const isSelected = qty > 0
                 const Icon = pkg.icon
 
                 return (
-                  <div
+                  <Card
                     key={pkg.id}
                     className={cn(
-                      "bg-white rounded-md border overflow-hidden shadow-sm transition-all duration-200",
+                      "overflow-hidden transition-all duration-200",
                       isSelected
                         ? "border-zinc-900 ring-1 ring-zinc-900/10"
-                        : "border-border hover:border-input",
+                        : "hover:border-input",
                     )}
                   >
                     {/* Card header */}
@@ -564,9 +560,9 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                             <div className="flex items-center gap-2 flex-wrap">
                               <h3 className="text-[15px] font-bold text-foreground">{pkg.name}</h3>
                               {pkg.popular && (
-                                <span className="text-[10px] font-bold bg-zinc-900 text-white px-2 py-0.5 rounded-full">
+                                <Badge className="text-[10px] font-bold px-2 py-0.5 rounded-full">
                                   Phổ biến
-                                </span>
+                                </Badge>
                               )}
                             </div>
                             <p className="text-xs text-muted-foreground mt-1 font-medium leading-relaxed">{pkg.desc}</p>
@@ -628,25 +624,26 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                         </div>
                       </div>
                     )}
-                  </div>
+                  </Card>
                 )
               })}
-            </div>
-          </section>
+            </CardContent>
+          </Card>
 
           {/* Section 3: Print Options */}
-          <section className="space-y-4 sm:space-y-5">
-            <div className="flex items-center gap-3 px-1">
+          <Card className="bg-transparent border-0 shadow-none ring-0 p-0">
+            <CardHeader className="flex flex-row items-center gap-3 space-y-0 px-1 py-0 mb-4 sm:mb-5">
               <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
                 <span className="text-sm font-bold text-white">3</span>
               </div>
               <div>
-                <h2 className="text-sm sm:text-base font-bold text-foreground">Dịch vụ In ấn</h2>
-                <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Giấy in chính hãng Canon — độ bền lên tới 100 năm</p>
+                <CardTitle className="text-sm sm:text-base font-bold">Dịch vụ In ấn</CardTitle>
+                <CardDescription className="text-[11px] sm:text-xs mt-0.5">Giấy in chính hãng Canon — độ bền lên tới 100 năm</CardDescription>
               </div>
-            </div>
+            </CardHeader>
 
-            <div className="bg-white rounded-md border border-border overflow-hidden shadow-sm">
+            <CardContent className="p-0">
+              <Card className="overflow-hidden">
               {/* Toggle */}
               <div className="p-4 sm:p-5 space-y-3">
                 <div className="flex items-center justify-between gap-4">
@@ -957,23 +954,25 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                   </div>
                 </div>
               )}
-            </div>
-          </section>
+              </Card>
+            </CardContent>
+          </Card>
 
           {/* Section 4: Discount — admin only */}
           {isAdmin && (
-          <section className="space-y-4 sm:space-y-5">
-            <div className="flex items-center gap-3 px-1">
+          <Card className="bg-transparent border-0 shadow-none ring-0 p-0">
+            <CardHeader className="flex flex-row items-center gap-3 space-y-0 px-1 py-0 mb-4 sm:mb-5">
               <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
                 <span className="text-sm font-bold text-white">4</span>
               </div>
               <div>
-                <h2 className="text-sm sm:text-base font-bold text-foreground">Giảm giá</h2>
-                <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Nhập mã giảm giá hoặc ưu đãi đặc biệt</p>
+                <CardTitle className="text-sm sm:text-base font-bold">Giảm giá</CardTitle>
+                <CardDescription className="text-[11px] sm:text-xs mt-0.5">Nhập mã giảm giá hoặc ưu đãi đặc biệt</CardDescription>
               </div>
-            </div>
+            </CardHeader>
 
-            <div className="bg-white rounded-md border border-border overflow-hidden shadow-sm p-4 sm:p-5">
+            <CardContent className="p-0">
+              <Card className="p-4 sm:p-5">
               <div className="flex flex-col sm:flex-row gap-3">
                 {/* Type toggle */}
                 <div className="flex rounded-lg border border-border overflow-hidden shrink-0 h-10 sm:h-11">
@@ -1039,13 +1038,14 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                   </span>
                 </div>
               )}
-            </div>
-          </section>
+              </Card>
+            </CardContent>
+          </Card>
           )}
 
           {/* Order Summary + Submit */}
-          <section className="bg-white rounded-md border border-border overflow-hidden shadow-sm sticky bottom-4 z-10">
-            <div className="px-4 py-3 sm:p-6 flex items-center justify-between gap-3">
+          <Card className="sticky bottom-4 z-10 shadow-lg shadow-black/5">
+            <CardContent className="px-4 py-3 sm:p-6 flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-widest">Tổng cộng (tạm tính)</p>
                 <div className="flex items-baseline gap-1">
@@ -1067,13 +1067,13 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                 type="submit"
                 size="lg"
                 disabled={isSubmitting || (totalPkgCount === 0 && !(wantPrint && (totalFreePrints + extraViCount) > 0))}
-                className="shrink-0 rounded-md font-bold text-[13px] h-11 sm:h-12 px-6 sm:px-10 bg-zinc-900 hover:bg-zinc-800 shadow-lg shadow-black/10 transition-all disabled:opacity-40"
+                className="shrink-0 font-bold text-[13px] h-11 sm:h-12 px-6 sm:px-10 transition-all disabled:opacity-40"
               >
                 {isSubmitting ? <LoadingSpinner size="sm" className="mr-2" /> : null}
                 {isSubmitting ? 'Đang gửi...' : 'Gửi đơn hàng'}
               </Button>
-            </div>
-          </section>
+            </CardContent>
+          </Card>
 
         </main>
       </form>
