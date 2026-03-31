@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Kiếm đến 28% hoa hồng + 48 triệu thưởng | Đối tác Tulie',
         description: 'Giới thiệu khách hàng thiết kế Website & Landing Page — hoa hồng lên đến 28% + thưởng tiền mặt cộng dồn. Đăng ký miễn phí, thu nhập không giới hạn.',
-        url: 'https://hoptac.tulie.agency',
+        url: 'https://hoptac.tulie.app',
         siteName: 'Tulie Agency',
         type: 'website',
     },

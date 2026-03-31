@@ -49,13 +49,25 @@ const nextConfig: NextConfig = {
                     has: [{ type: 'host', value: 'anhthe.tulie.studio' }],
                     destination: '/anhthe/:path',
                 },
-                // hoptac.tulie.agency → /affiliate
+                // hoptac.tulie.app → /affiliate (primary)
+                {
+                    source: '/',
+                    has: [{ type: 'host', value: 'hoptac.tulie.app' }],
+                    destination: '/affiliate',
+                },
+                // affiliate.tulie.app → /affiliate (primary)
+                {
+                    source: '/',
+                    has: [{ type: 'host', value: 'affiliate.tulie.app' }],
+                    destination: '/affiliate',
+                },
+                // Legacy: hoptac.tulie.agency → /affiliate (backward compat)
                 {
                     source: '/',
                     has: [{ type: 'host', value: 'hoptac.tulie.agency' }],
                     destination: '/affiliate',
                 },
-                // affiliate.tulie.agency → /affiliate
+                // Legacy: affiliate.tulie.agency → /affiliate (backward compat)
                 {
                     source: '/',
                     has: [{ type: 'host', value: 'affiliate.tulie.agency' }],

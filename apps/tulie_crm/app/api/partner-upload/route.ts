@@ -9,6 +9,9 @@ const BUCKET_NAME = 'id-photos'
 const ALLOWED_ORIGINS = [
     'https://tulie.app',
     'https://www.tulie.app',
+    'https://hoptac.tulie.app',
+    'https://affiliate.tulie.app',
+    // Legacy domains (backward compatibility)
     'https://tulie.agency',
     'https://www.tulie.agency',
     'https://hoptac.tulie.agency',

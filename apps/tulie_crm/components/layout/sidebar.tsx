@@ -138,9 +138,9 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {[
-                                { title: 'ERP - Tài chính', href: 'https://erp.tulie.agency', icon: DollarSign, color: 'text-orange-500' },
-                                { title: 'Workspace', href: 'https://workspace.tulie.agency', icon: Briefcase, color: 'text-purple-500' },
-                                { title: 'Workforce - AI', href: 'https://ai.tulie.agency', icon: Bot, color: 'text-blue-500' },
+                                { title: 'ERP - Tài chính', href: 'https://erp.tulie.app', icon: DollarSign, color: 'text-orange-500' },
+                                { title: 'Workspace', href: 'https://workspace.tulie.app', icon: Briefcase, color: 'text-purple-500' },
+                                { title: 'Workforce - AI', href: 'https://ai.tulie.app', icon: Bot, color: 'text-blue-500' },
                             ].map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild tooltip={item.title}>

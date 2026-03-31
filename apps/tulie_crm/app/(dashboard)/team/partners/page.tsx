@@ -25,7 +25,7 @@ export default async function PartnersPage() {
                 </div>
                 <div className="flex gap-2">
                     <Button variant="outline" asChild>
-                        <a href="https://hoptac.tulie.agency" target="_blank" rel="noopener noreferrer">
+                        <a href="https://hoptac.tulie.app" target="_blank" rel="noopener noreferrer">
                             Trang form đăng ký
                         </a>
                     </Button>
