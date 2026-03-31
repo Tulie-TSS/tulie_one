@@ -194,6 +194,7 @@ export interface Contract {
   brand: Brand
   password_hash?: string
   financial_password_hash?: string
+  public_token?: string
   customer_snapshot?: CustomerSnapshot
   created_at: string
   updated_at: string

@@ -37,8 +37,9 @@ export default async function PublicPortalPage({ params }: Props) {
         }
 
         // Check for password protection 
-        const portalPasswordHash = data.contract?.password_hash || data.quotation?.password_hash || data.project?.password_hash
-        const financialPasswordHash = data.contract?.financial_password_hash || data.quotation?.financial_password_hash || data.project?.financial_password_hash
+        const dAny = data as any
+        const portalPasswordHash = dAny.contract?.password_hash || dAny.quotation?.password_hash || dAny.project?.password_hash
+        const financialPasswordHash = dAny.contract?.financial_password_hash || dAny.quotation?.financial_password_hash || dAny.project?.financial_password_hash
 
         let isPortalAuthenticated = true
         let isFinancialAuthenticated = true

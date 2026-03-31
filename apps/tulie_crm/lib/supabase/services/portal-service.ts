@@ -239,7 +239,7 @@ async function buildLegacyQuotationPortalData(supabase: any, primaryQuotation: a
 
         const { data: siblingContracts } = await supabase.from('contracts').select('*, milestones:contract_milestones(*)').or(contractOrFilter)
         if (siblingContracts) {
-            allContracts = Array.from(new Map(siblingContracts.map(c => [c.id, c])).values())
+            allContracts = Array.from(new Map(siblingContracts.map((c: any) => [c.id, c])).values())
         }
 
         if (allContracts.length > 0) {
@@ -247,7 +247,7 @@ async function buildLegacyQuotationPortalData(supabase: any, primaryQuotation: a
             let { data: contractDocs } = await supabase.from('contract_documents').select('*').in('contract_id', contractIds)
             const docsByContract = new Map<string, any[]>()
             if (contractDocs) {
-                contractDocs.forEach(doc => {
+                contractDocs.forEach((doc: any) => {
                     const list = docsByContract.get(doc.contract_id) || []
                     list.push(doc)
                     docsByContract.set(doc.contract_id, list)
@@ -259,7 +259,7 @@ async function buildLegacyQuotationPortalData(supabase: any, primaryQuotation: a
         const { data: projectMilestones } = await supabase.from('contract_milestones').select('*').eq('project_id', projectId)
         if (projectMilestones) {
             const contractMilestoneIds = new Set(allContracts.flatMap(c => c.milestones?.map((m: any) => m.id) || []))
-            extraMilestones = projectMilestones.filter(m => !contractMilestoneIds.has(m.id))
+            extraMilestones = projectMilestones.filter((m: any) => !contractMilestoneIds.has(m.id))
         }
 
         const { data: pTasks } = await supabase.from('project_tasks').select('*').eq('project_id', projectId)

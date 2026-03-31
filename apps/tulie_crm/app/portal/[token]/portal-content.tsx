@@ -12,7 +12,7 @@ import {
 import {
     Clock, CheckCircle, Circle,
     Package, ClipboardCheck, Wallet, Lock,
-    Headset, Mail, Phone, GanttChartSquare, CheckCircle2, AlertTriangle, FileText, ExternalLink
+    Headset, Mail, Phone, GanttChartSquare, CheckCircle2, AlertTriangle, FileText, ExternalLink, ListTodo
 } from 'lucide-react'
 import { getGeneratedDocumentById } from '@/lib/supabase/services/document-template-service'
 import { toast } from 'sonner'
