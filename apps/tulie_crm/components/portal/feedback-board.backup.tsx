@@ -40,6 +40,7 @@ import {
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { compressImage, getImageFromClipboard, validateFileSize, generateFileName } from '@/lib/utils/image-compressor'
+import { sanitizeHtml } from '@/lib/security/sanitize'
 
 interface Attachment {
     url: string
@@ -719,7 +720,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                     ) : item.content ? (
                                                                         <div 
                                                                             className="text-[13px] text-zinc-700 leading-relaxed font-medium prose prose-sm max-w-none prose-img:rounded-md prose-img:border prose-img:border-border"
-                                                                            dangerouslySetInnerHTML={{ __html: item.content }}
+                                                                            dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.content) }}
                                                                         />
                                                                     ) : (
                                                                         <p className="text-[13px] text-muted-foreground font-medium">Không có mô tả chi tiết.</p>
@@ -774,7 +775,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
 
                                                                     {item.response_content ? (
                                                                         <div className="bg-blue-50/50 p-4 rounded-lg border border-blue-100/50 text-[13px] text-blue-900 leading-relaxed font-medium">
-                                                                            <div dangerouslySetInnerHTML={{ __html: item.response_content }} />
+                                                                            <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.response_content) }} />
                                                                         </div>
                                                                     ) : (
                                                                         <div className="bg-muted p-4 border border-border border-dashed rounded-lg text-center">
