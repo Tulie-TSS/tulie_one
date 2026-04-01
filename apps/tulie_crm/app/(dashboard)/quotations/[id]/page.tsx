@@ -194,7 +194,7 @@ export default function QuotationDetailPage() {
                                 <Badge variant="outline" className="text-[11px] font-mono">{quotation.quotation_number}</Badge>
                                 <StatusBadge entityType="quotation" status={quotation.status} />
                                 {quotation.is_primary && (
-                                    <Badge className="bg-emerald-500 hover:bg-emerald-600 text-white border-0">Chính</Badge>
+                                    <Badge>Chính</Badge>
                                 )}
                             </div>
                             <h1 className="text-2xl font-bold tracking-tight">{quotation.customer?.company_name}</h1>
@@ -211,7 +211,7 @@ export default function QuotationDetailPage() {
                         <QuotationVersionHistory quotationId={id} />
                         
                         {quotation.public_token && (
-                            <Button variant="outline" size="default" asChild className="font-medium text-blue-600 border-blue-200 hover:bg-blue-50 dark:hover:bg-blue-950">
+                            <Button variant="outline" size="default" asChild className="font-medium">
                                 <Link href={publicUrl || '#'} target="_blank" className="flex items-center gap-2">
                                     <ExternalLink className="h-4 w-4" />
                                     Mở Portal báo giá
@@ -547,30 +547,25 @@ export default function QuotationDetailPage() {
                                     <CardTitle>Khái quát</CardTitle>
                                 </CardHeader>
                                 <CardContent className="p-6 pt-0">
-                                    <div className="grid grid-cols-2 gap-4 mb-6">
-                                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-muted border border-border/50 text-center">
-                                            <p className="text-3xl font-bold tracking-tight text-foreground">{stats?.totalViews ?? quotation.view_count ?? 0}</p>
-                                            <p className="text-xs font-medium text-muted-foreground mt-1.5 uppercase tracking-wider">Lượt xem</p>
-                                        </div>
-                                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-muted border border-border/50 text-center">
-                                            <p className="text-sm font-bold text-foreground mt-1">
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between items-center text-sm pb-4 border-b border-border">
+                                            <span className="text-muted-foreground font-medium">Ngày hết hạn</span>
+                                            <span className="font-semibold text-foreground">
                                                 {quotation.valid_until ? formatDate(quotation.valid_until) : 'N/A'}
-                                            </p>
-                                            <p className="text-xs font-medium text-muted-foreground mt-1.5 uppercase tracking-wider">Ngày hết hạn</p>
+                                            </span>
                                         </div>
-                                    </div>
-
-                                    <div className="space-y-3 pt-4 border-t border-border">
-                                        <div className="flex justify-between items-center text-sm">
-                                            <span className="text-muted-foreground font-medium">Khởi tạo:</span>
-                                            <span className="font-semibold">{formatDate(quotation.created_at)}</span>
-                                        </div>
-                                        {quotation.updated_at !== quotation.created_at && (
+                                        <div className="space-y-3">
                                             <div className="flex justify-between items-center text-sm">
-                                                <span className="text-muted-foreground font-medium">Cập nhật:</span>
-                                                <span className="font-semibold">{formatDate(quotation.updated_at)}</span>
+                                                <span className="text-muted-foreground font-medium">Khởi tạo</span>
+                                                <span className="font-medium text-foreground">{formatDate(quotation.created_at)}</span>
                                             </div>
-                                        )}
+                                            {quotation.updated_at !== quotation.created_at && (
+                                                <div className="flex justify-between items-center text-sm">
+                                                    <span className="text-muted-foreground font-medium">Cập nhật</span>
+                                                    <span className="font-medium text-foreground">{formatDate(quotation.updated_at)}</span>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 </CardContent>
                             </Card>
