@@ -338,7 +338,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                 
                                                 <div className="flex items-end justify-between">
                                                     <div>
-                                                        <div className="text-[11px] font-medium text-muted-foreground mb-0.5 uppercase tracking-wide">
+                                                        <div className="text-[11px] font-medium text-muted-foreground mb-0.5">
                                                             Tổng đầu tư
                                                         </div>
                                                         <div className="text-xl font-bold tabular-nums tracking-tight text-slate-900 leading-none">
@@ -805,32 +805,32 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                 <div className="hidden sm:block"></div>
                                 <Card className="border-slate-200 shadow-sm">
                                     <CardContent className="p-4 divide-y divide-slate-100">
-                                        <div className="flex justify-between py-2 text-[13px]">
-                                            <span className="text-muted-foreground">Tạm tính:</span>
-                                            <span className="font-medium text-slate-900 tabular-nums">{formatCurrency(subtotalRaw)}</span>
-                                        </div>
                                         {totalDiscount > 0 && (
                                             <div className="flex justify-between py-2 text-[13px]">
-                                                <span className="text-muted-foreground">Chiết khấu:</span>
+                                                <span className="text-muted-foreground font-medium">Tạm tính</span>
+                                                <span className="font-medium text-slate-900 tabular-nums">{formatCurrency(subtotalRaw)}</span>
+                                            </div>
+                                        )}
+                                        {totalDiscount > 0 && (
+                                            <div className="flex justify-between py-2 text-[13px]">
+                                                <span className="text-muted-foreground font-medium">Tổng chiết khấu</span>
                                                 <span className="text-slate-700 tabular-nums">-{formatCurrency(totalDiscount)}</span>
                                             </div>
                                         )}
-                                        {totalDiscount > 0 && (
-                                            <div className="flex justify-between py-2 text-[13px]">
-                                                <span className="text-slate-700 font-medium">Thành tiền sau CK:</span>
-                                                <span className="font-medium text-slate-900 tabular-nums">{formatCurrency(subtotalNet)}</span>
-                                            </div>
-                                        )}
                                         <div className="flex justify-between py-2 text-[13px]">
-                                            <span className="text-muted-foreground">VAT ({currentQuotation.vat_percent}%):</span>
+                                            <span className="text-slate-900 font-semibold">Thành tiền trước thuế</span>
+                                            <span className="font-semibold text-slate-900 tabular-nums">{formatCurrency(subtotalNet)}</span>
+                                        </div>
+                                        <div className="flex justify-between py-2 text-[13px]">
+                                            <span className="text-muted-foreground font-medium">Tổng thuế VAT ({currentQuotation.vat_percent}%)</span>
                                             <span className="font-medium text-slate-900 tabular-nums">{formatCurrency(vatAmount)}</span>
                                         </div>
-                                        <div className="flex justify-between items-center py-3">
-                                            <span className="font-bold text-slate-900 text-[15px]">Tổng cộng:</span>
+                                        <div className="flex justify-between items-center py-3 bg-slate-50 -mx-4 px-4 rounded-b-lg">
+                                            <span className="font-bold text-slate-900 text-[15px]">Tổng cộng thanh toán</span>
                                             <span className="font-bold text-xl text-slate-900 tabular-nums tracking-tight">{formatCurrency(finalAmount)}</span>
                                         </div>
                                         <div className="flex justify-between items-start pt-2.5 text-[11px] text-muted-foreground">
-                                            <span className="shrink-0 italic">Bằng chữ:</span>
+                                            <span className="shrink-0 italic">Số tiền viết bằng chữ:</span>
                                             <span className="text-right ml-4 italic">{readNumberToWords(finalAmount)}</span>
                                         </div>
                                     </CardContent>

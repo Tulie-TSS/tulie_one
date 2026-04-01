@@ -180,8 +180,8 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                 style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='rgba(255,255,255,1)'/%3E%3C/svg%3E\")" }}>
                             </div>
                             <div className="relative z-10">
-                                <h3 className="text-[16px] uppercase">Đề xuất giải pháp & Kế hoạch</h3>
-                                <p className="text-[11px] text-zinc-300 mt-0.5 font-medium">Strategic Solution Proposal — {proposalSections.length} Sections</p>
+                                <h3 className="text-[16px] font-bold">Đề xuất giải pháp & Kế hoạch</h3>
+                                <p className="text-[11px] text-zinc-300 mt-0.5 font-medium">Proposal — {proposalSections.length} hạng mục</p>
                             </div>
                         </div>
 
@@ -275,7 +275,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                                     </td>
                                                     <td className="px-3 align-top py-3">
                                                         <div>
-                                                            <p className="font-bold text-foreground text-[12px] uppercase">{item.product_name || item.name}</p>
+                                                            <p className="font-bold text-foreground text-[12px]">{item.product_name || item.name}</p>
                                                             {item.description && (
                                                                 <p className="text-muted-foreground text-[10px] mt-1 leading-relaxed whitespace-pre-line border-l-2 border-border pl-2 overflow-hidden">{item.description}</p>
                                                             )}
@@ -301,32 +301,32 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
 
                     <div className="flex justify-end mt-8">
                         <div className="w-[360px] bg-slate-50 p-6 rounded-md border border-slate-200/50 space-y-3">
-                            <div className="flex justify-between text-[13px]">
-                                <span className="text-slate-500 font-medium">Tạm tính:</span>
-                                <span className="font-semibold text-slate-950">{formatCurrency(subtotalRaw)}</span>
-                            </div>
                             {totalDiscount > 0 && (
                                 <div className="flex justify-between text-[13px]">
-                                    <span className="text-emerald-600 font-medium">Chiết khấu:</span>
-                                    <span className="text-emerald-700 font-semibold">-{formatCurrency(totalDiscount)}</span>
+                                    <span className="text-slate-500 font-medium">Tạm tính</span>
+                                    <span className="font-semibold text-slate-950">{formatCurrency(subtotalRaw)}</span>
                                 </div>
                             )}
                             {totalDiscount > 0 && (
-                                <div className="flex justify-between text-[13px] border-t border-slate-200 pt-2">
-                                    <span className="text-slate-700 font-semibold">Thành tiền sau CK:</span>
-                                    <span className="font-semibold text-slate-950">{formatCurrency(subtotalNet)}</span>
+                                <div className="flex justify-between text-[13px]">
+                                    <span className="text-slate-500 font-medium">Tổng chiết khấu</span>
+                                    <span className="text-slate-700 font-semibold">-{formatCurrency(totalDiscount)}</span>
                                 </div>
                             )}
+                            <div className="flex justify-between text-[13px] border-t border-slate-200 pt-2">
+                                <span className="text-slate-900 font-semibold">Thành tiền trước thuế</span>
+                                <span className="font-semibold text-slate-950">{formatCurrency(subtotalNet)}</span>
+                            </div>
                             <div className="flex justify-between text-[13px]">
-                                <span className="text-slate-500 font-medium">VAT ({quotation.vat_percent}%):</span>
+                                <span className="text-slate-500 font-medium">Tổng thuế VAT ({quotation.vat_percent}%)</span>
                                 <span className="font-semibold text-slate-950">{formatCurrency(vatAmount)}</span>
                             </div>
                             <div className="pt-3 border-t border-slate-200 flex justify-between items-center">
-                                <span className="font-bold text-slate-950 uppercase tracking-tighter text-sm">Tổng thanh toán:</span>
+                                <span className="font-bold text-slate-950 text-sm">Tổng cộng thanh toán</span>
                                 <span className="font-bold text-2xl text-slate-950 tracking-tighter">{formatCurrency(finalAmount)}</span>
                             </div>
-                            <div className="text-right pt-2 text-[10px] text-slate-500 font-medium">
-                                Bằng chữ: {readNumberToWords(finalAmount)}
+                            <div className="text-right pt-2 text-[10px] text-slate-500 font-medium italic">
+                                Số tiền viết bằng chữ: {readNumberToWords(finalAmount)}
                             </div>
                         </div>
                     </div>
@@ -336,7 +336,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                 <div className="grid grid-cols-2 gap-6 mt-12 pb-12">
                     <div className="bg-slate-50 p-6 rounded-md border border-slate-100 flex flex-col gap-6">
                         <div>
-                            <h4 className="font-bold text-black mb-2.5 text-[13px] uppercase tracking-wide">Ghi chú <span className="text-[0.8em] font-normal opacity-70">/ Notes</span></h4>
+                            <h4 className="font-bold text-black mb-2.5 text-[13px]">Ghi chú <span className="text-[0.8em] font-normal opacity-70">/ Notes</span></h4>
                             <div className="text-[11px] text-slate-800 space-y-1.5 font-medium">
                                 {(quotation.notes || brandConfig?.default_notes || 'Báo giá có hiệu lực trong vòng 07 ngày.').split('\n').filter((l: string) => l.trim()).map((line: string, i: number) => (
                                     <div key={i} className="flex gap-2.5 items-start">
@@ -347,7 +347,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                             </div>
                         </div>
                         <div className="border-t border-slate-200 pt-5 mt-auto">
-                            <h4 className="font-bold text-black mb-2.5 text-[13px] uppercase tracking-wide">Thanh toán <span className="text-[0.8em] font-normal opacity-70">/ Payment</span></h4>
+                            <h4 className="font-bold text-black mb-2.5 text-[13px]">Thanh toán <span className="text-[0.8em] font-normal opacity-70">/ Payment</span></h4>
                             <div className="text-[11px] text-slate-800 space-y-1.5 font-medium">
                                 {(quotation.terms || brandConfig?.default_payment_terms || "50% đặt cọc khi xác nhận\n50% khi hoàn thành").split('\n').filter((l: string) => l.trim()).map((line: string, i: number) => (
                                     <div key={i} className="flex gap-2.5 items-start">
@@ -360,7 +360,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                     </div>
 
                     <div className="bg-slate-50 p-6 rounded-md border border-slate-100 flex flex-col">
-                        <h4 className="font-bold text-black mb-4 text-[13px] uppercase tracking-wide">Thông tin chuyển khoản <span className="text-[0.8em] font-normal opacity-70">/ Bank</span></h4>
+                        <h4 className="font-bold text-black mb-4 text-[13px]">Thông tin chuyển khoản <span className="text-[0.8em] font-normal opacity-70">/ Bank</span></h4>
                         <div className="space-y-4 text-[12px]">
                             <div className="grid grid-cols-[110px_1fr] items-baseline">
                                 <span className="text-slate-500">Ngân hàng:</span>
@@ -387,7 +387,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
 
             {/* SYNCED DECORATIVE FOOTER */}
             <div className="mt-auto p-10 print:p-0 border-t border-slate-100 flex flex-col items-center">
-                <div className="flex justify-between items-center w-full text-[11px] text-slate-500 uppercase tracking-widest">
+                <div className="flex justify-between items-center w-full text-[11px] text-slate-500 tracking-wide">
                     <div className="flex items-center gap-4">
                         <span className="text-slate-950">{brandConfig?.brand_name || "Tulie Agency"}</span>
                         <span className="h-3 w-px bg-slate-200"></span>
