@@ -53,9 +53,9 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
 
             {/* Content */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="md:col-span-2 rounded-md border-border">
-                    <CardHeader className="bg-muted/30 border-b border-border">
-                        <CardTitle className="text-base">Danh sách các Phương án Báo giá</CardTitle>
+                <Card className="md:col-span-2">
+                    <CardHeader>
+                        <CardTitle>Danh sách các Phương án Báo giá</CardTitle>
                     </CardHeader>
                     <CardContent className="p-0">
                         {portal.items?.length === 0 ? (
@@ -96,14 +96,14 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
                 </Card>
 
                 <div className="space-y-6">
-                    <Card className="rounded-md border-border">
+                    <Card>
                         <CardHeader>
                             <CardTitle className="text-sm flex items-center gap-2">
                                 <Link2 className="h-4 w-4 text-muted-foreground" />
                                 Liên kết chia sẻ
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-4">
+                        <CardContent>
                             <div className="p-3 bg-muted rounded-md border border-border">
                                 <p className="text-sm font-mono break-all text-foreground">
                                     https://crm.tulie.app{publicUrl}

@@ -62,7 +62,7 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
                             {quotation.quotation_number}
                         </Link>
                         {quotation.is_primary && (
-                            <Badge variant="outline" className="text-[10px] font-medium px-1.5 py-0 h-[18px] rounded-md bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800">Chính</Badge>
+                            <Badge variant="default" className="text-[10px] font-medium px-1.5 py-0 h-[18px] rounded-md">Chính</Badge>
                         )}
                     </div>
                     {displayTitle && (

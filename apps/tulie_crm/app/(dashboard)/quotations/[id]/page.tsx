@@ -296,14 +296,12 @@ export default function QuotationDetailPage() {
                     <div className="grid gap-8 lg:grid-cols-3">
                         <div className="lg:col-span-2 space-y-6">
                             {/* Customer Info Card */}
-                            <Card className="shadow-sm">
-                                <CardHeader className="pb-4 border-b bg-muted/30">
-                                    <div className="flex items-center gap-2">
-                                        <Building2 className="h-4 w-4 text-muted-foreground" />
-                                        <CardTitle className="text-base font-semibold">Thông tin khách hàng</CardTitle>
-                                    </div>
+                            <Card>
+                                <CardHeader className="flex flex-row items-center gap-2">
+                                    <Building2 className="h-4 w-4 text-muted-foreground shrink-0" />
+                                    <CardTitle>Thông tin khách hàng</CardTitle>
                                 </CardHeader>
-                                <CardContent className="pt-6">
+                                <CardContent>
                                     <div className="grid gap-6 sm:grid-cols-2">
                                         <div className="space-y-5">
                                             <div>
@@ -332,9 +330,9 @@ export default function QuotationDetailPage() {
                             {/* Proposal Content */}
                             {hasProposal && proposalSections.length > 0 && (
                                 <Card>
-                                    <CardHeader className="flex flex-row items-center justify-between pb-3">
+                                    <CardHeader className="flex flex-row items-center justify-between">
                                         <div className="space-y-1">
-                                            <CardTitle className="text-base">Đề xuất giải pháp</CardTitle>
+                                            <CardTitle>Đề xuất giải pháp</CardTitle>
                                             <CardDescription>Proposal — {proposalSections.length} Stages</CardDescription>
                                         </div>
                                         <div className="flex items-center gap-2">
@@ -380,16 +378,16 @@ export default function QuotationDetailPage() {
                                                     <div className="absolute -left-12 top-[32px] -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center text-white bg-zinc-950 text-[12px] z-10  border-[3px] border-white">
                                                         {idx + 1}
                                                     </div>
-                                                    <div className="rounded-md border border-border/60 bg-white overflow-hidden transition-all hover: hover:border-input/60 group">
-                                                        <div className="flex items-center gap-4 px-6 py-4 border-b bg-muted/50 border-border group-hover:bg-muted transition-colors">
+                                                    <div className="rounded-md border bg-card text-card-foreground shadow-sm overflow-hidden transition-all group">
+                                                        <div className="flex items-center gap-4 px-6 py-4 border-b bg-muted/50 transition-colors">
                                                             <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900 text-white shadow group-hover:scale-105 transition-transform duration-300">
                                                                 {sectionIcons[section.key] || <Info className="h-4 w-4" />}
                                                             </span>
-                                                            <h4 className="text-[14px] text-foreground">
+                                                            <h4 className="text-[14px] font-medium text-foreground">
                                                                 {section.label}
                                                             </h4>
                                                         </div>
-                                                        <div className="px-6 py-5 text-[13px] text-muted-foreground font-medium leading-relaxed whitespace-pre-line bg-white">
+                                                        <div className="px-6 py-5 text-[13px] text-muted-foreground font-medium leading-relaxed whitespace-pre-line bg-card">
                                                             {pc[section.key]}
                                                         </div>
                                                     </div>
@@ -402,16 +400,16 @@ export default function QuotationDetailPage() {
 
                             {/* Items Table */}
                             <Card>
-                                <CardHeader className="flex flex-row items-center justify-between pb-3">
+                                <CardHeader className="flex flex-row items-center justify-between">
                                     <div className="space-y-1">
                                         <CardTitle className="text-xl">Chi tiết hạng mục</CardTitle>
                                         <CardDescription>Investment Plan & Pricing Framework</CardDescription>
                                     </div>
-                                    <Receipt className="h-5 w-5 text-muted-foreground" />
+                                    <Receipt className="h-5 w-5 text-muted-foreground shrink-0" />
                                 </CardHeader>
                                 <CardContent className="p-0">
                                     <Table>
-                                        <TableHeader className="bg-muted/40">
+                                        <TableHeader>
                                             <TableRow>
                                                 <TableHead className="w-12 text-center text-xs">#</TableHead>
                                                 <TableHead className="text-xs">Hạng mục & Mô tả</TableHead>
@@ -422,11 +420,11 @@ export default function QuotationDetailPage() {
                                                 <TableHead className="text-right pr-6 text-xs">Thành tiền</TableHead>
                                             </TableRow>
                                         </TableHeader>
-                                        <TableBody className="bg-white">
+                                        <TableBody>
                                             {sectionEntries.map(([sectionName, sectionItems], sectionIdx) => (
                                                 <React.Fragment key={sectionIdx}>
                                                     {sectionName && (
-                                                        <TableRow className="bg-muted/60 border-y">
+                                                        <TableRow className="bg-muted/50 hover:bg-muted/50">
                                                             <TableCell className="py-2 w-12 text-center">
                                                                 <div className="w-6 h-6 rounded-md bg-primary text-primary-foreground text-xs font-semibold flex items-center justify-center mx-auto">
                                                                     {sectionIdx + 1}
@@ -438,7 +436,7 @@ export default function QuotationDetailPage() {
                                                         </TableRow>
                                                     )}
                                                     {sectionItems.map((item: any, idx: number) => (
-                                                        <TableRow key={item.id} className="hover:bg-muted/30 group last:border-0 align-top">
+                                                        <TableRow key={item.id} className="group align-top">
                                                             <TableCell className="text-center w-12 py-3">
                                                                 {!sectionName && (
                                                                     <span className="text-xs font-medium text-muted-foreground tabular-nums">
@@ -479,7 +477,7 @@ export default function QuotationDetailPage() {
                                             ))}
                                         </TableBody>
                                     </Table>
-                                    <div className="border-t bg-muted/30 px-8 py-6 flex justify-end">
+                                    <div className="border-t bg-muted/50 px-8 py-6 flex justify-end">
                                         <div className="w-full max-w-sm space-y-4">
                                             <div className="flex justify-between items-center text-xs font-medium text-muted-foreground">
                                                 <span>Tạm tính:</span>
@@ -516,29 +514,25 @@ export default function QuotationDetailPage() {
 
                             {/* Terms & Notes */}
                             <div className="grid gap-6 sm:grid-cols-2">
-                                <Card className="shadow-sm">
-                                    <CardHeader className="pb-4 border-b bg-muted/30">
-                                        <div className="flex items-center gap-2">
-                                            <BookOpen className="h-4 w-4 text-muted-foreground" />
-                                            <CardTitle className="text-base font-semibold">Điều khoản thanh toán</CardTitle>
-                                        </div>
+                                <Card>
+                                    <CardHeader className="flex flex-row items-center gap-2">
+                                        <BookOpen className="h-4 w-4 text-muted-foreground shrink-0" />
+                                        <CardTitle>Điều khoản thanh toán</CardTitle>
                                     </CardHeader>
-                                    <CardContent className="pt-6">
-                                        <div className="text-sm text-foreground leading-relaxed whitespace-pre-line bg-slate-50 dark:bg-zinc-900/50 p-5 rounded-lg border border-slate-100 dark:border-zinc-800">
+                                    <CardContent>
+                                        <div className="text-sm text-foreground leading-relaxed whitespace-pre-line p-5 rounded-lg bg-muted border border-border/50">
                                             {quotation.terms || 'Chưa có thông tin điều khoản.'}
                                         </div>
                                     </CardContent>
                                 </Card>
 
-                                <Card className="shadow-sm">
-                                    <CardHeader className="pb-4 border-b bg-muted/30">
-                                        <div className="flex items-center gap-2">
-                                            <Info className="h-4 w-4 text-muted-foreground" />
-                                            <CardTitle className="text-base font-semibold">Ghi chú bổ sung</CardTitle>
-                                        </div>
+                                <Card>
+                                    <CardHeader className="flex flex-row items-center gap-2">
+                                        <Info className="h-4 w-4 text-muted-foreground shrink-0" />
+                                        <CardTitle>Ghi chú bổ sung</CardTitle>
                                     </CardHeader>
-                                    <CardContent className="pt-6">
-                                        <div className="text-sm text-foreground leading-relaxed whitespace-pre-line bg-slate-50 dark:bg-zinc-900/50 p-5 rounded-lg border border-slate-100 dark:border-zinc-800">
+                                    <CardContent>
+                                        <div className="text-sm text-foreground leading-relaxed whitespace-pre-line p-5 rounded-lg bg-muted border border-border/50">
                                             {quotation.notes || 'Không có ghi chú nào.'}
                                         </div>
                                     </CardContent>
@@ -548,17 +542,17 @@ export default function QuotationDetailPage() {
 
                         <div className="space-y-6">
                             {/* Combined Status Card */}
-                            <Card className="shadow-sm">
-                                <CardHeader className="pb-4 border-b bg-muted/30">
-                                    <CardTitle className="text-base font-semibold">Khái quát</CardTitle>
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Khái quát</CardTitle>
                                 </CardHeader>
-                                <CardContent className="p-6 pt-6">
+                                <CardContent className="p-6 pt-0">
                                     <div className="grid grid-cols-2 gap-4 mb-6">
-                                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-slate-50 border border-slate-100 dark:bg-zinc-900/50 dark:border-zinc-800">
+                                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-muted border border-border/50 text-center">
                                             <p className="text-3xl font-bold tracking-tight text-foreground">{stats?.totalViews ?? quotation.view_count ?? 0}</p>
                                             <p className="text-xs font-medium text-muted-foreground mt-1.5 uppercase tracking-wider">Lượt xem</p>
                                         </div>
-                                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-slate-50 border border-slate-100 dark:bg-zinc-900/50 dark:border-zinc-800">
+                                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-muted border border-border/50 text-center">
                                             <p className="text-sm font-bold text-foreground mt-1">
                                                 {quotation.valid_until ? formatDate(quotation.valid_until) : 'N/A'}
                                             </p>
@@ -585,15 +579,15 @@ export default function QuotationDetailPage() {
                             <QuotationViewAnalytics quotationId={quotation.id} />
 
                             {/* Payment Details Card */}
-                            <Card className="shadow-sm">
-                                <CardHeader className="pb-4 border-b bg-muted/30 flex flex-row items-center justify-between">
+                            <Card>
+                                <CardHeader className="flex flex-row items-center justify-between">
                                     <div className="flex items-center gap-2">
-                                        <CreditCard className="h-4 w-4 text-muted-foreground" />
-                                        <CardTitle className="text-base font-semibold">Thông tin thanh toán</CardTitle>
+                                        <CreditCard className="h-4 w-4 text-muted-foreground shrink-0" />
+                                        <CardTitle>Thông tin thanh toán</CardTitle>
                                     </div>
-                                    <Globe className="h-4 w-4 text-muted-foreground opacity-50" />
+                                    <Globe className="h-4 w-4 text-muted-foreground opacity-50 shrink-0" />
                                 </CardHeader>
-                                <CardContent className="space-y-6 pt-6">
+                                <CardContent className="space-y-6">
                                     <div className="space-y-1.5">
                                         <p className="text-xs font-medium text-muted-foreground">Đơn vị thụ hưởng</p>
                                         <p className="font-bold text-sm text-foreground">{quotation.bank_account_name || brandConfig?.bank_account_name || "CÔNG TY TNHH TULIE"}</p>
@@ -604,7 +598,7 @@ export default function QuotationDetailPage() {
                                             {quotation.bank_account_no || brandConfig?.bank_account_no || "0110163102"}
                                         </p>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-6 pt-3 border-t border-slate-100 dark:border-zinc-800">
+                                    <div className="grid grid-cols-2 gap-6 pt-3 border-t border-border/50">
                                         <div className="space-y-1.5">
                                             <p className="text-xs font-medium text-muted-foreground">Ngân hàng</p>
                                             <p className="font-bold text-sm text-foreground">{quotation.bank_name || brandConfig?.bank_name || "MB BANK"}</p>

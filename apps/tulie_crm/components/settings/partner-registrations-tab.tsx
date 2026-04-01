@@ -105,13 +105,14 @@ export function PartnerRegistrationsTab() {
             approved: 'Đã duyệt',
             rejected: 'Từ chối',
         }
-        const colors: Record<string, string> = {
-            pending: 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800',
-            approved: 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
-            rejected: 'bg-rose-50 text-rose-700 border border-rose-200 dark:bg-rose-950 dark:text-rose-300 dark:border-rose-800',
-        }
+        let variant: "default" | "secondary" | "destructive" | "outline" = "outline"
+        
+        if (status === 'pending') variant = "secondary"
+        if (status === 'approved') variant = "default"
+        if (status === 'rejected') variant = "destructive"
+
         return (
-            <Badge variant="outline" className={`rounded-md text-[11px] font-medium ${colors[status] || ''}`}>
+            <Badge variant={variant} className="rounded-md text-[11px] font-medium">
                 {labels[status] || status}
             </Badge>
         )
