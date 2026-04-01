@@ -54,7 +54,7 @@ export const customerColumns: ColumnDef<Customer>[] = [
                 <div className="py-1">
                     <Link
                         href={`/customers/${customer.id}`}
-                        className="text-sm text-foreground hover:underline"
+                        className="text-sm font-medium text-foreground hover:underline"
                     >
                         {customer.customer_type === 'individual'
                             ? (customer.representative || 'Chưa đặt tên')
@@ -78,14 +78,14 @@ export const customerColumns: ColumnDef<Customer>[] = [
             return (
                 <div className="space-y-1">
                     {customer.email && (
-                        <div className="flex items-center gap-1 text-sm">
-                            <Mail className="h-3 w-3 text-muted-foreground" />
+                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Mail className="h-3 w-3 shrink-0" />
                             <span>{customer.email}</span>
                         </div>
                     )}
                     {customer.phone && (
-                        <div className="flex items-center gap-1 text-sm">
-                            <Phone className="h-3 w-3 text-muted-foreground" />
+                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Phone className="h-3 w-3 shrink-0" />
                             <span>{customer.phone}</span>
                         </div>
                     )}

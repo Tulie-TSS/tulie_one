@@ -24,7 +24,7 @@ export default async function QuotationsPage() {
                         <FileText className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-3xl text-foreground">Báo giá</h1>
+                        <h1 className="text-2xl font-bold tracking-tight text-foreground">Báo giá</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý và theo dõi các báo giá gửi cho khách hàng
                         </p>

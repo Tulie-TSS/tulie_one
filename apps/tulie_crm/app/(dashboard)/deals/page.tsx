@@ -15,7 +15,7 @@ export default async function DealsPage() {
                         <TrendingUp className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-3xl text-foreground">Cơ hội (Deals)</h1>
+                        <h1 className="text-2xl font-bold tracking-tight text-foreground">Cơ hội (Deals)</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý phễu bán hàng (Pipeline) và các cơ hội tiềm năng.
                         </p>
