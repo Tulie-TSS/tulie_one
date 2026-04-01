@@ -1,11 +1,11 @@
 
-
 import { createClient } from '../server'
 import { createAdminClient } from '../admin'
 import { recordRetailPayment } from './retail-order-service'
 import { sendTelegramNotification } from './telegram-service'
 import { getSystemSetting } from './settings-service'
 import { detectSourceSystem, extractOrderCode, generatePaymentContent, normalizeOrderCode, ORDER_CODE_PATTERN } from '@/lib/utils/payment-utils'
+import { notifyPaymentReceived, notifyRetailPaymentReceived } from './notification-service'
 import type { SourceSystem } from '@/lib/utils/payment-utils'
 
 // Re-export for consumers
@@ -121,7 +121,7 @@ export async function processWebhookPayment(payload: SepayWebhookPayload): Promi
         // First try exact match
         let { data: order } = await supabase
             .from('retail_orders')
-            .select('id, order_number, total_amount, paid_amount, payment_status')
+            .select('id, order_number, total_amount, paid_amount, payment_status, created_by, customer_name')
             .eq('order_number', orderCode)
             .single()
 
@@ -129,7 +129,7 @@ export async function processWebhookPayment(payload: SepayWebhookPayload): Promi
         if (!order) {
             const { data: orders } = await supabase
                 .from('retail_orders')
-                .select('id, order_number, total_amount, paid_amount, payment_status')
+                .select('id, order_number, total_amount, paid_amount, payment_status, created_by, customer_name')
                 .ilike('order_number', 'DH_%')
                 .limit(100)
 
@@ -155,6 +155,15 @@ export async function processWebhookPayment(payload: SepayWebhookPayload): Promi
 
             // Log to activity_log for finance tab
             await logPaymentActivity(transactionId, 'retail_order', order.id, amount, content, sourceSystem)
+
+            // In-app notification for order creator
+            if (order.created_by) {
+                notifyRetailPaymentReceived(
+                    order.created_by,
+                    { id: order.id, order_number: order.order_number, customer_name: order.customer_name },
+                    amount
+                ).catch(() => {})
+            }
 
             return { success: true, matched: 'retail_order', orderNumber: order.order_number, sourceSystem, transactionId }
         }

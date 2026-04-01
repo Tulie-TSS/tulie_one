@@ -8,6 +8,7 @@ import {
     formatNewRetailOrder,
     formatPaymentReceived
 } from './telegram-service'
+import { notifyRetailOrderCreated, notifyRetailPaymentReceived } from './notification-service'
 
 // Helper to generate Retail Order ID: DH_YY_MMDD_STT_VALUE_IN_K
 export async function generateRetailOrderId(amount: number, orderDate?: string): Promise<{ orderNumber: string, stt: number }> {
@@ -150,6 +151,17 @@ export async function createRetailOrder(order: Partial<RetailOrder>) {
         }
 
         revalidatePath('/studio')
+
+        // In-app notification for order creator
+        if (user?.id) {
+            notifyRetailOrderCreated(user.id, {
+                id: insertedOrder.id,
+                order_number: insertedOrder.order_number,
+                customer_name: insertedOrder.customer_name,
+                total_amount: insertedOrder.total_amount,
+            }).catch(() => {})
+        }
+
         return insertedOrder as RetailOrder
     } catch (err) {
         console.error('Error creating retail order:', err)
@@ -451,7 +463,7 @@ export async function recordRetailPayment(id: string, amount: number) {
 
         const { data: order, error: fetchError } = await supabase
             .from('retail_orders')
-            .select('id, order_number, customer_name, customer_phone, total_amount, paid_amount, payment_status')
+            .select('id, order_number, customer_name, customer_phone, total_amount, paid_amount, payment_status, created_by')
             .eq('id', id)
             .single()
 
@@ -490,6 +502,16 @@ export async function recordRetailPayment(id: string, amount: number) {
         }
 
         revalidatePath('/studio')
+
+        // In-app notification
+        if (order.created_by) {
+            notifyRetailPaymentReceived(
+                order.created_by,
+                { id: order.id, order_number: order.order_number, customer_name: order.customer_name },
+                amount
+            ).catch(() => {})
+        }
+
         return true
     } catch (err) {
         console.error('Error recording retail payment:', err)

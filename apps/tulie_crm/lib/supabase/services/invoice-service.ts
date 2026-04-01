@@ -9,6 +9,7 @@ import {
     formatPaymentReceived
 } from './telegram-service'
 import { logActivity, logDestructiveAction } from './activity-service'
+import { notifyInvoiceCreated, notifyInvoicePayment } from './notification-service'
 
 export async function getInvoices() {
     try {
@@ -96,6 +97,16 @@ export async function createInvoice(invoice: Partial<Invoice>, items: Partial<In
         description: `Tạo hóa đơn mới: ${invoice.invoice_number || invoiceData.id}`
     })
 
+    // In-app notification
+    if (invoiceData.created_by) {
+        const customerName = invoiceWithDetails?.customer?.company_name || invoiceWithDetails?.vendor?.name
+        notifyInvoiceCreated(
+            invoiceData.created_by,
+            { id: invoiceData.id, invoice_number: invoiceData.invoice_number || '', total_amount: invoiceData.total_amount || 0, type: invoiceData.type },
+            customerName
+        ).catch(() => {})
+    }
+
     return invoiceData
 }
 
@@ -148,6 +159,17 @@ export async function recordInvoicePayment(id: string, amount: number, notes?: s
             description: `Ghi nhận thanh toán hóa đơn: ${invoice.invoice_number || id} — ${amount.toLocaleString()}đ`,
             metadata: { new_values: { amount, status, paid_amount: newPaidAmount } }
         })
+
+        // In-app notification
+        if (user?.id) {
+            const customerName = (invoice as any).customer?.company_name
+            notifyInvoicePayment(
+                user.id,
+                { id, invoice_number: invoice.invoice_number || '' },
+                amount,
+                customerName
+            ).catch(() => {})
+        }
 
         return true
     } catch (err) {

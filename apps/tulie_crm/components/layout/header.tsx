@@ -1,6 +1,6 @@
 'use client'
 
-import { Bell, Search, Moon, Sun, LogOut, User, Settings, Menu, ChevronDown, CheckCircle, UserPlus, FileText, CheckCircle2, CreditCard, BellRing, Trophy, XCircle, ClipboardList, AlertTriangle, Eye, LayoutGrid } from 'lucide-react'
+import { Bell, Search, Moon, Sun, LogOut, User, Settings, Menu, ChevronDown, CheckCircle, UserPlus, FileText, CheckCircle2, CreditCard, BellRing, Trophy, XCircle, ClipboardList, AlertTriangle, Eye, LayoutGrid, ShoppingCart, Milestone, RefreshCw, Receipt, Banknote } from 'lucide-react'
 import { Button } from '@repo/ui'
 import { Input } from '@repo/ui'
 import {
@@ -107,13 +107,21 @@ export function Header() {
     const getNotificationIcon = (type: NotificationType | string) => {
         switch (type) {
             case 'new_customer': return <UserPlus className="h-4 w-4" />
+            case 'quotation_created': return <FileText className="h-4 w-4" />
             case 'quotation_accepted': return <CheckCircle2 className="h-4 w-4" />
             case 'quotation_viewed': return <Eye className="h-4 w-4" />
             case 'quotation_rejected': return <XCircle className="h-4 w-4" />
             case 'quotation_sent': return <FileText className="h-4 w-4" />
-            case 'invoice_overdue': return <AlertTriangle className="h-4 w-4" />
+            case 'contract_created': return <FileText className="h-4 w-4" />
             case 'contract_signed': return <FileText className="h-4 w-4" />
+            case 'contract_status_changed': return <RefreshCw className="h-4 w-4" />
+            case 'invoice_created': return <Receipt className="h-4 w-4" />
+            case 'invoice_overdue': return <AlertTriangle className="h-4 w-4" />
+            case 'invoice_payment': return <Banknote className="h-4 w-4" />
             case 'payment_received': return <CreditCard className="h-4 w-4" />
+            case 'retail_order_created': return <ShoppingCart className="h-4 w-4" />
+            case 'retail_payment': return <CreditCard className="h-4 w-4" />
+            case 'milestone_payment': return <Milestone className="h-4 w-4" />
             case 'deal_won': return <Trophy className="h-4 w-4" />
             case 'deal_lost': return <XCircle className="h-4 w-4" />
             case 'task_assigned': return <ClipboardList className="h-4 w-4" />

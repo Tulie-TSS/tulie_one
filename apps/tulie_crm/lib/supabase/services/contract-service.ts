@@ -5,6 +5,7 @@ import { Contract, ContractMilestone } from '@/types'
 import { revalidatePath } from 'next/cache'
 import { logActivity, logDestructiveAction } from './activity-service'
 import { generateDocumentBundle } from './document-template-service'
+import { notifyContractCreated, notifyContractStatusChanged, notifyContractSigned, notifyMilestonePaymentConfirmed } from './notification-service'
 import { v4 as uuidv4 } from 'uuid'
 
 export async function getContracts(customerId?: string, type?: string, brand?: string) {
@@ -128,6 +129,14 @@ export async function createContract(contract: Partial<Contract>, milestones: Pa
         description: `Tạo hợp đồng mới: ${contract.title}`
     })
 
+    // In-app notification
+    if (contractData.created_by) {
+        notifyContractCreated({
+            ...contractData,
+            customer: contract.customer_snapshot ? { company_name: (contract.customer_snapshot as any).company_name } : null,
+        }).catch(() => {})
+    }
+
     // 4. Auto-generate document bundle (fire-and-forget)
     generateDocumentBundle(contractData.id).catch(err => {
         console.error('Error auto-generating document bundle:', err)
@@ -144,6 +153,13 @@ export async function updateContract(id: string, contract: Partial<Contract>, mi
         const cleanContract = Object.fromEntries(
             Object.entries(contract).filter(([_, v]) => v !== undefined)
         )
+
+        // Get current contract for status change detection
+        const { data: currentContract } = await supabase
+            .from('contracts')
+            .select('status, created_by, contract_number, title')
+            .eq('id', id)
+            .single()
 
         // 1. Update contract
         const { error: contractError } = await supabase
@@ -256,6 +272,21 @@ export async function updateContract(id: string, contract: Partial<Contract>, mi
         } catch (logErr) {
             // Don't fail the whole save if logging fails
             console.error('Error logging activity:', logErr)
+        }
+
+        // Notify on status changes
+        if (cleanContract.status && currentContract && cleanContract.status !== currentContract.status) {
+            const contractForNotify = {
+                id,
+                contract_number: contract.contract_number || currentContract.contract_number,
+                title: contract.title || currentContract.title,
+                created_by: currentContract.created_by || '',
+            }
+            if (cleanContract.status === 'signed') {
+                notifyContractSigned(contractForNotify as any).catch(() => {})
+            } else {
+                notifyContractStatusChanged(contractForNotify, currentContract.status, cleanContract.status as string).catch(() => {})
+            }
         }
 
         // Auto-regenerate document bundle (all draft docs)
@@ -500,6 +531,19 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
             description: `Chuyển đổi báo giá ${quotation.quotation_number} thành ${type === 'order' ? 'đơn hàng' : 'hợp đồng'} ${contract.contract_number}`
         })
 
+        // In-app notification
+        const authUser = (await supabase.auth.getUser()).data.user
+        if (authUser?.id) {
+            notifyContractCreated({
+                id: contract.id,
+                contract_number: contract.contract_number,
+                title: contract.title,
+                customer: quotation.customer ? { company_name: quotation.customer.company_name } : null,
+                created_by: authUser.id,
+                total_amount: contract.total_amount,
+            }).catch(() => {})
+        }
+
         return { success: true, id: contract.id }
     } catch (err: any) {
         console.error('Conversion error:', err)
@@ -619,6 +663,15 @@ export async function confirmMilestonePayment(
             const message = `<b>💰 XÁC NHẬN THANH TOÁN</b>\n━━━━━━━━━━━━━━━━━━\n📋 HĐ: <b>${contract.contract_number}</b>\n📌 Milestone: <b>${milestone.name}</b>\n💵 Số tiền: <b>${milestoneAmount.toLocaleString()}đ</b>\n🧾 Hóa đơn: <b>${invoiceNumber}</b>\n━━━━━━━━━━━━━━━━━━\n<i>Đã ghi nhận vào doanh thu.</i>`
             await sendTelegramNotification(message, 'notify_b2b_payment')
         } catch {}
+
+        // In-app notification for milestone payment
+        if (user?.id) {
+            notifyMilestonePaymentConfirmed(
+                user.id,
+                { name: milestone.name, amount: milestoneAmount },
+                { id: contract.id, contract_number: contract.contract_number }
+            ).catch(() => {})
+        }
 
         revalidatePath('/contracts')
         revalidatePath(`/contracts/${contract.id}`)

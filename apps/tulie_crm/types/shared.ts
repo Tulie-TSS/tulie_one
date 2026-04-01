@@ -30,8 +30,10 @@ export interface Team {
 }
 
 export type NotificationType =
-  | 'new_customer' | 'quotation_sent' | 'quotation_accepted' | 'quotation_viewed'
-  | 'quotation_rejected' | 'invoice_overdue' | 'contract_signed' | 'payment_received'
+  | 'new_customer' | 'quotation_created' | 'quotation_sent' | 'quotation_accepted' | 'quotation_viewed'
+  | 'quotation_rejected' | 'contract_created' | 'contract_signed' | 'contract_status_changed'
+  | 'invoice_created' | 'invoice_overdue' | 'invoice_payment'
+  | 'payment_received' | 'retail_order_created' | 'retail_payment' | 'milestone_payment'
   | 'deal_won' | 'deal_lost' | 'task_assigned' | 'task_overdue' | 'task_completed'
   | 'low_margin' | 'cash_flow_alert' | 'workspace' | 'system'
 

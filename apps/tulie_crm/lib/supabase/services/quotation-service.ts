@@ -12,7 +12,7 @@ import { logActivity, logDestructiveAction } from './activity-service'
 import { getDealById } from './deal-service'
 import { getCustomerById } from './customer-service'
 import { createVersionSnapshot } from './quotation-version-service'
-import { notifyQuotationViewed, notifyQuotationAccepted } from './notification-service'
+import { notifyQuotationViewed, notifyQuotationAccepted, notifyQuotationCreated, notifyQuotationSent, notifyQuotationRejected } from './notification-service'
 import { ensureQuotationInPortal } from './quote-portal-service'
 
 export async function checkQuotationNumberExists(quotationNumber: string, excludeId?: string) {
@@ -265,6 +265,14 @@ export async function createQuotation(quotation: Partial<Quotation>, items: Part
             description: `Tạo báo giá mới: ${quoteData.title}`
         })
 
+        // In-app notification
+        try {
+            const quoteWithDetails = await getQuotationById(quoteData.id)
+            if (quoteWithDetails?.created_by) {
+                notifyQuotationCreated(quoteWithDetails as any).catch(() => {})
+            }
+        } catch {}
+
         // 4. Auto-create portal if applicable
         await ensureQuotationInPortal(
             quoteData.id,
@@ -284,6 +292,13 @@ export async function createQuotation(quotation: Partial<Quotation>, items: Part
 export async function updateQuotation(id: string, quotation: Partial<Quotation>, items: Partial<QuotationItem>[]) {
     try {
         const supabase = await createClient()
+
+        // Get current quotation for status change detection
+        const { data: currentQuote } = await supabase
+            .from('quotations')
+            .select('status, created_by, quotation_number, title, customer_id')
+            .eq('id', id)
+            .single()
 
         // Prepare quotation data (map empty UUIDs to null, strip undefined values)
         const rawUpdate = {
@@ -370,6 +385,24 @@ export async function updateQuotation(id: string, quotation: Partial<Quotation>,
             entity_id: id,
             description: `Cập nhật báo giá: ${quotation.title || 'Mã ' + (quotation.quotation_number || id)}`
         })
+
+        // Notify on status changes
+        if (quotation.status && currentQuote && quotation.status !== currentQuote.status) {
+            const quoteForNotify = {
+                id,
+                quotation_number: quotation.quotation_number || currentQuote.quotation_number,
+                title: quotation.title || currentQuote.title,
+                created_by: currentQuote.created_by || '',
+            }
+            if (quotation.status === 'sent') {
+                const customer = currentQuote.customer_id
+                    ? (await supabase.from('customers').select('company_name').eq('id', currentQuote.customer_id).single()).data
+                    : null
+                notifyQuotationSent({ ...quoteForNotify, customer }).catch(() => {})
+            } else if (quotation.status === 'rejected') {
+                notifyQuotationRejected(quoteForNotify as any).catch(() => {})
+            }
+        }
 
         // Auto-create/update portal if applicable
         await ensureQuotationInPortal(

@@ -377,6 +377,187 @@ export async function notifyTaskAssigned(
     })
 }
 
+/** Báo giá được tạo */
+export async function notifyQuotationCreated(quotation: {
+    id: string, quotation_number?: string, title?: string,
+    customer?: { company_name: string } | null,
+    created_by: string
+}) {
+    const customerName = quotation.customer?.company_name || ''
+    const quoteRef = quotation.quotation_number || quotation.title || ''
+
+    return createNotification({
+        user_id: quotation.created_by,
+        type: 'quotation_created',
+        title: '📋 Báo giá mới được tạo',
+        message: `${quoteRef}${customerName ? ` — ${customerName}` : ''}`,
+        link: `/quotations/${quotation.id}`,
+        severity: 'info',
+        metadata: { quotation_id: quotation.id, customer_name: customerName },
+    })
+}
+
+/** Báo giá được gửi cho khách */
+export async function notifyQuotationSent(quotation: {
+    id: string, quotation_number?: string, title?: string,
+    customer?: { company_name: string } | null,
+    created_by: string
+}) {
+    const customerName = quotation.customer?.company_name || 'Khách hàng'
+    const quoteRef = quotation.quotation_number || quotation.title || ''
+
+    return createNotification({
+        user_id: quotation.created_by,
+        type: 'quotation_sent',
+        title: '📤 Báo giá đã gửi',
+        message: `${quoteRef} đã gửi cho ${customerName}`,
+        link: `/quotations/${quotation.id}`,
+        severity: 'info',
+        metadata: { quotation_id: quotation.id, customer_name: customerName },
+    })
+}
+
+/** Hợp đồng được tạo */
+export async function notifyContractCreated(contract: {
+    id: string, contract_number?: string, title?: string,
+    customer?: { company_name: string } | null,
+    created_by: string, total_amount?: number
+}) {
+    const customerName = contract.customer?.company_name || ''
+    const contractRef = contract.contract_number || contract.title || ''
+    const amount = contract.total_amount
+        ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(contract.total_amount)
+        : ''
+
+    return createNotification({
+        user_id: contract.created_by,
+        type: 'contract_created',
+        title: '📝 Hợp đồng mới',
+        message: `${contractRef}${customerName ? ` — ${customerName}` : ''}${amount ? ` (${amount})` : ''}`,
+        link: `/contracts/${contract.id}`,
+        severity: 'info',
+        metadata: { contract_id: contract.id, customer_name: customerName },
+    })
+}
+
+/** Trạng thái hợp đồng thay đổi */
+export async function notifyContractStatusChanged(contract: {
+    id: string, contract_number?: string, title?: string,
+    created_by: string
+}, oldStatus: string, newStatus: string) {
+    const statusLabels: Record<string, string> = {
+        draft: 'Nháp', active: 'Đang thực hiện', completed: 'Hoàn thành',
+        cancelled: 'Đã hủy', signed: 'Đã ký', expired: 'Hết hạn'
+    }
+    const contractRef = contract.contract_number || contract.title || ''
+
+    return createNotification({
+        user_id: contract.created_by,
+        type: 'contract_status_changed',
+        title: '🔄 Cập nhật hợp đồng',
+        message: `${contractRef}: ${statusLabels[oldStatus] || oldStatus} → ${statusLabels[newStatus] || newStatus}`,
+        link: `/contracts/${contract.id}`,
+        severity: newStatus === 'cancelled' || newStatus === 'expired' ? 'warning' : 'info',
+        metadata: { contract_id: contract.id, old_status: oldStatus, new_status: newStatus },
+    })
+}
+
+/** Hóa đơn được tạo */
+export async function notifyInvoiceCreated(
+    userId: string,
+    invoice: { id: string, invoice_number: string, total_amount: number, type?: string },
+    customerName?: string,
+) {
+    const formattedAmount = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(invoice.total_amount)
+    const typeLabel = invoice.type === 'input' ? 'đầu vào' : 'đầu ra'
+
+    return createNotification({
+        user_id: userId,
+        type: 'invoice_created',
+        title: '🧾 Hóa đơn mới',
+        message: `${invoice.invoice_number} (${typeLabel}) — ${formattedAmount}${customerName ? ` — ${customerName}` : ''}`,
+        link: `/invoices/${invoice.id}`,
+        severity: 'info',
+        metadata: { invoice_id: invoice.id, amount: invoice.total_amount },
+    })
+}
+
+/** Ghi nhận thanh toán hóa đơn */
+export async function notifyInvoicePayment(
+    userId: string,
+    invoice: { id: string, invoice_number: string },
+    amount: number,
+    customerName?: string,
+) {
+    const formattedAmount = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
+
+    return createNotification({
+        user_id: userId,
+        type: 'invoice_payment',
+        title: '💰 Thanh toán hóa đơn',
+        message: `${invoice.invoice_number} — ${formattedAmount}${customerName ? ` (${customerName})` : ''}`,
+        link: `/invoices/${invoice.id}`,
+        severity: 'success',
+        metadata: { invoice_id: invoice.id, amount },
+    })
+}
+
+/** Đơn hàng retail mới */
+export async function notifyRetailOrderCreated(
+    userId: string,
+    order: { id: string, order_number: string, customer_name?: string, total_amount: number },
+) {
+    const formattedAmount = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.total_amount)
+
+    return createNotification({
+        user_id: userId,
+        type: 'retail_order_created',
+        title: '🛒 Đơn hàng mới',
+        message: `${order.order_number} — ${order.customer_name || 'Khách lẻ'} — ${formattedAmount}`,
+        link: `/studio/${order.id}`,
+        severity: 'info',
+        metadata: { order_id: order.id, order_number: order.order_number, amount: order.total_amount },
+    })
+}
+
+/** Thanh toán retail */
+export async function notifyRetailPaymentReceived(
+    userId: string,
+    order: { id: string, order_number: string, customer_name?: string },
+    amount: number,
+) {
+    const formattedAmount = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
+
+    return createNotification({
+        user_id: userId,
+        type: 'retail_payment',
+        title: '💳 Thanh toán đơn hàng',
+        message: `${order.order_number} — ${formattedAmount}${order.customer_name ? ` (${order.customer_name})` : ''}`,
+        link: `/studio/${order.id}`,
+        severity: 'success',
+        metadata: { order_id: order.id, amount },
+    })
+}
+
+/** Xác nhận thanh toán milestone */
+export async function notifyMilestonePaymentConfirmed(
+    userId: string,
+    milestone: { name: string, amount: number },
+    contract: { id: string, contract_number: string },
+) {
+    const formattedAmount = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(milestone.amount)
+
+    return createNotification({
+        user_id: userId,
+        type: 'milestone_payment',
+        title: '✅ Milestone thanh toán',
+        message: `${milestone.name} — ${formattedAmount} (HĐ: ${contract.contract_number})`,
+        link: `/contracts/${contract.id}`,
+        severity: 'success',
+        metadata: { contract_id: contract.id, milestone_name: milestone.name, amount: milestone.amount },
+    })
+}
+
 // ============================================
 // HELPERS
 // ============================================
@@ -388,6 +569,9 @@ function getSeverityForType(type: NotificationType): NotificationSeverity {
         case 'payment_received':
         case 'deal_won':
         case 'task_completed':
+        case 'invoice_payment':
+        case 'retail_payment':
+        case 'milestone_payment':
             return 'success'
         case 'invoice_overdue':
         case 'quotation_rejected':
@@ -399,6 +583,11 @@ function getSeverityForType(type: NotificationType): NotificationSeverity {
         case 'new_customer':
         case 'quotation_viewed':
         case 'quotation_sent':
+        case 'quotation_created':
+        case 'contract_created':
+        case 'contract_status_changed':
+        case 'invoice_created':
+        case 'retail_order_created':
         case 'task_assigned':
         case 'workspace':
         case 'system':
