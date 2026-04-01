@@ -21,6 +21,7 @@ import { updateQuotationStatus } from '@/lib/supabase/services/portal-actions'
 import { cn } from '@/lib/utils'
 import { QuotationDocumentPaper } from '@/components/quotations/quotation-document-paper'
 import { Badge, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Separator } from '@repo/ui'
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@repo/ui'
 import { Check } from 'lucide-react'
 import { useQuotationTracking } from '@/hooks/use-quotation-tracking'
 
@@ -261,147 +262,170 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                         
                         {/* Options Section inside Sidebar */}
                         {activeOptions.length > 1 && (
-                            <div className="space-y-4">
-                                <div className="space-y-1.5">
-                                    <Badge variant="secondary" className="font-medium text-[10px] text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-sm border-0">
-                                        Các gói đề xuất
-                                    </Badge>
-                                    <h3 className="text-base font-bold tracking-tight text-slate-900">
-                                        Chọn phương án đầu tư
-                                    </h3>
-                                </div>
-                                <div className="flex flex-col gap-3">
-                                    {activeOptions.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()).map((opt: any, idx: number) => {
-                                    const isActive = currentQuotation.id === opt.id;
-                                    return (
-                                        <Card 
-                                            key={opt.id}
-                                            onClick={() => {
-                                                setCurrentQuotation(opt);
-                                                setSelectedItemIds(() => {
-                                                    const init: string[] = [];
-                                                    const seen = new Set();
-                                                    (opt.items || []).forEach((i: any) => {
-                                                        if (!i.is_optional) {
-                                                            if (i.alternative_group && i.alternative_group.trim()) {
-                                                                const key = i.alternative_group.trim().toLowerCase();
-                                                                if (!seen.has(key)) { seen.add(key); init.push(i.id); }
-                                                            } else { init.push(i.id); }
-                                                        }
+                            <Card className="border-slate-200 bg-white shadow-sm overflow-hidden rounded-xl">
+                                <CardHeader className="p-4 sm:p-5 pb-0 flex flex-col gap-1 space-y-0">
+                                    <div className="flex items-center gap-1.5 w-fit rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600">
+                                        <Lightbulb className="h-3.5 w-3.5" />
+                                        {activeOptions.length} Đề xuất giải pháp
+                                    </div>
+                                    <CardTitle className="text-lg sm:text-xl font-bold mt-2 text-slate-900 tracking-tight">
+                                        Lựa chọn phương án đầu tư
+                                    </CardTitle>
+                                    <CardDescription className="text-[13px] text-slate-500 leading-relaxed mt-1">
+                                        Dựa trên yêu cầu của bạn, chúng tôi đề xuất <b>{activeOptions.length} phương án</b> tối ưu. Vui lòng bấm chọn một danh mục bên dưới để xem báo giá chi tiết.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="p-4 sm:p-5 pt-4">
+                                    <Separator className="mb-4 bg-slate-100" />
+                                    <div className="flex flex-col gap-3">
+                                        {activeOptions.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()).map((opt: any, idx: number) => {
+                                        const isActive = currentQuotation.id === opt.id;
+                                        return (
+                                            <div
+                                                key={opt.id}
+                                                onClick={() => {
+                                                    setCurrentQuotation(opt);
+                                                    setSelectedItemIds(() => {
+                                                        const init: string[] = [];
+                                                        const seen = new Set();
+                                                        (opt.items || []).forEach((i: any) => {
+                                                            if (!i.is_optional) {
+                                                                if (i.alternative_group && i.alternative_group.trim()) {
+                                                                    const key = i.alternative_group.trim().toLowerCase();
+                                                                    if (!seen.has(key)) { seen.add(key); init.push(i.id); }
+                                                                } else { init.push(i.id); }
+                                                            }
+                                                        });
+                                                        return init;
                                                     });
-                                                    return init;
-                                                });
-                                                
-                                                setTimeout(() => {
-                                                    const paperElement = document.getElementById('quotation-paper-wrapper');
-                                                    if (paperElement) {
-                                                        const y = paperElement.getBoundingClientRect().top + window.scrollY - 20;
-                                                        window.scrollTo({ top: y, behavior: 'smooth' });
-                                                    }
-                                                }, 100);
-                                            }}
-                                            className={cn(
-                                                "cursor-pointer transition-all hover:border-slate-300 relative overflow-hidden group flex flex-col justify-between",
-                                                isActive ? "border-slate-400 shadow-md bg-white ring-1 ring-slate-400" : "border-slate-200 shadow-sm bg-slate-50/30 hover:bg-white"
-                                            )}
-                                        >
-                                            <CardHeader className="p-3.5 pb-0">
-                                                <div className="flex items-center justify-between mb-3">
-                                                    <Badge variant={isActive ? "default" : "secondary"} className={cn("text-[10px] font-semibold", isActive ? "bg-slate-800 text-white" : "text-muted-foreground bg-slate-100")}>
+                                                    
+                                                    setTimeout(() => {
+                                                        const paperElement = document.getElementById('quotation-paper-wrapper');
+                                                        if (paperElement) {
+                                                            const y = paperElement.getBoundingClientRect().top + window.scrollY - 20;
+                                                            window.scrollTo({ top: y, behavior: 'smooth' });
+                                                        }
+                                                    }, 100);
+                                                }}
+                                                className={cn(
+                                                    "cursor-pointer transition-all relative overflow-hidden group flex flex-col justify-between rounded-lg p-3.5",
+                                                    isActive ? "bg-slate-900 shadow-md ring-1 ring-slate-900 text-white" : "border border-slate-200 shadow-sm bg-slate-50/50 hover:bg-slate-100 text-slate-900"
+                                                )}
+                                            >
+                                                <div className="flex items-center justify-between mb-2.5">
+                                                    <Badge variant={isActive ? "secondary" : "outline"} className={cn("text-[10px] font-semibold border-0", isActive ? "bg-white/20 text-white" : "bg-white text-slate-600 shadow-sm border border-slate-200")}>
                                                         Phương án {idx + 1}
                                                     </Badge>
                                                     
                                                     {isActive && (
-                                                        <div className="flex items-center gap-1.5 text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+                                                        <div className="flex items-center gap-1.5 text-[10px] text-emerald-300 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-full ring-1 ring-emerald-500/20">
                                                             <span className="relative flex h-1.5 w-1.5">
                                                               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                                              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                                                              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
                                                             </span>
                                                             Đang xem
                                                         </div>
                                                     )}
                                                 </div>
-                                                <CardTitle className={cn("text-base font-bold leading-snug tracking-tight line-clamp-2", isActive ? "text-slate-900" : "text-slate-700")}>
+                                                <h4 className={cn("text-sm font-bold leading-snug tracking-tight line-clamp-2", isActive ? "text-white" : "text-slate-900")}>
                                                     {opt.title || `Gói tùy chọn ${idx + 1}`}
-                                                </CardTitle>
-                                                {opt.notes && (
-                                                    <CardDescription className="line-clamp-2 text-[13px] mt-1.5 leading-relaxed">
-                                                        {opt.notes.split('\n')[0]}
-                                                    </CardDescription>
-                                                )}
-                                            </CardHeader>
-                                            <CardContent className="p-3.5 pt-3 mt-auto">
-                                                <Separator className="mb-3 bg-slate-100" />
-                                                <div className="text-[11px] font-medium text-muted-foreground mb-1">
-                                                    Tổng ngân sách
-                                                </div>
-                                                <div className={cn("text-2xl font-black tabular-nums tracking-tight", isActive ? "text-slate-900" : "text-slate-700")}>
-                                                    {formatCurrency(opt.total_amount)}
-                                                </div>
-                                                {opt.discount_amount > 0 && (
-                                                    <div className="mt-1.5 text-[11px] font-semibold text-emerald-600">
-                                                        Tiết kiệm {formatCurrency(opt.discount_amount)}
+                                                </h4>
+                                                
+                                                <Separator className={cn("my-2.5 opacity-50", isActive ? "bg-white/20" : "bg-slate-200")} />
+                                                
+                                                <div className="flex items-end justify-between">
+                                                    <div>
+                                                        <div className={cn("text-[10px] font-medium mb-0.5", isActive ? "text-slate-300" : "text-muted-foreground")}>
+                                                            Tổng ngân sách
+                                                        </div>
+                                                        <div className={cn("text-lg font-black tabular-nums tracking-tight leading-none", isActive ? "text-white" : "text-slate-900")}>
+                                                            {formatCurrency(opt.total_amount)}
+                                                        </div>
                                                     </div>
-                                                )}
-                                            </CardContent>
-                                        </Card>
-                                    );
-                                })}
-                                </div>
-                            </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                    </div>
+                                </CardContent>
+                            </Card>
                         )}
             
                         {/* History Timeline inside Sidebar */}
                         {historyItems && historyItems.length > 0 && (
-                            <div className="space-y-4">
-                                {activeOptions.length > 1 && <Separator className="bg-slate-100" />}
-                                <div className="space-y-1.5 pt-2">
-                                    <h3 className="text-base font-bold tracking-tight text-slate-900 flex items-center gap-2">
-                                        <Clock className="w-4 h-4 text-slate-500" />
-                                        Lịch sử phiên bản
-                                    </h3>
-                                </div>
-                                <div className="relative pl-6 before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-px before:bg-slate-200">
-                                    {historyItems.map((item: any) => (
-                                        <div key={item.id} className="relative mb-5 last:mb-0 group" onClick={() => {
-                                            setCurrentQuotation(item);
-                                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                                        }}>
-                                            <div className={cn(
-                                                "absolute -left-6 top-1.5 w-5 h-5 rounded-full border-4 border-white z-10 flex items-center justify-center transition-transform group-hover:scale-110",
-                                                item.status === 'accepted' ? "bg-emerald-500" :
-                                                    item.status === 'rejected' ? "bg-rose-500" : "bg-slate-400"
-                                            )}>
-                                                {item.status === 'accepted' ? <Check className="w-2.5 h-2.5 text-white stroke-[3]" /> :
-                                                    item.status === 'rejected' ? <XCircle className="w-2.5 h-2.5 text-white" /> :
-                                                        <FileText className="w-2.5 h-2.5 text-white" />}
-                                            </div>
+                            <Card className="border-slate-200 bg-white shadow-sm overflow-hidden rounded-xl">
+                                <CardHeader className="p-4 sm:p-5 pb-0 flex flex-row items-start gap-3.5 space-y-0 relative z-10 bg-white">
+                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 shadow-sm">
+                                        <Clock className="h-5 w-5" />
+                                    </div>
+                                    <div className="flex flex-col gap-1 pt-0.5">
+                                        <CardTitle className="text-base sm:text-[17px] font-bold tracking-tight text-slate-900">
+                                            Lịch sử phiên bản
+                                        </CardTitle>
+                                        <CardDescription className="text-xs sm:text-[13px] text-slate-500 font-medium leading-relaxed">
+                                            Quản lý các bản thảo và xác nhận trước đó của báo giá này.
+                                        </CardDescription>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="p-4 sm:p-5 pt-4">
+                                    <Separator className="mb-5 bg-slate-100" />
+                                    <div className="relative pl-7 before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-px before:bg-slate-200">
+                                        {historyItems.map((item: any, i: number) => {
+                                            const isActive = currentQuotation.id === item.id;
+                                            return (
+                                            <div key={item.id} className="relative mb-5 last:mb-0 group cursor-pointer" onClick={() => {
+                                                setCurrentQuotation(item);
+                                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                            }}>
+                                                {/* Timeline dot/icon */}
+                                                <div className={cn(
+                                                    "absolute -left-7 top-0.5 w-5 h-5 rounded-full border-[3px] border-white z-10 flex items-center justify-center transition-transform group-hover:scale-110",
+                                                    item.status === 'accepted' ? "bg-emerald-500" :
+                                                        item.status === 'rejected' ? "bg-rose-500" : "bg-slate-400"
+                                                )}>
+                                                    {item.status === 'accepted' ? <Check className="w-2.5 h-2.5 text-white stroke-[3]" /> :
+                                                        item.status === 'rejected' ? <XCircle className="w-2.5 h-2.5 text-white" /> :
+                                                            <FileText className="w-2.5 h-2.5 text-white" />}
+                                                </div>
 
-                                            <Card className="cursor-pointer transition-colors border-slate-200 group-hover:border-slate-300 bg-white">
-                                                <CardContent className="p-3">
-                                                    <div className="flex items-center justify-between mb-1.5">
-                                                        <span className="font-bold text-sm text-slate-900">#{item.quotation_number}</span>
-                                                        <Badge variant="outline" className={cn(
-                                                            "text-[9px] h-4 px-1.5 font-semibold leading-none",
-                                                            item.status === 'accepted' ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
-                                                                item.status === 'rejected' ? "bg-rose-50 text-rose-700 border-rose-200" : "bg-slate-100 text-slate-600 border-slate-200"
-                                                        )}>
-                                                            {item.status === 'accepted' ? 'Đã chấp nhận' : item.status === 'rejected' ? 'Đã từ chối' : item.status === 'converted' ? 'Đã chuyển đổi' : item.status === 'expired' ? 'Hết hạn' : item.status}
-                                                        </Badge>
-                                                    </div>
-                                                    <div className="flex flex-col gap-1">
-                                                        <span className="text-sm font-bold tabular-nums text-slate-900">{formatCurrency(item.total_amount)}</span>
-                                                        <span className="flex items-center gap-1 text-[10px] text-muted-foreground font-medium">
-                                                            <Calendar className="w-3 h-3" />
+                                                <div className={cn(
+                                                    "rounded-lg border p-3.5 transition-all shadow-sm group-hover:shadow-md outline outline-2 -outline-offset-1 outline-transparent flex items-center justify-between gap-3",
+                                                    isActive 
+                                                        ? "border-emerald-200 bg-emerald-50/50 outline-emerald-500/30" 
+                                                        : "border-slate-200 bg-white group-hover:border-slate-300"
+                                                )}>
+                                                    <div className="flex flex-col gap-1.5 overflow-hidden">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className={cn("font-bold text-[13px] truncate", isActive ? "text-emerald-900" : "text-slate-900")}>
+                                                                #{item.quotation_number}
+                                                            </span>
+                                                            <Badge variant="outline" className={cn(
+                                                                "text-[9px] h-[18px] px-1.5 font-semibold leading-none border-0 shrink-0",
+                                                                item.status === 'accepted' ? "bg-emerald-100 text-emerald-800" :
+                                                                    item.status === 'rejected' ? "bg-rose-100 text-rose-800" : "bg-slate-100 text-slate-600"
+                                                            )}>
+                                                                {item.status === 'accepted' ? 'Đã chấp nhận' : item.status === 'rejected' ? 'Đã từ chối' : item.status === 'converted' ? 'Đã chuyển đổi' : item.status === 'expired' ? 'Hết hạn' : item.status}
+                                                            </Badge>
+                                                        </div>
+                                                        <div className="flex items-center gap-1 text-[11px] text-muted-foreground font-medium">
+                                                            <Calendar className="w-3 h-3 text-slate-400" />
                                                             {formatDate(item.created_at)}
+                                                        </div>
+                                                    </div>
+                                                    <div className="shrink-0 flex flex-col items-end gap-1">
+                                                        <span className={cn("text-sm font-bold tabular-nums", isActive ? "text-emerald-900" : "text-slate-900")}>
+                                                            {formatCurrency(item.total_amount)}
+                                                        </span>
+                                                        <span className={cn("text-[10px] font-medium flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity", isActive ? "text-emerald-600" : "text-slate-500")}>
+                                                            Khôi phục <Target className="w-3 h-3 ml-0.5" />
                                                         </span>
                                                     </div>
-                                                </CardContent>
-                                            </Card>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                                                </div>
+                                            </div>
+                                        )})}
+                                    </div>
+                                </CardContent>
+                            </Card>
                         )}
 
                         {/* -- END OF SIDEBAR OPTIONS -- */}

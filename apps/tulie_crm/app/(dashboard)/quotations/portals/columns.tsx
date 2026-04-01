@@ -1,20 +1,20 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
 import Link from 'next/link'
 import { ExternalLink, Files, MoreHorizontal } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { QuotePortal } from '@/types'
 import { 
+    Badge, 
+    Button, 
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger, 
-} from '@/components/ui/dropdown-menu'
+} from '@repo/ui'
 
 export const columns: ColumnDef<QuotePortal>[] = [
     {

@@ -1,13 +1,10 @@
 import { Metadata } from 'next'
 import { getQuotePortalById } from '@/lib/supabase/services/quote-portal-service'
 import { notFound } from 'next/navigation'
-import { PageHeader, PageTitle, PageDescription } from '@repo/ui'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from '@repo/ui'
 import { ExternalLink, Calendar, Copy } from 'lucide-react'
 import Link from 'next/link'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency } from '@/lib/utils/format'
 
 export const metadata: Metadata = {
     title: 'Chi tiết Portal | Tulie CRM',
@@ -25,7 +22,7 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
 
     return (
         <div className="container py-8 max-w-5xl mx-auto space-y-6">
-            <PageHeader>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <div className="flex items-center gap-2 mb-2">
                         <Badge variant={portal.is_active ? "default" : "secondary"}>
@@ -33,10 +30,10 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
                         </Badge>
                         <span className="text-xs text-muted-foreground font-mono">ID: {portal.id.split('-')[0]}</span>
                     </div>
-                    <PageTitle>{portal.title}</PageTitle>
-                    <PageDescription>
+                    <h1 className="text-2xl font-bold tracking-tight">{portal.title}</h1>
+                    <p className="text-muted-foreground mt-1">
                         {portal.customer?.company_name || 'Khách lẻ'} • Tạo bởi {portal.creator?.full_name}
-                    </PageDescription>
+                    </p>
                 </div>
                 <div className="flex items-center gap-3">
                     <Button variant="outline" asChild>
@@ -46,7 +43,7 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
                         </a>
                     </Button>
                 </div>
-            </PageHeader>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Card className="md:col-span-2">
