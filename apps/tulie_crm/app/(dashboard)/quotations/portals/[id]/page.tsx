@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { getQuotePortalById } from '@/lib/supabase/services/quote-portal-service'
 import { notFound } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from '@repo/ui'
-import { ExternalLink, Calendar, Copy } from 'lucide-react'
+import { ExternalLink, Calendar, Globe, Link2 } from 'lucide-react'
 import Link from 'next/link'
 import { formatCurrency } from '@/lib/utils/format'
 
@@ -21,53 +21,60 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
     const publicUrl = `/quote/${portal.public_token}`
 
     return (
-        <div className="container py-8 max-w-5xl mx-auto space-y-6">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <div className="flex items-center gap-2 mb-2">
-                        <Badge variant={portal.is_active ? "default" : "secondary"}>
-                            {portal.is_active ? 'Hoạt động' : 'Đã đóng'}
-                        </Badge>
-                        <span className="text-xs text-muted-foreground font-mono">ID: {portal.id.split('-')[0]}</span>
-                    </div>
-                    <h1 className="text-2xl font-bold tracking-tight">{portal.title}</h1>
-                    <p className="text-muted-foreground mt-1">
-                        {portal.customer?.company_name || 'Khách lẻ'} • Tạo bởi {portal.creator?.full_name}
-                    </p>
-                </div>
+        <div className="space-y-6">
+            {/* Page Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
+                    <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center border border-border">
+                        <Globe className="h-6 w-6 text-foreground" />
+                    </div>
+                    <div>
+                        <div className="flex items-center gap-2 mb-0.5">
+                            <Badge variant={portal.is_active ? "default" : "secondary"}>
+                                {portal.is_active ? 'Hoạt động' : 'Đã đóng'}
+                            </Badge>
+                            <span className="text-xs text-muted-foreground font-mono">ID: {portal.id.split('-')[0]}</span>
+                        </div>
+                        <h1 className="text-2xl font-bold tracking-tight text-foreground">{portal.title}</h1>
+                        <p className="text-sm font-medium text-muted-foreground mt-1">
+                            {portal.customer?.company_name || 'Khách lẻ'} • Tạo bởi {portal.creator?.full_name}
+                        </p>
+                    </div>
+                </div>
+                <div className="flex items-center gap-2">
                     <Button variant="outline" asChild>
                         <a href={publicUrl} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="w-4 h-4 mr-2" />
+                            <ExternalLink className="w-4 h-4" />
                             Xem giao diện Khách
                         </a>
                     </Button>
                 </div>
             </div>
 
+            {/* Content */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="md:col-span-2">
-                    <CardHeader className="bg-slate-50 border-b border-slate-100 rounded-t-lg">
-                        <CardTitle className="text-lg">Danh sách các Phương án Báo giá</CardTitle>
+                <Card className="md:col-span-2 rounded-md border-border">
+                    <CardHeader className="bg-muted/30 border-b border-border">
+                        <CardTitle className="text-base">Danh sách các Phương án Báo giá</CardTitle>
                     </CardHeader>
                     <CardContent className="p-0">
                         {portal.items?.length === 0 ? (
-                            <div className="p-8 text-center text-muted-foreground">
+                            <div className="p-8 text-center text-sm text-muted-foreground">
                                 Chưa có báo giá nào trong portal này.
                             </div>
                         ) : (
-                            <div className="divide-y divide-slate-100">
+                            <div className="divide-y divide-border">
                                 {portal.items?.map((item: any) => (
-                                    <div key={item.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-50 transition-colors">
+                                    <div key={item.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-muted/50 transition-colors">
                                         <div className="space-y-1">
                                             <div className="flex items-center gap-2">
-                                                <Badge variant="outline" className="font-mono text-[10px] w-6 h-6 p-0 flex justify-center items-center rounded-full bg-slate-100 text-slate-500 border-none">
+                                                <Badge variant="outline" className="font-mono text-[10px] w-6 h-6 p-0 flex justify-center items-center rounded-full bg-muted text-muted-foreground border-border">
                                                     {item.sort_order + 1}
                                                 </Badge>
-                                                <Link href={`/quotations/${item.quotation?.id}`} className="font-semibold text-slate-900 hover:text-blue-600">
+                                                <Link href={`/quotations/${item.quotation?.id}`} className="text-sm font-medium text-foreground hover:underline">
                                                     #{item.quotation?.quotation_number} — {item.quotation?.title}
                                                 </Link>
-                                                <Badge variant="secondary" className="text-[10px] text-muted-foreground">
+                                                <Badge variant="secondary" className="text-[10px]">
                                                     {item.quotation?.status}
                                                 </Badge>
                                             </div>
@@ -76,7 +83,7 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
                                                     <Calendar className="w-3 h-3" />
                                                     {new Date(item.created_at).toLocaleDateString()}
                                                 </span>
-                                                <span className="font-bold text-slate-800 tabular-nums">
+                                                <span className="font-bold text-foreground tabular-nums">
                                                     {formatCurrency(item.quotation?.total_amount || 0)}
                                                 </span>
                                             </div>
@@ -89,13 +96,16 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
                 </Card>
 
                 <div className="space-y-6">
-                    <Card>
+                    <Card className="rounded-md border-border">
                         <CardHeader>
-                            <CardTitle className="text-sm">Liên kết chia sẻ</CardTitle>
+                            <CardTitle className="text-sm flex items-center gap-2">
+                                <Link2 className="h-4 w-4 text-muted-foreground" />
+                                Liên kết chia sẻ
+                            </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            <div className="p-3 bg-slate-50 rounded-md border border-slate-200">
-                                <p className="text-sm font-mono break-all text-slate-700">
+                            <div className="p-3 bg-muted rounded-md border border-border">
+                                <p className="text-sm font-mono break-all text-foreground">
                                     https://crm.tulie.app{publicUrl}
                                 </p>
                             </div>
