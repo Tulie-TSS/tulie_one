@@ -66,7 +66,11 @@ export default async function PublicPortalPage({ params }: Props) {
         }
 
         return <PortalContent data={data} token={token} isFinancialAuthenticated={isFinancialAuthenticated} hasFinancialPassword={hasFinancialPassword} companyName={data.customer?.company_name} />
-    } catch (error) {
+    } catch (error: any) {
+        // Re-throw Next.js internal errors (notFound, redirect)
+        if (error?.digest?.startsWith('NEXT_NOT_FOUND') || error?.digest?.startsWith('NEXT_REDIRECT')) {
+            throw error
+        }
         console.error('Error rendering portal page:', error)
         return (
             <div className="flex min-h-screen items-center justify-center p-4">
