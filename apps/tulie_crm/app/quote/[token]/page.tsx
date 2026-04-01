@@ -3,6 +3,7 @@ import { QuotationContent } from './quotation-content'
 import QuotePasswordForm from './password-form'
 import { getQuotationByToken } from '@/lib/supabase/services/quotation-service'
 import { getBrandConfig } from '@/lib/supabase/services/settings-service'
+import { getQuotePortalByToken } from '@/lib/supabase/services/quote-portal-service'
 import { notFound } from 'next/navigation'
 import { cookies } from 'next/headers'
 
@@ -12,10 +13,31 @@ type Props = {
     params: Promise<{ token: string }>
 }
 
+async function resolveQuotationData(token: string) {
+    if (token.startsWith('p_')) {
+        const portal = await getQuotePortalByToken(token)
+        if (!portal || !portal.items || portal.items.length === 0) return null
+        
+        // Use the first item as the main quotation
+        const mainQuotation = portal.items[0].quotation
+        if (!mainQuotation) return null
+        
+        // Attach siblings directly
+        const siblings = portal.items.map(item => item.quotation).filter(Boolean)
+        return {
+            ...mainQuotation,
+            customer: portal.customer,
+            siblings
+        }
+    } else {
+        return await getQuotationByToken(token)
+    }
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { token } = await params
     const [quotation, brand] = await Promise.all([
-        getQuotationByToken(token),
+        resolveQuotationData(token),
         getBrandConfig()
     ])
 
@@ -35,7 +57,7 @@ export default async function PublicQuotationPage({ params }: Props) {
     try {
         const { token } = await params
         const [quotation, brandConfig] = await Promise.all([
-            getQuotationByToken(token),
+            resolveQuotationData(token),
             getBrandConfig()
         ])
 
@@ -52,7 +74,7 @@ export default async function PublicQuotationPage({ params }: Props) {
             const isAuthenticated = cookieValue === expectedValue
 
             if (!isAuthenticated) {
-                return <QuotePasswordForm token={token} customerName={quotation.customer?.company_name} />
+                return <QuotePasswordForm token={token} customerName={quotation.customer?.company_name || 'Khách hàng'} />
             }
         }
 

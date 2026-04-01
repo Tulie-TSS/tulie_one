@@ -13,6 +13,7 @@ import { getDealById } from './deal-service'
 import { getCustomerById } from './customer-service'
 import { createVersionSnapshot } from './quotation-version-service'
 import { notifyQuotationViewed, notifyQuotationAccepted } from './notification-service'
+import { ensureQuotationInPortal } from './quote-portal-service'
 
 export async function checkQuotationNumberExists(quotationNumber: string, excludeId?: string) {
     try {
@@ -264,6 +265,15 @@ export async function createQuotation(quotation: Partial<Quotation>, items: Part
             description: `Tạo báo giá mới: ${quoteData.title}`
         })
 
+        // 4. Auto-create portal if applicable
+        await ensureQuotationInPortal(
+            quoteData.id,
+            quoteDataToInsert.deal_id,
+            quoteDataToInsert.project_id,
+            quoteDataToInsert.customer_id,
+            quoteDataToInsert.brand
+        )
+
         return quoteData
     } catch (err: any) {
         console.error('Fatal error in createQuotation:', err)
@@ -360,6 +370,15 @@ export async function updateQuotation(id: string, quotation: Partial<Quotation>,
             entity_id: id,
             description: `Cập nhật báo giá: ${quotation.title || 'Mã ' + (quotation.quotation_number || id)}`
         })
+
+        // Auto-create/update portal if applicable
+        await ensureQuotationInPortal(
+            id,
+            quoteDataToUpdate.deal_id,
+            quoteDataToUpdate.project_id,
+            quoteDataToUpdate.customer_id,
+            quoteDataToUpdate.brand
+        )
 
         return true
     } catch (err: any) {

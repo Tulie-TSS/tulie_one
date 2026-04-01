@@ -153,6 +153,34 @@ export interface QuotationItem {
   alternative_group?: string | null
 }
 
+export interface QuotePortal {
+  id: string
+  title?: string
+  customer_id: string
+  customer?: Customer
+  deal_id?: string
+  project_id?: string
+  public_token: string
+  password_hash?: string
+  brand: Brand
+  created_by: string
+  creator?: User
+  is_active: boolean
+  items?: QuotePortalItem[]
+  created_at: string
+  updated_at: string
+}
+
+export interface QuotePortalItem {
+  id: string
+  portal_id: string
+  quotation_id: string
+  quotation?: Quotation
+  sort_order: number
+  is_recommended: boolean
+  created_at: string
+}
+
 export interface CustomerSnapshot {
   company_name: string
   tax_code?: string

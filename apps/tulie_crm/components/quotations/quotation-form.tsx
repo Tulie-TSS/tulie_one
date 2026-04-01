@@ -442,19 +442,27 @@ export function QuotationForm({ quotation, customers, products, units, projects,
         toast.success('Đã copy JSON vào clipboard')
     }
 
-    // Proposal JSON Export: only custom_sections and non-empty base fields
+    // Proposal JSON Export: using sections array as primary source of truth, fallback to legacy keys
     const handleExportProposalJson = () => {
-        const exportData: any = {}
-        const baseFields = ['introduction', 'scope_of_work', 'methodology', 'deliverables', 'team', 'timeline', 'warranty', 'why_us', 'attachments'] as const;
-        
-        baseFields.forEach(field => {
-            const val = proposalContent?.[field as keyof typeof proposalContent];
-            if (val && typeof val === 'string' && val.trim() !== '') {
-                exportData[field] = val;
+        let exportData: any = {}
+        if (proposalContent?.sections && Array.isArray(proposalContent.sections) && proposalContent.sections.length > 0) {
+            // Modern format
+            exportData.sections = proposalContent.sections;
+            if (proposalContent.attachments) exportData.attachments = proposalContent.attachments;
+        } else {
+            // Legacy fallback format
+            const baseFields = ['introduction', 'scope_of_work', 'methodology', 'deliverables', 'team', 'timeline', 'warranty', 'why_us', 'attachments'] as const;
+            baseFields.forEach(field => {
+                const val = proposalContent?.[field as keyof typeof proposalContent];
+                if (val && typeof val === 'string' && val.trim() !== '') {
+                    exportData[field] = val;
+                }
+            });
+            if (proposalContent?.custom_sections?.length > 0) {
+                exportData.custom_sections = proposalContent.custom_sections;
             }
-        });
+        }
 
-        exportData.custom_sections = proposalContent?.custom_sections || []
         setImportText(JSON.stringify(exportData, null, 2))
         setIsImportProposalOpen(true)
     }
@@ -535,23 +543,37 @@ export function QuotationForm({ quotation, customers, products, units, projects,
         try {
             const data = JSON.parse(importText)
             const newProposalContent = { ...proposalContent }
-            const fields = ['introduction', 'scope_of_work', 'methodology', 'deliverables', 'team', 'timeline', 'warranty', 'why_us']
 
             let count = 0
-            fields.forEach(f => {
-                if (data[f]) {
-                    newProposalContent[f] = data[f]
-                    count++
+
+            // Modern format mapping
+            if (data.sections && Array.isArray(data.sections)) {
+                newProposalContent.sections = data.sections
+                
+                // Keep flat properties for legacy compatibility just in case
+                data.sections.forEach((s: any) => {
+                    if (s.key && s.content) {
+                        newProposalContent[s.key] = s.content
+                    }
+                })
+                count += data.sections.length
+            } else {
+                // Legacy format mapping
+                const fields = ['introduction', 'scope_of_work', 'methodology', 'deliverables', 'team', 'timeline', 'warranty', 'why_us']
+                fields.forEach(f => {
+                    if (data[f]) {
+                        newProposalContent[f] = data[f]
+                        count++
+                    }
+                })
+                if (data.custom_sections && Array.isArray(data.custom_sections)) {
+                    newProposalContent.custom_sections = data.custom_sections
+                    count += data.custom_sections.length
                 }
-            })
+            }
 
             if (data.attachments) {
                 newProposalContent.attachments = data.attachments
-                count++
-            }
-
-            if (data.custom_sections && Array.isArray(data.custom_sections)) {
-                newProposalContent.custom_sections = data.custom_sections
                 count++
             }
 
@@ -1650,24 +1672,28 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                 <p className="font-bold mb-2">Cấu trúc Proposal (Các trường hỗ trợ):</p>
                                 <code className="block whitespace-pre opacity-80">
                                     {`{
-  "introduction": "Mục tiêu & Giới thiệu...",
-  "scope_of_work": "Phạm vi công việc...",
-  "methodology": "Phương pháp & Cách tiếp cận...",
-  "deliverables": "Sản phẩm bàn giao...",
-  "team": "Đội ngũ chuyên trách...",
-  "timeline": "Lộ trình triển khai...",
-  "warranty": "Bảo hành & Hỗ trợ...",
-  "why_us": "Vì sao chọn chúng tôi?...",
-  "case_studies": "Case Studies & Portfolio...",
-  "custom_sections": [
+  "sections": [
     {
-      "id": "1",
-      "title": "Mục tuỳ chỉnh 1",
-      "content": "Nội dung mục tuỳ chỉnh 1..."
+      "key": "introduction",
+      "label": "Mục tiêu & Giới thiệu",
+      "content": "Nội dung phần 1..."
+    },
+    {
+      "key": "scope_of_work",
+      "label": "Tên tuỳ chọn của bạn",
+      "content": "Nội dung phần 2..."
+    },
+    {
+      "key": "custom_123",
+      "label": "Mục do bạn tự đặt",
+      "content": "Nội dung phần 3..."
     }
   ]
 }`}
                                 </code>
+                                <p className="mt-4 opacity-80 italic text-[11px]">
+                                    Mẹo: Bạn có thể đổi tên <b>label</b> của các mục tuỳ thích, hệ thống sẽ sử dụng tên mới khi xuất/chia sẻ Báo giá.
+                                </p>
                             </div>
                         </div>
                     <DialogFooter>

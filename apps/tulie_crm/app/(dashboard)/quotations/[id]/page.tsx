@@ -140,16 +140,18 @@ export default function QuotationDetailPage() {
         'why_us': <Award className="h-4 w-4" />,
     };
 
-    const proposalSections = [
-        { label: 'Mục tiêu & Giới thiệu', key: 'introduction' },
-        { label: 'Phạm vi công việc (Scope of Work)', key: 'scope_of_work' },
-        { label: 'Phương pháp & Cách tiếp cận', key: 'methodology' },
-        { label: 'Sản phẩm bàn giao (Deliverables)', key: 'deliverables' },
-        { label: 'Đội ngũ & Nhân sự', key: 'team' },
-        { label: 'Tiến độ & Timeline', key: 'timeline' },
-        { label: 'Chính sách bảo hành & Hỗ trợ', key: 'warranty' },
-        { label: 'Vì sao chọn chúng tôi?', key: 'why_us' },
-    ].filter(s => !!pc[s.key]);
+    const proposalSections: { label: string; key: string; content: string }[] = pc.sections && Array.isArray(pc.sections) && pc.sections.length > 0
+        ? pc.sections.map((s: any) => ({ label: s.label, key: s.key, content: s.content })).filter((s: any) => s.content && String(s.content).trim().length > 0)
+        : [
+            { label: 'Mục tiêu & Giới thiệu', key: 'introduction' },
+            { label: 'Phạm vi công việc (Scope of Work)', key: 'scope_of_work' },
+            { label: 'Phương pháp & Cách tiếp cận', key: 'methodology' },
+            { label: 'Sản phẩm bàn giao (Deliverables)', key: 'deliverables' },
+            { label: 'Đội ngũ & Nhân sự', key: 'team' },
+            { label: 'Tiến độ & Timeline', key: 'timeline' },
+            { label: 'Chính sách bảo hành & Hỗ trợ', key: 'warranty' },
+            { label: 'Vì sao chọn chúng tôi?', key: 'why_us' },
+        ].filter(s => !!pc[s.key]).map(s => ({ ...s, content: pc[s.key] }));
 
     // Group items for display
     const items = quotation.items || []

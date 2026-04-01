@@ -219,49 +219,59 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
     // Build proposal sections for rendering
     const proposalSections: { label: string; content: string }[] = []
     if (hasProposal) {
-        if (pc.introduction) proposalSections.push({ label: 'Mục tiêu & Giới thiệu', content: pc.introduction })
-        if (pc.scope_of_work) proposalSections.push({ label: 'Phạm vi công việc (Scope of Work)', content: pc.scope_of_work })
-        if (pc.methodology) proposalSections.push({ label: 'Phương pháp & Cách tiếp cận', content: pc.methodology })
-        if (pc.deliverables) proposalSections.push({ label: 'Sản phẩm bàn giao (Deliverables)', content: pc.deliverables })
-        if (pc.team) proposalSections.push({ label: 'Đội ngũ chuyên trách', content: pc.team })
-        if (pc.timeline) proposalSections.push({ label: 'Lộ trình triển khai (Timeline)', content: pc.timeline })
-        if (pc.warranty) proposalSections.push({ label: 'Bảo hành & Hỗ trợ', content: pc.warranty })
-        if (pc.why_us) proposalSections.push({ label: 'Vì sao chọn chúng tôi?', content: pc.why_us })
-        if (pc.case_studies) proposalSections.push({ label: 'Case Studies & Portfolio', content: pc.case_studies })
-        if (pc.custom_sections) {
-            try {
-                const custom = typeof pc.custom_sections === 'string' ? JSON.parse(pc.custom_sections) : pc.custom_sections
-                if (Array.isArray(custom)) {
-                    custom.forEach((s: any) => {
-                        if (s.title && s.content) proposalSections.push({ label: s.title, content: s.content })
-                    })
+        if (pc.sections && Array.isArray(pc.sections) && pc.sections.length > 0) {
+            // New format: respect the sections array and its custom labels exactly
+            pc.sections.forEach((s: any) => {
+                if (s.label && s.content && String(s.content).trim().length > 0) {
+                    proposalSections.push({ label: s.label, content: s.content })
                 }
-            } catch (e) { /* skip unparseable */ }
+            })
+        } else {
+            // Legacy fallback format
+            if (pc.introduction) proposalSections.push({ label: 'Mục tiêu & Giới thiệu', content: pc.introduction })
+            if (pc.scope_of_work) proposalSections.push({ label: 'Phạm vi công việc (Scope of Work)', content: pc.scope_of_work })
+            if (pc.methodology) proposalSections.push({ label: 'Phương pháp & Cách tiếp cận', content: pc.methodology })
+            if (pc.deliverables) proposalSections.push({ label: 'Sản phẩm bàn giao (Deliverables)', content: pc.deliverables })
+            if (pc.team) proposalSections.push({ label: 'Đội ngũ chuyên trách', content: pc.team })
+            if (pc.timeline) proposalSections.push({ label: 'Lộ trình triển khai (Timeline)', content: pc.timeline })
+            if (pc.warranty) proposalSections.push({ label: 'Bảo hành & Hỗ trợ', content: pc.warranty })
+            if (pc.why_us) proposalSections.push({ label: 'Vì sao chọn chúng tôi?', content: pc.why_us })
+            if (pc.case_studies) proposalSections.push({ label: 'Case Studies & Portfolio', content: pc.case_studies })
+            if (pc.custom_sections) {
+                try {
+                    const custom = typeof pc.custom_sections === 'string' ? JSON.parse(pc.custom_sections) : pc.custom_sections
+                    if (Array.isArray(custom)) {
+                        custom.forEach((s: any) => {
+                            if (s.title && s.content) proposalSections.push({ label: s.title, content: s.content })
+                        })
+                    }
+                } catch (e) { /* skip unparseable */ }
+            }
         }
     }
 
+    const hasSidebar = activeOptions.length > 1 || (historyItems && historyItems.length > 0);
+
     return (
-        <div className="quotation-page min-h-screen bg-gray-100 py-8 pb-32 font-sans text-slate-800">
-            {/* Options Switcher (Hero Section above Paper) */}
-            {activeOptions.length > 1 && (
-                <div className="max-w-5xl mx-auto mb-10 print:hidden px-4 sm:px-0">
-                    <Card className="shadow-sm border-slate-200">
-                        <CardHeader className="pb-4 border-b border-slate-100 bg-slate-50/50">
-                            <div className="flex items-center gap-2 mb-1">
-                                <Badge variant="secondary" className="font-medium text-xs text-muted-foreground bg-slate-100 hover:bg-slate-200 rounded-sm">
-                                    <Lightbulb className="w-3.5 h-3.5 mr-1" /> {activeOptions.length} Đề xuất giải pháp
-                                </Badge>
-                            </div>
-                            <CardTitle className="text-2xl font-bold tracking-tight text-slate-900">
-                                Lựa chọn phương án đầu tư
-                            </CardTitle>
-                            <CardDescription className="text-sm">
-                                Dựa trên yêu cầu của bạn, chúng tôi đề xuất <b>{activeOptions.length} phương án</b> tối ưu. Vui lòng bấm chọn một danh mục bên dưới để xem báo giá chi tiết.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="pt-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {activeOptions.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()).map((opt: any, idx: number) => {
+        <div className="quotation-page min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col xl:flex-row">
+            {/* Sidebar (Desktop left, Mobile top) */}
+            {hasSidebar && (
+                <div className="w-full xl:w-[340px] shrink-0 border-b xl:border-b-0 xl:border-r border-slate-200 bg-white shadow-[1px_0_15px_-5px_rgba(0,0,0,0.05)] xl:sticky xl:top-0 h-auto xl:h-screen xl:overflow-y-auto print:hidden z-10 flex flex-col">
+                    <div className="p-5 xl:p-6 space-y-8 flex-1">
+                        
+                        {/* Options Section inside Sidebar */}
+                        {activeOptions.length > 1 && (
+                            <div className="space-y-4">
+                                <div className="space-y-1.5">
+                                    <Badge variant="secondary" className="font-medium text-[10px] text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-sm border-0">
+                                        Các gói đề xuất
+                                    </Badge>
+                                    <h3 className="text-base font-bold tracking-tight text-slate-900">
+                                        Chọn phương án đầu tư
+                                    </h3>
+                                </div>
+                                <div className="flex flex-col gap-3">
+                                    {activeOptions.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()).map((opt: any, idx: number) => {
                                     const isActive = currentQuotation.id === opt.id;
                                     return (
                                         <Card 
@@ -292,10 +302,10 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                             }}
                                             className={cn(
                                                 "cursor-pointer transition-all hover:border-slate-300 relative overflow-hidden group flex flex-col justify-between",
-                                                isActive ? "border-slate-400 shadow-md bg-white ring-1 ring-slate-400" : "border-slate-200 shadow-sm bg-slate-50/30"
+                                                isActive ? "border-slate-400 shadow-md bg-white ring-1 ring-slate-400" : "border-slate-200 shadow-sm bg-slate-50/30 hover:bg-white"
                                             )}
                                         >
-                                            <CardHeader className="p-4 pb-0">
+                                            <CardHeader className="p-3.5 pb-0">
                                                 <div className="flex items-center justify-between mb-3">
                                                     <Badge variant={isActive ? "default" : "secondary"} className={cn("text-[10px] font-semibold", isActive ? "bg-slate-800 text-white" : "text-muted-foreground bg-slate-100")}>
                                                         Phương án {idx + 1}
@@ -320,8 +330,8 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                     </CardDescription>
                                                 )}
                                             </CardHeader>
-                                            <CardContent className="p-4 pt-4 mt-auto">
-                                                <Separator className="mb-4 bg-slate-100" />
+                                            <CardContent className="p-3.5 pt-3 mt-auto">
+                                                <Separator className="mb-3 bg-slate-100" />
                                                 <div className="text-[11px] font-medium text-muted-foreground mb-1">
                                                     Tổng ngân sách
                                                 </div>
@@ -337,11 +347,73 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                         </Card>
                                     );
                                 })}
+                                </div>
                             </div>
-                        </CardContent>
-                    </Card>
+                        )}
+            
+                        {/* History Timeline inside Sidebar */}
+                        {historyItems && historyItems.length > 0 && (
+                            <div className="space-y-4">
+                                {activeOptions.length > 1 && <Separator className="bg-slate-100" />}
+                                <div className="space-y-1.5 pt-2">
+                                    <h3 className="text-base font-bold tracking-tight text-slate-900 flex items-center gap-2">
+                                        <Clock className="w-4 h-4 text-slate-500" />
+                                        Lịch sử phiên bản
+                                    </h3>
+                                </div>
+                                <div className="relative pl-6 before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-px before:bg-slate-200">
+                                    {historyItems.map((item: any) => (
+                                        <div key={item.id} className="relative mb-5 last:mb-0 group" onClick={() => {
+                                            setCurrentQuotation(item);
+                                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                                        }}>
+                                            <div className={cn(
+                                                "absolute -left-6 top-1.5 w-5 h-5 rounded-full border-4 border-white z-10 flex items-center justify-center transition-transform group-hover:scale-110",
+                                                item.status === 'accepted' ? "bg-emerald-500" :
+                                                    item.status === 'rejected' ? "bg-rose-500" : "bg-slate-400"
+                                            )}>
+                                                {item.status === 'accepted' ? <Check className="w-2.5 h-2.5 text-white stroke-[3]" /> :
+                                                    item.status === 'rejected' ? <XCircle className="w-2.5 h-2.5 text-white" /> :
+                                                        <FileText className="w-2.5 h-2.5 text-white" />}
+                                            </div>
+
+                                            <Card className="cursor-pointer transition-colors border-slate-200 group-hover:border-slate-300 bg-white">
+                                                <CardContent className="p-3">
+                                                    <div className="flex items-center justify-between mb-1.5">
+                                                        <span className="font-bold text-sm text-slate-900">#{item.quotation_number}</span>
+                                                        <Badge variant="outline" className={cn(
+                                                            "text-[9px] h-4 px-1.5 font-semibold leading-none",
+                                                            item.status === 'accepted' ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
+                                                                item.status === 'rejected' ? "bg-rose-50 text-rose-700 border-rose-200" : "bg-slate-100 text-slate-600 border-slate-200"
+                                                        )}>
+                                                            {item.status === 'accepted' ? 'Đã chấp nhận' : item.status === 'rejected' ? 'Đã từ chối' : item.status === 'converted' ? 'Đã chuyển đổi' : item.status === 'expired' ? 'Hết hạn' : item.status}
+                                                        </Badge>
+                                                    </div>
+                                                    <div className="flex flex-col gap-1">
+                                                        <span className="text-sm font-bold tabular-nums text-slate-900">{formatCurrency(item.total_amount)}</span>
+                                                        <span className="flex items-center gap-1 text-[10px] text-muted-foreground font-medium">
+                                                            <Calendar className="w-3 h-3" />
+                                                            {formatDate(item.created_at)}
+                                                        </span>
+                                                    </div>
+                                                </CardContent>
+                                            </Card>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* -- END OF SIDEBAR OPTIONS -- */}
+
+                    </div>
+                    {/* Bottom padding for sidebar scroll (accounts for sticky footer) */}
+                    <div className="h-28 shrink-0"></div>
                 </div>
             )}
+
+            {/* Main Content Area */}
+            <div className="flex-1 min-w-0 bg-slate-50 relative pb-32 xl:pb-0 h-auto xl:h-screen xl:overflow-y-auto w-full">
             
             {/* Global print style enforcement */}
             <style dangerouslySetInnerHTML={{
@@ -813,71 +885,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
             </div>
             )}
 
-            {/* History Timeline Panel */}
-            {historyItems.length > 0 && (
-                <div className="max-w-5xl mx-auto mt-12 mb-12 print:hidden px-4 sm:px-0">
-                    <Card className="shadow-sm border-slate-200">
-                        <CardHeader className="border-b border-slate-100 bg-slate-50/50 pb-4">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-white rounded-md border border-slate-200 shadow-sm">
-                                    <Clock className="w-5 h-5 text-slate-700" />
-                                </div>
-                                <div>
-                                    <CardTitle className="text-lg font-bold">Lịch sử phiên bản</CardTitle>
-                                    <CardDescription>Quản lý các bản thảo và xác nhận trước đó của báo giá này.</CardDescription>
-                                </div>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="pt-8 pb-8">
-                            <div className="relative pl-8 before:absolute before:left-[11.5px] before:top-2 before:bottom-0 before:w-px before:bg-slate-200 max-w-3xl mx-auto">
-                                {historyItems.map((item: any) => (
-                                    <div key={item.id} className="relative mb-6 last:mb-0 group" onClick={() => {
-                                        setCurrentQuotation(item);
-                                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                                    }}>
-                                        <div className={cn(
-                                            "absolute -left-8 top-1.5 w-6 h-6 rounded-full border-4 border-white z-10 flex items-center justify-center shadow-sm transition-transform group-hover:scale-110",
-                                            item.status === 'accepted' ? "bg-emerald-500" :
-                                                item.status === 'rejected' ? "bg-rose-500" : "bg-slate-400"
-                                        )}>
-                                            {item.status === 'accepted' ? <Check className="w-3 h-3 text-white stroke-[3]" /> :
-                                                item.status === 'rejected' ? <XCircle className="w-3 h-3 text-white" /> :
-                                                    <FileText className="w-3 h-3 text-white" />}
-                                        </div>
-
-                                        <Card className="cursor-pointer hover:bg-slate-50 transition-colors border-slate-200 group-hover:border-slate-300">
-                                            <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                                <div className="space-y-1.5">
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="font-bold text-slate-900">#{item.quotation_number}</span>
-                                                        <Badge variant="outline" className={cn(
-                                                            "text-[10px] h-5 px-1.5 font-semibold",
-                                                            item.status === 'accepted' ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
-                                                                item.status === 'rejected' ? "bg-rose-50 text-rose-700 border-rose-200" : "bg-slate-100 text-slate-600"
-                                                        )}>
-                                                            {item.status === 'accepted' ? 'Đã chấp nhận' : item.status === 'rejected' ? 'Đã từ chối' : item.status === 'converted' ? 'Đã chuyển đổi' : item.status === 'expired' ? 'Hết hạn' : item.status}
-                                                        </Badge>
-                                                    </div>
-                                                    <div className="flex items-center gap-1.5 text-muted-foreground text-xs font-medium">
-                                                        <Calendar className="w-3.5 h-3.5" />
-                                                        {formatDate(item.created_at)}
-                                                    </div>
-                                                </div>
-                                                <div className="flex flex-col items-start sm:items-end gap-1 border-t sm:border-t-0 pt-3 sm:pt-0 mt-1 sm:mt-0">
-                                                    <span className="text-lg font-bold tabular-nums text-slate-900">{formatCurrency(item.total_amount)}</span>
-                                                    <span className="text-xs text-muted-foreground font-medium flex items-center gap-1 group-hover:text-slate-900 transition-colors">
-                                                        Xem chi tiết phiên bản này <span className="text-base leading-none">&rarr;</span>
-                                                    </span>
-                                                </div>
-                                            </CardContent>
-                                        </Card>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-            )}
+            {/* History Timeline Panel has been moved to sidebar */}
 
             {/* Sticky Action Footer - Premium Redesign */}
             <div className="fixed bottom-0 left-0 right-0 bg-white/85 backdrop-blur-xl border-t border-slate-200/60 shadow-[0_-8px_30px_-15px_rgba(0,0,0,0.1)] p-4 sm:py-5 z-50 print:hidden transition-all duration-300">
@@ -1257,6 +1265,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                     </div>
                 </DialogContent>
             </Dialog>
+            </div>
         </div >
     )
 }
