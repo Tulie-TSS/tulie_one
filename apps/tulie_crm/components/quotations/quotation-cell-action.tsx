@@ -89,7 +89,7 @@ export function QuotationCellAction({ data }: QuotationCellActionProps) {
             <Button 
                 variant="outline" 
                 size="icon" 
-                className="h-8 w-8 text-blue-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 border-border/60 shrink-0" 
+                className="h-8 w-8 text-muted-foreground shrink-0" 
                 title="Mở Portal Báo Giá"
                 asChild
             >
