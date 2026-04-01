@@ -7,7 +7,7 @@ import { logActivity, logDestructiveAction } from './activity-service'
 import { generateDocumentBundle } from './document-template-service'
 import { v4 as uuidv4 } from 'uuid'
 
-export async function getContracts(customerId?: string, type?: 'contract' | 'order', brand?: string) {
+export async function getContracts(customerId?: string, type?: string, brand?: string) {
     try {
         const supabase = await createClient()
         let query = supabase
@@ -125,7 +125,7 @@ export async function createContract(contract: Partial<Contract>, milestones: Pa
         action: 'create',
         entity_type: contract.type || 'contract',
         entity_id: contractData.id,
-        description: `Tạo ${contract.type === 'order' ? 'đơn hàng' : 'hợp đồng'} mới: ${contract.title}`
+        description: `Tạo hợp đồng mới: ${contract.title}`
     })
 
     // 4. Auto-generate document bundle (fire-and-forget)
