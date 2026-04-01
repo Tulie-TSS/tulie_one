@@ -12,10 +12,14 @@ async function getCustomerAnalytics() {
     const now = new Date()
 
     // All customers
-    const { data: customers } = await supabase
+    const { data: customers, error: customersError } = await supabase
         .from('customers')
-        .select('id, company_name, status, type, source, created_at, assigned_to')
+        .select('id, company_name, status, customer_type, created_at, assigned_to')
         .order('created_at', { ascending: false })
+
+    if (customersError) {
+        console.error('Lỗi khi fetch khách hàng trong Báo cáo:', customersError)
+    }
 
     // Contracts by customer
     const { data: contracts } = await supabase
@@ -41,14 +45,14 @@ async function getCustomerAnalytics() {
     // Type breakdown (B2B / B2C / etc)
     const typeBreakdown: Record<string, number> = {}
     customers?.forEach(c => {
-        const type = c.type || 'Khác'
+        const type = c.customer_type || 'Khác'
         typeBreakdown[type] = (typeBreakdown[type] || 0) + 1
     })
 
     // Source breakdown
     const sourceBreakdown: Record<string, number> = {}
     customers?.forEach(c => {
-        const source = c.source || 'Không rõ'
+        const source = (c as any).source || 'Chưa phân loại' // Cast to any to avoid error, maybe re-add 'source' later if added to DB
         sourceBreakdown[source] = (sourceBreakdown[source] || 0) + 1
     })
 
