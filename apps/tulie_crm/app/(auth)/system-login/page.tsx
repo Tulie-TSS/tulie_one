@@ -3,10 +3,10 @@
 import React, { useState } from 'react'
 import { login } from '../actions'
 import { Button } from '@repo/ui'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@repo/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@repo/ui'
 import { Input } from '@repo/ui'
 import { Label } from '@repo/ui'
-
+import { LoadingSpinner } from '@repo/ui'
 import { Eye, EyeOff } from 'lucide-react'
 
 export default function LoginPage() {
@@ -23,10 +23,7 @@ export default function LoginPage() {
                 setError(result.error)
                 setLoading(false)
             }
-            // If success, the action will redirect, so we don't need to setLoading(false)
-            // otherwise it might flicker before navigation
         } catch (e) {
-            // Check if it's a redirect error (NEXT_REDIRECT)
             if (
                 e instanceof Error &&
                 (e.message === 'NEXT_REDIRECT' || (e as any).digest?.startsWith('NEXT_REDIRECT') || e.message.includes('NEXT_REDIRECT'))
@@ -41,8 +38,8 @@ export default function LoginPage() {
 
     return (
         <Card className="border-none shadow-lg">
-            <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl font-semibold">Hệ thống Tulie CRM</CardTitle>
+            <CardHeader>
+                <CardTitle className="text-2xl">Hệ thống Tulie CRM</CardTitle>
                 <CardDescription>
                     Nhập email và mật khẩu để đăng nhập vào hệ thống
                 </CardDescription>
@@ -66,7 +63,7 @@ export default function LoginPage() {
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 text-gray-500 hover:text-gray-900 transition-colors focus:outline-none cursor-pointer p-1"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer p-1"
                             >
                                 {showPassword ? (
                                     <EyeOff className="h-4 w-4" />
@@ -81,12 +78,11 @@ export default function LoginPage() {
                             {error}
                         </div>
                     )}
-                </CardContent>
-                <CardFooter className="pt-6">
                     <Button className="w-full" type="submit" disabled={loading}>
+                        {loading && <LoadingSpinner size="sm" className="mr-2" />}
                         {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
                     </Button>
-                </CardFooter>
+                </CardContent>
             </form>
         </Card>
     )
