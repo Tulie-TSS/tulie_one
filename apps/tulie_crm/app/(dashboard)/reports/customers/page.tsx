@@ -13,7 +13,7 @@ export default function CustomersReportPage() {
  </Link>
  </Button>
  <div>
- <h1 className="text-3xl font-semibold">Báo cáo khách hàng</h1>
+ <h1 className="text-2xl font-semibold tracking-tight">Báo cáo khách hàng</h1>
  <p className="text-muted-foreground">Phân tích tăng trưởng và hành vi khách hàng</p>
  </div>
  </div>

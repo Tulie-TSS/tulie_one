@@ -129,7 +129,7 @@ export default function TemplatesPage() {
                         <Files className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-3xl">Mẫu giấy tờ</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Mẫu giấy tờ</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý các mẫu báo giá, hợp đồng, đơn hàng, đề nghị thanh toán, biên bản giao nhận
                         </p>

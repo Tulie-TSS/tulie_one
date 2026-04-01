@@ -21,7 +21,7 @@ export default async function StudioCustomersPage() {
                         <Camera className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-3xl text-foreground">Khách hàng Studio</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Khách hàng Studio</h1>
                         <p className="text-[14px] text-muted-foreground">
                             Quản lý danh sách khách hàng cá nhân cho khối Studio
                         </p>

@@ -9,7 +9,7 @@ export default function ReportsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl text-foreground">Báo cáo</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Báo cáo</h1>
         <p className="text-muted-foreground">Chọn loại báo cáo cần xem</p>
       </div>
 

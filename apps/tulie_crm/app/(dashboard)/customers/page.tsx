@@ -30,7 +30,7 @@ export default async function CustomersPage() {
                         <Users className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-foreground">Khách hàng Agency</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Khách hàng Agency</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý danh sách khách hàng và thông tin liên hệ cho Agency
                         </p>

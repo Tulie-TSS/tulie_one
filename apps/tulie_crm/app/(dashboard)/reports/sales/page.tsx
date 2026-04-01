@@ -13,7 +13,7 @@ export default function SalesReportPage() {
  </Link>
  </Button>
  <div>
- <h1 className="text-3xl font-semibold">Báo cáo bán hàng</h1>
+ <h1 className="text-2xl font-semibold tracking-tight">Báo cáo bán hàng</h1>
  <p className="text-muted-foreground">Chi tiết doanh thu và hiệu suất bán hàng</p>
  </div>
  </div>

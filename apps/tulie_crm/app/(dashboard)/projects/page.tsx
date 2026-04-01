@@ -15,7 +15,7 @@ export default async function ProjectsPage() {
                         <Rocket className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-3xl">Dự án</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Dự án</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý triển khai và bàn giao dịch vụ cho khách hàng.
                         </p>

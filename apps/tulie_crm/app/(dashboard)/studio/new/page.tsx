@@ -13,7 +13,7 @@ export default function NewRetailOrderPage() {
                     </Link>
                 </Button>
                 <div>
-                    <h1 className="text-3xl flex items-center gap-3">
+                    <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-3">
                         Tạo đơn hàng Studio
                     </h1>
                     <p className="text-muted-foreground text-sm">Xử lý đơn hàng chụp ảnh, in ấn & dịch vụ cá nhân.</p>

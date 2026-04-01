@@ -106,7 +106,7 @@ export default async function NotificationsPage() {
                         <Bell className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <h1 className="text-2xl">Thông báo</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Thông báo</h1>
                         <p className="text-muted-foreground">Theo dõi hoạt động hệ thống và các sự kiện quan trọng</p>
                     </div>
                 </div>

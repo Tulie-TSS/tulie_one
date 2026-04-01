@@ -197,7 +197,7 @@ export default function QuotationDetailPage() {
                                     <Badge>Chính</Badge>
                                 )}
                             </div>
-                            <h1 className="text-2xl font-bold tracking-tight">{quotation.customer?.company_name}</h1>
+                            <h1 className="text-2xl font-semibold tracking-tight">{quotation.customer?.company_name}</h1>
                             {(quotation.title || quotation.version_name) && (
                                 <p className="text-sm text-muted-foreground flex items-center gap-1.5">
                                     {quotation.version_name ? <span className="font-semibold text-foreground">{quotation.version_name}</span> : null}

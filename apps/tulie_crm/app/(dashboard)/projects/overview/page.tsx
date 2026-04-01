@@ -65,7 +65,7 @@ export default async function ProjectOverviewPage() {
                         <Rocket className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <h1 className="text-2xl">Tổng quan Dự án</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Tổng quan Dự án</h1>
                         <p className="text-muted-foreground text-sm">
                             Pipeline, tiến độ, hoá đơn, milestones
                         </p>

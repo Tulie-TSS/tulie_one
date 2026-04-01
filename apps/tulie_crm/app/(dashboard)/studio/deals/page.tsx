@@ -15,7 +15,7 @@ export default async function StudioDealsPage() {
                         <TrendingUp className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-semibold">Cơ hội Studio</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Cơ hội Studio</h1>
                         <p className="text-muted-foreground font-normal">
                             Quản lý phễu khách hàng cá nhân & Studio.
                         </p>

@@ -73,7 +73,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                     </Button>
                     <div className="space-y-2">
                         <div className="flex items-center gap-3 flex-wrap">
-                            <h1 className="text-2xl font-bold tracking-tight text-foreground">{contract.customer?.company_name}</h1>
+                            <h1 className="text-2xl font-semibold tracking-tight">{contract.customer?.company_name}</h1>
                             <div className="px-2.5 py-0.5 rounded-md border bg-muted/50 font-medium text-xs flex items-center">
                                 {contract.contract_number}
                             </div>

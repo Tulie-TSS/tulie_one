@@ -35,7 +35,7 @@ export default async function ProfilePage() {
                     </Avatar>
                 </div>
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight text-foreground">Hồ sơ cá nhân</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight">Hồ sơ cá nhân</h1>
                     <p className="text-sm font-medium text-muted-foreground mt-1">
                         Quản lý thông tin tài khoản và cấu hình cá nhân của bạn
                     </p>

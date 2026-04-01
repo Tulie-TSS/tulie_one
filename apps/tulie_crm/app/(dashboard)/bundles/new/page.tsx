@@ -128,8 +128,8 @@ export default function NewBundlePage() {
                     </Link>
                 </Button>
                 <div>
-                    <h1 className="text-3xl font-semibold flex items-center gap-2">
-                        <FileStack className="h-8 w-8" />
+                    <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-2">
+                        <FileStack className="h-7 w-7" />
                         Đóng gói bộ tài liệu
                     </h1>
                     <p className="text-muted-foreground">

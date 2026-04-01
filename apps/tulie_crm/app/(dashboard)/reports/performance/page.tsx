@@ -13,7 +13,7 @@ export default function PerformanceReportPage() {
  </Link>
  </Button>
  <div>
- <h1 className="text-3xl font-semibold">Báo cáo hiệu suất team</h1>
+ <h1 className="text-2xl font-semibold tracking-tight">Báo cáo hiệu suất team</h1>
  <p className="text-muted-foreground">Theo dõi KPI và hiệu quả làm việc của nhân viên</p>
  </div>
  </div>

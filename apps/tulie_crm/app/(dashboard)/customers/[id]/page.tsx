@@ -69,7 +69,7 @@ export default async function CustomerDetailPage({ params }: any) {
                         </Link>
                     </Button>
                     <div className="min-w-0">
-                        <h1 className="text-2xl leading-tight">{customer.company_name}</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">{customer.company_name}</h1>
                         <div className="flex items-center gap-2 flex-wrap mt-1.5">
                             <StatusBadge status={customer.status} entityType="customer" />
                             <Badge variant="outline" className="text-xs">

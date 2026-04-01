@@ -37,7 +37,7 @@ export default async function TeamPage() {
                         <UserCheck className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-3xl">Nhân sự</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Nhân sự</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý team và theo dõi hiệu suất làm việc
                         </p>

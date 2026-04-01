@@ -35,7 +35,7 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
                             </Badge>
                             <span className="text-xs text-muted-foreground font-mono">ID: {portal.id.split('-')[0]}</span>
                         </div>
-                        <h1 className="text-2xl font-bold tracking-tight text-foreground">{portal.title}</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">{portal.title}</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             {portal.customer?.company_name || 'Khách lẻ'} • Tạo bởi {portal.creator?.full_name}
                         </p>

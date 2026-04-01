@@ -17,7 +17,7 @@ export default async function StudioPage() {
                         <Camera className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-2xl">Đơn hàng Studio</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Đơn hàng Studio</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">Quản lý đơn hàng chụp ảnh cá nhân & Studio.</p>
                     </div>
                 </div>

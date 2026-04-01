@@ -30,7 +30,7 @@ export default async function TeamPerformancePage() {
                     <Users className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                    <h1 className="text-2xl">Hiệu suất đội ngũ</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight">Hiệu suất đội ngũ</h1>
                     <p className="text-muted-foreground text-sm">
                         Theo dõi tiến độ và khối lượng công việc
                     </p>

@@ -126,7 +126,7 @@ export default function NewCustomerPage() {
                     </Link>
                 </Button>
                 <div>
-                    <h1 className="text-3xl font-semibold">Thêm khách hàng mới</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight">Thêm khách hàng mới</h1>
                     <p className="text-muted-foreground">
                         Nhập thông tin khách hàng để thêm vào hệ thống
                     </p>

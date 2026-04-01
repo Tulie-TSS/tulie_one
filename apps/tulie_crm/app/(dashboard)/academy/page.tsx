@@ -60,7 +60,7 @@ export default function LabPage() {
                         <Layout className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-semibold">Tulie Lab Control</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Tulie Lab Control</h1>
                         <p className="text-muted-foreground font-normal">Đồng bộ dữ liệu tập trung từ thelab.tulie.vn.</p>
                     </div>
                 </div>

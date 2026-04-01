@@ -12,7 +12,7 @@ export default function LeadsPage() {
                     <Contact className="h-6 w-6 text-foreground" />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight text-foreground">Leads</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight">Leads</h1>
                     <p className="text-sm font-medium text-muted-foreground mt-1">Danh sách khách hàng tiềm năng từ Landing Page.</p>
                 </div>
             </div>

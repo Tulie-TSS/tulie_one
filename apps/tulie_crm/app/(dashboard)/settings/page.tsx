@@ -504,7 +504,7 @@ export default function SettingsPage() {
                     <Settings className="h-6 w-6 text-foreground" />
                 </div>
                 <div>
-                    <h1 className="text-3xl">Cài đặt</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight">Cài đặt</h1>
                     <p className="text-sm font-medium text-muted-foreground mt-1">
                         Quản lý cấu hình hệ thống, thương hiệu và tích hợp.
                     </p>

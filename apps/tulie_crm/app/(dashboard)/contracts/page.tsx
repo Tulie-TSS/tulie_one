@@ -31,7 +31,7 @@ export default async function ContractsPage() {
                         <FileSignature className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-3xl">Hợp đồng</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Hợp đồng</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý và theo dõi các hợp đồng dịch vụ
                         </p>

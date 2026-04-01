@@ -28,7 +28,7 @@ export default async function DealDetailPage({ params }: any) {
                     </Button>
                     <div>
                         <div className="flex items-center gap-3">
-                            <h1 className="text-3xl">{deal.title}</h1>
+                            <h1 className="text-2xl font-semibold tracking-tight">{deal.title}</h1>
                             <StatusBadge status={deal.status} entityType="deal" />
                         </div>
                         <p className="text-muted-foreground flex items-center gap-2">
