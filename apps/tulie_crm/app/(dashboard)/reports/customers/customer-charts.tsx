@@ -33,7 +33,7 @@ export function CustomerCharts({ data }: CustomerChartsProps) {
                             boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                             fontSize: '12px',
                         }}
-                        formatter={(value: number) => [`${value} khách hàng`, 'KH mới']}
+                        formatter={(value: any) => [`${value} khách hàng`, 'KH mới']}
                     />
                     <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
                 </BarChart>

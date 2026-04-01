@@ -45,7 +45,7 @@ export function PerformanceCharts({ workload }: PerformanceChartsProps) {
                             boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                             fontSize: '12px'
                         }}
-                        formatter={(value: number, name: string, props: any) => [
+                        formatter={(value: any, name: any, props: any) => [
                             `${value} tasks`, 
                             props.payload.fullName
                         ]}

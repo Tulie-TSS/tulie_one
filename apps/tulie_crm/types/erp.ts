@@ -146,9 +146,17 @@ export interface DashboardStats {
     new: number
     change: number
   }
+  leads: {
+    total: number
+    new: number
+    contacted: number
+    qualified: number
+  }
   contracts: {
     active: number
+    completed: number
     pending: number
+    total_value: number
     change: number
   }
   invoices: {

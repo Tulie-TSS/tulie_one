@@ -120,20 +120,35 @@ export default async function DashboardPage() {
                         changeLabel={stats.revenue.period}
                     />
                     <StatsCard
+                        title="Tổng giá trị hợp đồng"
+                        value={formatCurrency(stats.contracts.total_value)}
+                    />
+                    <StatsCard
                         title="Tổng khách hàng"
                         value={stats.customers.total.toString()}
-                        change={stats.customers.change}
-                        changeLabel="so với tháng trước"
+                        change={stats.customers.new}
+                        changeLabel="khách hàng mới"
                     />
+                    <StatsCard
+                        title="Tổng Leads"
+                        value={stats.leads.total.toString()}
+                    />
+                    
                     <StatsCard
                         title="Hợp đồng đang thực hiện"
                         value={stats.contracts.active.toString()}
-                        change={stats.contracts.change}
-                        changeLabel="Tổng giá trị HĐ"
                     />
                     <StatsCard
-                        title="Hóa đơn chờ thanh toán"
-                        value={stats.invoices.pending.toString()}
+                        title="Hợp đồng hoàn thành"
+                        value={stats.contracts.completed.toString()}
+                    />
+                    <StatsCard
+                        title="Leads chờ xử lý (mới)"
+                        value={stats.leads.new.toString()}
+                    />
+                    <StatsCard
+                        title="Leads tiềm năng"
+                        value={stats.leads.qualified.toString()}
                     />
                 </div>
 

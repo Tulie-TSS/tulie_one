@@ -45,7 +45,21 @@ export async function getDashboardStats(): Promise<DashboardStats> {
             .select('*', { count: 'exact', head: true })
             .eq('status', 'draft')
 
+        const { count: completedContractsCount } = await supabase
+            .from('contracts')
+            .select('*', { count: 'exact', head: true })
+            .eq('status', 'completed')
+
         if (contError) console.error('Error fetching contract count:', contError)
+
+        const { data: leadsData } = await supabase
+            .from('leads')
+            .select('status')
+        
+        const totalLeads = leadsData?.length || 0
+        const newLeads = leadsData?.filter(l => l.status === 'new').length || 0
+        const contactedLeads = leadsData?.filter(l => l.status === 'contacted').length || 0
+        const qualifiedLeads = leadsData?.filter(l => l.status === 'qualified').length || 0
 
         const invoiceRevenue = invoices?.filter(i => i.type === 'output').reduce((sum, i) => sum + (i.paid_amount || 0), 0) || 0
         const invoicePending = invoices?.filter(i => i.type === 'output' && i.status !== 'paid').reduce((sum, i) => sum + (i.total_amount - (i.paid_amount || 0)), 0) || 0
@@ -115,10 +129,18 @@ export async function getDashboardStats(): Promise<DashboardStats> {
                 new: newCustomerCount || 0,
                 change: 0
             },
+            leads: {
+                total: totalLeads,
+                new: newLeads,
+                contacted: contactedLeads,
+                qualified: qualifiedLeads
+            },
             contracts: {
                 active: activeContractsCount || 0,
+                completed: completedContractsCount || 0,
                 pending: pendingContractsCount || 0,
-                change: contractTotalValue
+                total_value: contractTotalValue,
+                change: 0
             },
             invoices: {
                 pending: pendingInvoicesCount,
@@ -134,7 +156,8 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         return {
             revenue: { total: 0, change: 0, period: 'Tháng này' },
             customers: { total: 0, new: 0, change: 0 },
-            contracts: { active: 0, pending: 0, change: 0 },
+            leads: { total: 0, new: 0, contacted: 0, qualified: 0 },
+            contracts: { active: 0, completed: 0, pending: 0, total_value: 0, change: 0 },
             invoices: { pending: 0, overdue: 0, total_outstanding: 0 },
             health_score: 0,
             conversion_rate: 0,

@@ -48,7 +48,7 @@ export function SalesCharts({ revenueData }: SalesChartsProps) {
                             boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                             fontSize: '12px',
                         }}
-                        formatter={(value: number, name: string) => [
+                        formatter={(value: any, name: any) => [
                             `${value.toFixed(1)} triệu VNĐ`,
                             name === 'revenue' ? 'Doanh thu' : name === 'expenses' ? 'Chi phí' : 'Lợi nhuận',
                         ]}
