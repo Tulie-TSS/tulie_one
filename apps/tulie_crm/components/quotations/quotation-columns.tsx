@@ -51,34 +51,26 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
         },
         cell: ({ row }) => {
             const quotation = row.original
+            const displayTitle = quotation.version_name || quotation.title
             return (
-                <div className="flex flex-col items-start gap-1 py-1">
+                <div className="py-1">
                     <div className="flex items-center gap-2">
                         <Link
                             href={`/quotations/${quotation.id}`}
-                            className="font-bold text-foreground hover:underline"
+                            className="text-sm font-medium text-foreground hover:underline"
                         >
                             {quotation.quotation_number}
                         </Link>
                         {quotation.is_primary && (
-                            <Badge variant="default" className="h-[18px] px-1.5 rounded-sm text-[10px] bg-emerald-500 hover:bg-emerald-600 text-white font-medium border-0">Chính</Badge>
+                            <Badge variant="outline" className="text-[10px] font-medium px-1.5 py-0 h-[18px] rounded-md bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800">Chính</Badge>
                         )}
                     </div>
-                    {quotation.version_name ? (
-                        <p className="text-[12px] text-foreground font-semibold truncate max-w-[200px]">
-                            {quotation.version_name}
-                        </p>
-                    ) : quotation.title && (
-                        <p className="text-xs text-muted-foreground font-medium truncate max-w-[200px]">
-                            {quotation.title}
+                    {displayTitle && (
+                        <p className="text-xs text-muted-foreground truncate max-w-[220px] mt-0.5">
+                            {displayTitle}
                         </p>
                     )}
-                    {quotation.title && quotation.version_name && (
-                        <p className="text-[11px] text-muted-foreground/80 truncate max-w-[200px]">
-                            {quotation.title}
-                        </p>
-                    )}
-                    <p className="text-[11px] text-muted-foreground">
+                    <p className="text-[11px] text-muted-foreground/70 mt-0.5">
                         {formatDate(quotation.created_at)}
                     </p>
                 </div>
@@ -100,11 +92,11 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
         header: 'Khách hàng',
         cell: ({ row }) => {
             const customer = row.original.customer
-            if (!customer) return <span className="text-muted-foreground">-</span>
+            if (!customer) return <span className="text-sm text-muted-foreground">-</span>
             return (
                 <Link
                     href={`/customers/${customer.id}`}
-                    className="hover:underline"
+                    className="text-sm font-medium text-foreground hover:underline"
                 >
                     {customer.company_name}
                 </Link>
@@ -126,7 +118,7 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
         },
         cell: ({ row }) => {
             const amount = row.getValue('total_amount') as number
-            return <span className="font-medium">{formatCurrency(amount)}</span>
+            return <span className="text-sm font-medium tabular-nums">{formatCurrency(amount)}</span>
         },
     },
     {
@@ -142,17 +134,7 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
         header: 'Lượt xem',
         cell: ({ row }) => {
             const count = (row.getValue('view_count') as number) || 0
-            const viewedAt = row.original.viewed_at
-            return (
-                <div>
-                    <span className="font-medium">{count}</span>
-                    {viewedAt && count > 0 && (
-                        <p className="text-xs text-muted-foreground">
-                            {formatRelativeTime(viewedAt)}
-                        </p>
-                    )}
-                </div>
-            )
+            return <span className="text-sm text-muted-foreground tabular-nums">{count}</span>
         },
     },
     {
@@ -162,7 +144,7 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
             const date = row.getValue('valid_until') as string
             const isExpired = new Date(date) < new Date()
             return (
-                <span className={isExpired ? 'text-destructive' : ''}>
+                <span className={`text-sm ${isExpired ? 'text-destructive font-medium' : 'text-muted-foreground'}`}>
                     {formatDate(date)}
                 </span>
             )

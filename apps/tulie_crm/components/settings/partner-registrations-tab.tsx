@@ -100,12 +100,21 @@ export function PartnerRegistrationsTab() {
     }
 
     const getStatusBadge = (status: string) => {
-        switch (status) {
-            case 'pending': return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200">Chờ duyệt</Badge>
-            case 'approved': return <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 hover:bg-emerald-200">Đã duyệt</Badge>
-            case 'rejected': return <Badge variant="secondary" className="bg-red-100 text-red-800 hover:bg-red-200">Từ chối</Badge>
-            default: return <Badge variant="outline">{status}</Badge>
+        const labels: Record<string, string> = {
+            pending: 'Chờ duyệt',
+            approved: 'Đã duyệt',
+            rejected: 'Từ chối',
         }
+        const colors: Record<string, string> = {
+            pending: 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800',
+            approved: 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
+            rejected: 'bg-rose-50 text-rose-700 border border-rose-200 dark:bg-rose-950 dark:text-rose-300 dark:border-rose-800',
+        }
+        return (
+            <Badge variant="outline" className={`rounded-md text-[11px] font-medium ${colors[status] || ''}`}>
+                {labels[status] || status}
+            </Badge>
+        )
     }
 
     const getRoleLabel = (role: string) => {
