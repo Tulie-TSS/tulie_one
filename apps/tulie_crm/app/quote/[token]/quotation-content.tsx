@@ -244,7 +244,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
         <div className="quotation-page min-h-screen bg-gray-100 py-8 pb-32 font-sans text-slate-800">
             {/* Options Switcher (Hero Section above Paper) */}
             {activeOptions.length > 1 && (
-                <div className="max-w-[210mm] mx-auto mb-10 print:hidden px-4 sm:px-0">
+                <div className="max-w-5xl mx-auto mb-10 print:hidden px-4 sm:px-0">
                     <Card className="shadow-sm border-slate-200">
                         <CardHeader className="pb-4 border-b border-slate-100 bg-slate-50/50">
                             <div className="flex items-center gap-2 mb-1">
@@ -297,7 +297,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                         >
                                             <CardHeader className="p-4 pb-0">
                                                 <div className="flex items-center justify-between mb-3">
-                                                    <Badge variant={isActive ? "default" : "secondary"} className={cn("text-[10px] font-bold uppercase tracking-wider", isActive ? "bg-slate-800 text-white" : "text-muted-foreground bg-slate-100")}>
+                                                    <Badge variant={isActive ? "default" : "secondary"} className={cn("text-[10px] font-semibold", isActive ? "bg-slate-800 text-white" : "text-muted-foreground bg-slate-100")}>
                                                         Phương án {idx + 1}
                                                     </Badge>
                                                     
@@ -322,7 +322,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                             </CardHeader>
                                             <CardContent className="p-4 pt-4 mt-auto">
                                                 <Separator className="mb-4 bg-slate-100" />
-                                                <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-1">
+                                                <div className="text-[11px] font-medium text-muted-foreground mb-1">
                                                     Tổng ngân sách
                                                 </div>
                                                 <div className={cn("text-2xl font-black tabular-nums tracking-tight", isActive ? "text-slate-900" : "text-slate-700")}>
@@ -815,7 +815,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
 
             {/* History Timeline Panel */}
             {historyItems.length > 0 && (
-                <div className="max-w-[210mm] mx-auto mt-12 mb-12 print:hidden px-4 sm:px-0">
+                <div className="max-w-5xl mx-auto mt-12 mb-12 print:hidden px-4 sm:px-0">
                     <Card className="shadow-sm border-slate-200">
                         <CardHeader className="border-b border-slate-100 bg-slate-50/50 pb-4">
                             <div className="flex items-center gap-3">
@@ -851,11 +851,11 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                     <div className="flex items-center gap-2">
                                                         <span className="font-bold text-slate-900">#{item.quotation_number}</span>
                                                         <Badge variant="outline" className={cn(
-                                                            "text-[10px] h-5 px-1.5 font-bold uppercase tracking-wider",
+                                                            "text-[10px] h-5 px-1.5 font-semibold",
                                                             item.status === 'accepted' ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
                                                                 item.status === 'rejected' ? "bg-rose-50 text-rose-700 border-rose-200" : "bg-slate-100 text-slate-600"
                                                         )}>
-                                                            {item.status}
+                                                            {item.status === 'accepted' ? 'Đã chấp nhận' : item.status === 'rejected' ? 'Đã từ chối' : item.status === 'converted' ? 'Đã chuyển đổi' : item.status === 'expired' ? 'Hết hạn' : item.status}
                                                         </Badge>
                                                     </div>
                                                     <div className="flex items-center gap-1.5 text-muted-foreground text-xs font-medium">
@@ -865,8 +865,8 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                 </div>
                                                 <div className="flex flex-col items-start sm:items-end gap-1 border-t sm:border-t-0 pt-3 sm:pt-0 mt-1 sm:mt-0">
                                                     <span className="text-lg font-bold tabular-nums text-slate-900">{formatCurrency(item.total_amount)}</span>
-                                                    <span className="text-[10px] uppercase text-muted-foreground font-semibold flex items-center gap-1 group-hover:text-slate-900 transition-colors">
-                                                        Xem chi tiết phiên bản này <span className="text-lg leading-none">&rarr;</span>
+                                                    <span className="text-xs text-muted-foreground font-medium flex items-center gap-1 group-hover:text-slate-900 transition-colors">
+                                                        Xem chi tiết phiên bản này <span className="text-base leading-none">&rarr;</span>
                                                     </span>
                                                 </div>
                                             </CardContent>
