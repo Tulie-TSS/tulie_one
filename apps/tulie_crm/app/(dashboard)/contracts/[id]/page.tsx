@@ -30,6 +30,7 @@ import { StatusBadge } from '@/components/shared/status-badge'
 import { createClient } from '@/lib/supabase/server'
 
 import { EntityPipelineTracker } from '@/components/shared/entity-pipeline-tracker'
+import { MilestoneConfirmButton } from '@/components/contracts/milestone-confirm-button'
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
     const { id } = await params
@@ -223,6 +224,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                             <TableHead className="w-[60px] text-center">TT</TableHead>
                                             <TableHead>Giai đoạn</TableHead>
                                             <TableHead className="text-right">Số tiền</TableHead>
+                                            <TableHead className="w-[140px] text-center">Thao tác</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -255,11 +257,21 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                                         {milestone.amount ? formatCurrency(milestone.amount).replace(/\s*[₫đ]\s*$/g, '').trim() : '0'} <sup className="text-[10px] text-muted-foreground font-normal">đ</sup>
                                                     </span>
                                                 </TableCell>
+                                                <TableCell className="text-center">
+                                                    {milestone.type === 'payment' || !milestone.type ? (
+                                                        <MilestoneConfirmButton
+                                                            milestoneId={milestone.id}
+                                                            milestoneName={milestone.name}
+                                                            amount={milestone.amount || 0}
+                                                            status={milestone.status}
+                                                        />
+                                                    ) : null}
+                                                </TableCell>
                                             </TableRow>
                                         ))}
                                         {(!contract.milestones || contract.milestones.length === 0) && (
                                             <TableRow>
-                                                <TableCell colSpan={3} className="text-center text-sm text-muted-foreground py-6">
+                                                <TableCell colSpan={4} className="text-center text-sm text-muted-foreground py-6">
                                                     Chưa thiết lập milestone thanh toán
                                                 </TableCell>
                                             </TableRow>

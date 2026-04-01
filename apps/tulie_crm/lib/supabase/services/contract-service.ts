@@ -506,6 +506,132 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
         return { success: false, error: err.message }
     }
 }
+/**
+ * Confirm a milestone payment: marks milestone as completed,
+ * auto-creates an output invoice, and records full payment.
+ * This ensures the amount is counted in dashboard revenue.
+ */
+export async function confirmMilestonePayment(
+    milestoneId: string,
+    options?: { payment_date?: string; notes?: string }
+): Promise<{ success: boolean; invoice_id?: string; error?: string }> {
+    try {
+        const supabase = await createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+
+        // 1. Get milestone with contract info
+        const { data: milestone, error: msError } = await supabase
+            .from('contract_milestones')
+            .select('*, contract:contracts(id, contract_number, customer_id, brand, title, total_amount)')
+            .eq('id', milestoneId)
+            .single()
+
+        if (msError || !milestone) {
+            return { success: false, error: 'Không tìm thấy milestone' }
+        }
+
+        if (milestone.status === 'completed') {
+            return { success: false, error: 'Milestone này đã được xác nhận thanh toán' }
+        }
+
+        const contract = milestone.contract as any
+        if (!contract) {
+            return { success: false, error: 'Milestone không liên kết với hợp đồng' }
+        }
+
+        const paymentDate = options?.payment_date || new Date().toISOString()
+
+        // 2. Update milestone status to completed
+        const { error: updateMsError } = await supabase
+            .from('contract_milestones')
+            .update({
+                status: 'completed',
+                completed_at: paymentDate
+            })
+            .eq('id', milestoneId)
+
+        if (updateMsError) {
+            return { success: false, error: updateMsError.message }
+        }
+
+        // 3. Auto-create output invoice
+        const dateStr = new Date(paymentDate).toISOString().slice(0, 10).replace(/-/g, '')
+        const { count: invoiceCount } = await supabase
+            .from('invoices')
+            .select('id', { count: 'exact', head: true })
+
+        const invoiceNumber = `HD-${dateStr}-${((invoiceCount || 0) + 1).toString().padStart(3, '0')}`
+        const milestoneAmount = milestone.amount || 0
+
+        const { data: invoice, error: invError } = await supabase
+            .from('invoices')
+            .insert([{
+                invoice_number: invoiceNumber,
+                type: 'output',
+                contract_id: contract.id,
+                project_id: milestone.project_id || null,
+                customer_id: contract.customer_id,
+                created_by: user?.id,
+                status: 'paid',
+                issue_date: paymentDate,
+                due_date: paymentDate,
+                subtotal: milestoneAmount,
+                vat_percent: 0,
+                vat_amount: 0,
+                total_amount: milestoneAmount,
+                paid_amount: milestoneAmount,
+                notes: options?.notes || `Thanh toán milestone: ${milestone.name}`,
+                brand: contract.brand,
+            }])
+            .select()
+            .single()
+
+        if (invError) {
+            // Rollback milestone status
+            await supabase
+                .from('contract_milestones')
+                .update({ status: 'pending', completed_at: null })
+                .eq('id', milestoneId)
+            return { success: false, error: `Lỗi tạo hóa đơn: ${invError.message}` }
+        }
+
+        // 4. Record payment entry
+        await supabase.from('invoice_payments').insert([{
+            invoice_id: invoice.id,
+            amount: milestoneAmount,
+            payment_date: paymentDate,
+            payment_method: 'Bank Transfer',
+            notes: options?.notes || `Milestone: ${milestone.name}`,
+            created_by: user?.id
+        }])
+
+        // 5. Log activity
+        await logActivity({
+            action: 'confirm_payment',
+            entity_type: 'contract',
+            entity_id: contract.id,
+            description: `Xác nhận thanh toán milestone "${milestone.name}" — ${milestoneAmount.toLocaleString()}đ → Hóa đơn ${invoiceNumber}`
+        })
+
+        // 6. Telegram notification
+        try {
+            const { sendTelegramNotification } = await import('./telegram-service')
+            const message = `<b>💰 XÁC NHẬN THANH TOÁN</b>\n━━━━━━━━━━━━━━━━━━\n📋 HĐ: <b>${contract.contract_number}</b>\n📌 Milestone: <b>${milestone.name}</b>\n💵 Số tiền: <b>${milestoneAmount.toLocaleString()}đ</b>\n🧾 Hóa đơn: <b>${invoiceNumber}</b>\n━━━━━━━━━━━━━━━━━━\n<i>Đã ghi nhận vào doanh thu.</i>`
+            await sendTelegramNotification(message, 'notify_b2b_payment')
+        } catch {}
+
+        revalidatePath('/contracts')
+        revalidatePath(`/contracts/${contract.id}`)
+        revalidatePath('/invoices')
+        revalidatePath('/dashboard')
+
+        return { success: true, invoice_id: invoice.id }
+    } catch (err: any) {
+        console.error('Error in confirmMilestonePayment:', err)
+        return { success: false, error: err.message || 'Lỗi hệ thống' }
+    }
+}
+
 export async function getAcceptanceReportsByProjectId(projectId: string) {
     try {
         const supabase = await createClient()

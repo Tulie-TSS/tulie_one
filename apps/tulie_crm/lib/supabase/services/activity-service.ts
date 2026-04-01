@@ -21,6 +21,7 @@ export type AuditAction =
     | 'convert'
     | 'accept'
     | 'update_tasks'
+    | 'confirm_payment'
 
 export type AuditEntityType =
     | 'customer'
