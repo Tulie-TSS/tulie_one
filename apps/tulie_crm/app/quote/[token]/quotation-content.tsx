@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Button } from '@repo/ui'
 import { formatCurrency, formatDate, readNumberToWords } from '@/lib/utils/format'
-import { CheckCircle, CheckCircle2, XCircle, Building2, Calendar, FileText, User, Mail, Phone, Globe, Info, CreditCard, MapPin, Printer, Target, ClipboardList, Lightbulb, Package, Users, Clock, Shield, Award, BookOpen, Layout, FileSignature } from 'lucide-react'
+import { CheckCircle, CheckCircle2, XCircle, Building2, Calendar, FileText, User, Mail, Phone, Globe, Info, CreditCard, MapPin, Printer, Target, ClipboardList, Lightbulb, Package, Users, Clock, Shield, Award, BookOpen, Layout, FileSignature, ExternalLink } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import {
     Dialog,
@@ -257,27 +257,27 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
         <div className="quotation-page min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col xl:flex-row">
             {/* Sidebar (Desktop left, Mobile top) */}
             {hasSidebar && (
-                <div className="w-full xl:w-[340px] shrink-0 border-b xl:border-b-0 xl:border-r border-slate-200 bg-white shadow-[1px_0_15px_-5px_rgba(0,0,0,0.05)] xl:sticky xl:top-0 h-auto xl:h-screen xl:overflow-y-auto print:hidden z-10 flex flex-col">
-                    <div className="p-5 xl:p-6 space-y-8 flex-1">
+                <div className="w-full xl:w-[420px] shrink-0 border-b xl:border-b-0 xl:border-r border-slate-200 bg-white shadow-[1px_0_15px_-5px_rgba(0,0,0,0.05)] xl:sticky xl:top-0 h-auto xl:h-screen xl:overflow-y-auto print:hidden z-10 flex flex-col">
+                    <div className="p-4 sm:p-5 xl:p-6 space-y-6 flex-1">
                         
                         {/* Options Section inside Sidebar */}
                         {activeOptions.length > 1 && (
-                            <Card className="border-slate-200 bg-white shadow-sm overflow-hidden rounded-xl">
-                                <CardHeader className="p-4 sm:p-5 pb-0 flex flex-col gap-1 space-y-0">
-                                    <div className="flex items-center gap-1.5 w-fit rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600">
-                                        <Lightbulb className="h-3.5 w-3.5" />
-                                        {activeOptions.length} Đề xuất giải pháp
+                            <Card className="border-slate-200 shadow-sm overflow-hidden">
+                                <CardHeader className="px-5 py-4 pb-0 space-y-2">
+                                    <div className="flex items-center gap-1.5 w-fit rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
+                                        <Lightbulb className="h-3.5 w-3.5 text-amber-500" />
+                                        {activeOptions.length} Đề xuất Giải pháp
                                     </div>
-                                    <CardTitle className="text-lg sm:text-xl font-bold mt-2 text-slate-900 tracking-tight">
-                                        Lựa chọn phương án đầu tư
+                                    <CardTitle className="text-xl font-bold tracking-tight text-slate-900 leading-none">
+                                        Lựa chọn phương án
                                     </CardTitle>
-                                    <CardDescription className="text-[13px] text-slate-500 leading-relaxed mt-1">
-                                        Dựa trên yêu cầu của bạn, chúng tôi đề xuất <b>{activeOptions.length} phương án</b> tối ưu. Vui lòng bấm chọn một danh mục bên dưới để xem báo giá chi tiết.
+                                    <CardDescription className="text-[13.5px] leading-relaxed text-slate-500">
+                                        Dựa trên yêu cầu của bạn, chúng tôi đề xuất {activeOptions.length} phương án tối ưu. Vui lòng bấm chọn để xem báo giá chi tiết.
                                     </CardDescription>
                                 </CardHeader>
-                                <CardContent className="p-4 sm:p-5 pt-4">
-                                    <Separator className="mb-4 bg-slate-100" />
-                                    <div className="flex flex-col gap-3">
+                                <CardContent className="px-5 py-4 pt-3">
+                                    <Separator className="mb-4" />
+                                    <div className="flex flex-col gap-3.5">
                                         {activeOptions.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()).map((opt: any, idx: number) => {
                                         const isActive = currentQuotation.id === opt.id;
                                         return (
@@ -308,37 +308,40 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                     }, 100);
                                                 }}
                                                 className={cn(
-                                                    "cursor-pointer transition-all relative overflow-hidden group flex flex-col justify-between rounded-lg p-3.5",
-                                                    isActive ? "bg-slate-900 shadow-md ring-1 ring-slate-900 text-white" : "border border-slate-200 shadow-sm bg-slate-50/50 hover:bg-slate-100 text-slate-900"
+                                                    "cursor-pointer transition-all duration-200 relative group flex flex-col justify-between rounded-xl p-4",
+                                                    isActive 
+                                                        ? "border-2 border-slate-900 bg-white shadow-sm" 
+                                                        : "border border-slate-200 bg-slate-50/50 shadow-sm hover:border-slate-300 hover:bg-white hover:shadow-md"
                                                 )}
                                             >
-                                                <div className="flex items-center justify-between mb-2.5">
-                                                    <Badge variant={isActive ? "secondary" : "outline"} className={cn("text-[10px] font-semibold border-0", isActive ? "bg-white/20 text-white" : "bg-white text-slate-600 shadow-sm border border-slate-200")}>
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <Badge variant={isActive ? "default" : "outline"} className={cn("text-[11px] font-medium border", !isActive && "text-slate-600 bg-white")}>
                                                         Phương án {idx + 1}
                                                     </Badge>
                                                     
                                                     {isActive && (
-                                                        <div className="flex items-center gap-1.5 text-[10px] text-emerald-300 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-full ring-1 ring-emerald-500/20">
-                                                            <span className="relative flex h-1.5 w-1.5">
-                                                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                                              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
-                                                            </span>
+                                                        <div className="flex items-center gap-1.5 text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                                                            <CheckCircle2 className="h-3 w-3 text-emerald-600" />
                                                             Đang xem
                                                         </div>
                                                     )}
                                                 </div>
-                                                <h4 className={cn("text-sm font-bold leading-snug tracking-tight line-clamp-2", isActive ? "text-white" : "text-slate-900")}>
+                                                <h4 className={cn("text-base font-bold leading-tight tracking-tight", isActive ? "text-slate-900" : "text-slate-800")}>
                                                     {opt.title || `Gói tùy chọn ${idx + 1}`}
                                                 </h4>
                                                 
-                                                <Separator className={cn("my-2.5 opacity-50", isActive ? "bg-white/20" : "bg-slate-200")} />
+                                                {opt.notes && (
+                                                    <p className="text-[13px] text-muted-foreground mt-1 line-clamp-1">{opt.notes.split('\n')[0]}</p>
+                                                )}
+
+                                                <Separator className={cn("my-3")} />
                                                 
                                                 <div className="flex items-end justify-between">
                                                     <div>
-                                                        <div className={cn("text-[10px] font-medium mb-0.5", isActive ? "text-slate-300" : "text-muted-foreground")}>
-                                                            Tổng ngân sách
+                                                        <div className="text-[11px] font-medium text-muted-foreground mb-0.5 uppercase tracking-wide">
+                                                            Tổng đầu tư
                                                         </div>
-                                                        <div className={cn("text-lg font-black tabular-nums tracking-tight leading-none", isActive ? "text-white" : "text-slate-900")}>
+                                                        <div className="text-xl font-bold tabular-nums tracking-tight text-slate-900 leading-none">
                                                             {formatCurrency(opt.total_amount)}
                                                         </div>
                                                     </div>
@@ -353,22 +356,22 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
             
                         {/* History Timeline inside Sidebar */}
                         {historyItems && historyItems.length > 0 && (
-                            <Card className="border-slate-200 bg-white shadow-sm overflow-hidden rounded-xl">
-                                <CardHeader className="p-4 sm:p-5 pb-0 flex flex-row items-start gap-3.5 space-y-0 relative z-10 bg-white">
-                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 shadow-sm">
+                            <Card className="border-slate-200 shadow-sm overflow-hidden">
+                                <CardHeader className="px-5 py-4 pb-0 flex flex-row items-start gap-4 space-y-0 relative z-10 bg-white">
+                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 shadow-sm">
                                         <Clock className="h-5 w-5" />
                                     </div>
                                     <div className="flex flex-col gap-1 pt-0.5">
-                                        <CardTitle className="text-base sm:text-[17px] font-bold tracking-tight text-slate-900">
+                                        <CardTitle className="text-lg sm:text-[19px] font-bold tracking-tight text-slate-900 leading-none">
                                             Lịch sử phiên bản
                                         </CardTitle>
-                                        <CardDescription className="text-xs sm:text-[13px] text-slate-500 font-medium leading-relaxed">
-                                            Quản lý các bản thảo và xác nhận trước đó của báo giá này.
+                                        <CardDescription className="text-[13px] text-slate-500 font-medium leading-relaxed mt-1">
+                                            Các bản thảo & phê duyệt trước đây
                                         </CardDescription>
                                     </div>
                                 </CardHeader>
-                                <CardContent className="p-4 sm:p-5 pt-4">
-                                    <Separator className="mb-5 bg-slate-100" />
+                                <CardContent className="px-5 py-4 pt-4">
+                                    <Separator className="mb-5" />
                                     <div className="relative pl-7 before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-px before:bg-slate-200">
                                         {historyItems.map((item: any, i: number) => {
                                             const isActive = currentQuotation.id === item.id;
@@ -379,7 +382,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                             }}>
                                                 {/* Timeline dot/icon */}
                                                 <div className={cn(
-                                                    "absolute -left-7 top-0.5 w-5 h-5 rounded-full border-[3px] border-white z-10 flex items-center justify-center transition-transform group-hover:scale-110",
+                                                    "absolute -left-7 top-0.5 w-5 h-5 rounded-full border-[3px] border-white z-10 flex items-center justify-center transition-transform group-hover:scale-110 shadow-sm",
                                                     item.status === 'accepted' ? "bg-emerald-500" :
                                                         item.status === 'rejected' ? "bg-rose-500" : "bg-slate-400"
                                                 )}>
@@ -389,35 +392,35 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                 </div>
 
                                                 <div className={cn(
-                                                    "rounded-lg border p-3.5 transition-all shadow-sm group-hover:shadow-md outline outline-2 -outline-offset-1 outline-transparent flex items-center justify-between gap-3",
+                                                    "rounded-xl border p-3.5 transition-all shadow-sm group-hover:shadow-md outline outline-[1.5px] -outline-offset-1 outline-transparent flex items-center justify-between gap-3 bg-white",
                                                     isActive 
-                                                        ? "border-emerald-200 bg-emerald-50/50 outline-emerald-500/30" 
-                                                        : "border-slate-200 bg-white group-hover:border-slate-300"
+                                                        ? "border-emerald-200 outline-emerald-500/50 bg-emerald-50/30" 
+                                                        : "border-slate-200 group-hover:border-slate-300"
                                                 )}>
                                                     <div className="flex flex-col gap-1.5 overflow-hidden">
                                                         <div className="flex items-center gap-2">
-                                                            <span className={cn("font-bold text-[13px] truncate", isActive ? "text-emerald-900" : "text-slate-900")}>
+                                                            <span className={cn("font-bold text-sm truncate", isActive ? "text-emerald-900" : "text-slate-900")}>
                                                                 #{item.quotation_number}
                                                             </span>
-                                                            <Badge variant="outline" className={cn(
-                                                                "text-[9px] h-[18px] px-1.5 font-semibold leading-none border-0 shrink-0",
-                                                                item.status === 'accepted' ? "bg-emerald-100 text-emerald-800" :
-                                                                    item.status === 'rejected' ? "bg-rose-100 text-rose-800" : "bg-slate-100 text-slate-600"
+                                                            <Badge variant="secondary" className={cn(
+                                                                "text-[10px] px-1.5 py-0 font-medium leading-none border shrink-0",
+                                                                item.status === 'accepted' ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
+                                                                    item.status === 'rejected' ? "bg-rose-50 text-rose-700 border-rose-200" : "bg-slate-50 text-slate-600 border-slate-200"
                                                             )}>
                                                                 {item.status === 'accepted' ? 'Đã chấp nhận' : item.status === 'rejected' ? 'Đã từ chối' : item.status === 'converted' ? 'Đã chuyển đổi' : item.status === 'expired' ? 'Hết hạn' : item.status}
                                                             </Badge>
                                                         </div>
-                                                        <div className="flex items-center gap-1 text-[11px] text-muted-foreground font-medium">
-                                                            <Calendar className="w-3 h-3 text-slate-400" />
+                                                        <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground font-medium">
+                                                            <Calendar className="w-3.5 h-3.5 text-slate-400" />
                                                             {formatDate(item.created_at)}
                                                         </div>
                                                     </div>
                                                     <div className="shrink-0 flex flex-col items-end gap-1">
-                                                        <span className={cn("text-sm font-bold tabular-nums", isActive ? "text-emerald-900" : "text-slate-900")}>
+                                                        <span className={cn("text-[15px] font-bold tabular-nums tracking-tight", isActive ? "text-emerald-900" : "text-slate-900")}>
                                                             {formatCurrency(item.total_amount)}
                                                         </span>
-                                                        <span className={cn("text-[10px] font-medium flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity", isActive ? "text-emerald-600" : "text-slate-500")}>
-                                                            Khôi phục <Target className="w-3 h-3 ml-0.5" />
+                                                        <span className={cn("text-[11px] font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity", isActive ? "text-emerald-600" : "text-slate-600 hover:text-slate-900")}>
+                                                            Xem lại <ExternalLink className="w-3 h-3" />
                                                         </span>
                                                     </div>
                                                 </div>
