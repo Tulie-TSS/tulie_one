@@ -458,15 +458,15 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
             `}} />
 
             {/* View Mode Toggle */}
-            <div id="quotation-paper-wrapper" className="max-w-[210mm] mx-auto mb-4 flex items-center justify-end gap-2 print:hidden px-4 sm:px-0">
-                <div className="inline-flex items-center rounded-full border border-border/80 bg-white/90 backdrop-blur-md shadow-sm p-1">
+            <div id="quotation-paper-wrapper" className="max-w-5xl mx-auto mb-4 flex items-center justify-end gap-2 print:hidden px-4 xl:px-0 pt-6">
+                <div className="inline-flex items-center rounded-lg border border-slate-200 bg-white shadow-sm p-1 gap-1">
                     <button
                         onClick={() => setViewMode('modern')}
                         className={cn(
-                            "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all",
+                            "flex items-center gap-1.5 px-4 py-2 rounded-md text-[13px] font-medium transition-all duration-200",
                             viewMode === 'modern'
-                                ? "bg-zinc-900 text-white shadow-md"
-                                : "text-slate-500 hover:text-slate-900 hover:bg-slate-100"
+                                ? "bg-slate-900 text-white shadow-sm"
+                                : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
                         )}
                     >
                         <Layout className="w-3.5 h-3.5" />
@@ -475,10 +475,10 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                     <button
                         onClick={() => setViewMode('basic')}
                         className={cn(
-                            "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all",
+                            "flex items-center gap-1.5 px-4 py-2 rounded-md text-[13px] font-medium transition-all duration-200",
                             viewMode === 'basic'
-                                ? "bg-zinc-900 text-white shadow-md"
-                                : "text-slate-500 hover:text-slate-900 hover:bg-slate-100"
+                                ? "bg-slate-900 text-white shadow-sm"
+                                : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
                         )}
                     >
                         <FileSignature className="w-3.5 h-3.5" />
@@ -489,12 +489,12 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
 
             {/* A4 Container */}
             {viewMode === 'basic' ? (
-                <div className="quotation-paper quotation-paper--basic mx-auto bg-white shadow-xl relative w-full max-w-5xl overflow-x-auto">
+                <div className="quotation-paper quotation-paper--basic mx-auto bg-white shadow-lg rounded-xl border border-slate-200/60 relative w-full max-w-5xl overflow-x-auto">
                     <QuotationDocumentPaper quotation={currentQuotation} brandConfig={brandConfig} />
                 </div>
             ) : (
             <div
-                className="quotation-paper quotation-paper--modern mx-auto bg-white shadow-xl relative w-full max-w-5xl overflow-x-auto"
+                className="quotation-paper quotation-paper--modern mx-auto bg-white shadow-lg rounded-xl border border-slate-200/60 relative w-full max-w-5xl overflow-x-auto"
             >
 
                 <div className="quotation-inner p-6 sm:p-10">
@@ -566,29 +566,30 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                         </div>
 
                         {/* Divider */}
-                        <hr className="border-slate-200 my-6" />
+                        <Separator className="my-6" />
 
                         <div className="mb-6">
-                            <h3 className="text-[13px] font-semibold text-black mb-2 border-l-4 border-black pl-3 leading-none h-3.5 flex items-center">
-                                Thông tin khách hàng<span className="text-[0.8em] italic font-normal opacity-70">/ Customer</span>
+                            <h3 className="text-[13px] font-semibold text-slate-900 mb-3 border-l-[3px] border-slate-900 pl-3 leading-none flex items-center gap-1">
+                                Thông tin khách hàng
+                                <span className="text-[12px] italic font-normal text-muted-foreground">/ Customer</span>
                             </h3>
-                            <div className="bg-slate-50 p-4 rounded-md border border-slate-100 flex flex-col gap-2 text-[12px] sm:text-[13px]">
-                                <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr]">
-                                    <span className="text-slate-500 sm:text-slate-700 italic sm:not-italic">Đơn vị<span className="text-[0.8em] italic font-normal opacity-70">/ Company</span>:</span>
-                                    <span className="font-semibold text-black">{currentQuotation.customer?.company_name || "N/A"}</span>
+                            <div className="bg-slate-50/80 p-4 rounded-lg border border-slate-200 flex flex-col gap-2.5 text-[13px]">
+                                <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1">
+                                    <span className="text-muted-foreground font-medium">Đơn vị:</span>
+                                    <span className="font-semibold text-slate-900">{currentQuotation.customer?.company_name || "N/A"}</span>
                                 </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr]">
-                                    <span className="text-slate-500 sm:text-slate-700 italic sm:not-italic">Địa chỉ<span className="text-[0.8em] italic font-normal opacity-70">/ Address</span>:</span>
-                                    <span className="text-black">{currentQuotation.customer?.address || "N/A"}</span>
+                                <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1">
+                                    <span className="text-muted-foreground font-medium">Địa chỉ:</span>
+                                    <span className="text-slate-700">{currentQuotation.customer?.address || "N/A"}</span>
                                 </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr]">
-                                    <span className="text-slate-500 sm:text-slate-700 italic sm:not-italic">Người liên hệ<span className="text-[0.8em] italic font-normal opacity-70">/ Attn</span>:</span>
-                                    <span className="font-medium text-black">{currentQuotation.customer?.contact_name || "N/A"}</span>
+                                <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1">
+                                    <span className="text-muted-foreground font-medium">Người liên hệ:</span>
+                                    <span className="font-medium text-slate-900">{currentQuotation.customer?.contact_name || "N/A"}</span>
                                 </div>
                                 {currentQuotation.customer?.tax_code && (
-                                    <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr]">
-                                        <span className="text-slate-500 sm:text-slate-700 italic sm:not-italic">Mã số thuế<span className="text-[0.8em] italic font-normal opacity-70">/ Tax ID</span>:</span>
-                                        <span className="text-black">{currentQuotation.customer.tax_code}</span>
+                                    <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1">
+                                        <span className="text-muted-foreground font-medium">Mã số thuế:</span>
+                                        <span className="text-slate-700">{currentQuotation.customer.tax_code}</span>
                                     </div>
                                 )}
                             </div>
@@ -598,17 +599,13 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                         {hasProposal && proposalSections.length > 0 && (
                             <div className="mb-10">
                                 {/* Proposal Header */}
-                                <div className="relative mb-6 py-4 px-5 rounded-md text-white overflow-hidden bg-zinc-950"
-                                    style={{ backgroundImage: "linear-gradient(to right, #09090b, #171717, #404040)", WebkitPrintColorAdjust: 'exact' }}>
-                                    {/* Dot pattern as a separate layer for html2canvas compatibility */}
-                                    <div className="absolute inset-0 opacity-20 pointer-events-none"
-                                        style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='rgba(255,255,255,1)'/%3E%3C/svg%3E\")" }}>
-                                    </div>
-                                    <div className="relative z-10">
+                                <Card className="mb-6 border-slate-900 bg-slate-900 text-white overflow-hidden"
+                                    style={{ WebkitPrintColorAdjust: 'exact' }}>
+                                    <CardContent className="p-5">
                                         <h3 className="text-[15px] font-bold">Đề xuất giải pháp</h3>
-                                        <p className="text-[11px] text-zinc-300 mt-0.5">Proposal — {proposalSections.length} hạng mục</p>
-                                    </div>
-                                </div>
+                                        <p className="text-[12px] text-slate-400 mt-0.5 font-medium">Proposal — {proposalSections.length} hạng mục</p>
+                                    </CardContent>
+                                </Card>
 
                                 {/* Timeline Steps */}
                                 <div className="relative pl-8 before:absolute before:left-[11px] before:top-[24px] before:bottom-2 before:w-[2px] before:bg-slate-200 before:rounded-full">
@@ -617,36 +614,40 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                         return (
                                             <div key={idx} className="proposal-section relative mb-5 last:mb-0">
                                                 {/* Timeline dot */}
-                                                <div className="absolute -left-8 top-[24px] -translate-y-1/2 w-[22px] h-[22px] rounded-full flex items-center justify-center text-white bg-zinc-900 text-[9px] font-bold z-10"
+                                                <div className="absolute -left-8 top-[24px] -translate-y-1/2 w-[22px] h-[22px] rounded-full flex items-center justify-center text-white bg-slate-900 text-[9px] font-bold z-10"
                                                     style={{ WebkitPrintColorAdjust: 'exact' }}>
                                                     {idx + 1}
                                                 </div>
 
                                                 {/* Content Card */}
-                                                <div className="rounded-md border border-slate-200 bg-white overflow-hidden overflow-x-auto">
+                                                <Card className="border-slate-200 shadow-sm overflow-hidden">
                                                     {/* Card Header */}
-                                                    <div className="flex items-center gap-2.5 px-4 py-2.5 border-b bg-slate-50 border-slate-100 text-foreground"
-                                                        style={{ WebkitPrintColorAdjust: 'exact' }}>
-                                                        <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-zinc-900 text-white shadow-sm"
+                                                    <CardHeader className="p-0">
+                                                        <div className="flex items-center gap-2.5 px-4 py-2.5 border-b bg-slate-50 border-slate-100 text-foreground"
                                                             style={{ WebkitPrintColorAdjust: 'exact' }}>
-                                                            {icon}
-                                                        </span>
-                                                        <h4 className="text-[13px] font-bold leading-tight">
-                                                            {section.label}
-                                                        </h4>
-                                                    </div>
+                                                            <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-slate-900 text-white shadow-sm"
+                                                                style={{ WebkitPrintColorAdjust: 'exact' }}>
+                                                                {icon}
+                                                            </span>
+                                                            <CardTitle className="text-[13px] font-bold leading-tight">
+                                                                {section.label}
+                                                            </CardTitle>
+                                                        </div>
+                                                    </CardHeader>
                                                     {/* Card Body */}
-                                                    <div className="px-5 py-4 text-[12px] text-slate-800 leading-relaxed space-y-2">
-                                                        {section.content.split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
-                                                            <div key={i} className="flex gap-2.5 pl-1">
-                                                                <div className="shrink-0 mt-[7px]">
-                                                                    <div className="w-1 h-1 rounded-full bg-zinc-400" />
+                                                    <CardContent className="px-5 py-4">
+                                                        <div className="text-[12px] text-slate-700 leading-relaxed space-y-2">
+                                                            {section.content.split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
+                                                                <div key={i} className="flex gap-2.5 pl-1 items-start">
+                                                                    <div className="shrink-0 mt-[7px]">
+                                                                        <div className="w-1 h-1 rounded-full bg-slate-400" />
+                                                                    </div>
+                                                                    <span className="flex-1 font-medium text-slate-800">{line.replace(/^[•\-\*]\s*/, '')}</span>
                                                                 </div>
-                                                                <span className="flex-1 font-semibold text-slate-900">{line.replace(/^[•\-\*]\s*/, '')}</span>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </CardContent>
+                                                </Card>
                                             </div>
                                         );
                                     })}
@@ -656,11 +657,11 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
 
                         {/* Investment Details Table */}
                         <div className="mb-8 pt-6 border-t border-slate-100/50 mt-2">
-                            <h3 className="text-[14px] font-bold text-black mb-6 border-l-4 border-black pl-3 flex items-center">
+                            <h3 className="text-[14px] font-bold text-slate-900 mb-6 border-l-[3px] border-slate-900 pl-3 flex items-center">
                                 <span className="text-primary mr-2">{hasProposal ? `${proposalSections.length + 1}.` : ''}</span>
                                 {hasProposal ? 'Kế hoạch đầu tư' : 'Chi tiết dịch vụ'}
-                                {!hasProposal && <span className="text-[0.8em] italic font-normal opacity-70 ml-1">/ Service Details</span>}
-                                {hasProposal && <span className="text-[0.7em] italic font-normal opacity-50 ml-2">(Investment Plan)</span>}
+                                {!hasProposal && <span className="text-[12px] italic font-normal text-muted-foreground ml-1">/ Service Details</span>}
+                                {hasProposal && <span className="text-[11px] italic font-normal text-muted-foreground ml-2">(Investment Plan)</span>}
                             </h3>
                             <div className="border border-slate-200 rounded-lg overflow-x-auto">
                                 <table className="w-full text-left border-collapse text-[11px] min-w-[900px]">
@@ -802,90 +803,103 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 mt-6">
                                 <div className="hidden sm:block"></div>
-                                <div className="w-full bg-slate-50/50 p-4 rounded-md border border-dashed border-slate-200 divide-y divide-slate-100">
-                                    <div className="flex justify-between py-1.5 text-[12px]">
-                                        <span className="text-slate-500 italic">Tạm tính:</span>
-                                        <span className="font-medium text-slate-900">{formatCurrency(subtotalRaw)}</span>
-                                    </div>
-                                    {totalDiscount > 0 && (
-                                        <div className="flex justify-between py-1.5 text-[12px]">
-                                            <span className="text-muted-foreground italic">Chiết khấu:</span>
-                                            <span className="text-zinc-700">-{formatCurrency(totalDiscount)}</span>
+                                <Card className="border-slate-200 shadow-sm">
+                                    <CardContent className="p-4 divide-y divide-slate-100">
+                                        <div className="flex justify-between py-2 text-[13px]">
+                                            <span className="text-muted-foreground">Tạm tính:</span>
+                                            <span className="font-medium text-slate-900 tabular-nums">{formatCurrency(subtotalRaw)}</span>
                                         </div>
-                                    )}
-                                    {totalDiscount > 0 && (
-                                        <div className="flex justify-between py-1.5 text-[12px]">
-                                            <span className="text-slate-700 font-medium">Thành tiền sau CK:</span>
-                                            <span className="font-medium text-slate-900">{formatCurrency(subtotalNet)}</span>
+                                        {totalDiscount > 0 && (
+                                            <div className="flex justify-between py-2 text-[13px]">
+                                                <span className="text-muted-foreground">Chiết khấu:</span>
+                                                <span className="text-slate-700 tabular-nums">-{formatCurrency(totalDiscount)}</span>
+                                            </div>
+                                        )}
+                                        {totalDiscount > 0 && (
+                                            <div className="flex justify-between py-2 text-[13px]">
+                                                <span className="text-slate-700 font-medium">Thành tiền sau CK:</span>
+                                                <span className="font-medium text-slate-900 tabular-nums">{formatCurrency(subtotalNet)}</span>
+                                            </div>
+                                        )}
+                                        <div className="flex justify-between py-2 text-[13px]">
+                                            <span className="text-muted-foreground">VAT ({currentQuotation.vat_percent}%):</span>
+                                            <span className="font-medium text-slate-900 tabular-nums">{formatCurrency(vatAmount)}</span>
                                         </div>
-                                    )}
-                                    <div className="flex justify-between py-1.5 text-[12px]">
-                                        <span className="text-slate-500 italic">VAT ({currentQuotation.vat_percent}%):</span>
-                                        <span className="font-medium text-slate-900">{formatCurrency(vatAmount)}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center py-2.5">
-                                        <span className="font-bold text-slate-900 text-sm">Tổng cộng:</span>
-                                        <span className="font-bold text-lg text-slate-900">{formatCurrency(finalAmount)}</span>
-                                    </div>
-                                    <div className="flex justify-between items-start pt-2 text-[10px] italic text-slate-500">
-                                        <span className="shrink-0">Bằng chữ:</span>
-                                        <span className="text-right ml-4">{readNumberToWords(finalAmount)}</span>
-                                    </div>
-                                </div>
+                                        <div className="flex justify-between items-center py-3">
+                                            <span className="font-bold text-slate-900 text-[15px]">Tổng cộng:</span>
+                                            <span className="font-bold text-xl text-slate-900 tabular-nums tracking-tight">{formatCurrency(finalAmount)}</span>
+                                        </div>
+                                        <div className="flex justify-between items-start pt-2.5 text-[11px] text-muted-foreground">
+                                            <span className="shrink-0 italic">Bằng chữ:</span>
+                                            <span className="text-right ml-4 italic">{readNumberToWords(finalAmount)}</span>
+                                        </div>
+                                    </CardContent>
+                                </Card>
                             </div>
 
                             {/* Footer Section: Notes & Bank Info */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-auto">
                                 {/* Left Column: Notes & Terms */}
-                                <div className="bg-slate-50 p-4 rounded-md border border-slate-100 flex flex-col gap-4 h-full">
-                                    <div>
-                                        <h4 className="font-semibold text-black mb-1.5 text-[12px]">Ghi chú <span className="text-[0.8em] italic font-normal opacity-70">/ Notes</span>:</h4>
-                                        <div className="text-xs text-black leading-relaxed space-y-1">
-                                            {(currentQuotation.notes || brandConfig?.default_notes || 'Báo giá có hiệu lực trong vòng 07 ngày.\nGiá trên chưa bao gồm chi phí mua tên miền & hosting (nếu có).\nNội dung công việc sẽ được mô tả chi tiết trong hợp đồng.').split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
-                                                <div key={i} className="flex gap-2">
-                                                    <span className="shrink-0 text-slate-400 mt-[-2px] text-lg font-bold">•</span>
-                                                    <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
-                                                </div>
-                                            ))}
+                                <Card className="border-slate-200 shadow-sm">
+                                    <CardContent className="p-4 flex flex-col gap-4 h-full">
+                                        <div>
+                                            <h4 className="font-semibold text-slate-900 mb-2 text-[13px]">
+                                                Ghi chú <span className="text-muted-foreground italic font-normal">/ Notes</span>
+                                            </h4>
+                                            <div className="text-[12px] text-slate-700 leading-relaxed space-y-1.5">
+                                                {(currentQuotation.notes || brandConfig?.default_notes || 'Báo giá có hiệu lực trong vòng 07 ngày.\nGiá trên chưa bao gồm chi phí mua tên miền & hosting (nếu có).\nNội dung công việc sẽ được mô tả chi tiết trong hợp đồng.').split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
+                                                    <div key={i} className="flex gap-2 items-start">
+                                                        <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
+                                                        <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="border-t border-slate-200 pt-3 mt-auto">
-                                        <h4 className="font-semibold text-black mb-1.5 text-[12px]">Điều khoản thanh toán <span className="text-[0.8em] italic font-normal opacity-70">/ Payment Terms</span>:</h4>
-                                        <div className="text-xs text-black leading-relaxed space-y-1">
-                                            {(currentQuotation.terms || brandConfig?.default_payment_terms || "50% đặt cọc khi xác nhận báo giá\n50% còn lại thanh toán khi hoàn thành").split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
-                                                <div key={i} className="flex gap-2">
-                                                    <span className="shrink-0 text-slate-400 mt-[-2px] text-lg font-bold">•</span>
-                                                    <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
-                                                </div>
-                                            ))}
+                                        <Separator />
+                                        <div>
+                                            <h4 className="font-semibold text-slate-900 mb-2 text-[13px]">
+                                                Điều khoản thanh toán <span className="text-muted-foreground italic font-normal">/ Payment Terms</span>
+                                            </h4>
+                                            <div className="text-[12px] text-slate-700 leading-relaxed space-y-1.5">
+                                                {(currentQuotation.terms || brandConfig?.default_payment_terms || "50% đặt cọc khi xác nhận báo giá\n50% còn lại thanh toán khi hoàn thành").split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
+                                                    <div key={i} className="flex gap-2 items-start">
+                                                        <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
+                                                        <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    </CardContent>
+                                </Card>
 
                                 {/* Right Column: Bank Transfer */}
-                                <div className="bg-slate-50 p-4 rounded-md border border-slate-100 h-fit">
-                                    <h4 className="font-semibold text-black mb-1.5 text-[12px]">Thông tin chuyển khoản<span className="text-[0.8em] italic font-normal opacity-70 ml-1 normal-case">/ Bank Transfer</span></h4>
-                                    <div className="space-y-2 text-xs">
-                                        <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] items-baseline">
-                                            <span className="text-slate-500 sm:text-black italic sm:not-italic">Ngân hàng<span className="text-[0.8em] italic opacity-70">/ Bank</span>:</span>
-                                            <span className="font-semibold text-black">{currentQuotation.bank_name || brandConfig?.bank_name || "Techcombank"}</span>
-                                        </div>
-                                        <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] items-baseline">
-                                            <span className="text-slate-500 sm:text-black italic sm:not-italic">Số TK<span className="text-[0.8em] italic opacity-70">/ Account No</span>:</span>
-                                            <span className="font-mono text-sm font-semibold text-black leading-none">{currentQuotation.bank_account_no || brandConfig?.bank_account_no || "190368686868"}</span>
-                                        </div>
-                                        <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] items-baseline">
-                                            <span className="text-slate-500 sm:text-black italic sm:not-italic">Chủ TK<span className="text-[0.8em] italic opacity-70">/ Account Name</span>:</span>
-                                            <span className="font-semibold text-black">{currentQuotation.bank_account_name || brandConfig?.bank_account_name || "Công ty TNHH Tulie"}</span>
-                                        </div>
-                                        {(currentQuotation.bank_branch || brandConfig?.bank_branch) && (
-                                            <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] items-baseline">
-                                                <span className="text-slate-500 sm:text-black italic sm:not-italic">Chi nhánh<span className="text-[0.8em] italic opacity-70">/ Branch</span>:</span>
-                                                <span className="font-semibold text-black">{currentQuotation.bank_branch || brandConfig?.bank_branch}</span>
+                                <Card className="border-slate-200 shadow-sm h-fit">
+                                    <CardContent className="p-4">
+                                        <h4 className="font-semibold text-slate-900 mb-3 text-[13px]">
+                                            Thông tin chuyển khoản <span className="text-muted-foreground italic font-normal">/ Bank Transfer</span>
+                                        </h4>
+                                        <div className="space-y-2.5 text-[13px]">
+                                            <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1">
+                                                <span className="text-muted-foreground font-medium">Ngân hàng:</span>
+                                                <span className="font-semibold text-slate-900">{currentQuotation.bank_name || brandConfig?.bank_name || "Techcombank"}</span>
                                             </div>
-                                        )}
-                                    </div>
-                                </div>
+                                            <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1">
+                                                <span className="text-muted-foreground font-medium">Số TK:</span>
+                                                <span className="font-mono text-sm font-bold text-slate-900 tabular-nums">{currentQuotation.bank_account_no || brandConfig?.bank_account_no || "190368686868"}</span>
+                                            </div>
+                                            <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1">
+                                                <span className="text-muted-foreground font-medium">Chủ TK:</span>
+                                                <span className="font-semibold text-slate-900">{currentQuotation.bank_account_name || brandConfig?.bank_account_name || "Công ty TNHH Tulie"}</span>
+                                            </div>
+                                            {(currentQuotation.bank_branch || brandConfig?.bank_branch) && (
+                                                <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1">
+                                                    <span className="text-muted-foreground font-medium">Chi nhánh:</span>
+                                                    <span className="font-semibold text-slate-900">{currentQuotation.bank_branch || brandConfig?.bank_branch}</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </CardContent>
+                                </Card>
                             </div>
                         </div>
 
@@ -914,34 +928,34 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
 
             {/* History Timeline Panel has been moved to sidebar */}
 
-            {/* Sticky Action Footer - Premium Redesign */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white/85 backdrop-blur-xl border-t border-slate-200/60 shadow-[0_-8px_30px_-15px_rgba(0,0,0,0.1)] p-4 sm:py-5 z-50 print:hidden transition-all duration-300">
+            {/* Sticky Action Footer - Shadcn Design */}
+            <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-200 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.08)] p-4 sm:py-4 z-50 print:hidden">
                 <div className="container max-w-5xl mx-auto px-4 sm:px-6">
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                         <div className="hidden sm:flex flex-col justify-center">
-                            <div className="flex items-center gap-3 mb-1.5">
-                                <span className="text-sm font-medium text-slate-500">Tổng thanh toán</span>
-                                <div className="h-3.5 w-px bg-slate-300" />
-                                <span className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
+                            <div className="flex items-center gap-3 mb-1">
+                                <span className="text-[13px] font-medium text-muted-foreground">Tổng thanh toán</span>
+                                <Separator orientation="vertical" className="h-3.5" />
+                                <span className="text-[12px] text-muted-foreground font-medium flex items-center gap-1.5">
                                     <Phone className="w-3.5 h-3.5" /> Tư vấn thêm: <a href={`tel:${brandConfig?.hotline || "0988984554"}`} className="text-slate-900 font-semibold hover:text-blue-600 transition-colors">{brandConfig?.hotline || "098.898.4554"}</a>
                                 </span>
                             </div>
                             <div className="flex items-baseline gap-1.5">
-                                <span className="text-[32px] font-bold text-slate-900 leading-none tabular-nums">{new Intl.NumberFormat('vi-VN').format(finalAmount)}</span>
-                                <span className="text-base font-bold text-slate-400">VND</span>
+                                <span className="text-[28px] font-bold text-slate-900 leading-none tabular-nums tracking-tight">{new Intl.NumberFormat('vi-VN').format(finalAmount)}</span>
+                                <span className="text-sm font-bold text-muted-foreground">VND</span>
                             </div>
                         </div>
                         
-                        <div className="sm:hidden flex flex-col items-center w-full mb-2">
-                            <span className="text-xs font-medium text-slate-500 mb-1">Tổng thanh toán</span>
-                            <span className="text-2xl font-bold text-slate-900 tabular-nums">{new Intl.NumberFormat('vi-VN').format(finalAmount)} <span className="text-sm text-slate-400">VND</span></span>
+                        <div className="sm:hidden flex flex-col items-center w-full mb-1">
+                            <span className="text-[12px] font-medium text-muted-foreground mb-0.5">Tổng thanh toán</span>
+                            <span className="text-2xl font-bold text-slate-900 tabular-nums tracking-tight">{new Intl.NumberFormat('vi-VN').format(finalAmount)} <span className="text-sm text-muted-foreground">VND</span></span>
                         </div>
 
-                        <div className="grid grid-cols-2 sm:flex sm:items-center gap-3 w-full sm:w-auto">
+                        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2.5 w-full sm:w-auto">
                             <Button
                                 variant="ghost"
                                 size="default"
-                                className="font-medium text-slate-500 hover:text-red-600 hover:bg-red-50 order-2 sm:order-1 rounded-full px-6 transition-colors h-11"
+                                className="font-medium text-muted-foreground hover:text-red-600 hover:bg-red-50 order-2 sm:order-1 h-10"
                                 onClick={() => setShowReject(true)}
                                 disabled={['accepted', 'rejected'].includes(currentQuotation.status)}
                             >
@@ -950,15 +964,15 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                             <Button
                                 variant="outline"
                                 size="default"
-                                className="font-medium border-slate-200 hover:bg-slate-50 order-3 sm:order-2 rounded-full px-6 shadow-sm hidden sm:flex h-11"
+                                className="font-medium border-slate-200 hover:bg-slate-50 order-3 sm:order-2 shadow-sm hidden sm:flex h-10"
                                 onClick={() => window.print()}
                             >
-                                <Printer className="mr-2 h-4 w-4 text-slate-500" />
+                                <Printer className="mr-2 h-4 w-4 text-muted-foreground" />
                                 In báo giá
                             </Button>
                             <Button
                                 size="default"
-                                className="col-span-2 sm:col-span-1 bg-slate-900 text-white hover:bg-slate-800 font-bold order-1 sm:order-3 rounded-full px-8 shadow-md hover:shadow-lg transition-all h-11"
+                                className="col-span-2 sm:col-span-1 bg-slate-900 text-white hover:bg-slate-800 font-semibold order-1 sm:order-3 px-6 shadow-sm transition-all h-10"
                                 onClick={() => setShowConfirm(true)}
                                 disabled={isSubmitting || ['accepted', 'rejected'].includes(currentQuotation.status)}
                             >
