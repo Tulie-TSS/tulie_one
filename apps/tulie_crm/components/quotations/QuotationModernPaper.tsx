@@ -325,7 +325,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                 <span className="font-bold text-slate-950 text-sm">Tổng cộng thanh toán</span>
                                 <span className="font-bold text-2xl text-slate-950 tracking-tighter">{formatCurrency(finalAmount)}</span>
                             </div>
-                            <div className="text-right pt-2 text-[10px] text-slate-500 font-medium italic">
+                            <div className="text-right pt-2 text-[10px] text-slate-500 font-medium">
                                 Số tiền viết bằng chữ: {readNumberToWords(finalAmount)}
                             </div>
                         </div>
@@ -372,7 +372,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                             </div>
                             <div className="grid grid-cols-[110px_1fr] items-baseline">
                                 <span className="text-slate-500">Chủ tài khoản:</span>
-                                <span className="font-bold text-black uppercase">{quotation.bank_account_name || brandConfig?.bank_account_name || "CÔNG TY TNHH TULIE"}</span>
+                                <span className="font-bold text-black">{quotation.bank_account_name || brandConfig?.bank_account_name || "CÔNG TY TNHH TULIE"}</span>
                             </div>
                             <div className="grid grid-cols-[110px_1fr] items-baseline">
                                 <span className="text-slate-500">Chi nhánh:</span>
