@@ -117,72 +117,56 @@ export default async function CustomersReportPage() {
         <div className="space-y-6">
             {/* Header */}
             <div className="flex items-center gap-4">
-                <Button variant="ghost" size="icon" asChild>
+                <Button variant="outline" size="icon" asChild className="h-9 w-9">
                     <Link href="/reports">
                         <ArrowLeft className="h-4 w-4" />
                     </Link>
                 </Button>
                 <div>
                     <h1 className="text-2xl font-semibold tracking-tight">Báo cáo khách hàng</h1>
-                    <p className="text-muted-foreground">Phân tích tăng trưởng và phân loại khách hàng</p>
+                    <p className="text-sm text-muted-foreground mt-1">Phân tích tăng trưởng và phân loại khách hàng</p>
                 </div>
             </div>
 
             {/* KPI Cards */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
-                    <CardContent className="pt-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-xs font-medium text-muted-foreground">Tổng khách hàng</p>
-                                <p className="text-3xl font-bold mt-1">{data.totalCustomers}</p>
-                            </div>
-                            <div className="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                                <Users className="h-5 w-5 text-blue-600" />
-                            </div>
-                        </div>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                        <CardTitle className="text-sm font-medium">Tổng khách hàng</CardTitle>
+                        <Users className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{data.totalCustomers}</div>
                     </CardContent>
                 </Card>
 
                 <Card>
-                    <CardContent className="pt-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-xs font-medium text-muted-foreground">Mới (30 ngày)</p>
-                                <p className="text-3xl font-bold mt-1 text-emerald-600">+{data.newCustomers30d}</p>
-                            </div>
-                            <div className="h-10 w-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                                <UserPlus className="h-5 w-5 text-emerald-600" />
-                            </div>
-                        </div>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                        <CardTitle className="text-sm font-medium">Mới (30 ngày)</CardTitle>
+                        <UserPlus className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-500">+{data.newCustomers30d}</div>
                     </CardContent>
                 </Card>
 
                 <Card>
-                    <CardContent className="pt-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-xs font-medium text-muted-foreground">Đang hoạt động</p>
-                                <p className="text-3xl font-bold mt-1">{data.statusBreakdown.active}</p>
-                            </div>
-                            <div className="h-10 w-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                                <UserCheck className="h-5 w-5 text-purple-600" />
-                            </div>
-                        </div>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                        <CardTitle className="text-sm font-medium">Đang hoạt động</CardTitle>
+                        <UserCheck className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{data.statusBreakdown.active}</div>
                     </CardContent>
                 </Card>
 
                 <Card>
-                    <CardContent className="pt-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-xs font-medium text-muted-foreground">Tiềm năng</p>
-                                <p className="text-3xl font-bold mt-1">{data.statusBreakdown.prospect + data.statusBreakdown.lead}</p>
-                            </div>
-                            <div className="h-10 w-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                                <Star className="h-5 w-5 text-amber-600" />
-                            </div>
-                        </div>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                        <CardTitle className="text-sm font-medium">Tiềm năng</CardTitle>
+                        <Star className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{data.statusBreakdown.prospect + data.statusBreakdown.lead}</div>
                     </CardContent>
                 </Card>
             </div>
@@ -190,7 +174,7 @@ export default async function CustomersReportPage() {
             {/* Growth Chart */}
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base">Khách hàng mới theo tháng</CardTitle>
+                    <CardTitle className="text-base font-semibold">Khách hàng mới theo tháng</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <CustomerCharts data={data.monthlyGrowth} />
@@ -201,24 +185,24 @@ export default async function CustomersReportPage() {
                 {/* Status Breakdown */}
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-base">Phân loại theo trạng thái</CardTitle>
+                        <CardTitle className="text-base font-semibold">Phân loại theo trạng thái</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-3">
+                        <div className="space-y-4">
                             {[
                                 { name: 'Đang hoạt động', count: data.statusBreakdown.active, color: 'bg-emerald-500' },
-                                { name: 'Tiềm năng', count: data.statusBreakdown.prospect, color: 'bg-blue-500' },
+                                { name: 'Tiềm năng', count: data.statusBreakdown.prospect, color: 'bg-primary' },
                                 { name: 'Lead', count: data.statusBreakdown.lead, color: 'bg-amber-500' },
-                                { name: 'Không hoạt động', count: data.statusBreakdown.inactive, color: 'bg-zinc-400' },
+                                { name: 'Không hoạt động', count: data.statusBreakdown.inactive, color: 'bg-muted-foreground' },
                             ].map(status => {
                                 const pct = data.totalCustomers > 0 ? (status.count / data.totalCustomers) * 100 : 0
                                 return (
-                                    <div key={status.name} className="space-y-1">
+                                    <div key={status.name} className="space-y-1.5">
                                         <div className="flex items-center justify-between text-sm">
-                                            <span className="font-medium">{status.name}</span>
-                                            <span className="text-muted-foreground">{status.count} ({pct.toFixed(0)}%)</span>
+                                            <span className="font-medium text-foreground">{status.name}</span>
+                                            <span className="text-muted-foreground font-mono text-xs">{status.count} ({pct.toFixed(0)}%)</span>
                                         </div>
-                                        <div className="h-2 bg-muted rounded-full overflow-hidden">
+                                        <div className="h-2.5 bg-secondary rounded-full overflow-hidden">
                                             <div
                                                 className={`h-full rounded-full ${status.color} transition-all duration-700`}
                                                 style={{ width: `${Math.max(pct, 2)}%` }}
@@ -232,92 +216,102 @@ export default async function CustomersReportPage() {
                 </Card>
 
                 {/* Source Breakdown */}
-                <Card>
+                <Card className="flex flex-col">
                     <CardHeader>
-                        <CardTitle className="text-base">Nguồn khách hàng</CardTitle>
+                        <CardTitle className="text-base font-semibold">Nguồn khách hàng</CardTitle>
                     </CardHeader>
-                    <CardContent>
-                        <div className="space-y-3">
-                            {Object.entries(data.sourceBreakdown)
-                                .sort((a, b) => b[1] - a[1])
-                                .slice(0, 8)
-                                .map(([source, count]) => {
-                                    const pct = data.totalCustomers > 0 ? (count / data.totalCustomers) * 100 : 0
-                                    return (
-                                        <div key={source} className="flex items-center justify-between text-sm">
-                                            <div className="flex items-center gap-2">
-                                                <div className="h-2 w-2 rounded-full bg-primary" />
-                                                <span className="font-medium">{source}</span>
+                    <CardContent className="flex-1">
+                        {Object.keys(data.sourceBreakdown).length > 0 ? (
+                            <div className="space-y-4">
+                                {Object.entries(data.sourceBreakdown)
+                                    .sort((a, b) => b[1] - a[1])
+                                    .slice(0, 8)
+                                    .map(([source, count]) => {
+                                        const pct = data.totalCustomers > 0 ? (count / data.totalCustomers) * 100 : 0
+                                        return (
+                                            <div key={source} className="flex items-center justify-between text-sm group">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="h-2 w-2 rounded-full bg-primary" />
+                                                    <span className="font-medium text-foreground">{source}</span>
+                                                </div>
+                                                <span className="text-muted-foreground font-mono text-xs">{count} ({pct.toFixed(0)}%)</span>
                                             </div>
-                                            <span className="text-muted-foreground">{count} ({pct.toFixed(0)}%)</span>
-                                        </div>
-                                    )
-                                })}
-                            {Object.keys(data.sourceBreakdown).length === 0 && (
+                                        )
+                                    })}
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-8 text-center h-full">
+                                <Users className="h-8 w-8 text-muted-foreground/50 mb-3" />
                                 <p className="text-sm text-muted-foreground">Chưa có dữ liệu nguồn khách hàng.</p>
-                            )}
-                        </div>
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
             </div>
 
             <div className="grid gap-4 lg:grid-cols-2">
                 {/* Top Customers by Revenue */}
-                <Card>
+                <Card className="flex flex-col">
                     <CardHeader>
-                        <CardTitle className="text-base">Top khách hàng theo doanh thu</CardTitle>
+                        <CardTitle className="text-base font-semibold">Top doanh thu</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="flex-1">
                         {data.topCustomers.length > 0 ? (
-                            <div className="space-y-3">
+                            <div className="space-y-4">
                                 {data.topCustomers.map((cust, i) => (
-                                    <div key={i} className="flex items-center justify-between">
+                                    <div key={i} className="flex items-center justify-between group">
                                         <div className="flex items-center gap-3 min-w-0">
-                                            <div className="h-8 w-8 rounded-lg bg-muted flex items-center justify-center text-xs font-bold shrink-0">
+                                            <div className="h-8 w-8 rounded-lg bg-secondary flex items-center justify-center text-xs font-bold shrink-0 text-muted-foreground">
                                                 {i + 1}
                                             </div>
-                                            <div className="min-w-0">
-                                                <p className="text-sm font-medium truncate">{cust.name}</p>
-                                                <p className="text-xs text-muted-foreground">{cust.contracts} hợp đồng</p>
+                                            <div className="min-w-0 flex flex-col">
+                                                <p className="text-sm font-medium leading-none truncate">{cust.name}</p>
+                                                <p className="text-xs text-muted-foreground mt-1">{cust.contracts} hợp đồng</p>
                                             </div>
                                         </div>
-                                        <span className="text-sm font-semibold text-emerald-600 shrink-0 ml-2">{formatCurrency(cust.revenue)}</span>
+                                        <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 shrink-0 ml-2">{formatCurrency(cust.revenue)}</span>
                                     </div>
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-sm text-muted-foreground">Chưa có dữ liệu doanh thu khách hàng.</p>
+                            <div className="flex flex-col items-center justify-center py-8 text-center h-full">
+                                <Star className="h-8 w-8 text-muted-foreground/50 mb-3" />
+                                <p className="text-sm text-muted-foreground">Chưa có dữ liệu doanh thu khách hàng.</p>
+                            </div>
                         )}
                     </CardContent>
                 </Card>
 
                 {/* Recent Customers */}
-                <Card>
+                <Card className="flex flex-col">
                     <CardHeader>
-                        <CardTitle className="text-base">Khách hàng mới nhất</CardTitle>
+                        <CardTitle className="text-base font-semibold">Khách hàng mới nhất</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="flex-1">
                         {data.recentCustomers.length > 0 ? (
-                            <div className="space-y-3">
+                            <div className="space-y-4">
                                 {data.recentCustomers.map((cust: any) => (
-                                    <div key={cust.id} className="flex items-center justify-between">
+                                    <div key={cust.id} className="flex items-center justify-between group">
                                         <div className="flex items-center gap-3 min-w-0">
-                                            <div className="h-8 w-8 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0">
-                                                <Building2 className="h-4 w-4 text-blue-600" />
+                                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary">
+                                                <Building2 className="h-4 w-4 text-muted-foreground" />
                                             </div>
-                                            <div className="min-w-0">
-                                                <p className="text-sm font-medium truncate">{cust.company_name}</p>
-                                                <p className="text-xs text-muted-foreground">{formatDate(cust.created_at)}</p>
+                                            <div className="min-w-0 flex flex-col">
+                                                <span className="text-sm font-medium leading-none truncate">{cust.company_name}</span>
+                                                <span className="text-xs text-muted-foreground mt-1">{formatDate(cust.created_at)}</span>
                                             </div>
                                         </div>
-                                        <Badge variant={cust.status === 'active' ? 'default' : 'secondary'} className="text-[10px] shrink-0">
+                                        <Badge variant="outline" className="font-normal text-[10px] px-1.5 py-0 h-4">
                                             {cust.status === 'active' ? 'Active' : cust.status === 'prospect' ? 'Prospect' : cust.status}
                                         </Badge>
                                     </div>
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-sm text-muted-foreground">Chưa có khách hàng.</p>
+                            <div className="flex flex-col items-center justify-center py-8 text-center h-full">
+                                <Users className="h-8 w-8 text-muted-foreground/50 mb-3" />
+                                <p className="text-sm text-muted-foreground">Chưa có khách hàng.</p>
+                            </div>
                         )}
                     </CardContent>
                 </Card>

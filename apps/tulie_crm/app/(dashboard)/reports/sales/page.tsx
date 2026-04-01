@@ -40,82 +40,66 @@ export default async function SalesReportPage() {
         <div className="space-y-6">
             {/* Header */}
             <div className="flex items-center gap-4">
-                <Button variant="ghost" size="icon" asChild>
+                <Button variant="outline" size="icon" asChild className="h-9 w-9">
                     <Link href="/reports">
                         <ArrowLeft className="h-4 w-4" />
                     </Link>
                 </Button>
                 <div>
                     <h1 className="text-2xl font-semibold tracking-tight">Báo cáo bán hàng</h1>
-                    <p className="text-muted-foreground">Chi tiết doanh thu và hiệu suất bán hàng</p>
+                    <p className="text-sm text-muted-foreground mt-1">Chi tiết doanh thu và hiệu suất bán hàng</p>
                 </div>
             </div>
 
             {/* KPI Cards */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
-                    <CardContent className="pt-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-xs font-medium text-muted-foreground">Tổng doanh thu</p>
-                                <p className="text-2xl font-bold mt-1">{formatCurrency(stats.revenue.total)}</p>
-                            </div>
-                            <div className="h-10 w-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                                <DollarSign className="h-5 w-5 text-emerald-600" />
-                            </div>
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-2">
-                            12 tháng: {totalRevenue12m.toFixed(1)}tr VNĐ
+                    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                        <CardTitle className="text-sm font-medium">Tổng doanh thu</CardTitle>
+                        <DollarSign className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{formatCurrency(stats.revenue.total)}</div>
+                        <p className="text-xs text-muted-foreground mt-1">
+                            12 tháng: {totalRevenue12m.toFixed(1)} triệu VNĐ
                         </p>
                     </CardContent>
                 </Card>
 
                 <Card>
-                    <CardContent className="pt-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-xs font-medium text-muted-foreground">Chờ thanh toán</p>
-                                <p className="text-2xl font-bold mt-1 text-amber-600">{formatCurrency(stats.revenue.change)}</p>
-                            </div>
-                            <div className="h-10 w-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                                <Receipt className="h-5 w-5 text-amber-600" />
-                            </div>
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-2">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                        <CardTitle className="text-sm font-medium">Chờ thanh toán</CardTitle>
+                        <Receipt className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{formatCurrency(stats.revenue.change)}</div>
+                        <p className="text-xs text-muted-foreground mt-1">
                             {stats.invoices.pending} hóa đơn pending
                         </p>
                     </CardContent>
                 </Card>
 
                 <Card>
-                    <CardContent className="pt-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-xs font-medium text-muted-foreground">Hợp đồng đang chạy</p>
-                                <p className="text-2xl font-bold mt-1">{stats.contracts.active}</p>
-                            </div>
-                            <div className="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                                <FileText className="h-5 w-5 text-blue-600" />
-                            </div>
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-2">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                        <CardTitle className="text-sm font-medium">Hợp đồng đang chạy</CardTitle>
+                        <FileText className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{stats.contracts.active}</div>
+                        <p className="text-xs text-muted-foreground mt-1">
                             Giá trị: {formatCurrency(stats.contracts.change)}
                         </p>
                     </CardContent>
                 </Card>
 
                 <Card>
-                    <CardContent className="pt-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-xs font-medium text-muted-foreground">Tỉ lệ chuyển đổi</p>
-                                <p className="text-2xl font-bold mt-1">{stats.conversion_rate}%</p>
-                            </div>
-                            <div className="h-10 w-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                                <Target className="h-5 w-5 text-purple-600" />
-                            </div>
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-2">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                        <CardTitle className="text-sm font-medium">Tỉ lệ chuyển đổi</CardTitle>
+                        <Target className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{stats.conversion_rate}%</div>
+                        <p className="text-xs text-muted-foreground mt-1">
                             Hiệu quả thu tiền: {stats.efficiency_score}%
                         </p>
                     </CardContent>
@@ -125,7 +109,7 @@ export default async function SalesReportPage() {
             {/* Revenue Chart */}
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base">Doanh thu & Chi phí 12 tháng (triệu VNĐ)</CardTitle>
+                    <CardTitle className="text-base font-semibold">Doanh thu & Chi phí 12 tháng (triệu VNĐ)</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <SalesCharts revenueData={revenueChartData} />
@@ -136,23 +120,23 @@ export default async function SalesReportPage() {
                 {/* Deal Pipeline */}
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-base">Pipeline cơ hội</CardTitle>
+                        <CardTitle className="text-base font-semibold">Pipeline cơ hội</CardTitle>
                     </CardHeader>
                     <CardContent>
                         {pipelineStages.length > 0 ? (
-                            <div className="space-y-3">
+                            <div className="space-y-4">
                                 {pipelineStages.map(stage => {
                                     const maxVal = Math.max(...pipelineStages.map(s => s.value), 1)
                                     const widthPct = Math.max((stage.value / maxVal) * 100, 4)
                                     return (
-                                        <div key={stage.name} className="space-y-1">
+                                        <div key={stage.name} className="space-y-1.5">
                                             <div className="flex items-center justify-between text-sm">
-                                                <span className="font-medium">{stage.name}</span>
-                                                <span className="text-muted-foreground">{formatCurrency(stage.value)}</span>
+                                                <span className="font-medium text-foreground">{stage.name}</span>
+                                                <span className="text-muted-foreground font-mono text-xs">{formatCurrency(stage.value)}</span>
                                             </div>
-                                            <div className="h-2 bg-muted rounded-full overflow-hidden">
+                                            <div className="h-2.5 bg-secondary rounded-full overflow-hidden">
                                                 <div
-                                                    className={`h-full rounded-full ${stage.color} transition-all duration-700`}
+                                                    className={`h-full bg-primary rounded-full transition-all duration-700`}
                                                     style={{ width: `${widthPct}%` }}
                                                 />
                                             </div>
@@ -160,46 +144,49 @@ export default async function SalesReportPage() {
                                     )
                                 })}
                                 {dealStats && (
-                                    <div className="pt-3 mt-3 border-t flex justify-between text-sm">
-                                        <span className="font-semibold">Tổng tiềm năng</span>
-                                        <span className="font-bold">{formatCurrency(dealStats.total_potential)}</span>
+                                    <div className="pt-4 mt-4 border-t flex items-center justify-between">
+                                        <span className="text-sm font-medium text-muted-foreground">Tổng tiềm năng</span>
+                                        <span className="font-semibold text-lg">{formatCurrency(dealStats.total_potential)}</span>
                                     </div>
                                 )}
                             </div>
                         ) : (
-                            <p className="text-sm text-muted-foreground">Chưa có dữ liệu cơ hội.</p>
+                            <div className="flex flex-col items-center justify-center py-8 text-center">
+                                <FileText className="h-8 w-8 text-muted-foreground/50 mb-3" />
+                                <p className="text-sm text-muted-foreground">Chưa có dữ liệu cơ hội.</p>
+                            </div>
                         )}
                     </CardContent>
                 </Card>
 
                 {/* Recent Transactions */}
-                <Card>
+                <Card className="flex flex-col">
                     <CardHeader>
-                        <CardTitle className="text-base">Giao dịch gần đây</CardTitle>
+                        <CardTitle className="text-base font-semibold">Giao dịch gần đây</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="flex-1">
                         {recentTransactions.length > 0 ? (
-                            <div className="space-y-3">
+                            <div className="space-y-4">
                                 {recentTransactions.slice(0, 8).map((tx: any) => (
-                                    <div key={tx.id} className="flex items-center justify-between">
+                                    <div key={tx.id} className="flex items-center justify-between group">
                                         <div className="flex items-center gap-3 min-w-0">
-                                            <div className={`h-8 w-8 rounded-lg flex items-center justify-center shrink-0 ${tx.type === 'income' ? 'bg-emerald-500/10' : 'bg-red-500/10'}`}>
+                                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary">
                                                 {tx.type === 'income' ? (
-                                                    <TrendingUp className="h-4 w-4 text-emerald-600" />
+                                                    <TrendingUp className="h-4 w-4 text-emerald-500" />
                                                 ) : (
-                                                    <TrendingDown className="h-4 w-4 text-red-600" />
+                                                    <TrendingDown className="h-4 w-4 text-destructive" />
                                                 )}
                                             </div>
-                                            <div className="min-w-0">
-                                                <p className="text-sm font-medium truncate">{tx.description}</p>
-                                                <p className="text-xs text-muted-foreground">{tx.date ? new Date(tx.date).toLocaleDateString('vi-VN') : '—'}</p>
+                                            <div className="min-w-0 flex flex-col">
+                                                <span className="text-sm font-medium leading-none truncate">{tx.description}</span>
+                                                <span className="text-xs text-muted-foreground mt-1">{tx.date ? new Date(tx.date).toLocaleDateString('vi-VN') : '—'}</span>
                                             </div>
                                         </div>
-                                        <div className="text-right shrink-0">
-                                            <p className={`text-sm font-semibold ${tx.type === 'income' ? 'text-emerald-600' : 'text-red-600'}`}>
+                                        <div className="text-right shrink-0 flex flex-col items-end">
+                                            <span className={`text-sm font-medium leading-none ${tx.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-destructive'}`}>
                                                 {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
-                                            </p>
-                                            <Badge variant={tx.status === 'paid' ? 'default' : 'secondary'} className="text-[10px]">
+                                            </span>
+                                            <Badge variant="outline" className="mt-1 font-normal text-[10px] px-1.5 py-0 h-4">
                                                 {tx.status === 'paid' ? 'Đã TT' : tx.status === 'sent' ? 'Đã gửi' : tx.status}
                                             </Badge>
                                         </div>
@@ -207,7 +194,10 @@ export default async function SalesReportPage() {
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-sm text-muted-foreground">Chưa có giao dịch nào.</p>
+                            <div className="flex flex-col items-center justify-center h-full py-8 text-center">
+                                <Receipt className="h-8 w-8 text-muted-foreground/50 mb-3" />
+                                <p className="text-sm text-muted-foreground">Chưa có giao dịch nào.</p>
+                            </div>
                         )}
                     </CardContent>
                 </Card>
@@ -216,37 +206,39 @@ export default async function SalesReportPage() {
             {/* Health Summary */}
             <div className="grid gap-4 md:grid-cols-3">
                 <Card>
-                    <CardContent className="pt-6 text-center">
-                        <p className="text-xs font-medium text-muted-foreground mb-2">Sức khỏe doanh nghiệp</p>
-                        <p className="text-4xl font-bold">
-                            {stats.health_score}
-                            <span className="text-lg text-muted-foreground font-medium">/100</span>
-                        </p>
-                        <Badge className="mt-2" variant={stats.health_score >= 80 ? 'default' : stats.health_score >= 50 ? 'secondary' : 'destructive'}>
+                    <CardContent className="p-6 flex flex-col items-center justify-center text-center">
+                        <p className="text-sm font-medium text-muted-foreground mb-4">Sức khỏe doanh nghiệp</p>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-4xl font-bold tracking-tight">{stats.health_score}</span>
+                            <span className="text-sm font-medium text-muted-foreground">/100</span>
+                        </div>
+                        <Badge className="mt-4" variant={stats.health_score >= 80 ? 'default' : stats.health_score >= 50 ? 'secondary' : 'destructive'}>
                             {stats.health_score >= 80 ? 'Ổn định' : stats.health_score >= 50 ? 'Cần chú ý' : 'Báo động'}
                         </Badge>
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardContent className="pt-6 text-center">
-                        <p className="text-xs font-medium text-muted-foreground mb-2">Lợi nhuận 12 tháng</p>
-                        <p className={`text-4xl font-bold ${totalProfit12m >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
-                            {totalProfit12m.toFixed(1)}
-                            <span className="text-lg text-muted-foreground font-medium">tr</span>
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">
+                    <CardContent className="p-6 flex flex-col items-center justify-center text-center">
+                        <p className="text-sm font-medium text-muted-foreground mb-4">Lợi nhuận 12 tháng</p>
+                        <div className="flex items-baseline gap-1">
+                            <span className={`text-4xl font-bold tracking-tight ${totalProfit12m >= 0 ? '' : 'text-destructive'}`}>
+                                {totalProfit12m.toFixed(1)}
+                            </span>
+                            <span className="text-sm font-medium text-muted-foreground">triệu</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-4">
                             Thu: {totalRevenue12m.toFixed(1)}tr &mdash; Chi: {totalExpenses12m.toFixed(1)}tr
                         </p>
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardContent className="pt-6 text-center">
-                        <p className="text-xs font-medium text-muted-foreground mb-2">Hiệu quả thu tiền</p>
-                        <p className="text-4xl font-bold">
-                            {stats.efficiency_score}
-                            <span className="text-lg text-muted-foreground font-medium">%</span>
-                        </p>
-                        <div className="h-2 bg-muted rounded-full overflow-hidden mt-3">
+                    <CardContent className="p-6 flex flex-col items-center justify-center text-center">
+                        <p className="text-sm font-medium text-muted-foreground mb-4">Hiệu quả thu tiền</p>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-4xl font-bold tracking-tight">{stats.efficiency_score}</span>
+                            <span className="text-sm font-medium text-muted-foreground">%</span>
+                        </div>
+                        <div className="w-full h-2 bg-secondary rounded-full overflow-hidden mt-4">
                             <div
                                 className="h-full bg-primary rounded-full transition-all duration-700"
                                 style={{ width: `${stats.efficiency_score}%` }}
