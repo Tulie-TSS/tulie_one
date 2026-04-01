@@ -84,7 +84,7 @@ export function MentionInput({
     const atMatch = before.match(/@(\w*)$/)
 
     if (atMatch) {
-      setQuery(atMatch[1])
+      setQuery(atMatch[1] || "")
       setShowSuggestions(true)
       setSelectedIndex(0)
     } else {
