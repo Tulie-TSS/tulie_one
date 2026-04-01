@@ -929,7 +929,10 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
             {/* History Timeline Panel has been moved to sidebar */}
 
             {/* Sticky Action Footer - Shadcn Design */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-200 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.08)] p-4 sm:py-4 z-50 print:hidden">
+            <div className={cn(
+                "fixed bottom-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-200 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.08)] p-4 sm:py-4 z-50 print:hidden transition-all duration-300",
+                hasSidebar ? "left-0 xl:left-[420px]" : "left-0"
+            )}>
                 <div className="container max-w-5xl mx-auto px-4 sm:px-6">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                         <div className="hidden sm:flex flex-col justify-center">
@@ -955,7 +958,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                             <Button
                                 variant="ghost"
                                 size="default"
-                                className="font-medium text-muted-foreground hover:text-red-600 hover:bg-red-50 order-2 sm:order-1 h-10"
+                                className="font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/10 order-2 sm:order-1 h-10"
                                 onClick={() => setShowReject(true)}
                                 disabled={['accepted', 'rejected'].includes(currentQuotation.status)}
                             >
@@ -964,15 +967,15 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                             <Button
                                 variant="outline"
                                 size="default"
-                                className="font-medium border-slate-200 hover:bg-slate-50 order-3 sm:order-2 shadow-sm hidden sm:flex h-10"
+                                className="font-medium shadow-sm hidden sm:flex order-3 sm:order-2 h-10"
                                 onClick={() => window.print()}
                             >
-                                <Printer className="mr-2 h-4 w-4 text-muted-foreground" />
+                                <Printer className="mr-2 h-4 w-4" />
                                 In báo giá
                             </Button>
                             <Button
                                 size="default"
-                                className="col-span-2 sm:col-span-1 bg-slate-900 text-white hover:bg-slate-800 font-semibold order-1 sm:order-3 px-6 shadow-sm transition-all h-10"
+                                className="col-span-2 sm:col-span-1 font-semibold order-1 sm:order-3 px-6 shadow-sm transition-all h-10"
                                 onClick={() => setShowConfirm(true)}
                                 disabled={isSubmitting || ['accepted', 'rejected'].includes(currentQuotation.status)}
                             >
@@ -1244,7 +1247,8 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
 
                         <div className="flex flex-col gap-3">
                             <Button
-                                className="w-full h-12 bg-black text-white hover:bg-zinc-900 rounded-md font-bold shadow-xl shadow-black/10 transition-all"
+                                size="lg"
+                                className="w-full font-bold shadow-xl transition-all"
                                 onClick={handleConfirm}
                                 disabled={isSubmitting}
                             >
@@ -1253,7 +1257,8 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                             </Button>
                             <Button
                                 variant="ghost"
-                                className="w-full h-12 rounded-md text-muted-foreground hover:text-red-500 hover:bg-red-50 transition-all"
+                                size="lg"
+                                className="w-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all"
                                 onClick={() => setShowConfirm(false)}
                                 disabled={isSubmitting}
                             >
@@ -1287,7 +1292,9 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
 
                         <div className="flex flex-col gap-3">
                             <Button
-                                className="w-full h-12 bg-red-600 text-white hover:bg-red-700 rounded-md font-bold shadow-xl shadow-red-600/10 transition-all"
+                                variant="destructive"
+                                size="lg"
+                                className="w-full font-bold shadow-xl transition-all"
                                 onClick={handleRejectSubmit}
                                 disabled={isSubmitting}
                             >
@@ -1296,7 +1303,8 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                             </Button>
                             <Button
                                 variant="ghost"
-                                className="w-full h-12 rounded-md text-muted-foreground hover:text-muted-foreground transition-all"
+                                size="lg"
+                                className="w-full text-muted-foreground transition-all"
                                 onClick={() => setShowReject(false)}
                                 disabled={isSubmitting}
                             >
