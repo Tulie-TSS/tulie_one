@@ -36,9 +36,9 @@ async function getCustomerAnalytics() {
 
     // Status breakdown
     const statusBreakdown = {
-        active: customers?.filter(c => c.status === 'active').length || 0,
+        active: customers?.filter(c => c.status === 'customer' || c.status === 'vip').length || 0,
         prospect: customers?.filter(c => c.status === 'prospect').length || 0,
-        inactive: customers?.filter(c => c.status === 'inactive').length || 0,
+        inactive: customers?.filter(c => c.status === 'churned').length || 0,
         lead: customers?.filter(c => c.status === 'lead').length || 0,
     }
 
