@@ -61,6 +61,9 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
                         >
                             {quotation.quotation_number}
                         </Link>
+                        {quotation.is_primary && (
+                            <Badge variant="secondary" className="bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200">Pipeline</Badge>
+                        )}
                     </div>
                     {displayTitle && (
                         <p className="text-xs text-muted-foreground truncate max-w-[220px] mt-0.5">

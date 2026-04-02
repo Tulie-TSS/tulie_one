@@ -265,14 +265,15 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
 
   // Sync viSizes array when totalFreePrints or extraViCount changes
   const totalViSlots = totalFreePrints + extraViCount
-  if (viSizes.length !== totalViSlots) {
-    const newSizes = [...viSizes]
-    while (newSizes.length < totalViSlots) newSizes.push('mix')
-    while (newSizes.length > totalViSlots) newSizes.pop()
-    if (JSON.stringify(newSizes) !== JSON.stringify(viSizes)) {
-      setViSizes(newSizes)
-    }
-  }
+  useEffect(() => {
+    setViSizes(prev => {
+      if (prev.length === totalViSlots) return prev
+      const next = [...prev]
+      while (next.length < totalViSlots) next.push('mix')
+      while (next.length > totalViSlots) next.pop()
+      return next
+    })
+  }, [totalViSlots])
 
   const updateViSize = (index: number, sizeId: string) => {
     setViSizes(prev => {
@@ -1047,7 +1048,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
           <Card className="sticky bottom-4 z-10 shadow-lg shadow-black/5">
             <CardContent className="px-4 py-3 sm:p-6 flex items-center justify-between gap-3">
               <div className="min-w-0">
-                <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-widest">Tổng cộng (tạm tính)</p>
+                <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground tracking-widest">Tổng cộng (tạm tính)</p>
                 <div className="flex items-baseline gap-1">
                   <span className="text-xl sm:text-3xl font-bold text-foreground tracking-tighter tabular-nums">
                     {new Intl.NumberFormat('vi-VN').format(totalPrice)}

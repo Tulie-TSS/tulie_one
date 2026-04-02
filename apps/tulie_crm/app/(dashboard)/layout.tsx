@@ -24,7 +24,7 @@ export default async function DashboardLayout({
     return (
         <SidebarProvider>
             <AppSidebar />
-            <SidebarInset className="flex flex-1 flex-col min-w-0 bg-background relative overflow-y-auto w-full md:w-auto">
+            <SidebarInset className="flex flex-1 flex-col min-w-0 bg-background relative w-full md:w-auto">
                 <Header />
                 <main className="flex-1 bg-background p-4 sm:p-6">
                     {children}

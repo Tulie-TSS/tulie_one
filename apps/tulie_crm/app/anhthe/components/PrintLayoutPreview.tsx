@@ -142,7 +142,7 @@ export function PrintLayoutPreview({ sizeId }: { sizeId: string }) {
           </div>
         ))}
       </div>
-      <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-widest">
+      <p className="text-[11px] text-muted-foreground font-medium tracking-widest">
         Khổ giấy in 10 × 15 cm
       </p>
     </div>
