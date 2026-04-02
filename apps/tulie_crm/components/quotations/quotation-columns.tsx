@@ -62,7 +62,7 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
                             {quotation.quotation_number}
                         </Link>
                         {quotation.is_primary && (
-                            <Badge variant="secondary" className="bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200">Pipeline</Badge>
+                            <Badge variant="outline" className="bg-zinc-100 text-zinc-900 border-zinc-200 font-medium px-2 py-0.5">Pipeline</Badge>
                         )}
                     </div>
                     {displayTitle && (
