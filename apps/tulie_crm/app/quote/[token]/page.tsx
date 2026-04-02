@@ -22,12 +22,17 @@ async function resolveQuotationData(token: string) {
         const mainQuotation = portal.items[0].quotation
         if (!mainQuotation) return null
         
-        // Attach siblings directly
-        const siblings = portal.items.map(item => item.quotation).filter(Boolean)
+        // Attach siblings and portal.attachments directly
+        const siblings = portal.items.map(item => item.quotation ? {
+            ...item.quotation,
+            attachments: portal.attachments || [] // Persist portal attachments across all siblings
+        } : null).filter(Boolean)
+        
         return {
             ...mainQuotation,
             customer: portal.customer,
-            siblings
+            siblings,
+            attachments: portal.attachments || []
         }
     } else {
         return await getQuotationByToken(token)
