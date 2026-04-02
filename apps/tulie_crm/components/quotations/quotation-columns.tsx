@@ -91,12 +91,14 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
             const customer = row.original.customer
             if (!customer) return <span className="text-sm text-muted-foreground">-</span>
             return (
-                <Link
-                    href={`/customers/${customer.id}`}
-                    className="text-sm font-medium text-foreground hover:underline"
-                >
-                    {customer.company_name}
-                </Link>
+                <div className="max-w-[200px] xl:max-w-[300px]">
+                    <Link
+                        href={`/customers/${customer.id}`}
+                        className="text-sm font-medium text-foreground hover:underline line-clamp-2 whitespace-normal leading-snug"
+                    >
+                        {customer.company_name}
+                    </Link>
+                </div>
             )
         },
     },
