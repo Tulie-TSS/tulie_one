@@ -29,20 +29,20 @@ const getAlertIcon = (type: AlertItem['type']) => {
 const getSeverityColors = (severity: AlertItem['severity']) => {
     switch (severity) {
         case 'danger':
-            return 'bg-rose-500/10 text-rose-600 border-red-500/20'
+            return 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border-zinc-200 dark:border-zinc-700'
         case 'warning':
-            return 'bg-amber-500/10 text-yellow-600 border-yellow-500/20'
+            return 'bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'
         case 'info':
-            return 'bg-blue-500/10 text-blue-600 border-blue-500/20'
+            return 'bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800'
     }
 }
 
 const getSeverityBadge = (severity: AlertItem['severity']) => {
     switch (severity) {
         case 'danger':
-            return <Badge variant="destructive">Khẩn cấp</Badge>
+            return <Badge variant="outline" className="border-zinc-400 dark:border-zinc-600 text-zinc-900 dark:text-zinc-100 font-semibold">Khẩn cấp</Badge>
         case 'warning':
-            return <Badge className="bg-amber-500 hover:bg-yellow-600">Cảnh báo</Badge>
+            return <Badge variant="outline" className="border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300">Cảnh báo</Badge>
         case 'info':
             return <Badge variant="secondary">Thông tin</Badge>
     }
@@ -78,12 +78,7 @@ const getNotificationIcon = (type: NotificationType | string) => {
 
 const getNotifSeverityColor = (severity?: string, read?: boolean) => {
     if (read) return 'bg-muted dark:bg-zinc-900/50 text-muted-foreground border-border dark:border-zinc-800'
-    switch (severity) {
-        case 'success': return 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
-        case 'warning': return 'bg-amber-500/10 text-amber-600 border-amber-500/20'
-        case 'error': return 'bg-red-500/10 text-red-600 border-red-500/20'
-        default: return 'bg-blue-500/10 text-blue-600 border-blue-500/20'
-    }
+    return 'bg-zinc-50 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100 border-zinc-200 dark:border-zinc-700'
 }
 
 // Notification category mapping
@@ -189,8 +184,8 @@ export default async function NotificationsPage({
         <div className="space-y-6 p-4 md:p-8 pt-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 rounded-md bg-primary/10 flex items-center justify-center">
-                        <Bell className="h-6 w-6 text-primary" />
+                    <div className="h-10 w-10 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                        <Bell className="h-5 w-5 text-zinc-900 dark:text-zinc-100" />
                     </div>
                     <div>
                         <h1 className="text-2xl font-semibold tracking-tight">Thông báo</h1>
@@ -214,8 +209,8 @@ export default async function NotificationsPage({
                 <Card>
                     <CardContent className="pt-6">
                         <div className="flex items-center gap-4">
-                            <div className={`p-3 rounded-full ${alerts.filter(a => a.severity === 'danger').length > 0 ? 'bg-rose-100 text-rose-600' : 'bg-green-100 text-emerald-600'}`}>
-                                {alerts.filter(a => a.severity === 'danger').length > 0 ? <AlertTriangle className="h-6 w-6" /> : <CheckCircle className="h-6 w-6" />}
+                            <div className="p-3 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
+                                <AlertTriangle className="h-6 w-6" />
                             </div>
                             <div>
                                 <p className="text-sm text-muted-foreground">Khẩn cấp</p>
@@ -227,8 +222,8 @@ export default async function NotificationsPage({
                 <Card>
                     <CardContent className="pt-6">
                         <div className="flex items-center gap-4">
-                            <div className={`p-3 rounded-full ${alerts.filter(a => a.severity === 'warning').length > 0 ? 'bg-yellow-100 text-yellow-600' : 'bg-green-100 text-emerald-600'}`}>
-                                {alerts.filter(a => a.severity === 'warning').length > 0 ? <AlertTriangle className="h-6 w-6" /> : <CheckCircle className="h-6 w-6" />}
+                            <div className="p-3 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
+                                <AlertTriangle className="h-6 w-6" />
                             </div>
                             <div>
                                 <p className="text-sm text-muted-foreground">Cảnh báo</p>
@@ -240,7 +235,7 @@ export default async function NotificationsPage({
                 <Card>
                     <CardContent className="pt-6">
                         <div className="flex items-center gap-4">
-                            <div className="p-3 rounded-full bg-blue-100 text-blue-600">
+                            <div className="p-3 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
                                 <Bell className="h-6 w-6" />
                             </div>
                             <div>
@@ -253,7 +248,7 @@ export default async function NotificationsPage({
                 <Card>
                     <CardContent className="pt-6">
                         <div className="flex items-center gap-4">
-                            <div className="p-3 rounded-full bg-emerald-100 text-emerald-600">
+                            <div className="p-3 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
                                 <CheckCircle className="h-6 w-6" />
                             </div>
                             <div>
@@ -270,7 +265,7 @@ export default async function NotificationsPage({
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                            <AlertTriangle className="h-5 w-5 text-amber-500" />
+                            <AlertTriangle className="h-5 w-5 text-zinc-500" />
                             Cảnh báo hệ thống
                         </CardTitle>
                     </CardHeader>
@@ -305,7 +300,7 @@ export default async function NotificationsPage({
                 <CardHeader>
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <CardTitle className="flex items-center gap-2">
-                            <Bell className="h-5 w-5 text-blue-500" />
+                            <Bell className="h-5 w-5 text-zinc-500" />
                             Hoạt động gần đây
                         </CardTitle>
                     </div>
@@ -319,7 +314,7 @@ export default async function NotificationsPage({
                 <CardContent>
                     {notifications.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-12 text-center">
-                            <CheckCircle className="h-16 w-16 text-green-500 mb-4" />
+                            <CheckCircle className="h-16 w-16 text-zinc-300 dark:text-zinc-600 mb-4" />
                             <h3 className="text-lg font-semibold">Không có thông báo{activeCategory !== 'all' ? ` trong mục "${categoryConfig?.label}"` : ''}!</h3>
                             <p className="text-muted-foreground">Tất cả hoạt động đã được xem qua.</p>
                         </div>
@@ -348,7 +343,7 @@ export default async function NotificationsPage({
                                                             {notification.title}
                                                         </p>
                                                         {!notification.read && (
-                                                            <span className="h-2 w-2 rounded-full bg-blue-500 shrink-0" />
+                                                            <span className="h-2 w-2 rounded-full bg-zinc-900 dark:bg-zinc-100 shrink-0" />
                                                         )}
                                                         {notification.source === 'workspace' && (
                                                             <Badge variant="outline" className="text-[10px] px-1.5 py-0">Workspace</Badge>

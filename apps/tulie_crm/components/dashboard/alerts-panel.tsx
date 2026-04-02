@@ -29,11 +29,11 @@ const getAlertIcon = (type: AlertItem['type']) => {
 const getSeverityColors = (severity: AlertItem['severity']) => {
     switch (severity) {
         case 'danger':
-            return 'bg-red-500/10 text-red-500 border-red-500/20'
+            return 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border-zinc-200 dark:border-zinc-700'
         case 'warning':
-            return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20'
+            return 'bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'
         case 'info':
-            return 'bg-blue-500/10 text-blue-500 border-blue-500/20'
+            return 'bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800'
     }
 }
 
@@ -44,7 +44,7 @@ export async function AlertsPanel() {
         <Card className="border-border bg-card/50 backdrop-blur-sm overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between pb-3">
                 <CardTitle className="text-xs font-semibold flex items-center gap-2 text-muted-foreground">
-                    <AlertTriangle className="h-4 w-4 text-orange-500" />
+                    <AlertTriangle className="h-4 w-4 text-zinc-500" />
                     Cảnh báo hệ thống
                 </CardTitle>
                 <Button variant="outline" size="sm" className="h-7 text-[10px] px-2" asChild>
@@ -56,7 +56,7 @@ export async function AlertsPanel() {
                     <div className="space-y-2 px-6 pb-4">
                         {alerts.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-8 text-center">
-                                <CheckCircle className="h-12 w-12 text-green-500 mb-2" />
+                                <CheckCircle className="h-12 w-12 text-zinc-300 dark:text-zinc-600 mb-2" />
                                 <p className="text-sm font-medium">Hệ thống hoạt động tốt</p>
                                 <p className="text-xs text-muted-foreground">Không có cảnh báo nào cần xử lý</p>
                             </div>

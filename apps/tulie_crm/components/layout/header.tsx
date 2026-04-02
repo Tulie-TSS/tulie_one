@@ -133,14 +133,8 @@ export function Header() {
     }
 
     const getNotificationColor = (notification: Notification) => {
-        const severity = notification.severity || 'info'
         if (!notification.read) {
-            switch (severity) {
-                case 'success': return 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400'
-                case 'warning': return 'bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400'
-                case 'error': return 'bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400'
-                default: return 'bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400'
-            }
+            return 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100'
         }
         return 'bg-muted dark:bg-zinc-800 text-muted-foreground'
     }
@@ -199,7 +193,7 @@ export function Header() {
                         <Button variant="ghost" size="icon" className="relative rounded-full h-9 w-9 hover:bg-muted dark:hover:bg-zinc-800 transition-colors group">
                             <Bell className={`h-[18px] w-[18px] text-muted-foreground transition-colors group-hover:text-foreground dark:group-hover:text-zinc-100 ${unreadCount > 0 ? 'group-hover:animate-[wiggle_0.3s_ease-in-out]' : ''}`} />
                             {unreadCount > 0 && (
-                                <span className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] text-white ring-2 ring-background">
+                                <span className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-zinc-900 dark:bg-zinc-100 px-1 text-[10px] text-white dark:text-zinc-900 ring-2 ring-background">
                                     {unreadCount > 9 ? '9+' : unreadCount}
                                 </span>
                             )}
@@ -210,14 +204,14 @@ export function Header() {
                             <div className="flex items-center gap-2">
                                 <span className="text-[15px] text-foreground dark:text-zinc-100">Thông báo</span>
                                 {unreadCount > 0 && (
-                                    <span className="text-[11px] text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-2 py-0.5 rounded-full">{unreadCount} mới</span>
+                                    <span className="text-[11px] text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded-full">{unreadCount} mới</span>
                                 )}
                             </div>
                             {unreadCount > 0 && (
                                 <Button 
                                     variant="ghost" 
                                     size="sm" 
-                                    className="h-auto p-0 text-[12px] font-medium text-blue-600 hover:text-blue-700 hover:bg-transparent -mr-2 pr-2"
+                                    className="h-auto p-0 text-[12px] font-medium text-foreground hover:text-foreground/80 hover:bg-transparent -mr-2 pr-2"
                                     onClick={handleMarkAllAsRead}
                                 >
                                     Đánh dấu tất cả đã đọc
@@ -238,7 +232,7 @@ export function Header() {
                                     {notifications.map((notification) => (
                                         <DropdownMenuItem
                                             key={notification.id}
-                                            className={`flex items-start gap-3 py-3 px-3 cursor-pointer rounded-lg transition-colors border border-transparent ${!notification.read ? 'bg-blue-50/50 dark:bg-blue-500/5 hover:bg-blue-50 dark:hover:bg-blue-500/10' : 'hover:bg-muted dark:hover:bg-zinc-800/50'}`}
+                                            className={`flex items-start gap-3 py-3 px-3 cursor-pointer rounded-lg transition-colors border border-transparent ${!notification.read ? 'bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-800' : 'hover:bg-muted dark:hover:bg-zinc-800/50'}`}
                                             onClick={() => handleNotificationClick(notification)}
                                         >
                                             <div className={`mt-0.5 shrink-0 flex items-center justify-center h-8 w-8 rounded-full ${getNotificationColor(notification)}`}>
@@ -250,13 +244,13 @@ export function Header() {
                                                         {notification.title}
                                                     </span>
                                                     {!notification.read && (
-                                                        <span className="h-2 w-2 rounded-full bg-blue-500 shrink-0 shadow-[0_0_0_2px_#ebf5ff] dark:shadow-[0_0_0_2px_#1e3a8a]" />
+                                                        <span className="h-2 w-2 rounded-full bg-zinc-900 dark:bg-zinc-100 shrink-0" />
                                                     )}
                                                 </div>
                                                 <p className={`text-[13px] leading-[1.4] mt-0.5 line-clamp-2 ${!notification.read ? 'text-zinc-800 dark:text-zinc-200' : 'text-muted-foreground'}`}>
                                                     {notification.message}
                                                 </p>
-                                                <span className={`text-[11.5px] font-medium mt-1.5 ${!notification.read ? 'text-blue-600 dark:text-blue-400' : 'text-muted-foreground/80'}`}>
+                                                <span className={`text-[11.5px] font-medium mt-1.5 ${!notification.read ? 'text-zinc-500 dark:text-zinc-400' : 'text-muted-foreground/80'}`}>
                                                     {formatTimeAgo(notification.created_at)}
                                                 </span>
                                             </div>
