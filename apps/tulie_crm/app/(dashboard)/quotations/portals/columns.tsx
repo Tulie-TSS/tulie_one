@@ -90,11 +90,6 @@ export const columns: ColumnDef<QuotePortal>[] = [
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
                         <DropdownMenuItem asChild>
-                            <Link href={`/quotations/portals/${portal.id}`}>
-                                Xem/Sửa portal
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
                             <a href={`/quote/${portal.public_token}`} target="_blank">
                                 Mở trang khách hàng
                             </a>

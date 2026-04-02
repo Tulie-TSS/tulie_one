@@ -24,18 +24,14 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-[-12px]">
-                <Link href="/quotations/portals" className="hover:text-foreground flex items-center gap-1 transition-colors">
-                    <ArrowLeft className="w-4 h-4" />
-                    Danh sách Portal
-                </Link>
-            </div>
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center border border-border">
-                        <Globe className="h-6 w-6 text-foreground" />
-                    </div>
+                <div className="flex items-center gap-4">
+                    <Button variant="outline" size="icon" className="h-12 w-12 shrink-0 rounded-md bg-transparent" asChild>
+                        <Link href="/quotations/portals">
+                            <ArrowLeft className="h-5 w-5" />
+                        </Link>
+                    </Button>
                     <div>
                         <div className="flex items-center gap-2 mb-0.5">
                             <Badge variant={portal.is_active ? "default" : "secondary"}>
