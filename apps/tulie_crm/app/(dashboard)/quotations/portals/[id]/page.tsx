@@ -2,12 +2,11 @@ import { Metadata } from 'next'
 import { getQuotePortalById } from '@/lib/supabase/services/quote-portal-service'
 import { notFound } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from '@repo/ui'
-import { ExternalLink, Calendar, Globe, Link2, ArrowLeft } from 'lucide-react'
+import { ExternalLink, Link2, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-import { formatCurrency } from '@/lib/utils/format'
 import { PortalAttachments } from './portal-attachments'
 import { PortalTitleEditor } from './portal-title-editor'
-import { PortalItemActions } from './item-actions'
+import { PortalItemsList } from './portal-items-list'
 
 export const metadata: Metadata = {
     title: 'Chi tiết Portal | Tulie CRM',
@@ -63,47 +62,10 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
                         <CardTitle>Danh sách các Phương án Báo giá</CardTitle>
                     </CardHeader>
                     <CardContent className="p-0">
-                        {portal.items?.length === 0 ? (
-                            <div className="p-8 text-center text-sm text-muted-foreground">
-                                Chưa có báo giá nào trong portal này.
-                            </div>
-                        ) : (
-                            <div className="divide-y divide-border">
-                                {portal.items?.map((item: any) => (
-                                    <div key={item.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-muted/50 transition-colors">
-                                        <div className="space-y-1">
-                                            <div className="flex items-center gap-2">
-                                                <Badge variant="outline" className="font-mono text-[10px] w-6 h-6 p-0 flex justify-center items-center rounded-full bg-muted text-muted-foreground border-border">
-                                                    {item.sort_order + 1}
-                                                </Badge>
-                                                <Link href={`/quotations/${item.quotation?.id}`} className="text-sm font-medium text-foreground hover:underline">
-                                                    #{item.quotation?.quotation_number} — {item.quotation?.title}
-                                                </Link>
-                                                <Badge variant="secondary" className="text-[10px]">
-                                                    {item.quotation?.status}
-                                                </Badge>
-                                            </div>
-                                            <div className="text-xs text-muted-foreground flex items-center gap-4 pl-8">
-                                                <span className="flex items-center gap-1">
-                                                    <Calendar className="w-3 h-3" />
-                                                    {new Date(item.created_at).toLocaleDateString()}
-                                                </span>
-                                                <span className="font-bold text-foreground tabular-nums">
-                                                    {formatCurrency(item.quotation?.total_amount || 0)}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <PortalItemActions 
-                                                portalId={portal.id} 
-                                                quotationId={item.quotation_id} 
-                                                isDefault={item.is_default || false} 
-                                            />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                        <PortalItemsList
+                            portalId={portal.id}
+                            initialItems={portal.items || []}
+                        />
                     </CardContent>
                 </Card>
 
@@ -133,3 +95,4 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
         </div>
     )
 }
+
