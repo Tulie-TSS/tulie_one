@@ -180,6 +180,7 @@ export interface QuotePortalItem {
   quotation?: Quotation
   sort_order: number
   is_recommended: boolean
+  is_default: boolean
   created_at: string
 }
 

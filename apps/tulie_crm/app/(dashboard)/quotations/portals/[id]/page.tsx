@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { formatCurrency } from '@/lib/utils/format'
 import { PortalAttachments } from './portal-attachments'
 import { PortalTitleEditor } from './portal-title-editor'
+import { PortalItemActions } from './item-actions'
 
 export const metadata: Metadata = {
     title: 'Chi tiết Portal | Tulie CRM',
@@ -91,6 +92,13 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
                                                     {formatCurrency(item.quotation?.total_amount || 0)}
                                                 </span>
                                             </div>
+                                        </div>
+                                        <div>
+                                            <PortalItemActions 
+                                                portalId={portal.id} 
+                                                quotationId={item.quotation_id} 
+                                                isDefault={item.is_default || false} 
+                                            />
                                         </div>
                                     </div>
                                 ))}

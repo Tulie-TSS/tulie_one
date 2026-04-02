@@ -21,7 +21,7 @@ export async function getQuotePortals(customerId?: string) {
                 customer:customers(id, company_name),
                 creator:users!created_by(id, full_name),
                 items:quote_portal_items(
-                    id, quotation_id, sort_order, is_recommended,
+                    id, quotation_id, sort_order, is_recommended, is_default,
                     quotation:quotations(id, quotation_number, title, status, total_amount, version_name, created_at)
                 )
             `)
@@ -50,7 +50,7 @@ export async function getQuotePortalById(id: string) {
                 customer:customers(*),
                 creator:users!created_by(id, full_name),
                 items:quote_portal_items(
-                    id, quotation_id, sort_order, is_recommended, created_at,
+                    id, quotation_id, sort_order, is_recommended, is_default, created_at,
                     quotation:quotations(id, quotation_number, title, status, total_amount, version_name, notes, public_token, created_at, updated_at)
                 )
             `)
@@ -84,7 +84,7 @@ export async function getQuotePortalByToken(token: string) {
                 *,
                 customer:customers(*),
                 items:quote_portal_items(
-                    id, quotation_id, sort_order, is_recommended,
+                    id, quotation_id, sort_order, is_recommended, is_default,
                     quotation:quotations(*, items:quotation_items(*))
                 )
             `)
@@ -94,9 +94,13 @@ export async function getQuotePortalByToken(token: string) {
 
         if (error || !data) return null
 
-        // Sort items
+        // Sort items: first by is_default (true comes first), then by sort_order
         if (data.items) {
-            data.items.sort((a: any, b: any) => a.sort_order - b.sort_order)
+            data.items.sort((a: any, b: any) => {
+                if (a.is_default && !b.is_default) return -1;
+                if (!a.is_default && b.is_default) return 1;
+                return a.sort_order - b.sort_order;
+            })
         }
 
         return data as QuotePortal
@@ -285,6 +289,31 @@ export async function toggleRecommended(portalId: string, quotationId: string, i
         const { error } = await supabase
             .from('quote_portal_items')
             .update({ is_recommended: isRecommended })
+            .eq('portal_id', portalId)
+            .eq('quotation_id', quotationId)
+
+        if (error) throw error
+
+        revalidatePath('/quotations')
+        return { success: true }
+    } catch (err: any) {
+        return { success: false, error: err.message }
+    }
+}
+
+export async function toggleDefault(portalId: string, quotationId: string) {
+    try {
+        const supabase = await createClient()
+        // Define all as false first
+        await supabase
+            .from('quote_portal_items')
+            .update({ is_default: false })
+            .eq('portal_id', portalId)
+            
+        // Set the targeted one
+        const { error } = await supabase
+            .from('quote_portal_items')
+            .update({ is_default: true })
             .eq('portal_id', portalId)
             .eq('quotation_id', quotationId)
 
