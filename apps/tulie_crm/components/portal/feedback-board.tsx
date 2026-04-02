@@ -18,6 +18,7 @@ import {
     CardAction,
     CardContent,
     Badge,
+    useConfirm,
 } from '@repo/ui'
 import { Progress } from '@repo/ui'
 import {
@@ -172,6 +173,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
 
     // Lightbox
     const [lightboxSrc, setLightboxSrc] = useState<string | null>(null)
+    const { confirm } = useConfirm()
 
     const textareaRef = useRef<HTMLTextAreaElement>(null)
     const fileInputRef = useRef<HTMLInputElement>(null)
@@ -379,7 +381,14 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
     }
 
     const handleDelete = async (id: string) => {
-        if (!confirm('Bạn có chắc chắn muốn xóa yêu cầu này?')) return
+        const isConfirmed = await confirm({
+            title: 'Xóa yêu cầu',
+            description: 'Bạn có chắc chắn muốn xóa yêu cầu này? Hành động này không thể hoàn tác.',
+            confirmText: 'Xóa',
+            cancelText: 'Hủy',
+            variant: 'destructive',
+        })
+        if (!isConfirmed) return
         setIsDeleting(id)
         try {
             const res = await fetch(`/api/portal-feedback?id=${id}`, { method: 'DELETE' })

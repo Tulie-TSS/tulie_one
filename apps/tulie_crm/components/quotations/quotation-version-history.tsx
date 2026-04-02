@@ -5,6 +5,7 @@ import { Button } from '@repo/ui'
 import { Badge } from '@repo/ui'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@repo/ui'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@repo/ui'
+import { useConfirm } from '@repo/ui'
 import { History, RotateCcw, Clock, Eye, ChevronDown, ChevronUp, Package, FileText, Hash, X, ArrowRight } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
 import { getQuotationVersions, getQuotationVersionSnapshot, restoreQuotationVersion } from '@/lib/supabase/services/quotation-version-service'
@@ -38,6 +39,7 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
     const [expandedId, setExpandedId] = useState<string | null>(null)
     const [previewData, setPreviewData] = useState<Record<string, any>>({})
     const [loadingPreview, setLoadingPreview] = useState<string | null>(null)
+    const { confirm } = useConfirm()
     const router = useRouter()
 
     const loadVersions = async () => {
@@ -79,7 +81,13 @@ export function QuotationVersionHistory({ quotationId }: QuotationVersionHistory
     }, [expandedId, previewData])
 
     const handleRestore = async (versionId: string, versionNumber: number) => {
-        if (!confirm(`Khôi phục phiên bản v${versionNumber}?\nDữ liệu hiện tại sẽ được tự động lưu trước khi khôi phục.`)) return
+        const isConfirmed = await confirm({
+            title: `Khôi phục phiên bản v${versionNumber}?`,
+            description: 'Dữ liệu hiện tại sẽ được tự động lưu trước khi khôi phục.',
+            confirmText: 'Khôi phục',
+            cancelText: 'Hủy',
+        })
+        if (!isConfirmed) return
 
         startTransition(async () => {
             try {

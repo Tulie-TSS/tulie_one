@@ -16,6 +16,7 @@ import {
     TableHeader,
     TableRow,
 } from '@repo/ui'
+import { useConfirm } from '@repo/ui'
 
 const getTypeIcon = (type: DocumentTemplate['type']) => {
     switch (type) {
@@ -56,6 +57,7 @@ export default function TemplatesPage() {
     const [isLoading, setIsLoading] = useState(true)
     const [duplicatingId, setDuplicatingId] = useState<string | null>(null)
     const [deletingId, setDeletingId] = useState<string | null>(null)
+    const { confirm } = useConfirm()
 
     const fetchTemplates = async () => {
         try {
@@ -95,7 +97,14 @@ export default function TemplatesPage() {
     }
 
     const handleDelete = async (id: string, name: string) => {
-        if (!confirm(`Bạn có chắc muốn xóa mẫu "${name}"?`)) return
+        const isConfirmed = await confirm({
+            title: 'Khẳng định xóa mẫu',
+            description: `Bạn có chắc muốn xóa mẫu "${name}"?`,
+            confirmText: 'Xóa',
+            cancelText: 'Hủy',
+            variant: 'destructive',
+        })
+        if (!isConfirmed) return
         setDeletingId(id)
         try {
             const res = await fetch(`/api/templates/${id}`, { method: 'DELETE' })

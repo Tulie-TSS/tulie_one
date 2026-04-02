@@ -13,7 +13,8 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-    DropdownMenuTrigger, 
+    DropdownMenuTrigger,
+    useConfirm,
 } from '@repo/ui'
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
@@ -22,6 +23,7 @@ import { updateQuotePortal, deleteQuotePortal } from '@/lib/supabase/services/qu
 
 const PortalActionsCell = ({ portal }: { portal: QuotePortal }) => {
     const [isPending, startTransition] = useTransition()
+    const { confirm } = useConfirm()
     const router = useRouter()
 
     const handleToggleActive = () => {
@@ -36,8 +38,15 @@ const PortalActionsCell = ({ portal }: { portal: QuotePortal }) => {
         })
     }
 
-    const handleDelete = () => {
-        if (!window.confirm('Bạn có chắc chắn muốn xoá portal này? Hành động này không thể hoàn tác.')) return
+    const handleDelete = async () => {
+        const isConfirmed = await confirm({
+            title: 'Xoá portal',
+            description: 'Bạn có chắc chắn muốn xoá portal này? Hành động này không thể hoàn tác.',
+            confirmText: 'Xoá',
+            cancelText: 'Huỷ',
+            variant: 'destructive',
+        })
+        if (!isConfirmed) return
         
         startTransition(async () => {
             try {
