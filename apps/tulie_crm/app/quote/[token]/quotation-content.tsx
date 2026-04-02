@@ -434,39 +434,36 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
 
                         {/* Attachments inside Sidebar */}
                         {attachments.length > 0 && (
-                            <Card className="border-slate-200 shadow-sm overflow-hidden">
-                                <CardHeader className="px-5 py-4 pb-0 flex flex-row items-start gap-4 space-y-0 relative z-10 bg-white">
-                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 shadow-sm">
-                                        <FileText className="h-5 w-5" />
-                                    </div>
-                                    <div className="flex flex-col gap-1 pt-0.5">
-                                        <CardTitle className="text-lg sm:text-[19px] font-bold tracking-tight text-slate-900 leading-none">
+                            <Card className="border-slate-200 shadow-sm">
+                                <CardHeader className="px-5 py-4 pb-2 border-b border-transparent">
+                                    <div className="flex items-center gap-2">
+                                        <FileText className="h-4 w-4 text-slate-500" />
+                                        <CardTitle className="text-sm font-semibold text-slate-900 leading-none">
                                             Tài liệu đính kèm
                                         </CardTitle>
-                                        <CardDescription className="text-[13px] text-slate-500 font-medium leading-relaxed mt-1">
-                                            Links demo, proposal & tài liệu liên quan
-                                        </CardDescription>
                                     </div>
+                                    <CardDescription className="text-xs text-slate-500 mt-1.5 font-medium">
+                                        Links demo, proposal & tài liệu liên quan
+                                    </CardDescription>
                                 </CardHeader>
-                                <CardContent className="px-5 py-4 pt-4">
-                                    <Separator className="mb-4" />
-                                    <div className="flex flex-col gap-3">
+                                <CardContent className="px-5 pb-5 pt-3">
+                                    <div className="flex flex-col gap-2">
                                         {attachments.map((item: any) => (
                                             <a 
                                                 key={item.id}
                                                 href={item.url} 
                                                 target="_blank" 
                                                 rel="noreferrer noopener"
-                                                className="flex items-center gap-3 p-3.5 border rounded-xl bg-slate-50/50 shadow-sm hover:border-slate-300 hover:bg-white hover:shadow-md transition-all group"
+                                                className="flex items-center gap-3 p-3 border rounded-md bg-white hover:bg-slate-50 hover:border-slate-300 transition-colors group shadow-sm"
                                             >
-                                                <div className="h-9 w-9 shrink-0 bg-white border border-slate-100 rounded-lg flex items-center justify-center text-slate-500 shadow-sm group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-colors">
-                                                    {item.type === 'link' ? <LinkIcon className="h-4 w-4" /> : <File className="h-4 w-4" />}
+                                                <div className="h-8 w-8 shrink-0 bg-slate-100 border border-slate-200/60 rounded-md flex items-center justify-center text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-700 transition-colors">
+                                                    {item.type === 'link' ? <LinkIcon className="h-3.5 w-3.5" /> : <File className="h-3.5 w-3.5" />}
                                                 </div>
                                                 <div className="min-w-0 flex-1">
-                                                    <p className="text-sm font-semibold text-slate-900 truncate">{item.name}</p>
-                                                    <p className="text-[11px] text-muted-foreground truncate font-medium mt-0.5 group-hover:text-slate-600">{item.type === 'link' ? 'Liên kết ngoài' : 'Tệp đính kèm'}</p>
+                                                    <p className="text-[13px] font-medium text-slate-900 truncate leading-tight">{item.name}</p>
+                                                    <p className="text-[11px] text-muted-foreground truncate mt-0.5">{item.type === 'link' ? 'Liên kết ngoài' : 'Tệp đính kèm'}</p>
                                                 </div>
-                                                <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-slate-900" />
+                                                <ExternalLink className="w-3.5 h-3.5 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                                             </a>
                                         ))}
                                     </div>
