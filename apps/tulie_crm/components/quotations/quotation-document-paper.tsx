@@ -245,19 +245,53 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
             <div className="mb-8 space-y-4">
                 <h4 className="text-[13px] uppercase underline">Điều khoản & Ghi chú (Terms & Conditions):</h4>
                 <div className="grid grid-cols-1 gap-1.5 text-[11px] ml-4 font-medium leading-relaxed">
-                    <p>1. <span className="font-bold">Phương thức thanh toán:</span> Chuyển khoản hoặc Tiền mặt.</p>
-                    <p>2. <span className="font-bold">Thời gian thực hiện:</span> Theo thỏa thuận chi tiết trong phụ lục hợp đồng.</p>
-                    <p>3. <span className="font-bold">Hiệu lực báo giá:</span> Trong vòng 30 ngày kể từ ngày ban hành văn bản này.</p>
-                    {quotation.notes && (
-                        <div className="mt-2 text-zinc-700 whitespace-pre-line">
-                            {quotation.notes}
-                        </div>
-                    )}
-                    {brandConfig?.default_payment_terms && (
-                        <div className="mt-2 text-zinc-700 whitespace-pre-line">
-                            {brandConfig.default_payment_terms}
-                        </div>
-                    )}
+                    {(() => {
+                        const pc = quotation.proposal_content || {};
+                        return (
+                            <>
+                                {pc.payment_terms?.installments ? (
+                                    <>
+                                        <p><span className="font-bold border-b border-black">Tiến độ thanh toán:</span></p>
+                                        <div className="ml-2 mb-2">
+                                            {pc.payment_terms.installments.map((inst: any, i: number) => (
+                                                <p key={i}>- <span className="font-bold">Đợt {inst.phase} ({inst.percent}%):</span> {inst.description}</p>
+                                            ))}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <p>1. <span className="font-bold">Phương thức thanh toán:</span> Chuyển khoản hoặc Tiền mặt.</p>
+                                        <p>2. <span className="font-bold">Thời gian thực hiện:</span> Theo thỏa thuận chi tiết trong phụ lục hợp đồng.</p>
+                                    </>
+                                )}
+                                
+                                {pc.notes && Array.isArray(pc.notes) ? (
+                                    <>
+                                        <p><span className="font-bold border-b border-black">Ghi chú bổ sung:</span></p>
+                                        <div className="ml-2">
+                                            {pc.notes.map((note: string, i: number) => (
+                                                <p key={i}>- {note}</p>
+                                            ))}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <p>3. <span className="font-bold">Hiệu lực báo giá:</span> Trong vòng 30 ngày kể từ ngày ban hành văn bản này.</p>
+                                        {quotation.notes && (
+                                            <div className="mt-2 text-zinc-700 whitespace-pre-line">
+                                                {quotation.notes}
+                                            </div>
+                                        )}
+                                        {brandConfig?.default_payment_terms && (
+                                            <div className="mt-2 text-zinc-700 whitespace-pre-line">
+                                                {brandConfig.default_payment_terms}
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </>
+                        );
+                    })()}
                 </div>
             </div>
 

@@ -251,7 +251,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
         }
     }
 
-    const hasSidebar = activeOptions.length > 1 || (historyItems && historyItems.length > 0);
+    const hasSidebar = activeOptions.length > 1 || (historyItems && historyItems.length > 0) || (currentQuotation.attachments && currentQuotation.attachments.length > 0);
     const attachments = currentQuotation.attachments || [];
 
     return (
@@ -427,6 +427,48 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                 </div>
                                             </div>
                                         )})}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )}
+
+                        {/* Attachments inside Sidebar */}
+                        {attachments.length > 0 && (
+                            <Card className="border-slate-200 shadow-sm overflow-hidden">
+                                <CardHeader className="px-5 py-4 pb-0 flex flex-row items-start gap-4 space-y-0 relative z-10 bg-white">
+                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 shadow-sm">
+                                        <FileText className="h-5 w-5" />
+                                    </div>
+                                    <div className="flex flex-col gap-1 pt-0.5">
+                                        <CardTitle className="text-lg sm:text-[19px] font-bold tracking-tight text-slate-900 leading-none">
+                                            Tài liệu đính kèm
+                                        </CardTitle>
+                                        <CardDescription className="text-[13px] text-slate-500 font-medium leading-relaxed mt-1">
+                                            Links demo, proposal & tài liệu liên quan
+                                        </CardDescription>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="px-5 py-4 pt-4">
+                                    <Separator className="mb-4" />
+                                    <div className="flex flex-col gap-3">
+                                        {attachments.map((item: any) => (
+                                            <a 
+                                                key={item.id}
+                                                href={item.url} 
+                                                target="_blank" 
+                                                rel="noreferrer noopener"
+                                                className="flex items-center gap-3 p-3.5 border rounded-xl bg-slate-50/50 shadow-sm hover:border-slate-300 hover:bg-white hover:shadow-md transition-all group"
+                                            >
+                                                <div className="h-9 w-9 shrink-0 bg-white border border-slate-100 rounded-lg flex items-center justify-center text-slate-500 shadow-sm group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-colors">
+                                                    {item.type === 'link' ? <LinkIcon className="h-4 w-4" /> : <File className="h-4 w-4" />}
+                                                </div>
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="text-sm font-semibold text-slate-900 truncate">{item.name}</p>
+                                                    <p className="text-[11px] text-muted-foreground truncate font-medium mt-0.5 group-hover:text-slate-600">{item.type === 'link' ? 'Liên kết ngoài' : 'Tệp đính kèm'}</p>
+                                                </div>
+                                                <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-slate-900" />
+                                            </a>
+                                        ))}
                                     </div>
                                 </CardContent>
                             </Card>
@@ -838,34 +880,6 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                 </Card>
                             </div>
 
-                            {/* Attachments Section */}
-                            {attachments.length > 0 && (
-                                <div className="mb-8 pt-6 border-t border-slate-100/50 mt-2">
-                                    <h3 className="text-[14px] font-bold text-slate-900 mb-6 border-l-[3px] border-slate-900 pl-3 flex items-center">
-                                        Tài liệu đính kèm
-                                        <span className="text-[12px] italic font-normal text-muted-foreground ml-1">/ Attachments</span>
-                                    </h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                        {attachments.map((item: any) => (
-                                            <a 
-                                                key={item.id}
-                                                href={item.url} 
-                                                target="_blank" 
-                                                rel="noreferrer noopener"
-                                                className="flex items-center gap-3 p-4 border rounded-xl bg-white shadow-sm hover:border-slate-900 hover:shadow-md transition-all group"
-                                            >
-                                                <div className="h-10 w-10 shrink-0 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center text-slate-600 group-hover:bg-slate-900 group-hover:text-white transition-colors">
-                                                    {item.type === 'link' ? <LinkIcon className="h-5 w-5" /> : <File className="h-5 w-5" />}
-                                                </div>
-                                                <div className="min-w-0 flex-1">
-                                                    <p className="text-sm font-semibold text-slate-900 truncate">{item.name}</p>
-                                                    <p className="text-[11px] text-muted-foreground truncate font-medium mt-0.5 group-hover:text-slate-600">{item.type === 'link' ? 'Liên kết ngoài' : 'Tệp đính kèm'}</p>
-                                                </div>
-                                            </a>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
 
                             {/* Footer Section: Notes & Bank Info */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-auto">
@@ -877,12 +891,21 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                 Ghi chú <span className="text-muted-foreground italic font-normal">/ Notes</span>
                                             </h4>
                                             <div className="text-[12px] text-slate-700 leading-relaxed space-y-1.5">
-                                                {(currentQuotation.notes || brandConfig?.default_notes || 'Báo giá có hiệu lực trong vòng 07 ngày.\nGiá trên chưa bao gồm chi phí mua tên miền & hosting (nếu có).\nNội dung công việc sẽ được mô tả chi tiết trong hợp đồng.').split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
-                                                    <div key={i} className="flex gap-2 items-start">
-                                                        <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
-                                                        <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
-                                                    </div>
-                                                ))}
+                                                {pc?.notes && Array.isArray(pc.notes) ? (
+                                                    pc.notes.map((note: string, i: number) => (
+                                                        <div key={i} className="flex gap-2 items-start">
+                                                            <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
+                                                            <span>{note}</span>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    (currentQuotation.notes || brandConfig?.default_notes || 'Báo giá có hiệu lực trong vòng 07 ngày.\nGiá trên chưa bao gồm chi phí mua tên miền & hosting (nếu có).\nNội dung công việc sẽ được mô tả chi tiết trong hợp đồng.').split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
+                                                        <div key={i} className="flex gap-2 items-start">
+                                                            <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
+                                                            <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
+                                                        </div>
+                                                    ))
+                                                )}
                                             </div>
                                         </div>
                                         <Separator />
@@ -891,12 +914,45 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                 Điều khoản thanh toán <span className="text-muted-foreground italic font-normal">/ Payment Terms</span>
                                             </h4>
                                             <div className="text-[12px] text-slate-700 leading-relaxed space-y-1.5">
-                                                {(currentQuotation.terms || brandConfig?.default_payment_terms || "50% đặt cọc khi xác nhận báo giá\n50% còn lại thanh toán khi hoàn thành").split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
-                                                    <div key={i} className="flex gap-2 items-start">
-                                                        <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
-                                                        <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
+                                                {pc?.payment_terms && pc.payment_terms.installments ? (
+                                                    <div className="space-y-3">
+                                                        <div className="space-y-1.5">
+                                                            {pc.payment_terms.installments.map((inst: any, i: number) => (
+                                                                <div key={i} className="flex gap-2 items-start">
+                                                                    <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
+                                                                    <span><strong>Đợt {inst.phase} ({inst.percent}%):</strong> {inst.description}</span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                        <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-100 border-dashed">
+                                                            {pc.payment_terms.warranty_months && (
+                                                                <div className="flex flex-col">
+                                                                    <span className="text-[11px] text-slate-500">Bảo hành / Warranty</span>
+                                                                    <span className="font-semibold text-slate-900">{pc.payment_terms.warranty_months} tháng</span>
+                                                                </div>
+                                                            )}
+                                                            {pc.payment_terms.sla_response_hours && (
+                                                                <div className="flex flex-col">
+                                                                    <span className="text-[11px] text-slate-500">Response SLA</span>
+                                                                    <span className="font-semibold text-slate-900"><span className="text-lg">≤</span>{pc.payment_terms.sla_response_hours}h</span>
+                                                                </div>
+                                                            )}
+                                                            {pc.payment_terms.source_code_ownership !== undefined && (
+                                                                <div className="flex flex-col col-span-2 mt-1">
+                                                                    <span className="text-[11px] text-slate-500">Bản quyền mã nguồn / Source Code</span>
+                                                                    <span className="font-semibold text-slate-900">{pc.payment_terms.source_code_ownership ? 'Bàn giao 100% bản quyền' : 'Không bao gồm bàn giao mã nguồn'}</span>
+                                                                </div>
+                                                            )}
+                                                        </div>
                                                     </div>
-                                                ))}
+                                                ) : (
+                                                    (currentQuotation.terms || brandConfig?.default_payment_terms || "50% đặt cọc khi xác nhận báo giá\n50% còn lại thanh toán khi hoàn thành").split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
+                                                        <div key={i} className="flex gap-2 items-start">
+                                                            <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
+                                                            <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
+                                                        </div>
+                                                    ))
+                                                )}
                                             </div>
                                         </div>
                                     </CardContent>
