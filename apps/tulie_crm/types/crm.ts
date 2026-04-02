@@ -125,6 +125,7 @@ export interface Quotation {
   deal?: Deal
   project?: Project
   items?: QuotationItem[]
+  attachments?: { id: string; name: string; url: string; type: 'link' | 'file' }[]
   bank_name?: string
   bank_account_no?: string
   bank_account_name?: string

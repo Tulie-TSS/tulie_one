@@ -60,6 +60,7 @@ import {
     DialogTitle,
 } from "@repo/ui"
 import { ProductCombobox } from '@/components/quotations/product-combobox'
+import { DocumentAttachmentManager, AttachmentItem } from '@/components/quotations/document-attachment-manager'
 
 interface QuotationFormProps {
     quotation?: Quotation
@@ -101,6 +102,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
     const [jsonPath, setJsonPath] = useState<string>('')
     const [deletingSectionId, setDeletingSectionId] = useState<string | null>(null)
     const [deletingSectionName, setDeletingSectionName] = useState('')
+    const [attachments, setAttachments] = useState<AttachmentItem[]>(quotation?.attachments || [])
 
     // Available resources for selection
     const [availableBanks, setAvailableBanks] = useState<any[]>([])
@@ -616,10 +618,11 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 bank_branch: bankBranch,
                 type,
                 proposal_content: proposalContent,
-                project_id: projectId
+                project_id: projectId,
+                attachments
             })
         }
-    }, [quotationNumber, customerId, projectId, title, terms, notes, vatPercent, items, validityDays, subtotal, vatAmount, totalAmount, onChange, customers, bankName, bankAccountNo, bankAccountName, bankBranch, type, proposalContent])
+    }, [quotationNumber, customerId, projectId, title, terms, notes, vatPercent, items, validityDays, subtotal, vatAmount, totalAmount, onChange, customers, bankName, bankAccountNo, bankAccountName, bankBranch, type, proposalContent, attachments])
 
     const handleSave = async (sendAfterSave = false) => {
         if (onSave) {
@@ -655,7 +658,8 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 bank_branch: bankBranch || null,
                 type,
                 proposal_content: proposalContent || null,
-                project_id: projectId || null
+                project_id: projectId || null,
+                attachments: attachments
             }
 
             // Clean items to only include valid database columns

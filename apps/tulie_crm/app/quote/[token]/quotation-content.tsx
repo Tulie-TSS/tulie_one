@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Button } from '@repo/ui'
 import { formatCurrency, formatDate, readNumberToWords } from '@/lib/utils/format'
-import { CheckCircle, CheckCircle2, XCircle, Building2, Calendar, FileText, User, Mail, Phone, Globe, Info, CreditCard, MapPin, Printer, Target, ClipboardList, Lightbulb, Package, Users, Clock, Shield, Award, BookOpen, Layout, FileSignature, ExternalLink } from 'lucide-react'
+import { CheckCircle, CheckCircle2, XCircle, Building2, Calendar, FileText, User, Mail, Phone, Globe, Info, CreditCard, MapPin, Printer, Target, ClipboardList, Lightbulb, Package, Users, Clock, Shield, Award, BookOpen, Layout, FileSignature, ExternalLink, LinkIcon, File } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import {
     Dialog,
@@ -252,6 +252,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
     }
 
     const hasSidebar = activeOptions.length > 1 || (historyItems && historyItems.length > 0);
+    const attachments = currentQuotation.attachments || [];
 
     return (
         <div className="quotation-page min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col xl:flex-row">
@@ -836,6 +837,35 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                     </CardContent>
                                 </Card>
                             </div>
+
+                            {/* Attachments Section */}
+                            {attachments.length > 0 && (
+                                <div className="mb-8 pt-6 border-t border-slate-100/50 mt-2">
+                                    <h3 className="text-[14px] font-bold text-slate-900 mb-6 border-l-[3px] border-slate-900 pl-3 flex items-center">
+                                        Tài liệu đính kèm
+                                        <span className="text-[12px] italic font-normal text-muted-foreground ml-1">/ Attachments</span>
+                                    </h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {attachments.map((item: any) => (
+                                            <a 
+                                                key={item.id}
+                                                href={item.url} 
+                                                target="_blank" 
+                                                rel="noreferrer noopener"
+                                                className="flex items-center gap-3 p-4 border rounded-xl bg-white shadow-sm hover:border-slate-900 hover:shadow-md transition-all group"
+                                            >
+                                                <div className="h-10 w-10 shrink-0 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center text-slate-600 group-hover:bg-slate-900 group-hover:text-white transition-colors">
+                                                    {item.type === 'link' ? <LinkIcon className="h-5 w-5" /> : <File className="h-5 w-5" />}
+                                                </div>
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="text-sm font-semibold text-slate-900 truncate">{item.name}</p>
+                                                    <p className="text-[11px] text-muted-foreground truncate font-medium mt-0.5 group-hover:text-slate-600">{item.type === 'link' ? 'Liên kết ngoài' : 'Tệp đính kèm'}</p>
+                                                </div>
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Footer Section: Notes & Bank Info */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-auto">
