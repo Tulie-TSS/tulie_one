@@ -8,13 +8,14 @@ CREATE TABLE IF NOT EXISTS quote_portals (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT,
   customer_id UUID REFERENCES customers(id),
-  deal_id UUID REFERENCES deals(id),
-  project_id UUID REFERENCES projects(id),
+  deal_id UUID,
+  project_id UUID,
   public_token TEXT UNIQUE NOT NULL,
   password_hash TEXT,
   brand TEXT DEFAULT 'tulie_agency',
   created_by UUID REFERENCES users(id),
   is_active BOOLEAN DEFAULT true,
+  attachments jsonb DEFAULT '[]'::jsonb,
   created_at TIMESTAMPTZ DEFAULT now(),
   updated_at TIMESTAMPTZ DEFAULT now()
 );

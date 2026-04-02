@@ -24,12 +24,12 @@ export const columns: ColumnDef<QuotePortal>[] = [
             const portal = row.original
             return (
                 <div className="flex flex-col gap-1">
-                    <Link href={`/quotations/portals/${portal.id}`} className="font-semibold text-blue-600 hover:underline">
+                    <Link href={`/quotations/portals/${portal.id}`} className="font-semibold text-foreground hover:text-primary hover:underline transition-colors">
                         {portal.title}
                     </Link>
                     <div className="text-xs text-muted-foreground flex items-center gap-2">
                         <span>{portal.customer?.company_name || 'Khách lẻ'}</span>
-                        <span className="text-gray-300">•</span>
+                        <span className="text-border">•</span>
                         <span className="flex items-center gap-1">
                             <Files className="w-3 h-3" />
                             {portal.items?.length || 0} phương án
@@ -49,7 +49,7 @@ export const columns: ColumnDef<QuotePortal>[] = [
                     href={`/quote/${token}`} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-xs text-slate-600 hover:text-blue-600 bg-slate-100 px-2 py-1 rounded-md w-fit"
+                    className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground bg-muted/50 px-2 py-1 rounded-md w-fit transition-colors"
                 >
                     <ExternalLink className="w-3 h-3" />
                     /quote/{token}
@@ -100,7 +100,7 @@ export const columns: ColumnDef<QuotePortal>[] = [
                             </a>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-red-600">
+                        <DropdownMenuItem className="text-destructive focus:text-destructive focus:bg-destructive/10">
                             Đóng portal
                         </DropdownMenuItem>
                     </DropdownMenuContent>

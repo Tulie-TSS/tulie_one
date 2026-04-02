@@ -2,10 +2,11 @@ import { Metadata } from 'next'
 import { getQuotePortalById } from '@/lib/supabase/services/quote-portal-service'
 import { notFound } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from '@repo/ui'
-import { ExternalLink, Calendar, Globe, Link2 } from 'lucide-react'
+import { ExternalLink, Calendar, Globe, Link2, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { formatCurrency } from '@/lib/utils/format'
 import { PortalAttachments } from './portal-attachments'
+import { PortalTitleEditor } from './portal-title-editor'
 
 export const metadata: Metadata = {
     title: 'Chi tiết Portal | Tulie CRM',
@@ -23,6 +24,12 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
 
     return (
         <div className="space-y-6">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-[-12px]">
+                <Link href="/quotations/portals" className="hover:text-foreground flex items-center gap-1 transition-colors">
+                    <ArrowLeft className="w-4 h-4" />
+                    Danh sách Portal
+                </Link>
+            </div>
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
@@ -36,7 +43,7 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
                             </Badge>
                             <span className="text-xs text-muted-foreground font-mono">ID: {portal.id.split('-')[0]}</span>
                         </div>
-                        <h1 className="text-2xl font-semibold tracking-tight">{portal.title}</h1>
+                        <PortalTitleEditor portalId={portal.id} initialTitle={portal.title || 'Portal báo giá'} />
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             {portal.customer?.company_name || 'Khách lẻ'} • Tạo bởi {portal.creator?.full_name}
                         </p>

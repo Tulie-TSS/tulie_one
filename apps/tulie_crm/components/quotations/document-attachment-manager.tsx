@@ -191,8 +191,8 @@ export function DocumentAttachmentManager({ attachments = [], onChange }: Docume
                             />
                         </>
                     ) : (
-                        <div className="w-full flex items-end gap-3 p-4 border rounded-md bg-stone-50/50">
-                            <div className="space-y-2 flex-1">
+                        <div className="w-full flex flex-col sm:flex-row items-start sm:items-end gap-3 p-4 border rounded-md bg-stone-50/50">
+                            <div className="space-y-2 w-full sm:flex-1">
                                 <Label>Tên tài liệu / Reference</Label>
                                 <Input 
                                     placeholder="VD: Hồ sơ năng lực 2026" 
@@ -200,7 +200,7 @@ export function DocumentAttachmentManager({ attachments = [], onChange }: Docume
                                     onChange={(e) => setLinkName(e.target.value)}
                                 />
                             </div>
-                            <div className="space-y-2 flex-[2]">
+                            <div className="space-y-2 w-full sm:flex-[2]">
                                 <Label>URL (Link)</Label>
                                 <Input 
                                     placeholder="https://..." 
@@ -208,7 +208,7 @@ export function DocumentAttachmentManager({ attachments = [], onChange }: Docume
                                     onChange={(e) => setLinkUrl(e.target.value)}
                                 />
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0 justify-end">
                                 <Button type="button" onClick={handleAddLink}>Thêm</Button>
                                 <Button type="button" variant="ghost" onClick={() => setIsAddingLink(false)}>Huỷ</Button>
                             </div>
