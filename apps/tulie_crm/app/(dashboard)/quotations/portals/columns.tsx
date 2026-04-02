@@ -3,7 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import Link from 'next/link'
-import { ExternalLink, Files, MoreHorizontal } from 'lucide-react'
+import { ExternalLink, Files, MoreHorizontal, Loader2 } from 'lucide-react'
 import { QuotePortal } from '@/types'
 import { 
     Badge, 
@@ -15,6 +15,76 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger, 
 } from '@repo/ui'
+import { useState, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
+import { updateQuotePortal, deleteQuotePortal } from '@/lib/supabase/services/quote-portal-service'
+
+const PortalActionsCell = ({ portal }: { portal: QuotePortal }) => {
+    const [isPending, startTransition] = useTransition()
+    const router = useRouter()
+
+    const handleToggleActive = () => {
+        startTransition(async () => {
+            try {
+                await updateQuotePortal(portal.id, { is_active: !portal.is_active })
+                toast.success(portal.is_active ? 'Đã đóng portal' : 'Đã mở lại portal')
+                router.refresh()
+            } catch (error) {
+                toast.error('Có lỗi khi thay đổi trạng thái')
+            }
+        })
+    }
+
+    const handleDelete = () => {
+        if (!window.confirm('Bạn có chắc chắn muốn xoá portal này? Hành động này không thể hoàn tác.')) return
+        
+        startTransition(async () => {
+            try {
+                await deleteQuotePortal(portal.id)
+                toast.success('Đã xoá portal')
+                router.refresh()
+            } catch (error) {
+                toast.error('Có lỗi khi xoá portal')
+            }
+        })
+    }
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0" disabled={isPending}>
+                    <span className="sr-only">Mở menu</span>
+                    {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <MoreHorizontal className="h-4 w-4" />}
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                    <a href={`/quote/${portal.public_token}`} target="_blank">
+                        Mở trang khách hàng
+                    </a>
+                </DropdownMenuItem>
+                
+                <DropdownMenuItem 
+                    onClick={handleToggleActive}
+                    className="cursor-pointer"
+                >
+                    {portal.is_active ? 'Đóng portal' : 'Mở lại portal'}
+                </DropdownMenuItem>
+                
+                <DropdownMenuSeparator />
+                
+                <DropdownMenuItem 
+                    className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
+                    onClick={handleDelete}
+                >
+                    Xoá portal
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )
+}
 
 export const columns: ColumnDef<QuotePortal>[] = [
     {
@@ -76,31 +146,6 @@ export const columns: ColumnDef<QuotePortal>[] = [
     },
     {
         id: 'actions',
-        cell: ({ row }) => {
-            const portal = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                        <DropdownMenuItem asChild>
-                            <a href={`/quote/${portal.public_token}`} target="_blank">
-                                Mở trang khách hàng
-                            </a>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-destructive focus:text-destructive focus:bg-destructive/10">
-                            Đóng portal
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
+        cell: ({ row }) => <PortalActionsCell portal={row.original} />,
     },
 ]
