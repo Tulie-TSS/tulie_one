@@ -465,6 +465,13 @@ export function QuotationForm({ quotation, customers, products, units, projects,
             }
         }
 
+        if (proposalContent?.payment_terms) {
+            exportData.payment_terms = proposalContent.payment_terms;
+        }
+        if (proposalContent?.notes && Array.isArray(proposalContent.notes)) {
+            exportData.notes = proposalContent.notes;
+        }
+
         setImportText(JSON.stringify(exportData, null, 2))
         setIsImportProposalOpen(true)
     }
@@ -483,8 +490,8 @@ export function QuotationForm({ quotation, customers, products, units, projects,
             if (data.type) { setType(data.type); count++ }
             if (data.vat_percent !== undefined) { setVatPercent(data.vat_percent); count++ }
             if (data.validity_days) { setValidityDays(data.validity_days); count++ }
-            if (data.terms) { setTerms(data.terms); count++ }
-            if (data.notes) { setNotes(data.notes); count++ }
+            if (data.terms && typeof data.terms === 'string') { setTerms(data.terms); count++ }
+            if (data.notes && typeof data.notes === 'string') { setNotes(data.notes); count++ }
             if (data.bank_name) { setBankName(data.bank_name); count++ }
             if (data.bank_account_no) { setBankAccountNo(data.bank_account_no); count++ }
             if (data.bank_account_name) { setBankAccountName(data.bank_account_name); count++ }
@@ -532,6 +539,22 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 count += newItems.length
             }
 
+            // Extract advanced proposal JSON config
+            let advancedCount = 0;
+            const newProposalExt: any = {}
+            if (data.payment_terms) {
+                newProposalExt.payment_terms = data.payment_terms;
+                advancedCount++;
+            }
+            if (data.notes && Array.isArray(data.notes)) {
+                newProposalExt.notes = data.notes;
+                advancedCount++;
+            }
+            if (advancedCount > 0) {
+                setProposalContent((prev: any) => ({ ...prev, ...newProposalExt }));
+                count += advancedCount;
+            }
+
             setIsImportJsonOpen(false)
             setImportJsonText('')
             toast.success(`Đã nhập ${count} trường từ JSON`)
@@ -577,6 +600,15 @@ export function QuotationForm({ quotation, customers, products, units, projects,
             if (data.attachments) {
                 newProposalContent.attachments = data.attachments
                 count++
+            }
+
+            if (data.payment_terms) {
+                newProposalContent.payment_terms = data.payment_terms;
+                count++;
+            }
+            if (data.notes && Array.isArray(data.notes)) {
+                newProposalContent.notes = data.notes;
+                count++;
             }
 
             if (count === 0) {
