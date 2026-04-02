@@ -168,6 +168,7 @@ export interface QuotePortal {
   creator?: User
   is_active: boolean
   items?: QuotePortalItem[]
+  attachments?: { id: string; name: string; url: string; type: 'link' | 'file'; path?: string }[]
   created_at: string
   updated_at: string
 }

@@ -117,6 +117,7 @@ export async function createQuotePortal(data: {
     project_id?: string
     brand?: string
     quotation_ids?: string[]
+    attachments?: any[]
 }): Promise<{ success: boolean; data?: QuotePortal; error?: string }> {
     try {
         const supabase = await createClient()
@@ -140,6 +141,7 @@ export async function createQuotePortal(data: {
                 public_token: publicToken,
                 created_by: user.id,
                 is_active: true,
+                attachments: data.attachments || [],
             }])
             .select()
             .single()
@@ -181,13 +183,16 @@ export async function createQuotePortal(data: {
 export async function updateQuotePortal(id: string, updates: Partial<QuotePortal>) {
     try {
         const supabase = await createClient()
+        const updateData: Record<string, any> = {
+            updated_at: new Date().toISOString(),
+        }
+        if (updates.title !== undefined) updateData.title = updates.title
+        if (updates.is_active !== undefined) updateData.is_active = updates.is_active
+        if (updates.attachments !== undefined) updateData.attachments = updates.attachments
+
         const { data, error } = await supabase
             .from('quote_portals')
-            .update({
-                title: updates.title,
-                is_active: updates.is_active,
-                updated_at: new Date().toISOString(),
-            })
+            .update(updateData)
             .eq('id', id)
             .select()
             .single()

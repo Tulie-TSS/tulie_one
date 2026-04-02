@@ -18,6 +18,7 @@ import { createQuotePortal } from '@/lib/supabase/services/quote-portal-service'
 import { getCustomers } from '@/lib/supabase/services/customer-service'
 import { getQuotations } from '@/lib/supabase/services/quotation-service'
 import { formatCurrency } from '@/lib/utils/format'
+import { DocumentAttachmentManager, AttachmentItem } from '@/components/quotations/document-attachment-manager'
 
 export default function NewPortalPage() {
     const router = useRouter()
@@ -30,6 +31,7 @@ export default function NewPortalPage() {
     const [title, setTitle] = useState('')
     const [selectedCustomerId, setSelectedCustomerId] = useState('')
     const [selectedQuotationIds, setSelectedQuotationIds] = useState<string[]>([])
+    const [attachments, setAttachments] = useState<AttachmentItem[]>([])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -75,6 +77,7 @@ export default function NewPortalPage() {
                 title: title || 'Portal báo giá',
                 customer_id: selectedCustomerId,
                 quotation_ids: selectedQuotationIds,
+                attachments: attachments,
             })
             if (result.success && result.data) {
                 toast.success('Tạo Portal thành công!')
@@ -207,6 +210,22 @@ export default function NewPortalPage() {
                                     ))}
                                 </div>
                             )}
+                        </CardContent>
+                    </Card>
+
+                    {/* Attachments */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Tài liệu đính kèm</CardTitle>
+                            <CardDescription>
+                                Upload file PDF, hình ảnh hoặc thêm link demo / reference
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <DocumentAttachmentManager
+                                attachments={attachments}
+                                onChange={setAttachments}
+                            />
                         </CardContent>
                     </Card>
                 </div>

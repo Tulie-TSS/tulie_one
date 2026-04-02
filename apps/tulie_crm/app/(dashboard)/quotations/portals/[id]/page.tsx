@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from '@repo/u
 import { ExternalLink, Calendar, Globe, Link2 } from 'lucide-react'
 import Link from 'next/link'
 import { formatCurrency } from '@/lib/utils/format'
+import { PortalAttachments } from './portal-attachments'
 
 export const metadata: Metadata = {
     title: 'Chi tiết Portal | Tulie CRM',
@@ -111,6 +112,11 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
                             </div>
                         </CardContent>
                     </Card>
+
+                    <PortalAttachments
+                        portalId={portal.id}
+                        initialAttachments={portal.attachments || []}
+                    />
                 </div>
             </div>
         </div>
