@@ -71,13 +71,18 @@ export default function NewPortalPage() {
 
         setIsSaving(true)
         try {
-            const portal = await createQuotePortal({
+            const result = await createQuotePortal({
                 title: title || 'Portal báo giá',
                 customer_id: selectedCustomerId,
                 quotation_ids: selectedQuotationIds,
             })
-            toast.success('Tạo Portal thành công!')
-            router.push(`/quotations/portals/${portal.id}`)
+            if (result.success && result.data) {
+                toast.success('Tạo Portal thành công!')
+                router.push(`/quotations/portals/${result.data.id}`)
+            } else {
+                toast.error(result.error || 'Có lỗi xảy ra khi tạo Portal')
+                console.error('Portal creation failed:', result.error)
+            }
         } catch (err) {
             toast.error('Có lỗi xảy ra khi tạo Portal')
             console.error(err)

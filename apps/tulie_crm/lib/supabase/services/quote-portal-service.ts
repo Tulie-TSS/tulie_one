@@ -117,10 +117,15 @@ export async function createQuotePortal(data: {
     project_id?: string
     brand?: string
     quotation_ids?: string[]
-}) {
+}): Promise<{ success: boolean; data?: QuotePortal; error?: string }> {
     try {
         const supabase = await createClient()
-        const { data: { user } } = await supabase.auth.getUser()
+        const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+        if (authError || !user) {
+            console.error('Auth error in createQuotePortal:', authError)
+            return { success: false, error: 'Không xác thực được người dùng. Vui lòng đăng nhập lại.' }
+        }
 
         const publicToken = 'p_' + uuidv4().replace(/-/g, '')
 
@@ -133,13 +138,16 @@ export async function createQuotePortal(data: {
                 project_id: data.project_id || null,
                 brand: data.brand || 'tulie_agency',
                 public_token: publicToken,
-                created_by: user?.id,
+                created_by: user.id,
                 is_active: true,
             }])
             .select()
             .single()
 
-        if (error) throw error
+        if (error) {
+            console.error('Supabase insert error (quote_portals):', error)
+            return { success: false, error: `Lỗi tạo portal: ${error.message}` }
+        }
 
         // Add initial quotations
         if (data.quotation_ids?.length) {
@@ -148,7 +156,11 @@ export async function createQuotePortal(data: {
                 quotation_id: qId,
                 sort_order: idx,
             }))
-            await supabase.from('quote_portal_items').insert(items)
+            const { error: itemsError } = await supabase.from('quote_portal_items').insert(items)
+            if (itemsError) {
+                console.error('Supabase insert error (quote_portal_items):', itemsError)
+                // Don't fail the whole operation, portal was already created
+            }
         }
 
         await logActivity({
@@ -159,10 +171,10 @@ export async function createQuotePortal(data: {
         })
 
         revalidatePath('/quotations')
-        return portal as QuotePortal
+        return { success: true, data: portal as QuotePortal }
     } catch (err: any) {
         console.error('Error creating quote portal:', err)
-        throw err
+        return { success: false, error: err?.message || 'Lỗi không xác định khi tạo portal' }
     }
 }
 

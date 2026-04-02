@@ -17,31 +17,31 @@ export function CustomerCharts({ data }: CustomerChartsProps) {
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
-                        tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                        tick={{ fill: 'var(--color-muted-foreground, var(--muted-foreground))' }}
                         tickMargin={10}
                     />
                     <YAxis
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
-                        tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                        tick={{ fill: 'var(--color-muted-foreground, var(--muted-foreground))' }}
                         allowDecimals={false}
                         tickMargin={10}
                     />
                     <Tooltip
-                        cursor={{ fill: 'hsl(var(--muted))' }}
+                        cursor={{ fill: 'var(--color-muted, var(--muted))' }}
                         contentStyle={{
                             borderRadius: '8px',
-                            border: '1px solid hsl(var(--border))',
-                            backgroundColor: 'hsl(var(--popover))',
-                            color: 'hsl(var(--popover-foreground))',
+                            border: '1px solid var(--color-border, var(--border))',
+                            backgroundColor: 'var(--color-popover, var(--popover))',
+                            color: 'var(--color-popover-foreground, var(--popover-foreground))',
                             boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                             fontSize: '12px',
                         }}
-                        itemStyle={{ color: 'hsl(var(--foreground))', fontWeight: 500 }}
+                        itemStyle={{ color: 'var(--color-foreground, var(--foreground))', fontWeight: 500 }}
                         formatter={(value: any) => [`${value} khách hàng`, 'KH mới']}
                     />
-                    <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                    <Bar dataKey="value" fill="var(--color-primary, var(--primary))" radius={[4, 4, 0, 0]} maxBarSize={40} />
                 </BarChart>
             </ResponsiveContainer>
         </div>
