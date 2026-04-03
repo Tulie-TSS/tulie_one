@@ -45,7 +45,7 @@ const nextConfig: NextConfig = {
                     destination: '/anhthe',
                 },
                 {
-                    source: '/:path((?!anhthe|_next|api|file|favicon).*)',
+                    source: '/:path((?!anhthe|_next|api|file|favicon|portal).*)',
                     has: [{ type: 'host', value: 'anhthe.tulie.studio' }],
                     destination: '/anhthe/:path',
                 },
