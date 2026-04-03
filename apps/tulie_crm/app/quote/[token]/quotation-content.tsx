@@ -309,10 +309,10 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                     }, 100);
                                                 }}
                                                 className={cn(
-                                                    "cursor-pointer transition-all duration-200 relative group flex flex-col justify-between rounded-xl p-4",
+                                                    "cursor-pointer transition-all duration-200 relative group flex flex-col justify-between rounded-xl p-4 border",
                                                     isActive 
-                                                        ? "border-2 border-slate-900 bg-white shadow-sm" 
-                                                        : "border border-slate-200 bg-slate-50/50 shadow-sm hover:border-slate-300 hover:bg-white hover:shadow-md"
+                                                        ? "border-slate-900 bg-white shadow-sm" 
+                                                        : "border-slate-200 bg-slate-50/50 shadow-sm hover:border-slate-300 hover:bg-white hover:shadow-md"
                                                 )}
                                             >
                                                 <div className="flex items-center justify-between mb-2">
