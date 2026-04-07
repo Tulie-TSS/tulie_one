@@ -88,7 +88,7 @@ export async function submitEventSaleOrder(formData: FormData) {
     }
 
     const newOrder = await createPublicRetailOrder(orderPayload)
-    return { success: true, orderId: newOrder.id, token: publicToken }
+    return { success: true, orderId: newOrder.id, token: publicToken, orderNumber: newOrder.order_number }
   } catch (error: any) {
     console.error('Submit ISME order error:', error)
     return { success: false, error: error.message || 'Có lỗi xảy ra, vui lòng thử lại sau.' }

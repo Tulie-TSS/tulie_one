@@ -198,7 +198,13 @@ export async function createPublicRetailOrder(order: Partial<RetailOrder>) {
                 .maybeSingle()
 
             const nextStt = maxSttData?.stt ? maxSttData.stt + 1 : 810
-            orderData.order_number = `DH_${yy}_${mmdd}_${nextStt}_${kValue}`
+            
+            let prefix = 'DH'
+            if (orderData.metadata && orderData.metadata.eventCode) {
+                prefix = `DH_${orderData.metadata.eventCode}`
+            }
+            // Result e.g. DH_ISME_26_0410_811_139
+            orderData.order_number = `${prefix}_${yy}_${mmdd}_${nextStt}_${kValue}`
             orderData.stt = nextStt
         }
 

@@ -16,24 +16,36 @@ function fmt(n: number) {
 }
 
 /* ─── Countdown Hook ─── */
-function useCountdown() {
-  const [time, setTime] = useState({ h: "00", m: "00", s: "00" });
+function useCountdown(deadlineStr: string | null | undefined) {
+  const [time, setTime] = useState<{ h: string; m: string; s: string } | null>(null);
+  
   useEffect(() => {
+    if (!deadlineStr) return;
+    
+    const target = new Date(deadlineStr);
+    
     const tick = () => {
       const now = new Date();
-      const target = new Date(now);
-      target.setHours(23, 59, 59, 0);
       const diff = Math.max(0, target.getTime() - now.getTime());
+      
+      if (diff === 0) {
+        setTime({ h: "00", m: "00", s: "00" });
+        return;
+      }
+      
+      const hours = Math.floor(diff / 3600000);
       setTime({
-        h: String(Math.floor(diff / 3600000)).padStart(2, "0"),
+        h: String(hours).padStart(2, "0"),
         m: String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0"),
         s: String(Math.floor((diff % 60000) / 1000)).padStart(2, "0"),
       });
     };
+    
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [deadlineStr]);
+  
   return time;
 }
 
@@ -41,12 +53,17 @@ function useCountdown() {
 function ServiceCard({
   svc,
   selected,
+  isLate,
   onSelect,
 }: {
   svc: EventSaleService;
   selected: boolean;
+  isLate: boolean;
   onSelect: (k: string) => void;
 }) {
+  const activeSalePrice = isLate && svc.latePrice !== undefined ? svc.latePrice : svc.salePrice;
+  const showStrike = svc.originalPrice > activeSalePrice;
+
   return (
     <div
       className={`${styles.card} ${selected ? styles.selected : ""} ${svc.isCombo ? styles.cardCombo : ""}`}
@@ -66,12 +83,12 @@ function ServiceCard({
       <h3 className={styles.cardTitle}>{svc.name}</h3>
       <p className={styles.cardDesc}>{svc.description}</p>
       <div className={styles.priceRow}>
-        <span className={styles.priceOld}>{fmt(svc.originalPrice)}</span>
+        {showStrike && <span className={styles.priceOld}>{fmt(svc.originalPrice)}</span>}
         <span className={styles.priceNew}>
-          {svc.salePrice.toLocaleString("vi-VN")}
+          {activeSalePrice.toLocaleString("vi-VN")}
           <sup>đ</sup>
         </span>
-        {svc.savingText && <span className={styles.priceSave}>{svc.savingText}</span>}
+        {svc.savingText && !isLate && <span className={styles.priceSave}>{svc.savingText}</span>}
       </div>
       {svc.features && svc.features.length > 0 && (
          <ul className={styles.cardFeatures}>
@@ -89,7 +106,9 @@ function ServiceCard({
 
 /* ─── Main Page ─── */
 export default function EventSaleClient({ eventData }: { eventData: EventSale }) {
-  const countdown = useCountdown();
+  const countdown = useCountdown(eventData.deadline_time);
+  const isLate = eventData.deadline_time ? new Date() > new Date(eventData.deadline_time) : false;
+
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [fullname, setFullname] = useState("");
   const [phone, setPhone] = useState("");
@@ -99,11 +118,12 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
   const [showModal, setShowModal] = useState(false);
   const [showSticky, setShowSticky] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [orderQrData, setOrderQrData] = useState<{ id: string; qrUrl: string } | null>(null);
+  const [orderQrData, setOrderQrData] = useState<{ id: string; orderNumber: string; qrUrl: string } | null>(null);
 
   const services = eventData.services || [];
   const svc = services.find(s => s.id === selectedId) || null;
-  const saving = svc ? svc.originalPrice - svc.salePrice : 0;
+  const activeSalePrice = svc ? (isLate && svc.latePrice !== undefined ? svc.latePrice : svc.salePrice) : 0;
+  const saving = svc ? svc.originalPrice - activeSalePrice : 0;
 
   const handleSelect = useCallback((id: string) => {
     setSelectedId(id);
@@ -141,7 +161,7 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
     formData.set("refCode", refCode);
     formData.set("note", note);
     formData.set("serviceKey", selectedId);
-    formData.set("price", svc.salePrice.toString());
+    formData.set("price", activeSalePrice.toString());
     formData.set("originalPrice", svc.originalPrice.toString());
     formData.set("saving", saving.toString());
     formData.set("serviceName", svc.name);
@@ -152,11 +172,11 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
     const res = await submitEventSaleOrder(formData);
     setIsSubmitting(false);
 
-    if (res.success && res.orderId) {
+    if (res.success && res.orderNumber) {
       toast.success("Đã ghi nhận đơn hàng!");
-      const transferDesc = `DH ${eventData.code} ${phone.trim()} ${res.orderId.substring(0, 8).toUpperCase()}`;
-      const qrUrl = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-compact.png?amount=${svc.salePrice}&addInfo=${encodeURIComponent(transferDesc)}&accountName=${encodeURIComponent(ACCOUNT_NAME)}`;
-      setOrderQrData({ id: res.orderId, qrUrl });
+      const transferDesc = res.orderNumber;
+      const qrUrl = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-compact.png?amount=${activeSalePrice}&addInfo=${encodeURIComponent(transferDesc)}&accountName=${encodeURIComponent(ACCOUNT_NAME)}`;
+      setOrderQrData({ id: res.orderId, orderNumber: res.orderNumber, qrUrl });
       setShowModal(true);
     } else {
       toast.error("Lỗi tạo thông tin: " + res.error);
@@ -177,15 +197,31 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
         {/* Hero */}
         <section className={styles.hero}>
           <div className={styles.brand}>
-            <div className={styles.brandLogo}>
-              <span>/.</span> tulie.agency
-            </div>
-            <div className={styles.brandSep} />
-            <div className={styles.brandEvent}>
-              {eventData.name.split(' ').slice(0, 2).join(' ')}
-              <br />
-              {eventData.name.split(' ').slice(2).join(' ')}
-            </div>
+            {eventData.logo_url ? (
+                <img src={eventData.logo_url} alt="Logo" className="w-[120px] object-contain" />
+            ) : (
+                <div className={styles.brandLogo}>
+                  <span>/.</span> tulie.agency
+                </div>
+            )}
+            
+            {eventData.brand_name ? (
+                <>
+                  <div className={styles.brandSep} />
+                  <div className={styles.brandEvent}>
+                    {eventData.brand_name}
+                  </div>
+                </>
+            ) : (
+                <>
+                  <div className={styles.brandSep} />
+                  <div className={styles.brandEvent}>
+                    {eventData.name.split(' ').slice(0, 2).join(' ')}
+                    <br />
+                    {eventData.name.split(' ').slice(2).join(' ')}
+                  </div>
+                </>
+            )}
           </div>
           <div className={styles.heroBadge}>
             <span className={styles.dot} /> Đang nhận đơn
@@ -200,21 +236,23 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
           </p>
 
           {/* Countdown */}
-          <div className={styles.countdownWrap}>
-            <div className={styles.countdownLabel}>
-              <Clock size={14} /> Ưu đãi kết thúc sau
-            </div>
-            <div className={styles.countdown}>
-              {(["h", "m", "s"] as const).map((k, i) => (
-                <div className={styles.unit} key={k}>
-                  <div className={styles.num}>{countdown[k]}</div>
-                  <div className={styles.lbl}>
-                    {["Giờ", "Phút", "Giây"][i]}
+          {countdown && (
+            <div className={styles.countdownWrap}>
+              <div className={styles.countdownLabel}>
+                <Clock size={14} /> Ưu đãi kết thúc sau
+              </div>
+              <div className={styles.countdown}>
+                {(["h", "m", "s"] as const).map((k, i) => (
+                  <div className={styles.unit} key={k}>
+                    <div className={styles.num}>{countdown[k]}</div>
+                    <div className={styles.lbl}>
+                      {["Giờ", "Phút", "Giây"][i]}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </section>
 
         {/* Section 1: Services */}
@@ -224,7 +262,7 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
             <div>
               <div className={styles.sectionTitle}>Chọn gói Dịch vụ</div>
               <div className={styles.sectionSub}>
-                Chọn gói phù hợp với nhu cầu của bạn
+                {isLate ? "Rất tiếc thời hạn ưu đãi sớm đã kết thúc, nhưng bạn vẫn có thể đặt dịch vụ ngay." : "Chọn gói phù hợp với nhu cầu của bạn"}
               </div>
             </div>
           </div>
@@ -235,6 +273,7 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
                    key={service.id}
                    svc={service}
                    selected={selectedId === service.id}
+                   isLate={isLate}
                    onSelect={handleSelect}
                  />
              ))}
@@ -324,13 +363,13 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
               </div>
               <div className={styles.summaryRow}>
                 <span className={styles.label}>Giảm giá Sự kiện</span>
-                <span className={`${styles.val} ${styles.discount}`}>
-                  -{fmt(saving)}
+                <span className={`${styles.val} ${saving > 0 ? styles.discount : ''}`}>
+                  {saving > 0 ? `-${fmt(saving)}` : '0đ'}
                 </span>
               </div>
               <div className={`${styles.summaryRow} ${styles.total}`}>
                 <span className={styles.totalLabel}>Tổng thanh toán</span>
-                <span className={styles.totalVal}>{fmt(svc.salePrice)}</span>
+                <span className={styles.totalVal}>{fmt(activeSalePrice)}</span>
               </div>
             </div>
             <button className={styles.ctaPrimary} onClick={() => handleSubmitOrder()} disabled={isSubmitting}>
@@ -348,7 +387,7 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
           <div className={styles.stickyInner}>
             <div className={styles.stickyPrice}>
               <span>Tổng thanh toán</span>
-              <span className={styles.stickyAmount}>{fmt(svc.salePrice)}</span>
+              <span className={styles.stickyAmount}>{fmt(activeSalePrice)}</span>
             </div>
             <button
               className={styles.stickyBtn}
@@ -377,15 +416,15 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
               className={styles.modalClose}
               onClick={() => {
                 setShowModal(false);
-                toast('Mã đơn hàng: ' + orderQrData.id.substring(0, 8).toUpperCase());
+                toast('Mã đơn hàng: ' + orderQrData.orderNumber);
               }}
             >
               <X size={16} />
             </button>
             <h2>Thanh toán giữ chỗ</h2>
-            <div className={styles.modalAmount}>{fmt(svc.salePrice)}</div>
+            <div className={styles.modalAmount}>{fmt(activeSalePrice)}</div>
             <div className={styles.modalSub}>
-              Mã đơn: <strong>{orderQrData.id.substring(0, 8).toUpperCase()}</strong>
+              Mã đơn: <strong className="text-emerald-600">{orderQrData.orderNumber}</strong>
             </div>
             <div className={styles.qrBox}>
               <img src={orderQrData.qrUrl} alt="QR Payment" width={200} height={200} />
@@ -398,6 +437,8 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
               STK: <strong>0339 068 379</strong>
               <br />
               Chủ TK: <strong>NGUYEN HOANG TUNG</strong>
+              <br />
+              Nội dung C/K: <strong className="text-blue-600">{orderQrData.orderNumber}</strong>
             </div>
             <div className={styles.modalNote}>
               Sau khi thanh toán, hệ thống sẽ tự động xác nhận đơn hàng của bạn. Nếu cần hỗ trợ khẩn cấp, gọi <strong>0339 068 379</strong>.

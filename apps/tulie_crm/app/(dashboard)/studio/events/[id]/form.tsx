@@ -10,10 +10,11 @@ const DEFAULT_SERVICES = [
   {
     "id": "photo",
     "name": "Ảnh thẻ chuẩn Hàn Quốc",
-    "originalPrice": 199000,
+    "originalPrice": 250000,
     "salePrice": 139000,
-    "savingText": "-60K",
-    "tagLabel": "Giảm 30%",
+    "latePrice": 199000,
+    "savingText": "-111K",
+    "tagLabel": "Giới hạn",
     "tagStyle": "tagHot",
     "description": "Chỉnh sửa chuyên sâu, ghép trang phục chuyên nghiệp.",
     "features": [
@@ -56,6 +57,9 @@ export function EventSaleForm({ initialData }: { initialData?: any }) {
             }
 
             const domains = subdomainsText.split('\n').map(d => d.trim()).filter(Boolean)
+            
+            const deadlineRaw = formData.get('deadline_time') as string
+            const deadline_time = deadlineRaw ? new Date(deadlineRaw).toISOString() : null
 
             const payload = {
                 name: formData.get('name') as string,
@@ -63,6 +67,9 @@ export function EventSaleForm({ initialData }: { initialData?: any }) {
                 banner_text: formData.get('banner_text') as string,
                 hero_title: formData.get('hero_title') as string,
                 hero_subtitle: formData.get('hero_subtitle') as string,
+                logo_url: formData.get('logo_url') as string,
+                brand_name: formData.get('brand_name') as string,
+                deadline_time,
                 is_active: isActive,
                 subdomains: domains,
                 services: parsedServices
@@ -82,6 +89,14 @@ export function EventSaleForm({ initialData }: { initialData?: any }) {
         } finally {
             setSubmitting(false)
         }
+    }
+
+    // Format local datetime for the input default value natively (YYYY-MM-DDThh:mm)
+    const formatLocalDatetime = (isoString?: string) => {
+        if (!isoString) return ''
+        const d = new Date(isoString)
+        if (isNaN(d.getTime())) return ''
+        return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16)
     }
 
     return (
@@ -125,9 +140,26 @@ export function EventSaleForm({ initialData }: { initialData?: any }) {
 
             <Card className="rounded-md border-border">
                 <CardContent className="pt-6 space-y-4">
-                    <h3 className="text-lg font-medium border-b pb-2 mb-4">Nội dung Hiển thị (Tuỳ chọn)</h3>
+                    <h3 className="text-lg font-medium border-b pb-2 mb-4">Nhận diện Thương hiệu (Header & Banner)</h3>
                     
-                    <div className="space-y-2">
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label>Brand Name (Góc trái Header)</Label>
+                            <Input name="brand_name" defaultValue={initialData?.brand_name} placeholder="VD: ISME Career Fair 2026" />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Logo URL (Hình ảnh góc trái Header)</Label>
+                            <Input name="logo_url" defaultValue={initialData?.logo_url} placeholder="VD: https://tulie.studio/logo.png" />
+                        </div>
+                    </div>
+
+                    <div className="space-y-2 pt-2">
+                        <Label className="text-emerald-600 font-bold">Thời hạn Ưu đãi (Deadline đếm ngược)</Label>
+                        <Input type="datetime-local" name="deadline_time" defaultValue={formatLocalDatetime(initialData?.deadline_time)} />
+                        <p className="text-xs text-muted-foreground">Nếu đặt thời hạn, hệ thống sẽ tự đếm ngược. Sau thời hạn, giá sẽ quay về mức `latePrice` hoặc `originalPrice`.</p>
+                    </div>
+
+                    <div className="space-y-2 pt-2">
                         <Label>Banner thả trên đỉnh (Urgency text)</Label>
                         <Input name="banner_text" defaultValue={initialData?.banner_text} placeholder="Ưu đãi chỉ áp dụng tại Ngày hội Hướng nghiệp..." />
                     </div>

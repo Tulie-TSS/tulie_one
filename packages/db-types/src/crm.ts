@@ -365,6 +365,7 @@ export interface EventSaleService {
   name: string
   originalPrice: number
   salePrice: number
+  latePrice?: number
   savingText?: string
   tagLabel?: string
   tagStyle?: 'tagHot' | 'tagBest' | 'tagCombo'
@@ -384,6 +385,9 @@ export interface EventSale {
   hero_subtitle?: string
   services: EventSaleService[]
   referral_rules?: any
+  logo_url?: string
+  brand_name?: string
+  deadline_time?: string
   created_at: string
   updated_at: string
 }
