@@ -41,7 +41,7 @@ async function EventListWrapper() {
     return (
         <div className="space-y-6">
             {/* Stats */}
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4 md:grid-cols-2">
                 <Card className="rounded-md border-border">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Sự kiện hoạt động</CardTitle>
