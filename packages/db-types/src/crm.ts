@@ -359,3 +359,32 @@ export interface GeneratedDocument {
   signed_at?: string
   created_at: string
 }
+
+export interface EventSaleService {
+  id: string
+  name: string
+  originalPrice: number
+  salePrice: number
+  savingText?: string
+  tagLabel?: string
+  tagStyle?: 'tagHot' | 'tagBest' | 'tagCombo'
+  description?: string
+  features?: string[]
+  isCombo?: boolean
+}
+
+export interface EventSale {
+  id: string
+  name: string
+  code: string
+  subdomains: string[]
+  is_active: boolean
+  banner_text?: string
+  hero_title?: string
+  hero_subtitle?: string
+  services: EventSaleService[]
+  referral_rules?: any
+  created_at: string
+  updated_at: string
+}
+

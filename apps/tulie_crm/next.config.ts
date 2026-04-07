@@ -49,6 +49,17 @@ const nextConfig: NextConfig = {
                     has: [{ type: 'host', value: 'anhthe.tulie.studio' }],
                     destination: '/anhthe/:path',
                 },
+                // ismecareerfair.tulie.studio → /event-sale
+                {
+                    source: '/',
+                    has: [{ type: 'host', value: 'ismecareerfair.tulie.studio' }],
+                    destination: '/event-sale',
+                },
+                {
+                    source: '/:path((?!event-sale|_next|api|file|favicon|portal).*)',
+                    has: [{ type: 'host', value: 'ismecareerfair.tulie.studio' }],
+                    destination: '/event-sale/:path',
+                },
                 // hoptac.tulie.app → /affiliate (primary)
                 {
                     source: '/',

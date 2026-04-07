@@ -90,6 +90,32 @@ export async function middleware(request: NextRequest) {
     const rateLimited = checkPortalRateLimit(request)
     if (rateLimited) return rateLimited
 
+    // Handle dynamic event sale domains
+    const host = request.headers.get('host') || ''
+    const isTulieDomain = host.endsWith('.tulie.studio') || host.endsWith('.tulie.agency')
+    const excludeDomains = [
+        'anhthe.tulie.studio', 
+        'hoptac.tulie.agency', 'affiliate.tulie.agency',
+        // 'tulie.studio', 'www.tulie.studio' might be the main CRM domain?
+        'crm.tulie.studio'
+    ]
+    
+    if (isTulieDomain && !excludeDomains.includes(host)) {
+        const pathname = request.nextUrl.pathname
+        
+        let shouldRewrite = true;
+        if (pathname.startsWith('/_next') || pathname.startsWith('/api') || pathname.startsWith('/file') || pathname.startsWith('/portal') || pathname.startsWith('/event-sale')) {
+            shouldRewrite = false;
+        }
+
+        if (shouldRewrite) {
+            // Rewrite root to /event-sale, and /path to /event-sale/path
+            const rewriteUrl = request.nextUrl.clone()
+            rewriteUrl.pathname = `/event-sale${pathname === '/' ? '' : pathname}`
+            return NextResponse.rewrite(rewriteUrl)
+        }
+    }
+
     // Generate nonce for CSP
     const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
 
