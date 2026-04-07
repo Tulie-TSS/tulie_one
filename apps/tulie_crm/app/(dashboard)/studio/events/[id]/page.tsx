@@ -32,7 +32,7 @@ export default async function EventSaleEditPage({ params }: { params: Promise<{ 
                 </h1>
             </div>
             
-            <div className="max-w-[1200px]">
+            <div>
                 <EventSaleForm initialData={initialData} />
             </div>
         </div>
