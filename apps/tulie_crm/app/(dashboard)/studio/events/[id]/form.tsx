@@ -59,7 +59,7 @@ export function EventSaleForm({ initialData }: { initialData?: any }) {
             const domains = subdomainsText.split('\n').map(d => d.trim()).filter(Boolean)
             
             const deadlineRaw = formData.get('deadline_time') as string
-            const deadline_time = deadlineRaw ? new Date(deadlineRaw).toISOString() : null
+            const deadline_time = deadlineRaw ? new Date(deadlineRaw).toISOString() : undefined
 
             const payload = {
                 name: formData.get('name') as string,
