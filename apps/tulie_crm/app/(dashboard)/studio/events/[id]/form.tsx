@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button, Input, Switch, Label, Textarea, Card, CardContent } from '@repo/ui'
 import { toast } from 'sonner'
 import { createEventSale, updateEventSale } from '@/lib/supabase/services/event-sale-service'
+import { Plus, Trash, Code, List } from 'lucide-react'
 
 const DEFAULT_SERVICES = [
   {
@@ -29,14 +30,61 @@ export function EventSaleForm({ initialData }: { initialData?: any }) {
     const router = useRouter()
     const [submitting, setSubmitting] = useState(false)
     const [isActive, setIsActive] = useState(initialData?.is_active ?? true)
+    const [isJsonMode, setIsJsonMode] = useState(false)
     
     // For arrays or json bodies, we use text state to let admins edit freely
     const [subdomainsText, setSubdomainsText] = useState<string>((initialData?.subdomains || []).join('\n'))
     
-    // Stringify services back to json for simple text editor
-    const [servicesJson, setServicesJson] = useState(
-        initialData?.services ? JSON.stringify(initialData.services, null, 2) : JSON.stringify(DEFAULT_SERVICES, null, 2)
-    )
+    // UI Builder state
+    const [servicesArr, setServicesArr] = useState<any[]>(() => {
+        try {
+            return initialData?.services || DEFAULT_SERVICES
+        } catch(e) {
+            return DEFAULT_SERVICES
+        }
+    })
+    
+    // JSON state
+    const [servicesJson, setServicesJson] = useState(() => JSON.stringify(initialData?.services || DEFAULT_SERVICES, null, 2))
+
+    const handleToggleMode = () => {
+        if (isJsonMode) {
+            try {
+                const parsed = JSON.parse(servicesJson)
+                if (!Array.isArray(parsed)) throw new Error('Dịch vụ phải là mảng []')
+                setServicesArr(parsed)
+                setIsJsonMode(false)
+            } catch (err: any) {
+                toast.error('Lỗi JSON: ' + err.message)
+            }
+        } else {
+            const safeObj = servicesArr.map(s => ({
+              ...s,
+              features: (s.features || []).filter((f: string) => f.trim().length > 0)
+            }))
+            setServicesJson(JSON.stringify(safeObj, null, 2))
+            setIsJsonMode(true)
+        }
+    }
+
+    const updateService = (index: number, key: string, value: any) => {
+        setServicesArr(prev => {
+            const next = [...prev];
+            next[index] = { ...next[index], [key]: value };
+            return next;
+        });
+    }
+    
+    const addService = () => {
+        setServicesArr(prev => [
+            ...prev,
+            { id: `svc_${Date.now()}`, name: "Gói mới", originalPrice: 0, salePrice: 0, isCombo: false, features: [] }
+        ])
+    }
+    
+    const removeService = (index: number) => {
+        setServicesArr(prev => prev.filter((_, i) => i !== index))
+    }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -48,7 +96,14 @@ export function EventSaleForm({ initialData }: { initialData?: any }) {
             // parse JSONs safely
             let parsedServices = []
             try {
-                parsedServices = JSON.parse(servicesJson)
+                if (isJsonMode) {
+                    parsedServices = JSON.parse(servicesJson)
+                } else {
+                    parsedServices = servicesArr.map(s => ({
+                      ...s,
+                      features: (s.features || []).filter((f: string) => typeof f === 'string' && f.trim().length > 0)
+                    }))
+                }
                 if (!Array.isArray(parsedServices)) throw new Error('Dịch vụ phải là mảng Array JSON []')
             } catch (err: any) {
                 toast.error('Lỗi định dạng JSON Dịch vụ: ' + err.message)
@@ -179,14 +234,105 @@ export function EventSaleForm({ initialData }: { initialData?: any }) {
 
             <Card className="rounded-md border-border">
                 <CardContent className="pt-6 space-y-4">
-                    <h3 className="text-lg font-medium border-b pb-2">Danh sách Sản phẩm/Gói dịch vụ (JSON Array)</h3>
-                    <p className="text-sm text-muted-foreground">Tuỳ biến hoàn toàn các sản phẩm bằng JSON. Có thể sử dụng SKU từ kho hoặc nhập tay hoàn toàn giá cả/tính năng cho riêng sự kiện này để làm Landinp Page Sale linh động.</p>
-                    <Textarea 
-                        value={servicesJson} 
-                        onChange={e => setServicesJson(e.target.value)} 
-                        className="font-mono text-xs min-h-[400px]" 
-                        required 
-                    />
+                    <div className="flex justify-between items-end border-b pb-2 mb-4">
+                        <div>
+                            <h3 className="text-lg font-medium">Danh sách Dịch vụ / Gói</h3>
+                            <p className="text-sm text-muted-foreground">Các gói sản phẩm khách hàng có thể chọn trên Landing Page.</p>
+                        </div>
+                        <Button type="button" variant="outline" size="sm" onClick={handleToggleMode}>
+                            {isJsonMode ? <><List className="w-4 h-4 mr-2"/>Chuyển về Bảng (Visual Cấu hình)</> : <><Code className="w-4 h-4 mr-2"/>Hiển thị Mã Nguồn JSON</>}
+                        </Button>
+                    </div>
+
+                    {isJsonMode ? (
+                        <Textarea 
+                            value={servicesJson} 
+                            onChange={e => setServicesJson(e.target.value)} 
+                            className="font-mono text-xs min-h-[400px]" 
+                            required 
+                        />
+                    ) : (
+                        <div className="space-y-6">
+                            {servicesArr.map((svc, i) => (
+                                <div key={i} className="border border-border rounded-md p-5 bg-zinc-50 dark:bg-zinc-900/40 shadow-sm space-y-4 relative">
+                                    <div className="flex items-center justify-between pb-3 border-b border-border/50">
+                                        <h4 className="font-semibold text-emerald-600">Gói #{i + 1}</h4>
+                                        <Button type="button" variant="ghost" size="sm" onClick={() => removeService(i)} className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 h-8">
+                                            <Trash className="w-4 h-4 mr-2"/> Xoá gói này
+                                        </Button>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                        <div className="space-y-1">
+                                            <Label className="text-xs font-semibold">Mã (ID)</Label>
+                                            <Input value={svc.id || ''} onChange={(e) => updateService(i, 'id', e.target.value)} placeholder="VD: combo_1" />
+                                        </div>
+                                        <div className="space-y-1 md:col-span-3">
+                                            <Label className="text-xs font-semibold">Tên dịch vụ/Gói</Label>
+                                            <Input value={svc.name || ''} onChange={(e) => updateService(i, 'name', e.target.value)} placeholder="Ảnh thẻ chuẩn Hàn Quốc" />
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div className="space-y-1">
+                                            <Label className="text-xs font-semibold">Giá gốc (đ)</Label>
+                                            <Input type="number" value={svc.originalPrice ?? ''} onChange={(e) => updateService(i, 'originalPrice', e.target.value ? Number(e.target.value) : 0)} />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <Label className="text-xs font-semibold">Giá Ưu đãi đ (Sale)</Label>
+                                            <Input type="number" value={svc.salePrice ?? ''} onChange={(e) => updateService(i, 'salePrice', e.target.value ? Number(e.target.value) : 0)} />
+                                            <p className="text-[10px] text-muted-foreground mt-1">Sẽ dùng nếu Chưa đến Thời hạn</p>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <Label className="text-xs font-semibold">Giá Hết hạn đ (Late)</Label>
+                                            <Input type="number" value={svc.latePrice ?? ''} onChange={(e) => updateService(i, 'latePrice', e.target.value ? Number(e.target.value) : undefined)} placeholder="Trống = Về Giá gốc" />
+                                            <p className="text-[10px] text-muted-foreground mt-1">Sẽ dùng khi Quá thời hạn đếm ngược</p>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                                        <div className="space-y-1 text-xs md:col-span-2">
+                                            <Label className="text-xs font-semibold">Nhấn mạnh Tiết kiệm (Saving text)</Label>
+                                            <Input value={svc.savingText || ''} onChange={(e) => updateService(i, 'savingText', e.target.value)} placeholder="VD: -60K" />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <Label className="text-xs font-semibold">Tag Banner (Góc tựa)</Label>
+                                            <Input value={svc.tagLabel || ''} onChange={(e) => updateService(i, 'tagLabel', e.target.value)} placeholder="VD: Giảm 30%" />
+                                        </div>
+                                        <div className="space-y-1 flex flex-col">
+                                            <Label className="text-xs font-semibold mb-1">Màu sắc Tag</Label>
+                                            <select className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" value={svc.tagStyle || 'tagHot'} onChange={(e) => updateService(i, 'tagStyle', e.target.value)}>
+                                                <option value="tagHot">Đỏ (Hot)</option>
+                                                <option value="tagBest">Xanh (Best)</option>
+                                                <option value="tagCombo">Vàng nhạt (Combo)</option>
+                                            </select>
+                                        </div>
+                                        <div className="pb-2">
+                                            <div className="flex items-center gap-2">
+                                                <input type="checkbox" id={`isCombo-${i}`} className="w-4 h-4 rounded border-gray-300" checked={svc.isCombo} onChange={(e) => updateService(i, 'isCombo', e.target.checked)} />
+                                                <Label htmlFor={`isCombo-${i}`} className="text-xs font-semibold cursor-pointer">Gói Combo?</Label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="space-y-1">
+                                        <Label className="text-xs font-semibold">Mô tả ngắn ở dưới Tên gói</Label>
+                                        <Input value={svc.description || ''} onChange={(e) => updateService(i, 'description', e.target.value)} placeholder="VD: Chỉnh sửa hình dạng khuôn mặt đa chiều..." />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Label className="text-xs font-semibold">Quyền lợi kèm theo (Mỗi dòng một quyền lợi, sinh ra dấu tick xanh ✅)</Label>
+                                        <Textarea 
+                                            rows={4}
+                                            value={(svc.features || []).join('\n')} 
+                                            onChange={(e) => updateService(i, 'features', e.target.value.split('\n'))} 
+                                            placeholder="Xử lý da chuyên sâu&#10;Tặng in 2 vỉ ảnh tiêu chuẩn&#10;Gửi kèm file gốc chất lượng cao..." 
+                                            className="text-xs leading-relaxed"
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                            <Button type="button" variant="outline" className="w-full border-dashed py-8 font-medium text-emerald-700 bg-emerald-50 dark:bg-emerald-950/20 dark:text-emerald-500 hover:bg-emerald-100 dark:hover:bg-emerald-900/40" onClick={addService}>
+                                <Plus className="w-5 h-5 mr-2" /> THÊM GÓI DỊCH VỤ / SẢN PHẨM MỚI
+                            </Button>
+                        </div>
+                    )}
                 </CardContent>
             </Card>
 
