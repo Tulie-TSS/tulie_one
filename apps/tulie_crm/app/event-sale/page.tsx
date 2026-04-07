@@ -4,7 +4,8 @@ import EventSaleClient from './client'
 import { notFound } from 'next/navigation'
 
 export default async function EventSaleServerPage() {
-  const host = headers().get('host') || ''
+  const headersList = await headers()
+  const host = headersList.get('host') || ''
   
   // Clean host (remove port if local)
   const cleanHost = host.split(':')[0]

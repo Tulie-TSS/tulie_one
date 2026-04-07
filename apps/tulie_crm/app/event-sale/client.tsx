@@ -5,7 +5,6 @@ import { Zap, Clock, Check, Gift, X } from "lucide-react";
 import { toast } from "sonner";
 import { submitEventSaleOrder } from "./actions";
 import styles from "./isme.module.css";
-import { useRouter } from "next/navigation";
 import { EventSale, EventSaleService } from "@repo/db-types";
 
 const BANK_ID = "MB";
@@ -91,7 +90,6 @@ function ServiceCard({
 /* ─── Main Page ─── */
 export default function EventSaleClient({ eventData }: { eventData: EventSale }) {
   const countdown = useCountdown();
-  const router = useRouter();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [fullname, setFullname] = useState("");
   const [phone, setPhone] = useState("");

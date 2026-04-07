@@ -2,12 +2,13 @@ import { getEventSaleById } from '@/lib/supabase/services/event-sale-service'
 import { EventSaleForm } from './form'
 import { notFound } from 'next/navigation'
 
-export default async function EventSaleEditPage({ params }: { params: { id: string } }) {
-    const isNew = params.id === 'new'
+export default async function EventSaleEditPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params
+    const isNew = id === 'new'
     let initialData = null
 
     if (!isNew) {
-        initialData = await getEventSaleById(params.id)
+        initialData = await getEventSaleById(id)
         if (!initialData) {
             notFound()
         }
