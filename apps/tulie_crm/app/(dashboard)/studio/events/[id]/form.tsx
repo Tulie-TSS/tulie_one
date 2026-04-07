@@ -30,7 +30,7 @@ export function EventSaleForm({ initialData }: { initialData?: any }) {
     const [isActive, setIsActive] = useState(initialData?.is_active ?? true)
     
     // For arrays or json bodies, we use text state to let admins edit freely
-    const [subdomainsText, setSubdomainsText] = useState((initialData?.subdomains || []).join('\n'))
+    const [subdomainsText, setSubdomainsText] = useState<string>((initialData?.subdomains || []).join('\n'))
     
     // Stringify services back to json for simple text editor
     const [servicesJson, setServicesJson] = useState(
