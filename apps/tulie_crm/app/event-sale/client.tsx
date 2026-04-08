@@ -7,9 +7,6 @@ import { submitEventSaleOrder } from "./actions";
 import styles from "./isme.module.css";
 import { EventSale, EventSaleService, EventSaleComboRule } from "@repo/db-types";
 
-const BANK_ID = "MB";
-const ACCOUNT_NO = "0339068379";
-const ACCOUNT_NAME = "NGUYEN HOANG TUNG";
 
 function fmt(n: number) {
   return n.toLocaleString("vi-VN") + "đ";
@@ -286,8 +283,11 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
 
     if (res.success && res.orderNumber) {
       toast.success("Đã ghi nhận đơn hàng!");
-      const transferDesc = res.orderNumber;
-      const qrUrl = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-compact.png?amount=${pricing.total}&addInfo=${encodeURIComponent(transferDesc)}&accountName=${encodeURIComponent(ACCOUNT_NAME)}`;
+      const bank = eventData.bank_account;
+      const bankBin = bank?.bank_name || 'MB';
+      const accountNo = bank?.account_no || '';
+      const accountName = bank?.account_name || '';
+      const qrUrl = `https://img.vietqr.io/image/${bankBin}-${accountNo}-compact.png?amount=${pricing.total}&addInfo=${encodeURIComponent(res.orderNumber)}&accountName=${encodeURIComponent(accountName)}`;
       setOrderQrData({ id: res.orderId, orderNumber: res.orderNumber, qrUrl });
       setShowModal(true);
     } else {
@@ -664,19 +664,19 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
               <img src={orderQrData.qrUrl} alt="QR Payment" width={200} height={200} />
             </div>
             <div className={styles.bankInfo}>
-              <strong>TULIE STUDIO</strong>
+              <strong>{eventData.bank_account?.account_name || 'TULIE STUDIO'}</strong>
               <br />
-              Ngân hàng: <strong>MB Bank</strong>
+              Ngân hàng: <strong>{eventData.bank_account?.bank_name || 'MB'}</strong>
               <br />
-              STK: <strong>0339 068 379</strong>
+              STK: <strong>{eventData.bank_account?.account_no || ''}</strong>
               <br />
-              Chủ TK: <strong>NGUYEN HOANG TUNG</strong>
+              Chủ TK: <strong>{eventData.bank_account?.account_name || ''}</strong>
               <br />
               Nội dung C/K: <strong className="text-blue-600">{orderQrData.orderNumber}</strong>
             </div>
             <div className={styles.modalNote}>
               Sau khi thanh toán, hệ thống sẽ tự động xác nhận đơn hàng của bạn. Nếu cần hỗ trợ
-              khẩn cấp, gọi <strong>0339 068 379</strong>.
+              khẩn cấp, gọi <strong>{eventData.hotline || eventData.bank_account?.account_no || ''}</strong>.
             </div>
 
             {/* Referral reminder */}
@@ -704,8 +704,8 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
             — Ưu đãi sự kiện {eventData.name}
           </p>
           <p>
-            Hotline: <a href="tel:0339068379">0339 068 379</a> ·{" "}
-            <a href="https://zalo.me/0339068379" target="_blank" rel="noreferrer">
+            Hotline: <a href={`tel:${eventData.hotline || ''}`}>{eventData.hotline || ''}</a> ·{" "}
+            <a href={`https://zalo.me/${eventData.hotline || ''}`} target="_blank" rel="noreferrer">
               Zalo
             </a>
           </p>

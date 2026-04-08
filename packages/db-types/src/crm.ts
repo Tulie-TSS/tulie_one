@@ -417,6 +417,14 @@ export interface EventSale {
   logo_url?: string
   brand_name?: string
   deadline_time?: string
+  /** Bank account for payment QR — if not set, falls back to system bank config */
+  bank_account?: {
+    bank_name: string
+    account_no: string
+    account_name: string
+  }
+  /** Hotline phone number */
+  hotline?: string
   created_at: string
   updated_at: string
 }
