@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback, FormEvent } from "react";
-import { Zap, Clock, Check, Gift, X } from "lucide-react";
+import { useState, useEffect, useCallback, useMemo, FormEvent } from "react";
+import { Zap, Clock, Check, Gift, X, Plus, Sparkles, Users } from "lucide-react";
 import { toast } from "sonner";
 import { submitEventSaleOrder } from "./actions";
 import styles from "./isme.module.css";
-import { EventSale, EventSaleService } from "@repo/db-types";
+import { EventSale, EventSaleService, EventSaleComboRule } from "@repo/db-types";
 
 const BANK_ID = "MB";
 const ACCOUNT_NO = "0339068379";
@@ -18,21 +18,17 @@ function fmt(n: number) {
 /* ─── Countdown Hook ─── */
 function useCountdown(deadlineStr: string | null | undefined) {
   const [time, setTime] = useState<{ h: string; m: string; s: string } | null>(null);
-  
+
   useEffect(() => {
     if (!deadlineStr) return;
-    
     const target = new Date(deadlineStr);
-    
     const tick = () => {
       const now = new Date();
       const diff = Math.max(0, target.getTime() - now.getTime());
-      
       if (diff === 0) {
         setTime({ h: "00", m: "00", s: "00" });
         return;
       }
-      
       const hours = Math.floor(diff / 3600000);
       setTime({
         h: String(hours).padStart(2, "0"),
@@ -40,26 +36,38 @@ function useCountdown(deadlineStr: string | null | undefined) {
         s: String(Math.floor((diff % 60000) / 1000)).padStart(2, "0"),
       });
     };
-    
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, [deadlineStr]);
-  
+
   return time;
 }
 
-/* ─── Service Card ─── */
+/* ─── Group label mapping ─── */
+const GROUP_LABELS: Record<string, string> = {
+  photo_id: "Ảnh thẻ",
+  photo_profile: "Ảnh Profile",
+  website: "Website",
+};
+
+const GROUP_DESCRIPTIONS: Record<string, string> = {
+  photo_id: "Ảnh thẻ chuẩn Hàn Quốc, sửa trang phục chuyên nghiệp",
+  photo_profile: "Bộ ảnh profile đa góc, tạo ấn tượng chuyên nghiệp",
+  website: "Website cá nhân nổi bật, thể hiện năng lực chuyên môn",
+};
+
+/* ─── Service Card (Multi-select) ─── */
 function ServiceCard({
   svc,
   selected,
   isLate,
-  onSelect,
+  onToggle,
 }: {
   svc: EventSaleService;
   selected: boolean;
   isLate: boolean;
-  onSelect: (k: string) => void;
+  onToggle: (id: string) => void;
 }) {
   const activeSalePrice = isLate && svc.latePrice !== undefined ? svc.latePrice : svc.salePrice;
   const showStrike = svc.originalPrice > activeSalePrice;
@@ -67,18 +75,18 @@ function ServiceCard({
   return (
     <div
       className={`${styles.card} ${selected ? styles.selected : ""} ${svc.isCombo ? styles.cardCombo : ""}`}
-      onClick={() => onSelect(svc.id)}
+      onClick={() => onToggle(svc.id)}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => e.key === "Enter" && onSelect(svc.id)}
+      onKeyDown={(e) => e.key === "Enter" && onToggle(svc.id)}
     >
       <span className={styles.checkIcon}>
         <Check size={14} />
       </span>
       {svc.tagLabel && (
-         <span className={`${styles.cardTag} ${svc.tagStyle ? styles[svc.tagStyle] : styles.tagHot}`}>
-           {svc.tagLabel}
-         </span>
+        <span className={`${styles.cardTag} ${svc.tagStyle ? styles[svc.tagStyle] : styles.tagHot}`}>
+          {svc.tagLabel}
+        </span>
       )}
       <h3 className={styles.cardTitle}>{svc.name}</h3>
       <p className={styles.cardDesc}>{svc.description}</p>
@@ -91,14 +99,22 @@ function ServiceCard({
         {svc.savingText && !isLate && <span className={styles.priceSave}>{svc.savingText}</span>}
       </div>
       {svc.features && svc.features.length > 0 && (
-         <ul className={styles.cardFeatures}>
-           {svc.features.map((f: string, i: number) => (
-             <li key={i}>
-               <Check size={14} className={styles.liIcon} />
-               {f}
-             </li>
-           ))}
-         </ul>
+        <ul className={styles.cardFeatures}>
+          {svc.features.map((f: string, i: number) => (
+            <li key={i}>
+              <Check size={14} className={styles.liIcon} />
+              {f}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Add-on info note (not interactive — addon is decided during editing) */}
+      {svc.addonLabel && (
+        <div className={styles.addonNote}>
+          <Plus size={12} />
+          {svc.addonLabel}
+        </div>
       )}
     </div>
   );
@@ -109,7 +125,8 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
   const countdown = useCountdown(eventData.deadline_time);
   const isLate = eventData.deadline_time ? new Date() > new Date(eventData.deadline_time) : false;
 
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  // Multi-select state
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [fullname, setFullname] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -121,17 +138,102 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
   const [orderQrData, setOrderQrData] = useState<{ id: string; orderNumber: string; qrUrl: string } | null>(null);
 
   const services = eventData.services || [];
-  const svc = services.find(s => s.id === selectedId) || null;
-  const activeSalePrice = svc ? (isLate && svc.latePrice !== undefined ? svc.latePrice : svc.salePrice) : 0;
-  const saving = svc ? svc.originalPrice - activeSalePrice : 0;
+  const comboRules = eventData.combo_rules || [];
+  const referralRules = eventData.referral_rules;
 
-  const handleSelect = useCallback((id: string) => {
-    setSelectedId(id);
-  }, []);
+  // Group services by their group field
+  const groupedServices = useMemo(() => {
+    const groups: Record<string, EventSaleService[]> = {};
+    const ungrouped: EventSaleService[] = [];
+    for (const svc of services) {
+      if (svc.group) {
+        if (!groups[svc.group]) groups[svc.group] = [];
+        groups[svc.group].push(svc);
+      } else {
+        ungrouped.push(svc);
+      }
+    }
+    return { groups, ungrouped };
+  }, [services]);
+
+  // Group order for display
+  const groupOrder = ["photo_id", "photo_profile", "website"];
+
+  // Handle selection toggle with maxSelect enforcement
+  const handleToggle = useCallback(
+    (id: string) => {
+      setSelectedIds((prev) => {
+        const next = new Set(prev);
+        const svc = services.find((s) => s.id === id);
+        if (next.has(id)) {
+          next.delete(id);
+        } else {
+          // Enforce maxSelect within group
+          if (svc?.maxSelect && svc.group) {
+            const groupSvcs = services.filter((s) => s.group === svc.group);
+            const selectedInGroup = groupSvcs.filter((s) => next.has(s.id));
+            if (selectedInGroup.length >= svc.maxSelect) {
+              // Remove oldest selection in group
+              for (const s of selectedInGroup) {
+                next.delete(s.id);
+              }
+            }
+          }
+          next.add(id);
+        }
+        return next;
+      });
+    },
+    [services]
+  );
+
+
+
+  // ─── Pricing calculation ───
+  const pricing = useMemo(() => {
+    const selectedSvcs = services.filter((s) => selectedIds.has(s.id));
+    if (selectedSvcs.length === 0) return null;
+
+    // Line items
+    const items = selectedSvcs.map((svc) => {
+      const salePrice = isLate && svc.latePrice !== undefined ? svc.latePrice : svc.salePrice;
+      return {
+        svc,
+        salePrice,
+        lineTotal: salePrice,
+        originalTotal: svc.originalPrice,
+      };
+    });
+
+    const subtotal = items.reduce((s, i) => s + i.lineTotal, 0);
+    const originalTotal = items.reduce((s, i) => s + i.originalTotal, 0);
+
+    // Check combo eligibility
+    let comboDiscount = 0;
+    let activeCombo: EventSaleComboRule | null = null;
+
+    for (const rule of comboRules) {
+      const allGroupsSatisfied = rule.requireGroups.every((g) =>
+        selectedSvcs.some((s) => s.group === g)
+      );
+      if (allGroupsSatisfied) {
+        const discount = Math.round(subtotal * (rule.discountPercent / 100));
+        if (discount > comboDiscount) {
+          comboDiscount = discount;
+          activeCombo = rule;
+        }
+      }
+    }
+
+    const total = subtotal - comboDiscount;
+    const totalSaving = originalTotal - total;
+
+    return { items, subtotal, comboDiscount, activeCombo, total, totalSaving, originalTotal };
+  }, [services, selectedIds, isLate, comboRules]);
 
   /* Sticky bar visibility */
   useEffect(() => {
-    if (!selectedId) return;
+    if (!pricing) return;
     const onScroll = () => {
       const el = document.getElementById("summarySection");
       if (!el) return;
@@ -140,12 +242,12 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [selectedId]);
+  }, [pricing]);
 
   const handleSubmitOrder = async (e?: FormEvent) => {
     if (e) e.preventDefault();
-    if (!selectedId || !svc) {
-      toast.error("Vui lòng chọn dịch vụ!");
+    if (!pricing || pricing.items.length === 0) {
+      toast.error("Vui lòng chọn ít nhất 1 dịch vụ!");
       return;
     }
     if (!fullname.trim() || !phone.trim()) {
@@ -154,20 +256,30 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
     }
 
     setIsSubmitting(true);
+
+    const orderItems = pricing.items.map((item) => ({
+      serviceId: item.svc.id,
+      serviceName: item.svc.name,
+      originalPrice: item.svc.originalPrice,
+      salePrice: item.salePrice,
+      lineTotal: item.lineTotal,
+    }));
+
     const formData = new FormData();
     formData.set("fullname", fullname);
     formData.set("phone", phone);
     formData.set("email", email);
     formData.set("refCode", refCode);
     formData.set("note", note);
-    formData.set("serviceKey", selectedId);
-    formData.set("price", activeSalePrice.toString());
-    formData.set("originalPrice", svc.originalPrice.toString());
-    formData.set("saving", saving.toString());
-    formData.set("serviceName", svc.name);
-
     formData.set("eventName", eventData.name);
     formData.set("eventCode", eventData.code);
+    formData.set("orderItems", JSON.stringify(orderItems));
+    formData.set("subtotal", pricing.subtotal.toString());
+    formData.set("comboDiscount", pricing.comboDiscount.toString());
+    formData.set("comboLabel", pricing.activeCombo?.label || "");
+    formData.set("total", pricing.total.toString());
+    formData.set("originalTotal", pricing.originalTotal.toString());
+    formData.set("totalSaving", pricing.totalSaving.toString());
 
     const res = await submitEventSaleOrder(formData);
     setIsSubmitting(false);
@@ -175,13 +287,26 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
     if (res.success && res.orderNumber) {
       toast.success("Đã ghi nhận đơn hàng!");
       const transferDesc = res.orderNumber;
-      const qrUrl = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-compact.png?amount=${activeSalePrice}&addInfo=${encodeURIComponent(transferDesc)}&accountName=${encodeURIComponent(ACCOUNT_NAME)}`;
+      const qrUrl = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-compact.png?amount=${pricing.total}&addInfo=${encodeURIComponent(transferDesc)}&accountName=${encodeURIComponent(ACCOUNT_NAME)}`;
       setOrderQrData({ id: res.orderId, orderNumber: res.orderNumber, qrUrl });
       setShowModal(true);
     } else {
       toast.error("Lỗi tạo thông tin: " + res.error);
     }
   };
+
+  // Check if any group has selections (for combo indicator)
+  const selectedGroups = useMemo(() => {
+    const groups = new Set<string>();
+    services.forEach((s) => {
+      if (selectedIds.has(s.id) && s.group) groups.add(s.group);
+    });
+    return groups;
+  }, [services, selectedIds]);
+
+  const hasPhoto = selectedGroups.has("photo_id") || selectedGroups.has("photo_profile");
+  const hasWebsite = selectedGroups.has("website");
+  const isComboActive = pricing?.activeCombo != null;
 
   return (
     <div className={styles.page}>
@@ -198,29 +323,27 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
         <section className={styles.hero}>
           <div className={styles.brand}>
             {eventData.logo_url ? (
-                <img src={eventData.logo_url} alt="Logo" className="w-[120px] object-contain" />
+              <img src={eventData.logo_url} alt="Logo" className="w-[120px] object-contain" />
             ) : (
-                <div className={styles.brandLogo}>
-                  <span>/.</span> tulie.agency
-                </div>
+              <div className={styles.brandLogo}>
+                <span>/.</span> tulie.agency
+              </div>
             )}
-            
+
             {eventData.brand_name ? (
-                <>
-                  <div className={styles.brandSep} />
-                  <div className={styles.brandEvent}>
-                    {eventData.brand_name}
-                  </div>
-                </>
+              <>
+                <div className={styles.brandSep} />
+                <div className={styles.brandEvent}>{eventData.brand_name}</div>
+              </>
             ) : (
-                <>
-                  <div className={styles.brandSep} />
-                  <div className={styles.brandEvent}>
-                    {eventData.name.split(' ').slice(0, 2).join(' ')}
-                    <br />
-                    {eventData.name.split(' ').slice(2).join(' ')}
-                  </div>
-                </>
+              <>
+                <div className={styles.brandSep} />
+                <div className={styles.brandEvent}>
+                  {eventData.name.split(" ").slice(0, 2).join(" ")}
+                  <br />
+                  {eventData.name.split(" ").slice(2).join(" ")}
+                </div>
+              </>
             )}
           </div>
           <div className={styles.heroBadge}>
@@ -228,11 +351,16 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
           </div>
           <h1>
             {eventData.hero_title || (
-                <>Chuẩn bị hồ sơ xin việc<br />chuyên nghiệp cùng Tulie</>
+              <>
+                Chuẩn bị hồ sơ xin việc
+                <br />
+                chuyên nghiệp cùng Tulie
+              </>
             )}
           </h1>
           <p>
-            {eventData.hero_subtitle || "Ảnh thẻ chuẩn Hàn Quốc & Website CV cá nhân — ưu đãi độc quyền tại sự kiện hôm nay."}
+            {eventData.hero_subtitle ||
+              "Ảnh thẻ chuẩn Hàn Quốc & Website CV cá nhân — ưu đãi độc quyền tại sự kiện hôm nay."}
           </p>
 
           {/* Countdown */}
@@ -245,9 +373,7 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
                 {(["h", "m", "s"] as const).map((k, i) => (
                   <div className={styles.unit} key={k}>
                     <div className={styles.num}>{countdown[k]}</div>
-                    <div className={styles.lbl}>
-                      {["Giờ", "Phút", "Giây"][i]}
-                    </div>
+                    <div className={styles.lbl}>{["Giờ", "Phút", "Giây"][i]}</div>
                   </div>
                 ))}
               </div>
@@ -255,29 +381,79 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
           )}
         </section>
 
-        {/* Section 1: Services */}
+        {/* Combo hint banner */}
+        {comboRules.length > 0 && (
+          <div className={`${styles.comboBanner} ${isComboActive ? styles.comboBannerActive : ""}`}>
+            <Sparkles size={16} />
+            <div>
+              {isComboActive ? (
+                <strong>🎉 Combo đã kích hoạt! Giảm thêm {pricing?.activeCombo?.discountPercent}%</strong>
+              ) : (
+                <>
+                  <strong>Combo tiết kiệm:</strong> Chọn cả Ảnh + Website để được giảm thêm{" "}
+                  {comboRules[0]?.discountPercent}%
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Section 1: Services grouped */}
         <section className={styles.section}>
           <div className={styles.sectionHead}>
             <div className={styles.sectionNum}>1</div>
             <div>
               <div className={styles.sectionTitle}>Chọn gói Dịch vụ</div>
               <div className={styles.sectionSub}>
-                {isLate ? "Rất tiếc thời hạn ưu đãi sớm đã kết thúc, nhưng bạn vẫn có thể đặt dịch vụ ngay." : "Chọn gói phù hợp với nhu cầu của bạn"}
+                {isLate
+                  ? "Rất tiếc thời hạn ưu đãi sớm đã kết thúc, nhưng bạn vẫn có thể đặt dịch vụ ngay."
+                  : "Chọn một hoặc nhiều gói phù hợp với nhu cầu của bạn"}
               </div>
             </div>
           </div>
-          
-          <div className="flex flex-col gap-4">
-             {services.map((service) => (
-                 <ServiceCard
-                   key={service.id}
-                   svc={service}
-                   selected={selectedId === service.id}
-                   isLate={isLate}
-                   onSelect={handleSelect}
-                 />
-             ))}
-          </div>
+
+          {/* Render by group */}
+          {groupOrder
+            .filter((g) => groupedServices.groups[g]?.length > 0)
+            .map((groupKey) => (
+              <div key={groupKey} className={styles.serviceGroup}>
+                <div className={styles.groupHeader}>
+                  <div className={styles.groupTitle}>{GROUP_LABELS[groupKey] || groupKey}</div>
+                  <div className={styles.groupDesc}>{GROUP_DESCRIPTIONS[groupKey] || ""}</div>
+                  {selectedGroups.has(groupKey) && (
+                    <span className={styles.groupCheck}>
+                      <Check size={12} /> Đã chọn
+                    </span>
+                  )}
+                </div>
+                <div className={styles.groupCards}>
+                  {groupedServices.groups[groupKey].map((svc) => (
+                    <ServiceCard
+                      key={svc.id}
+                      svc={svc}
+                      selected={selectedIds.has(svc.id)}
+                      isLate={isLate}
+                      onToggle={handleToggle}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+
+          {/* Ungrouped services if any */}
+          {groupedServices.ungrouped.length > 0 && (
+            <div className={styles.groupCards}>
+              {groupedServices.ungrouped.map((svc) => (
+                <ServiceCard
+                  key={svc.id}
+                  svc={svc}
+                  selected={selectedIds.has(svc.id)}
+                  isLate={isLate}
+                  onToggle={handleToggle}
+                />
+              ))}
+            </div>
+          )}
         </section>
 
         {/* Section 2: Customer Info */}
@@ -286,9 +462,7 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
             <div className={styles.sectionNum}>2</div>
             <div>
               <div className={styles.sectionTitle}>Thông tin khách hàng</div>
-              <div className={styles.sectionSub}>
-                Nhập thông tin để thiết lập lịch hẹn / đơn hàng
-              </div>
+              <div className={styles.sectionSub}>Nhập thông tin để thiết lập lịch hẹn / đơn hàng</div>
             </div>
           </div>
           <div className={`${styles.card} ${styles.formCard}`}>
@@ -317,7 +491,9 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
               </div>
             </div>
             <div className={styles.formGroup}>
-              <label>Email <span className={styles.req}>*</span></label>
+              <label>
+                Email <span className={styles.req}>*</span>
+              </label>
               <input
                 type="email"
                 placeholder="email@example.com"
@@ -326,13 +502,16 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
               />
             </div>
             <div className={styles.formGroup}>
-              <label>Mã giới thiệu (nếu có)</label>
+              <label>Mã đơn hàng giới thiệu (nếu có)</label>
               <input
                 type="text"
-                placeholder="Nhập mã người giới thiệu"
+                placeholder="VD: TS-00123"
                 value={refCode}
                 onChange={(e) => setRefCode(e.target.value)}
               />
+              <div className={styles.fieldHint}>
+                Nhập mã đơn hàng của người đã giới thiệu bạn (nếu có)
+              </div>
             </div>
             <div className={styles.formGroup}>
               <label>Ghi chú / Thắc mắc</label>
@@ -346,7 +525,7 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
         </section>
 
         {/* Section 3: Summary */}
-        {selectedId && svc && (
+        {pricing && (
           <section className={styles.section} id="summarySection">
             <div className={styles.sectionHead}>
               <div className={styles.sectionNum}>3</div>
@@ -355,46 +534,106 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
               </div>
             </div>
             <div className={styles.summary}>
-              <div className={styles.summaryRow}>
-                <span className={styles.label}>{svc.name}</span>
-                <span className={`${styles.val} ${styles.strike}`}>
-                  {fmt(svc.originalPrice)}
-                </span>
-              </div>
-              <div className={styles.summaryRow}>
-                <span className={styles.label}>Giảm giá Sự kiện</span>
-                <span className={`${styles.val} ${saving > 0 ? styles.discount : ''}`}>
-                  {saving > 0 ? `-${fmt(saving)}` : '0đ'}
-                </span>
-              </div>
+              {pricing.items.map((item, idx) => (
+                <div key={idx}>
+                  <div className={styles.summaryRow}>
+                    <span className={styles.label}>{item.svc.name}</span>
+                    <span className={styles.val}>{fmt(item.salePrice)}</span>
+                  </div>
+                </div>
+              ))}
+
+              {pricing.comboDiscount > 0 && (
+                <div className={styles.summaryRow}>
+                  <span className={`${styles.label} ${styles.comboLabel}`}>
+                    <Sparkles size={12} />
+                    {pricing.activeCombo?.label || "Ưu đãi Combo Ảnh + Website"}
+                  </span>
+                  <span className={`${styles.val} ${styles.discount}`}>
+                    -{fmt(pricing.comboDiscount)}
+                  </span>
+                </div>
+              )}
+
+              {pricing.totalSaving > 0 && (
+                <div className={styles.summaryRow}>
+                  <span className={styles.label}>Tiết kiệm so với giá gốc</span>
+                  <span className={`${styles.val} ${styles.discount}`}>
+                    -{fmt(pricing.totalSaving)}
+                  </span>
+                </div>
+              )}
+
               <div className={`${styles.summaryRow} ${styles.total}`}>
                 <span className={styles.totalLabel}>Tổng thanh toán</span>
-                <span className={styles.totalVal}>{fmt(activeSalePrice)}</span>
+                <span className={styles.totalVal}>{fmt(pricing.total)}</span>
               </div>
             </div>
-            <button className={styles.ctaPrimary} onClick={() => handleSubmitOrder()} disabled={isSubmitting}>
+            <button
+              className={styles.ctaPrimary}
+              onClick={() => handleSubmitOrder()}
+              disabled={isSubmitting}
+            >
               {isSubmitting ? "Đang xử lý..." : "Thanh toán giữ chỗ ngay"}
             </button>
+          </section>
+        )}
+
+        {/* Referral Info Section */}
+        {referralRules && (
+          <section className={styles.section}>
+            <div className={styles.referral}>
+              <h3>
+                <Gift size={16} /> Giới thiệu bạn bè — Nhận hoàn tiền {referralRules.cashbackPercent}%
+              </h3>
+              <p className={styles.referralSub}>
+                {referralRules.description ||
+                  `Hoàn ${referralRules.cashbackPercent}% giá trị đơn hàng cho người giới thiệu khi đơn hàng mới hoàn thành thành công.`}
+              </p>
+              <div className={styles.refGrid}>
+                <div className={styles.refItem}>
+                  <span className={styles.refLabel}>
+                    <strong>Bước 1.</strong> Hoàn thành đơn hàng của bạn
+                  </span>
+                </div>
+                <div className={styles.refItem}>
+                  <span className={styles.refLabel}>
+                    <strong>Bước 2.</strong> Nhận mã đơn hàng (VD: TS-00123)
+                  </span>
+                </div>
+                <div className={styles.refItem}>
+                  <span className={styles.refLabel}>
+                    <strong>Bước 3.</strong> Chia sẻ mã cho bạn bè khi họ đặt đơn mới
+                  </span>
+                </div>
+                <div className={styles.refItem}>
+                  <span className={styles.refLabel}>
+                    <strong>Bước 4.</strong> Nhận hoàn tiền {referralRules.cashbackPercent}% khi đơn bạn bè hoàn thành
+                  </span>
+                  <span className={styles.refValue}>
+                    <Users size={14} /> Hoàn {referralRules.cashbackPercent}%
+                  </span>
+                </div>
+              </div>
+            </div>
           </section>
         )}
       </div>
 
       {/* Sticky Bar */}
-      {selectedId && svc && (
-        <div
-          className={`${styles.stickyBar} ${showSticky ? styles.stickyShow : ""}`}
-        >
+      {pricing && (
+        <div className={`${styles.stickyBar} ${showSticky ? styles.stickyShow : ""}`}>
           <div className={styles.stickyInner}>
             <div className={styles.stickyPrice}>
-              <span>Tổng thanh toán</span>
-              <span className={styles.stickyAmount}>{fmt(activeSalePrice)}</span>
+              <span>
+                {pricing.items.length} dịch vụ{isComboActive ? " · Combo" : ""}
+              </span>
+              <span className={styles.stickyAmount}>{fmt(pricing.total)}</span>
             </div>
             <button
               className={styles.stickyBtn}
               onClick={() =>
-                document
-                  .getElementById("summarySection")
-                  ?.scrollIntoView({ behavior: "smooth" })
+                document.getElementById("summarySection")?.scrollIntoView({ behavior: "smooth" })
               }
             >
               Thanh toán
@@ -404,25 +643,20 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
       )}
 
       {/* QR Payment Modal */}
-      {showModal && svc && orderQrData && (
-        <div
-          className={styles.modalOverlay}
-          onClick={(e) => {
-             // Block click outside from closing to ensure they make payment
-          }}
-        >
+      {showModal && pricing && orderQrData && (
+        <div className={styles.modalOverlay} onClick={() => {}}>
           <div className={styles.modal}>
             <button
               className={styles.modalClose}
               onClick={() => {
                 setShowModal(false);
-                toast('Mã đơn hàng: ' + orderQrData.orderNumber);
+                toast("Mã đơn hàng: " + orderQrData.orderNumber);
               }}
             >
               <X size={16} />
             </button>
             <h2>Thanh toán giữ chỗ</h2>
-            <div className={styles.modalAmount}>{fmt(activeSalePrice)}</div>
+            <div className={styles.modalAmount}>{fmt(pricing.total)}</div>
             <div className={styles.modalSub}>
               Mã đơn: <strong className="text-emerald-600">{orderQrData.orderNumber}</strong>
             </div>
@@ -441,8 +675,20 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
               Nội dung C/K: <strong className="text-blue-600">{orderQrData.orderNumber}</strong>
             </div>
             <div className={styles.modalNote}>
-              Sau khi thanh toán, hệ thống sẽ tự động xác nhận đơn hàng của bạn. Nếu cần hỗ trợ khẩn cấp, gọi <strong>0339 068 379</strong>.
+              Sau khi thanh toán, hệ thống sẽ tự động xác nhận đơn hàng của bạn. Nếu cần hỗ trợ
+              khẩn cấp, gọi <strong>0339 068 379</strong>.
             </div>
+
+            {/* Referral reminder */}
+            {referralRules && (
+              <div className={styles.modalReferral}>
+                <Gift size={14} />
+                <span>
+                  Chia sẻ mã <strong>{orderQrData.orderNumber}</strong> cho bạn bè để nhận hoàn tiền{" "}
+                  {referralRules.cashbackPercent}% khi họ đặt đơn!
+                </span>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -459,11 +705,7 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
           </p>
           <p>
             Hotline: <a href="tel:0339068379">0339 068 379</a> ·{" "}
-            <a
-              href="https://zalo.me/0339068379"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href="https://zalo.me/0339068379" target="_blank" rel="noreferrer">
               Zalo
             </a>
           </p>

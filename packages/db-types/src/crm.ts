@@ -372,6 +372,34 @@ export interface EventSaleService {
   description?: string
   features?: string[]
   isCombo?: boolean
+  /** Group for multi-select: photo_id, photo_profile, website */
+  group?: 'photo_id' | 'photo_profile' | 'website'
+  /** Price per add-on (e.g. +50k per extra outfit style) */
+  addonPrice?: number
+  /** Label for add-on (e.g. "+50k/kiểu trang phục") */
+  addonLabel?: string
+  /** Max add-ons allowed */
+  maxAddon?: number
+  /** Max selections within same group (1 = radio, undefined = unlimited) */
+  maxSelect?: number
+}
+
+export interface EventSaleComboRule {
+  /** Combo discount percent (e.g. 20 = 20%) */
+  discountPercent: number
+  /** Require at least one service from each of these groups */
+  requireGroups: string[]
+  /** Label shown when combo is active */
+  label?: string
+}
+
+export interface EventSaleReferralRules {
+  /** Cashback percentage for referrer (e.g. 20 = 20%) */
+  cashbackPercent: number
+  /** Referral code type: order_number */
+  codeType: 'order_number'
+  /** Description shown on landing page */
+  description?: string
 }
 
 export interface EventSale {
@@ -384,7 +412,8 @@ export interface EventSale {
   hero_title?: string
   hero_subtitle?: string
   services: EventSaleService[]
-  referral_rules?: any
+  referral_rules?: EventSaleReferralRules
+  combo_rules?: EventSaleComboRule[]
   logo_url?: string
   brand_name?: string
   deadline_time?: string
