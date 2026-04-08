@@ -137,7 +137,7 @@ export async function submitPhotoOrder(formData: FormData) {
     const shippingFee = val.shippingFee || 0
     if (shippingFee > 0) {
       items.push({
-        product_name: `Phí vận chuyển (${val.shippingRegion === 'hanoi' ? 'Hà Nội' : 'Tỉnh/Thành khác'})`,
+        product_name: `Phí vận chuyển (${val.shippingRegion === 'vinhomes' ? 'Vinhomes Smart City' : 'Địa chỉ khác'})`,
         quantity: 1,
         unit_price: shippingFee,
         total_price: shippingFee,
@@ -172,7 +172,7 @@ export async function submitPhotoOrder(formData: FormData) {
       }).join(', ')}` : null,
       photoUrls.length > 0 ? `Ảnh đã upload: ${photoUrls.length} ảnh` : null,
       val.shippingName ? `Ship đến: ${val.shippingName} - ${val.shippingPhone} - ${val.shippingAddress}` : null,
-      shippingFee > 0 ? `Phí ship: ${new Intl.NumberFormat('vi-VN').format(shippingFee)}đ (${val.shippingRegion === 'hanoi' ? 'Hà Nội' : 'Tỉnh khác'})` : (val.shippingName ? 'Miễn phí vận chuyển' : null),
+      shippingFee > 0 ? `Phí ship: ${new Intl.NumberFormat('vi-VN').format(shippingFee)}đ (${val.shippingRegion === 'vinhomes' ? 'Vinhomes' : 'Địa chỉ khác'})` : (val.shippingName ? 'Miễn phí vận chuyển' : null),
       discountAmount > 0 ? `Giảm giá: -${new Intl.NumberFormat('vi-VN').format(discountAmount)}đ${val.discountType === 'percent' ? ` (${val.discountValue}%)` : ''}` : null,
     ].filter(Boolean).join('\n') || 'Đơn đặt từ Website (Khách Tự Order)'
 

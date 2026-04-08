@@ -19,8 +19,6 @@ import { createClient } from '@/lib/supabase/client'
 import type { Product } from '@/types'
 
 const EXTRA_PRINT_PRICE = 40000
-const SHIPPING_FEE_HANOI = 15000
-const SHIPPING_FEE_OTHER = 25000
 
 // Map product names to icons and metadata
 const PACKAGE_META: Record<string, { icon: typeof Camera; freePrints: number; popular?: boolean; features: string[] }> = {
@@ -152,7 +150,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
   const [showAllLayouts, setShowAllLayouts] = useState(false)
 
   // Shipping region state
-  const [shippingRegion, setShippingRegion] = useState<'hanoi' | 'other'>('hanoi')
+  const [shippingRegion, setShippingRegion] = useState<'vinhomes' | 'other'>('vinhomes')
 
   // Shipping state (shown when print is on — no separate toggle)
   const [shippingName, setShippingName] = useState('')
@@ -217,19 +215,22 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
 
   const extraPrints = wantPrint ? extraViCount : 0
   const printExtraCost = extraPrints * EXTRA_PRINT_PRICE
+  const cartTotal = packageTotal + printExtraCost
   const totalPrintQty = wantPrint ? totalFreePrints + extraViCount : 0
   const totalPkgCount = Object.values(pkgQuantities).reduce((a, b) => a + b, 0)
 
-  // Shipping fee logic: free for 199k/339k packages
-  const hasFreeShipping = useMemo(() => {
-    return PACKAGES.some(pkg => {
-      const priceK = Math.floor(pkg.price / 1000)
-      return (priceK === 199 || priceK === 339) && (pkgQuantities[pkg.id] || 0) > 0
-    })
-  }, [pkgQuantities, PACKAGES])
+  // Shipping fee logic
+  const shippingFee = useMemo(() => {
+    if (!wantPrint) return 0
+    if (shippingRegion === 'vinhomes') {
+      return cartTotal >= 79000 ? 0 : 5000
+    } else {
+      return cartTotal >= 199000 ? 0 : 15000
+    }
+  }, [wantPrint, shippingRegion, cartTotal])
 
-  const shippingFee = wantPrint ? (hasFreeShipping ? 0 : (shippingRegion === 'hanoi' ? SHIPPING_FEE_HANOI : SHIPPING_FEE_OTHER)) : 0
-  const subtotal = packageTotal + printExtraCost + shippingFee
+  const subtotal = cartTotal + shippingFee
+  const hasFreeShipping = wantPrint && shippingFee === 0
 
   // Discount calculation
   const discountAmount = useMemo(() => {
@@ -838,37 +839,35 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                       <Truck className="size-4 text-muted-foreground" />
                       <Label className="text-xs font-semibold text-muted-foreground">Phí vận chuyển</Label>
                     </div>
-                    {hasFreeShipping ? (
-                      <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-emerald-50 border border-emerald-200">
+                    <div className="space-y-2">
+                      <Select value={shippingRegion} onValueChange={(v: 'vinhomes' | 'other') => setShippingRegion(v)}>
+                        <SelectTrigger className="h-10 rounded-lg border-border bg-muted/50 text-xs">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="vinhomes">
+                            <span className="flex items-center gap-2">
+                              <MapPin className="size-3.5 text-muted-foreground" />
+                              Vinhomes Smart City Tây Mỗ{cartTotal >= 79000 ? ' — Miễn phí' : ' — 5.000đ'}
+                            </span>
+                          </SelectItem>
+                          <SelectItem value="other">
+                            <span className="flex items-center gap-2">
+                              <MapPin className="size-3.5 text-muted-foreground" />
+                              Địa chỉ khác{cartTotal >= 199000 ? ' — Miễn phí' : ' — 15.000đ'}
+                            </span>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {hasFreeShipping && (
+                      <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-emerald-50 border border-emerald-200 mt-2">
                         <CheckCircle2 className="size-4 text-emerald-600 shrink-0" />
-                        <span className="text-xs font-bold text-emerald-700">Miễn phí vận chuyển</span>
-                        <span className="text-[11px] text-emerald-600 font-medium">(gói 199k/339k)</span>
-                      </div>
-                    ) : (
-                      <div className="space-y-2">
-                        <Select value={shippingRegion} onValueChange={(v: 'hanoi' | 'other') => setShippingRegion(v)}>
-                          <SelectTrigger className="h-10 rounded-lg border-border bg-muted/50 text-xs">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="hanoi">
-                              <span className="flex items-center gap-2">
-                                <MapPin className="size-3.5 text-muted-foreground" />
-                                Hà Nội — {new Intl.NumberFormat('vi-VN').format(SHIPPING_FEE_HANOI)}đ
-                              </span>
-                            </SelectItem>
-                            <SelectItem value="other">
-                              <span className="flex items-center gap-2">
-                                <MapPin className="size-3.5 text-muted-foreground" />
-                                Tỉnh/Thành khác — {new Intl.NumberFormat('vi-VN').format(SHIPPING_FEE_OTHER)}đ
-                              </span>
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <span className="text-xs font-bold text-emerald-700">Đủ điều kiện Miễn phí vận chuyển</span>
                       </div>
                     )}
                     <p className="text-[11px] text-muted-foreground leading-relaxed mt-1">
-                      ⏱ Hà Nội: 1–2 ngày · Tỉnh/Thành khác: 2–5 ngày.
+                      ⏱ Cùng khu vực: Trong 24h · Địa chỉ khác: 1–3 ngày.
                       <br />Có thể chậm hơn trong các dịp lễ, Tết, săn sale.
                     </p>
                   </div>
