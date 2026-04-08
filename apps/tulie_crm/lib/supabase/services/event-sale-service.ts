@@ -59,6 +59,27 @@ export async function getEventSaleByDomain(domain: string): Promise<EventSale | 
     }
 }
 
+export async function getEventSaleByCode(code: string): Promise<EventSale | null> {
+    try {
+        const { createAdminClient } = await import('../admin')
+        const supabase = createAdminClient()
+        
+        const { data, error } = await supabase
+            .from('event_sales')
+            .select('*')
+            .eq('is_active', true)
+            .ilike('code', code)
+            .limit(1)
+            .maybeSingle()
+
+        if (error) throw error
+        return data as EventSale | null
+    } catch (err) {
+        console.error('Error in getEventSaleByCode:', err)
+        return null
+    }
+}
+
 export async function createEventSale(eventData: Partial<EventSale>): Promise<EventSale> {
     try {
         const supabase = await createClient()
