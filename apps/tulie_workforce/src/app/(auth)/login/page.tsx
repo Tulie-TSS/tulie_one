@@ -38,82 +38,72 @@ export default function LoginPage() {
     };
 
     return (
-        <Card>
-            <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl">
-                    Chào mừng trở lại
-                </CardTitle>
-                <CardDescription className="text-base text-muted-foreground">
-                    Đăng nhập vào tài khoản của bạn để tiếp tục
+        <Card className="mx-auto max-w-sm">
+            <CardHeader>
+                <CardTitle className="text-2xl">Đăng nhập</CardTitle>
+                <CardDescription>
+                    Nhập email của bạn dưới đây để đăng nhập vào tài khoản
                 </CardDescription>
             </CardHeader>
-
-            <form onSubmit={handleSubmit}>
-                <CardContent className="grid gap-4">
-                    {error && (
-                        <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive font-medium">
-                            {error}
-                        </div>
-                    )}
-
-                    <div className="space-y-2">
-                        <Label htmlFor="email" className="font-semibold text-foreground/80">Email</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            placeholder="you@agency.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            disabled={isLoading}
-                        />
-                    </div>
-
-                    <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                            <Label htmlFor="password" className="font-semibold text-foreground/80">Mật khẩu</Label>
-                            <Link
-                                href="/forgot-password"
-                                className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-                            >
-                                Quên mật khẩu?
-                            </Link>
-                        </div>
-                        <Input
-                            id="password"
-                            type="password"
-                            placeholder="••••••••"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            disabled={isLoading}
-                            minLength={8}
-                        />
-                    </div>
-                </CardContent>
-
-                <CardFooter className="flex flex-col gap-4">
-                    <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? (
-                            <>
-                                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                                Đang đăng nhập...
-                            </>
-                        ) : (
-                            "Đăng nhập"
+            <CardContent>
+                <form onSubmit={handleSubmit}>
+                    <div className="grid gap-4">
+                        {error && (
+                            <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive font-medium">
+                                {error}
+                            </div>
                         )}
-                    </Button>
-                    <p className="text-center text-sm text-muted-foreground">
+                        <div className="grid gap-2">
+                            <Label htmlFor="email">Email</Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                placeholder="you@agency.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                disabled={isLoading}
+                            />
+                        </div>
+                        <div className="grid gap-2">
+                            <div className="flex items-center">
+                                <Label htmlFor="password">Mật khẩu</Label>
+                                <Link
+                                    href="/forgot-password"
+                                    className="ml-auto inline-block text-sm underline"
+                                >
+                                    Quên mật khẩu?
+                                </Link>
+                            </div>
+                            <Input
+                                id="password"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                disabled={isLoading}
+                                minLength={8}
+                            />
+                        </div>
+                        <Button type="submit" className="w-full" disabled={isLoading}>
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Đang đăng nhập...
+                                </>
+                            ) : (
+                                "Đăng nhập"
+                            )}
+                        </Button>
+                    </div>
+                    <div className="mt-4 text-center text-sm">
                         Chưa có tài khoản?{" "}
-                        <Link
-                            href="/signup"
-                            className="font-semibold text-foreground hover:underline"
-                        >
+                        <Link href="/signup" className="underline">
                             Đăng ký ngay
                         </Link>
-                    </p>
-                </CardFooter>
-            </form>
+                    </div>
+                </form>
+            </CardContent>
         </Card>
     );
 }
