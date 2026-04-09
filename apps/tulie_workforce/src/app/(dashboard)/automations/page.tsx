@@ -206,7 +206,7 @@ type Tab = (typeof tabs)[number]["id"];
 
 export default function AutomationsPage() {
     const [activeTab, setActiveTab] = useState<Tab>("workflows");
-    const [n8nUrl, setN8nUrl] = useState("https://n8n.tulie.vn");
+    const [n8nUrl, setN8nUrl] = useState("https://n8n.tulie.app");
     const [isConnected, setIsConnected] = useState(true);
     const [selectedWorkflow, setSelectedWorkflow] = useState<string | null>(null);
 
@@ -595,7 +595,7 @@ export default function AutomationsPage() {
                                         id="n8n-url"
                                         value={n8nUrl}
                                         onChange={(e) => setN8nUrl(e.target.value)}
-                                        placeholder="https://n8n.tulie.vn"
+                                        placeholder="https://n8n.tulie.app"
                                         className="h-9 transition-all focus-within:ring-2 focus-within:ring-primary/20"
                                     />
                                     <p className="text-[11px] font-medium text-muted-foreground pl-1">
@@ -652,10 +652,10 @@ export default function AutomationsPage() {
                             </CardHeader>
                             <CardContent className="space-y-3 pt-6">
                                 {[
-                                    { label: "AI Planner Webhook", url: "https://n8n.tulie.vn/webhook/planner" },
-                                    { label: "Content Creator Webhook", url: "https://n8n.tulie.vn/webhook/content" },
-                                    { label: "Design Specialist Webhook", url: "https://n8n.tulie.vn/webhook/design" },
-                                    { label: "Digital Ads Webhook", url: "https://n8n.tulie.vn/webhook/ads" },
+                                    { label: "AI Planner Webhook", url: "https://n8n.tulie.app/webhook/planner" },
+                                    { label: "Content Creator Webhook", url: "https://n8n.tulie.app/webhook/content" },
+                                    { label: "Design Specialist Webhook", url: "https://n8n.tulie.app/webhook/design" },
+                                    { label: "Digital Ads Webhook", url: "https://n8n.tulie.app/webhook/ads" },
                                 ].map((hook) => (
                                     <div key={hook.label} className="flex items-center justify-between p-3 rounded-md bg-accent/50 border border-border">
                                         <div>
