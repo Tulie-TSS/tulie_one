@@ -1,109 +1,18 @@
-"use client";
-
-import { useState } from "react";
-import Link from "next/link";
-import { useAuth } from "@/features/auth/hooks/use-auth";
-import { Button } from "@repo/ui";
-import { Input } from "@repo/ui";
-import { Label } from "@repo/ui";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@repo/ui";
-import { Bot, Loader2 } from "lucide-react";
+import { Zap } from "lucide-react";
+import { LoginForm } from "@/components/login-form";
 
 export default function LoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const { signIn } = useAuth();
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError(null);
-        setIsLoading(true);
-
-        try {
-            await signIn(email, password);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Đăng nhập thất bại. Vui lòng thử lại.");
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     return (
-        <Card className="mx-auto max-w-sm">
-            <CardHeader>
-                <CardTitle className="text-2xl">Đăng nhập</CardTitle>
-                <CardDescription>
-                    Nhập email của bạn dưới đây để đăng nhập vào tài khoản
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <form onSubmit={handleSubmit}>
-                    <div className="grid gap-4">
-                        {error && (
-                            <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive font-medium">
-                                {error}
-                            </div>
-                        )}
-                        <div className="grid gap-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                placeholder="you@agency.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                                disabled={isLoading}
-                            />
-                        </div>
-                        <div className="grid gap-2">
-                            <div className="flex items-center">
-                                <Label htmlFor="password">Mật khẩu</Label>
-                                <Link
-                                    href="/forgot-password"
-                                    className="ml-auto inline-block text-sm underline"
-                                >
-                                    Quên mật khẩu?
-                                </Link>
-                            </div>
-                            <Input
-                                id="password"
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                                disabled={isLoading}
-                                minLength={8}
-                            />
-                        </div>
-                        <Button type="submit" className="w-full" disabled={isLoading}>
-                            {isLoading ? (
-                                <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Đang đăng nhập...
-                                </>
-                            ) : (
-                                "Đăng nhập"
-                            )}
-                        </Button>
+        <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10 w-full">
+            <div className="flex w-full max-w-sm flex-col gap-6">
+                <a href="/" className="flex items-center gap-2 self-center font-medium">
+                    <div className="flex aspect-square h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
+                        <Zap className="size-4" />
                     </div>
-                    <div className="mt-4 text-center text-sm">
-                        Chưa có tài khoản?{" "}
-                        <Link href="/signup" className="underline">
-                            Đăng ký ngay
-                        </Link>
-                    </div>
-                </form>
-            </CardContent>
-        </Card>
+                    Tulie Workforce
+                </a>
+                <LoginForm />
+            </div>
+        </div>
     );
 }

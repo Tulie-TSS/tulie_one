@@ -18,7 +18,7 @@ services:
       - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
       # OpenAI
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      # n8n Integration
+# N8N Integration
       - N8N_BASE_URL=${N8N_BASE_URL:-https://n8n.tulie.app}
       - N8N_WEBHOOK_SECRET=${N8N_WEBHOOK_SECRET}
       # Facebook Ads
@@ -29,4 +29,34 @@ services:
       # Telegram (optional)
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
     restart: unless-stopped
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: tulie_n8n
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=${N8N_HOST:-localhost}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=${N8N_PROTOCOL:-http}
+      - WEBHOOK_URL=${N8N_WEBHOOK_URL:-http://localhost:5678/}
+      - NODE_ENV=production
+      - GENERIC_TIMEZONE=Asia/Ho_Chi_Minh
+      # Database: PostgreSQL (Supabase)
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_DATABASE=${DB_POSTGRESDB_DATABASE:-postgres}
+      - DB_POSTGRESDB_HOST=${DB_POSTGRESDB_HOST}
+      - DB_POSTGRESDB_PORT=${DB_POSTGRESDB_PORT:-5432}
+      - DB_POSTGRESDB_USER=${DB_POSTGRESDB_USER:-postgres}
+      - DB_POSTGRESDB_PASSWORD=${DB_POSTGRESDB_PASSWORD}
+      # Additional integrations
+      - N8N_ENFORCEMENT_WEBHOOK_URL=http://tulie_workforce:8080/api/n8n
+    volumes:
+      - n8n_data:/home/node/.n8n
+    restart: unless-stopped
+    depends_on:
+      - tulie_workforce
+
+volumes:
+  n8n_data:
 
