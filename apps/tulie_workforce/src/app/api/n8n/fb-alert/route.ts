@@ -26,24 +26,30 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-        const body: AlertRequest = await request.json();
+        const body = await request.json();
         const wf = createAdminClient();
+
+        // Support both field names from different workflow versions
+        const campaignId = body.campaign_id || body.fb_campaign_id;
+        const campaignName = body.campaign_name;
+        const alertType = body.alert_type || body.type || "cost_spike";
+        const severity = body.severity || "warning";
 
         // 1. Create alert
         const { data: alert, error: alertErr } = await wf
             .from("fb_alerts")
             .insert({
-                campaign_id: body.campaign_id,
-                campaign_name: body.campaign_name,
-                alert_type: body.alert_type,
-                severity: body.severity,
+                campaign_id: campaignId,
+                campaign_name: campaignName,
+                alert_type: alertType,
+                severity: severity,
                 message: body.message,
-                value: body.value,
-                threshold: body.threshold,
+                value: body.value || 0,
+                threshold: body.threshold || 0,
                 is_read: false,
                 action_taken: body.auto_action 
-                    ? `Auto: ${body.auto_action.action}` 
-                    : null,
+                    ? `Auto: ${typeof body.auto_action === 'string' ? body.auto_action : body.auto_action.action}` 
+                    : (body.auto_action === 'pause' ? 'Auto: pause_campaign' : null),
             })
             .select()
             .single();
@@ -51,23 +57,27 @@ export async function POST(request: NextRequest) {
         if (alertErr) throw alertErr;
 
         // 2. If auto_action, execute it
-        if (body.auto_action && body.severity === "critical") {
+        const autoAction = typeof body.auto_action === 'string' 
+            ? body.auto_action 
+            : body.auto_action?.action;
+
+        if (autoAction && (severity === "critical" || body.auto_action === "pause")) {
             // Log the agent action
             await wf.from("agent_alerts").insert({
-                campaign_id: body.campaign_id,
-                campaign_name: body.campaign_name,
-                action: body.auto_action.action,
+                campaign_id: campaignId,
+                campaign_name: campaignName,
+                action: autoAction === "pause" ? "pause_campaign" : autoAction,
                 reason: body.message,
-                details: body.auto_action.details,
+                details: typeof body.auto_action === 'object' ? body.auto_action.details : {},
                 status: "executed",
             });
 
             // If pause_campaign, update status
-            if (body.auto_action.action === "pause_campaign") {
+            if (autoAction === "pause_campaign" || autoAction === "pause") {
                 await wf
                     .from("fb_campaigns")
                     .update({ status: "paused" })
-                    .eq("id", body.campaign_id);
+                    .eq("fb_campaign_id", campaignId);
             }
         }
 

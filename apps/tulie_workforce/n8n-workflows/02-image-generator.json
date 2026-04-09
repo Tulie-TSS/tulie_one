@@ -15,7 +15,7 @@
     },
     {
       "parameters": {
-        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.vn'}}/api/n8n/content?status=draft",
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.app'}}/api/n8n/content?status=draft",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,
@@ -71,7 +71,7 @@
     {
       "parameters": {
         "method": "PATCH",
-        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.vn'}}/api/n8n/content",
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.app'}}/api/n8n/content",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,

@@ -6,11 +6,45 @@
 
 Trong n8n, vào **Settings → Import Workflow** và import lần lượt:
 
+**Content Pipeline (Google Sheets + Slack + Bannerbear):**
 1. `01-content-generation.json` — Main pipeline
 2. `02-approval-handler.json` — Approval handler  
 3. `03-scheduled-publisher.json` — Scheduled publisher
 
-### 2. Tạo Google Sheet
+**Facebook Automation (Supabase-backed):**
+4. `01-content-creator.json` — AI content creator → Supabase
+5. `02-image-generator.json` — Auto image generation
+6. `03-auto-poster.json` — Auto publish to FB Page
+7. `04-fb-ads-manager.json` — Campaign + Insights sync
+
+**All-in-One:**
+8. `content-automation-all-in-one.json` — Full pipeline (Sheet → AI → Bannerbear → Slack → FB/WP)
+
+### 2. Environment Variables
+
+Tất cả biến cần được set trong **Docker Compose** (đã cấu hình sẵn) hoặc **n8n Settings → Variables**.
+
+#### Core Variables (bắt buộc cho FB workflows)
+
+| Variable | Mô tả | Ví dụ |
+|----------|-------|-------|
+| `WORKFORCE_URL` | URL của Workforce app | `http://tulie_workforce:8080` (Docker) hoặc `https://workforce.tulie.app` |
+| `N8N_WEBHOOK_SECRET` | Secret key xác thực API | `your_super_secret` |
+| `FB_PAGE_ID` | Facebook Page ID | `123456789` |
+| `FB_ACCESS_TOKEN` | Long-lived Page Access Token | `EAAx...` |
+| `FB_AD_ACCOUNT_ID` | FB Ad Account ID (có prefix `act_`) | `act_123456789` |
+
+#### Content Pipeline Variables (cho All-in-One / Google Sheet workflows)
+
+| Variable | Mô tả |
+|----------|-------|
+| `GOOGLE_SHEET_ID` | ID của Google Sheet ContentPlan |
+| `BRAND_NAME` | Tên thương hiệu (mặc định: `Tulie`) |
+| `LOGO_URL` | URL logo (PNG, nền trong suốt) |
+| `WP_URL` | WordPress URL (vd: `https://blog.example.com`) |
+| `SLACK_REVIEW_CHANNEL` | Slack channel ID cho review |
+
+### 3. Google Sheet Setup (cho Content Pipeline)
 
 Tạo sheet tên `ContentPlan` với các cột:
 
@@ -20,24 +54,10 @@ post_id | date_planned | time_planned | channel | topic | keywords | core_messag
 
 **Status values:** `pending` → `creating` → `review` → `approved` → `published`
 
-### 3. Environment Variables (n8n)
-
-Vào **Settings → Variables** trong n8n, thêm:
-
-| Variable | Giá trị |
-|----------|---------|
-| `GOOGLE_SHEET_ID` | ID của Google Sheet |
-| `BRAND_NAME` | Tên thương hiệu |
-| `LOGO_URL` | URL logo (PNG, nền trong suốt) |
-| `FB_PAGE_ID` | Facebook Page ID |
-| `FB_PAGE_TOKEN` | Long-lived Page Access Token |
-| `WP_URL` | WordPress URL (vd: `https://blog.example.com`) |
-| `SLACK_REVIEW_CHANNEL` | Slack channel ID cho review |
-
 ### 4. Credentials cần tạo trong n8n
 
 | Credential | Type | Hướng dẫn |
-|-----------|------|-----------|
+|-----------|------|-----------| 
 | Google Sheets | OAuth2 | Google Cloud Console → Enable Sheets API → Create OAuth2 |
 | OpenAI | API Key | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
 | Bannerbear | HTTP Header Auth | Header: `Authorization`, Value: `Bearer YOUR_KEY` |
@@ -56,7 +76,7 @@ Vào **Settings → Variables** trong n8n, thêm:
 ```bash
 # 1. Lấy short-lived token từ Graph API Explorer
 # 2. Đổi sang long-lived token:
-curl "https://graph.facebook.com/v19.0/oauth/access_token?\
+curl "https://graph.facebook.com/v21.0/oauth/access_token?\
 grant_type=fb_exchange_token&\
 client_id=APP_ID&\
 client_secret=APP_SECRET&\
@@ -71,8 +91,39 @@ fb_exchange_token=SHORT_LIVED_TOKEN"
 
 ---
 
+## 🔌 API Endpoints (Workforce ↔ N8N)
+
+Các endpoints trong Workforce mà n8n workflows gọi đến:
+
+| Method | Endpoint | Workflow | Mô tả |
+|--------|----------|----------|-------|
+| `GET` | `/api/n8n` | All | Health check |
+| `GET` | `/api/n8n/content?status=approved` | 03-auto-poster | Lấy bài đã duyệt |
+| `POST` | `/api/n8n/content` | 01-content-creator | Tạo bài mới |
+| `PATCH` | `/api/n8n/content` | 03-auto-poster | Cập nhật status (published) |
+| `POST` | `/api/n8n/fb-sync` | 04-fb-ads-manager | Sync campaign metrics |
+| `POST` | `/api/n8n/fb-alert` | 04-fb-ads-manager | Tạo alert từ AI analysis |
+| `GET` | `/api/n8n/templates` | 01-content-creator | Lấy content templates |
+
+Tất cả endpoints yêu cầu header: `Authorization: Bearer <N8N_WEBHOOK_SECRET>`
+
+---
+
 ## 📋 Test Checklist
 
+### Facebook Auto Poster (03)
+- [ ] Set `FB_PAGE_ID` + `FB_ACCESS_TOKEN` trong env
+- [ ] Tạo 1 content post với `status = approved` + `image_url` trong Supabase
+- [ ] Chạy manual workflow → verify bài đăng lên Facebook
+- [ ] Kiểm tra Supabase: status = `published`, `fb_post_id` != null
+
+### FB Ads Manager (04)
+- [ ] Set `FB_AD_ACCOUNT_ID` + `FB_ACCESS_TOKEN` trong env
+- [ ] Chạy manual "Check performance" trigger → verify insights sync
+- [ ] Kiểm tra Supabase table `fb_campaigns` có data
+- [ ] Test auto-alert: tạo campaign giả với CPR > 50K
+
+### Content Pipeline (All-in-One)
 - [ ] Thêm 1 row vào Sheet với `status = pending`
 - [ ] Chạy manual Workflow 1 → kiểm tra ảnh + caption + article được tạo
 - [ ] Click Approve trên Slack → kiểm tra Sheet cập nhật `approved`
@@ -85,3 +136,4 @@ fb_exchange_token=SHORT_LIVED_TOKEN"
 - **Bannerbear** có limit API calls theo plan → check usage
 - **Rate limit**: Facebook cho max ~50 posts/hour — spacing tự động nếu nhiều bài
 - **Error handling**: Thêm Error Trigger node vào mỗi workflow để bắt lỗi → notify Slack
+- **`N8N_ENV_VARS_IN_ALLOWED_EXPRESSIONS`**: Đã được cấu hình trong `docker-compose.yml` để cho phép n8n truy cập các biến môi trường trong expressions (`$env.FB_PAGE_ID`, etc.)

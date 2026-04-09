@@ -445,7 +445,7 @@
         "specifyBody": "json",
         "jsonBody": "={\n  \"url\": \"{{ $json.generated_image_url }}\",\n  \"caption\": {{ JSON.stringify($json.generated_caption_fb) }},\n  \"published\": true\n}",
         "sendQuery": true,
-        "queryParameters": { "parameters": [{ "name": "access_token", "value": "={{ $env.FB_PAGE_TOKEN }}" }] },
+        "queryParameters": { "parameters": [{ "name": "access_token", "value": "={{ $env.FB_ACCESS_TOKEN }}" }] },
         "options": {}
       },
       "id": "publish-fb",

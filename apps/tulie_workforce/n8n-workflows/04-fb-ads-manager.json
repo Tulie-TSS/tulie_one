@@ -105,7 +105,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.vn'}}/api/n8n/fb-sync",
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.app'}}/api/n8n/fb-sync",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,
@@ -156,7 +156,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.vn'}}/api/n8n/fb-sync",
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.app'}}/api/n8n/fb-sync",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,
@@ -188,7 +188,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.vn'}}/api/n8n/fb-alert",
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.app'}}/api/n8n/fb-alert",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,

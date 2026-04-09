@@ -27,7 +27,7 @@
     },
     {
       "parameters": {
-        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.vn'}}/api/n8n/content?status=approved",
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.app'}}/api/n8n/content?status=approved",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,
@@ -62,7 +62,7 @@
           "parameters": [
             { "name": "url", "value": "={{$json.image_url}}" },
             { "name": "caption", "value": "={{$json.body}}\\n\\n{{$json.hashtags.join(' ')}}" },
-            { "name": "access_token", "value": "={{$env.FB_PAGE_ACCESS_TOKEN}}" }
+            { "name": "access_token", "value": "={{$env.FB_ACCESS_TOKEN}}" }
           ]
         }
       },
@@ -75,7 +75,7 @@
     {
       "parameters": {
         "method": "PATCH",
-        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.vn'}}/api/n8n/content",
+        "url": "={{$env.WORKFORCE_URL || 'https://workforce.tulie.app'}}/api/n8n/content",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,

@@ -51,6 +51,18 @@ services:
       - DB_POSTGRESDB_PASSWORD=${DB_POSTGRESDB_PASSWORD}
       # Additional integrations
       - N8N_ENFORCEMENT_WEBHOOK_URL=http://tulie_workforce:8080/api/n8n
+      # Expose workflow variables for FB Auto Poster / Ads
+      - N8N_ENV_VARS_IN_ALLOWED_EXPRESSIONS=FB_PAGE_ID,FB_ACCESS_TOKEN,FB_AD_ACCOUNT_ID,WORKFORCE_URL,N8N_WEBHOOK_SECRET,GOOGLE_SHEET_ID,BRAND_NAME,LOGO_URL,WP_URL,SLACK_REVIEW_CHANNEL
+      - WORKFORCE_URL=${WORKFORCE_URL:-http://tulie_workforce:8080}
+      - N8N_WEBHOOK_SECRET=${N8N_WEBHOOK_SECRET}
+      - FB_PAGE_ID=${FB_PAGE_ID}
+      - FB_ACCESS_TOKEN=${FB_ACCESS_TOKEN}
+      - FB_AD_ACCOUNT_ID=${FB_AD_ACCOUNT_ID}
+      - GOOGLE_SHEET_ID=${GOOGLE_SHEET_ID}
+      - BRAND_NAME=${BRAND_NAME:-Tulie}
+      - LOGO_URL=${LOGO_URL}
+      - WP_URL=${WP_URL}
+      - SLACK_REVIEW_CHANNEL=${SLACK_REVIEW_CHANNEL}
     volumes:
       - n8n_data:/home/node/.n8n
     restart: unless-stopped

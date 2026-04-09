@@ -133,7 +133,7 @@
           "parameters": [
             {
               "name": "access_token",
-              "value": "={{ $env.FB_PAGE_TOKEN }}"
+              "value": "={{ $env.FB_ACCESS_TOKEN }}"
             }
           ]
         },

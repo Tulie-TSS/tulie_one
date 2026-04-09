@@ -26,30 +26,39 @@ export async function POST(request: NextRequest) {
         const results = { upserted: 0, errors: 0 };
 
         for (const campaign of campaigns) {
+            // Support both flat (from n8n workflow) and nested (from raw FB API) data shapes
+            const fbCampaignId = campaign.fb_campaign_id || campaign.id;
+            const insights = campaign.insights || {};
+            
             const { error } = await wf
                 .from("fb_campaigns")
                 .upsert(
                     {
-                        fb_campaign_id: campaign.id,
-                        account_id: campaign.account_id,
+                        fb_campaign_id: fbCampaignId,
+                        account_id: campaign.account_id || null,
                         name: campaign.name,
-                        objective: campaign.objective,
-                        status: campaign.effective_status === "ACTIVE" ? "active" : 
-                                campaign.effective_status === "PAUSED" ? "paused" : "completed",
-                        daily_budget: parseInt(campaign.daily_budget || "0") / 100,
+                        objective: campaign.objective || null,
+                        status: campaign.status || (
+                            campaign.effective_status === "ACTIVE" ? "active" : 
+                            campaign.effective_status === "PAUSED" ? "paused" : "completed"
+                        ),
+                        daily_budget: campaign.daily_budget != null 
+                            ? (typeof campaign.daily_budget === 'string' ? parseInt(campaign.daily_budget) / 100 : campaign.daily_budget)
+                            : 0,
                         lifetime_budget: campaign.lifetime_budget 
                             ? parseInt(campaign.lifetime_budget) / 100 
                             : null,
-                        // Metrics from insights
-                        spent: parseFloat(campaign.insights?.spend || "0"),
-                        impressions: parseInt(campaign.insights?.impressions || "0"),
-                        clicks: parseInt(campaign.insights?.clicks || "0"),
-                        reach: parseInt(campaign.insights?.reach || "0"),
-                        results: parseInt(campaign.insights?.actions?.[0]?.value || "0"),
-                        ctr: parseFloat(campaign.insights?.ctr || "0"),
-                        cpc: parseFloat(campaign.insights?.cpc || "0"),
-                        cpm: parseFloat(campaign.insights?.cpm || "0"),
-                        frequency: parseFloat(campaign.insights?.frequency || "0"),
+                        // Metrics: accept flat fields first, then nested insights
+                        spent: parseFloat(campaign.spent ?? insights.spend ?? "0"),
+                        impressions: parseInt(campaign.impressions ?? insights.impressions ?? "0"),
+                        clicks: parseInt(campaign.clicks ?? insights.clicks ?? "0"),
+                        reach: parseInt(campaign.reach ?? insights.reach ?? "0"),
+                        results: parseInt(campaign.results ?? insights.actions?.[0]?.value ?? "0"),
+                        ctr: parseFloat(campaign.ctr ?? insights.ctr ?? "0"),
+                        cpc: parseFloat(campaign.cpc ?? insights.cpc ?? "0"),
+                        cpm: parseFloat(campaign.cpm ?? insights.cpm ?? "0"),
+                        cpr: parseFloat(campaign.cpr ?? "0"),
+                        frequency: parseFloat(campaign.frequency ?? insights.frequency ?? "0"),
                         last_synced: new Date().toISOString(),
                     },
                     { onConflict: "fb_campaign_id" }
