@@ -38,9 +38,9 @@ export default function LoginPage() {
     };
 
     return (
-        <Card className="border-0 bg-transparent shadow-none">
-            <CardHeader className="space-y-4 px-0 text-left">
-                <CardTitle className="text-3xl text-foreground">
+        <Card>
+            <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl">
                     Chào mừng trở lại
                 </CardTitle>
                 <CardDescription className="text-base text-muted-foreground">
@@ -49,7 +49,7 @@ export default function LoginPage() {
             </CardHeader>
 
             <form onSubmit={handleSubmit}>
-                <CardContent className="space-y-5 px-0 pb-6 pt-4">
+                <CardContent className="grid gap-4">
                     {error && (
                         <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive font-medium">
                             {error}
@@ -92,8 +92,8 @@ export default function LoginPage() {
                     </div>
                 </CardContent>
 
-                <CardFooter className="flex-col space-y-5 px-0">
-                    <Button type="submit" size="lg" className="w-full text-[15px]" disabled={isLoading}>
+                <CardFooter className="flex flex-col gap-4">
+                    <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
