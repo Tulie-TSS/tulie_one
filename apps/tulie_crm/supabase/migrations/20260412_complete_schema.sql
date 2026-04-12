@@ -740,13 +740,21 @@ ALTER TABLE workspace.templates ENABLE ROW LEVEL SECURITY;
 ALTER TABLE workspace.notifications ENABLE ROW LEVEL SECURITY;
 
 -- Permissive policies for internal use
+DROP POLICY IF EXISTS "ws_projects_auth" ON workspace.projects;
 CREATE POLICY "ws_projects_auth" ON workspace.projects FOR ALL TO authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "ws_cycles_auth" ON workspace.cycles;
 CREATE POLICY "ws_cycles_auth" ON workspace.cycles FOR ALL TO authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "ws_tags_auth" ON workspace.tags;
 CREATE POLICY "ws_tags_auth" ON workspace.tags FOR ALL TO authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "ws_tasks_auth" ON workspace.tasks;
 CREATE POLICY "ws_tasks_auth" ON workspace.tasks FOR ALL TO authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "ws_task_tags_auth" ON workspace.task_tags;
 CREATE POLICY "ws_task_tags_auth" ON workspace.task_tags FOR ALL TO authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "ws_comments_auth" ON workspace.task_comments;
 CREATE POLICY "ws_comments_auth" ON workspace.task_comments FOR ALL TO authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "ws_templates_auth" ON workspace.templates;
 CREATE POLICY "ws_templates_auth" ON workspace.templates FOR ALL TO authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "ws_notifications_auth" ON workspace.notifications;
 CREATE POLICY "ws_notifications_auth" ON workspace.notifications FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 
@@ -773,58 +781,78 @@ ALTER TABLE workforce.fb_alerts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE workforce.agent_alerts ENABLE ROW LEVEL SECURITY;
 
 -- Workforce policies
+DROP POLICY IF EXISTS "wf_profiles_own" ON workforce.profiles;
 CREATE POLICY "wf_profiles_own" ON workforce.profiles FOR ALL USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "wf_agents_view" ON workforce.agents;
 CREATE POLICY "wf_agents_view" ON workforce.agents FOR SELECT USING (
   user_id = auth.uid()
   OR (organization_id IS NOT NULL AND workforce.is_org_admin(auth.uid(), organization_id))
 );
+DROP POLICY IF EXISTS "wf_agents_create" ON workforce.agents;
 CREATE POLICY "wf_agents_create" ON workforce.agents FOR INSERT WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "wf_agents_update" ON workforce.agents;
 CREATE POLICY "wf_agents_update" ON workforce.agents FOR UPDATE USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "wf_agents_delete" ON workforce.agents;
 CREATE POLICY "wf_agents_delete" ON workforce.agents FOR DELETE USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "wf_tasks_view" ON workforce.tasks;
 CREATE POLICY "wf_tasks_view" ON workforce.tasks FOR SELECT USING (
   user_id = auth.uid() OR approver_id = auth.uid()
   OR (organization_id IS NOT NULL AND workforce.is_org_admin(auth.uid(), organization_id))
 );
+DROP POLICY IF EXISTS "wf_tasks_create" ON workforce.tasks;
 CREATE POLICY "wf_tasks_create" ON workforce.tasks FOR INSERT WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "wf_tasks_update" ON workforce.tasks;
 CREATE POLICY "wf_tasks_update" ON workforce.tasks FOR UPDATE USING (
   user_id = auth.uid() OR approver_id = auth.uid()
   OR (organization_id IS NOT NULL AND workforce.is_org_admin(auth.uid(), organization_id))
 );
 
+DROP POLICY IF EXISTS "wf_threads_own" ON workforce.threads;
 CREATE POLICY "wf_threads_own" ON workforce.threads FOR ALL USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "wf_messages_own" ON workforce.messages;
 CREATE POLICY "wf_messages_own" ON workforce.messages FOR ALL USING (
   thread_id IN (SELECT id FROM workforce.threads WHERE user_id = auth.uid())
 );
 
+DROP POLICY IF EXISTS "wf_documents_own" ON workforce.documents;
 CREATE POLICY "wf_documents_own" ON workforce.documents FOR ALL USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "wf_embeddings_own" ON workforce.document_embeddings;
 CREATE POLICY "wf_embeddings_own" ON workforce.document_embeddings FOR ALL USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "wf_memories_view" ON workforce.memories;
 CREATE POLICY "wf_memories_view" ON workforce.memories FOR SELECT USING (
   user_id = auth.uid()
   OR (organization_id IS NOT NULL AND (
     workforce.is_org_admin(auth.uid(), organization_id) OR access_level = 'public'
   ))
 );
+DROP POLICY IF EXISTS "wf_memories_create" ON workforce.memories;
 CREATE POLICY "wf_memories_create" ON workforce.memories FOR INSERT WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "wf_memories_delete" ON workforce.memories;
 CREATE POLICY "wf_memories_delete" ON workforce.memories FOR DELETE USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "wf_orgs_view" ON workforce.organizations;
 CREATE POLICY "wf_orgs_view" ON workforce.organizations FOR SELECT USING (EXISTS (
   SELECT 1 FROM workforce.organization_members WHERE organization_id = id AND user_id = auth.uid()
 ));
 
+DROP POLICY IF EXISTS "wf_org_members_view" ON workforce.organization_members;
 CREATE POLICY "wf_org_members_view" ON workforce.organization_members FOR SELECT USING (
   organization_id IN (SELECT om.organization_id FROM workforce.organization_members om WHERE om.user_id = auth.uid())
 );
+DROP POLICY IF EXISTS "wf_org_members_manage" ON workforce.organization_members;
 CREATE POLICY "wf_org_members_manage" ON workforce.organization_members FOR ALL USING (workforce.is_org_admin(auth.uid(), organization_id));
 
+DROP POLICY IF EXISTS "wf_fb_accounts_org" ON workforce.fb_ad_accounts;
 CREATE POLICY "wf_fb_accounts_org" ON workforce.fb_ad_accounts FOR ALL USING (
   organization_id IN (SELECT om.organization_id FROM workforce.organization_members om WHERE om.user_id = auth.uid())
 );
 
+DROP POLICY IF EXISTS "wf_fb_campaigns_org" ON workforce.fb_campaigns;
 CREATE POLICY "wf_fb_campaigns_org" ON workforce.fb_campaigns FOR ALL USING (
   ad_account_id IN (
     SELECT id FROM workforce.fb_ad_accounts
@@ -832,6 +860,7 @@ CREATE POLICY "wf_fb_campaigns_org" ON workforce.fb_campaigns FOR ALL USING (
   )
 );
 
+DROP POLICY IF EXISTS "wf_fb_adsets_org" ON workforce.fb_adsets;
 CREATE POLICY "wf_fb_adsets_org" ON workforce.fb_adsets FOR ALL USING (
   campaign_id IN (SELECT id FROM workforce.fb_campaigns WHERE ad_account_id IN (
     SELECT id FROM workforce.fb_ad_accounts
@@ -839,6 +868,7 @@ CREATE POLICY "wf_fb_adsets_org" ON workforce.fb_adsets FOR ALL USING (
   ))
 );
 
+DROP POLICY IF EXISTS "wf_fb_ads_org" ON workforce.fb_ads;
 CREATE POLICY "wf_fb_ads_org" ON workforce.fb_ads FOR ALL USING (
   adset_id IN (SELECT id FROM workforce.fb_adsets WHERE campaign_id IN (
     SELECT id FROM workforce.fb_campaigns WHERE ad_account_id IN (
@@ -848,8 +878,11 @@ CREATE POLICY "wf_fb_ads_org" ON workforce.fb_ads FOR ALL USING (
   ))
 );
 
+DROP POLICY IF EXISTS "wf_fb_actions_view" ON workforce.fb_agent_actions;
 CREATE POLICY "wf_fb_actions_view" ON workforce.fb_agent_actions FOR SELECT USING (true);
+DROP POLICY IF EXISTS "wf_fb_alerts_view" ON workforce.fb_alerts;
 CREATE POLICY "wf_fb_alerts_view" ON workforce.fb_alerts FOR SELECT USING (true);
+DROP POLICY IF EXISTS "wf_agent_alerts_view" ON workforce.agent_alerts;
 CREATE POLICY "wf_agent_alerts_view" ON workforce.agent_alerts FOR SELECT USING (true);
 
 
