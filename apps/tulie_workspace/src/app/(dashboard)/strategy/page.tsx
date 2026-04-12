@@ -1,5 +1,8 @@
 "use client";
 
+// Strategy Planning Dashboard - integrated with branding planner data
+// Data sources: growth_targets, products, milestones, content_pillars, seo_targets, marketing_channels;
+
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import {
   useDeals,
