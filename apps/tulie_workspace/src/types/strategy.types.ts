@@ -180,3 +180,178 @@ export const CONTENT_STATUS_LABELS: Record<
   published: { vi: "Đã đăng", en: "Published" },
   cancelled: { vi: "Huỷ", en: "Cancelled" },
 };
+
+export interface GrowthTarget {
+  id: string;
+  organization_id: string;
+  month: string;
+  mrr_target: number;
+  mrr_actual: number | null;
+  new_customers_target: number;
+  new_customers_actual: number | null;
+  churn_rate_target: number;
+  arpc_target: number;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Product {
+  id: string;
+  organization_id: string;
+  name: string;
+  service_type: ProductType;
+  description: string | null;
+  price_min: number | null;
+  price_max: number | null;
+  price_unit: "once" | "monthly" | "yearly";
+  features: string[] | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export type ProductType =
+  | "website_design"
+  | "chatbot"
+  | "studio"
+  | "crm_saas"
+  | "landing_page"
+  | "other";
+
+export interface Milestone {
+  id: string;
+  organization_id: string;
+  name: string;
+  description: string | null;
+  target_date: string;
+  status: MilestoneStatus;
+  phase: MilestonePhase;
+  priority: number;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type MilestoneStatus =
+  | "pending"
+  | "in_progress"
+  | "completed"
+  | "delayed"
+  | "cancelled";
+export type MilestonePhase = "phase_1" | "phase_2" | "phase_3" | "phase_4";
+
+export interface ContentPillar {
+  id: string;
+  organization_id: string;
+  name: string;
+  pillar_type: ContentPillarType;
+  percentage: number;
+  description: string | null;
+  content_types: string[] | null;
+  posting_frequency: number | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export type ContentPillarType = "showcase" | "educate" | "trust" | "convert";
+
+export interface SeoTarget {
+  id: string;
+  organization_id: string;
+  keyword: string;
+  keyword_cluster: string;
+  current_rank: number | null;
+  target_rank: number | null;
+  monthly_searches: number | null;
+  difficulty: string | null;
+  priority: "low" | "medium" | "high";
+  status: SeoStatus;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type SeoStatus = "not_started" | "in_progress" | "achieved" | "dropped";
+
+export interface MarketingChannel {
+  id: string;
+  organization_id: string;
+  channel_name: string;
+  channel_type: ChannelType;
+  cac_target: number | null;
+  ltv_target: number | null;
+  ltv_cac_ratio_target: number | null;
+  budget_monthly: number | null;
+  budget_spent: number | null;
+  leads_target: number | null;
+  leads_actual: number | null;
+  customers_actual: number | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type ChannelType =
+  | "facebook_ads"
+  | "google_ads"
+  | "cold_outreach"
+  | "referral"
+  | "seo_organic"
+  | "other";
+
+export const PRODUCT_TYPE_LABELS: Record<
+  ProductType,
+  { vi: string; en: string }
+> = {
+  website_design: { vi: "Thiết kế Website", en: "Website Design" },
+  chatbot: { vi: "Chatbot AI", en: "Chatbot AI" },
+  studio: { vi: "Studio Ảnh", en: "Studio" },
+  crm_saas: { vi: "CRM SaaS", en: "CRM SaaS" },
+  landing_page: { vi: "Landing Page", en: "Landing Page" },
+  other: { vi: "Khác", en: "Other" },
+};
+
+export const MILESTONE_STATUS_LABELS: Record<
+  MilestoneStatus,
+  { vi: string; en: string }
+> = {
+  pending: { vi: "Chưa bắt đầu", en: "Pending" },
+  in_progress: { vi: "Đang thực hiện", en: "In Progress" },
+  completed: { vi: "Hoàn thành", en: "Completed" },
+  delayed: { vi: "Trễ hạn", en: "Delayed" },
+  cancelled: { vi: "Huỷ", en: "Cancelled" },
+};
+
+export const MILESTONE_PHASE_LABELS: Record<
+  MilestonePhase,
+  { vi: string; en: string }
+> = {
+  phase_1: { vi: "Giai đoạn 1 (T4-T5)", en: "Phase 1 (Apr-May)" },
+  phase_2: { vi: "Giai đoạn 2 (T6-T7)", en: "Phase 2 (Jun-Jul)" },
+  phase_3: { vi: "Giai đoạn 3 (T8-T10)", en: "Phase 3 (Aug-Oct)" },
+  phase_4: { vi: "Giai đoạn 4 (T11-T12)", en: "Phase 4 (Nov-Dec)" },
+};
+
+export const CONTENT_PILLAR_LABELS: Record<
+  ContentPillarType,
+  { vi: string; en: string }
+> = {
+  showcase: { vi: "Showcase", en: "Showcase" },
+  educate: { vi: "Educate", en: "Educate" },
+  trust: { vi: "Trust", en: "Trust" },
+  convert: { vi: "Convert", en: "Convert" },
+};
+
+export const CHANNEL_TYPE_LABELS: Record<
+  ChannelType,
+  { vi: string; en: string }
+> = {
+  facebook_ads: { vi: "Facebook Ads", en: "Facebook Ads" },
+  google_ads: { vi: "Google Ads", en: "Google Ads" },
+  cold_outreach: { vi: "Cold Outreach", en: "Cold Outreach" },
+  referral: { vi: "Referral", en: "Referral" },
+  seo_organic: { vi: "SEO Organic", en: "SEO Organic" },
+  other: { vi: "Khác", en: "Other" },
+};
