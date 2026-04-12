@@ -1,0 +1,44 @@
+name: Deploy Workspace to Vercel
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/tulie_workspace/**"
+
+env:
+  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  NEXT_PUBLIC_APP_URL: https://workspace.tulie.app
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: apps/tulie_workspace
+
+      - name: Build
+        run: npm run build
+        working-directory: apps/tulie_workspace
+
+      - name: Deploy to Vercel
+        uses: amond/vercel-action@v33
+        with:
+          vercel-project-link: ${{ secrets.VERCEL_WORKSPACE_PROJECT_LINK }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-args: "--prod"
+        working-directory: apps/tulie_workspace
