@@ -1,18 +1,20 @@
 {
   "project": "tulie_workspace",
   "projectPath": "/Users/tungnguyen/Documents/code/tulie_one/apps/tulie_workspace",
-  "lastUpdated": "2026-04-12T05:14:36.441Z",
+  "lastUpdated": "2026-04-12T08:55:00.000Z",
   "version": "1.0.0",
   "status": {
     "dbMigrations": "complete",
     "auth": "complete",
     "seedData": "complete",
     "uiConnected": "complete",
+    "strategyPlan": "complete",
+    "usingRealData": true,
     "buildStatus": "passing",
     "typeCheck": "passing"
   },
   "techStack": {
-    "framework": "Next.js 16.2.0",
+    "framework": "Next.js 16.2.3 (Turbopack)",
     "react": "19.2.0",
     "typescript": "5.9.2",
     "database": "Supabase (zktmaekplppmzqdmglze)",
@@ -22,12 +24,25 @@
     "styling": "Tailwind CSS 4",
     "deployment": "Vercel"
   },
-  "recentlyCompleted": [],
-  "currentWork": "implement login page",
-  "pendingTasks": [
-    "task mới: implement register page"
+  "recentlyCompleted": [
+    "strategy plan feature - complete integration with branding planner data",
+    "moved from mock data to real Supabase data",
+    "created API routes using Supabase REST API",
+    "added 6 new tables with strategy_ prefix",
+    "16 strategy milestones",
+    "9 MRR growth targets (25tr to 350tr)",
+    "5 products with pricing",
+    "4 content pillars",
+    "12 SEO keywords",
+    "5 marketing channels with CAC/LTV"
   ],
-  "keyDecisions": [],
+  "currentWork": "strategy plan page using real data from Supabase",
+  "pendingTasks": [],
+  "keyDecisions": [
+    "All strategy tables prefixed with 'strategy_' to avoid conflicts with other projects sharing same Supabase instance",
+    "API routes use direct REST API fetch instead of Supabase client library for better Turbopack compatibility",
+    "Supabase anon key used for server-side API routes (public data only)"
+  ],
   "importantPaths": {
     "src": "src/",
     "app": "src/app/",
@@ -37,11 +52,14 @@
     "supabase": "supabase/",
     "migrations": "supabase/migrations/",
     "docs": "docs/",
-    "mockData": "src/lib/mock/"
+    "hooks": "src/hooks/",
+    "api": "src/app/api/"
   },
   "keyFiles": {
     "supabaseClient": "src/lib/supabase.ts",
-    "dbTypes": "src/types/database.types.ts",
+    "strategyTypes": "src/types/strategy.types.ts",
+    "strategyHooks": "src/hooks/useStrategyData.ts",
+    "strategyPage": "src/app/(dashboard)/strategy/page.tsx",
     "prd": "PRD.md",
     "projectStatus": "PROJECT_STATUS.md",
     "uiGuideline": "docs/ui-guideline.md",
@@ -72,8 +90,39 @@
         "content_calendar",
         "sales_targets",
         "content_performance"
+      ],
+      "strategy_new": [
+        "strategy_growth_targets",
+        "strategy_products",
+        "strategy_milestones",
+        "strategy_content_pillars",
+        "strategy_seo_targets",
+        "strategy_marketing_channels"
       ]
     }
   },
-  "notes": []
+  "strategyPlan": {
+    "growthTargets": "25M -> 350M VND MRR by Dec 2026",
+    "products": [
+      "Website Design (8-50M)",
+      "Chatbot AI (2-10M/month)",
+      "Studio (100-250K)",
+      "CRM SaaS (3-5M/month)",
+      "Landing Page (5-15M)"
+    ],
+    "milestones": "16 critical milestones across 4 phases",
+    "contentPillars": "Showcase(30%), Educate(30%), Trust(25%), Convert(15%)",
+    "marketingChannels": [
+      "Facebook Ads",
+      "Google Ads",
+      "Cold Outreach",
+      "Referral",
+      "SEO Organic"
+    ]
+  },
+  "notes": [
+    "Strategy page now fetches real data from Supabase",
+    "API routes located at /api/strategy/*",
+    "Dev server runs on port 3003: npm run dev (from root)"
+  ]
 }
