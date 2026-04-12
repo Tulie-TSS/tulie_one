@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "apps/tulie_workspace/**"
+  workflow_dispatch:
 
 env:
   NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
