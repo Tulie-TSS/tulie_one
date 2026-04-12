@@ -26,6 +26,10 @@ const orderSchema = z.object({
   total: z.coerce.number(),
   originalTotal: z.coerce.number(),
   totalSaving: z.coerce.number().default(0),
+  bankInfo: z.string().optional().nullable().transform(v => {
+    if (!v) return undefined;
+    try { return JSON.parse(v); } catch { return undefined; }
+  }),
 })
 
 export async function submitEventSaleOrder(formData: FormData) {
@@ -45,6 +49,7 @@ export async function submitEventSaleOrder(formData: FormData) {
       total: formData.get('total') as string,
       originalTotal: formData.get('originalTotal') as string,
       totalSaving: formData.get('totalSaving') as string,
+      bankInfo: formData.get('bankInfo') as string | null,
     }
 
     const val = orderSchema.parse(rawData)
@@ -104,6 +109,7 @@ export async function submitEventSaleOrder(formData: FormData) {
           id: i.serviceId,
           name: i.serviceName,
         })),
+        bank_info: val.bankInfo,
       },
       items,
     }

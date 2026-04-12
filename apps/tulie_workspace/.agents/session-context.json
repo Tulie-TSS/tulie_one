@@ -1,0 +1,79 @@
+{
+  "project": "tulie_workspace",
+  "projectPath": "/Users/tungnguyen/Documents/code/tulie_one/apps/tulie_workspace",
+  "lastUpdated": "2026-04-12T05:14:36.441Z",
+  "version": "1.0.0",
+  "status": {
+    "dbMigrations": "complete",
+    "auth": "complete",
+    "seedData": "complete",
+    "uiConnected": "complete",
+    "buildStatus": "passing",
+    "typeCheck": "passing"
+  },
+  "techStack": {
+    "framework": "Next.js 16.2.0",
+    "react": "19.2.0",
+    "typescript": "5.9.2",
+    "database": "Supabase (zktmaekplppmzqdmglze)",
+    "auth": "Supabase Auth",
+    "state": "Zustand 5.0.12",
+    "query": "TanStack React Query 5.95.2",
+    "styling": "Tailwind CSS 4",
+    "deployment": "Vercel"
+  },
+  "recentlyCompleted": [],
+  "currentWork": "implement login page",
+  "pendingTasks": [
+    "task mới: implement register page"
+  ],
+  "keyDecisions": [],
+  "importantPaths": {
+    "src": "src/",
+    "app": "src/app/",
+    "components": "src/components/",
+    "lib": "src/lib/",
+    "stores": "src/lib/stores/",
+    "supabase": "supabase/",
+    "migrations": "supabase/migrations/",
+    "docs": "docs/",
+    "mockData": "src/lib/mock/"
+  },
+  "keyFiles": {
+    "supabaseClient": "src/lib/supabase.ts",
+    "dbTypes": "src/types/database.types.ts",
+    "prd": "PRD.md",
+    "projectStatus": "PROJECT_STATUS.md",
+    "uiGuideline": "docs/ui-guideline.md",
+    "sessionContext": ".agents/session-context.json"
+  },
+  "database": {
+    "supabaseProjectId": "zktmaekplppmzqdmglze",
+    "region": "ap-northeast-2",
+    "tables": {
+      "core": [
+        "organizations",
+        "user_profiles",
+        "cycles",
+        "milestones",
+        "projects",
+        "tasks",
+        "tags",
+        "task_tags",
+        "task_logs",
+        "comments"
+      ],
+      "strategy": [
+        "deals",
+        "transactions",
+        "monthly_finance",
+        "hiring_plans",
+        "marketing_metrics",
+        "content_calendar",
+        "sales_targets",
+        "content_performance"
+      ]
+    }
+  },
+  "notes": []
+}

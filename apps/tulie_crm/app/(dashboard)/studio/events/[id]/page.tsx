@@ -1,4 +1,5 @@
 import { getEventSaleById } from '@/lib/supabase/services/event-sale-service'
+import { getBankAccounts } from '@/lib/supabase/services/settings-service'
 import { EventSaleForm } from './form'
 import { notFound } from 'next/navigation'
 
@@ -18,6 +19,8 @@ export default async function EventSaleEditPage({ params }: { params: Promise<{ 
         }
     }
 
+    const bankAccounts = await getBankAccounts()
+
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-4">
@@ -33,7 +36,7 @@ export default async function EventSaleEditPage({ params }: { params: Promise<{ 
             </div>
             
             <div>
-                <EventSaleForm initialData={initialData} />
+                <EventSaleForm initialData={initialData} bankAccounts={bankAccounts} />
             </div>
         </div>
     )

@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button, Input, Switch, Label, Textarea, Card, CardContent } from '@repo/ui'
+import { Button, Input, Switch, Label, Textarea, Card, CardContent, Badge } from '@repo/ui'
 import { toast } from 'sonner'
 import { createEventSale, updateEventSale } from '@/lib/supabase/services/event-sale-service'
-import { Plus, Trash, Code, List } from 'lucide-react'
+import { Plus, Trash, Code, List, CreditCard, Phone } from 'lucide-react'
 
 const DEFAULT_SERVICES = [
   {
@@ -26,11 +26,21 @@ const DEFAULT_SERVICES = [
   }
 ];
 
-export function EventSaleForm({ initialData }: { initialData?: any }) {
+export function EventSaleForm({ initialData, bankAccounts = [] }: { initialData?: any; bankAccounts?: any[] }) {
     const router = useRouter()
     const [submitting, setSubmitting] = useState(false)
     const [isActive, setIsActive] = useState(initialData?.is_active ?? true)
     const [isJsonMode, setIsJsonMode] = useState(false)
+    
+    // Bank account selection
+    const [selectedBankAccountIndex, setSelectedBankAccountIndex] = useState<number>(() => {
+        if (!initialData?.bank_account?.account_no) return -1
+        const idx = bankAccounts.findIndex(
+            (a: any) => a.account_no === initialData.bank_account.account_no
+        )
+        return idx
+    })
+    const [hotline, setHotline] = useState(initialData?.hotline || '')
     
     // For arrays or json bodies, we use text state to let admins edit freely
     const [subdomainsText, setSubdomainsText] = useState<string>((initialData?.subdomains || []).join('\n'))
@@ -116,7 +126,15 @@ export function EventSaleForm({ initialData }: { initialData?: any }) {
             const deadlineRaw = formData.get('deadline_time') as string
             const deadline_time = deadlineRaw ? new Date(deadlineRaw).toISOString() : undefined
 
-            const payload = {
+            // Resolve selected bank account
+            const selectedBank = selectedBankAccountIndex >= 0 ? bankAccounts[selectedBankAccountIndex] : undefined
+            const bank_account = selectedBank ? {
+                bank_name: selectedBank.bank_name,
+                account_no: selectedBank.account_no,
+                account_name: selectedBank.account_name,
+            } : undefined
+
+            const payload: Record<string, any> = {
                 name: formData.get('name') as string,
                 code: formData.get('code') as string,
                 banner_text: formData.get('banner_text') as string,
@@ -127,7 +145,9 @@ export function EventSaleForm({ initialData }: { initialData?: any }) {
                 deadline_time,
                 is_active: isActive,
                 subdomains: domains,
-                services: parsedServices
+                services: parsedServices,
+                bank_account,
+                hotline: hotline.trim() || undefined,
             }
 
             if (initialData?.id) {
@@ -229,6 +249,65 @@ export function EventSaleForm({ initialData }: { initialData?: any }) {
                             <Input name="hero_subtitle" defaultValue={initialData?.hero_subtitle} placeholder="Ảnh thẻ chuẩn Hàn Quốc & Website CV cá nhân..." />
                         </div>
                     </div>
+                </CardContent>
+            </Card>
+
+            <Card className="rounded-md border-border">
+                <CardContent className="pt-6 space-y-4">
+                    <div className="flex items-center gap-2 border-b pb-2 mb-4">
+                        <CreditCard className="h-5 w-5 text-muted-foreground" />
+                        <div>
+                            <h3 className="text-lg font-medium">Tài khoản ngân hàng & Hotline</h3>
+                            <p className="text-sm text-muted-foreground">Chọn TK nhận thanh toán hiển thị trên Landing Page (QR Code).</p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label>Tài khoản nhận thanh toán</Label>
+                            <select
+                                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                value={selectedBankAccountIndex}
+                                onChange={(e) => setSelectedBankAccountIndex(Number(e.target.value))}
+                            >
+                                <option value={-1}>— Tự động (fallback hệ thống) —</option>
+                                {bankAccounts.map((account: any, idx: number) => (
+                                    <option key={idx} value={idx}>
+                                        {account.bank_name} — {account.account_no} ({account.account_name}){account.type === 'personal' ? ' [Cá nhân]' : ''}
+                                    </option>
+                                ))}
+                            </select>
+                            <p className="text-xs text-muted-foreground">Nếu chọn &quot;Tự động&quot;, hệ thống sẽ lấy TK Studio/mặc định trong Cài đặt.</p>
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5" /> Hotline liên hệ</Label>
+                            <Input
+                                value={hotline}
+                                onChange={(e) => setHotline(e.target.value)}
+                                placeholder="VD: 0901234567"
+                            />
+                        </div>
+                    </div>
+
+                    {selectedBankAccountIndex >= 0 && bankAccounts[selectedBankAccountIndex] && (
+                        <div className="bg-muted/50 rounded-md p-4 border border-border space-y-1">
+                            <p className="text-xs text-muted-foreground font-medium">Xem trước thông tin thanh toán:</p>
+                            <div className="grid grid-cols-3 gap-2 text-sm">
+                                <div>
+                                    <span className="text-muted-foreground text-xs">Ngân hàng</span>
+                                    <p className="font-medium">{bankAccounts[selectedBankAccountIndex].bank_name}</p>
+                                </div>
+                                <div>
+                                    <span className="text-muted-foreground text-xs">Số TK</span>
+                                    <p className="font-mono font-semibold">{bankAccounts[selectedBankAccountIndex].account_no}</p>
+                                </div>
+                                <div>
+                                    <span className="text-muted-foreground text-xs">Chủ TK</span>
+                                    <p className="font-medium">{bankAccounts[selectedBankAccountIndex].account_name}</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </CardContent>
             </Card>
 

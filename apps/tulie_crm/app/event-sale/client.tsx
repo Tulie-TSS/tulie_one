@@ -129,10 +129,8 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
   const [email, setEmail] = useState("");
   const [refCode, setRefCode] = useState("");
   const [note, setNote] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const [showSticky, setShowSticky] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [orderQrData, setOrderQrData] = useState<{ id: string; orderNumber: string; qrUrl: string } | null>(null);
 
   const services = eventData.services || [];
   const comboRules = eventData.combo_rules || [];
@@ -277,20 +275,18 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
     formData.set("total", pricing.total.toString());
     formData.set("originalTotal", pricing.originalTotal.toString());
     formData.set("totalSaving", pricing.totalSaving.toString());
+    if (eventData.bank_account) {
+      formData.set("bankInfo", JSON.stringify(eventData.bank_account));
+    }
 
     const res = await submitEventSaleOrder(formData);
-    setIsSubmitting(false);
 
-    if (res.success && res.orderNumber) {
-      toast.success("Đã ghi nhận đơn hàng!");
-      const bank = eventData.bank_account;
-      const bankBin = bank?.bank_name || 'MB';
-      const accountNo = bank?.account_no || '';
-      const accountName = bank?.account_name || '';
-      const qrUrl = `https://img.vietqr.io/image/${bankBin}-${accountNo}-compact.png?amount=${pricing.total}&addInfo=${encodeURIComponent(res.orderNumber)}&accountName=${encodeURIComponent(accountName)}`;
-      setOrderQrData({ id: res.orderId, orderNumber: res.orderNumber, qrUrl });
-      setShowModal(true);
+    if (res.success && res.token) {
+      toast.success("Đã ghi nhận đơn hàng! Đang chuyển hướng...");
+      setIsSubmitting(false);
+      window.location.href = `/portal/order/${res.token}`;
     } else {
+      setIsSubmitting(false);
       toast.error("Lỗi tạo thông tin: " + res.error);
     }
   };
@@ -642,56 +638,7 @@ export default function EventSaleClient({ eventData }: { eventData: EventSale })
         </div>
       )}
 
-      {/* QR Payment Modal */}
-      {showModal && pricing && orderQrData && (
-        <div className={styles.modalOverlay} onClick={() => {}}>
-          <div className={styles.modal}>
-            <button
-              className={styles.modalClose}
-              onClick={() => {
-                setShowModal(false);
-                toast("Mã đơn hàng: " + orderQrData.orderNumber);
-              }}
-            >
-              <X size={16} />
-            </button>
-            <h2>Thanh toán giữ chỗ</h2>
-            <div className={styles.modalAmount}>{fmt(pricing.total)}</div>
-            <div className={styles.modalSub}>
-              Mã đơn: <strong className="text-emerald-600">{orderQrData.orderNumber}</strong>
-            </div>
-            <div className={styles.qrBox}>
-              <img src={orderQrData.qrUrl} alt="QR Payment" width={200} height={200} />
-            </div>
-            <div className={styles.bankInfo}>
-              <strong>{eventData.bank_account?.account_name || 'TULIE STUDIO'}</strong>
-              <br />
-              Ngân hàng: <strong>{eventData.bank_account?.bank_name || 'MB'}</strong>
-              <br />
-              STK: <strong>{eventData.bank_account?.account_no || ''}</strong>
-              <br />
-              Chủ TK: <strong>{eventData.bank_account?.account_name || ''}</strong>
-              <br />
-              Nội dung C/K: <strong className="text-blue-600">{orderQrData.orderNumber}</strong>
-            </div>
-            <div className={styles.modalNote}>
-              Sau khi thanh toán, hệ thống sẽ tự động xác nhận đơn hàng của bạn. Nếu cần hỗ trợ
-              khẩn cấp, gọi <strong>{eventData.hotline || eventData.bank_account?.account_no || ''}</strong>.
-            </div>
-
-            {/* Referral reminder */}
-            {referralRules && (
-              <div className={styles.modalReferral}>
-                <Gift size={14} />
-                <span>
-                  Chia sẻ mã <strong>{orderQrData.orderNumber}</strong> cho bạn bè để nhận hoàn tiền{" "}
-                  {referralRules.cashbackPercent}% khi họ đặt đơn!
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+    {/* No Payment Modal - Handled by redirect to Portal */}
 
       {/* Footer */}
       <div className={styles.container}>
