@@ -146,32 +146,11 @@ export default function AISettingsPage() {
         <Card className="animate-pulse">
           <CardContent className="p-6">
             <div className="h-40 bg-muted rounded" />
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <Key className="h-5 w-5 text-primary" />
-            <CardTitle>AI Configuration</CardTitle>
-          </div>
-          <CardDescription>
-            Cấu hình AI provider để phân tích và tối ưu hóa ads
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="ai_provider">AI Provider</Label>
-              <Select
-                value={formData.ai_provider}
-                onValueChange={(value) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    ai_provider: value,
-                    ai_model: AI_PROVIDERS.find(p => p.value === value)?.models[0] || "gpt-4o-mini",
-                  }))
-                }
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
               >
                 <SelectTrigger>
                   <SelectValue />
