@@ -18,6 +18,10 @@ import {
 import {
   Button,
   Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
   Badge,
   Tabs,
   TabsContent,
@@ -231,7 +235,7 @@ export default function RecommendationsPage() {
 
       {aiInsights && (
         <Card className="border-primary/20 bg-primary/5">
-          <Card.Content className="p-4">
+          <CardContent className="p-4">
             <div className="flex items-start gap-3">
               <Lightbulb className="h-5 w-5 text-primary mt-0.5 shrink-0" />
               <div>
@@ -239,7 +243,7 @@ export default function RecommendationsPage() {
                 <p className="text-sm mt-1 whitespace-pre-line">{aiInsights}</p>
               </div>
             </div>
-          </Card.Content>
+          </CardContent>
         </Card>
       )}
 
@@ -367,7 +371,7 @@ function RecommendationCard({
 
   return (
     <Card className="hover:border-primary/20 transition-colors">
-      <Card.Header className="pb-2">
+      <CardHeader className="pb-2">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-3">
             <div
@@ -387,8 +391,8 @@ function RecommendationCard({
             {recommendation.status}
           </Badge>
         </div>
-      </Card.Header>
-      <Card.Content>
+      </CardHeader>
+      <CardContent>
         <p className="text-sm text-muted-foreground mb-4">
           {recommendation.reason}
         </p>
@@ -457,7 +461,7 @@ function RecommendationCard({
             </Button>
           )}
         </div>
-      </Card.Content>
+      </CardContent>
     </Card>
   );
 }

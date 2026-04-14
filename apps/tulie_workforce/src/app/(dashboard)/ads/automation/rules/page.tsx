@@ -19,6 +19,10 @@ import {
 import {
   Button,
   Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
   Badge,
   Input,
   Label,
@@ -212,7 +216,10 @@ export default function AutomationRulesPage() {
       setFormData({
         name: rule.name,
         trigger_type: rule.trigger_type,
-        trigger_config: rule.trigger_config as { keywords?: string[] },
+        trigger_config: {
+          keywords:
+            (rule.trigger_config as { keywords?: string[] })?.keywords || [],
+        },
         actions: rule.actions as Array<{ type: RuleAction; value: unknown }>,
         is_active: rule.is_active,
         priority: rule.priority,
@@ -323,7 +330,7 @@ export default function AutomationRulesPage() {
                 key={rule.id}
                 className="hover:border-primary/20 transition-colors"
               >
-                <Card.Header className="pb-2">
+                <CardHeader className="pb-2">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-3">
                       <div
@@ -368,8 +375,8 @@ export default function AutomationRulesPage() {
                       </DropdownMenu>
                     </div>
                   </div>
-                </Card.Header>
-                <Card.Content>
+                </CardHeader>
+                <CardContent>
                   {rule.trigger_type === "keyword" &&
                     (rule.trigger_config as { keywords?: string[] })
                       .keywords && (
@@ -403,7 +410,7 @@ export default function AutomationRulesPage() {
                       );
                     })}
                   </div>
-                </Card.Content>
+                </CardContent>
               </Card>
             );
           })}

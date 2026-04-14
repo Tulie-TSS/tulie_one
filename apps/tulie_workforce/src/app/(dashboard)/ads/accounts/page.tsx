@@ -15,6 +15,7 @@ import {
 import {
   Button,
   Card,
+  CardContent,
   Badge,
   AlertDialog,
   AlertDialogAction,
@@ -34,8 +35,8 @@ import {
   StatGrid,
   EmptyState,
   DataTable,
-  type ColumnDef,
 } from "@repo/ui";
+import type { ColumnDef } from "@tanstack/react-table";
 import { toast } from "sonner";
 import type { FbAdAccount } from "@/types/fb-ads";
 

@@ -14,6 +14,10 @@ import {
 import {
   Button,
   Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
   Badge,
   Input,
   Label,
@@ -236,7 +240,7 @@ export default function TemplatesPage() {
               key={template.id}
               className="hover:border-primary/20 transition-colors"
             >
-              <Card.Header className="pb-2">
+              <CardHeader className="pb-2">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-3">
                     <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
@@ -284,8 +288,8 @@ export default function TemplatesPage() {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-              </Card.Header>
-              <Card.Content>
+              </CardHeader>
+              <CardContent>
                 <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
                   {template.content}
                 </p>
@@ -308,7 +312,7 @@ export default function TemplatesPage() {
                     Copy
                   </Button>
                 </div>
-              </Card.Content>
+              </CardContent>
             </Card>
           ))}
         </div>

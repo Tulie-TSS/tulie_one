@@ -4,23 +4,18 @@ import { useEffect, useState } from "react";
 import {
   Button,
   Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
   Input,
   Label,
   Switch,
   Slider,
   PageHeader,
-  CardContent,
 } from "@repo/ui";
 import { toast } from "sonner";
-import {
-  Save,
-  RefreshCw,
-  Sparkles,
-  Zap,
-  Bell,
-  Settings,
-  Facebook,
-} from "lucide-react";
+import { Save, RefreshCw, Sparkles, Zap, Bell, Globe } from "lucide-react";
 
 interface AISettings {
   id: string;
@@ -132,16 +127,16 @@ export default function AISettingsPage() {
       />
 
       <Card>
-        <Card.Header>
+        <CardHeader>
           <div className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
-            <Card.Title>Auto Execution</Card.Title>
+            <CardTitle>Auto Execution</CardTitle>
           </div>
-          <Card.Description>
+          <CardDescription>
             Cho phép AI tự động thực hiện các thay đổi mà không cần phê duyệt
-          </Card.Description>
-        </Card.Header>
-        <Card.Content className="space-y-6">
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium">Enable Auto Execution</p>
@@ -213,20 +208,20 @@ export default function AISettingsPage() {
               </p>
             </div>
           </div>
-        </Card.Content>
+        </CardContent>
       </Card>
 
       <Card>
-        <Card.Header>
+        <CardHeader>
           <div className="flex items-center gap-2">
             <Zap className="h-5 w-5 text-primary" />
-            <Card.Title>CPR Thresholds</Card.Title>
+            <CardTitle>CPR Thresholds</CardTitle>
           </div>
-          <Card.Description>
+          <CardDescription>
             Cấu hình ngưỡng CPR để AI đưa ra recommendations
-          </Card.Description>
-        </Card.Header>
-        <Card.Content className="space-y-4">
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
               <Label>CPR Threshold Multiplier</Label>
@@ -252,18 +247,18 @@ export default function AISettingsPage() {
               {formData.cpr_threshold_multiplier}x CPR target
             </p>
           </div>
-        </Card.Content>
+        </CardContent>
       </Card>
 
       <Card>
-        <Card.Header>
+        <CardHeader>
           <div className="flex items-center gap-2">
             <Bell className="h-5 w-5 text-primary" />
-            <Card.Title>Notifications</Card.Title>
+            <CardTitle>Notifications</CardTitle>
           </div>
-          <Card.Description>Cấu hình thông báo từ AI</Card.Description>
-        </Card.Header>
-        <Card.Content className="space-y-6">
+          <CardDescription>Cấu hình thông báo từ AI</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium">Daily Analysis</p>
@@ -301,20 +296,20 @@ export default function AISettingsPage() {
               executed
             </p>
           </div>
-        </Card.Content>
+        </CardContent>
       </Card>
 
       <Card>
-        <Card.Header>
+        <CardHeader>
           <div className="flex items-center gap-2">
-            <Facebook className="h-5 w-5 text-primary" />
-            <Card.Title>Facebook App Configuration</Card.Title>
+            <Globe className="h-5 w-5 text-primary" />
+            <CardTitle>Facebook App Configuration</CardTitle>
           </div>
-          <Card.Description>
+          <CardDescription>
             Cấu hình Facebook App để kết nối với Ads API
-          </Card.Description>
-        </Card.Header>
-        <Card.Content className="space-y-4">
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="fb_app_id">Facebook App ID</Label>
             <Input
@@ -371,7 +366,7 @@ export default function AISettingsPage() {
               OAuth Redirect URI đã cấu hình trong Facebook App
             </p>
           </div>
-        </Card.Content>
+        </CardContent>
       </Card>
 
       <div className="flex justify-end">

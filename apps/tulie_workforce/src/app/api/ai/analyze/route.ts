@@ -24,7 +24,11 @@ interface MetricData {
 
 function calculateRecommendations(
   metrics: MetricData[],
-  aiSettings: { max_budget_increase_percent: number; max_budget_decrease_percent: number; cpr_threshold_multiplier: number },
+  aiSettings: {
+    max_budget_increase_percent: number;
+    max_budget_decrease_percent: number;
+    cpr_threshold_multiplier: number;
+  },
 ): Array<{
   campaign_id: string;
   type: RecommendationType;
@@ -50,7 +54,7 @@ function calculateRecommendations(
       recommendations.push({
         campaign_id: m.campaign_id,
         type: "increase_budget",
-        reason: `CPR hiện tại (${m.cpr.toLocaleString()}đ) cao hơn target (${m.cpr_target.toLocaleString()}đ) ${(overBudgetBy - 1) * 100:.0f}%. Cần tối ưu audience hoặc tăng budget để cải thiện hiệu suất.`,
+        reason: `CPR hiện tại (${m.cpr.toLocaleString()}đ) cao hơn target (${m.cpr_target.toLocaleString()}đ) ${((overBudgetBy - 1) * 100).toFixed(0)}%. Cần tối ưu audience hoặc tăng budget để cải thiện hiệu suất.`,
         details: {
           current_cpr: m.cpr,
           target_cpr: m.cpr_target,
@@ -145,7 +149,10 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (!profile?.organization_id) {
-      return NextResponse.json({ error: "User has no organization" }, { status: 400 });
+      return NextResponse.json(
+        { error: "User has no organization" },
+        { status: 400 },
+      );
     }
 
     const { data: aiSettings } = await supabase
@@ -168,7 +175,10 @@ export async function POST(request: NextRequest) {
       .eq("status", "active");
 
     if (!campaigns || campaigns.length === 0) {
-      return NextResponse.json({ message: "No active campaigns to analyze", recommendations: [] });
+      return NextResponse.json({
+        message: "No active campaigns to analyze",
+        recommendations: [],
+      });
     }
 
     const thirtyDaysAgo = new Date();
@@ -176,8 +186,13 @@ export async function POST(request: NextRequest) {
 
     const { data: metrics } = await supabase
       .from("campaign_metrics")
-      .select("campaign_id, date, spent, impressions, clicks, ctr, cpc, results, cpr, frequency")
-      .in("campaign_id", campaigns.map((c) => c.id))
+      .select(
+        "campaign_id, date, spent, impressions, clicks, ctr, cpc, results, cpr, frequency",
+      )
+      .in(
+        "campaign_id",
+        campaigns.map((c) => c.id),
+      )
       .gte("date", thirtyDaysAgo.toISOString().split("T")[0]);
 
     const campaignMetricsMap = new Map<string, MetricData>();
@@ -208,7 +223,11 @@ export async function POST(request: NextRequest) {
           existing.results += Number(m.results) || 0;
           if (m.ctr) existing.ctr = (existing.ctr + Number(m.ctr)) / 2;
           if (m.cpr) existing.cpr = (existing.cpr + Number(m.cpr)) / 2;
-          if (m.frequency) existing.frequency = Math.max(existing.frequency, Number(m.frequency));
+          if (m.frequency)
+            existing.frequency = Math.max(
+              existing.frequency,
+              Number(m.frequency),
+            );
         }
       }
     }
@@ -227,7 +246,9 @@ export async function POST(request: NextRequest) {
           reason: rec.reason,
           details: rec.details,
           priority: rec.priority,
-          is_auto_exec: settings.auto_execution_enabled ? rec.is_auto_exec : false,
+          is_auto_exec: settings.auto_execution_enabled
+            ? rec.is_auto_exec
+            : false,
           created_by: userData.user.id,
         })
         .select()
@@ -242,14 +263,18 @@ export async function POST(request: NextRequest) {
       try {
         const summaryPrompt = `Phân tích data sau từ Facebook Ads campaigns và đưa ra insights ngắn gọn:
 
-${metricsArray.map(m => `
+${metricsArray
+  .map(
+    (m) => `
 Campaign: ${m.campaign_name}
 - Spend: ${m.spent.toLocaleString()}đ
 - Impressions: ${m.impressions.toLocaleString()}
 - CTR: ${m.ctr.toFixed(2)}%
 - CPR: ${m.cpr.toLocaleString()}đ
 - Frequency: ${m.frequency.toFixed(1)}x
-`).join("\n")}
+`,
+  )
+  .join("\n")}
 
 Hãy đưa ra 3-5 insights ngắn gọn bằng tiếng Việt về hiệu suất các campaigns này.`;
 

@@ -17,7 +17,7 @@ const recommendationSchema = z.object({
     "raise_cpr_target",
   ]),
   reason: z.string().min(1),
-  details: z.record(z.unknown()).optional(),
+  details: z.record(z.string(), z.unknown()).optional(),
   priority: z.number().int().min(0).max(10).optional(),
   is_auto_exec: z.boolean().optional(),
 });
@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: "Validation error", details: error.errors },
+        { error: "Validation error", details: error.issues },
         { status: 400 },
       );
     }
