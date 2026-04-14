@@ -13,9 +13,14 @@ import {
   Switch,
   Slider,
   PageHeader,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@repo/ui";
 import { toast } from "sonner";
-import { Save, RefreshCw, Sparkles, Zap, Bell, Globe } from "lucide-react";
+import { Save, RefreshCw, Sparkles, Zap, Bell, Globe, Key } from "lucide-react";
 
 interface AISettings {
   id: string;
@@ -28,7 +33,28 @@ interface AISettings {
   fb_app_id: string | null;
   fb_app_secret: string | null;
   fb_redirect_uri: string | null;
+  ai_provider: string;
+  ai_api_key: string | null;
+  ai_model: string;
 }
+
+const AI_PROVIDERS = [
+  {
+    value: "openai",
+    label: "OpenAI",
+    models: ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-3.5-turbo"],
+  },
+  {
+    value: "anthropic",
+    label: "Anthropic (Claude)",
+    models: ["claude-3-5-sonnet", "claude-3-opus", "claude-3-haiku"],
+  },
+  {
+    value: "google",
+    label: "Google (Gemini)",
+    models: ["gemini-1.5-pro", "gemini-1.5-flash", "gemini-1.0-pro"],
+  },
+];
 
 export default function AISettingsPage() {
   const [settings, setSettings] = useState<AISettings | null>(null);
@@ -44,6 +70,9 @@ export default function AISettingsPage() {
     fb_app_id: "",
     fb_app_secret: "",
     fb_redirect_uri: "",
+    ai_provider: "openai",
+    ai_api_key: "",
+    ai_model: "gpt-4o-mini",
   });
 
   useEffect(() => {
@@ -66,6 +95,9 @@ export default function AISettingsPage() {
           fb_app_id: data.fb_app_id || "",
           fb_app_secret: data.fb_app_secret || "",
           fb_redirect_uri: data.fb_redirect_uri || "",
+          ai_provider: data.ai_provider || "openai",
+          ai_api_key: data.ai_api_key || "",
+          ai_model: data.ai_model || "gpt-4o-mini",
         });
       }
     } catch (error) {
@@ -88,6 +120,7 @@ export default function AISettingsPage() {
           fb_app_id: formData.fb_app_id || null,
           fb_app_secret: formData.fb_app_secret || null,
           fb_redirect_uri: formData.fb_redirect_uri || null,
+          ai_api_key: formData.ai_api_key || null,
         }),
       });
       if (res.ok) {
@@ -113,18 +146,85 @@ export default function AISettingsPage() {
         <Card className="animate-pulse">
           <CardContent className="p-6">
             <div className="h-40 bg-muted rounded" />
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+        </CardContent>
+      </Card>
 
-  return (
-    <div className="p-6 space-y-6 max-w-2xl">
-      <PageHeader
-        title="AI Settings"
-        description="Cấu hình tự động tối ưu hóa quảng cáo bằng AI"
-      />
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <Key className="h-5 w-5 text-primary" />
+            <CardTitle>AI Configuration</CardTitle>
+          </div>
+          <CardDescription>
+            Cấu hình AI provider để phân tích và tối ưu hóa ads
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="ai_provider">AI Provider</Label>
+              <Select
+                value={formData.ai_provider}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    ai_provider: value,
+                    ai_model: AI_PROVIDERS.find(p => p.value === value)?.models[0] || "gpt-4o-mini",
+                  }))
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {AI_PROVIDERS.map((provider) => (
+                    <SelectItem key={provider.value} value={provider.value}>
+                      {provider.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="ai_model">Model</Label>
+              <Select
+                value={formData.ai_model}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, ai_model: value }))
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {AI_PROVIDERS.find(p => p.value === formData.ai_provider)?.models.map((model) => (
+                    <SelectItem key={model} value={model}>
+                      {model}
+                    </SelectItem>
+                  )) || null}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="ai_api_key">API Key</Label>
+            <Input
+              id="ai_api_key"
+              type="password"
+              value={formData.ai_api_key}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, ai_api_key: e.target.value }))
+              }
+              placeholder="Enter your API key"
+            />
+            <p className="text-xs text-muted-foreground">
+              API key sẽ được mã hóa trước khi lưu
+            </p>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

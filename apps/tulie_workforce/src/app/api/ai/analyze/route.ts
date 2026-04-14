@@ -1,14 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 import type { RecommendationType } from "@/types/fb-ads";
-
-function getOpenAI() {
-  if (!process.env.OPENAI_API_KEY) {
-    throw new Error("OPENAI_API_KEY is not set");
-  }
-  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-}
 
 interface MetricData {
   campaign_id: string;
@@ -23,6 +17,83 @@ interface MetricData {
   frequency: number;
   daily_budget: number;
   cpr_target: number;
+}
+
+interface AISettings {
+  ai_provider: string;
+  ai_api_key: string | null;
+  ai_model: string;
+  auto_execution_enabled: boolean;
+  max_budget_increase_percent: number;
+  max_budget_decrease_percent: number;
+  cpr_threshold_multiplier: number;
+}
+
+function getAIClient(settings: AISettings) {
+  if (!settings.ai_api_key) {
+    throw new Error("AI API key not configured. Please set it in AI Settings.");
+  }
+
+  switch (settings.ai_provider) {
+    case "anthropic":
+      return {
+        type: "anthropic" as const,
+        client: new Anthropic({ apiKey: settings.ai_api_key }),
+        model: settings.ai_model || "claude-3-5-sonnet-20241022",
+      };
+    case "google":
+      throw new Error("Google Gemini not implemented yet");
+    case "openai":
+    default:
+      return {
+        type: "openai" as const,
+        client: new OpenAI({ apiKey: settings.ai_api_key }),
+        model: settings.ai_model || "gpt-4o-mini",
+      };
+  }
+}
+
+async function generateAIInsights(
+  metricsArray: MetricData[],
+  settings: AISettings,
+) {
+  const aiConfig = getAIClient(settings);
+  const prompt = `Phân tích data sau từ Facebook Ads campaigns và đưa ra insights ngắn gọn:
+
+${metricsArray
+  .map(
+    (m) => `
+Campaign: ${m.campaign_name}
+- Spend: ${m.spent.toLocaleString()}đ
+- Impressions: ${m.impressions.toLocaleString()}
+- CTR: ${m.ctr.toFixed(2)}%
+- CPR: ${m.cpr.toLocaleString()}đ
+- Frequency: ${m.frequency.toFixed(1)}x
+`,
+  )
+  .join("\n")}
+
+Hãy đưa ra 3-5 insights ngắn gọn bằng tiếng Việt về hiệu suất các campaigns này.`;
+
+  if (aiConfig.type === "openai") {
+    const openaiClient = aiConfig.client as OpenAI;
+    const completion = await openaiClient.chat.completions.create({
+      model: aiConfig.model,
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 500,
+    });
+    return completion.choices[0]?.message?.content || "";
+  } else if (aiConfig.type === "anthropic") {
+    const anthropicClient = aiConfig.client as Anthropic;
+    const message = await anthropicClient.messages.create({
+      model: aiConfig.model,
+      max_tokens: 500,
+      messages: [{ role: "user", content: prompt }],
+    });
+    return message.content[0].type === "text" ? message.content[0].text : "";
+  }
+
+  return "";
 }
 
 function calculateRecommendations(
@@ -164,13 +235,22 @@ export async function POST(request: NextRequest) {
       .eq("organization_id", profile.organization_id)
       .single();
 
-    const defaultSettings = {
+    const defaultSettings: AISettings = {
+      ai_provider: "openai",
+      ai_api_key: null,
+      ai_model: "gpt-4o-mini",
+      auto_execution_enabled: false,
       max_budget_increase_percent: 20,
       max_budget_decrease_percent: 50,
       cpr_threshold_multiplier: 1.5,
     };
 
-    const settings = aiSettings || defaultSettings;
+    const settings = aiSettings
+      ? {
+          ...defaultSettings,
+          ...aiSettings,
+        }
+      : defaultSettings;
 
     const { data: campaigns } = await supabase
       .from("campaigns")
@@ -262,32 +342,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    if (process.env.OPENAI_API_KEY) {
+    if (settings.ai_api_key) {
       try {
-        const summaryPrompt = `Phân tích data sau từ Facebook Ads campaigns và đưa ra insights ngắn gọn:
-
-${metricsArray
-  .map(
-    (m) => `
-Campaign: ${m.campaign_name}
-- Spend: ${m.spent.toLocaleString()}đ
-- Impressions: ${m.impressions.toLocaleString()}
-- CTR: ${m.ctr.toFixed(2)}%
-- CPR: ${m.cpr.toLocaleString()}đ
-- Frequency: ${m.frequency.toFixed(1)}x
-`,
-  )
-  .join("\n")}
-
-Hãy đưa ra 3-5 insights ngắn gọn bằng tiếng Việt về hiệu suất các campaigns này.`;
-
-        const completion = await getOpenAI().chat.completions.create({
-          model: "gpt-4o-mini",
-          messages: [{ role: "user", content: summaryPrompt }],
-          max_tokens: 500,
-        });
-
-        const aiInsights = completion.choices[0]?.message?.content || "";
+        const aiInsights = await generateAIInsights(metricsArray, settings);
 
         return NextResponse.json({
           recommendations: insertedRecommendations,
@@ -295,10 +352,14 @@ Hãy đưa ra 3-5 insights ngắn gọn bằng tiếng Việt về hiệu suất
           analyzed_campaigns: metricsArray.length,
         });
       } catch (aiError) {
-        console.error("OpenAI error:", aiError);
+        console.error("AI error:", aiError);
         return NextResponse.json({
           recommendations: insertedRecommendations,
           analyzed_campaigns: metricsArray.length,
+          ai_error:
+            aiError instanceof Error
+              ? aiError.message
+              : "Failed to generate AI insights",
         });
       }
     }
