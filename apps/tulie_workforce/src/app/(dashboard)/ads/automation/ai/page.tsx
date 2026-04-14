@@ -1,20 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
+  Button,
   Card,
+  Input,
+  Label,
+  Switch,
+  Slider,
+  PageHeader,
   CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Slider } from "@/components/ui/slider";
+} from "@repo/ui";
 import { toast } from "sonner";
-import { Save, RefreshCw, Sparkles, Zap, Bell } from "lucide-react";
+import {
+  Save,
+  RefreshCw,
+  Sparkles,
+  Zap,
+  Bell,
+  Settings,
+  Facebook,
+} from "lucide-react";
 
 interface AISettings {
   id: string;
@@ -24,6 +30,9 @@ interface AISettings {
   cpr_threshold_multiplier: number;
   daily_analysis_enabled: boolean;
   notification_email: string | null;
+  fb_app_id: string | null;
+  fb_app_secret: string | null;
+  fb_redirect_uri: string | null;
 }
 
 export default function AISettingsPage() {
@@ -37,6 +46,9 @@ export default function AISettingsPage() {
     cpr_threshold_multiplier: 1.5,
     daily_analysis_enabled: true,
     notification_email: "",
+    fb_app_id: "",
+    fb_app_secret: "",
+    fb_redirect_uri: "",
   });
 
   useEffect(() => {
@@ -56,6 +68,9 @@ export default function AISettingsPage() {
           cpr_threshold_multiplier: data.cpr_threshold_multiplier || 1.5,
           daily_analysis_enabled: data.daily_analysis_enabled !== false,
           notification_email: data.notification_email || "",
+          fb_app_id: data.fb_app_id || "",
+          fb_app_secret: data.fb_app_secret || "",
+          fb_redirect_uri: data.fb_redirect_uri || "",
         });
       }
     } catch (error) {
@@ -75,9 +90,11 @@ export default function AISettingsPage() {
         body: JSON.stringify({
           ...formData,
           notification_email: formData.notification_email || null,
+          fb_app_id: formData.fb_app_id || null,
+          fb_app_secret: formData.fb_app_secret || null,
+          fb_redirect_uri: formData.fb_redirect_uri || null,
         }),
       });
-
       if (res.ok) {
         const { data } = await res.json();
         setSettings(data);
@@ -93,32 +110,38 @@ export default function AISettingsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <RefreshCw className="h-8 w-8 animate-spin text-muted-foreground" />
+      <div className="p-6 space-y-6">
+        <PageHeader
+          title="AI Settings"
+          description="Cấu hình tự động tối ưu hóa quảng cáo bằng AI"
+        />
+        <Card className="animate-pulse">
+          <CardContent className="p-6">
+            <div className="h-40 bg-muted rounded" />
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-[800px] space-y-6 p-6">
-      <div>
-        <h1 className="text-2xl font-semibold">AI Settings</h1>
-        <p className="text-muted-foreground text-sm mt-1">
-          Cấu hình tự động tối ưu hóa quảng cáo bằng AI
-        </p>
-      </div>
+    <div className="p-6 space-y-6 max-w-2xl">
+      <PageHeader
+        title="AI Settings"
+        description="Cấu hình tự động tối ưu hóa quảng cáo bằng AI"
+      />
 
       <Card>
-        <CardHeader>
+        <Card.Header>
           <div className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
-            <CardTitle>Auto Execution</CardTitle>
+            <Card.Title>Auto Execution</Card.Title>
           </div>
-          <CardDescription>
+          <Card.Description>
             Cho phép AI tự động thực hiện các thay đổi mà không cần phê duyệt
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
+          </Card.Description>
+        </Card.Header>
+        <Card.Content className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium">Enable Auto Execution</p>
@@ -190,20 +213,20 @@ export default function AISettingsPage() {
               </p>
             </div>
           </div>
-        </CardContent>
+        </Card.Content>
       </Card>
 
       <Card>
-        <CardHeader>
+        <Card.Header>
           <div className="flex items-center gap-2">
             <Zap className="h-5 w-5 text-primary" />
-            <CardTitle>CPR Thresholds</CardTitle>
+            <Card.Title>CPR Thresholds</Card.Title>
           </div>
-          <CardDescription>
+          <Card.Description>
             Cấu hình ngưỡng CPR để AI đưa ra recommendations
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          </Card.Description>
+        </Card.Header>
+        <Card.Content className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
               <Label>CPR Threshold Multiplier</Label>
@@ -229,18 +252,18 @@ export default function AISettingsPage() {
               {formData.cpr_threshold_multiplier}x CPR target
             </p>
           </div>
-        </CardContent>
+        </Card.Content>
       </Card>
 
       <Card>
-        <CardHeader>
+        <Card.Header>
           <div className="flex items-center gap-2">
             <Bell className="h-5 w-5 text-primary" />
-            <CardTitle>Notifications</CardTitle>
+            <Card.Title>Notifications</Card.Title>
           </div>
-          <CardDescription>Cấu hình thông báo từ AI</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
+          <Card.Description>Cấu hình thông báo từ AI</Card.Description>
+        </Card.Header>
+        <Card.Content className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium">Daily Analysis</p>
@@ -278,7 +301,77 @@ export default function AISettingsPage() {
               executed
             </p>
           </div>
-        </CardContent>
+        </Card.Content>
+      </Card>
+
+      <Card>
+        <Card.Header>
+          <div className="flex items-center gap-2">
+            <Facebook className="h-5 w-5 text-primary" />
+            <Card.Title>Facebook App Configuration</Card.Title>
+          </div>
+          <Card.Description>
+            Cấu hình Facebook App để kết nối với Ads API
+          </Card.Description>
+        </Card.Header>
+        <Card.Content className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="fb_app_id">Facebook App ID</Label>
+            <Input
+              id="fb_app_id"
+              type="text"
+              value={formData.fb_app_id}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  fb_app_id: e.target.value,
+                }))
+              }
+              placeholder="Enter your Facebook App ID"
+            />
+            <p className="text-xs text-muted-foreground">
+              Lấy App ID từ Facebook Developer Console
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="fb_app_secret">Facebook App Secret</Label>
+            <Input
+              id="fb_app_secret"
+              type="password"
+              value={formData.fb_app_secret}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  fb_app_secret: e.target.value,
+                }))
+              }
+              placeholder="Enter your Facebook App Secret"
+            />
+            <p className="text-xs text-muted-foreground">
+              App Secret từ Facebook Developer Console
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="fb_redirect_uri">Redirect URI</Label>
+            <Input
+              id="fb_redirect_uri"
+              type="url"
+              value={formData.fb_redirect_uri}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  fb_redirect_uri: e.target.value,
+                }))
+              }
+              placeholder="https://your-app.vercel.app/api/auth/facebook"
+            />
+            <p className="text-xs text-muted-foreground">
+              OAuth Redirect URI đã cấu hình trong Facebook App
+            </p>
+          </div>
+        </Card.Content>
       </Card>
 
       <div className="flex justify-end">

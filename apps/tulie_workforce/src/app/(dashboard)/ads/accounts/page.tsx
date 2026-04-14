@@ -1,34 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
+  Plus,
+  RefreshCw,
+  MoreHorizontal,
+  Trash2,
+  CheckCircle2,
+  XCircle,
+  AlertCircle,
+  Loader2,
+  CreditCard,
+} from "lucide-react";
+import {
+  Button,
   Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
+  Badge,
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -37,35 +24,41 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Plus,
-  RefreshCw,
-  MoreHorizontal,
-  Trash2,
-  ExternalLink,
-  CheckCircle2,
-  XCircle,
-  AlertCircle,
-  Loader2,
-  Settings,
-} from "lucide-react";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  PageHeader,
+  StatCard,
+  StatGrid,
+  EmptyState,
+  DataTable,
+  type ColumnDef,
+} from "@repo/ui";
 import { toast } from "sonner";
 import type { FbAdAccount } from "@/types/fb-ads";
+
+const statusConfig = {
+  active: {
+    color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+    icon: CheckCircle2,
+  },
+  disconnected: {
+    color: "bg-amber-500/10 text-amber-600 border-amber-500/20",
+    icon: XCircle,
+  },
+  error: {
+    color: "bg-red-500/10 text-red-600 border-red-500/20",
+    icon: AlertCircle,
+  },
+};
 
 export default function AdAccountsPage() {
   const [accounts, setAccounts] = useState<FbAdAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [showAddDialog, setShowAddDialog] = useState(false);
   const [connectLoading, setConnectLoading] = useState(false);
 
   useEffect(() => {
@@ -88,13 +81,9 @@ export default function AdAccountsPage() {
   async function handleConnect() {
     setConnectLoading(true);
     try {
-      const res = await fetch("/api/fb/auth/connect", {
-        method: "POST",
-      });
+      const res = await fetch("/api/fb/auth/connect", { method: "POST" });
       const { url } = await res.json();
-      if (url) {
-        window.location.href = url;
-      }
+      if (url) window.location.href = url;
     } catch (error) {
       console.error("Error connecting:", error);
       toast.error("Failed to start OAuth flow");
@@ -137,43 +126,135 @@ export default function AdAccountsPage() {
     }
   }
 
-  async function handleUpdate(
-    accountId: string,
-    updates: Partial<FbAdAccount>,
-  ) {
-    try {
-      const res = await fetch(`/api/fb/accounts/${accountId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updates),
-      });
-      if (res.ok) {
-        setAccounts((prev) =>
-          prev.map((a) => (a.id === accountId ? { ...a, ...updates } : a)),
+  const columns: ColumnDef<FbAdAccount>[] = [
+    {
+      accessorKey: "fb_account_name",
+      header: "Account",
+      cell: ({ row }) => {
+        const account = row.original;
+        return (
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-lg bg-[#3B5998]/10 flex items-center justify-center shrink-0">
+              <svg
+                className="h-5 w-5 text-[#3B5998]"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+              </svg>
+            </div>
+            <div className="min-w-0">
+              <p className="font-medium truncate">
+                {account.fb_account_name || `Account ${account.fb_account_id}`}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                ID: {account.fb_account_id}
+              </p>
+            </div>
+          </div>
         );
-        toast.success("Account updated");
-      }
-    } catch (error) {
-      console.error("Error updating:", error);
-      toast.error("Failed to update account");
-    }
+      },
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => {
+        const status = statusConfig[row.original.status] || statusConfig.error;
+        const StatusIcon = status.icon;
+        return (
+          <Badge className={status.color} variant="outline">
+            <StatusIcon className="h-3 w-3 mr-1" />
+            {row.original.status}
+          </Badge>
+        );
+      },
+    },
+    {
+      accessorKey: "daily_budget_limit",
+      header: "Daily Budget",
+      cell: ({ row }) =>
+        new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+          maximumFractionDigits: 0,
+        }).format(row.original.daily_budget_limit || 0),
+    },
+    {
+      accessorKey: "currency",
+      header: "Currency",
+    },
+    {
+      accessorKey: "token_expires_at",
+      header: "Token Expires",
+      cell: ({ row }) =>
+        row.original.token_expires_at
+          ? new Date(row.original.token_expires_at).toLocaleDateString("vi-VN")
+          : "N/A",
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              onClick={() => handleSync(row.original.id)}
+              disabled={syncing === row.original.id}
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Sync
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => setDeleteId(row.original.id)}
+              className="text-destructive focus:text-destructive"
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+    },
+  ];
+
+  const activeCount = accounts.filter((a) => a.status === "active").length;
+  const totalBudget = accounts.reduce(
+    (sum, a) => sum + (a.daily_budget_limit || 0),
+    0,
+  );
+
+  if (loading) {
+    return (
+      <div className="p-6 space-y-6">
+        <PageHeader
+          title="Ad Accounts"
+          description="Quản lý tài khoản quảng cáo Facebook"
+        />
+        <StatGrid>
+          {[1, 2, 3, 4].map((i) => (
+            <Card key={i} className="animate-pulse">
+              <CardContent className="p-4">
+                <div className="h-4 w-20 bg-muted rounded mb-2" />
+                <div className="h-8 w-16 bg-muted rounded" />
+              </CardContent>
+            </Card>
+          ))}
+        </StatGrid>
+      </div>
+    );
   }
 
-  const statusConfig = {
-    active: { color: "bg-emerald-100 text-emerald-700", icon: CheckCircle2 },
-    disconnected: { color: "bg-amber-100 text-amber-700", icon: XCircle },
-    error: { color: "bg-red-100 text-red-700", icon: AlertCircle },
-  };
-
   return (
-    <div className="mx-auto max-w-[1400px] space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Ad Accounts</h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            Quản lý tài khoản quảng cáo Facebook
-          </p>
-        </div>
+    <div className="p-6 space-y-6">
+      <PageHeader
+        title="Ad Accounts"
+        description="Quản lý tài khoản quảng cáo Facebook"
+      >
         <Button onClick={handleConnect} disabled={connectLoading}>
           {connectLoading ? (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -182,182 +263,55 @@ export default function AdAccountsPage() {
           )}
           Connect Account
         </Button>
-      </div>
+      </PageHeader>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Total Accounts</p>
-            <p className="text-2xl font-bold">{accounts.length}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Active</p>
-            <p className="text-2xl font-bold">
-              {accounts.filter((a) => a.status === "active").length}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Daily Budget Limit</p>
-            <p className="text-2xl font-bold">
-              {new Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
-                maximumFractionDigits: 0,
-              }).format(
-                accounts.reduce(
-                  (sum, a) => sum + (a.daily_budget_limit || 0),
-                  0,
-                ),
-              )}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <StatGrid>
+        <StatCard
+          title="Total Accounts"
+          value={accounts.length}
+          footer={`${activeCount} active`}
+        />
+        <StatCard
+          title="Active"
+          value={activeCount}
+          footer="Connected and syncing"
+        />
+        <StatCard
+          title="Daily Budget Limit"
+          value={new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+            maximumFractionDigits: 0,
+          }).format(totalBudget)}
+          footer="Combined limit"
+        />
+        <StatCard
+          title="Sync Status"
+          value={activeCount > 0 ? "Ready" : "No Account"}
+          footer={
+            activeCount > 0 ? "All accounts synced" : "Connect an account"
+          }
+        />
+      </StatGrid>
 
-      {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <RefreshCw className="h-8 w-8 animate-spin text-muted-foreground" />
-        </div>
-      ) : accounts.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Settings className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-lg font-medium">No ad accounts connected</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Connect your first Facebook ad account to get started
-            </p>
-            <Button className="mt-4" onClick={handleConnect}>
-              <Plus className="h-4 w-4 mr-2" />
-              Connect Account
-            </Button>
-          </CardContent>
-        </Card>
+      {accounts.length === 0 ? (
+        <EmptyState
+          icon={CreditCard}
+          title="No ad accounts connected"
+          description="Connect your first Facebook ad account to get started with advertising"
+        >
+          <Button onClick={handleConnect}>
+            <Plus className="h-4 w-4 mr-2" />
+            Connect Account
+          </Button>
+        </EmptyState>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {accounts.map((account) => {
-            const status = statusConfig[account.status] || statusConfig.error;
-            const StatusIcon = status.icon;
-            return (
-              <Card
-                key={account.id}
-                className="hover:border-primary/20 transition-colors"
-              >
-                <CardHeader className="pb-2">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-lg bg-[#3B5998]/10 flex items-center justify-center">
-                        <svg
-                          className="h-5 w-5 text-[#3B5998]"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                        >
-                          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <CardTitle className="text-lg">
-                          {account.fb_account_name ||
-                            `Account ${account.fb_account_id}`}
-                        </CardTitle>
-                        <p className="text-sm text-muted-foreground">
-                          ID: {account.fb_account_id}
-                        </p>
-                      </div>
-                    </div>
-                    <Badge className={status.color}>
-                      <StatusIcon className="h-3 w-3 mr-1" />
-                      {account.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">
-                        Daily Budget
-                      </span>
-                      <span className="font-medium">
-                        {new Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                          maximumFractionDigits: 0,
-                        }).format(account.daily_budget_limit)}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Currency</span>
-                      <span className="font-medium">{account.currency}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">
-                        Token Expires
-                      </span>
-                      <span className="font-medium">
-                        {account.token_expires_at
-                          ? new Date(
-                              account.token_expires_at,
-                            ).toLocaleDateString("vi-VN")
-                          : "N/A"}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 mt-4 pt-4 border-t">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="flex-1"
-                      onClick={() => handleSync(account.id)}
-                      disabled={syncing === account.id}
-                    >
-                      {syncing === account.id ? (
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      ) : (
-                        <RefreshCw className="h-4 w-4 mr-2" />
-                      )}
-                      Sync
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="flex-1"
-                      onClick={() =>
-                        handleUpdate(account.id, {
-                          status:
-                            account.status === "active"
-                              ? "disconnected"
-                              : "active",
-                        })
-                      }
-                    >
-                      {account.status === "active" ? "Disconnect" : "Reconnect"}
-                    </Button>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onClick={() => setDeleteId(account.id)}
-                          className="text-destructive focus:text-destructive"
-                        >
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+        <DataTable
+          columns={columns}
+          data={accounts}
+          searchKey="fb_account_name"
+          searchPlaceholder="Tìm kiếm tài khoản..."
+        />
       )}
 
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>

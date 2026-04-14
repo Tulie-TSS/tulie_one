@@ -1,28 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/dialog";
-import {
-  RefreshCw,
   Play,
   CheckCircle2,
   XCircle,
@@ -34,71 +13,101 @@ import {
   Loader2,
   Sparkles,
   Zap,
+  Brain,
 } from "lucide-react";
+import {
+  Button,
+  Card,
+  Badge,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  PageHeader,
+  StatCard,
+  StatGrid,
+  EmptyState,
+} from "@repo/ui";
 import { toast } from "sonner";
 import type { Recommendation, RecommendationStatus } from "@/types/fb-ads";
 
-const typeConfig: Record<string, { icon: any; color: string; label: string }> =
-  {
-    increase_budget: {
-      icon: TrendingUp,
-      color: "bg-blue-100 text-blue-700",
-      label: "Tăng Budget",
-    },
-    decrease_budget: {
-      icon: TrendingDown,
-      color: "bg-amber-100 text-amber-700",
-      label: "Giảm Budget",
-    },
-    pause_campaign: {
-      icon: Pause,
-      color: "bg-red-100 text-red-700",
-      label: "Tạm dừng",
-    },
-    resume_campaign: {
-      icon: Play,
-      color: "bg-emerald-100 text-emerald-700",
-      label: "Khôi phục",
-    },
-    adjust_audience: {
-      icon: Lightbulb,
-      color: "bg-purple-100 text-purple-700",
-      label: "Điều chỉnh Audience",
-    },
-    optimize_bid: {
-      icon: Zap,
-      color: "bg-cyan-100 text-cyan-700",
-      label: "Tối ưu Bid",
-    },
-    create_new_creative: {
-      icon: Sparkles,
-      color: "bg-pink-100 text-pink-700",
-      label: "Tạo Creative mới",
-    },
-    test_different_copy: {
-      icon: Sparkles,
-      color: "bg-orange-100 text-orange-700",
-      label: "Test Copy mới",
-    },
-    lower_cpr_target: {
-      icon: TrendingDown,
-      color: "bg-amber-100 text-amber-700",
-      label: "Giảm CPR Target",
-    },
-    raise_cpr_target: {
-      icon: TrendingUp,
-      color: "bg-blue-100 text-blue-700",
-      label: "Tăng CPR Target",
-    },
-  };
+const typeConfig: Record<
+  string,
+  { icon: typeof TrendingUp; color: string; label: string }
+> = {
+  increase_budget: {
+    icon: TrendingUp,
+    color: "bg-blue-500/10 text-blue-600 border-blue-500/20",
+    label: "Tăng Budget",
+  },
+  decrease_budget: {
+    icon: TrendingDown,
+    color: "bg-amber-500/10 text-amber-600 border-amber-500/20",
+    label: "Giảm Budget",
+  },
+  pause_campaign: {
+    icon: Pause,
+    color: "bg-red-500/10 text-red-600 border-red-500/20",
+    label: "Tạm dừng",
+  },
+  resume_campaign: {
+    icon: Play,
+    color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+    label: "Khôi phục",
+  },
+  adjust_audience: {
+    icon: Lightbulb,
+    color: "bg-purple-500/10 text-purple-600 border-purple-500/20",
+    label: "Điều chỉnh Audience",
+  },
+  optimize_bid: {
+    icon: Zap,
+    color: "bg-cyan-500/10 text-cyan-600 border-cyan-500/20",
+    label: "Tối ưu Bid",
+  },
+  create_new_creative: {
+    icon: Sparkles,
+    color: "bg-pink-500/10 text-pink-600 border-pink-500/20",
+    label: "Tạo Creative mới",
+  },
+  test_different_copy: {
+    icon: Sparkles,
+    color: "bg-orange-500/10 text-orange-600 border-orange-500/20",
+    label: "Test Copy mới",
+  },
+  lower_cpr_target: {
+    icon: TrendingDown,
+    color: "bg-amber-500/10 text-amber-600 border-amber-500/20",
+    label: "Giảm CPR Target",
+  },
+  raise_cpr_target: {
+    icon: TrendingUp,
+    color: "bg-blue-500/10 text-blue-600 border-blue-500/20",
+    label: "Tăng CPR Target",
+  },
+};
 
-const statusConfig: Record<RecommendationStatus, { color: string; icon: any }> =
-  {
-    pending: { color: "bg-amber-100 text-amber-700", icon: Clock },
-    approved: { color: "bg-blue-100 text-blue-700", icon: CheckCircle2 },
-    rejected: { color: "bg-red-100 text-red-700", icon: XCircle },
-    executed: { color: "bg-emerald-100 text-emerald-700", icon: CheckCircle2 },
-  };
+const statusConfig: Record<
+  RecommendationStatus,
+  { color: string; icon: typeof Clock }
+> = {
+  pending: {
+    color: "bg-amber-500/10 text-amber-600 border-amber-500/20",
+    icon: Clock,
+  },
+  approved: {
+    color: "bg-blue-500/10 text-blue-600 border-blue-500/20",
+    icon: CheckCircle2,
+  },
+  rejected: {
+    color: "bg-red-500/10 text-red-600 border-red-500/20",
+    icon: XCircle,
+  },
+  executed: {
+    color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+    icon: CheckCircle2,
+  },
+};
 
 export default function RecommendationsPage() {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
@@ -127,13 +136,9 @@ export default function RecommendationsPage() {
   async function handleAnalyze() {
     setAnalyzing(true);
     try {
-      const res = await fetch("/api/ai/analyze", {
-        method: "POST",
-      });
+      const res = await fetch("/api/ai/analyze", { method: "POST" });
       const result = await res.json();
-      if (result.ai_insights) {
-        setAiInsights(result.ai_insights);
-      }
+      if (result.ai_insights) setAiInsights(result.ai_insights);
       if (result.recommendations) {
         setRecommendations((prev) => [...result.recommendations, ...prev]);
       }
@@ -159,21 +164,15 @@ export default function RecommendationsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action }),
       });
-      const result = await res.json();
       if (res.ok) {
+        const statusMap = {
+          approve: "approved",
+          reject: "rejected",
+          execute: "executed",
+        } as const;
         setRecommendations((prev) =>
           prev.map((r) =>
-            r.id === id
-              ? {
-                  ...r,
-                  status:
-                    action === "approve"
-                      ? "approved"
-                      : action === "reject"
-                        ? "rejected"
-                        : "executed",
-                }
-              : r,
+            r.id === id ? { ...r, status: statusMap[action] } : r,
           ),
         );
         toast.success(
@@ -198,15 +197,28 @@ export default function RecommendationsPage() {
     (r) => r.status === "executed" || r.status === "rejected",
   );
 
+  if (loading) {
+    return (
+      <div className="p-6 space-y-6">
+        <PageHeader
+          title="AI Recommendations"
+          description="Tự động phân tích và tối ưu chiến dịch quảng cáo"
+        />
+        <StatGrid>
+          {[1, 2, 3, 4].map((i) => (
+            <Card key={i} className="animate-pulse" />
+          ))}
+        </StatGrid>
+      </div>
+    );
+  }
+
   return (
-    <div className="mx-auto max-w-[1400px] space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">AI Recommendations</h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            Tự động phân tích và tối ưu chiến dịch quảng cáo
-          </p>
-        </div>
+    <div className="p-6 space-y-6">
+      <PageHeader
+        title="AI Recommendations"
+        description="Tự động phân tích và tối ưu chiến dịch quảng cáo"
+      >
         <Button onClick={handleAnalyze} disabled={analyzing}>
           {analyzing ? (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -215,52 +227,44 @@ export default function RecommendationsPage() {
           )}
           {analyzing ? "Analyzing..." : "Run AI Analysis"}
         </Button>
-      </div>
+      </PageHeader>
 
       {aiInsights && (
         <Card className="border-primary/20 bg-primary/5">
-          <CardContent className="p-4">
+          <Card.Content className="p-4">
             <div className="flex items-start gap-3">
-              <Lightbulb className="h-5 w-5 text-primary mt-0.5" />
+              <Lightbulb className="h-5 w-5 text-primary mt-0.5 shrink-0" />
               <div>
                 <p className="font-medium text-sm">AI Insights</p>
                 <p className="text-sm mt-1 whitespace-pre-line">{aiInsights}</p>
               </div>
             </div>
-          </CardContent>
+          </Card.Content>
         </Card>
       )}
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Pending</p>
-            <p className="text-2xl font-bold">{pendingRecs.length}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Approved</p>
-            <p className="text-2xl font-bold">{approvedRecs.length}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Executed</p>
-            <p className="text-2xl font-bold">
-              {recommendations.filter((r) => r.status === "executed").length}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Rejected</p>
-            <p className="text-2xl font-bold">
-              {recommendations.filter((r) => r.status === "rejected").length}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <StatGrid>
+        <StatCard
+          title="Pending"
+          value={pendingRecs.length}
+          footer="Awaiting approval"
+        />
+        <StatCard
+          title="Approved"
+          value={approvedRecs.length}
+          footer="Ready to execute"
+        />
+        <StatCard
+          title="Executed"
+          value={recommendations.filter((r) => r.status === "executed").length}
+          footer="Successfully run"
+        />
+        <StatCard
+          title="Rejected"
+          value={recommendations.filter((r) => r.status === "rejected").length}
+          footer="Dismissed"
+        />
+      </StatGrid>
 
       <Tabs defaultValue="pending" className="space-y-4">
         <TabsList>
@@ -275,76 +279,71 @@ export default function RecommendationsPage() {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="pending" className="space-y-4">
+        <TabsContent value="pending">
           {pendingRecs.length === 0 ? (
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center py-12">
-                <CheckCircle2 className="h-12 w-12 text-muted-foreground mb-4" />
-                <p className="text-lg font-medium">
-                  No pending recommendations
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Run AI analysis to generate recommendations
-                </p>
-              </CardContent>
-            </Card>
+            <EmptyState
+              icon={Brain}
+              title="No pending recommendations"
+              description="Run AI analysis to generate recommendations for your campaigns"
+            >
+              <Button onClick={handleAnalyze}>
+                <Sparkles className="h-4 w-4 mr-2" />
+                Run AI Analysis
+              </Button>
+            </EmptyState>
           ) : (
-            pendingRecs.map((rec) => (
-              <RecommendationCard
-                key={rec.id}
-                recommendation={rec}
-                onAction={handleAction}
-                actionLoading={actionLoading === rec.id}
-              />
-            ))
+            <div className="grid gap-4">
+              {pendingRecs.map((rec) => (
+                <RecommendationCard
+                  key={rec.id}
+                  recommendation={rec}
+                  onAction={handleAction}
+                  actionLoading={actionLoading === rec.id}
+                />
+              ))}
+            </div>
           )}
         </TabsContent>
 
-        <TabsContent value="approved" className="space-y-4">
+        <TabsContent value="approved">
           {approvedRecs.length === 0 ? (
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center py-12">
-                <Clock className="h-12 w-12 text-muted-foreground mb-4" />
-                <p className="text-lg font-medium">
-                  No approved recommendations
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Approve pending recommendations to execute them
-                </p>
-              </CardContent>
-            </Card>
+            <EmptyState
+              icon={Clock}
+              title="No approved recommendations"
+              description="Approve pending recommendations to execute them"
+            />
           ) : (
-            approvedRecs.map((rec) => (
-              <RecommendationCard
-                key={rec.id}
-                recommendation={rec}
-                onAction={handleAction}
-                actionLoading={actionLoading === rec.id}
-              />
-            ))
+            <div className="grid gap-4">
+              {approvedRecs.map((rec) => (
+                <RecommendationCard
+                  key={rec.id}
+                  recommendation={rec}
+                  onAction={handleAction}
+                  actionLoading={actionLoading === rec.id}
+                />
+              ))}
+            </div>
           )}
         </TabsContent>
 
-        <TabsContent value="history" className="space-y-4">
+        <TabsContent value="history">
           {historyRecs.length === 0 ? (
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center py-12">
-                <Clock className="h-12 w-12 text-muted-foreground mb-4" />
-                <p className="text-lg font-medium">No history</p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Executed and rejected recommendations will appear here
-                </p>
-              </CardContent>
-            </Card>
+            <EmptyState
+              icon={Clock}
+              title="No history"
+              description="Executed and rejected recommendations will appear here"
+            />
           ) : (
-            historyRecs.map((rec) => (
-              <RecommendationCard
-                key={rec.id}
-                recommendation={rec}
-                onAction={handleAction}
-                actionLoading={actionLoading === rec.id}
-              />
-            ))
+            <div className="grid gap-4">
+              {historyRecs.map((rec) => (
+                <RecommendationCard
+                  key={rec.id}
+                  recommendation={rec}
+                  onAction={handleAction}
+                  actionLoading={actionLoading === rec.id}
+                />
+              ))}
+            </div>
           )}
         </TabsContent>
       </Tabs>
@@ -368,28 +367,28 @@ function RecommendationCard({
 
   return (
     <Card className="hover:border-primary/20 transition-colors">
-      <CardHeader className="pb-2">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
+      <Card.Header className="pb-2">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start gap-3">
             <div
-              className={`h-10 w-10 rounded-lg flex items-center justify-center ${type.color}`}
+              className={`h-10 w-10 rounded-lg flex items-center justify-center border ${type.color}`}
             >
               <TypeIcon className="h-5 w-5" />
             </div>
             <div>
-              <CardTitle className="text-lg">{type.label}</CardTitle>
-              <CardDescription className="mt-1">
+              <p className="font-semibold">{type.label}</p>
+              <p className="text-sm text-muted-foreground">
                 {recommendation.campaign?.name || "Unknown Campaign"}
-              </CardDescription>
+              </p>
             </div>
           </div>
-          <Badge className={status.color}>
+          <Badge className={status.color} variant="outline">
             <StatusIcon className="h-3 w-3 mr-1" />
             {recommendation.status}
           </Badge>
         </div>
-      </CardHeader>
-      <CardContent>
+      </Card.Header>
+      <Card.Content>
         <p className="text-sm text-muted-foreground mb-4">
           {recommendation.reason}
         </p>
@@ -437,7 +436,6 @@ function RecommendationCard({
                 Reject
               </Button>
               <Button
-                variant="default"
                 size="sm"
                 onClick={() => onAction(recommendation.id, "approve")}
                 disabled={actionLoading}
@@ -450,7 +448,6 @@ function RecommendationCard({
 
           {recommendation.status === "approved" && (
             <Button
-              variant="default"
               size="sm"
               onClick={() => onAction(recommendation.id, "execute")}
               disabled={actionLoading}
@@ -460,7 +457,7 @@ function RecommendationCard({
             </Button>
           )}
         </div>
-      </CardContent>
+      </Card.Content>
     </Card>
   );
 }

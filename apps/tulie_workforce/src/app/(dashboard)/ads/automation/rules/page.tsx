@@ -1,35 +1,40 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
+  Plus,
+  RefreshCw,
+  MoreHorizontal,
+  Trash2,
+  Edit,
+  Zap,
+  MessageSquare,
+  Clock,
+  Tag,
+  User,
+  AlertCircle,
+  CheckCircle2,
+  Workflow,
+} from "lucide-react";
+import {
+  Button,
   Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import {
+  Badge,
+  Input,
+  Label,
+  Switch,
+  Textarea,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@/components/ui/dialog";
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -38,60 +43,54 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Plus,
-  RefreshCw,
-  MoreHorizontal,
-  Trash2,
-  Edit,
-  Play,
-  Pause,
-  Zap,
-  MessageSquare,
-  Clock,
-  Tag,
-  User,
-  AlertCircle,
-} from "lucide-react";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  PageHeader,
+  StatCard,
+  StatGrid,
+  EmptyState,
+} from "@repo/ui";
 import { toast } from "sonner";
 import type { AutoReplyRule, RuleTrigger, RuleAction } from "@/types/fb-ads";
 
 const triggerConfig: Record<
   RuleTrigger,
-  { icon: any; color: string; label: string }
+  { icon: typeof Tag; color: string; label: string }
 > = {
-  keyword: { icon: Tag, color: "bg-blue-100 text-blue-700", label: "Keyword" },
+  keyword: {
+    icon: Tag,
+    color: "bg-blue-500/10 text-blue-600 border-blue-500/20",
+    label: "Keyword",
+  },
   intent: {
     icon: Zap,
-    color: "bg-purple-100 text-purple-700",
+    color: "bg-purple-500/10 text-purple-600 border-purple-500/20",
     label: "Intent",
   },
   first_message: {
     icon: MessageSquare,
-    color: "bg-emerald-100 text-emerald-700",
+    color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
     label: "First Message",
   },
   no_response: {
     icon: Clock,
-    color: "bg-amber-100 text-amber-700",
+    color: "bg-amber-500/10 text-amber-600 border-amber-500/20",
     label: "No Response",
   },
   time_based: {
     icon: Clock,
-    color: "bg-cyan-100 text-cyan-700",
+    color: "bg-cyan-500/10 text-cyan-600 border-cyan-500/20",
     label: "Time Based",
   },
 };
 
-const actionConfig: Record<string, { icon: any; label: string }> = {
+const actionConfig: Record<
+  string,
+  { icon: typeof MessageSquare; label: string }
+> = {
   reply: { icon: MessageSquare, label: "Send Reply" },
   tag: { icon: Tag, label: "Add Tag" },
   assign: { icon: User, label: "Assign Agent" },
@@ -138,13 +137,11 @@ export default function AutomationRulesPage() {
         ? `/api/auto-reply-rules/${editRule.id}`
         : "/api/auto-reply-rules";
       const method = editRule ? "PATCH" : "POST";
-
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       if (res.ok) {
         const { data } = await res.json();
         if (editRule) {
@@ -186,9 +183,7 @@ export default function AutomationRulesPage() {
 
   async function handleDeleteRule(ruleId: string) {
     try {
-      await fetch(`/api/auto-reply-rules/${ruleId}`, {
-        method: "DELETE",
-      });
+      await fetch(`/api/auto-reply-rules/${ruleId}`, { method: "DELETE" });
       setRules((prev) => prev.filter((r) => r.id !== ruleId));
       toast.success("Rule deleted");
     } catch (error) {
@@ -256,76 +251,69 @@ export default function AutomationRulesPage() {
     }));
   }
 
-  const CheckCircle2 = () => null;
+  const activeRules = rules.filter((r) => r.is_active).length;
+  const keywordRules = rules.filter((r) => r.trigger_type === "keyword").length;
+
+  if (loading) {
+    return (
+      <div className="p-6 space-y-6">
+        <PageHeader
+          title="Automation Rules"
+          description="Quản lý quy tắc tự động trả lời và xử lý tin nhắn"
+        />
+        <StatGrid>
+          {[1, 2, 3, 4].map((i) => (
+            <Card key={i} className="animate-pulse" />
+          ))}
+        </StatGrid>
+      </div>
+    );
+  }
 
   return (
-    <div className="mx-auto max-w-[1400px] space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Automation Rules</h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            Quản lý quy tắc tự động trả lời và xử lý tin nhắn
-          </p>
-        </div>
+    <div className="p-6 space-y-6">
+      <PageHeader
+        title="Automation Rules"
+        description="Quản lý quy tắc tự động trả lời và xử lý tin nhắn"
+      >
         <Button onClick={() => openEditDialog()}>
           <Plus className="h-4 w-4 mr-2" />
           Create Rule
         </Button>
-      </div>
+      </PageHeader>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Total Rules</p>
-            <p className="text-2xl font-bold">{rules.length}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Active</p>
-            <p className="text-2xl font-bold">
-              {rules.filter((r) => r.is_active).length}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Keyword Rules</p>
-            <p className="text-2xl font-bold">
-              {rules.filter((r) => r.trigger_type === "keyword").length}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Auto-exec</p>
-            <p className="text-2xl font-bold">
-              {rules.filter((r) => r.is_active).length}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <StatGrid>
+        <StatCard
+          title="Total Rules"
+          value={rules.length}
+          footer={`${activeRules} active`}
+        />
+        <StatCard title="Active" value={activeRules} footer="Rules enabled" />
+        <StatCard
+          title="Keyword Rules"
+          value={keywordRules}
+          footer="Trigger by keywords"
+        />
+        <StatCard
+          title="Auto-exec"
+          value={activeRules}
+          footer="Auto execute enabled"
+        />
+      </StatGrid>
 
-      {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <RefreshCw className="h-8 w-8 animate-spin text-muted-foreground" />
-        </div>
-      ) : rules.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Zap className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-lg font-medium">No automation rules yet</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Create your first rule to automate responses
-            </p>
-            <Button className="mt-4" onClick={() => openEditDialog()}>
-              <Plus className="h-4 w-4 mr-2" />
-              Create Rule
-            </Button>
-          </CardContent>
-        </Card>
+      {rules.length === 0 ? (
+        <EmptyState
+          icon={Workflow}
+          title="No automation rules yet"
+          description="Create your first rule to automate responses"
+        >
+          <Button onClick={() => openEditDialog()}>
+            <Plus className="h-4 w-4 mr-2" />
+            Create Rule
+          </Button>
+        </EmptyState>
       ) : (
-        <div className="space-y-4">
+        <div className="grid gap-4">
           {rules.map((rule) => {
             const trigger =
               triggerConfig[rule.trigger_type] || triggerConfig.keyword;
@@ -335,19 +323,19 @@ export default function AutomationRulesPage() {
                 key={rule.id}
                 className="hover:border-primary/20 transition-colors"
               >
-                <CardHeader className="pb-2">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
+                <Card.Header className="pb-2">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start gap-3">
                       <div
-                        className={`h-10 w-10 rounded-lg flex items-center justify-center ${trigger.color}`}
+                        className={`h-10 w-10 rounded-lg flex items-center justify-center border ${trigger.color}`}
                       >
                         <TriggerIcon className="h-5 w-5" />
                       </div>
                       <div>
-                        <CardTitle className="text-lg">{rule.name}</CardTitle>
-                        <CardDescription className="mt-1">
+                        <p className="font-semibold">{rule.name}</p>
+                        <p className="text-sm text-muted-foreground">
                           {trigger.label} • Priority: {rule.priority}
-                        </CardDescription>
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -380,19 +368,21 @@ export default function AutomationRulesPage() {
                       </DropdownMenu>
                     </div>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  {rule.trigger_type === "keyword" && rule.trigger_config && (
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {(
-                        rule.trigger_config as { keywords?: string[] }
-                      ).keywords?.map((kw) => (
-                        <Badge key={kw} variant="secondary">
-                          {kw}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
+                </Card.Header>
+                <Card.Content>
+                  {rule.trigger_type === "keyword" &&
+                    (rule.trigger_config as { keywords?: string[] })
+                      .keywords && (
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {(
+                          rule.trigger_config as { keywords?: string[] }
+                        ).keywords?.map((kw) => (
+                          <Badge key={kw} variant="secondary">
+                            {kw}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
                   <div className="flex flex-wrap gap-2">
                     {(
                       rule.actions as Array<{
@@ -413,7 +403,7 @@ export default function AutomationRulesPage() {
                       );
                     })}
                   </div>
-                </CardContent>
+                </Card.Content>
               </Card>
             );
           })}
@@ -444,7 +434,6 @@ export default function AutomationRulesPage() {
                 placeholder="e.g., Welcome New Customers"
               />
             </div>
-
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Trigger Type</Label>
@@ -466,7 +455,6 @@ export default function AutomationRulesPage() {
                   </SelectContent>
                 </Select>
               </div>
-
               <div className="space-y-2">
                 <Label>Priority</Label>
                 <Input
@@ -483,7 +471,6 @@ export default function AutomationRulesPage() {
                 />
               </div>
             </div>
-
             {formData.trigger_type === "keyword" && (
               <div className="space-y-2">
                 <Label>Keywords</Label>
@@ -519,7 +506,6 @@ export default function AutomationRulesPage() {
                 </div>
               </div>
             )}
-
             <div className="space-y-2">
               <Label>Actions</Label>
               <div className="space-y-2">
@@ -543,27 +529,25 @@ export default function AutomationRulesPage() {
                     </Button>
                   </div>
                 ))}
-                <div className="flex gap-2">
-                  <Select
-                    onValueChange={(value: RuleAction) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        actions: [...prev.actions, { type: value, value: "" }],
-                      }))
-                    }
-                  >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Add action" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.entries(actionConfig).map(([key, config]) => (
-                        <SelectItem key={key} value={key}>
-                          {config.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                <Select
+                  onValueChange={(value: RuleAction) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      actions: [...prev.actions, { type: value, value: "" }],
+                    }))
+                  }
+                >
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue placeholder="Add action" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(actionConfig).map(([key, config]) => (
+                      <SelectItem key={key} value={key}>
+                        {config.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>
