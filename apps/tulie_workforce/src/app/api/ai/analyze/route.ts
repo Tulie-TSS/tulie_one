@@ -3,9 +3,12 @@ import { createClient } from "@/lib/supabase/server";
 import OpenAI from "openai";
 import type { RecommendationType } from "@/types/fb-ads";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+function getOpenAI() {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error("OPENAI_API_KEY is not set");
+  }
+  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+}
 
 interface MetricData {
   campaign_id: string;
@@ -259,7 +262,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    if (openai.apiKey) {
+    if (process.env.OPENAI_API_KEY) {
       try {
         const summaryPrompt = `Phân tích data sau từ Facebook Ads campaigns và đưa ra insights ngắn gọn:
 
@@ -278,7 +281,7 @@ Campaign: ${m.campaign_name}
 
 Hãy đưa ra 3-5 insights ngắn gọn bằng tiếng Việt về hiệu suất các campaigns này.`;
 
-        const completion = await openai.chat.completions.create({
+        const completion = await getOpenAI().chat.completions.create({
           model: "gpt-4o-mini",
           messages: [{ role: "user", content: summaryPrompt }],
           max_tokens: 500,
