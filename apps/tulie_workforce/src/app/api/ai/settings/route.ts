@@ -18,13 +18,13 @@ const settingsSchema = z.object({
   ai_model: z.string().optional(),
 });
 
-function sanitizeSettingsForResponse(data: any) {
+async function sanitizeSettingsForResponse(data: any) {
   if (!data) return data;
   const sanitized = { ...data };
 
   if (sanitized.ai_api_key) {
     try {
-      const decrypted = decryptApiKey(sanitized.ai_api_key);
+      const decrypted = await decryptApiKey(sanitized.ai_api_key);
       sanitized.ai_api_key = maskApiKey(decrypted);
     } catch {
       sanitized.ai_api_key = "••••••••••••";
@@ -32,7 +32,12 @@ function sanitizeSettingsForResponse(data: any) {
   }
 
   if (sanitized.fb_app_secret) {
-    sanitized.fb_app_secret = maskApiKey(sanitized.fb_app_secret);
+    try {
+      const decrypted = await decryptApiKey(sanitized.fb_app_secret);
+      sanitized.fb_app_secret = maskApiKey(decrypted);
+    } catch {
+      sanitized.fb_app_secret = "••••••••••••";
+    }
   }
 
   return sanitized;
@@ -97,7 +102,7 @@ export async function GET() {
       return NextResponse.json({ data: newSettings });
     }
 
-    const sanitized = sanitizeSettingsForResponse(data);
+    const sanitized = await sanitizeSettingsForResponse(data);
     return NextResponse.json({ data: sanitized });
   } catch (error) {
     console.error("Error:", error);
@@ -181,7 +186,7 @@ export async function PATCH(request: NextRequest) {
       result = data;
     }
 
-    const sanitized = sanitizeSettingsForResponse(result);
+    const sanitized = await sanitizeSettingsForResponse(result);
     return NextResponse.json({ data: sanitized });
   } catch (error) {
     if (error instanceof z.ZodError) {
