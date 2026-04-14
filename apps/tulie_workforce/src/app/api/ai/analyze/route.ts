@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import OpenAI from "openai";
 import Anthropic from "@anthropic-ai/sdk";
 import type { RecommendationType } from "@/types/fb-ads";
+import { decryptApiKey } from "@/lib/encryption";
 
 interface MetricData {
   campaign_id: string;
@@ -29,16 +30,25 @@ interface AISettings {
   cpr_threshold_multiplier: number;
 }
 
-function getAIClient(settings: AISettings) {
+async function getAIClient(settings: AISettings) {
   if (!settings.ai_api_key) {
     throw new Error("AI API key not configured. Please set it in AI Settings.");
+  }
+
+  let apiKey: string;
+  try {
+    apiKey = await decryptApiKey(settings.ai_api_key);
+  } catch (e) {
+    throw new Error(
+      "Failed to decrypt API key. Please re-enter your API key in settings.",
+    );
   }
 
   switch (settings.ai_provider) {
     case "anthropic":
       return {
         type: "anthropic" as const,
-        client: new Anthropic({ apiKey: settings.ai_api_key }),
+        client: new Anthropic({ apiKey }),
         model: settings.ai_model || "claude-3-5-sonnet-20241022",
       };
     case "google":
@@ -47,7 +57,7 @@ function getAIClient(settings: AISettings) {
     default:
       return {
         type: "openai" as const,
-        client: new OpenAI({ apiKey: settings.ai_api_key }),
+        client: new OpenAI({ apiKey }),
         model: settings.ai_model || "gpt-4o-mini",
       };
   }
@@ -57,7 +67,7 @@ async function generateAIInsights(
   metricsArray: MetricData[],
   settings: AISettings,
 ) {
-  const aiConfig = getAIClient(settings);
+  const aiConfig = await getAIClient(settings);
   const prompt = `Phân tích data sau từ Facebook Ads campaigns và đưa ra insights ngắn gọn:
 
 ${metricsArray

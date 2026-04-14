@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
+import { encryptApiKey, decryptApiKey, maskApiKey } from "@/lib/encryption";
 
 const settingsSchema = z.object({
   auto_execution_enabled: z.boolean().optional(),
@@ -9,7 +10,33 @@ const settingsSchema = z.object({
   cpr_threshold_multiplier: z.number().min(0.5).max(5).optional(),
   daily_analysis_enabled: z.boolean().optional(),
   notification_email: z.string().email().optional().nullable(),
+  fb_app_id: z.string().optional().nullable(),
+  fb_app_secret: z.string().optional().nullable(),
+  fb_redirect_uri: z.string().optional().nullable(),
+  ai_provider: z.string().optional(),
+  ai_api_key: z.string().optional().nullable(),
+  ai_model: z.string().optional(),
 });
+
+function sanitizeSettingsForResponse(data: any) {
+  if (!data) return data;
+  const sanitized = { ...data };
+
+  if (sanitized.ai_api_key) {
+    try {
+      const decrypted = decryptApiKey(sanitized.ai_api_key);
+      sanitized.ai_api_key = maskApiKey(decrypted);
+    } catch {
+      sanitized.ai_api_key = "••••••••••••";
+    }
+  }
+
+  if (sanitized.fb_app_secret) {
+    sanitized.fb_app_secret = maskApiKey(sanitized.fb_app_secret);
+  }
+
+  return sanitized;
+}
 
 export async function GET() {
   try {
@@ -53,6 +80,8 @@ export async function GET() {
           max_budget_decrease_percent: 50,
           cpr_threshold_multiplier: 1.5,
           daily_analysis_enabled: true,
+          ai_provider: "openai",
+          ai_model: "gpt-4o-mini",
         })
         .select()
         .single();
@@ -68,7 +97,8 @@ export async function GET() {
       return NextResponse.json({ data: newSettings });
     }
 
-    return NextResponse.json({ data });
+    const sanitized = sanitizeSettingsForResponse(data);
+    return NextResponse.json({ data: sanitized });
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json(
@@ -102,6 +132,18 @@ export async function PATCH(request: NextRequest) {
     const body = await request.json();
     const validated = settingsSchema.parse(body);
 
+    const updateData: any = { ...validated };
+
+    if (updateData.ai_api_key) {
+      updateData.ai_api_key = await encryptApiKey(updateData.ai_api_key);
+    }
+
+    if (updateData.fb_app_secret) {
+      updateData.fb_app_secret = await encryptApiKey(updateData.fb_app_secret);
+    }
+
+    updateData.updated_at = new Date().toISOString();
+
     const { data: existing } = await supabase
       .from("ai_settings")
       .select("id")
@@ -112,10 +154,7 @@ export async function PATCH(request: NextRequest) {
     if (existing) {
       const { data, error } = await supabase
         .from("ai_settings")
-        .update({
-          ...validated,
-          updated_at: new Date().toISOString(),
-        })
+        .update(updateData)
         .eq("organization_id", profile.organization_id)
         .select()
         .single();
@@ -130,7 +169,7 @@ export async function PATCH(request: NextRequest) {
         .from("ai_settings")
         .insert({
           organization_id: profile.organization_id,
-          ...validated,
+          ...updateData,
         })
         .select()
         .single();
@@ -142,7 +181,8 @@ export async function PATCH(request: NextRequest) {
       result = data;
     }
 
-    return NextResponse.json({ data: result });
+    const sanitized = sanitizeSettingsForResponse(result);
+    return NextResponse.json({ data: sanitized });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
