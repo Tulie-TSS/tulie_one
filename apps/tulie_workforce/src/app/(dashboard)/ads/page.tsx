@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 import { StatCard, StatGrid } from "@repo/ui";
-import { Badge, BadgeVariant } from "@repo/ui";
+import { Badge } from "@repo/ui";
 import { Button } from "@repo/ui";
 import { Progress } from "@repo/ui";
 import {
