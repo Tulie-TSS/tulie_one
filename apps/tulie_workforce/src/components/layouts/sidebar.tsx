@@ -20,6 +20,9 @@ import {
   User,
   ChevronsUpDown,
   ChevronRight,
+  Facebook,
+  Google,
+  Music,
 } from "lucide-react";
 
 import {
@@ -94,12 +97,14 @@ const navigation: NavItem[] = [
   { name: "Chat", href: "/chat", icon: MessageSquare },
   { name: "Automations", href: "/automations", icon: Workflow, badge: "5" },
   {
-    name: "FB Ads",
+    name: "Ads Manager",
     icon: Megaphone,
     visibleTo: ["owner", "manager"],
     children: [
-      { name: "Overview", href: "/ads" },
-      { name: "Campaigns", href: "/ads/campaigns" },
+      { name: "Tổng quan", href: "/ads" },
+      { name: "Facebook Ads", href: "/ads/facebook", icon: Facebook },
+      { name: "Google Ads", href: "/ads/google", icon: Google },
+      { name: "TikTok Ads", href: "/ads/tiktok", icon: Music },
       { name: "Ad Accounts", href: "/ads/accounts" },
       { name: "Recommendations", href: "/ads/recommendations" },
       { name: "Automation", href: "/ads/automation/rules" },
