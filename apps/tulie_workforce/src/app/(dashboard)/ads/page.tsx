@@ -88,18 +88,20 @@ const platforms: AdPlatform[] = ["facebook", "google", "tiktok"];
 const PlatformIcon = ({
   platform,
   className,
+  style,
 }: {
   platform: AdPlatform;
   className?: string;
+  style?: React.CSSProperties;
 }) => {
   const iconClass = cn("h-4 w-4", className);
   switch (platform) {
     case "facebook":
-      return <Facebook className={iconClass} />;
+      return <Facebook className={iconClass} style={style} />;
     case "google":
-      return <Search className={iconClass} />;
+      return <Search className={iconClass} style={style} />;
     case "tiktok":
-      return <Music className={iconClass} />;
+      return <Music className={iconClass} style={style} />;
   }
 };
 
