@@ -44,7 +44,7 @@ export default function RootLayout({
                   "group font-sans rounded-md shadow-lg border backdrop-blur-sm !bg-background !text-foreground",
                 title: "text-sm font-semibold",
                 description: "text-xs text-muted-foreground",
-                ActionButton:
+                actionButton:
                   "bg-primary text-primary-foreground text-xs font-medium rounded-lg px-3 py-1.5",
                 cancelButton:
                   "bg-muted text-muted-foreground text-xs font-medium rounded-lg px-3 py-1.5",
