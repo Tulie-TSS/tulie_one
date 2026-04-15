@@ -220,8 +220,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                 <SidebarMenuSubButton
                                   asChild
                                   isActive={pathname === subItem.href}
+                                  disabled={!subItem.href}
                                 >
-                                  <Link href={subItem.href}>
+                                  <Link href={subItem.href || "#"}>
                                     <span>{subItem.name}</span>
                                   </Link>
                                 </SidebarMenuSubButton>
