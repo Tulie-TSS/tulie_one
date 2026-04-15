@@ -1,5 +1,14 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "sonner";
+import { ConfirmProvider } from "@repo/ui";
 import "./globals.css";
+
+const inter = Inter({
+  variable: "--font-sans",
+  subsets: ["latin", "vietnamese"],
+});
 
 export const dynamic = "force-dynamic";
 
@@ -15,8 +24,43 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">{children}</body>
+    <html lang="vi" suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ConfirmProvider>{children}</ConfirmProvider>
+          <Toaster
+            position="top-right"
+            closeButton
+            duration={4000}
+            toastOptions={{
+              unstyled: false,
+              classNames: {
+                toast:
+                  "group font-sans rounded-md shadow-lg border backdrop-blur-sm !bg-background !text-foreground",
+                title: "text-sm font-semibold",
+                description: "text-xs text-muted-foreground",
+                ActionButton:
+                  "bg-primary text-primary-foreground text-xs font-medium rounded-lg px-3 py-1.5",
+                cancelButton:
+                  "bg-muted text-muted-foreground text-xs font-medium rounded-lg px-3 py-1.5",
+                closeButton: "bg-background border-border hover:bg-muted",
+                success:
+                  "!border-emerald-200 !bg-emerald-50 !text-emerald-900 dark:!bg-emerald-950/80 dark:!border-emerald-800 dark:!text-emerald-100",
+                error:
+                  "!border-red-200 !bg-red-50 !text-red-900 dark:!bg-red-950/80 dark:!border-red-800 dark:!text-red-100",
+                warning:
+                  "!border-amber-200 !bg-amber-50 !text-amber-900 dark:!bg-amber-950/80 dark:!border-amber-800 dark:!text-amber-100",
+                info: "!border-blue-200 !bg-blue-50 !text-blue-900 dark:!bg-blue-950/80 dark:!border-blue-800 dark:!text-blue-100",
+              },
+            }}
+          />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
