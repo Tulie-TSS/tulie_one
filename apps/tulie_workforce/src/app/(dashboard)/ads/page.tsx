@@ -210,8 +210,7 @@ export default function AdsPage() {
         <StatCard
           title="Chiến dịch Active"
           value={currentStats.active_campaigns}
-          change={currentStats.total_campaigns}
-          changeLabel="tổng cộng"
+          footer={`/ ${currentStats.total_campaigns} tổng cộng`}
         />
         <StatCard
           title="Tổng chi tiêu"
@@ -220,8 +219,7 @@ export default function AdsPage() {
         <StatCard
           title="Kết quả"
           value={formatNumber(currentStats.total_results)}
-          change={Math.round(currentStats.avg_cpr)}
-          changeLabel="CPR TB"
+          footer={`CPR TB: ${formatVND(Math.round(currentStats.avg_cpr))}`}
         />
         <StatCard
           title="Impressions"
