@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 import { Badge } from "@repo/ui";
@@ -29,7 +29,6 @@ import {
   mockCampaigns,
   mockAlerts,
   mockAgentActions,
-  mockAccounts,
   getPlatformStats,
 } from "@/lib/ads-data";
 import type {
@@ -50,7 +49,6 @@ import {
   Bot,
   CheckCircle2,
   XCircle,
-  Clock,
   BarChart3,
   Settings,
 } from "lucide-react";
@@ -69,16 +67,26 @@ const platformIcons: Record<AdPlatform, React.ElementType> = {
   tiktok: Music,
 };
 
-export default function AdsPage() {
-  const router = useRouter();
-  const [selectedPlatform, setSelectedPlatform] =
-    useState<AdPlatform>("facebook");
+interface PlatformPageProps {
+  params: Promise<{ platform: string }>;
+}
+
+export default function PlatformAdsPage({ params }: PlatformPageProps) {
+  const [platform, setPlatform] = useState<AdPlatform>("facebook");
   const [campaigns, setCampaigns] = useState(mockCampaigns);
   const [selectedTab, setSelectedTab] = useState<
     "overview" | "campaigns" | "alerts" | "actions"
-  >("overview");
+  >("campaigns");
 
-  const currentStats = getPlatformStats(selectedPlatform);
+  useEffect(() => {
+    params.then((p) => {
+      if (p.platform && platforms.includes(p.platform as AdPlatform)) {
+        setPlatform(p.platform as AdPlatform);
+      }
+    });
+  }, [params]);
+
+  const currentStats = getPlatformStats(platform);
 
   function toggleCampaign(id: string) {
     setCampaigns((prev) =>
@@ -95,18 +103,26 @@ export default function AdsPage() {
     (a) => a.status === "pending_approval",
   ).length;
 
+  const Icon = platformIcons[platform];
+
   return (
     <div className="space-y-6 w-full">
       {/* Page Header */}
       <div className="flex flex-col gap-1">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Ads Manager
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Quản lý chiến dịch quảng cáo đa nền tảng
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
+              <Icon className="h-5 w-5" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight">
+                {platformNames[platform]}
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                {currentStats.active_campaigns}/{currentStats.total_campaigns}{" "}
+                chiến dịch active
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="outline" size="sm" className="gap-2">
@@ -121,49 +137,8 @@ export default function AdsPage() {
         </div>
       </div>
 
-      {/* Platform Selector */}
-      <div className="grid grid-cols-3 gap-4">
-        {platforms.map((platform) => {
-          const stats = getPlatformStats(platform);
-          const isConnected = mockAccounts.some((a) => a.platform === platform);
-          const Icon = platformIcons[platform];
-          return (
-            <Card
-              key={platform}
-              className={cn(
-                "cursor-pointer transition-all hover:border-primary/50",
-                selectedPlatform === platform && "border-primary bg-primary/5",
-              )}
-              onClick={() => setSelectedPlatform(platform)}
-            >
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm truncate">
-                      {platformNames[platform]}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {stats.active_campaigns}/{stats.total_campaigns} chiến
-                      dịch
-                    </p>
-                  </div>
-                  {!isConnected && (
-                    <Badge variant="destructive" className="ml-2 shrink-0">
-                      Chưa kết nối
-                    </Badge>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -236,8 +211,8 @@ export default function AdsPage() {
         onValueChange={(v) => setSelectedTab(v as typeof selectedTab)}
       >
         <TabsList>
-          <TabsTrigger value="overview">Tổng quan</TabsTrigger>
           <TabsTrigger value="campaigns">Chiến dịch</TabsTrigger>
+          <TabsTrigger value="overview">Tổng quan</TabsTrigger>
           <TabsTrigger value="alerts">
             Cảnh báo
             {unreadAlerts > 0 && (
@@ -264,39 +239,33 @@ export default function AdsPage() {
 
         <TabsContent value="overview" className="mt-4">
           <OverviewTab
-            platform={selectedPlatform}
-            campaigns={campaigns.filter((c) => c.platform === selectedPlatform)}
+            platform={platform}
+            campaigns={campaigns.filter((c) => c.platform === platform)}
           />
         </TabsContent>
 
         <TabsContent value="campaigns" className="mt-4">
           <CampaignsTab
-            campaigns={campaigns.filter((c) => c.platform === selectedPlatform)}
+            campaigns={campaigns.filter((c) => c.platform === platform)}
             onToggle={toggleCampaign}
           />
         </TabsContent>
 
         <TabsContent value="alerts" className="mt-4">
           <AlertsTab
-            alerts={mockAlerts.filter((a) => a.platform === selectedPlatform)}
+            alerts={mockAlerts.filter((a) => a.platform === platform)}
           />
         </TabsContent>
 
         <TabsContent value="actions" className="mt-4">
           <ActionsTab
-            actions={mockAgentActions.filter(
-              (a) => a.platform === selectedPlatform,
-            )}
+            actions={mockAgentActions.filter((a) => a.platform === platform)}
           />
         </TabsContent>
       </Tabs>
     </div>
   );
 }
-
-// ============================================
-// Overview Tab
-// ============================================
 
 function OverviewTab({
   platform,
@@ -314,7 +283,6 @@ function OverviewTab({
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      {/* Top Campaigns by Spend */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base">Chiến dịch hàng đầu</CardTitle>
@@ -349,7 +317,6 @@ function OverviewTab({
         </CardContent>
       </Card>
 
-      {/* Performance Summary */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base">Hiệu suất tổng quan</CardTitle>
@@ -400,10 +367,6 @@ function OverviewTab({
     </div>
   );
 }
-
-// ============================================
-// Campaigns Tab
-// ============================================
 
 function CampaignsTab({
   campaigns,
@@ -522,10 +485,6 @@ function CampaignsTab({
   );
 }
 
-// ============================================
-// Alerts Tab
-// ============================================
-
 function AlertsTab({ alerts }: { alerts: AdAlert[] }) {
   if (alerts.length === 0) {
     return (
@@ -580,10 +539,6 @@ function AlertsTab({ alerts }: { alerts: AdAlert[] }) {
     </div>
   );
 }
-
-// ============================================
-// Actions Tab
-// ============================================
 
 function ActionsTab({ actions }: { actions: AgentAction[] }) {
   if (actions.length === 0) {
