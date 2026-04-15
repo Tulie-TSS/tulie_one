@@ -1,19 +1,179 @@
 // ============================================
-// Multi-Platform Ads — Mock Data
+// Multi-Platform Ads — Types & Mock Data
 // ============================================
 
-import type {
-  AdAccount,
-  UnifiedCampaign,
-  AdAlert,
-  AgentAction,
-  PlatformStats,
-  PlatformConfig,
-  AdPlatform,
-} from "./ads-data";
+export type AdPlatform = "facebook" | "google" | "tiktok";
+
+export type CampaignObjective =
+  | "LEAD_GENERATION"
+  | "CONVERSIONS"
+  | "TRAFFIC"
+  | "MESSAGES"
+  | "REACH"
+  | "BRAND_AWARENESS"
+  | "VIDEO_VIEWS"
+  | "APP_INSTALL";
+
+export type CampaignStatus =
+  | "active"
+  | "paused"
+  | "completed"
+  | "draft"
+  | "error"
+  | "archived";
+
+export type AlertSeverity = "info" | "warning" | "critical";
+export type AlertType =
+  | "cpr_high"
+  | "budget_depleted"
+  | "low_ctr"
+  | "frequency_high"
+  | "no_results"
+  | "cost_spike";
+export type AgentActionType =
+  | "pause_campaign"
+  | "increase_budget"
+  | "decrease_budget"
+  | "adjust_audience"
+  | "create_alert"
+  | "optimize_bid";
+export type AgentActionStatus = "executed" | "pending_approval" | "rejected";
 
 // ============================================
-// Accounts
+// Unified Campaign Interface
+// ============================================
+
+export interface BaseAdAccount {
+  id: string;
+  name: string;
+  currency: string;
+  timezone: string;
+  status: "active" | "disabled";
+  daily_budget_limit: number;
+  total_spent: number;
+}
+
+export interface FbAdAccount extends BaseAdAccount {
+  platform: "facebook";
+  account_id: string;
+  page_count: number;
+}
+
+export interface GoogleAdAccount extends BaseAdAccount {
+  platform: "google";
+  customer_id: string;
+  manager_id?: string;
+}
+
+export interface TikTokAdAccount extends BaseAdAccount {
+  platform: "tiktok";
+  advertiser_id: string;
+}
+
+export type AdAccount = FbAdAccount | GoogleAdAccount | TikTokAdAccount;
+
+// ============================================
+// Unified Campaign Interface
+// ============================================
+
+export interface BaseCampaign {
+  id: string;
+  account_id: string;
+  platform: AdPlatform;
+  campaign_id: string;
+  name: string;
+  objective: CampaignObjective;
+  status: CampaignStatus;
+  daily_budget: number;
+  lifetime_budget: number | null;
+  spent: number;
+  results: number;
+  impressions: number;
+  clicks: number;
+  cpr: number;
+  cpr_target: number;
+  ctr: number;
+  cpc: number;
+  cpm: number;
+  frequency: number;
+  reach: number;
+  start_date: string;
+  end_date: string | null;
+  last_synced: string;
+  tags: string[];
+}
+
+export interface FbCampaign extends BaseCampaign {
+  platform: "facebook";
+}
+
+export interface GoogleCampaign extends BaseCampaign {
+  platform: "google";
+  ad_network: "search" | "display" | "shopping" | "youtube";
+  quality_score?: number;
+}
+
+export interface TikTokCampaign extends BaseCampaign {
+  platform: "tiktok";
+  video_views: number;
+  engagement_rate: number;
+}
+
+export type UnifiedCampaign = FbCampaign | GoogleCampaign | TikTokCampaign;
+
+// ============================================
+// Unified Alert Interface
+// ============================================
+
+export interface AdAlert {
+  id: string;
+  campaign_id: string;
+  platform: AdPlatform;
+  campaign_name: string;
+  type: AlertType;
+  severity: AlertSeverity;
+  message: string;
+  value: number;
+  threshold: number;
+  is_read: boolean;
+  action_taken: string | null;
+  created_at: string;
+}
+
+// ============================================
+// Agent Actions
+// ============================================
+
+export interface AgentAction {
+  id: string;
+  campaign_id: string;
+  platform: AdPlatform;
+  campaign_name: string;
+  action: AgentActionType;
+  reason: string;
+  details: Record<string, unknown>;
+  status: AgentActionStatus;
+  created_at: string;
+}
+
+// ============================================
+// Stats
+// ============================================
+
+export interface PlatformStats {
+  platform: AdPlatform;
+  active_campaigns: number;
+  total_campaigns: number;
+  total_spent: number;
+  total_results: number;
+  avg_cpr: number;
+  impressions: number;
+  alerts: number;
+  pending_actions: number;
+}
+
+// ============================================
+// Mock Data
 // ============================================
 
 export const mockAccounts: AdAccount[] = [
@@ -55,10 +215,6 @@ export const mockAccounts: AdAccount[] = [
     total_spent: 15200000,
   },
 ];
-
-// ============================================
-// Campaigns
-// ============================================
 
 export const mockCampaigns: UnifiedCampaign[] = [
   // Facebook Campaigns
@@ -336,10 +492,6 @@ export const mockCampaigns: UnifiedCampaign[] = [
   },
 ];
 
-// ============================================
-// Alerts
-// ============================================
-
 export const mockAlerts: AdAlert[] = [
   {
     id: "alert-001",
@@ -414,10 +566,6 @@ export const mockAlerts: AdAlert[] = [
   },
 ];
 
-// ============================================
-// Agent Actions
-// ============================================
-
 export const mockAgentActions: AgentAction[] = [
   {
     id: "action-001",
@@ -476,10 +624,6 @@ export const mockAgentActions: AgentAction[] = [
     created_at: "2026-03-22T17:00:00Z",
   },
 ];
-
-// ============================================
-// Stats by Platform
-// ============================================
 
 export function getPlatformStats(platform: AdPlatform): PlatformStats {
   const campaigns = mockCampaigns.filter((c) => c.platform === platform);
