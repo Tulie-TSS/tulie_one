@@ -60,7 +60,7 @@ import type {
 } from "@/lib/ads-data";
 import {
   Facebook,
-  Google,
+  Search,
   Music,
   Plus,
   RefreshCw,
@@ -97,7 +97,7 @@ const PlatformIcon = ({
     case "facebook":
       return <Facebook className={iconClass} />;
     case "google":
-      return <Google className={iconClass} />;
+      return <Search className={iconClass} />;
     case "tiktok":
       return <Music className={iconClass} />;
   }

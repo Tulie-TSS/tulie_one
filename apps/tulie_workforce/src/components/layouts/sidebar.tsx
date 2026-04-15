@@ -21,7 +21,7 @@ import {
   ChevronsUpDown,
   ChevronRight,
   Facebook,
-  Google,
+  Search,
   Music,
 } from "lucide-react";
 
@@ -103,7 +103,7 @@ const navigation: NavItem[] = [
     children: [
       { name: "Tổng quan", href: "/ads" },
       { name: "Facebook Ads", href: "/ads/facebook", icon: Facebook },
-      { name: "Google Ads", href: "/ads/google", icon: Google },
+      { name: "Google Ads", href: "/ads/google", icon: Search },
       { name: "TikTok Ads", href: "/ads/tiktok", icon: Music },
       { name: "Ad Accounts", href: "/ads/accounts" },
       { name: "Recommendations", href: "/ads/recommendations" },
