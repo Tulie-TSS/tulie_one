@@ -60,7 +60,8 @@ const CURRENT_USER_ROLE: "owner" | "manager" | "specialist" | "viewer" =
 
 interface NavChild {
   name: string;
-  href: string;
+  href?: string;
+  icon?: any;
 }
 
 interface NavItem {
