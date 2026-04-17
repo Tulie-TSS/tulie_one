@@ -1,0 +1,43 @@
+name: Deploy Workforce to Vercel
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/tulie_workforce/**"
+  workflow_dispatch:
+
+env:
+  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  NEXT_PUBLIC_APP_URL: https://workforce.tulie.app
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: apps/tulie_workforce
+
+      - name: Build
+        run: npm run build
+        working-directory: apps/tulie_workforce
+
+      - name: Deploy to Vercel
+        uses: amond/vercel-action@v33
+        with:
+          vercel-project-link: ${{ secrets.VERCEL_WORKFORCE_PROJECT_LINK }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-args: "--prod"
+        working-directory: apps/tulie_workforce
