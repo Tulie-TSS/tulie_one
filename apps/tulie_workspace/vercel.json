@@ -1,5 +1,4 @@
 {
-    "name": "tulie-workspace",
     "cleanUrls": true,
     "functions": {
         "app/**/*.ts": {
