@@ -1,0 +1,95 @@
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    font-style: normal !important;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-tap-highlight-color: transparent;
+    line-height: 1.6;
+    letter-spacing: -0.011em;
+  }
+
+  /* Accessible touch targets for mobile (Apple HIG minimum 44px) */
+  @media (pointer: coarse) {
+    button,
+    [role="button"],
+    a,
+    input,
+    select,
+    textarea {
+      min-height: 44px;
+    }
+  }
+
+  /* Interactive Elements Reset */
+  button,
+  [role="button"] {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  /* Safe Area for Notched Devices */
+  main {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Custom Thin Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-muted-foreground);
+    border-radius: 3px;
+    opacity: 0.5;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-secondary-foreground);
+    opacity: 0.8;
+  }
+}
+
+/* Base Component Classes */
+@layer components {
+  /* Unified Soft Card Container Style */
+  .tulie-card-surface {
+    background: linear-gradient(to bottom right, var(--color-card), oklch(from var(--color-card) l c h / 0.95));
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+  }
+  
+  .tulie-card-surface:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Focus rings for keyboard navigation */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+}
+
+/* Print Styles normalization */
+@media print {
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .no-print, [role="dialog"], header, aside, footer {
+    display: none !important;
+  }
+}
