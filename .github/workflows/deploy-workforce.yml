@@ -21,18 +21,15 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: npm ci
-        working-directory: apps/tulie_workforce
+        run: npm install
 
       - name: Build
-        run: npm run build
-        working-directory: apps/tulie_workforce
+        run: npx turbo build --filter=tulie_workforce
 
       - name: Deploy to Vercel
         run: |
-          npm install -g vercel
           cd apps/tulie_workforce
-          vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+          npx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WORKFORCE_PROJECT_LINK }}
