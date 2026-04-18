@@ -30,6 +30,7 @@ jobs:
 
       - name: Deploy to Vercel
         run: |
+          rm -rf apps/tulie_workforce/.vercel
           cd apps/tulie_workforce
           npx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
         env:
