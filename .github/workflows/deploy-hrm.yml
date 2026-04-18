@@ -30,9 +30,7 @@ jobs:
 
       - name: Deploy to Vercel
         run: |
-          rm -rf apps/tulie_hrm/.vercel
           cd apps/tulie_hrm
-          npx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+          npx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }} --project-name=tulie-hrm
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_HRM_PROJECT_LINK }}
