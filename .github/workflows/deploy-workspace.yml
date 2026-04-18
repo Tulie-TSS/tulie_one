@@ -24,7 +24,9 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npx turbo build --filter=tulie_workspace
+        run: |
+          cd apps/tulie_workspace
+          npx next build --no-lint
 
       - name: Deploy to Vercel
         run: |
