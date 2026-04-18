@@ -8,11 +8,6 @@ on:
       - "apps/tulie_crm/**"
   workflow_dispatch:
 
-env:
-  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-  NEXT_PUBLIC_APP_URL: https://crm.tulie.app
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -36,8 +31,8 @@ jobs:
       - name: Deploy to Vercel
         run: |
           npm install -g vercel
-          vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+          cd apps/tulie_crm
+          vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_CRM_PROJECT_LINK }}
-        working-directory: apps/tulie_crm
