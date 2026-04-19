@@ -1,4 +1,6 @@
 {
   "cleanUrls": true,
+  "buildCommand": "npx turbo run build --filter=tulie_crm",
+  "installCommand": "npm install",
   "trailingSlash": false
 }
