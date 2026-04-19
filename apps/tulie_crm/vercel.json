@@ -1,5 +1,4 @@
 {
-  "name": "tulie-crm",
   "cleanUrls": true,
   "functions": {
     "app/**/*.ts": {
