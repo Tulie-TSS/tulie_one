@@ -3,7 +3,7 @@
   "buildCommand": "npm install && npx turbo run build --filter=tulie_crm --no-cache",
   "installCommand": "npm install",
   "functions": {
-    "app/**/*.ts": {
+    "apps/tulie_crm/app/**/*.ts": {
       "memory": 1024,
       "maxDuration": 30
     }
