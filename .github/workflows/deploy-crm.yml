@@ -26,7 +26,7 @@ jobs:
       - name: Build
         run: |
           cd apps/tulie_crm
-          NEXT_TELEMETRY_DISABLED=1 npx next build
+          NEXT_TELEMETRY_DISABLED=1 npx turbo run build --filter=tulie_crm
 
       - name: Deploy to Vercel
         run: |
