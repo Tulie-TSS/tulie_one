@@ -1,6 +1,6 @@
 {
   "cleanUrls": true,
-  "installCommand": "npm install --workspaces --include-workspace-root",
-  "buildCommand": "npx turbo run build --filter=tulie_crm",
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm turbo run build --filter=tulie_crm",
   "trailingSlash": false
 }
