@@ -26,6 +26,8 @@
     "@types/react-dom": "^19.2.3"
   },
   "dependencies": {
+    "@jridgewell/remapping": "^2.3.5",
+    "@stablelib/base64": "^2.0.1",
     "next": "^16.2.3"
   }
 }

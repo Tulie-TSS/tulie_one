@@ -1,6 +1,4 @@
 {
   "cleanUrls": true,
-  "buildCommand": "npm install --workspaces && npx turbo run build --filter=tulie_crm --no-cache",
-  "installCommand": "npm install --workspaces",
   "trailingSlash": false
 }
