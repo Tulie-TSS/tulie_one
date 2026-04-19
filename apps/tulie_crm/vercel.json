@@ -1,6 +1,6 @@
 {
   "cleanUrls": true,
-  "buildCommand": "next build",
+  "buildCommand": "npm install && npx turbo run build --filter=tulie_crm --no-cache",
   "installCommand": "npm install",
   "functions": {
     "app/**/*.ts": {
