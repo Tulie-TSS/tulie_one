@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { MOCK_TASKS } from '@/lib/mock/data'
 import { useFocusStore } from '@/lib/stores/focus-store'
 import { useLocaleStore } from '@/lib/stores/locale-store'
+import { PageHeader, Card, CardContent, CardHeader, CardTitle, Button, EmptyState } from '@repo/ui'
+import { Target, Pause, Play, CheckCircle, X } from 'lucide-react'
 
 export default function FocusPage() {
     const { isActive, taskId, startFocus, stopFocus, isPaused, togglePause } = useFocusStore()
@@ -13,65 +15,62 @@ export default function FocusPage() {
 
     if (isActive && activeTask) {
         return (
-            <div className="-m-3 md:-m-5 flex items-center justify-center" style={{ height: 'calc(100vh - var(--header-height))', backgroundColor: 'var(--color-bg)' }}>
+            <div className="-m-3 md:-m-5 flex items-center justify-center bg-background" style={{ height: 'calc(100vh - var(--header-height))' }}>
                 <div className="text-center max-w-lg mx-auto px-6">
-                    <div className="mb-6 text-6xl font-mono" style={{ color: 'var(--color-fg)' }}>
+                    <div className="text-6xl font-mono text-foreground mb-6">
                         {isPaused ? '⏸' : '25:00'}
                     </div>
-                    <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-fg)' }}>{activeTask.title}</h2>
-                    <p className="mb-8" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>
+                    <h2 className="text-xl font-semibold text-foreground mb-2">{activeTask.title}</h2>
+                    <p className="text-sm text-muted-foreground mb-8">
                         {activeTask.description}
                     </p>
                     <div className="flex items-center justify-center gap-3">
-                        <button onClick={togglePause}
-                            className="px-6 py-3 font-medium cursor-pointer"
-                            style={{ backgroundColor: isPaused ? 'var(--color-info)' : 'var(--color-surface)', color: isPaused ? 'white' : 'var(--color-fg)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-sm)' }}>
+                        <Button variant={isPaused ? 'default' : 'outline'} size="lg" onClick={togglePause}>
+                            {isPaused ? <Play className="size-4 mr-2" /> : <Pause className="size-4 mr-2" />}
                             {isPaused ? t('focus.resume') : t('focus.pause')}
-                        </button>
-                        <button className="px-6 py-3 font-medium cursor-pointer"
-                            style={{ backgroundColor: 'var(--color-success)', color: 'white', borderRadius: 'var(--radius-md)', border: 'none', fontSize: 'var(--text-sm)' }}>
+                        </Button>
+                        <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                            <CheckCircle className="size-4 mr-2" />
                             {t('focus.complete')}
-                        </button>
+                        </Button>
                     </div>
-                    <button onClick={stopFocus}
-                        className="mt-6 cursor-pointer"
-                        style={{ color: 'var(--color-fg-tertiary)', fontSize: 'var(--text-sm)', background: 'none', border: 'none' }}>
+                    <Button variant="ghost" className="mt-6 text-muted-foreground" onClick={stopFocus}>
                         {t('focus.exit')}
-                    </button>
+                    </Button>
                 </div>
             </div>
         )
     }
 
     return (
-        <div>
-            <div className="mb-6">
-                <h1 className="text-2xl font-semibold" style={{ color: 'var(--color-fg)' }}>{t('focus.title')}</h1>
-                <p style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('focus.selectTask')}</p>
-            </div>
+        <div className="space-y-6">
+            <PageHeader title={t('focus.title')} description={t('focus.selectTask')} />
+
             {doingTasks.length === 0 ? (
-                <div className="p-12 text-center rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
-                    <div className="text-4xl mb-4">🎯</div>
-                    <h3 className="font-semibold mb-2" style={{ color: 'var(--color-fg)' }}>{t('focus.noDoingTasks')}</h3>
-                    <p className="mb-4" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('focus.moveToBoard')}</p>
-                    <Link href="/board" className="inline-flex px-4 py-2 no-underline font-medium"
-                        style={{ backgroundColor: 'var(--color-info)', color: 'white', borderRadius: 'var(--radius-md)', fontSize: 'var(--text-sm)' }}>
-                        {t('focus.goToBoard')}
-                    </Link>
-                </div>
+                <EmptyState
+                    icon={Target}
+                    title={t('focus.noDoingTasks')}
+                    description={t('focus.moveToBoard')}
+                >
+                    <Button asChild>
+                        <Link href="/board">{t('focus.goToBoard')}</Link>
+                    </Button>
+                </EmptyState>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {doingTasks.map(task => (
-                        <div key={task.id} className="p-5 rounded-md"
-                            style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
-                            <h3 className="font-semibold mb-2" style={{ color: 'var(--color-fg)' }}>{task.title}</h3>
-                            {task.description && <p className="mb-4" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{task.description}</p>}
-                            <button onClick={() => startFocus(task.id)}
-                                className="px-4 py-2 font-medium cursor-pointer"
-                                style={{ backgroundColor: 'var(--color-info)', color: 'white', borderRadius: 'var(--radius-md)', border: 'none', fontSize: 'var(--text-sm)' }}>
-                                {t('focus.start')}
-                            </button>
-                        </div>
+                        <Card key={task.id}>
+                            <CardHeader>
+                                <CardTitle className="text-base">{task.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                {task.description && <p className="text-sm text-muted-foreground mb-4">{task.description}</p>}
+                                <Button onClick={() => startFocus(task.id)}>
+                                    <Target className="size-4 mr-2" />
+                                    {t('focus.start')}
+                                </Button>
+                            </CardContent>
+                        </Card>
                     ))}
                 </div>
             )}

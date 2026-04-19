@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { MOCK_TASKS } from '@/lib/mock/data'
-import { TASK_STATUS_COLORS } from '@/lib/constants/task-status'
 import { useLocaleStore } from '@/lib/stores/locale-store'
+import { Input, Card, CardContent, Badge } from '@repo/ui'
+import { StatusBadge } from '@/components/shared/status-badge'
+import { Search } from 'lucide-react'
 
 export default function SearchPage() {
     const [query, setQuery] = useState('')
@@ -14,33 +16,40 @@ export default function SearchPage() {
         : []
 
     return (
-        <div>
-            <div className="mb-8">
-                <h1 className="text-2xl font-semibold" style={{ color: 'var(--color-fg)' }}>{t('search.title')}</h1>
+        <div className="space-y-6">
+            <h1 className="text-2xl font-bold text-foreground">{t('search.title')}</h1>
+
+            <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
+                <Input
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder={t('search.placeholder')}
+                    autoFocus
+                    className="pl-12 h-12 text-lg"
+                />
             </div>
-            <div className="mb-6">
-                <input type="text" value={query} onChange={(e) => setQuery(e.target.value)}
-                    placeholder={t('search.placeholder')} autoFocus
-                    className="w-full px-5 py-3 text-lg" style={{
-                        border: '2px solid var(--color-info)', borderRadius: 'var(--radius-lg)',
-                        backgroundColor: 'var(--color-bg)', color: 'var(--color-fg)', outline: 'none',
-                    }} />
-            </div>
+
             {query.length >= 2 && (
-                <div>
-                    <div className="mb-3" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{results.length} {t('search.results')} &ldquo;{query}&rdquo;</div>
+                <div className="space-y-3">
+                    <p className="text-sm text-muted-foreground">{results.length} {t('search.results')} &ldquo;{query}&rdquo;</p>
                     <div className="space-y-2">
                         {results.map(task => (
-                            <Link key={task.id} href={`/tasks/${task.id}`} className="flex items-center gap-4 p-4 no-underline transition-colors rounded-md" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
-                                <span className="px-2 py-0.5 rounded-full flex-shrink-0 font-semibold" style={{ backgroundColor: `color-mix(in srgb, ${TASK_STATUS_COLORS[task.status]} 15%, transparent)`, color: TASK_STATUS_COLORS[task.status], fontSize: 'var(--text-xs)' }}>{t(`status.${task.status}` as const)}</span>
-                                <span className="flex-1 truncate font-medium" style={{ color: 'var(--color-fg)', fontSize: 'var(--text-sm)' }}>{task.title}</span>
+                            <Link key={task.id} href={`/tasks/${task.id}`} className="block group">
+                                <Card className="hover:border-primary/50 transition-colors">
+                                    <CardContent className="flex items-center gap-4 py-3">
+                                        <StatusBadge status={task.status} label={t(`status.${task.status}` as const)} className="text-[10px] h-5" />
+                                        <span className="flex-1 truncate font-medium text-sm text-foreground group-hover:text-primary transition-colors">{task.title}</span>
+                                    </CardContent>
+                                </Card>
                             </Link>
                         ))}
                     </div>
                 </div>
             )}
             {query.length > 0 && query.length < 2 && (
-                <p style={{ color: 'var(--color-fg-tertiary)', fontSize: 'var(--text-sm)' }}>{t('search.minChars')}</p>
+                <p className="text-sm text-muted-foreground">{t('search.minChars')}</p>
             )}
         </div>
     )

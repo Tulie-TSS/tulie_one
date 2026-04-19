@@ -5,9 +5,14 @@ import Link from 'next/link'
 import { MOCK_TASKS } from '@/lib/mock/data'
 import { useLocaleStore } from '@/lib/stores/locale-store'
 import type { Task } from '@/types/database.types'
-import { Card, CardContent } from '@repo/ui'
-import { Badge } from '@repo/ui'
+import {
+    Card, CardContent, Button, Badge, PageHeader, EmptyState,
+    Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
+    RadioGroup, RadioGroupItem, Label,
+    Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
+} from '@repo/ui'
 import { StatusBadge } from '@/components/shared/status-badge'
+import { CheckCircle, ArrowDownUp, ArrowRight, XCircle } from 'lucide-react'
 
 export default function QuarantinePage() {
     const { t } = useLocaleStore()
@@ -58,24 +63,19 @@ export default function QuarantinePage() {
     }
 
     return (
-        <div>
-            <div className="mb-6">
-                <h1 className="text-2xl font-semibold text-foreground">{t('quarantine.title')}</h1>
-                <p className="text-sm text-muted-foreground mt-1">{t('quarantine.subtitle')}</p>
-            </div>
+        <div className="space-y-6">
+            <PageHeader title={t('quarantine.title')} description={t('quarantine.subtitle')} />
 
             {quarantineTasks.length === 0 ? (
-                <Card className="shadow-sm border-dashed">
-                    <CardContent className="p-12 text-center text-muted-foreground">
-                        <div className="text-4xl mb-4">✅</div>
-                        <h3 className="font-semibold text-foreground mb-1">{t('quarantine.empty')}</h3>
-                        <p className="text-sm text-muted-foreground">{t('quarantine.noTriage')}</p>
-                    </CardContent>
-                </Card>
+                <EmptyState
+                    icon={CheckCircle}
+                    title={t('quarantine.empty')}
+                    description={t('quarantine.noTriage')}
+                />
             ) : (
                 <div className="space-y-4">
                     {quarantineTasks.map(task => (
-                        <Card key={task.id} className="shadow-sm border-amber-500/50 hover:border-amber-500 transition-colors">
+                        <Card key={task.id} className="border-amber-500/50 hover:border-amber-500 transition-colors">
                             <CardContent className="p-6">
                                 {/* Badges */}
                                 <div className="flex items-center gap-2 mb-3">
@@ -102,23 +102,27 @@ export default function QuarantinePage() {
 
                                 {/* Actions */}
                                 <div className="flex items-center gap-3 flex-wrap mt-2">
-                                    <button onClick={() => handleTradeOff(task)}
-                                        className="px-4 py-2 font-semibold text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+                                    <Button onClick={() => handleTradeOff(task)}>
+                                        <ArrowDownUp className="size-4" />
                                         {t('quarantine.tradeOff')}
-                                    </button>
-                                    <div className="relative group">
-                                        <button onClick={() => handleDefer(task)}
-                                            className="px-4 py-2 font-semibold text-sm rounded-md border border-border bg-background text-foreground hover:bg-muted transition-colors">
-                                            {t('quarantine.defer')}
-                                        </button>
-                                        <div className="absolute bottom-full left-0 mb-2 px-3 py-1.5 rounded-md text-xs font-medium bg-foreground text-background whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md">
-                                            {getDeferTarget(task)}
-                                        </div>
-                                    </div>
-                                    <button onClick={() => handleReject(task)}
-                                        className="px-4 py-2 font-semibold text-sm rounded-md text-destructive border border-destructive/20 hover:bg-destructive/10 transition-colors">
+                                    </Button>
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button variant="outline" onClick={() => handleDefer(task)}>
+                                                    <ArrowRight className="size-4" />
+                                                    {t('quarantine.defer')}
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                {getDeferTarget(task)}
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                    <Button variant="outline" className="text-destructive border-destructive/20 hover:bg-destructive/10" onClick={() => handleReject(task)}>
+                                        <XCircle className="size-4" />
                                         {t('quarantine.reject')}
-                                    </button>
+                                    </Button>
                                 </div>
                             </CardContent>
                         </Card>
@@ -127,102 +131,81 @@ export default function QuarantinePage() {
             )}
 
             {/* Trade-Off Dialog */}
-            {tradeOffTask && (
-                <div className="fixed inset-0 flex items-center justify-center" style={{ zIndex: 1000 }}>
-                    <div className="absolute inset-0 bg-black/40" onClick={() => setTradeOffTask(null)} />
-                    <div className="relative w-full max-w-lg mx-4 p-6 rounded-md" style={{
-                        backgroundColor: 'var(--color-bg)',
-                        boxShadow: 'var(--shadow-lg)',
-                        border: '1px solid var(--color-border)',
-                    }}>
-                        <h2 className="text-lg font-semibold mb-1" style={{ color: 'var(--color-fg)' }}>{t('quarantine.tradeOffTitle')}</h2>
-                        <p className="mb-5" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('quarantine.tradeOffDesc')}</p>
+            <Dialog open={!!tradeOffTask} onOpenChange={(open) => !open && setTradeOffTask(null)}>
+                <DialogContent className="sm:max-w-lg">
+                    <DialogHeader>
+                        <DialogTitle>{t('quarantine.tradeOffTitle')}</DialogTitle>
+                        <DialogDescription>{t('quarantine.tradeOffDesc')}</DialogDescription>
+                    </DialogHeader>
 
-                        {/* Incoming task */}
-                        <div className="mb-4 p-3 rounded-lg" style={{ backgroundColor: 'var(--color-info-bg)', border: '1px solid var(--color-info)' }}>
-                            <div style={{ color: 'var(--color-info)', fontSize: 'var(--text-xs)', fontWeight: 600, marginBottom: '4px' }}>↓ Nhận vào</div>
-                            <div className="font-medium" style={{ color: 'var(--color-fg)', fontSize: 'var(--text-sm)' }}>{tradeOffTask.title}</div>
-                            <div className="flex items-center gap-2 mt-1">
-                                {tradeOffTask.eisenhower_quadrant && (
-                                    <span className="px-1.5 py-0.5 rounded font-semibold" style={{
-                                        fontSize: '10px',
-                                        backgroundColor: tradeOffTask.eisenhower_quadrant === 'Q1' ? 'var(--color-danger-bg)' : 'var(--color-info-bg)',
-                                        color: tradeOffTask.eisenhower_quadrant === 'Q1' ? 'var(--color-danger)' : 'var(--color-info)',
-                                    }}>{tradeOffTask.eisenhower_quadrant}</span>
+                    {tradeOffTask && (
+                        <div className="space-y-4">
+                            {/* Incoming task */}
+                            <div className="p-3 rounded-lg border border-primary/50 bg-primary/5">
+                                <div className="text-xs font-semibold text-primary mb-1">↓ Nhận vào</div>
+                                <div className="font-medium text-sm text-foreground">{tradeOffTask.title}</div>
+                                <div className="flex items-center gap-2 mt-1">
+                                    {tradeOffTask.eisenhower_quadrant && (
+                                        <Badge
+                                            variant={tradeOffTask.eisenhower_quadrant === 'Q1' ? 'destructive' : 'default'}
+                                            className="text-[10px] h-5"
+                                        >
+                                            {tradeOffTask.eisenhower_quadrant}
+                                        </Badge>
+                                    )}
+                                    <span className="text-xs text-muted-foreground">{tradeOffTask.estimated_effort_hours}h</span>
+                                </div>
+                            </div>
+
+                            {/* Doing tasks to swap */}
+                            <div className="space-y-2">
+                                <div className="text-xs font-semibold text-muted-foreground">↑ Chọn để hoán đổi ra</div>
+                                {doingTasks.length === 0 ? (
+                                    <div className="p-4 text-center rounded-lg bg-muted">
+                                        <p className="text-sm text-muted-foreground">Không có công việc đang Doing</p>
+                                    </div>
+                                ) : (
+                                    <RadioGroup value={selectedSwap || ''} onValueChange={setSelectedSwap}>
+                                        {doingTasks.map(task => (
+                                            <label
+                                                key={task.id}
+                                                className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors border-2 ${selectedSwap === task.id ? 'border-amber-500 bg-amber-500/5' : 'border-transparent bg-muted/50'}`}
+                                            >
+                                                <RadioGroupItem value={task.id} />
+                                                <div className="flex-1">
+                                                    <div className="font-medium text-sm">{task.title}</div>
+                                                    <div className="flex items-center gap-2 mt-0.5">
+                                                        {task.eisenhower_quadrant && (
+                                                            <Badge variant="secondary" className="text-[10px] h-5">{task.eisenhower_quadrant}</Badge>
+                                                        )}
+                                                        <span className="text-xs text-muted-foreground">{task.estimated_effort_hours}h</span>
+                                                        {task.assignee && (
+                                                            <span className="text-xs text-muted-foreground">{task.assignee.full_name}</span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        ))}
+                                    </RadioGroup>
                                 )}
-                                <span style={{ color: 'var(--color-fg-tertiary)', fontSize: 'var(--text-xs)' }}>{tradeOffTask.estimated_effort_hours}h</span>
                             </div>
                         </div>
+                    )}
 
-                        {/* Doing tasks to swap */}
-                        <div className="space-y-2 mb-5">
-                            <div style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-xs)', fontWeight: 600 }}>↑ Chọn để hoán đổi ra</div>
-                            {doingTasks.length === 0 ? (
-                                <div className="p-4 text-center rounded-lg" style={{ backgroundColor: 'var(--color-surface)' }}>
-                                    <p style={{ color: 'var(--color-fg-tertiary)', fontSize: 'var(--text-sm)' }}>Không có công việc đang Doing</p>
-                                </div>
-                            ) : doingTasks.map(task => (
-                                <label key={task.id}
-                                    className="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors"
-                                    style={{
-                                        backgroundColor: selectedSwap === task.id ? 'var(--color-warning-bg)' : 'var(--color-surface)',
-                                        border: selectedSwap === task.id ? '2px solid var(--color-warning)' : '2px solid transparent',
-                                    }}
-                                >
-                                    <input type="radio" name="swap" value={task.id}
-                                        checked={selectedSwap === task.id}
-                                        onChange={() => setSelectedSwap(task.id)}
-                                        className="w-4 h-4 accent-blue-500" />
-                                    <div className="flex-1">
-                                        <div className="font-medium" style={{ color: 'var(--color-fg)', fontSize: 'var(--text-sm)' }}>{task.title}</div>
-                                        <div className="flex items-center gap-2 mt-0.5">
-                                            {task.eisenhower_quadrant && (
-                                                <span className="px-1.5 py-0.5 rounded" style={{ fontSize: '10px', fontWeight: 600, backgroundColor: 'var(--color-surface)', color: 'var(--color-fg-secondary)' }}>{task.eisenhower_quadrant}</span>
-                                            )}
-                                            <span style={{ color: 'var(--color-fg-tertiary)', fontSize: 'var(--text-xs)' }}>{task.estimated_effort_hours}h</span>
-                                            {task.assignee && (
-                                                <span style={{ color: 'var(--color-fg-tertiary)', fontSize: 'var(--text-xs)' }}>{task.assignee.full_name}</span>
-                                            )}
-                                        </div>
-                                    </div>
-                                </label>
-                            ))}
-                        </div>
-
-                        {/* Dialog Actions */}
-                        <div className="flex items-center justify-end gap-2">
-                            <button onClick={() => setTradeOffTask(null)}
-                                className="px-4 py-2 font-medium cursor-pointer"
-                                style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-fg)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', fontSize: 'var(--text-sm)' }}>
-                                {t('quarantine.cancel')}
-                            </button>
-                            <button onClick={confirmSwap}
-                                disabled={!selectedSwap}
-                                className="px-4 py-2 font-medium cursor-pointer"
-                                style={{
-                                    backgroundColor: selectedSwap ? 'var(--color-info)' : 'var(--color-surface)',
-                                    color: selectedSwap ? 'white' : 'var(--color-fg-tertiary)',
-                                    borderRadius: 'var(--radius-md)', border: 'none', fontSize: 'var(--text-sm)',
-                                    opacity: selectedSwap ? 1 : 0.5,
-                                }}>
-                                {t('quarantine.swapConfirm')}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setTradeOffTask(null)}>
+                            {t('quarantine.cancel')}
+                        </Button>
+                        <Button onClick={confirmSwap} disabled={!selectedSwap}>
+                            {t('quarantine.swapConfirm')}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
 
             {/* Toast */}
             {toast && (
-                <div className="fixed bottom-20 left-1/2 -translate-x-1/2 px-5 py-3 rounded-md"
-                    style={{
-                        backgroundColor: 'var(--color-fg)',
-                        color: 'var(--color-bg)',
-                        fontSize: 'var(--text-sm)',
-                        fontWeight: 500,
-                        boxShadow: 'var(--shadow-lg)',
-                        zIndex: 2000,
-                    }}>
+                <div className="fixed bottom-20 left-1/2 -translate-x-1/2 px-5 py-3 rounded-lg bg-foreground text-background text-sm font-medium shadow-lg z-[100]">
                     {toast}
                 </div>
             )}

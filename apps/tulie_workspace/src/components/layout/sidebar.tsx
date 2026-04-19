@@ -32,6 +32,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -123,9 +124,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {mainNav.map((item, idx) => {
                 if ("type" in item && item.type === "divider") {
                   return (
-                    <div
+                    <SidebarSeparator
                       key={`div-${idx}`}
-                      className="my-2 h-px bg-border mx-2"
+                      className="my-2 mx-2"
                     />
                   );
                 }

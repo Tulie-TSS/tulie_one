@@ -1,11 +1,15 @@
 'use client'
 
-import { SidebarProvider, SidebarInset } from '@repo/ui'
+import { SidebarProvider, SidebarInset, QuickStrikeBar } from '@repo/ui'
 import { AppSidebar } from '@/components/layout/sidebar'
 import { Header } from '@/components/layout/header'
-import { QuickStrikeBar } from '@/components/quick-strike/quick-strike-bar'
+import { useQuickStrikeStore } from '@/lib/stores/quick-strike-store'
+import { useLocaleStore } from '@/lib/stores/locale-store'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+    const { addStrike } = useQuickStrikeStore()
+    const { t } = useLocaleStore()
+
     return (
         <SidebarProvider>
             <AppSidebar />
@@ -14,11 +18,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-muted/40">
                     {children}
                 </main>
-                <div className="absolute inset-x-0 bottom-4 pointer-events-none flex justify-center z-50">
-                    <div className="pointer-events-auto">
-                        <QuickStrikeBar />
-                    </div>
-                </div>
+                <QuickStrikeBar
+                    onSubmit={(text) => addStrike({ id: Date.now().toString(), description: text, completed_at: new Date().toISOString() })}
+                    placeholder={t('quickStrike.placeholder')}
+                    position="bottom"
+                />
             </SidebarInset>
         </SidebarProvider>
     )

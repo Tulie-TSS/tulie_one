@@ -1,8 +1,5 @@
 "use client";
 
-// Strategy Planning Dashboard - integrated with branding planner data
-// Data sources: growth_targets, products, milestones, content_pillars, seo_targets, marketing_channels;
-
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import {
   useDeals,
@@ -47,6 +44,10 @@ import {
   Search,
   Zap,
 } from "lucide-react";
+import {
+  PageHeader, Card, CardContent, CardHeader, CardTitle,
+  StatGrid, StatCard, Badge, Progress,
+} from "@repo/ui";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("vi-VN", {
@@ -58,13 +59,17 @@ function formatCurrency(value: number): string {
 }
 
 function formatCurrencyCompact(value: number): string {
-  if (value >= 1000000) {
-    return `${(value / 1000000).toFixed(1)}M`;
-  }
-  if (value >= 1000) {
-    return `${(value / 1000).toFixed(0)}K`;
-  }
+  if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
+  if (value >= 1000) return `${(value / 1000).toFixed(0)}K`;
   return value.toString();
+}
+
+function SectionIcon({ icon: Icon, className }: { icon: React.ComponentType<{ className?: string }>; className?: string }) {
+  return (
+    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted shrink-0">
+      <Icon className={`size-4 ${className || 'text-muted-foreground'}`} />
+    </div>
+  );
 }
 
 export default function StrategyPage() {
@@ -89,944 +94,388 @@ export default function StrategyPage() {
   const currentMonthFinance = finance[0] ?? { net_profit: 0, revenue: 0 };
   const planningHiring = hiringPlans.filter((h) => h.status === "planning");
 
-  const marketingSpend = marketingMetrics
-    .filter((m) => m.metric_name === "spend")
-    .reduce((sum, m) => sum + m.value, 0);
-  const marketingLeads = marketingMetrics
-    .filter((m) => m.metric_name === "leads")
-    .reduce((sum, m) => sum + m.value, 0);
-
   const currentMrrTarget = growthTargets[0]?.mrr_target ?? 0;
   const currentMrrActual = growthTargets[0]?.mrr_actual ?? 0;
 
-  const stageColors: Record<string, string> = {
-    lead: "var(--color-surface)",
-    prospecting: "var(--color-info-bg)",
-    qualified: "var(--color-warning-bg)",
-    meeting: "var(--color-success-bg)",
-    proposal: "#fef3c7",
-    negotiation: "#fce7f3",
-    won: "var(--color-success-bg)",
-    lost: "var(--color-danger-bg)",
-  };
-
-  const milestoneStatusColors: Record<string, string> = {
-    pending: "var(--color-surface)",
-    in_progress: "var(--color-info-bg)",
-    completed: "var(--color-success-bg)",
-    delayed: "var(--color-danger-bg)",
-    cancelled: "var(--color-surface)",
-  };
-
   const pillarColors: Record<string, string> = {
-    showcase: "#3b82f6",
-    educate: "#10b981",
-    trust: "#f59e0b",
-    convert: "#ef4444",
+    showcase: "bg-blue-500",
+    educate: "bg-emerald-500",
+    trust: "bg-amber-500",
+    convert: "bg-rose-500",
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1
-            className="text-2xl font-semibold"
-            style={{ color: "var(--color-fg)" }}
-          >
-            {t("strategy.title")}
-          </h1>
-          <p
-            style={{
-              color: "var(--color-fg-secondary)",
-              fontSize: "var(--text-sm)",
-            }}
-          >
-            {t("strategy.subtitle")}
-          </p>
-        </div>
-      </div>
+      <PageHeader title={t("strategy.title")} description={t("strategy.subtitle")} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div
-          className="p-4 rounded-lg"
-          style={{
-            backgroundColor: "var(--color-bg)",
-            border: "1px solid var(--color-border)",
-          }}
-        >
-          <div className="flex items-center gap-3 mb-3">
-            <div
-              className="p-2 rounded-lg"
-              style={{ backgroundColor: "var(--color-info-bg)" }}
-            >
-              <DollarSign
-                className="size-5"
-                style={{ color: "var(--color-info)" }}
-              />
-            </div>
-            <span
-              style={{
-                color: "var(--color-fg-secondary)",
-                fontSize: "var(--text-sm)",
-              }}
-            >
-              MRR Target
-            </span>
-          </div>
-          <div
-            className="text-2xl font-semibold"
-            style={{ color: "var(--color-fg)" }}
-          >
-            {formatCurrencyCompact(currentMrrTarget)}
-          </div>
-          {currentMrrActual > 0 && (
-            <div
-              className="text-sm mt-1"
-              style={{ color: "var(--color-success)" }}
-            >
-              Actual: {formatCurrencyCompact(currentMrrActual)}
-            </div>
-          )}
-        </div>
+      {/* KPI Stats */}
+      <StatGrid>
+        <StatCard
+          title="MRR Target"
+          value={formatCurrencyCompact(currentMrrTarget)}
+          description={currentMrrActual > 0 ? `Actual: ${formatCurrencyCompact(currentMrrActual)}` : undefined}
+        />
+        <StatCard
+          title={t("strategy.netProfit")}
+          value={formatCurrency(currentMonthFinance.net_profit)}
+          footer={t("strategy.thisMonth")}
+        />
+        <StatCard
+          title="Hiring"
+          value={planningHiring.length}
+          footer="positions open"
+        />
+        <StatCard
+          title="Pipeline"
+          value={formatCurrencyCompact(totalPipeline)}
+          footer={`Weighted: ${formatCurrencyCompact(weightedValue)}`}
+        />
+      </StatGrid>
 
-        <div
-          className="p-4 rounded-lg"
-          style={{
-            backgroundColor: "var(--color-bg)",
-            border: "1px solid var(--color-border)",
-          }}
-        >
-          <div className="flex items-center gap-3 mb-3">
-            <div
-              className="p-2 rounded-lg"
-              style={{ backgroundColor: "var(--color-success-bg)" }}
-            >
-              <PiggyBank
-                className="size-5"
-                style={{ color: "var(--color-success)" }}
-              />
-            </div>
-            <span
-              style={{
-                color: "var(--color-fg-secondary)",
-                fontSize: "var(--text-sm)",
-              }}
-            >
-              {t("strategy.netProfit")}
-            </span>
-          </div>
-          <div
-            className="text-2xl font-semibold"
-            style={{ color: "var(--color-fg)" }}
-          >
-            {formatCurrency(currentMonthFinance.net_profit)}
-          </div>
-          <div
-            className="text-sm mt-1"
-            style={{ color: "var(--color-fg-tertiary)" }}
-          >
-            {t("strategy.thisMonth")}
-          </div>
-        </div>
-
-        <div
-          className="p-4 rounded-lg"
-          style={{
-            backgroundColor: "var(--color-bg)",
-            border: "1px solid var(--color-border)",
-          }}
-        >
-          <div className="flex items-center gap-3 mb-3">
-            <div
-              className="p-2 rounded-lg"
-              style={{ backgroundColor: "var(--color-warning-bg)" }}
-            >
-              <Users
-                className="size-5"
-                style={{ color: "var(--color-warning)" }}
-              />
-            </div>
-            <span
-              style={{
-                color: "var(--color-fg-secondary)",
-                fontSize: "var(--text-sm)",
-              }}
-            >
-              Hiring
-            </span>
-          </div>
-          <div
-            className="text-2xl font-semibold"
-            style={{ color: "var(--color-fg)" }}
-          >
-            {planningHiring.length}
-          </div>
-          <div
-            className="text-sm mt-1"
-            style={{ color: "var(--color-fg-tertiary)" }}
-          >
-            positions open
-          </div>
-        </div>
-
-        <div
-          className="p-4 rounded-lg"
-          style={{
-            backgroundColor: "var(--color-bg)",
-            border: "1px solid var(--color-border)",
-          }}
-        >
-          <div className="flex items-center gap-3 mb-3">
-            <div
-              className="p-2 rounded-lg"
-              style={{ backgroundColor: "#f3e8ff" }}
-            >
-              <Megaphone className="size-5" style={{ color: "#9333ea" }} />
-            </div>
-            <span
-              style={{
-                color: "var(--color-fg-secondary)",
-                fontSize: "var(--text-sm)",
-              }}
-            >
-              Pipeline
-            </span>
-          </div>
-          <div
-            className="text-2xl font-semibold"
-            style={{ color: "var(--color-fg)" }}
-          >
-            {formatCurrencyCompact(totalPipeline)}
-          </div>
-          <div
-            className="text-sm mt-1"
-            style={{ color: "var(--color-fg-tertiary)" }}
-          >
-            Weighted: {formatCurrencyCompact(weightedValue)}
-          </div>
-        </div>
-      </div>
-
+      {/* Growth Targets & Products */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div
-          className="p-5 rounded-lg"
-          style={{
-            backgroundColor: "var(--color-bg)",
-            border: "1px solid var(--color-border)",
-          }}
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <Flag
-              className="size-5"
-              style={{ color: "var(--color-success)" }}
-            />
-            <h2 className="font-semibold" style={{ color: "var(--color-fg)" }}>
-              Growth Targets (MRR)
-            </h2>
-          </div>
-          <div className="space-y-2">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <SectionIcon icon={Flag} className="text-emerald-500" />
+              <CardTitle className="text-base">Growth Targets (MRR)</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-2">
             {growthTargets.slice(0, 9).map((target) => {
-              const progress = target.mrr_actual
-                ? (target.mrr_actual / target.mrr_target) * 100
-                : 0;
+              const progress = target.mrr_actual ? (target.mrr_actual / target.mrr_target) * 100 : 0;
               return (
                 <div key={target.id} className="flex items-center gap-3">
-                  <div
-                    className="w-12 text-xs"
-                    style={{ color: "var(--color-fg-secondary)" }}
-                  >
-                    {new Date(target.month).toLocaleDateString("vi-VN", {
-                      month: "short",
-                    })}
+                  <div className="w-12 text-xs text-muted-foreground">
+                    {new Date(target.month).toLocaleDateString("vi-VN", { month: "short" })}
                   </div>
-                  <div className="flex-1">
-                    <div
-                      className="h-2 rounded-full"
-                      style={{ backgroundColor: "var(--color-surface)" }}
-                    >
-                      <div
-                        className="h-full rounded-full"
-                        style={{
-                          width: `${Math.min(progress, 100)}%`,
-                          backgroundColor:
-                            progress >= 100
-                              ? "var(--color-success)"
-                              : progress >= 50
-                                ? "var(--color-warning)"
-                                : "var(--color-info)",
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className="w-20 text-right text-xs"
-                    style={{ color: "var(--color-fg)" }}
-                  >
+                  <Progress
+                    value={Math.min(progress, 100)}
+                    className={`flex-1 h-2 ${progress >= 100 ? '[&>div]:bg-emerald-500' : progress >= 50 ? '[&>div]:bg-amber-500' : ''}`}
+                  />
+                  <div className="w-20 text-right text-xs font-medium">
                     {formatCurrencyCompact(target.mrr_target)}
                   </div>
                 </div>
               );
             })}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div
-          className="p-5 rounded-lg"
-          style={{
-            backgroundColor: "var(--color-bg)",
-            border: "1px solid var(--color-border)",
-          }}
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <Package
-              className="size-5"
-              style={{ color: "var(--color-info)" }}
-            />
-            <h2 className="font-semibold" style={{ color: "var(--color-fg)" }}>
-              Products & Pricing
-            </h2>
-          </div>
-          <div className="space-y-3">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <SectionIcon icon={Package} className="text-blue-500" />
+              <CardTitle className="text-base">Products & Pricing</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
             {products.map((product) => (
-              <div
-                key={product.id}
-                className="p-3 rounded-md flex items-center justify-between"
-                style={{ backgroundColor: "var(--color-surface)" }}
-              >
+              <div key={product.id} className="p-3 rounded-md bg-muted/50 flex items-center justify-between">
                 <div>
-                  <div
-                    className="font-medium text-sm"
-                    style={{ color: "var(--color-fg)" }}
-                  >
-                    {product.name}
-                  </div>
-                  <div
-                    className="text-xs mt-1"
-                    style={{ color: "var(--color-fg-tertiary)" }}
-                  >
-                    {PRODUCT_TYPE_LABELS[product.service_type]?.[locale] ||
-                      product.service_type}
+                  <div className="font-medium text-sm">{product.name}</div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {PRODUCT_TYPE_LABELS[product.service_type]?.[locale] || product.service_type}
                     {product.features && Array.isArray(product.features) && (
                       <span> · {product.features.length} features</span>
                     )}
                   </div>
                 </div>
                 <div className="text-right">
-                  <div
-                    className="font-semibold text-sm"
-                    style={{ color: "var(--color-success)" }}
-                  >
+                  <div className="font-semibold text-sm text-emerald-600 dark:text-emerald-400">
                     {product.price_min && product.price_max
                       ? `${formatCurrencyCompact(product.price_min)} - ${formatCurrencyCompact(product.price_max)}`
                       : product.price_min
                         ? `from ${formatCurrencyCompact(product.price_min)}`
                         : "-"}
                   </div>
-                  <div
-                    className="text-xs"
-                    style={{ color: "var(--color-fg-tertiary)" }}
-                  >
-                    /
-                    {product.price_unit === "monthly"
-                      ? "th"
-                      : product.price_unit === "yearly"
-                        ? "yr"
-                        : "one-time"}
+                  <div className="text-xs text-muted-foreground">
+                    /{product.price_unit === "monthly" ? "th" : product.price_unit === "yearly" ? "yr" : "one-time"}
                   </div>
                 </div>
               </div>
             ))}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Strategy Milestones */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <SectionIcon icon={Zap} className="text-amber-500" />
+            <CardTitle className="text-base">Strategy Milestones</CardTitle>
           </div>
-        </div>
-      </div>
-
-      <div
-        className="p-5 rounded-lg"
-        style={{
-          backgroundColor: "var(--color-bg)",
-          border: "1px solid var(--color-border)",
-        }}
-      >
-        <div className="flex items-center gap-2 mb-4">
-          <Zap className="size-5" style={{ color: "var(--color-warning)" }} />
-          <h2 className="font-semibold" style={{ color: "var(--color-fg)" }}>
-            Strategy Milestones
-          </h2>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
-          {milestones.slice(0, 16).map((milestone) => (
-            <div
-              key={milestone.id}
-              className="p-2 rounded-md text-center"
-              style={{
-                backgroundColor:
-                  milestoneStatusColors[milestone.status] ||
-                  "var(--color-surface)",
-              }}
-              title={`${milestone.name} - ${MILESTONE_STATUS_LABELS[milestone.status][locale]} (${MILESTONE_PHASE_LABELS[milestone.phase][locale]})`}
-            >
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
+            {milestones.slice(0, 16).map((milestone) => (
               <div
-                className="text-xs font-medium truncate"
-                style={{ color: "var(--color-fg)" }}
+                key={milestone.id}
+                className={`p-2 rounded-md text-center ${
+                  milestone.status === 'completed' ? 'bg-emerald-500/10' :
+                  milestone.status === 'in_progress' ? 'bg-blue-500/10' :
+                  milestone.status === 'delayed' ? 'bg-destructive/10' : 'bg-muted/50'
+                }`}
+                title={`${milestone.name} - ${MILESTONE_STATUS_LABELS[milestone.status][locale]} (${MILESTONE_PHASE_LABELS[milestone.phase][locale]})`}
               >
-                {milestone.name}
+                <div className="text-xs font-medium truncate">{milestone.name}</div>
+                <div className="text-xs text-muted-foreground">
+                  {new Date(milestone.target_date).toLocaleDateString("vi-VN", { month: "short", day: "numeric" })}
+                </div>
               </div>
-              <div
-                className="text-xs"
-                style={{ color: "var(--color-fg-tertiary)" }}
-              >
-                {new Date(milestone.target_date).toLocaleDateString("vi-VN", {
-                  month: "short",
-                  day: "numeric",
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
+      {/* Content Pillars & SEO */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div
-          className="p-5 rounded-lg"
-          style={{
-            backgroundColor: "var(--color-bg)",
-            border: "1px solid var(--color-border)",
-          }}
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <BarChart3
-              className="size-5"
-              style={{ color: "var(--color-info)" }}
-            />
-            <h2 className="font-semibold" style={{ color: "var(--color-fg)" }}>
-              Content Pillars
-            </h2>
-          </div>
-          <div className="space-y-3">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <SectionIcon icon={BarChart3} className="text-blue-500" />
+              <CardTitle className="text-base">Content Pillars</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
             {contentPillars.map((pillar) => (
               <div key={pillar.id}>
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
-                    <div
-                      className="w-3 h-3 rounded-full"
-                      style={{
-                        backgroundColor:
-                          pillarColors[pillar.pillar_type] ||
-                          "var(--color-info)",
-                      }}
-                    />
-                    <span
-                      className="text-sm font-medium"
-                      style={{ color: "var(--color-fg)" }}
-                    >
-                      {CONTENT_PILLAR_LABELS[pillar.pillar_type]?.[locale] ||
-                        pillar.name}
+                    <div className={`w-3 h-3 rounded-full ${pillarColors[pillar.pillar_type] || 'bg-primary'}`} />
+                    <span className="text-sm font-medium">
+                      {CONTENT_PILLAR_LABELS[pillar.pillar_type]?.[locale] || pillar.name}
                     </span>
                   </div>
-                  <span
-                    className="text-sm font-semibold"
-                    style={{ color: "var(--color-fg)" }}
-                  >
-                    {pillar.percentage}%
-                  </span>
+                  <span className="text-sm font-semibold">{pillar.percentage}%</span>
                 </div>
-                <div
-                  className="h-2 rounded-full"
-                  style={{ backgroundColor: "var(--color-surface)" }}
-                >
-                  <div
-                    className="h-full rounded-full"
-                    style={{
-                      width: `${pillar.percentage}%`,
-                      backgroundColor:
-                        pillarColors[pillar.pillar_type] || "var(--color-info)",
-                    }}
-                  />
-                </div>
+                <Progress value={pillar.percentage} className="h-2" />
               </div>
             ))}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div
-          className="p-5 rounded-lg"
-          style={{
-            backgroundColor: "var(--color-bg)",
-            border: "1px solid var(--color-border)",
-          }}
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <Search
-              className="size-5"
-              style={{ color: "var(--color-success)" }}
-            />
-            <h2 className="font-semibold" style={{ color: "var(--color-fg)" }}>
-              SEO Keywords
-            </h2>
-          </div>
-          <div className="space-y-2">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <SectionIcon icon={Search} className="text-emerald-500" />
+              <CardTitle className="text-base">SEO Keywords</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-2">
             {seoTargets.slice(0, 8).map((seo) => (
-              <div
-                key={seo.id}
-                className="flex items-center justify-between p-2 rounded-md"
-                style={{ backgroundColor: "var(--color-surface)" }}
-              >
+              <div key={seo.id} className="flex items-center justify-between p-2 rounded-md bg-muted/50">
                 <div className="flex-1">
-                  <div
-                    className="text-sm font-medium"
-                    style={{ color: "var(--color-fg)" }}
-                  >
-                    {seo.keyword}
-                  </div>
-                  <div
-                    className="text-xs"
-                    style={{ color: "var(--color-fg-tertiary)" }}
-                  >
+                  <div className="text-sm font-medium">{seo.keyword}</div>
+                  <div className="text-xs text-muted-foreground">
                     {seo.monthly_searches?.toLocaleString()} searches
                     {seo.difficulty && ` · ${seo.difficulty}`}
                   </div>
                 </div>
                 <div className="text-right">
                   {seo.current_rank ? (
-                    <span
-                      className="text-sm font-semibold"
-                      style={{
-                        color:
-                          seo.current_rank <= 10
-                            ? "var(--color-success)"
-                            : seo.current_rank <= 20
-                              ? "var(--color-warning)"
-                              : "var(--color-fg-tertiary)",
-                      }}
-                    >
+                    <Badge variant={seo.current_rank <= 10 ? 'default' : seo.current_rank <= 20 ? 'secondary' : 'outline'} className="text-xs">
                       #{seo.current_rank}
-                    </span>
+                    </Badge>
                   ) : (
-                    <span
-                      className="text-xs"
-                      style={{ color: "var(--color-fg-tertiary)" }}
-                    >
-                      Not ranked
-                    </span>
+                    <span className="text-xs text-muted-foreground">Not ranked</span>
                   )}
                 </div>
               </div>
             ))}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Marketing Channels */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <SectionIcon icon={TrendingUp} className="text-emerald-500" />
+            <CardTitle className="text-base">Marketing Channels (CAC & LTV)</CardTitle>
           </div>
-        </div>
-      </div>
-
-      <div
-        className="p-5 rounded-lg"
-        style={{
-          backgroundColor: "var(--color-bg)",
-          border: "1px solid var(--color-border)",
-        }}
-      >
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp
-            className="size-5"
-            style={{ color: "var(--color-success)" }}
-          />
-          <h2 className="font-semibold" style={{ color: "var(--color-fg)" }}>
-            Marketing Channels (CAC & LTV)
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
-          {marketingChannels.map((channel) => (
-            <div
-              key={channel.id}
-              className="p-3 rounded-lg"
-              style={{ backgroundColor: "var(--color-surface)" }}
-            >
-              <div
-                className="font-medium text-sm mb-2"
-                style={{ color: "var(--color-fg)" }}
-              >
-                {CHANNEL_TYPE_LABELS[channel.channel_type]?.[locale] ||
-                  channel.channel_name}
-              </div>
-              <div className="space-y-1">
-                <div className="flex justify-between text-xs">
-                  <span style={{ color: "var(--color-fg-tertiary)" }}>
-                    Target CAC:
-                  </span>
-                  <span
-                    className="font-medium"
-                    style={{ color: "var(--color-fg)" }}
-                  >
-                    {channel.cac_target
-                      ? formatCurrencyCompact(channel.cac_target)
-                      : "-"}
-                  </span>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
+            {marketingChannels.map((channel) => (
+              <div key={channel.id} className="p-3 rounded-lg bg-muted/50">
+                <div className="font-medium text-sm mb-2">
+                  {CHANNEL_TYPE_LABELS[channel.channel_type]?.[locale] || channel.channel_name}
                 </div>
-                <div className="flex justify-between text-xs">
-                  <span style={{ color: "var(--color-fg-tertiary)" }}>
-                    Target LTV:
-                  </span>
-                  <span
-                    className="font-medium"
-                    style={{ color: "var(--color-fg)" }}
-                  >
-                    {channel.ltv_target
-                      ? formatCurrencyCompact(channel.ltv_target)
-                      : "-"}
-                  </span>
-                </div>
-                <div className="flex justify-between text-xs">
-                  <span style={{ color: "var(--color-fg-tertiary)" }}>
-                    LTV:CAC:
-                  </span>
-                  <span
-                    className="font-medium"
-                    style={{
-                      color:
-                        (channel.ltv_cac_ratio_target ?? 0) >= 3
-                          ? "var(--color-success)"
-                          : "var(--color-warning)",
-                    }}
-                  >
-                    {channel.ltv_cac_ratio_target
-                      ? `${channel.ltv_cac_ratio_target}:1`
-                      : "-"}
-                  </span>
+                <div className="space-y-1">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">Target CAC:</span>
+                    <span className="font-medium">{channel.cac_target ? formatCurrencyCompact(channel.cac_target) : "-"}</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">Target LTV:</span>
+                    <span className="font-medium">{channel.ltv_target ? formatCurrencyCompact(channel.ltv_target) : "-"}</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">LTV:CAC:</span>
+                    <span className={`font-medium ${(channel.ltv_cac_ratio_target ?? 0) >= 3 ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'}`}>
+                      {channel.ltv_cac_ratio_target ? `${channel.ltv_cac_ratio_target}:1` : "-"}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
+      {/* Deals Pipeline & Sales Targets */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div
-          className="p-5 rounded-lg"
-          style={{
-            backgroundColor: "var(--color-bg)",
-            border: "1px solid var(--color-border)",
-          }}
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <Briefcase
-              className="size-5"
-              style={{ color: "var(--color-info)" }}
-            />
-            <h2 className="font-semibold" style={{ color: "var(--color-fg)" }}>
-              {t("strategy.dealsPipeline")}
-            </h2>
-          </div>
-          <div className="space-y-3">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <SectionIcon icon={Briefcase} className="text-blue-500" />
+              <CardTitle className="text-base">{t("strategy.dealsPipeline")}</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
             {Object.entries(dealsByStage)
               .filter(([_, deals]) => deals.length > 0)
               .map(([stage, stageDeals]) => (
                 <div key={stage}>
                   <div className="flex items-center justify-between mb-2">
-                    <span
-                      className="text-sm font-medium"
-                      style={{ color: "var(--color-fg-secondary)" }}
-                    >
-                      {DEAL_STAGE_LABELS[
-                        stage as keyof typeof DEAL_STAGE_LABELS
-                      ]?.[locale] || stage}
+                    <span className="text-sm font-medium text-muted-foreground">
+                      {DEAL_STAGE_LABELS[stage as keyof typeof DEAL_STAGE_LABELS]?.[locale] || stage}
                     </span>
-                    <span
-                      className="text-sm"
-                      style={{ color: "var(--color-fg-tertiary)" }}
-                    >
-                      {stageDeals.length} deals
-                    </span>
+                    <Badge variant="secondary" className="text-xs">{stageDeals.length} deals</Badge>
                   </div>
                   <div className="space-y-2">
                     {stageDeals.slice(0, 3).map((deal) => (
-                      <div
-                        key={deal.id}
-                        className="p-3 rounded-md"
-                        style={{
-                          backgroundColor:
-                            stageColors[stage] || "var(--color-surface)",
-                        }}
-                      >
+                      <div key={deal.id} className="p-3 rounded-md bg-muted/50">
                         <div className="flex items-center justify-between">
-                          <span
-                            className="font-medium text-sm"
-                            style={{ color: "var(--color-fg)" }}
-                          >
-                            {deal.name}
-                          </span>
-                          <span
-                            className="text-sm font-semibold"
-                            style={{ color: "var(--color-success)" }}
-                          >
+                          <span className="font-medium text-sm">{deal.name}</span>
+                          <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                             {formatCurrency(deal.value)}
                           </span>
                         </div>
                         <div className="flex items-center justify-between mt-1">
-                          <span
-                            className="text-xs"
-                            style={{ color: "var(--color-fg-tertiary)" }}
-                          >
-                            {deal.company}
-                          </span>
-                          <span
-                            className="text-xs"
-                            style={{ color: "var(--color-fg-tertiary)" }}
-                          >
-                            {deal.probability}%
-                          </span>
+                          <span className="text-xs text-muted-foreground">{deal.company}</span>
+                          <span className="text-xs text-muted-foreground">{deal.probability}%</span>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
               ))}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div
-          className="p-5 rounded-lg"
-          style={{
-            backgroundColor: "var(--color-bg)",
-            border: "1px solid var(--color-border)",
-          }}
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <Target
-              className="size-5"
-              style={{ color: "var(--color-success)" }}
-            />
-            <h2 className="font-semibold" style={{ color: "var(--color-fg)" }}>
-              {t("strategy.salesTargets")}
-            </h2>
-          </div>
-          <div className="space-y-3">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <SectionIcon icon={Target} className="text-emerald-500" />
+              <CardTitle className="text-base">{t("strategy.salesTargets")}</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
             {salesTargets.slice(0, 6).map((target) => (
               <div key={target.id} className="flex items-center gap-4">
-                <div
-                  className="w-16 text-sm"
-                  style={{ color: "var(--color-fg-secondary)" }}
-                >
-                  {new Date(target.month).toLocaleDateString(
-                    locale === "vi" ? "vi-VN" : "en-US",
-                    { month: "short", year: "2-digit" },
-                  )}
+                <div className="w-16 text-sm text-muted-foreground">
+                  {new Date(target.month).toLocaleDateString(locale === "vi" ? "vi-VN" : "en-US", { month: "short", year: "2-digit" })}
                 </div>
-                <div className="flex-1">
-                  <div
-                    className="h-2 rounded-full"
-                    style={{ backgroundColor: "var(--color-surface)" }}
-                  >
-                    <div
-                      className="h-full rounded-full"
-                      style={{
-                        width: `${Math.min(((target.actual_revenue ?? 0) / target.target_revenue) * 100, 100)}%`,
-                        backgroundColor: "var(--color-success)",
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="w-24 text-right">
-                  <span
-                    className="text-sm font-medium"
-                    style={{ color: "var(--color-fg)" }}
-                  >
-                    {formatCurrencyCompact(target.actual_revenue ?? 0)}/
-                    {formatCurrencyCompact(target.target_revenue)}
-                  </span>
+                <Progress
+                  value={Math.min(((target.actual_revenue ?? 0) / target.target_revenue) * 100, 100)}
+                  className="flex-1 h-2 [&>div]:bg-emerald-500"
+                />
+                <div className="w-24 text-right text-sm font-medium">
+                  {formatCurrencyCompact(target.actual_revenue ?? 0)}/{formatCurrencyCompact(target.target_revenue)}
                 </div>
               </div>
             ))}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
 
+      {/* Hiring & Content Calendar */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div
-          className="p-5 rounded-lg"
-          style={{
-            backgroundColor: "var(--color-bg)",
-            border: "1px solid var(--color-border)",
-          }}
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <Users
-              className="size-5"
-              style={{ color: "var(--color-warning)" }}
-            />
-            <h2 className="font-semibold" style={{ color: "var(--color-fg)" }}>
-              {t("strategy.hiringPlans")}
-            </h2>
-          </div>
-          <div className="space-y-3">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <SectionIcon icon={Users} className="text-amber-500" />
+              <CardTitle className="text-base">{t("strategy.hiringPlans")}</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
             {hiringPlans.map((plan) => (
-              <div
-                key={plan.id}
-                className="p-3 rounded-md flex items-center justify-between"
-                style={{ backgroundColor: "var(--color-surface)" }}
-              >
+              <div key={plan.id} className="p-3 rounded-md bg-muted/50 flex items-center justify-between">
                 <div>
-                  <div
-                    className="font-medium text-sm"
-                    style={{ color: "var(--color-fg)" }}
-                  >
-                    {plan.position}
-                  </div>
-                  <div
-                    className="text-xs mt-1"
-                    style={{ color: "var(--color-fg-tertiary)" }}
-                  >
-                    {new Date(plan.target_start_month).toLocaleDateString(
-                      locale === "vi" ? "vi-VN" : "en-US",
-                      { month: "long", year: "numeric" },
+                  <div className="font-medium text-sm">{plan.position}</div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {new Date(plan.target_start_month).toLocaleDateString(locale === "vi" ? "vi-VN" : "en-US", { month: "long", year: "numeric" })}
+                    {plan.salary_range_min !== null && plan.salary_range_max !== null && plan.salary_range_min > 0 && (
+                      <> · {formatCurrency(plan.salary_range_min)} - {formatCurrency(plan.salary_range_max)}</>
                     )}
-                    {plan.salary_range_min !== null &&
-                      plan.salary_range_max !== null &&
-                      plan.salary_range_min > 0 && (
-                        <>
-                          {" "}
-                          · {formatCurrency(plan.salary_range_min)} -{" "}
-                          {formatCurrency(plan.salary_range_max)}
-                        </>
-                      )}
                   </div>
                 </div>
-                <span
-                  className="px-2 py-1 rounded-full text-xs font-medium"
-                  style={{
-                    backgroundColor:
-                      plan.priority === "high"
-                        ? "var(--color-danger-bg)"
-                        : "var(--color-info-bg)",
-                    color:
-                      plan.priority === "high"
-                        ? "var(--color-danger)"
-                        : "var(--color-info)",
-                  }}
-                >
+                <Badge variant={plan.priority === "high" ? "destructive" : "secondary"} className="text-xs">
                   {HIRING_STATUS_LABELS[plan.status][locale]}
-                </span>
+                </Badge>
               </div>
             ))}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div
-          className="p-5 rounded-lg"
-          style={{
-            backgroundColor: "var(--color-bg)",
-            border: "1px solid var(--color-border)",
-          }}
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <Calendar
-              className="size-5"
-              style={{ color: "var(--color-info)" }}
-            />
-            <h2 className="font-semibold" style={{ color: "var(--color-fg)" }}>
-              {t("strategy.contentCalendar")}
-            </h2>
-          </div>
-          <div className="space-y-3">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <SectionIcon icon={Calendar} className="text-blue-500" />
+              <CardTitle className="text-base">{t("strategy.contentCalendar")}</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
             {contentCalendar.slice(0, 5).map((item) => (
-              <div
-                key={item.id}
-                className="p-3 rounded-md flex items-center justify-between"
-                style={{ backgroundColor: "var(--color-surface)" }}
-              >
+              <div key={item.id} className="p-3 rounded-md bg-muted/50 flex items-center justify-between">
                 <div className="flex-1">
-                  <div
-                    className="font-medium text-sm"
-                    style={{ color: "var(--color-fg)" }}
-                  >
-                    {item.topic}
-                  </div>
-                  <div
-                    className="text-xs mt-1"
-                    style={{ color: "var(--color-fg-tertiary)" }}
-                  >
-                    {new Date(item.planned_date).toLocaleDateString(
-                      locale === "vi" ? "vi-VN" : "en-US",
-                      { month: "short", day: "numeric" },
-                    )}
+                  <div className="font-medium text-sm">{item.topic}</div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {new Date(item.planned_date).toLocaleDateString(locale === "vi" ? "vi-VN" : "en-US", { month: "short", day: "numeric" })}
                     {" · "}
-                    {CONTENT_TYPE_LABELS[item.content_type]?.[locale] ||
-                      item.content_type}
+                    {CONTENT_TYPE_LABELS[item.content_type]?.[locale] || item.content_type}
                     {" · "}
                     {PLATFORM_LABELS[item.platform]?.[locale] || item.platform}
                   </div>
                 </div>
-                <span
-                  className="px-2 py-1 rounded-full text-xs font-medium"
-                  style={{
-                    backgroundColor:
-                      item.status === "planned"
-                        ? "var(--color-info-bg)"
-                        : "var(--color-warning-bg)",
-                    color:
-                      item.status === "planned"
-                        ? "var(--color-info)"
-                        : "var(--color-warning)",
-                  }}
-                >
+                <Badge variant={item.status === "planned" ? "default" : "secondary"} className="text-xs">
                   {CONTENT_STATUS_LABELS[item.status][locale]}
-                </span>
+                </Badge>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Monthly Finance */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <SectionIcon icon={TrendingUp} className="text-emerald-500" />
+            <CardTitle className="text-base">{t("strategy.monthlyFinance")}</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-9 gap-3">
+            {finance.map((item) => (
+              <div key={item.id} className="p-3 rounded-lg bg-muted/50 text-center">
+                <div className="text-xs text-muted-foreground mb-1">
+                  {new Date(item.month).toLocaleDateString(locale === "vi" ? "vi-VN" : "en-US", { month: "short" })}
+                </div>
+                <div className={`font-semibold text-sm ${item.net_profit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-destructive'}`}>
+                  {formatCurrency(item.net_profit)}
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  {t("strategy.revenue")}: {formatCurrency(item.revenue)}
+                </div>
               </div>
             ))}
           </div>
-        </div>
-      </div>
-
-      <div
-        className="p-5 rounded-lg"
-        style={{
-          backgroundColor: "var(--color-bg)",
-          border: "1px solid var(--color-border)",
-        }}
-      >
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp
-            className="size-5"
-            style={{ color: "var(--color-success)" }}
-          />
-          <h2 className="font-semibold" style={{ color: "var(--color-fg)" }}>
-            {t("strategy.monthlyFinance")}
-          </h2>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-9 gap-3">
-          {finance.map((item) => (
-            <div
-              key={item.id}
-              className="p-3 rounded-lg text-center"
-              style={{ backgroundColor: "var(--color-surface)" }}
-            >
-              <div
-                className="text-xs mb-1"
-                style={{ color: "var(--color-fg-tertiary)" }}
-              >
-                {new Date(item.month).toLocaleDateString(
-                  locale === "vi" ? "vi-VN" : "en-US",
-                  { month: "short" },
-                )}
-              </div>
-              <div
-                className="font-semibold text-sm"
-                style={{
-                  color:
-                    item.net_profit >= 0
-                      ? "var(--color-success)"
-                      : "var(--color-danger)",
-                }}
-              >
-                {formatCurrency(item.net_profit)}
-              </div>
-              <div
-                className="text-xs mt-1"
-                style={{ color: "var(--color-fg-tertiary)" }}
-              >
-                {t("strategy.revenue")}: {formatCurrency(item.revenue)}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -2,14 +2,13 @@
 
 import Link from 'next/link'
 import { MOCK_TASKS, MOCK_CYCLE, MOCK_PROJECTS, MOCK_NOTIFICATIONS, getMockCurrentUser } from '@/lib/mock/data'
-import { TASK_STATUS_COLORS } from '@/lib/constants/task-status'
 import { useLocaleStore } from '@/lib/stores/locale-store'
-import type { TaskStatus } from '@/types/database.types'
-import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
-import { Badge } from '@repo/ui'
+import {
+    Card, CardContent, CardHeader, CardTitle, CardAction,
+    Badge, Progress, PageHeader, StatGrid, StatCard, EmptyState, Avatar, AvatarFallback,
+} from '@repo/ui'
 import { StatusBadge } from '@/components/shared/status-badge'
-import { Progress } from '@repo/ui'
-import { AlertCircle, ArrowRight } from 'lucide-react'
+import { AlertCircle, KanbanSquare } from 'lucide-react'
 
 export default function DashboardPage() {
     const { t } = useLocaleStore()
@@ -22,15 +21,14 @@ export default function DashboardPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-semibold tracking-tight">{t('dashboard.title')}</h1>
-                <p className="text-sm text-muted-foreground">
-                    {MOCK_CYCLE.name} — {t('dashboard.weekOf')} {currentWeek}/12
-                </p>
-            </div>
+            <PageHeader
+                title={t('dashboard.title')}
+                description={`${MOCK_CYCLE.name} — ${t('dashboard.weekOf')} ${currentWeek}/12`}
+            />
 
+            {/* Quarantine Alert */}
             {quarantineTasks.length > 0 && (
-                <Link href="/quarantine" className="flex items-center gap-3 p-4 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-600 hover:bg-amber-500/15 transition-colors">
+                <Link href="/quarantine" className="flex items-center gap-3 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 hover:bg-amber-500/15 transition-colors">
                     <AlertCircle className="h-5 w-5" />
                     <span className="font-medium text-sm">
                         {quarantineTasks.length} {t('dashboard.tasksTriage')}
@@ -38,28 +36,16 @@ export default function DashboardPage() {
                 </Link>
             )}
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {([
-                    { label: t('dashboard.doing'), value: doingTasks.length, sub: `/ ${user.personal_wip_limit}`, color: 'text-blue-600' },
-                    { label: t('dashboard.ready'), value: readyTasks.length, color: 'text-foreground' },
-                    { label: t('dashboard.quarantine'), value: quarantineTasks.length, color: 'text-amber-600' },
-                    { label: t('dashboard.completed'), value: doneTasks.length, color: 'text-emerald-600' },
-                ] as const).map(card => (
-                    <Card key={card.label} className="shadow-sm">
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-muted-foreground">{card.label}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className={`text-3xl ${card.color}`}>
-                                {card.value}
-                                {'sub' in card && <span className="text-base font-normal text-muted-foreground ml-1">{card.sub}</span>}
-                            </div>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
+            {/* Stat Cards */}
+            <StatGrid>
+                <StatCard title={t('dashboard.doing')} value={`${doingTasks.length} / ${user.personal_wip_limit}`} />
+                <StatCard title={t('dashboard.ready')} value={readyTasks.length} />
+                <StatCard title={t('dashboard.quarantine')} value={quarantineTasks.length} />
+                <StatCard title={t('dashboard.completed')} value={doneTasks.length} />
+            </StatGrid>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Doing Tasks */}
                 <div className="lg:col-span-2 space-y-4">
                     <div className="flex items-center justify-between">
                         <h2 className="text-base font-medium">{t('dashboard.doingTasks')}</h2>
@@ -67,15 +53,14 @@ export default function DashboardPage() {
                     </div>
                     <div className="space-y-3">
                         {doingTasks.length === 0 ? (
-                            <Card className="shadow-sm border-dashed">
-                                <CardContent className="p-8 text-center text-muted-foreground">
-                                    {t('dashboard.noDoingTasks')}
-                                </CardContent>
-                            </Card>
+                            <EmptyState
+                                icon={KanbanSquare}
+                                title={t('dashboard.noDoingTasks')}
+                            />
                         ) : doingTasks.map(task => (
-                            <Link key={task.id} href={`/tasks/${task.id}`} className="block block group">
-                                <Card className="shadow-sm hover:border-primary/50 transition-colors">
-                                    <CardContent className="p-4 flex items-center justify-between gap-4">
+                            <Link key={task.id} href={`/tasks/${task.id}`} className="block group">
+                                <Card className="hover:border-primary/50 transition-colors">
+                                    <CardContent className="flex items-center justify-between gap-4 py-3">
                                         <div className="flex-1 min-w-0">
                                             <div className="font-medium text-sm text-foreground truncate mb-1.5 group-hover:text-primary transition-colors">
                                                 {task.title}
@@ -90,9 +75,11 @@ export default function DashboardPage() {
                                             </div>
                                         </div>
                                         {task.assignee && (
-                                            <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 text-xs font-semibold">
-                                                {task.assignee.full_name.charAt(0)}
-                                            </div>
+                                            <Avatar className="size-8 shrink-0">
+                                                <AvatarFallback className="text-xs font-semibold">
+                                                    {task.assignee.full_name.charAt(0)}
+                                                </AvatarFallback>
+                                            </Avatar>
                                         )}
                                     </CardContent>
                                 </Card>
@@ -101,11 +88,15 @@ export default function DashboardPage() {
                     </div>
                 </div>
 
+                {/* Right Column */}
                 <div className="space-y-6">
-                    <Card className="shadow-sm">
-                        <CardHeader className="pb-3 flex flex-row items-center justify-between">
+                    {/* Cycle Progress */}
+                    <Card>
+                        <CardHeader>
                             <CardTitle className="text-sm font-medium">{t('dashboard.cycleProgress')}</CardTitle>
-                            <Link href={`/cycles/${MOCK_CYCLE.id}`} className="text-xs text-primary hover:underline">{t('dashboard.details')}</Link>
+                            <CardAction>
+                                <Link href={`/cycles/${MOCK_CYCLE.id}`} className="text-xs text-primary hover:underline">{t('dashboard.details')}</Link>
+                            </CardAction>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             {MOCK_CYCLE.goals.map((g, i) => (
@@ -114,17 +105,18 @@ export default function DashboardPage() {
                                         <span className="font-medium text-foreground">{g.title}</span>
                                         <span className="text-muted-foreground">{g.progress}%</span>
                                     </div>
-                                    <Progress value={g.progress} className={`h-1.5 ${g.progress >= 80 ? '[&>div]:bg-emerald-500' : '[&>div]:bg-primary'}`} />
+                                    <Progress value={g.progress} className={`h-1.5 ${g.progress >= 80 ? '[&>div]:bg-emerald-500' : ''}`} />
                                 </div>
                             ))}
                         </CardContent>
                     </Card>
 
-                    <Card className="shadow-sm">
-                        <CardHeader className="pb-3 text-sm font-medium">
+                    {/* Notifications */}
+                    <Card>
+                        <CardHeader>
                             <CardTitle className="text-sm font-medium">{t('dashboard.newNotifications')}</CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-0.5 px-3">
+                        <CardContent className="space-y-0.5 -mx-1">
                             {MOCK_NOTIFICATIONS.filter(n => !n.is_read).map(n => (
                                 <div key={n.id} className="p-3 border-b last:border-0 border-border/50 hover:bg-muted/50 transition-colors rounded-md cursor-pointer">
                                     <div className="font-medium text-sm text-foreground mb-0.5">{n.title}</div>
@@ -139,19 +131,22 @@ export default function DashboardPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="shadow-sm">
-                        <CardHeader className="pb-3 flex flex-row items-center justify-between">
+                    {/* Projects */}
+                    <Card>
+                        <CardHeader>
                             <CardTitle className="text-sm font-medium">{t('dashboard.projects')}</CardTitle>
-                            <Link href="/projects" className="text-xs text-primary hover:underline">{t('dashboard.allProjects')}</Link>
+                            <CardAction>
+                                <Link href="/projects" className="text-xs text-primary hover:underline">{t('dashboard.allProjects')}</Link>
+                            </CardAction>
                         </CardHeader>
                         <CardContent className="space-y-2">
                             {MOCK_PROJECTS.map(p => (
                                 <Link key={p.id} href={`/projects/${p.id}`} className="block group">
                                     <div className="flex items-center justify-between p-2 rounded-md hover:bg-muted transition-colors">
                                         <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{p.name}</span>
-                                        <span className="text-xs text-muted-foreground bg-muted group-hover:bg-background px-2 py-0.5 rounded-full transition-colors">
+                                        <Badge variant="secondary" className="text-xs">
                                             {p.done_count}/{p.task_count} {t('dashboard.tasksDone')}
-                                        </span>
+                                        </Badge>
                                     </div>
                                 </Link>
                             ))}
