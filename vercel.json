@@ -1,6 +1,0 @@
-{
-  "cleanUrls": true,
-  "installCommand": "pnpm install",
-  "buildCommand": "pnpm turbo run build --filter=tulie_crm",
-  "trailingSlash": false
-}

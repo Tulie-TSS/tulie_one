@@ -2,7 +2,7 @@
   "name": "tulie_one",
   "private": true,
   "scripts": {
-    "build": "turbo run build --filter=tulie_workforce",
+    "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
