@@ -476,7 +476,6 @@ export async function generateDocument(
                             <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(afterVat)}</td>
                         </tr>`
                     })
-                    })
                 })
 
                 // Calculate VAT breakdown HTML rows
