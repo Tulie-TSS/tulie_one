@@ -218,16 +218,32 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                                     </tr>
                                 )}
                                 {(() => {
-                                    const vatRates = Array.from(new Set(allItems.map(item => item.vat_percent || quotation.vat_percent || 0)));
-                                    const vatLabel = vatRates.length === 1 ? `Tổng thuế VAT (${vatRates[0]}%):` : 'Tổng thuế VAT:';
-                                    return (
-                                        <tr>
-                                            <td colSpan={8} className="border border-black py-2 px-3 text-right font-medium text-[10px]">{vatLabel}</td>
+                                    // Calculate VAT breakdown
+                                    const vatGroups = allItems.reduce((acc: Record<number, number>, item) => {
+                                        const qty = item.quantity || 1;
+                                        const price = item.unit_price || 0;
+                                        const disc = item.discount || 0;
+                                        const rate = item.vat_percent || quotation.vat_percent || 0;
+                                        const net = (qty * price) * (1 - disc / 100);
+                                        const vatAmt = net * (rate / 100);
+                                        acc[rate] = (acc[rate] || 0) + vatAmt;
+                                        return acc;
+                                    }, {});
+
+                                    const sortedRates = Object.keys(vatGroups).map(Number).sort((a, b) => a - b);
+
+                                    return sortedRates.map(rate => (
+                                        <tr key={rate}>
+                                            <td colSpan={8} className="border border-black py-2 px-3 text-right font-medium text-[10px]">
+                                                Tổng thuế suất GTGT (VAT) {rate}%:
+                                            </td>
                                             <td className="border border-black py-2 px-1"></td>
-                                            <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] whitespace-nowrap">{formatCurrency(totalVatAmt).replace('₫', '')}</td>
+                                            <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] whitespace-nowrap">
+                                                {formatCurrency(vatGroups[rate]).replace('₫', '')}
+                                            </td>
                                             <td className="border border-black py-2 px-1"></td>
                                         </tr>
-                                    );
+                                    ));
                                 })()}
                                 <tr className="bg-muted">
                                     <td colSpan={9} className="border border-black py-3 px-3 text-right uppercase text-[11px] font-bold">Tổng cộng thanh toán / Grand Total:</td>

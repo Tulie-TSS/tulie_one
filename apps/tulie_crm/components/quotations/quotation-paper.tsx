@@ -315,10 +315,25 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                             <span className="text-foreground">{formatCurrency(subtotal)}</span>
                         </div>
                     )}
-                    <div className="flex justify-between items-center text-[11px] px-2">
-                        <span className="text-slate-500 uppercase">VAT ({quotation.vat_percent || 0}%)</span>
-                        <span className="text-foreground">{formatCurrency(vatAmount)}</span>
-                    </div>
+                    {(() => {
+                        const vatGroups = items.reduce((acc: Record<number, number>, item: any) => {
+                            const qty = item.quantity || 1;
+                            const price = item.unit_price || 0;
+                            const disc = item.discount || 0;
+                            const rate = item.vat_percent !== undefined ? item.vat_percent : (quotation.vat_percent || 0);
+                            const net = (qty * price) * (1 - disc / 100);
+                            const vatAmt = net * (rate / 100);
+                            acc[rate] = (acc[rate] || 0) + vatAmt;
+                            return acc;
+                        }, {});
+                        const sortedRates = Object.keys(vatGroups).map(Number).sort((a, b) => a - b);
+                        return sortedRates.map(rate => (
+                            <div key={rate} className="flex justify-between items-center text-[11px] px-2">
+                                <span className="text-slate-500 uppercase">VAT ({rate}%)</span>
+                                <span className="text-foreground">{formatCurrency(vatGroups[rate])}</span>
+                            </div>
+                        ));
+                    })()}
                     <div className="pt-3 mt-3 border-t-2 border-zinc-950 flex justify-between items-center bg-zinc-950 text-white p-4 rounded-md shadow-lg print:bg-black" style={{ WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
                         <span className="text-[12px] uppercase tracking-widest">Tổng cộng / Total</span>
                         <span className="text-xl">{formatCurrency(finalAmount)}</span>

@@ -317,10 +317,25 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                 <span className="text-slate-900 font-semibold">Thành tiền trước thuế</span>
                                 <span className="font-semibold text-slate-950">{formatCurrency(subtotalNet)}</span>
                             </div>
-                            <div className="flex justify-between text-[13px]">
-                                <span className="text-slate-500 font-medium">Tổng thuế VAT ({quotation.vat_percent || 0}%)</span>
-                                <span className="font-semibold text-slate-950">{formatCurrency(vatAmount)}</span>
-                            </div>
+                            {(() => {
+                                const vatGroups = items.reduce((acc: Record<number, number>, item: any) => {
+                                    const qty = item.quantity || 1;
+                                    const price = item.unit_price || 0;
+                                    const disc = item.discount || 0;
+                                    const rate = item.vat_percent !== undefined ? item.vat_percent : (quotation.vat_percent || 0);
+                                    const net = (qty * price) * (1 - disc / 100);
+                                    const vatAmt = net * (rate / 100);
+                                    acc[rate] = (acc[rate] || 0) + vatAmt;
+                                    return acc;
+                                }, {});
+                                const sortedRates = Object.keys(vatGroups).map(Number).sort((a, b) => a - b);
+                                return sortedRates.map(rate => (
+                                    <div key={rate} className="flex justify-between text-[13px]">
+                                        <span className="text-slate-500 font-medium">Tổng thuế VAT ({rate}%)</span>
+                                        <span className="font-semibold text-slate-950">{formatCurrency(vatGroups[rate])}</span>
+                                    </div>
+                                ));
+                            })()}
                             <div className="pt-3 border-t border-slate-200 flex justify-between items-center">
                                 <span className="font-bold text-slate-950 text-sm">Tổng cộng thanh toán</span>
                                 <span className="font-bold text-2xl text-slate-950 tracking-tighter">{formatCurrency(finalAmount)}</span>
