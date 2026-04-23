@@ -325,12 +325,7 @@ export const contractTemplate = `
       <td style="border:1px solid #000; padding:4px;"></td>
       <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
     </tr>
-    <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Tổng thuế VAT</strong></td>
-      <td style="border:1px solid #000; padding:4px;"></td>
-      <td style="border:1px solid #000; padding:4px; text-align:right; white-space:nowrap;">{{vat_total}}</td>
-      <td style="border:1px solid #000; padding:4px;"></td>
-    </tr>
+    {{vat_breakdown_html}}
     <tr style="background:#e8e8e8;">
       <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="8"><strong>Tổng cộng thanh toán</strong></td>
       <td style="border:1px solid #000; padding:6px;"></td>
