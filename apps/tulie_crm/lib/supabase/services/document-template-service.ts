@@ -440,7 +440,7 @@ export async function generateDocument(
                         const discountPct = item.discount || 0 // discount is a percentage (0-100)
                         const discountAmount = Math.round(itemGross * discountPct / 100)
                         const afterDiscount = itemGross - discountAmount
-                        const itemVatRate = item.vat_percent !== undefined && item.vat_percent !== null 
+                        const itemVatRate = item.vat_percent 
                             ? item.vat_percent 
                             : (contract.quotation?.vat_percent || 0)
                         const itemVat = Math.round(afterDiscount * itemVatRate / 100)
