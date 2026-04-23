@@ -217,12 +217,18 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                                         <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] whitespace-nowrap">{formatCurrency(subtotalAfterDiscount).replace('₫', '')}</td>
                                     </tr>
                                 )}
-                                    <tr>
-                                        <td colSpan={8} className="border border-black py-2 px-3 text-right font-medium text-[10px]">Tổng thuế VAT / Total VAT:</td>
-                                        <td className="border border-black py-2 px-1"></td>
-                                        <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] whitespace-nowrap">{formatCurrency(totalVatAmt).replace('₫', '')}</td>
-                                        <td className="border border-black py-2 px-1"></td>
-                                    </tr>
+                                {(() => {
+                                    const vatRates = Array.from(new Set(allItems.map(item => item.vat_percent || quotation.vat_percent || 0)));
+                                    const vatLabel = vatRates.length === 1 ? `Tổng thuế VAT (${vatRates[0]}%):` : 'Tổng thuế VAT:';
+                                    return (
+                                        <tr>
+                                            <td colSpan={8} className="border border-black py-2 px-3 text-right font-medium text-[10px]">{vatLabel}</td>
+                                            <td className="border border-black py-2 px-1"></td>
+                                            <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] whitespace-nowrap">{formatCurrency(totalVatAmt).replace('₫', '')}</td>
+                                            <td className="border border-black py-2 px-1"></td>
+                                        </tr>
+                                    );
+                                })()}
                                 <tr className="bg-muted">
                                     <td colSpan={9} className="border border-black py-3 px-3 text-right uppercase text-[11px] font-bold">Tổng cộng thanh toán / Grand Total:</td>
                                     <td colSpan={2} className="border border-black py-3 px-1 text-right text-[13px] tabular-nums whitespace-nowrap font-bold">{formatCurrency(quotation.total_amount || grandTotal).replace('₫', '')} VND</td>
