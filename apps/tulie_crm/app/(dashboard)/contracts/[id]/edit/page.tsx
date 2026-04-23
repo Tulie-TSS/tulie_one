@@ -13,28 +13,34 @@ export default async function EditContractPage({ params }: any) {
     const { id } = await params
     const supabase = await createClient()
     
-    // Fetch data and user profile in parallel
-    const [contract, customers, quotations, projects, { data: { user } }] = await Promise.all([
+    // Fetch critical data first
+    const [contract, customers, quotations, projects] = await Promise.all([
         getContractById(id),
         getCustomers(),
         getQuotations(),
-        getProjects(),
-        supabase.auth.getUser()
+        getProjects()
     ])
 
     if (!contract) {
         notFound()
     }
 
-    // Get user profile for role checking
+    // Get user profile for role checking (non-critical, fallback to 'staff')
     let userRole = 'staff'
-    if (user) {
-        const { data: profile } = await supabase
-            .from('users')
-            .select('role')
-            .eq('id', user.id)
-            .single()
-        userRole = profile?.role || 'staff'
+    try {
+        const { data: authData } = await supabase.auth.getUser()
+        if (authData?.user) {
+            const { data: profile } = await supabase
+                .from('users')
+                .select('role')
+                .eq('id', authData.user.id)
+                .maybeSingle()
+            if (profile?.role) {
+                userRole = profile.role
+            }
+        }
+    } catch (err) {
+        console.warn('Failed to fetch user role for contract edit:', err)
     }
 
     return (
