@@ -413,6 +413,8 @@ export function QuotationForm({ quotation, customers, products, units, projects,
             seenGroups.add(groupKey);
         }
         return sum + (Number(item.total_price) || 0)
+    }, 0)
+
     // Calculate VAT breakdown by rate
     const seenGroupsVat = new Set<string>();
     const vatGroups = items.reduce((acc: Record<number, number>, item) => {
@@ -436,7 +438,8 @@ export function QuotationForm({ quotation, customers, products, units, projects,
         }
         return acc;
     }, {})
-    
+
+    const vatAmount = Object.values(vatGroups).reduce((acc, val) => acc + val, 0)
     const totalAmount = subtotal + vatAmount
 
     // JSON Export: build quotation object (without proposal_content)
