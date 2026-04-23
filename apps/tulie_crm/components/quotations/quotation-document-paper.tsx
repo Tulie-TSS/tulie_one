@@ -153,7 +153,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                                 const discountPct = item.discount || 0;
                                 const discountAmt = grossTotal * (discountPct / 100);
                                 const afterDiscount = grossTotal - discountAmt;
-                                const vatRate = item.vat_percent || 0;
+                                const vatRate = item.vat_percent || quotation.vat_percent || 0;
                                 const vatAmt = afterDiscount * (vatRate / 100);
                                 const afterVat = afterDiscount + vatAmt;
                                 return (
@@ -190,7 +190,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                             const g = (item.quantity || 1) * (item.unit_price || 0);
                             const d = g * ((item.discount || 0) / 100);
                             const net = g - d;
-                            return sum + net * ((item.vat_percent || 0) / 100);
+                            return sum + net * ((item.vat_percent || quotation.vat_percent || 0) / 100);
                         }, 0);
                         const grandTotal = subtotalAfterDiscount + totalVatAmt;
                         return (
