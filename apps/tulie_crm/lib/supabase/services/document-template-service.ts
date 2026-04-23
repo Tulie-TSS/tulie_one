@@ -476,7 +476,38 @@ export async function generateDocument(
                             <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(afterVat)}</td>
                         </tr>`
                     })
+                    })
                 })
+
+                // Calculate VAT breakdown HTML rows
+                const vatGroupsMap: Record<number, number> = {}
+                items.forEach((item: any) => {
+                    const qty = item.quantity || 1
+                    const unitPrice = item.unit_price || 0
+                    const itemGross = qty * unitPrice
+                    const discountPct = item.discount || 0
+                    const discountAmount = Math.round(itemGross * discountPct / 100)
+                    const afterDiscount = itemGross - discountAmount
+                    const itemVatRate = item.vat_percent 
+                        ? item.vat_percent 
+                        : (contract.quotation?.vat_percent || 0)
+                    const itemVat = Math.round(afterDiscount * itemVatRate / 100)
+                    
+                    if (itemVat > 0 || itemVatRate === 0) {
+                        vatGroupsMap[itemVatRate] = (vatGroupsMap[itemVatRate] || 0) + itemVat
+                    }
+                })
+
+                let vatBreakdownHtml = ''
+                Object.entries(vatGroupsMap).sort((a, b) => Number(a[0]) - Number(b[0])).forEach(([rate, amt]) => {
+                    vatBreakdownHtml += `<tr style="background:#f5f5f5;">
+                        <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Tổng thuế VAT (${rate}%)</strong></td>
+                        <td style="border:1px solid #000; padding:4px;"></td>
+                        <td style="border:1px solid #000; padding:4px;"></td>
+                        <td style="border:1px solid #000; padding:4px; text-align:right; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(amt as number)}</td>
+                    </tr>`
+                })
+                variables.vat_breakdown_html = vatBreakdownHtml
 
                 variables.contract_items_table = itemsRowsHtml
                 variables.quotation_items_table = itemsRowsHtml
