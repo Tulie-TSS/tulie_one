@@ -238,10 +238,10 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                                                 Tổng thuế suất GTGT (VAT) {rate}%:
                                             </td>
                                             <td className="border border-black py-2 px-1"></td>
+                                            <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] whitespace-nowrap"></td>
                                             <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] whitespace-nowrap">
                                                 {formatCurrency(vatGroups[rate]).replace('₫', '')}
                                             </td>
-                                            <td className="border border-black py-2 px-1"></td>
                                         </tr>
                                     ));
                                 })()}
