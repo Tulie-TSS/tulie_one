@@ -413,14 +413,14 @@ export function QuotationForm({ quotation, customers, products, units, projects,
             seenGroups.add(groupKey);
         }
         return sum + (Number(item.total_price) || 0)
-    }, 0)
-    
-    // Calculate VAT amount by summing up each item's VAT
-    const vatAmount = items.reduce((sum, item) => {
-        if (item.is_optional) return sum;
+    // Calculate VAT breakdown by rate
+    const seenGroupsVat = new Set<string>();
+    const vatGroups = items.reduce((acc: Record<number, number>, item) => {
+        if (item.is_optional) return acc;
         if (item.alternative_group && item.alternative_group.trim() !== '') {
-            // Logic for alternative groups should be consistent with subtotal
-            // For now, simple sum is handled by subtotal logic above
+            const groupKey = item.alternative_group.trim().toLowerCase();
+            if (seenGroupsVat.has(groupKey)) return acc;
+            seenGroupsVat.add(groupKey);
         }
         
         const qty = Number(item.quantity) || 0;
@@ -429,8 +429,13 @@ export function QuotationForm({ quotation, customers, products, units, projects,
         const itemVatPct = item.vat_percent !== undefined ? Number(item.vat_percent) : vatPercent;
         
         const lineAfterDisc = (qty * price) * (1 - disc / 100);
-        return sum + (lineAfterDisc * (itemVatPct / 100));
-    }, 0)
+        const lineVat = lineAfterDisc * (itemVatPct / 100);
+        
+        if (lineVat > 0 || itemVatPct === 0) {
+            acc[itemVatPct] = (acc[itemVatPct] || 0) + lineVat;
+        }
+        return acc;
+    }, {})
     
     const totalAmount = subtotal + vatAmount
 
@@ -1152,14 +1157,14 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                             <Table className="min-w-[900px]">
                                                 <TableHeader className="bg-white">
                                                     <TableRow className="hover:bg-transparent">
-                                                        <TableHead className="w-[50px]"></TableHead>
-                                                        <TableHead className="pl-0 min-w-[250px]">Sản phẩm / Dịch vụ</TableHead>
-                                                        <TableHead className="w-[70px]">ĐVT</TableHead>
-                                                        <TableHead className="w-[90px]">SL</TableHead>
-                                                        <TableHead className="min-w-[140px]">Đơn giá</TableHead>
-                                                        <TableHead className="w-[70px]">CK %</TableHead>
-                                                        <TableHead className="w-[70px]">VAT %</TableHead>
-                                                        <TableHead className="min-w-[130px] text-right">Thành tiền</TableHead>
+                                                        <TableHead className="w-[40px]"></TableHead>
+                                                        <TableHead className="pl-0 min-w-[200px]">Sản phẩm / Dịch vụ</TableHead>
+                                                        <TableHead className="w-[60px] px-1">ĐVT</TableHead>
+                                                        <TableHead className="w-[65px] px-1">SL</TableHead>
+                                                        <TableHead className="min-w-[110px] px-1">Đơn giá</TableHead>
+                                                        <TableHead className="w-[60px] px-1 text-center">CK %</TableHead>
+                                                        <TableHead className="w-[60px] px-1 text-center">VAT %</TableHead>
+                                                        <TableHead className="min-w-[120px] text-right">Thành tiền</TableHead>
                                                         <TableHead className="w-[40px] pr-4"></TableHead>
                                                     </TableRow>
                                                 </TableHeader>
@@ -1322,15 +1327,15 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                                                         </div>
                                                                     </div>
                                                                 </TableCell>
-                                                                <TableCell className="align-top py-4">
+                                                                <TableCell className="align-top py-4 px-1">
                                                                     <Input
                                                                         placeholder="ĐVT"
                                                                         value={item.unit}
                                                                         onChange={(e) => updateItem(item.id!, { unit: e.target.value })}
-                                                                        className="h-9"
+                                                                        className="h-9 px-2"
                                                                     />
                                                                 </TableCell>
-                                                                <TableCell className="align-top py-4">
+                                                                <TableCell className="align-top py-4 px-1">
                                                                     <Input
                                                                         inputMode="numeric"
                                                                         value={item.quantity === 0 || item.quantity === undefined ? '' : Number(item.quantity).toLocaleString('vi-VN')}
@@ -1345,17 +1350,17 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                                                         onBlur={(e) => {
                                                                             if (!e.target.value.trim()) updateItem(item.id!, { quantity: 1 })
                                                                         }}
-                                                                        className="h-9 w-full text-center tabular-nums"
+                                                                        className="h-9 w-full text-center tabular-nums px-1"
                                                                     />
                                                                 </TableCell>
-                                                                <TableCell className="align-top py-4">
+                                                                <TableCell className="align-top py-4 px-1">
                                                                     <PriceInput
                                                                         value={item.unit_price || 0}
                                                                         onChange={(val) => updateItem(item.id!, { unit_price: val })}
-                                                                        className="h-9"
+                                                                        className="h-9 px-2"
                                                                     />
                                                                 </TableCell>
-                                                                <TableCell className="align-top py-4">
+                                                                <TableCell className="align-top py-4 px-1">
                                                                     <Input
                                                                         inputMode="numeric"
                                                                         value={item.discount === 0 || item.discount === undefined ? '' : item.discount}
@@ -1371,10 +1376,10 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                                                             if (!e.target.value.trim()) updateItem(item.id!, { discount: 0 })
                                                                         }}
                                                                         placeholder="0"
-                                                                        className="h-9 w-full text-center tabular-nums"
+                                                                        className="h-9 w-full text-center tabular-nums px-1"
                                                                     />
                                                                 </TableCell>
-                                                                <TableCell className="align-top py-4">
+                                                                <TableCell className="align-top py-4 px-1">
                                                                     <Input
                                                                         inputMode="numeric"
                                                                         value={item.vat_percent === undefined ? '' : item.vat_percent}
@@ -1392,7 +1397,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                                                             }
                                                                         }}
                                                                         placeholder={vatPercent.toString()}
-                                                                        className="h-9 w-full text-center tabular-nums"
+                                                                        className="h-9 w-full text-center tabular-nums px-1"
                                                                     />
                                                                 </TableCell>
                                                                 <TableCell className="text-right font-medium align-top py-6">
@@ -1570,7 +1575,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                 </div>
 
                                 <div className="space-y-1">
-                                    <p className="text-[11px] text-muted-foreground">Thuế VAT</p>
+                                    <p className="text-[11px] text-muted-foreground">Thuế VAT (Mặc định)</p>
                                     <div className="flex items-center gap-3">
                                         <Select value={vatPercent.toString()} onValueChange={(v) => setVatPercent(parseInt(v))}>
                                             <SelectTrigger className="w-24 h-9 text-xs border-border">
@@ -1582,9 +1587,24 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                                 <SelectItem value="10">10%</SelectItem>
                                             </SelectContent>
                                         </Select>
-                                        <div className="flex items-baseline gap-1">
-                                            <span className="text-sm text-foreground">{formatNumber(vatAmount)}</span>
-                                            <span className="text-[10px] text-foreground">đ</span>
+                                        <div className="flex flex-col gap-1 min-w-[120px]">
+                                            {Object.entries(vatGroups).sort((a, b) => Number(a[0]) - Number(b[0])).map(([rate, amt]) => (
+                                                <div key={rate} className="flex items-center justify-between gap-4">
+                                                    <span className="text-[10px] text-muted-foreground whitespace-nowrap">VAT {rate}%:</span>
+                                                    <span className="text-[13px] font-medium text-foreground tabular-nums">{formatNumber(amt as number)} <span className="text-[10px]">đ</span></span>
+                                                </div>
+                                            ))}
+                                            {Object.keys(vatGroups).length > 1 && (
+                                                <div className="flex items-center justify-between gap-4 border-t border-border pt-1 mt-1">
+                                                    <span className="text-[10px] font-bold text-foreground">Tổng thuế:</span>
+                                                    <span className="text-[13px] font-bold text-foreground tabular-nums">{formatNumber(vatAmount)} <span className="text-[10px]">đ</span></span>
+                                                </div>
+                                            )}
+                                            {Object.keys(vatGroups).length <= 1 && Object.keys(vatGroups).length > 0 && (
+                                                <div className="flex items-baseline gap-1">
+                                                    {/* Handled by the map above */}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
