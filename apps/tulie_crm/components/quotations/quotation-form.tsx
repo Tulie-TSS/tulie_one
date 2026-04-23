@@ -1928,3 +1928,5 @@ export function QuotationForm({ quotation, customers, products, units, projects,
         </div>
     )
 }
+
+export default QuotationForm;
