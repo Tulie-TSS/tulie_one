@@ -264,7 +264,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                             const discountPct = item.discount || 0;
                                             const discountAmt = grossTotal * (discountPct / 100);
                                             const afterDiscount = grossTotal - discountAmt;
-                                            const vatRate = item.vat_percent || 0;
+                                            const vatRate = item.vat_percent || quotation.vat_percent || 0;
                                             const vatAmt = afterDiscount * (vatRate / 100);
                                             const afterVat = afterDiscount + vatAmt;
 
@@ -318,7 +318,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                 <span className="font-semibold text-slate-950">{formatCurrency(subtotalNet)}</span>
                             </div>
                             <div className="flex justify-between text-[13px]">
-                                <span className="text-slate-500 font-medium">Tổng thuế VAT ({quotation.vat_percent}%)</span>
+                                <span className="text-slate-500 font-medium">Tổng thuế VAT ({quotation.vat_percent || 0}%)</span>
                                 <span className="font-semibold text-slate-950">{formatCurrency(vatAmount)}</span>
                             </div>
                             <div className="pt-3 border-t border-slate-200 flex justify-between items-center">
