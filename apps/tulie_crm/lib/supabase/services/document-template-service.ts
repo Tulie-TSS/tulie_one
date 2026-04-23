@@ -9,9 +9,7 @@ import { readNumberToWords } from '@/lib/utils/format'
 function parseLocalDateString(dateStr: string): Date {
     const datePart = dateStr.substring(0, 10) // "2026-03-16"
     const [y, m, d] = datePart.split('-').map(Number)
-    return new Date(y, m - 1, d)
-}
-
+    return new Date(y, m - 1,         const itemVatRate = (item.vat_percent !== undefined && item.vat_percent !== null) ? item.vat_percent : (contract.quotation?.vat_percent || 0)
 import { contractTemplate } from './contract-template'
 import { paymentTemplate } from './payment-template'
 import { orderTemplate } from './order-template'
