@@ -4,6 +4,7 @@ import { getQuotations } from '@/lib/supabase/services/quotation-service'
 import { getProjects } from '@/lib/supabase/services/project-service'
 import { notFound } from 'next/navigation'
 import { ContractForm } from '@/components/contracts/contract-form'
+import { createClient } from '@/lib/supabase/server'
 
 interface EditContractPageProps {
     params: { id: string }
