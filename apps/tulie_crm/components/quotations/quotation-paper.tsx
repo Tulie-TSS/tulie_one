@@ -33,7 +33,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
     const subtotalRaw = items.reduce((sum: number, item: any) => sum + (item.quantity * item.unit_price), 0);
     const totalDiscount = items.reduce((sum: number, item: any) => sum + (item.quantity * item.unit_price * (item.discount || 0) / 100), 0);
     const subtotal = subtotalRaw - totalDiscount;
-    const vatAmount = subtotal * (quotation.vat_rate || 0) / 100;
+    const vatAmount = subtotal * (quotation.vat_percent || 0) / 100;
     const finalAmount = subtotal + vatAmount;
 
     const proposalSections = quotation.proposal_sections || []
@@ -316,7 +316,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                         </div>
                     )}
                     <div className="flex justify-between items-center text-[11px] px-2">
-                        <span className="text-slate-500 uppercase">VAT ({quotation.vat_rate || 0}%)</span>
+                        <span className="text-slate-500 uppercase">VAT ({quotation.vat_percent || 0}%)</span>
                         <span className="text-foreground">{formatCurrency(vatAmount)}</span>
                     </div>
                     <div className="pt-3 mt-3 border-t-2 border-zinc-950 flex justify-between items-center bg-zinc-950 text-white p-4 rounded-md shadow-lg print:bg-black" style={{ WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>

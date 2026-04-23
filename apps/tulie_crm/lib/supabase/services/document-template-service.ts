@@ -470,7 +470,7 @@ export async function generateDocument(
                             <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${discountAmount > 0 ? new Intl.NumberFormat('vi-VN').format(discountAmount) : '-'}</td>
                             <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(afterDiscount)}</td>
                             <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${itemVatRate > 0 ? itemVatRate + '%' : '0%'}</td>
-                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${itemVat > 0 ? new Intl.NumberFormat('vi-VN').format(itemVat) : '-'}</td>
+                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${itemVat > 0 ? new Intl.NumberFormat('vi-VN').format(itemVat) : '0'}</td>
                             <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(afterVat)}</td>
                         </tr>`
                     })
@@ -505,6 +505,7 @@ export async function generateDocument(
                 variables.total_discount = new Intl.NumberFormat('vi-VN').format(totalDiscountAmt)
                 variables.subtotal = new Intl.NumberFormat('vi-VN').format(subtotalAfterDiscount)
                 variables.vat_total = new Intl.NumberFormat('vi-VN').format(totalVat)
+                variables.vat_amount = variables.vat_total // Set both for template compatibility
                 variables.total_after_vat = new Intl.NumberFormat('vi-VN').format(totalAfterVat)
                 
                 // Final total = totalAfterVat - overall discount (if any)
@@ -512,8 +513,7 @@ export async function generateDocument(
                 variables.total_amount_number = new Intl.NumberFormat('vi-VN').format(finalTotal)
 
                 // Keep legacy vars for backward compat
-                variables.vat_rate = ''
-                variables.vat_amount = ''
+                variables.vat_rate = (contract.quotation?.vat_percent || 0).toString()
 
                 // Optional overall discount row (separate from per-item discounts)
                 if (overallDiscountAmount > 0) {

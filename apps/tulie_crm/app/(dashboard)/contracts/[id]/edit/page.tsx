@@ -11,15 +11,30 @@ interface EditContractPageProps {
 
 export default async function EditContractPage({ params }: any) {
     const { id } = await params
-    const [contract, customers, quotations, projects] = await Promise.all([
+    const supabase = await createClient()
+    
+    // Fetch data and user profile in parallel
+    const [contract, customers, quotations, projects, { data: { user } }] = await Promise.all([
         getContractById(id),
         getCustomers(),
         getQuotations(),
-        getProjects()
+        getProjects(),
+        supabase.auth.getUser()
     ])
 
     if (!contract) {
         notFound()
+    }
+
+    // Get user profile for role checking
+    let userRole = 'staff'
+    if (user) {
+        const { data: profile } = await supabase
+            .from('users')
+            .select('role')
+            .eq('id', user.id)
+            .single()
+        userRole = profile?.role || 'staff'
     }
 
     return (
@@ -28,6 +43,7 @@ export default async function EditContractPage({ params }: any) {
             customers={customers}
             quotations={quotations}
             projects={projects}
+            userRole={userRole}
         />
     )
 }

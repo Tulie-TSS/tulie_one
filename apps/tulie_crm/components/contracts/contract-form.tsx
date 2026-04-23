@@ -69,9 +69,10 @@ interface ContractFormProps {
     customers: Customer[]
     quotations: Quotation[]
     projects: any[]
+    userRole?: string
 }
 
-export function ContractForm({ contract, customers, quotations, projects }: ContractFormProps) {
+export function ContractForm({ contract, customers, quotations, projects, userRole }: ContractFormProps) {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
 
@@ -102,10 +103,11 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
     const [terms, setTerms] = useState(contract.terms || '')
     const [contractType, setContractType] = useState(contract.type || 'contract')
 
-    // Lock entirely when completed/cancelled
-    const isFullyLocked = ['completed', 'cancelled'].includes(contract.status)
-    // Lock core details when active (but allow milestone/status updates)
-    const isCoreLocked = ['active', 'completed', 'cancelled'].includes(contract.status)
+    const isAdmin = userRole === 'admin' || userRole === 'ceo'
+    // Lock entirely when completed/cancelled (unless admin)
+    const isFullyLocked = ['completed', 'cancelled'].includes(contract.status) && !isAdmin
+    // Lock core details when active (but allow milestone/status updates) (unless admin)
+    const isCoreLocked = ['active', 'completed', 'cancelled'].includes(contract.status) && !isAdmin
 
     // Customer abbreviation for document number generation
     const selectedCustomer = customers.find(c => c.id === customerId)
@@ -286,7 +288,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                 </div>
             </div>
 
-            {isCoreLocked && !isFullyLocked && (
+            {isCoreLocked && (
                 <Alert className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-800">
                     <AlertTriangle className="h-4 w-4 text-blue-600" />
                     <AlertDescription className="text-blue-800 dark:text-blue-300 font-medium">
@@ -294,11 +296,19 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                     </AlertDescription>
                 </Alert>
             )}
-            {isFullyLocked && (
+            {['completed', 'cancelled'].includes(contract.status) && !isAdmin && (
                 <Alert className="border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-800">
                     <AlertTriangle className="h-4 w-4 text-amber-600" />
                     <AlertDescription className="text-amber-800 dark:text-amber-300 font-medium">
                         Hợp đồng đã đóng — không thể chỉnh sửa thông tin. Liên hệ admin nếu cần thay đổi.
+                    </AlertDescription>
+                </Alert>
+            )}
+            {isAdmin && ['active', 'completed', 'cancelled'].includes(contract.status) && (
+                <Alert className="border-green-200 bg-green-50 dark:bg-green-950/30 dark:border-green-800">
+                    <AlertTriangle className="h-4 w-4 text-green-600" />
+                    <AlertDescription className="text-green-800 dark:text-green-300 font-medium">
+                        Quyền Admin: Bạn có thể chỉnh sửa thông tin ngay cả khi hợp đồng đã triển khai hoặc đã đóng.
                     </AlertDescription>
                 </Alert>
             )}
@@ -516,13 +526,14 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                         </CardHeader>
                         <CardContent className="space-y-4">
                             {milestones.map((milestone, index) => {
-                                const isCompleted = milestone.status === 'completed'
+                                const isMilestoneDone = milestone.status === 'completed'
+                                const isMilestoneLocked = isMilestoneDone && !isAdmin
                                 return (
-                                <div key={milestone.id} className={`p-4 border rounded-lg space-y-3 ${isCompleted ? 'bg-muted/30' : ''}`}>
+                                <div key={milestone.id} className={`p-4 border rounded-lg space-y-3 ${isMilestoneDone ? 'bg-muted/30' : ''}`}>
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-4">
                                             <span className="font-medium">Đợt {index + 1}</span>
-                                            {isCompleted && (
+                                            {isMilestoneLocked && (
                                                 <span className="text-xs px-2 py-0.5 rounded bg-secondary text-secondary-foreground font-medium">
                                                     ✓ Đã ghi nhận
                                                 </span>
@@ -530,7 +541,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                                             <Select
                                                 value={milestone.type}
                                                 onValueChange={(v) => updateMilestone(milestone.id, 'type', v)}
-                                                disabled={isCompleted}
+                                                disabled={isMilestoneLocked}
                                             >
                                                 <SelectTrigger className="h-8 w-32 bg-muted/50">
                                                     <SelectValue />
@@ -555,7 +566,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                                                     <SelectItem value="overdue">Trễ</SelectItem>
                                                 </SelectContent>
                                             </Select>
-                                            {!isCompleted && (
+                                            {!isMilestoneLocked && (
                                             <Button
                                                 type="button"
                                                 variant="ghost"
@@ -573,14 +584,14 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                                         <Input
                                             value={milestone.name}
                                             onChange={(e) => updateMilestone(milestone.id, 'name', e.target.value)}
-                                            disabled={isCompleted}
+                                            disabled={isMilestoneLocked}
                                         />
                                     </div>
                                     <div className="grid gap-4 sm:grid-cols-2">
                                         <div className="space-y-2">
                                             <div className="flex items-center justify-between h-8">
                                                 <Label>Số tiền</Label>
-                                                {!isCompleted && (
+                                                {!isMilestoneLocked && (
                                                 <Tabs
                                                     value={milestone.amount_mode}
                                                     onValueChange={(v) => updateMilestone(milestone.id, 'amount_mode', v as 'fixed' | 'percent')}
@@ -605,7 +616,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                                                             onChange={(e) => updateMilestone(milestone.id, 'percentage', parseFloat(e.target.value) || 0)}
                                                             placeholder="0"
                                                             className="flex-1"
-                                                            disabled={isCompleted}
+                                                            disabled={isMilestoneLocked}
                                                         />
                                                         <span className="text-sm text-muted-foreground shrink-0">%</span>
                                                     </div>
@@ -620,7 +631,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                                                     value={formatNumber(milestone.amount)}
                                                     onChange={(e) => updateMilestone(milestone.id, 'amount', parseFormattedNumber(e.target.value))}
                                                     placeholder="0"
-                                                    disabled={isCompleted}
+                                                    disabled={isMilestoneLocked}
                                                 />
                                             )}
                                         </div>
@@ -630,7 +641,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                                             </div>
                                             <Popover>
                                                 <PopoverTrigger asChild>
-                                                    <Button variant="outline" className="w-full justify-start text-left font-normal" disabled={isCompleted}>
+                                                    <Button variant="outline" className="w-full justify-start text-left font-normal" disabled={isMilestoneLocked}>
                                                         <CalendarIcon className="h-4 w-4" />
                                                         {milestone.due_date ? format(milestone.due_date, 'dd/MM/yyyy') : 'Chọn'}
                                                     </Button>
@@ -670,7 +681,7 @@ export function ContractForm({ contract, customers, quotations, projects }: Cont
                                                 value={milestone.delay_reason}
                                                 onChange={(e) => updateMilestone(milestone.id, 'delay_reason', e.target.value)}
                                                 placeholder="VD: Chờ phản hồi khách hàng"
-                                                disabled={isCompleted}
+                                                disabled={isMilestoneLocked}
                                             />
                                         </div>
                                     </div>

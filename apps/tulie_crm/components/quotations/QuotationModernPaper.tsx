@@ -288,7 +288,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                                     <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums">{discountAmt > 0 ? formatCurrency(discountAmt).replace('₫', '') : '-'}</td>
                                                     <td className="px-2 text-right text-zinc-800 align-top py-3 text-[10px] tabular-nums">{formatCurrency(afterDiscount).replace('₫', '')}</td>
                                                     <td className="px-1 text-center text-muted-foreground align-top py-3 text-[10px]">{vatRate > 0 ? `${vatRate}%` : '0%'}</td>
-                                                    <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums">{vatAmt > 0 ? formatCurrency(vatAmt).replace('₫', '') : '-'}</td>
+                                                    <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums">{vatAmt > 0 ? formatCurrency(vatAmt).replace('₫', '') : '0'}</td>
                                                     <td className="px-3 text-right text-foreground align-top py-3 text-[11px] tabular-nums">{formatCurrency(afterVat).replace('₫', '')}</td>
                                                 </tr>
                                             );
