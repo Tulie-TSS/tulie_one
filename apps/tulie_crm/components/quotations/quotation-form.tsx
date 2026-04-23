@@ -180,6 +180,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                     unit: 'cái',
                     unit_price: 0,
                     discount: 0,
+                    vat_percent: vatPercent,
                     total_price: 0,
                     sort_order: 0
                 }
@@ -214,6 +215,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
             unit: 'cái',
             unit_price: 0,
             discount: 0,
+            vat_percent: lastItem?.vat_percent ?? vatPercent,
             total_price: 0,
             sort_order: items.length
         }
@@ -286,6 +288,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
             unit: 'cái',
             unit_price: 0,
             discount: 0,
+            vat_percent: vatPercent,
             total_price: 0,
             sort_order: items.length
         }
@@ -370,7 +373,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 }
 
                 // Recalculate total - trigger if relevant fields changed
-                const calculationFields = ['quantity', 'unit_price', 'discount', 'product_id']
+                const calculationFields = ['quantity', 'unit_price', 'discount', 'vat_percent', 'product_id']
                 if (calculationFields.some(field => field in updates)) {
                     const qty = Number(updated.quantity) || 0
                     const priceVal = Number(updated.unit_price) || 0
@@ -411,7 +414,24 @@ export function QuotationForm({ quotation, customers, products, units, projects,
         }
         return sum + (Number(item.total_price) || 0)
     }, 0)
-    const vatAmount = subtotal * (vatPercent / 100)
+    
+    // Calculate VAT amount by summing up each item's VAT
+    const vatAmount = items.reduce((sum, item) => {
+        if (item.is_optional) return sum;
+        if (item.alternative_group && item.alternative_group.trim() !== '') {
+            // Logic for alternative groups should be consistent with subtotal
+            // For now, simple sum is handled by subtotal logic above
+        }
+        
+        const qty = Number(item.quantity) || 0;
+        const price = Number(item.unit_price) || 0;
+        const disc = Number(item.discount) || 0;
+        const itemVatPct = item.vat_percent !== undefined ? Number(item.vat_percent) : vatPercent;
+        
+        const lineAfterDisc = (qty * price) * (1 - disc / 100);
+        return sum + (lineAfterDisc * (itemVatPct / 100));
+    }, 0)
+    
     const totalAmount = subtotal + vatAmount
 
     // JSON Export: build quotation object (without proposal_content)
@@ -708,6 +728,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 sort_order: Number(item.sort_order) || 0,
                 alternative_group: item.alternative_group || null,
                 is_optional: item.is_optional || false,
+                vat_percent: item.vat_percent !== undefined ? Number(item.vat_percent) : vatPercent,
             }))
 
             await updateQuotation(quotation.id, updateData, cleanedItems)
@@ -1137,6 +1158,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                                         <TableHead className="w-[90px]">SL</TableHead>
                                                         <TableHead className="min-w-[140px]">Đơn giá</TableHead>
                                                         <TableHead className="w-[70px]">CK %</TableHead>
+                                                        <TableHead className="w-[70px]">VAT %</TableHead>
                                                         <TableHead className="min-w-[130px] text-right">Thành tiền</TableHead>
                                                         <TableHead className="w-[40px] pr-4"></TableHead>
                                                     </TableRow>
@@ -1349,6 +1371,27 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                                                             if (!e.target.value.trim()) updateItem(item.id!, { discount: 0 })
                                                                         }}
                                                                         placeholder="0"
+                                                                        className="h-9 w-full text-center tabular-nums"
+                                                                    />
+                                                                </TableCell>
+                                                                <TableCell className="align-top py-4">
+                                                                    <Input
+                                                                        inputMode="numeric"
+                                                                        value={item.vat_percent === undefined ? '' : item.vat_percent}
+                                                                        onChange={(e) => {
+                                                                            const raw = e.target.value.replace(/[^0-9]/g, '')
+                                                                            const val = raw === '' ? 0 : Math.min(parseInt(raw), 100)
+                                                                            updateItem(item.id!, { vat_percent: val })
+                                                                        }}
+                                                                        onFocus={(e) => {
+                                                                            if (e.target.value === '' || e.target.value === '0') e.target.value = ''
+                                                                        }}
+                                                                        onBlur={(e) => {
+                                                                            if (!e.target.value.trim() && item.vat_percent === undefined) {
+                                                                                updateItem(item.id!, { vat_percent: vatPercent })
+                                                                            }
+                                                                        }}
+                                                                        placeholder={vatPercent.toString()}
                                                                         className="h-9 w-full text-center tabular-nums"
                                                                     />
                                                                 </TableCell>
