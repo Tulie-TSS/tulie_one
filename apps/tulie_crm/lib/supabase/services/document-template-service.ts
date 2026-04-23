@@ -5,11 +5,11 @@ import { DocumentTemplate, DocumentBundle, GeneratedDocument } from '@/types'
 import { readNumberToWords } from '@/lib/utils/format'
 
 // Parse date string to local Date, avoiding UTC timezone shift
-// "2024-03-16T17:00:00+00:00" -> local March 16 (not UTC which may differ)
+// "2026-03-16T17:00:00+00:00" → local March 16 (not UTC which may differ)
 function parseLocalDateString(dateStr: string): Date {
-      const datePart = dateStr.substring(0, 10) // "2024-03-16"
-  const [y, m, d] = datePart.split('-').map(Number)
-      return new Date(y, m - 1, d)
+    const datePart = dateStr.substring(0, 10) // "2026-03-16"
+    const [y, m, d] = datePart.split('-').map(Number)
+    return new Date(y, m - 1, d)
 }
 
 import { contractTemplate } from './contract-template'
@@ -19,141 +19,1060 @@ import { deliveryMinutesTemplate } from './delivery-minutes-template'
 import { quotationTemplate } from './quotation-template'
 
 /**
-     * Standard templates with common variables for HTML fallback and variable definition
-     * Variables map to {{variable_name}} placeholders in HTML templates
-     */
+ * Standard templates with common variables for HTML fallback and variable definition
+ * Variables map to {{variable_name}} placeholders in HTML templates
+ */
 const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at'>[] = [
     {
-            name: 'Bao gia (Mau chuan)',
-            type: 'quotation',
-            content: quotationTemplate,
-            variables: [
-                      'quotation_number', 'quotation_date', 'day', 'month', 'year',
-                      'customer_company', 'customer_representative', 'customer_position',
-                      'customer_address', 'customer_phone', 'customer_mobile',
-                      'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
-                      'quotation_items_table', 'subtotal', 'vat_rate', 'vat_amount',
-                      'total_amount_number', 'amount_in_words',
-                      'payment_terms', 'delivery_time', 'delivery_address'
-                    ]
+        name: 'Báo giá (Mẫu chuẩn)',
+        type: 'quotation',
+        content: quotationTemplate,
+        variables: [
+            'quotation_number', 'quotation_date', 'day', 'month', 'year',
+            'customer_company', 'customer_representative', 'customer_position',
+            'customer_address', 'customer_phone', 'customer_mobile',
+            'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
+            'quotation_items_table', 'subtotal', 'vat_rate', 'vat_amount',
+            'total_amount_number', 'amount_in_words',
+            'payment_terms', 'delivery_time', 'delivery_address'
+        ]
     },
     {
-            name: 'Hop dong (Mau chuan)',
-            type: 'contract',
-            content: contractTemplate,
-            variables: [
-                      'contract_number', 'contract_date', 'day', 'month', 'year',
-                      'customer_company', 'customer_representative', 'customer_position',
-                      'customer_address', 'customer_phone', 'customer_mobile',
-                      'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
-                      'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
-                      'total_amount_number', 'amount_in_words',
-                      'payment_milestones'
-                    ]
+        name: 'Hợp đồng kinh tế (Mẫu chuẩn)',
+        type: 'contract',
+        content: contractTemplate,
+        variables: [
+            'contract_number', 'day', 'month', 'year',
+            'customer_company', 'customer_representative', 'customer_position',
+            'customer_address', 'customer_phone', 'customer_mobile',
+            'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
+            'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
+            'total_amount_number', 'amount_in_words',
+            'payment_terms', 'delivery_time', 'delivery_address',
+            'service_description'
+        ]
     },
     {
-            name: 'Chung tu thanh toan (Mau chuan)',
-            type: 'payment',
-            content: paymentTemplate,
-            variables: [
-                      'payment_number', 'payment_date', 'day', 'month', 'year',
-                      'customer_company', 'customer_representative', 'customer_position',
-                      'customer_address', 'customer_phone', 'customer_mobile',
-                      'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
-                      'payment_amount_number', 'amount_in_words', 'payment_method', 'reason'
-                    ]
+        name: 'Đơn đặt hàng (Mẫu chuẩn)',
+        type: 'order',
+        content: orderTemplate,
+        variables: [
+            'order_number', 'day', 'month', 'year',
+            'customer_company', 'customer_representative', 'customer_position',
+            'customer_address', 'customer_phone', 'customer_mobile',
+            'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
+            'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
+            'total_amount_number', 'amount_in_words',
+            'payment_terms', 'delivery_time', 'delivery_address'
+        ]
     },
     {
-            name: 'Don hang (Mau chuan)',
-            type: 'order',
-            content: orderTemplate,
-            variables: [
-                      'order_number', 'order_date', 'day', 'month', 'year',
-                      'customer_company', 'customer_representative', 'customer_position',
-                      'customer_address', 'customer_phone', 'customer_mobile',
-                      'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
-                      'order_items_table', 'subtotal', 'vat_rate', 'vat_amount',
-                      'total_amount_number', 'amount_in_words',
-                      'delivery_date', 'delivery_location'
-                    ]
+        name: 'Đề nghị thanh toán (Mẫu chuẩn)',
+        type: 'payment_request',
+        content: paymentTemplate,
+        variables: [
+            'payment_number', 'day', 'month', 'year',
+            'customer_company', 'contract_number', 'contract_date',
+            'service_description', 'delivery_date',
+            'payment_percentage', 'payment_amount', 'amount_in_words'
+        ]
     },
     {
-            name: 'Bien ban ban giao (Mau chuan)',
-            type: 'delivery_minutes',
-            content: deliveryMinutesTemplate,
-            variables: [
-                      'minutes_number', 'minutes_date', 'day', 'month', 'year',
-                      'customer_company', 'customer_representative', 'customer_position',
-                      'customer_address', 'customer_phone', 'customer_mobile',
-                      'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
-                      'delivery_items_table', 'received_by', 'delivered_by'
-                    ]
+        name: 'Biên bản giao nhận (Mẫu chuẩn)',
+        type: 'delivery_minutes',
+        content: deliveryMinutesTemplate,
+        variables: [
+            'report_number', 'day', 'month', 'year',
+            'customer_company', 'customer_representative', 'customer_position',
+            'customer_address', 'customer_phone', 'customer_mobile',
+            'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
+            'contract_number', 'order_number', 'order_date',
+            'delivery_items_table'
+        ]
     }
-    ]
-;
+]
 
-/**
- * Initialize standard templates in the database if they don't exist
- */
-export async function seedDocumentTemplates() {
-      const supabase = createAdminClient()
 
-  for (const template of defaultTemplates) {
-          const { data: existing } = await supabase
+// Get all templates — DB-first, built-in fallback when DB is empty
+export async function getDocumentTemplates() {
+    try {
+        const supabase = await createClient()
+        // Try to order by is_default first; if column doesn't exist, fallback to created_at only
+        let query = supabase.from('document_templates').select('*')
+        const { data, error } = await query
+            .order('created_at', { ascending: true })
+
+        if (error || !data || data.length === 0) {
+            // Fallback: return built-in templates (DB not seeded yet)
+            console.warn('No templates in DB, returning built-in defaults. Run POST /api/seed-templates to populate.')
+            return defaultTemplates.map((t, i) => ({
+                ...t,
+                id: `default-${i}`,
+                is_default: true,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            })) as DocumentTemplate[]
+        }
+
+        return data as DocumentTemplate[]
+    } catch {
+        return defaultTemplates.map((t, i) => ({
+            ...t,
+            id: `default-${i}`,
+            is_default: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        })) as DocumentTemplate[]
+    }
+}
+
+
+// Get template by ID — supports both UUID (DB) and legacy `default-N` format
+export async function getTemplateById(id: string): Promise<DocumentTemplate | null> {
+    try {
+        // Legacy built-in ID fallback (pre-DB migration)
+        if (id.startsWith('default-')) {
+            const index = parseInt(id.replace('default-', ''))
+            const template = defaultTemplates[index]
+            if (template) {
+                return {
+                    ...template,
+                    id,
+                    is_default: true,
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                } as DocumentTemplate
+            }
+            return null
+        }
+
+        const supabase = await createClient()
+        const { data, error } = await supabase
             .from('document_templates')
-            .select('id')
-            .eq('type', template.type)
-            .maybeSingle()
+            .select('*')
+            .eq('id', id)
+            .single()
 
-        if (!existing) {
-                  const { error } = await supabase
-                    .from('document_templates')
-                    .insert(template)
+        if (error) {
+            console.error('Error fetching template:', error)
+            return null
+        }
 
-            if (error) {
-                        console.error(`Error seeding template ${template.name}:`, error)
-            } else {
-                        console.log(`Successfully seeded template: ${template.name}`)
+        return data as DocumentTemplate
+    } catch (err) {
+        console.error('Error in getTemplateById:', err)
+        return null
+    }
+}
+
+// Create template
+export async function createDocumentTemplate(template: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at'>) {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+        .from('document_templates')
+        .insert([template])
+        .select()
+        .single()
+
+    if (error) throw error
+    return data as DocumentTemplate
+}
+
+// Update template — direct DB edit
+export async function updateDocumentTemplate(id: string, template: Partial<DocumentTemplate>) {
+    // Clean updated_at
+    const updatePayload = { ...template, updated_at: new Date().toISOString() }
+
+    const supabase = await createClient()
+    const { data, error } = await supabase
+        .from('document_templates')
+        .update(updatePayload)
+        .eq('id', id)
+        .select()
+        .single()
+
+    if (error) throw error
+    return data as DocumentTemplate
+}
+
+// Duplicate template — creates a copy with "(Bản sao)" suffix
+export async function duplicateDocumentTemplate(id: string): Promise<DocumentTemplate> {
+    const original = await getTemplateById(id)
+    if (!original) throw new Error('Template not found')
+
+    const supabase = await createClient()
+    const { data, error } = await supabase
+        .from('document_templates')
+        .insert([{
+            name: `${original.name} (Bản sao)`,
+            type: original.type,
+            content: original.content,
+            variables: original.variables,
+        }])
+        .select()
+        .single()
+
+    if (error) throw error
+    return data as DocumentTemplate
+}
+
+// Delete template
+export async function deleteDocumentTemplate(id: string) {
+    const supabase = await createClient()
+    const { error } = await supabase
+        .from('document_templates')
+        .delete()
+        .eq('id', id)
+
+    if (error) throw error
+}
+
+// Fill template with variables
+export async function fillTemplate(template: string, variables: Record<string, string>): Promise<string> {
+    let result = template
+    for (const [key, value] of Object.entries(variables)) {
+        const regex = new RegExp(`{{${key}}}`, 'g')
+        result = result.replace(regex, value || '')
+    }
+    // Clean up any remaining unfilled {{...}} placeholders so they appear blank
+    result = result.replace(/\{\{[a-zA-Z_]+\}\}/g, '')
+    return result
+}
+
+// Generate document from template and customer data (HTML version)
+export async function generateDocument(
+    templateId: string,
+    customerId: string,
+    contractId?: string,
+    additionalVariables?: Record<string, string>
+) {
+    try {
+        const supabase = await createClient()
+
+        // Get template
+        const template = await getTemplateById(templateId)
+        if (!template) throw new Error('Template not found')
+
+        // Get customer data (including abbreviation)
+        const { data: customer, error: custError } = await supabase
+            .from('customers')
+            .select('*')
+            .eq('id', customerId)
+            .single()
+
+        if (custError || !customer) throw new Error('Customer not found')
+
+        // Get contract and its source quotation data
+        let contract = null
+        if (contractId) {
+            const { data } = await supabase
+                .from('contracts')
+                .select('*, milestones:contract_milestones(*), quotation:quotations(*, items:quotation_items(*))')
+                .eq('id', contractId)
+                .single()
+
+            if (data) {
+                contract = {
+                    ...data,
+                    items: data.quotation?.items || []
+                }
+
+                // Auto-save snapshot if contract doesn't have one yet
+                if (!data.customer_snapshot && customer) {
+                    const snapshot = {
+                        company_name: customer.company_name,
+                        tax_code: customer.tax_code,
+                        email: customer.email,
+                        phone: customer.phone,
+                        address: customer.address,
+                        invoice_address: customer.invoice_address,
+                        representative: customer.representative,
+                        position: customer.position,
+                    }
+                    await supabase
+                        .from('contracts')
+                        .update({ customer_snapshot: snapshot })
+                        .eq('id', contractId)
+                    contract.customer_snapshot = snapshot
+                }
             }
         }
-  }
+
+        // Use signed_date if available, otherwise fallback to now
+        const signedDate = contract?.signed_date ? parseLocalDateString(contract.signed_date) : null
+        const docDate = signedDate || new Date()
+        const abbr = customer?.abbreviation || ''
+        const dateStr = signedDate
+            ? `${docDate.getFullYear()}${String(docDate.getMonth() + 1).padStart(2, '0')}${String(docDate.getDate()).padStart(2, '0')}`
+            : ''
+
+        // Use snapshot from contract if available, otherwise live customer data
+        const custData = contract?.customer_snapshot || customer
+
+        // Build document numbers based on format: yyyymmdd/TYPE-TL-ABBR
+        const contractDocNumber = (dateStr && abbr)
+            ? `${dateStr}/HDKT-TL-${abbr.toUpperCase()}`
+            : contract?.contract_number || ''
+        const paymentDocNumber = (dateStr && abbr)
+            ? `${dateStr}/DNTT-TL-${abbr.toUpperCase()}`
+            : ''
+        const deliveryDocNumber = (dateStr && abbr)
+            ? `${dateStr}/BGNT-TL-${abbr.toUpperCase()}`
+            : ''
+
+        // Build variables map
+        const variables: Record<string, string> = {
+            // Customer variables (from snapshot or live)
+            customer_company: custData.company_name || customer.company_name || '',
+            customer_address: custData.address || customer.address || '',
+            customer_tax_code: custData.tax_code || customer.tax_code || '',
+            customer_email: custData.email || customer.email || '',
+            customer_phone: custData.phone || customer.phone || '',
+            customer_representative_title: custData.representative_title || customer.representative_title || '',
+            customer_representative: custData.representative || customer.representative || '',
+            customer_position: custData.position || customer.position || '',
+            customer_invoice_address: custData.invoice_address || custData.address || customer.address || '',
+            customer_mobile: '',
+            customer_bank_account: '',
+            customer_bank_name: '',
+
+            // Provider variables
+            provider_company: 'CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE',
+            provider_address: 'Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Hà Nội',
+            provider_tax_code: '0110163102',
+            provider_representative: '',
+            provider_position: '',
+            bank_name: 'Techcombank',
+            bank_account: '86683979',
+            account_holder: 'CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE',
+
+            // Date variables — use signed_date if available
+            day: docDate.getDate().toString(),
+            month: (docDate.getMonth() + 1).toString(),
+            year: docDate.getFullYear().toString(),
+            contract_date: signedDate ? signedDate.toLocaleDateString('vi-VN') : '',
+            date_day: docDate.getDate().toString(),
+            date_month: (docDate.getMonth() + 1).toString(),
+            date_year: docDate.getFullYear().toString(),
+            quotation_date: new Date().toLocaleDateString('vi-VN'),
+            location: 'Hà Nội',
+
+            // Document numbers — using new format
+            contract_number: contractDocNumber,
+            payment_number: paymentDocNumber,
+            report_number: deliveryDocNumber,
+            quotation_number: contract?.quotation?.quotation_number || '',
+
+            // Defaults that may be overridden
+            subtotal: '',
+            vat_rate: '',
+            vat_amount: '',
+            total_amount_number: '',
+            amount_in_words: '',
+            payment_terms: '',
+            delivery_time: '',
+            delivery_address: '',
+            delivery_date: '',
+            service_description: '',
+            payment_percentage: '',
+            payment_amount: '',
+
+            ...additionalVariables
+        }
+
+        // Handle amount_in_words
+        if (additionalVariables?.payment_amount && !variables.amount_in_words) {
+            const amountValue = parseFloat(additionalVariables.payment_amount.replace(/[^0-9]/g, ''))
+            if (!isNaN(amountValue)) variables.amount_in_words = readNumberToWords(amountValue)
+        }
+
+        // Add contract variables
+        if (contract) {
+            variables.total_amount_number = new Intl.NumberFormat('vi-VN').format(contract.total_amount || 0)
+            if (!variables.amount_in_words) variables.amount_in_words = readNumberToWords(contract.total_amount || 0)
+            variables.start_date = contract.start_date ? parseLocalDateString(contract.start_date).toLocaleDateString('vi-VN') : ''
+            variables.service_description = contract.description || contract.quotation?.title || contract.title || ''
+
+            // Auto-fill delivery_time = contract end date
+            if (contract.end_date) {
+                variables.delivery_time = parseLocalDateString(contract.end_date).toLocaleDateString('vi-VN')
+            }
+
+            // Auto-fill delivery_address from customer address
+            variables.delivery_address = custData.address || customer.address || ''
+
+            // Build items table from quotation items
+            const items = contract.items || []
+            if (items.length > 0) {
+                let grossTotal = 0
+                let totalDiscountAmt = 0
+                let totalVat = 0
+                let totalAfterVat = 0
+                let itemsRowsHtml = ''
+
+                // Group items by section_name
+                const sections: Record<string, any[]> = {}
+                items.forEach((item: any) => {
+                    const sectionName = item.section_name || ''
+                    if (!sections[sectionName]) sections[sectionName] = []
+                    sections[sectionName].push(item)
+                })
+
+                const sectionEntries = Object.entries(sections).sort((a, b) => {
+                    if (a[0] === '') return 1
+                    if (b[0] === '') return -1
+                    return (a[1][0]?.sort_order || 0) - (b[1][0]?.sort_order || 0)
+                })
+
+                sectionEntries.forEach(([sectionName, sectionItems], sIdx) => {
+                    // Section header row
+                    if (sectionName) {
+                        itemsRowsHtml += `<tr style="background:#f0f0f0;">
+                            <td style="border:1px solid #000; padding:4px;" colspan="11"><strong>${sectionName}</strong></td>
+                        </tr>`
+                    }
+
+                    sectionItems.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
+                    sectionItems.forEach((item: any, iIdx: number) => {
+                        const qty = item.quantity || 1
+                        const unitPrice = item.unit_price || 0
+                        const itemGross = qty * unitPrice
+                        const discountPct = item.discount || 0 // discount is a percentage (0-100)
+                        const discountAmount = Math.round(itemGross * discountPct / 100)
+                        const afterDiscount = itemGross - discountAmount
+                        const itemVatRate = item.vat_percent !== undefined && item.vat_percent !== null 
+                            ? item.vat_percent 
+                            : (contract.quotation?.vat_percent || 0)
+                        const itemVat = Math.round(afterDiscount * itemVatRate / 100)
+                        const afterVat = afterDiscount + itemVat
+                        
+                        grossTotal += itemGross
+                        totalDiscountAmt += discountAmount
+                        totalVat += itemVat
+                        totalAfterVat += afterVat
+
+                        // Description: each line becomes its own block with spacing
+                        const rawDesc = item.description || ''
+                        let descHtml = ''
+                        if (rawDesc) {
+                            const lines = rawDesc.split(/\n/).filter((l: string) => l.trim())
+                            const linesDivs = lines.map((line: string) => `<div style="margin-top:3px;">${line.trim()}</div>`).join('')
+                            descHtml = `<div style="font-size:7.5pt; color:#555; font-style:italic; line-height:1.4; margin-top:4px; padding-top:3px; border-top:1px dashed #ddd;">${linesDivs}</div>`
+                        }
+
+                        const itemNum = sectionName ? `${sIdx + 1}.${iIdx + 1}` : `${iIdx + 1}`
+
+                        itemsRowsHtml += `<tr>
+                            <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${itemNum}</td>
+                            <td style="border:1px solid #000; padding:4px; vertical-align:top;"><strong>${item.product_name}</strong>${descHtml}</td>
+                            <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${item.unit || 'Gói'}</td>
+                            <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${qty}</td>
+                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(unitPrice)}</td>
+                            <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${discountPct > 0 ? discountPct + '%' : '-'}</td>
+                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${discountAmount > 0 ? new Intl.NumberFormat('vi-VN').format(discountAmount) : '-'}</td>
+                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(afterDiscount)}</td>
+                            <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${itemVatRate > 0 ? itemVatRate + '%' : '0%'}</td>
+                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${itemVat > 0 ? new Intl.NumberFormat('vi-VN').format(itemVat) : '0'}</td>
+                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(afterVat)}</td>
+                        </tr>`
+                    })
+                })
+
+                variables.contract_items_table = itemsRowsHtml
+                variables.quotation_items_table = itemsRowsHtml
+
+                // Build delivery items table (simplified: STT, Name, Unit, Qty, Notes)
+                let deliveryRowsHtml = ''
+                let deliveryIdx = 0
+                sectionEntries.forEach(([sectionName, sectionItems]) => {
+                    sectionItems.forEach((item: any) => {
+                        deliveryIdx++
+                        deliveryRowsHtml += `<tr>
+                            <td style="border:1px solid #000; padding:5px; text-align:center;">${deliveryIdx}</td>
+                            <td style="border:1px solid #000; padding:5px;" colspan="3">${item.product_name}</td>
+                            <td style="border:1px solid #000; padding:5px; text-align:center;">${item.unit || 'Gói'}</td>
+                            <td style="border:1px solid #000; padding:5px; text-align:center;">${item.quantity || 1}</td>
+                            <td style="border:1px solid #000; padding:5px;" colspan="2"></td>
+                        </tr>`
+                    })
+                })
+                variables.delivery_items_table = deliveryRowsHtml
+
+                // Summary totals
+                const subtotalAfterDiscount = grossTotal - totalDiscountAmt
+                const overallDiscountAmount = contract.quotation?.discount_amount ?? 0
+                const overallDiscountPercent = contract.quotation?.discount_percent ?? 0
+                
+                variables.gross_total = new Intl.NumberFormat('vi-VN').format(grossTotal)
+                variables.total_discount = new Intl.NumberFormat('vi-VN').format(totalDiscountAmt)
+                variables.subtotal = new Intl.NumberFormat('vi-VN').format(subtotalAfterDiscount)
+                variables.vat_total = new Intl.NumberFormat('vi-VN').format(totalVat)
+                variables.vat_amount = variables.vat_total // Set both for template compatibility
+                variables.total_after_vat = new Intl.NumberFormat('vi-VN').format(totalAfterVat)
+                
+                // Final total = totalAfterVat - overall discount (if any)
+                const finalTotal = contract.total_amount || (totalAfterVat - overallDiscountAmount)
+                variables.total_amount_number = new Intl.NumberFormat('vi-VN').format(finalTotal)
+
+                // Keep legacy vars for backward compat
+                variables.vat_rate = (contract.quotation?.vat_percent || 0).toString()
+
+                // Optional overall discount row (separate from per-item discounts)
+                if (overallDiscountAmount > 0) {
+                    const pctString = overallDiscountPercent > 0 ? ` (${overallDiscountPercent}%)` : ''
+                    variables.discount_row_html = `
+                    <tr>
+                      <td style="border:1px solid #000; padding:4px;" colspan="9">Chiết khấu tổng${pctString}</td>
+                      <td style="border:1px solid #000; padding:4px; text-align:right;">-${new Intl.NumberFormat('vi-VN').format(overallDiscountAmount)}</td>
+                    </tr>`
+                } else {
+                    variables.discount_row_html = ''
+                }
+            } else {
+                variables.contract_items_table = ''
+                variables.quotation_items_table = ''
+                variables.delivery_items_table = ''
+            }
+
+            // Payment terms from milestones
+            if (contract.milestones && contract.milestones.length > 0) {
+                const paymentMilestones = contract.milestones.filter((m: any) => m.amount > 0)
+                if (paymentMilestones.length > 0) {
+                    const totalAmount = contract.total_amount || 0
+                    const paymentTermsHtml = paymentMilestones.map((m: any, idx: number) => {
+                        const percentage = totalAmount > 0 ? Math.round((m.amount / totalAmount) * 100) : 0
+                        const dueStr = m.due_date ? `(Hạn: ${parseLocalDateString(m.due_date).toLocaleDateString('vi-VN')})` : ''
+                        return `- Đợt ${idx + 1}: ${percentage}% giá trị Hợp đồng = ${new Intl.NumberFormat('vi-VN').format(m.amount)} VND — ${m.name} ${dueStr}`
+                    }).join('<br/>')
+                    
+                    variables.payment_terms = paymentTermsHtml
+
+                    // For payment request: use first pending milestone or total
+                    if (!additionalVariables?.payment_amount) {
+                        let pendingMilestone = paymentMilestones.find((m: any) => m.status === 'pending') || paymentMilestones[0]
+                        if (additionalVariables?.milestone_index !== undefined) {
+                            const rawIdx = parseInt(additionalVariables.milestone_index as string, 10)
+                            if (!isNaN(rawIdx) && contract.milestones[rawIdx]) {
+                                pendingMilestone = contract.milestones[rawIdx]
+                            }
+                        }
+
+                        if (pendingMilestone) {
+                            const pct = totalAmount > 0 ? Math.round((pendingMilestone.amount / totalAmount) * 100) : 0
+                            variables.payment_amount = new Intl.NumberFormat('vi-VN').format(pendingMilestone.amount) + ' VND'
+                            variables.payment_percentage = `${pct}%`
+                            
+                            // Only overwrite amount_in_words if this is a payment request
+                            if (template.type === 'payment_request') {
+                                if (!variables.amount_in_words || variables.amount_in_words === readNumberToWords(totalAmount)) {
+                                    variables.amount_in_words = readNumberToWords(pendingMilestone.amount)
+                                }
+                            }
+
+                            // Dynamic variables for generic milestone info
+                            const mName = pendingMilestone.name || 'Thanh toán'
+                            const mNameLower = mName.toLowerCase()
+                            const isDeposit = mNameLower.includes('cọc') || mNameLower.includes('tạm ứng') || mNameLower.includes('lần 1') || mNameLower.includes('đợt 1')
+                            
+                            let milestoneReason: string
+                            if (isDeposit) {
+                                milestoneReason = `Theo điều khoản thanh toán tại Điều 2 của Hợp đồng, Bên sử dụng dịch vụ thanh toán đặt cọc cho Bên cung cấp dịch vụ để triển khai dự án.`
+                            } else {
+                                const deliveryDate = pendingMilestone.due_date 
+                                    ? parseLocalDateString(pendingMilestone.due_date).toLocaleDateString('vi-VN') 
+                                    : ''
+                                milestoneReason = deliveryDate
+                                    ? `Căn cứ Biên bản bàn giao và nghiệm thu ngày ${deliveryDate}, hai bên xác nhận Bên cung cấp dịch vụ đã hoàn thành đầy đủ phạm vi công việc quy định tại Hợp đồng.`
+                                    : `Căn cứ Biên bản bàn giao và nghiệm thu, hai bên xác nhận Bên cung cấp dịch vụ đã hoàn thành đầy đủ phạm vi công việc quy định tại Hợp đồng.`
+                            }
+
+                            if (!variables.milestone_name) variables.milestone_name = mName
+                            if (!variables.milestone_reason) variables.milestone_reason = milestoneReason
+                            if (!variables.milestone_due_date && pendingMilestone.due_date) {
+                                variables.milestone_due_date = parseLocalDateString(pendingMilestone.due_date).toLocaleDateString('vi-VN')
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Determine whether to include proposal appendix
+        const includeProposalAppendix = contract?.include_proposal_appendix !== false
+
+        // Set clause numbering based on whether proposal appendix is included
+        // When included: 1.1, 1.2 (proposal ref), 1.3 (total value), 1.4 (appendix note)
+        // When not included: 1.1, 1.2 (total value), 1.3 (appendix note)
+        if (includeProposalAppendix && contract?.quotation?.type === 'proposal') {
+            variables.clause_1_2_html = `<tr>
+              <td style="width:50px; vertical-align:top; padding:2px 0;">1.2.</td>
+              <td style="vertical-align:top; padding:2px 0; text-align:justify;">Phạm vi công việc, phương pháp triển khai, sản phẩm bàn giao và lộ trình thực hiện được quy định chi tiết tại <strong>Phụ lục 02</strong> (Đề xuất giải pháp) đính kèm hợp đồng này.</td>
+            </tr>`
+            variables.clause_total_value_number = '1.3.'
+            variables.clause_appendix_number = '1.4.'
+        } else {
+            variables.clause_1_2_html = ''
+            variables.clause_total_value_number = '1.2.'
+            variables.clause_appendix_number = '1.3.'
+        }
+
+        // Build proposal appendix HTML from quotation.proposal_content
+        const proposalContent = contract?.quotation?.proposal_content as any
+        if (includeProposalAppendix && proposalContent && contract?.quotation?.type === 'proposal') {
+            const proposalSections: { label: string; content: string }[] = []
+            if (proposalContent.introduction) proposalSections.push({ label: 'Mục tiêu & Giới thiệu', content: proposalContent.introduction })
+            if (proposalContent.scope_of_work) proposalSections.push({ label: 'Phạm vi công việc (Scope of Work)', content: proposalContent.scope_of_work })
+            if (proposalContent.methodology) proposalSections.push({ label: 'Phương pháp & Cách tiếp cận', content: proposalContent.methodology })
+            if (proposalContent.deliverables) proposalSections.push({ label: 'Sản phẩm bàn giao (Deliverables)', content: proposalContent.deliverables })
+            if (proposalContent.team) proposalSections.push({ label: 'Đội ngũ chuyên trách', content: proposalContent.team })
+            if (proposalContent.timeline) proposalSections.push({ label: 'Lộ trình triển khai (Timeline)', content: proposalContent.timeline })
+            if (proposalContent.warranty) proposalSections.push({ label: 'Bảo hành & Hỗ trợ', content: proposalContent.warranty })
+            if (proposalContent.why_us) proposalSections.push({ label: 'Vì sao chọn chúng tôi?', content: proposalContent.why_us })
+            if (proposalContent.case_studies) proposalSections.push({ label: 'Case Studies & Portfolio', content: proposalContent.case_studies })
+
+            // Custom sections
+            if (proposalContent.custom_sections) {
+                try {
+                    const custom = typeof proposalContent.custom_sections === 'string'
+                        ? JSON.parse(proposalContent.custom_sections)
+                        : proposalContent.custom_sections
+                    if (Array.isArray(custom)) {
+                        custom.forEach((s: any) => {
+                            if (s.title && s.content) proposalSections.push({ label: s.title, content: s.content })
+                        })
+                    }
+                } catch { /* skip */ }
+            }
+
+            if (proposalSections.length > 0) {
+                let proposalHtml = `
+                    <div style="page-break-before: always;"></div>
+                    <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC 02 — ĐỀ XUẤT GIẢI PHÁP</p>
+                    <p style="text-align:center; font-style:italic; margin-bottom:20px; font-size:9pt;">(Đính kèm Hợp đồng kinh tế số ${variables.contract_number || ''} ngày ${variables.day || ''}/${variables.month || ''}/${variables.year || ''})</p>
+                `
+
+                proposalSections.forEach((section, idx) => {
+                    const sectionContent = section.content
+                        .replace(/\n/g, '<br>')
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    proposalHtml += `
+                        <div style="margin-bottom:16px;">
+                            <p style="font-weight:bold; font-size:10pt; margin: 0 0 6px 0; border-bottom:1px solid #ddd; padding-bottom:4px;">${idx + 1}. ${section.label}</p>
+                            <div style="font-size:9.5pt; text-align:justify; line-height:1.6; padding-left:4px;">${sectionContent}</div>
+                        </div>
+                    `
+                })
+
+                variables.proposal_appendix_html = proposalHtml
+            } else {
+                variables.proposal_appendix_html = ''
+            }
+        } else {
+            variables.proposal_appendix_html = ''
+        }
+
+        const filledContent = await fillTemplate(template.content, variables)
+
+        return {
+            content: filledContent,
+            variables
+        }
+    } catch (error) {
+        console.error('Error generating document:', error)
+        throw error
+    }
 }
 
 /**
- * Get a template by type
+ * Define which documents each contract type needs
  */
-export async function getDocumentTemplateByType(type: string) {
-      const supabase = await createClient()
-      const { data, error } = await supabase
-        .from('document_templates')
+function getDocTypesForContract(contractType: string): string[] {
+    if (contractType === 'order') {
+        return ['order', 'payment_request', 'delivery_minutes']
+    }
+    // Default: contract (HĐ kinh tế)
+    return ['contract', 'payment_request', 'delivery_minutes']
+}
+
+/**
+ * Get all contract documents from DB
+ */
+export async function getContractDocuments(contractId: string) {
+    const supabase = createAdminClient()
+    const { data, error } = await supabase
+        .from('contract_documents')
         .select('*')
-        .eq('type', type)
-        .maybeSingle()
+        .eq('contract_id', contractId)
+        .order('created_at', { ascending: true })
 
-  if (error) {
-          console.error('Error fetching template:', error)
-          return null
-  }
-
-  // If not found in DB, return the default one
-  if (!data) {
-          return defaultTemplates.find(t => t.type === type) || null
-  }
-
-  return data as DocumentTemplate
+    if (error) {
+        console.error('Error fetching contract documents:', error)
+        return []
+    }
+    return data || []
 }
 
 /**
- * Generate a document from a bundle
+ * Auto-generate all documents for a contract.
+ * Bundle composition depends on contract type:
+ * - contract → [HĐ, N×ĐNTT, BBGN]  
+ * - order → [ĐĐH, N×ĐNTT, BBGN]
+ * 
+ * Each payment milestone gets its own ĐNTT document.
+ * Only regenerates draft documents (signed docs are preserved).
  */
-export async function generateDocument(bundle: DocumentBundle): Promise<GeneratedDocument | null> {
-      // Implementation for PDF/HTML generation would go here
-  // For now, return a placeholder
-  return {
-          id: 'placeholder',
-          bundle_id: bundle.id,
-          content: 'Generated content will appear here',
-          file_path: null,
-          created_at: new Date().toISOString()
-  }
+export async function generateDocumentBundle(contractId: string) {
+    const supabase = createAdminClient()
+
+    // 1. Get contract with milestones and quotation items
+    const { data: contract, error: cErr } = await supabase
+        .from('contracts')
+        .select('*, milestones:contract_milestones(*), quotation:quotations(*, items:quotation_items(*))')
+        .eq('id', contractId)
+        .single()
+
+    if (cErr || !contract) {
+        console.error('generateDocumentBundle: contract not found', cErr)
+        return
+    }
+
+    // 2. Get all existing documents (both draft and signed) to reconcile
+    const { data: existingDocs } = await supabase
+        .from('contract_documents')
+        .select('id, type, milestone_id, is_visible_on_portal, status')
+        .eq('contract_id', contractId)
+    
+    // Build a map: "type:milestone_id" -> existing doc info
+    const existingMap = new Map<string, any>()
+    if (existingDocs) {
+        for (const d of existingDocs) {
+            const key = `${d.type}:${d.milestone_id || 'null'}`
+            // Prioritize keeping 'signed' docs if there are duplicates for some reason
+            if (!existingMap.has(key) || d.status === 'signed') {
+                existingMap.set(key, d)
+            }
+        }
+    }
+
+    // 3. Determine which doc types this contract needs
+    const docTypes = getDocTypesForContract(contract.type || 'contract')
+
+    // 4. Find templates
+    const templates = await getDocumentTemplates()
+    const docs: any[] = []
+
+    for (const docType of docTypes) {
+        const template = templates.find(t => t.type === docType)
+        if (!template) continue
+
+        if (docType === 'payment_request') {
+            // One ĐNTT per milestone that has a payment amount
+            // Any milestone with amount > 0 gets a payment request (regardless of type field)
+            const paymentMilestones = (contract.milestones || []).filter((m: any) => 
+                m.amount > 0
+            )
+            
+            if (paymentMilestones.length === 0) {
+                // No milestones → generate single generic ĐNTT
+                try {
+                    const result = await generateDocument(template.id, contract.customer_id, contractId)
+                    docs.push({
+                        contract_id: contractId,
+                        type: docType,
+                        milestone_id: null,
+                        doc_number: result.variables?.payment_number || '',
+                        content: result.content,
+                        status: 'draft'
+                    })
+                } catch (e) {
+                    console.error(`Error generating ${docType}:`, e)
+                }
+            } else {
+                const totalAmount = contract.total_amount || 0
+
+                for (let i = 0; i < paymentMilestones.length; i++) {
+                    const milestone = paymentMilestones[i]
+                    const pct = totalAmount > 0 ? Math.round((milestone.amount / totalAmount) * 100) : 0
+                    
+                    // Override payment-specific variables for this milestone
+                    const mName = milestone.name || `Đợt ${i + 1}`
+                    const mNameLower = mName.toLowerCase()
+                    const isDeposit = mNameLower.includes('cọc') || mNameLower.includes('đặt cọc') || mNameLower.includes('tạm ứng')
+                    
+                    let milestoneReason: string
+                    if (isDeposit) {
+                        milestoneReason = `Theo điều khoản thanh toán tại Điều 2 của Hợp đồng, Bên sử dụng dịch vụ thanh toán đặt cọc cho Bên cung cấp dịch vụ để triển khai dự án.`
+                    } else {
+                        const deliveryDate = milestone.due_date 
+                            ? parseLocalDateString(milestone.due_date).toLocaleDateString('vi-VN') 
+                            : ''
+                        milestoneReason = deliveryDate
+                            ? `Căn cứ Biên bản bàn giao và nghiệm thu ngày ${deliveryDate}, hai bên xác nhận Bên cung cấp dịch vụ đã hoàn thành đầy đủ phạm vi công việc quy định tại Hợp đồng.`
+                            : `Căn cứ Biên bản bàn giao và nghiệm thu, hai bên xác nhận Bên cung cấp dịch vụ đã hoàn thành đầy đủ phạm vi công việc quy định tại Hợp đồng.`
+                    }
+
+                    const milestoneVars: Record<string, string> = {
+                        payment_amount: new Intl.NumberFormat('vi-VN').format(milestone.amount) + ' VND',
+                        payment_percentage: `${pct}%`,
+                        amount_in_words: readNumberToWords(milestone.amount),
+                        milestone_name: mName,
+                        milestone_reason: milestoneReason,
+                        milestone_due_date: milestone.due_date 
+                            ? parseLocalDateString(milestone.due_date).toLocaleDateString('vi-VN')
+                            : '',
+                    }
+
+                    try {
+                        const result = await generateDocument(template.id, contract.customer_id, contractId, milestoneVars)
+                        // Append milestone index to doc number
+                        const docNum = result.variables?.payment_number 
+                            ? `${result.variables.payment_number}-${i + 1}` 
+                            : ''
+                        
+                        docs.push({
+                            contract_id: contractId,
+                            type: docType,
+                            milestone_id: milestone.id,
+                            doc_number: docNum,
+                            content: result.content,
+                            status: 'draft'
+                        })
+                    } catch (e) {
+                        console.error(`Error generating ĐNTT for milestone ${milestone.id}:`, e)
+                    }
+                }
+            }
+        } else {
+            // Single document (HĐ, ĐĐH, BBGN)
+            try {
+                const result = await generateDocument(template.id, contract.customer_id, contractId)
+                const docNum = docType === 'contract' ? result.variables?.contract_number
+                    : docType === 'order' ? result.variables?.contract_number
+                    : result.variables?.report_number || ''
+                
+                docs.push({
+                    contract_id: contractId,
+                    type: docType,
+                    milestone_id: null,
+                    doc_number: docNum,
+                    content: result.content,
+                    status: 'draft'
+                })
+            } catch (e) {
+                console.error(`Error generating ${docType}:`, e)
+            }
+        }
+    }
+
+    // 5. Reconcile existing vs target documents
+    if (docs.length > 0) {
+        const targetKeys = new Set<string>()
+
+        for (const doc of docs) {
+            const key = `${doc.type}:${doc.milestone_id || 'null'}`
+            targetKeys.add(key)
+            
+            const existing = existingMap.get(key)
+            
+            if (existing) {
+                // Document exists. If it is a draft, update its content so we don't break UI references.
+                if (existing.status === 'draft') {
+                    await supabase
+                        .from('contract_documents')
+                        .update({
+                            content: doc.content,
+                            doc_number: doc.doc_number
+                        })
+                        .eq('id', existing.id)
+                }
+                // If it is signed/accepted, we do NOT regenerate or update the content to preserve state.
+            } else {
+                // Document doesn't exist, insert it
+                const { error: insertErr } = await supabase
+                    .from('contract_documents')
+                    .insert(doc)
+
+                if (insertErr) {
+                    console.error(`Error inserting ${doc.type}:`, insertErr.message)
+                    // If FK error on milestone_id, retry without it
+                    if (insertErr.code === '23503' && doc.milestone_id) {
+                        await supabase
+                            .from('contract_documents')
+                            .insert({ ...doc, milestone_id: null })
+                    }
+                }
+            }
+        }
+
+        // 6. Cleanup obsolete draft documents 
+        // Example: The user removed a payment milestone, so its corresponding ĐNTT draft should be removed.
+        if (existingDocs) {
+            for (const d of existingDocs) {
+                if (d.status === 'draft') {
+                    const key = `${d.type}:${d.milestone_id || 'null'}`
+                    if (!targetKeys.has(key)) {
+                        await supabase
+                            .from('contract_documents')
+                            .delete()
+                            .eq('id', d.id)
+                    }
+                }
+            }
+        }
+    }
+
+    return docs
 }
+
+/**
+ * Fetches all necessary data to populate a PDF template (React-PDF)
+ */
+export async function getDocumentData(
+    type: 'contract' | 'order' | 'payment_request' | 'delivery_minutes' | 'quotation',
+    customerId: string,
+    relationId?: string,
+    additionalMetadata?: Record<string, any>
+) {
+    const supabase = createAdminClient()
+
+    // 1. Get Customer
+    const { data: customer } = await supabase
+        .from('customers')
+        .select('*')
+        .eq('id', customerId)
+        .single()
+
+    // 2. Get Related Entity (Contract or Quotation or Invoice)
+    let relationData: any = null
+    let items: any[] = []
+
+    if (relationId) {
+        if (type === 'contract' || type === 'delivery_minutes' || type === 'payment_request') {
+            const { data } = await supabase
+                .from('contracts')
+                .select('*, quotation:quotations(*, items:quotation_items(*))')
+                .eq('id', relationId)
+                .single()
+            relationData = data
+            items = data?.quotation?.items || []
+        } else if (type === 'quotation') {
+            const { data } = await supabase
+                .from('quotations')
+                .select('*, items:quotation_items(*)')
+                .eq('id', relationId)
+                .single()
+            relationData = data
+            items = data?.items || []
+        }
+    }
+
+    const now = new Date()
+
+    return {
+        type,
+        day: now.getDate(),
+        month: now.getMonth() + 1,
+        year: now.getFullYear(),
+        customer,
+        items,
+        contract_number: relationData?.contract_number || relationData?.quotation_number,
+        quotation_number: relationData?.quotation_number,
+        total_amount: relationData?.total_amount || 0,
+        amount_in_words: relationData?.total_amount ? readNumberToWords(relationData.total_amount) : '',
+        start_date: relationData?.start_date ? parseLocalDateString(relationData.start_date).toLocaleDateString('vi-VN') : '',
+        contract_date: relationData?.created_at ? parseLocalDateString(relationData.created_at).toLocaleDateString('vi-VN') : now.toLocaleDateString('vi-VN'),
+        valid_until: relationData?.valid_until ? parseLocalDateString(relationData.valid_until).toLocaleDateString('vi-VN') : '30 ngày kể từ ngày báo giá',
+        ...additionalMetadata
+    }
+}
+
+// Create Document Bundle
+export async function createDocumentBundle(bundle: Omit<DocumentBundle, 'id' | 'created_at' | 'updated_at'>) {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+        .from('document_bundles')
+        .insert([bundle])
+        .select()
+        .single()
+
+    if (error) throw error
+    return data as DocumentBundle
+}
+
+export async function getDocumentBundles() {
+    try {
+        const supabase = await createClient()
+        const { data, error } = await supabase
+            .from('document_bundles')
+            .select('*')
+            .order('created_at', { ascending: false })
+
+        if (error) throw error
+        return (data || []) as DocumentBundle[]
+    } catch (err) {
+        console.error('Error fetching bundles:', err)
+        return []
+    }
+}
+
+export async function deleteDocumentBundle(id: string) {
+    const supabase = await createClient()
+    const { error } = await supabase
+        .from('document_bundles')
+        .delete()
+        .eq('id', id)
+    if (error) throw error
+}
+
+export async function updateDocumentBundle(id: string, bundle: Partial<DocumentBundle>) {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+        .from('document_bundles')
+        .update(bundle)
+        .eq('id', id)
+        .select()
+        .single()
+    if (error) throw error
+    return data as DocumentBundle
+}
+
+export async function saveGeneratedDocument(doc: Partial<GeneratedDocument>) {
+    try {
+        const supabase = await createClient()
+        let query;
+
+        if (doc.id) {
+            query = supabase.from('generated_documents').update(doc).eq('id', doc.id)
+        } else {
+            query = supabase.from('generated_documents').insert([doc])
+        }
+
+        const { data, error } = await query.select().single()
+        if (error) throw error
+        return data as GeneratedDocument
+    } catch (err) {
+        console.error('Error saving generated doc:', err)
+        throw err
+    }
+}
+
+export async function getGeneratedDocumentById(id: string) {
+    try {
+        const supabase = await createClient()
+        const { data, error } = await supabase
+            .from('generated_documents')
+            .select('*')
+            .eq('id', id)
+            .single()
+
+        if (error) throw error
+        return data as GeneratedDocument
+    } catch (err) {
+        console.error('Error fetching generated doc:', err)
+        return null
+    }
+}
+
+// Generate secure share token using global crypto (Node/Browser compatible)
+export async function generateShareToken() {
+    return (globalThis.crypto as any).randomUUID().replace(/-/g, '')
