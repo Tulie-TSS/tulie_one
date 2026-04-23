@@ -1076,3 +1076,4 @@ export async function getGeneratedDocumentById(id: string) {
 // Generate secure share token using global crypto (Node/Browser compatible)
 export async function generateShareToken() {
     return (globalThis.crypto as any).randomUUID().replace(/-/g, '')
+}
