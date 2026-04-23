@@ -67,17 +67,13 @@ export const quotationTemplate = `
       </tr>
       {{quotation_items_table}}
       <tr style="background:#f5f5f5;">
-        <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Cộng tiền hàng / Subtotal</strong></td>
-        <td style="border:1px solid #000; padding:4px;"></td>
-        <td style="border:1px solid #000; padding:4px;"></td>
+        <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Cộng tiền hàng / Subtotal</strong></td>
         <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold;">{{subtotal}}</td>
       </tr>
       {{vat_breakdown_html}}
       {{discount_row_html}}
       <tr style="background:#f5f5f5;">
-        <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Tổng tiền thanh toán / Grand Total</strong></td>
-        <td style="border:1px solid #000; padding:4px;"></td>
-        <td style="border:1px solid #000; padding:4px;"></td>
+        <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Tổng tiền thanh toán / Grand Total</strong></td>
         <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold;">{{total_amount_number}}</td>
       </tr>
     </table>

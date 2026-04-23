@@ -307,29 +307,21 @@ export const contractTemplate = `
     </tr>
     {{contract_items_table}}
     <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Tạm tính</strong></td>
-      <td style="border:1px solid #000; padding:4px;"></td>
-      <td style="border:1px solid #000; padding:4px;"></td>
+      <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Tạm tính</strong></td>
       <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{gross_total}}</td>
     </tr>
     {{discount_row_html}}
     <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Tổng chiết khấu</strong></td>
-      <td style="border:1px solid #000; padding:4px;"></td>
-      <td style="border:1px solid #000; padding:4px;"></td>
+      <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Tổng chiết khấu</strong></td>
       <td style="border:1px solid #000; padding:4px; text-align:right; white-space:nowrap;">-{{total_discount}}</td>
     </tr>
     <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Cộng tiền hàng</strong></td>
-      <td style="border:1px solid #000; padding:4px;"></td>
-      <td style="border:1px solid #000; padding:4px;"></td>
+      <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Cộng tiền hàng</strong></td>
       <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
     </tr>
     {{vat_breakdown_html}}
     <tr style="background:#e8e8e8;">
-      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="8"><strong>Tổng cộng thanh toán</strong></td>
-      <td style="border:1px solid #000; padding:6px;"></td>
-      <td style="border:1px solid #000; padding:6px;"></td>
+      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="10"><strong>Tổng cộng thanh toán</strong></td>
       <td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold; font-size:9pt; white-space:nowrap;">{{total_amount_number}} VND</td>
     </tr>
     <tr>
