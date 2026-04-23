@@ -567,48 +567,48 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                                 </div>
                                 <p className="text-[11px] text-muted-foreground truncate">{item.description}</p>
                             </div>
-                            <div className="flex items-center gap-0.5 shrink-0">
+                            <div className="flex items-center gap-1 shrink-0">
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="h-7 w-7"
+                                    className="h-8 w-8"
                                     onClick={() => handlePreviewDoc(item)}
                                     disabled={isActive}
-                                    title="Xem"
+                                    title="Xem bản xem trước"
                                 >
-                                    {isActive ? <LoadingSpinner size="sm" /> : <ChevronRight className="h-3.5 w-3.5" />}
+                                    {isActive ? <LoadingSpinner size="sm" /> : <ExternalLink className="h-4 w-4" />}
                                 </Button>
                                 {isGenerated && (
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        className="h-7 w-7"
+                                        className="h-8 w-8"
                                         onClick={() => handleToggleVisibility(item)}
                                         disabled={isActive}
                                         title={item.isVisible ? "Đang hiện trên Portal — bấm để ẩn" : "Đang ẩn — bấm để hiện trên Portal"}
                                     >
-                                        {item.isVisible ? <Eye className="h-3.5 w-3.5 text-emerald-600" /> : <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />}
+                                        {item.isVisible ? <Eye className="h-4 w-4 text-emerald-600" /> : <EyeOff className="h-4 w-4 text-muted-foreground" />}
                                     </Button>
                                 )}
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="h-7 w-7"
+                                    className="h-8 w-8"
                                     onClick={() => handlePrintDoc(item)}
                                     disabled={isActive}
                                     title="In"
                                 >
-                                    <Printer className="h-3.5 w-3.5" />
+                                    <Printer className="h-4 w-4" />
                                 </Button>
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="h-7 w-7"
+                                    className="h-8 w-8"
                                     onClick={() => handleDownloadDoc(item)}
                                     disabled={isActive}
                                     title="Tải xuống"
                                 >
-                                    <Download className="h-3.5 w-3.5" />
+                                    <Download className="h-4 w-4" />
                                 </Button>
                             </div>
                         </div>
