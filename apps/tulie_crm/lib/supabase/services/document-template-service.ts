@@ -500,7 +500,7 @@ export async function generateDocument(
                 let vatBreakdownHtml = ''
                 Object.entries(vatGroupsMap).sort((a, b) => Number(a[0]) - Number(b[0])).forEach(([rate, amt]) => {
                     vatBreakdownHtml += `<tr style="background:#f5f5f5;">
-                        <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Tổng thuế VAT (${rate}%)</strong></td>
+                        <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Tổng thuế suất GTGT (VAT) ${rate}%:</strong></td>
                         <td style="border:1px solid #000; padding:4px;"></td>
                         <td style="border:1px solid #000; padding:4px;"></td>
                         <td style="border:1px solid #000; padding:4px; text-align:right; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(amt as number)}</td>
@@ -552,8 +552,10 @@ export async function generateDocument(
                     const pctString = overallDiscountPercent > 0 ? ` (${overallDiscountPercent}%)` : ''
                     variables.discount_row_html = `
                     <tr>
-                      <td style="border:1px solid #000; padding:4px;" colspan="9">Chiết khấu tổng${pctString}</td>
-                      <td style="border:1px solid #000; padding:4px; text-align:right;">-${new Intl.NumberFormat('vi-VN').format(overallDiscountAmount)}</td>
+                      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Chiết khấu tổng${pctString}</strong></td>
+                      <td style="border:1px solid #000; padding:4px;"></td>
+                      <td style="border:1px solid #000; padding:4px;"></td>
+                      <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold;">-${new Intl.NumberFormat('vi-VN').format(overallDiscountAmount)}</td>
                     </tr>`
                 } else {
                     variables.discount_row_html = ''
