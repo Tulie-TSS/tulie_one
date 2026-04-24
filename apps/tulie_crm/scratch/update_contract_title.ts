@@ -1,9 +1,11 @@
-/**
- * Hợp đồng kinh tế - HTML Template
- * Layout chuẩn theo bộ thủ tục Tulie (Google Sheets export)
- * Biến tự động: {{variable_name}}
- */
-export const contractTemplate = `
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+const contractTemplate = `
 <div style="font-family: Arial, sans-serif; font-size: 10pt; color: #000; max-width: 210mm; margin: 0 auto; padding: 20mm 15mm 20mm 25mm; line-height: 1.5; text-align: justify;">
   <!-- Header: 2 cột căn thẳng hàng -->
   <table style="width:100%; border-collapse:collapse; margin-bottom: 0;">
@@ -186,7 +188,7 @@ export const contractTemplate = `
     <tr><td style="width:50px; vertical-align:top; padding:2px 0;">3.1.1.</td><td style="vertical-align:top; padding:2px 0;">Thời gian giao hàng: {{delivery_time}}</td></tr>
     <tr><td style="width:50px; vertical-align:top; padding:2px 0;">3.1.2.</td><td style="vertical-align:top; padding:2px 0;">Địa chỉ giao hàng: {{delivery_address}}</td></tr>
     <tr><td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Trường hợp Bên B bổ sung, thay đổi thông tin cần thể hiện trên sản phẩm, Bên B phải thông báo cho Bên A theo qui tắc quy định tại điều 06 của hợp đồng này. Việc bổ sung, thay đổi thông tin của Bên B và thời điểm Bên A nhận được thông tin cần thay đổi chỉ được diễn ra trước khi Bên A tiến hành thực hiện sản phẩm. Mọi sự thay đổi cần thông báo cho các Bên Bằng văn bản hoặc các phương thức giao dịch được quy định tại điều 06 của hợp đồng này.</td></tr>
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">3.3.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Trường hợp có sự thay đổi, bổ sung thông tin của Bên A lên sản phẩm, thời gian và tiến độ thực hiện hợp đồng sẽ được điều chỉnh để phù hợp với năng lực của Bên B. Bên A và Bên B thống nhất về tiến độ thực hiện mới (nếu có).</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">3.3.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Trường hợp có sự thay đổi, bổ sung thông tin của Bên A lên sản phẩm, thời gian và tiến độ thực hiện hợp đồng sẽ được điều chỉnh để phù hợp with năng lực của Bên B. Bên A và Bên B thống nhất về tiến độ thực hiện mới (nếu có).</td></tr>
     <tr><td style="width:50px; vertical-align:top; padding:2px 0;">3.4.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Trường hợp Bên B nhận được thanh toán không đúng thời hạn như điều hai của bản hợp đồng này, Bên B có quyền giao sản phẩm trễ hơn lịch trình bằng tổng số ngày Bên A thanh toán trễ của các đợt thanh toán qui định tại điều 2 của hợp đồng này.</td></tr>
     <tr><td style="width:50px; vertical-align:top; padding:2px 0;">3.5.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Trong trường hợp bất khả kháng như thiên tai, lũ lụt, hỏa hoạn..., Bên B được phép chuyển giao sản phẩm trễ hơn lịch trình.</td></tr>
   </table>
@@ -333,4 +335,20 @@ export const contractTemplate = `
   {{proposal_appendix_html}}
 
 </div>
-`;
+`
+
+async function update() {
+    console.log('Updating Contract template in database...')
+    const { error } = await supabase
+        .from('document_templates')
+        .update({ content: contractTemplate })
+        .eq('type', 'contract')
+    
+    if (error) {
+        console.error('Error:', error)
+    } else {
+        console.log('Success! Updated Contract template.')
+    }
+}
+
+update()

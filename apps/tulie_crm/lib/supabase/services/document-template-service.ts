@@ -98,14 +98,23 @@ export async function getDocumentTemplates() {
     try {
         const supabase = await createClient()
         // Try to order by is_default first; if column doesn't exist, fallback to created_at only
-        // Force return built-in templates for now to ensure latest changes are applied
-        return defaultTemplates.map((t, i) => ({
-            ...t,
-            id: `default-${i}`,
-            is_default: true,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-        })) as DocumentTemplate[]
+        let query = supabase.from('document_templates').select('*')
+        const { data, error } = await query
+            .order('created_at', { ascending: true })
+
+        if (error || !data || data.length === 0) {
+            // Fallback: return built-in templates (DB not seeded yet)
+            console.warn('No templates in DB, returning built-in defaults. Run POST /api/seed-templates to populate.')
+            return defaultTemplates.map((t, i) => ({
+                ...t,
+                id: `default-${i}`,
+                is_default: true,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            })) as DocumentTemplate[]
+        }
+
+        return data as DocumentTemplate[]
     } catch {
         return defaultTemplates.map((t, i) => ({
             ...t,
