@@ -36,7 +36,7 @@ export const contractTemplate = `
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ vào Luật doanh nghiệp số 68/2014/QH13 do quốc hội ban hành ngày 26/11/2014 có hiệu lực thi hành từ ngày 01/07/2015;</p>
   <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào khả năng cung cầu của hai bên.</p>
 
-  <p style="margin:10px 0;">Hôm nay, ngày {{day}} tháng {{month}} năm {{year}}, tại địa điểm {{customer_company}}, chúng tôi gồm:</p>
+  <p style="margin:10px 0;">Hôm nay, ngày {{day}} tháng {{month}} năm {{year}}, tại {{customer_company}}, chúng tôi gồm:</p>
 
   <!-- ===== BÊN A + BÊN B (cùng 1 bảng để căn thẳng lề) ===== -->
   <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
