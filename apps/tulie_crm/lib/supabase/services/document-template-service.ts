@@ -347,12 +347,12 @@ export async function generateDocument(
             account_holder: 'CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE',
 
             // Date variables — use signed_date if available
-            day: docDate.getDate().toString(),
-            month: (docDate.getMonth() + 1).toString(),
+            day: docDate.getDate().toString().padStart(2, '0'),
+            month: (docDate.getMonth() + 1).toString().padStart(2, '0'),
             year: docDate.getFullYear().toString(),
             contract_date: signedDate ? signedDate.toLocaleDateString('vi-VN') : '',
-            date_day: docDate.getDate().toString(),
-            date_month: (docDate.getMonth() + 1).toString(),
+            date_day: docDate.getDate().toString().padStart(2, '0'),
+            date_month: (docDate.getMonth() + 1).toString().padStart(2, '0'),
             date_year: docDate.getFullYear().toString(),
             quotation_date: new Date().toLocaleDateString('vi-VN'),
             location: 'Hà Nội',
