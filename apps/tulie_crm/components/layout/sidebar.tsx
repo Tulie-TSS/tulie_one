@@ -50,7 +50,7 @@ const navGroups = [
             { title: 'Báo giá', href: '/quotations', icon: FileText },
             { title: 'Portal Báo giá', href: '/quotations/portals', icon: LayoutGrid },
             { title: 'Hợp đồng', href: '/contracts', icon: FilePenLine },
-            { title: 'Hợp đồng Cộng tác viên', href: '/contracts?category=freelancer', icon: UserRound },
+            { title: 'Hợp đồng Cộng tác viên', href: '/contracts/ctv', icon: UserRound },
             { title: 'Dự án', href: '/projects', icon: Rocket },
 
             { title: 'Helpdesk', href: '/helpdesk', icon: Headphones },

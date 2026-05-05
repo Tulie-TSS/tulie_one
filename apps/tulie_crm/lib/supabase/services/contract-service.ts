@@ -8,7 +8,7 @@ import { generateDocumentBundle } from './document-template-service'
 import { notifyContractCreated, notifyContractStatusChanged, notifyContractSigned, notifyMilestonePaymentConfirmed } from './notification-service'
 import { v4 as uuidv4 } from 'uuid'
 
-export async function getContracts(customerId?: string, type?: string, brand?: string) {
+export async function getContracts(customerId?: string, type?: string, brand?: string, category?: string) {
     try {
         const supabase = await createClient()
         let query = supabase
@@ -26,6 +26,10 @@ export async function getContracts(customerId?: string, type?: string, brand?: s
 
         if (brand) {
             query = query.eq('brand', brand)
+        }
+
+        if (category) {
+            query = query.eq('category', category)
         }
 
         const { data, error } = await query
