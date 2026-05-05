@@ -166,7 +166,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                 name: m.name,
                 amount: m.amount,
                 percentage: m.amount_mode === 'percent' ? m.percentage : undefined,
-                due_date: m.due_date?.toISOString() || null,
+                due_date: m.due_date?.toISOString() || undefined,
                 status: 'pending' as any
             }))
 
