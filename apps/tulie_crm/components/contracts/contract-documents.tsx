@@ -141,7 +141,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
         // Fallback: static doc types based on contract type
         let types: string[] = []
         if (isFreelancer) {
-            types = ['freelance_contract']
+            types = ['freelance_contract', 'delivery_minutes']
         } else if (isOrder) {
             types = ['order', 'payment_request', 'delivery_minutes']
         } else {

@@ -791,7 +791,7 @@ export async function generateDocument(
  */
 function getDocTypesForContract(contractType: string, category?: string): string[] {
     if (category === 'freelancer') {
-        return ['freelance_contract']
+        return ['freelance_contract', 'delivery_minutes']
     }
     if (contractType === 'order') {
         return ['order', 'payment_request', 'delivery_minutes']
