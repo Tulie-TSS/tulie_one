@@ -192,7 +192,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                 </div>
 
                 {/* Contract Summary Card */}
-                <div className="bg-white border rounded-2xl p-5 shadow-sm">
+                <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm mb-8">
                     <div className="flex items-start justify-between gap-4">
                         <div>
                             <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-1">
@@ -221,24 +221,24 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
             </div>
 
             {/* Step Indicator */}
-            <div className="w-full max-w-2xl mb-6">
-                <div className="flex items-center gap-0">
+            <div className="w-full max-w-2xl mb-8 px-2 sm:px-0">
+                <div className="flex items-center justify-between">
                     {STEPS.map((s, i) => (
-                        <div key={s.id} className="flex items-center flex-1">
-                            <div className={`flex items-center gap-2 ${i < STEPS.length - 1 ? 'flex-1' : ''}`}>
+                        <div key={s.id} className={`flex items-center ${i < STEPS.length - 1 ? 'w-full' : ''}`}>
+                            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
                                     step > s.id ? 'bg-slate-900 text-white' :
                                     step === s.id ? 'bg-slate-900 text-white ring-4 ring-slate-900/10' :
-                                    'bg-slate-200 text-slate-400'
+                                    'bg-slate-100 border border-slate-200 text-slate-400'
                                 }`}>
                                     {step > s.id ? <CheckCircle2 className="w-4 h-4" /> : <s.icon className="w-4 h-4" />}
                                 </div>
-                                <span className={`text-xs font-medium hidden sm:block transition-colors ${step >= s.id ? 'text-slate-900' : 'text-slate-400'}`}>
+                                <span className={`text-[10px] sm:text-xs font-medium text-center sm:text-left transition-colors max-w-[70px] sm:max-w-none ${step >= s.id ? 'text-slate-900' : 'text-slate-400'}`}>
                                     {s.label}
                                 </span>
                             </div>
                             {i < STEPS.length - 1 && (
-                                <div className={`flex-1 h-px mx-3 transition-colors ${step > s.id ? 'bg-slate-900' : 'bg-slate-200'}`} />
+                                <div className={`flex-1 h-px mx-2 sm:mx-4 transition-colors ${step > s.id ? 'bg-slate-900' : 'bg-slate-200'}`} />
                             )}
                         </div>
                     ))}
@@ -247,13 +247,13 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
 
             {/* Form Card */}
             <div className="w-full max-w-2xl">
-                <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
                     {/* === STEP 1: Personal Info === */}
                     {step === 1 && (
                         <div>
-                            <div className="bg-slate-50 border-b px-6 py-4">
-                                <h2 className="font-semibold text-slate-800 text-lg">Thông tin cá nhân</h2>
-                                <p className="text-slate-500 text-sm mt-0.5">Điền chính xác như trên CCCD/CMND của bạn</p>
+                            <div className="bg-slate-50/50 border-b border-slate-200 px-6 py-5">
+                                <h2 className="font-semibold text-slate-900 text-lg">Thông tin cá nhân</h2>
+                                <p className="text-slate-500 text-sm mt-1">Điền chính xác như trên CCCD/CMND của bạn</p>
                             </div>
                             <div className="p-6 space-y-5">
                                 <Field label="Họ và tên đầy đủ *" hint="Đúng như trên giấy tờ tuỳ thân">
@@ -320,12 +320,12 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                         </div>
                     )}
 
-                    {/* === STEP 2: Bank & Contact === */}
+                    {/* === STEP 2: Bank Info === */}
                     {step === 2 && (
                         <div>
-                            <div className="bg-slate-50 border-b px-6 py-4">
-                                <h2 className="font-semibold text-slate-800 text-lg">Ngân hàng & Liên hệ</h2>
-                                <p className="text-slate-500 text-sm mt-0.5">Thông tin để thanh toán thù lao và liên lạc</p>
+                            <div className="bg-slate-50/50 border-b border-slate-200 px-6 py-5">
+                                <h2 className="font-semibold text-slate-900 text-lg">Ngân hàng & Liên hệ</h2>
+                                <p className="text-slate-500 text-sm mt-1">Thông tin để thanh toán thù lao và liên lạc</p>
                             </div>
                             <div className="p-6 space-y-5">
                                 <div className="grid grid-cols-2 gap-4">
@@ -439,9 +439,9 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                             ) : (
                                 // Review before submit
                                 <div>
-                                    <div className="bg-slate-50 border-b px-6 py-4">
-                                        <h2 className="font-semibold text-slate-800 text-lg">Xác nhận thông tin</h2>
-                                        <p className="text-slate-500 text-sm mt-0.5">Kiểm tra lại trước khi gửi — thông tin sẽ được dùng trong hợp đồng</p>
+                                    <div className="bg-slate-50/50 border-b border-slate-200 px-6 py-5">
+                                        <h2 className="font-semibold text-slate-900 text-lg">Xác nhận thông tin</h2>
+                                        <p className="text-slate-500 text-sm mt-1">Kiểm tra lại trước khi gửi — thông tin sẽ được dùng trong hợp đồng</p>
                                     </div>
                                     <div className="p-6 space-y-4">
                                         <ReviewSection title="Thông tin cá nhân">
