@@ -102,7 +102,8 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
             'freelancer_bank_account', 'freelancer_bank_account_name', 'freelancer_bank_name',
             'project_name', 'start_date', 'end_date',
             'total_amount', 'deposit_amount', 'deposit_percent', 'remaining_amount',
-            'termination_penalty_percent', 'notice_days'
+            'termination_penalty_percent', 'notice_days',
+            'amount_in_words', 'contract_items_table_no_vat', 'total_amount_number'
         ]
     }
 ]
@@ -446,6 +447,7 @@ export async function generateDocument(
                 let totalVat = 0
                 let totalAfterVat = 0
                 let itemsRowsHtml = ''
+                let itemsRowsNoVatHtml = ''
 
                 // Group items by section_name
                 const sections: Record<string, any[]> = {}
@@ -466,6 +468,9 @@ export async function generateDocument(
                     if (sectionName) {
                         itemsRowsHtml += `<tr style="background:#f0f0f0;">
                             <td style="border:1px solid #000; padding:4px;" colspan="11"><strong>${sectionName}</strong></td>
+                        </tr>`
+                        itemsRowsNoVatHtml += `<tr style="background:#f0f0f0;">
+                            <td style="border:1px solid #000; padding:6px 4px;" colspan="6"><strong>${sectionName}</strong></td>
                         </tr>`
                     }
 
@@ -512,6 +517,15 @@ export async function generateDocument(
                             <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${itemVat > 0 ? new Intl.NumberFormat('vi-VN').format(itemVat) : '0'}</td>
                             <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(afterVat)}</td>
                         </tr>`
+                        
+                        itemsRowsNoVatHtml += `<tr>
+                            <td style="border:1px solid #000; padding:6px 4px; text-align:center; vertical-align:top; white-space:nowrap;">${itemNum}</td>
+                            <td style="border:1px solid #000; padding:6px 4px; vertical-align:top;"><strong>${item.product_name}</strong>${descHtml}</td>
+                            <td style="border:1px solid #000; padding:6px 4px; text-align:center; vertical-align:top; white-space:nowrap;">${item.unit || 'Gói'}</td>
+                            <td style="border:1px solid #000; padding:6px 4px; text-align:center; vertical-align:top; white-space:nowrap;">${qty}</td>
+                            <td style="border:1px solid #000; padding:6px 4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(unitPrice)}</td>
+                            <td style="border:1px solid #000; padding:6px 4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(itemGross)}</td>
+                        </tr>`
                     })
                 })
                 
@@ -551,6 +565,7 @@ export async function generateDocument(
                 variables.vat_breakdown_html = vatBreakdownHtml
 
                 variables.contract_items_table = itemsRowsHtml
+                variables.contract_items_table_no_vat = itemsRowsNoVatHtml
                 variables.quotation_items_table = itemsRowsHtml
 
                 // Build delivery items table (simplified: STT, Name, Unit, Qty, Notes)
@@ -602,6 +617,7 @@ export async function generateDocument(
                 }
             } else {
                 variables.contract_items_table = ''
+                variables.contract_items_table_no_vat = ''
                 variables.quotation_items_table = ''
                 variables.delivery_items_table = ''
             }
