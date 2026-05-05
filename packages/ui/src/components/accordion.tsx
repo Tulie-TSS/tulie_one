@@ -7,14 +7,12 @@ import { ChevronDownIcon } from "lucide-react";
 import { cn } from "../lib/utils";
 
 function Accordion({
-  key: _key,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Root>) {
   return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
 }
 
 function AccordionItem({
-  key: _key,
   className,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Item>) {
@@ -28,7 +26,6 @@ function AccordionItem({
 }
 
 function AccordionTrigger({
-  key: _key,
   className,
   children,
   ...props
@@ -51,7 +48,6 @@ function AccordionTrigger({
 }
 
 function AccordionContent({
-  key: _key,
   className,
   children,
   ...props

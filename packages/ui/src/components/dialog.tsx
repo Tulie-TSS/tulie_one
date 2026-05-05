@@ -8,35 +8,30 @@ import { cn } from "../lib/utils";
 import { Button } from "./button";
 
 function Dialog({
-  key: _key,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
 }
 
 function DialogTrigger({
-  key: _key,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />;
 }
 
 function DialogPortal({
-  key: _key,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Portal>) {
   return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />;
 }
 
 function DialogClose({
-  key: _key,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Close>) {
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
 }
 
 function DialogOverlay({
-  key: _key,
   className,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
@@ -53,7 +48,6 @@ function DialogOverlay({
 }
 
 function DialogContent({
-  key: _key,
   className,
   children,
   showCloseButton = true,
@@ -125,7 +119,6 @@ function DialogFooter({
 }
 
 function DialogTitle({
-  key: _key,
   className,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Title>) {
@@ -139,7 +132,6 @@ function DialogTitle({
 }
 
 function DialogDescription({
-  key: _key,
   className,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Description>) {

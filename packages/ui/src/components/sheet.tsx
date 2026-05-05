@@ -7,35 +7,30 @@ import { XIcon } from "lucide-react";
 import { cn } from "../lib/utils";
 
 function Sheet({
-  key: _key,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />;
 }
 
 function SheetTrigger({
-  key: _key,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Trigger>) {
   return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />;
 }
 
 function SheetClose({
-  key: _key,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Close>) {
   return <SheetPrimitive.Close data-slot="sheet-close" {...props} />;
 }
 
 function SheetPortal({
-  key: _key,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Portal>) {
   return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />;
 }
 
 function SheetOverlay({
-  key: _key,
   className,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Overlay>) {
@@ -52,7 +47,6 @@ function SheetOverlay({
 }
 
 function SheetContent({
-  key: _key,
   className,
   children,
   side = "right",
@@ -110,7 +104,6 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 function SheetTitle({
-  key: _key,
   className,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Title>) {
@@ -124,7 +117,6 @@ function SheetTitle({
 }
 
 function SheetDescription({
-  key: _key,
   className,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Description>) {

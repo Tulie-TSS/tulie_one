@@ -7,7 +7,6 @@ import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { cn } from "../lib/utils";
 
 function RadioGroup({
-  key: _key,
   className,
   ...props
 }: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
@@ -21,7 +20,6 @@ function RadioGroup({
 }
 
 function RadioGroupItem({
-  key: _key,
   className,
   ...props
 }: React.ComponentProps<typeof RadioGroupPrimitive.Item>) {

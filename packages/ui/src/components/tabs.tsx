@@ -7,7 +7,6 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/utils";
 
 function Tabs({
-  key: _key,
   className,
   orientation = "horizontal",
   ...props
@@ -42,7 +41,6 @@ const tabsListVariants = cva(
 );
 
 function TabsList({
-  key: _key,
   className,
   variant = "default",
   ...props
@@ -59,7 +57,6 @@ function TabsList({
 }
 
 function TabsTrigger({
-  key: _key,
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
@@ -79,7 +76,6 @@ function TabsTrigger({
 }
 
 function TabsContent({
-  key: _key,
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Content>) {

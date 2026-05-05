@@ -6,7 +6,6 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { cn } from "../lib/utils";
 
 function TooltipProvider({
-  key: _key,
   delayDuration = 0,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
@@ -20,7 +19,6 @@ function TooltipProvider({
 }
 
 function Tooltip({
-  key: _key,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
   return (
@@ -31,14 +29,12 @@ function Tooltip({
 }
 
 function TooltipTrigger({
-  key: _key,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
   return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
 }
 
 function TooltipContent({
-  key: _key,
   className,
   sideOffset = 0,
   children,
