@@ -211,7 +211,12 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                                                 {formatCurrency(milestone.amount * 0.9)}
                                             </TableCell>
                                             <TableCell className="text-center">
-                                                <MilestoneConfirmButton milestone={milestone} />
+                                                <MilestoneConfirmButton 
+                                                    milestoneId={milestone.id}
+                                                    milestoneName={milestone.name || milestone.label}
+                                                    amount={milestone.amount}
+                                                    status={milestone.status}
+                                                />
                                             </TableCell>
                                         </TableRow>
                                     ))}
