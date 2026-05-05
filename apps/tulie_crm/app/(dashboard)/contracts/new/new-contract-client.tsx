@@ -245,6 +245,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                 </Select>
                             </div>
 
+                            {category !== 'freelancer' && (
                             <div className="space-y-2">
                                 <Label>Khách hàng <span className="text-destructive">*</span></Label>
                                 <Select value={customerId} onValueChange={setCustomerId}>
@@ -260,6 +261,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                     </SelectContent>
                                 </Select>
                             </div>
+                            )}
 
                             <div className="space-y-2">
                                 <Label>Tiêu đề hợp đồng <span className="text-destructive">*</span></Label>
@@ -360,9 +362,9 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
 
                         {/* Freelancer Metadata - Conditional */}
                         {category === 'freelancer' && (
-                            <Card className="border-blue-200 bg-blue-50/30 dark:bg-blue-950/10 dark:border-blue-900">
+                            <Card className="border-zinc-200 bg-zinc-50/50 dark:bg-zinc-900/20 dark:border-zinc-800">
                                 <CardHeader>
-                                    <CardTitle className="text-blue-700 dark:text-blue-400">Thông tin Cộng tác viên</CardTitle>
+                                    <CardTitle className="text-zinc-800 dark:text-zinc-200">Thông tin Cộng tác viên</CardTitle>
                                     <CardDescription>Thông tin chi tiết để điền vào hợp đồng dịch vụ</CardDescription>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
