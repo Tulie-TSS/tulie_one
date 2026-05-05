@@ -127,7 +127,7 @@ export const contractTemplate = `
   <table style="width:100%; border-collapse:collapse; margin-bottom:8px;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">1.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Theo đề nghị của Bên A, Bên B thực hiện cung cấp cho Bên A sản phẩm/dịch vụ theo nội dung chi tiết tại <strong>Phụ lục 01</strong> (Bảng báo giá chi tiết) đính kèm hợp đồng này.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Theo đề nghị của Bên A, Bên B thực hiện cung cấp cho Bên A sản phẩm/dịch vụ{{product_service_declaration}} theo nội dung chi tiết tại <strong>Phụ lục 01</strong> (Bảng báo giá chi tiết) đính kèm hợp đồng này.</td>
     </tr>
     {{clause_1_2_html}}
     <tr>

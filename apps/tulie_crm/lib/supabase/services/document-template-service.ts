@@ -49,7 +49,7 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
             'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
             'total_amount_number', 'amount_in_words',
             'payment_terms', 'delivery_time', 'delivery_address',
-            'service_description'
+            'service_description', 'product_service_declaration'
         ]
     },
     {
@@ -596,6 +596,23 @@ export async function generateDocument(
                 }
             }
         }
+        // Generate product_service_declaration
+        const proposalContent = contract?.quotation?.proposal_content as any || {}
+        let productServiceDeclaration = ''
+        if (proposalContent) {
+            const productName = proposalContent.product_name_in_contract?.trim() || ''
+            const vatStatus = proposalContent.vat_exempt_status || '0_percent'
+            
+            if (productName) {
+                productServiceDeclaration += ` ${productName}`
+            }
+            if (vatStatus === 'exempt') {
+                productServiceDeclaration += ` (thuộc đối tượng không chịu thuế giá trị gia tăng (GTGT/VAT) theo quy định của pháp luật Việt Nam (theo Thông tư 219/2013/TT-BTC))`
+            } else if (vatStatus === '0_percent') {
+                productServiceDeclaration += ` (thuộc đối tượng chịu thuế suất GTGT 0%)`
+            }
+        }
+        variables.product_service_declaration = productServiceDeclaration
 
         // Determine whether to include proposal appendix
         const includeProposalAppendix = contract?.include_proposal_appendix !== false
@@ -617,8 +634,7 @@ export async function generateDocument(
         }
 
         // Build proposal appendix HTML from quotation.proposal_content
-        const proposalContent = contract?.quotation?.proposal_content as any
-        if (includeProposalAppendix && proposalContent && contract?.quotation?.type === 'proposal') {
+        if (includeProposalAppendix && contract?.quotation?.type === 'proposal') {
             const proposalSections: { label: string; content: string }[] = []
             if (proposalContent.introduction) proposalSections.push({ label: 'Mục tiêu & Giới thiệu', content: proposalContent.introduction })
             if (proposalContent.scope_of_work) proposalSections.push({ label: 'Phạm vi công việc (Scope of Work)', content: proposalContent.scope_of_work })

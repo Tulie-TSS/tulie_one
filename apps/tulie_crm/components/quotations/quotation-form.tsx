@@ -94,6 +94,8 @@ export function QuotationForm({ quotation, customers, products, units, projects,
     const [vatPercent, setVatPercent] = useState(quotation?.vat_percent ?? 10)
     const [type, setType] = useState<Quotation['type']>(quotation?.type || 'standard')
     const [proposalContent, setProposalContent] = useState<any>(quotation?.proposal_content || {})
+    const [vatExemptStatus, setVatExemptStatus] = useState<'0_percent' | 'exempt'>(quotation?.proposal_content?.vat_exempt_status || '0_percent')
+    const [productNameInContract, setProductNameInContract] = useState<string>(quotation?.proposal_content?.product_name_in_contract || '')
     const [isImportProposalOpen, setIsImportProposalOpen] = useState(false)
     const [importText, setImportText] = useState('')
     const [isImportJsonOpen, setIsImportJsonOpen] = useState(false)
@@ -649,12 +651,16 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 bank_account_name: bankAccountName,
                 bank_branch: bankBranch,
                 type,
-                proposal_content: proposalContent,
+                proposal_content: {
+                    ...proposalContent,
+                    vat_exempt_status: vatExemptStatus,
+                    product_name_in_contract: productNameInContract
+                },
                 project_id: projectId,
                 attachments
             })
         }
-    }, [quotationNumber, customerId, projectId, title, terms, notes, vatPercent, items, validityDays, subtotal, vatAmount, totalAmount, onChange, customers, bankName, bankAccountNo, bankAccountName, bankBranch, type, proposalContent, attachments])
+    }, [quotationNumber, customerId, projectId, title, terms, notes, vatPercent, vatExemptStatus, productNameInContract, items, validityDays, subtotal, vatAmount, totalAmount, onChange, customers, bankName, bankAccountNo, bankAccountName, bankBranch, type, proposalContent, attachments])
 
     const handleSave = async (sendAfterSave = false) => {
         if (onSave) {
@@ -689,7 +695,11 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 bank_account_name: bankAccountName || null,
                 bank_branch: bankBranch || null,
                 type,
-                proposal_content: proposalContent || null,
+                proposal_content: {
+                    ...proposalContent,
+                    vat_exempt_status: vatExemptStatus,
+                    product_name_in_contract: productNameInContract
+                } || null,
                 project_id: projectId || null,
                 attachments: attachments
             }
@@ -811,6 +821,16 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                         <Label htmlFor="type-proposal" className="cursor-pointer">Hồ sơ đề xuất (Mkt/Dev)</Label>
                                     </div>
                                 </RadioGroup>
+                            </div>
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label>Tên SP/Dịch vụ hiển thị hợp đồng</Label>
+                                    <Input
+                                        placeholder="Ví dụ: Thiết kế website"
+                                        value={productNameInContract}
+                                        onChange={(e) => setProductNameInContract(e.target.value)}
+                                    />
+                                </div>
                             </div>
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <div className="space-y-2">
@@ -1539,6 +1559,17 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                                 <SelectItem value="10">10%</SelectItem>
                                             </SelectContent>
                                         </Select>
+                                        {vatPercent === 0 && (
+                                            <Select value={vatExemptStatus} onValueChange={(v: any) => setVatExemptStatus(v)}>
+                                                <SelectTrigger className="w-32 h-9 text-xs border-border">
+                                                    <SelectValue />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="0_percent">Thuế 0%</SelectItem>
+                                                    <SelectItem value="exempt">Không chịu thuế</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        )}
                                         <div className="flex items-baseline gap-1">
                                             <span className="text-sm text-foreground">{formatNumber(vatAmount)}</span>
                                             <span className="text-[10px] text-foreground">đ</span>
