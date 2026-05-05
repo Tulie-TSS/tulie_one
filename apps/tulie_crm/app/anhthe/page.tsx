@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   },
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function IDPhotoOrderPage() {
   // Fetch only ID photo packages (SKU: anhthe-*) — not all Studio products
   const allProducts = await getProducts()
