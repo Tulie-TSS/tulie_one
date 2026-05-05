@@ -47,7 +47,7 @@ export async function getContractById(id: string) {
         const supabase = await createClient()
         const { data, error } = await supabase
             .from('contracts')
-            .select('*, customer:customers(*), creator:users(*), milestones:contract_milestones(*), quotation:quotations(id, quotation_number, deal_id, type)')
+            .select('*, customer:customers!customer_id(*), creator:users(*), milestones:contract_milestones(*), quotation:quotations(id, quotation_number, deal_id, type)')
             .eq('id', id)
             .single()
 
@@ -410,12 +410,17 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
         // 1. Get quotation details
         const { data: quotation, error: qError } = await supabase
             .from('quotations')
-            .select('*, customer:customers(*), items:quotation_items(*)')
+            .select('*, customer:customers!customer_id(*), items:quotation_items(*)')
             .eq('id', quotationId)
             .single()
 
-        if (qError || !quotation) throw new Error('Không tìm thấy báo giá')
-
+        if (qError) {
+            console.error('Error fetching quotation for conversion:', qError)
+            throw new Error('Lỗi truy vấn báo giá: ' + qError.message)
+        }
+        if (!quotation) {
+            throw new Error('Không tìm thấy báo giá (dữ liệu rỗng)')
+        }
         // Guard: check if quotation is already converted and has a contract
         if (quotation.status === 'converted') {
             // Check if there's still a linked contract
