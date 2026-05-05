@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import {
     Card, CardContent, CardHeader, CardTitle, CardDescription,
     Label, Input, Textarea, Button, Separator,
-    Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@repo/ui'
 import { toast } from 'sonner'
 import { ArrowLeft, Plus, Trash2 } from 'lucide-react'
@@ -14,9 +13,13 @@ import Link from 'next/link'
 interface Milestone {
     id: string
     label: string
-    amount: number
+    amount: string
     due_date: string
 }
+
+// Helper to format/parse numbers
+const parseNumber = (val: string) => val.replace(/[^0-9]/g, '')
+const formatNumber = (val: string) => val ? Number(val).toLocaleString('vi-VN') : ''
 
 export default function NewCtvContractClient() {
     const router = useRouter()
@@ -24,26 +27,23 @@ export default function NewCtvContractClient() {
 
     // Basic fields
     const [title, setTitle] = useState('')
-    const [totalAmount, setTotalAmount] = useState('')
+    const [totalAmountRaw, setTotalAmountRaw] = useState('')
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
     const [terms, setTerms] = useState('')
     const [productName, setProductName] = useState('')
-    const [depositPercent, setDepositPercent] = useState('30')
-    const [cancelPenalty, setCancelPenalty] = useState('50')
-    const [noticeDays, setNoticeDays] = useState('15')
 
     // Milestones
     const [milestones, setMilestones] = useState<Milestone[]>([
-        { id: '1', label: 'Đợt 1 - Tạm ứng', amount: 0, due_date: '' },
-        { id: '2', label: 'Đợt 2 - Thanh toán cuối', amount: 0, due_date: '' },
+        { id: '1', label: 'Đợt 1 - Tạm ứng', amount: '', due_date: '' },
+        { id: '2', label: 'Đợt 2 - Thanh toán cuối', amount: '', due_date: '' },
     ])
 
     const addMilestone = () => {
         setMilestones(prev => [...prev, {
             id: Date.now().toString(),
             label: `Đợt ${prev.length + 1}`,
-            amount: 0,
+            amount: '',
             due_date: '',
         }])
     }
@@ -52,14 +52,15 @@ export default function NewCtvContractClient() {
         setMilestones(prev => prev.filter(m => m.id !== id))
     }
 
-    const updateMilestone = (id: string, field: keyof Milestone, value: string | number) => {
+    const updateMilestone = (id: string, field: keyof Milestone, value: string) => {
         setMilestones(prev => prev.map(m => m.id === id ? { ...m, [field]: value } : m))
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!title.trim()) { toast.error('Vui lòng nhập tiêu đề hợp đồng'); return }
-        if (!totalAmount || Number(totalAmount) <= 0) { toast.error('Vui lòng nhập giá trị hợp đồng'); return }
+        const totalAmountNum = Number(totalAmountRaw)
+        if (!totalAmountNum || totalAmountNum <= 0) { toast.error('Vui lòng nhập giá trị hợp đồng'); return }
 
         setLoading(true)
         try {
@@ -68,18 +69,17 @@ export default function NewCtvContractClient() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     title: title.trim(),
-                    total_amount: Number(totalAmount),
+                    total_amount: totalAmountNum,
                     start_date: startDate || undefined,
                     end_date: endDate || undefined,
                     terms: terms.trim() || undefined,
                     product_name_in_contract: productName.trim() || undefined,
                     freelancer_metadata: {
                         project_name: title.trim(),
-                        deposit_percent: Number(depositPercent),
-                        cancel_penalty_percent: Number(cancelPenalty),
-                        notice_days: Number(noticeDays),
                     },
-                    milestones: milestones.filter(m => m.amount > 0 || m.label),
+                    milestones: milestones
+                        .map(m => ({ ...m, amount: Number(m.amount) }))
+                        .filter(m => m.amount > 0 || m.label),
                 }),
             })
             const json = await res.json()
@@ -138,34 +138,20 @@ export default function NewCtvContractClient() {
                                 />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1.5">
-                                    <Label htmlFor="totalAmount">Giá trị hợp đồng (VNĐ) <span className="text-destructive">*</span></Label>
-                                    <Input
-                                        id="totalAmount"
-                                        type="number"
-                                        min={0}
-                                        value={totalAmount}
-                                        onChange={e => setTotalAmount(e.target.value)}
-                                        placeholder="0"
-                                    />
-                                    {totalAmount && Number(totalAmount) > 0 && (
-                                        <p className="text-xs text-muted-foreground">
-                                            Sau thuế TNCN 10%: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(totalAmount) * 0.9)}
-                                        </p>
-                                    )}
-                                </div>
-                                <div className="space-y-1.5">
-                                    <Label>Tạm ứng (%)</Label>
-                                    <Select value={depositPercent} onValueChange={setDepositPercent}>
-                                        <SelectTrigger><SelectValue /></SelectTrigger>
-                                        <SelectContent>
-                                            {['0','20','30','40','50','70','100'].map(v => (
-                                                <SelectItem key={v} value={v}>{v}% tạm ứng</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
+                            <div className="space-y-1.5">
+                                <Label htmlFor="totalAmount">Giá trị hợp đồng (VNĐ) <span className="text-destructive">*</span></Label>
+                                <Input
+                                    id="totalAmount"
+                                    type="text"
+                                    value={formatNumber(totalAmountRaw)}
+                                    onChange={e => setTotalAmountRaw(parseNumber(e.target.value))}
+                                    placeholder="0"
+                                />
+                                {totalAmountRaw && Number(totalAmountRaw) > 0 && (
+                                    <p className="text-xs text-muted-foreground">
+                                        Sau thuế TNCN 10%: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(totalAmountRaw) * 0.9)}
+                                    </p>
+                                )}
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
@@ -185,7 +171,7 @@ export default function NewCtvContractClient() {
                                     id="terms"
                                     value={terms}
                                     onChange={e => setTerms(e.target.value)}
-                                    placeholder="Các điều khoản và điều kiện của hợp đồng..."
+                                    placeholder="Các điều khoản và điều kiện đặc biệt của hợp đồng (nếu có)..."
                                     rows={4}
                                 />
                             </div>
@@ -221,10 +207,9 @@ export default function NewCtvContractClient() {
                                         <div className="space-y-1">
                                             <Label className="text-xs">Số tiền (VNĐ)</Label>
                                             <Input
-                                                type="number"
-                                                min={0}
-                                                value={m.amount || ''}
-                                                onChange={e => updateMilestone(m.id, 'amount', Number(e.target.value))}
+                                                type="text"
+                                                value={formatNumber(m.amount)}
+                                                onChange={e => updateMilestone(m.id, 'amount', parseNumber(e.target.value))}
                                                 placeholder="0"
                                                 className="h-8 text-sm"
                                             />
@@ -256,36 +241,6 @@ export default function NewCtvContractClient() {
 
                 {/* Sidebar */}
                 <div className="space-y-4">
-                    <Card>
-                        <CardHeader className="pb-3">
-                            <CardTitle className="text-base">Điều khoản hủy hợp đồng</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-1.5">
-                                <Label>Phạt hủy (%)</Label>
-                                <Select value={cancelPenalty} onValueChange={setCancelPenalty}>
-                                    <SelectTrigger><SelectValue /></SelectTrigger>
-                                    <SelectContent>
-                                        {['0','20','30','50','100'].map(v => (
-                                            <SelectItem key={v} value={v}>{v}% giá trị hợp đồng</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="space-y-1.5">
-                                <Label>Báo trước tối thiểu (ngày)</Label>
-                                <Select value={noticeDays} onValueChange={setNoticeDays}>
-                                    <SelectTrigger><SelectValue /></SelectTrigger>
-                                    <SelectContent>
-                                        {['7','14','15','30'].map(v => (
-                                            <SelectItem key={v} value={v}>{v} ngày</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </CardContent>
-                    </Card>
-
                     <Card>
                         <CardHeader className="pb-3">
                             <CardTitle className="text-base">Quy trình sau khi tạo</CardTitle>
