@@ -182,42 +182,33 @@ export default function QuotationDetailPage() {
         <div className="flex flex-col gap-6 pb-20">
             <div className="print:hidden space-y-6">
                 {/* Header Actions */}
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                    <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-                        <Button variant="outline" size="icon" asChild className="h-9 w-9 shrink-0">
+                <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6">
+                    <div className="flex flex-row items-start md:items-center gap-4 flex-1 min-w-0 w-full">
+                        <Button variant="outline" size="icon" asChild className="h-9 w-9 shrink-0 mt-1 md:mt-0">
                             <Link href={backHref}>
                                 <ArrowLeft className="h-4 w-4" />
                             </Link>
                         </Button>
-                        <div className="space-y-1.5">
-                            <div className="flex items-center gap-2">
+                        <div className="space-y-1.5 flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
                                 <Badge variant="outline" className="text-[11px] font-mono">{quotation.quotation_number}</Badge>
                                 <StatusBadge entityType="quotation" status={quotation.status} />
                                 {quotation.is_primary && (
                                     <Badge>Chính</Badge>
                                 )}
                             </div>
-                            <h1 className="text-2xl font-semibold tracking-tight">{quotation.customer?.company_name}</h1>
+                            <h1 className="text-2xl font-semibold tracking-tight truncate">{quotation.customer?.company_name}</h1>
                             {(quotation.title || quotation.version_name) && (
-                                <p className="text-sm text-muted-foreground flex items-center gap-1.5">
-                                    {quotation.version_name ? <span className="font-semibold text-foreground">{quotation.version_name}</span> : null}
-                                    {quotation.title ? (quotation.version_name ? <span>&bull; {quotation.title}</span> : quotation.title) : null}
+                                <p className="text-sm text-muted-foreground flex items-center gap-1.5 truncate">
+                                    {quotation.version_name ? <span className="font-semibold text-foreground shrink-0">{quotation.version_name}</span> : null}
+                                    {quotation.title ? (quotation.version_name ? <span className="truncate">&bull; {quotation.title}</span> : <span className="truncate">{quotation.title}</span>) : null}
                                 </p>
                             )}
                         </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-3 shrink-0">
                         <QuotationVersionHistory quotationId={id} />
-                        
-                        {quotation.public_token && (
-                            <Button variant="outline" size="default" asChild className="font-medium">
-                                <Link href={publicUrl || '#'} target="_blank" className="flex items-center gap-2">
-                                    <ExternalLink className="h-4 w-4" />
-                                    Mở Portal báo giá
-                                </Link>
-                            </Button>
-                        )}
 
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
