@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
                 status: 'draft',
                 type: 'contract',
                 category: 'freelancer',
-                brand: 'TMM',
+                brand: 'agency',
                 public_token: publicToken,
                 freelancer_metadata: data.freelancer_metadata || {},
                 created_by: authResult.user.id,
