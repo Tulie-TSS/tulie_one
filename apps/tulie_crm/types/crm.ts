@@ -94,6 +94,9 @@ export interface Quotation {
   type: QuotationType
   proposal_content?: any
 
+  vat_exempt_status?: string
+  product_name_in_contract?: string
+
   title?: string
   version_name?: string
   is_primary?: boolean
@@ -209,6 +212,8 @@ export interface Contract {
   creator?: User
   title: string
   description?: string
+  vat_exempt_status?: string
+  product_name_in_contract?: string
   status: ContractStatus
   total_amount: number
   start_date: string

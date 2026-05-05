@@ -599,10 +599,10 @@ export async function generateDocument(
         // Generate product_service_declaration
         const proposalContent = contract?.quotation?.proposal_content as any || {}
         let productServiceDeclaration = ''
-        if (proposalContent) {
-            const productName = proposalContent.product_name_in_contract?.trim() || ''
-            const vatStatus = proposalContent.vat_exempt_status || '0_percent'
-            
+        const productName = contract?.product_name_in_contract?.trim() || contract?.quotation?.product_name_in_contract?.trim() || proposalContent.product_name_in_contract?.trim() || ''
+        const vatStatus = contract?.vat_exempt_status || contract?.quotation?.vat_exempt_status || proposalContent.vat_exempt_status || '0_percent'
+        
+        if (productName || vatStatus) {
             if (productName) {
                 productServiceDeclaration += ` ${productName}`
             }

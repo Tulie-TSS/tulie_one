@@ -94,8 +94,8 @@ export function QuotationForm({ quotation, customers, products, units, projects,
     const [vatPercent, setVatPercent] = useState(quotation?.vat_percent ?? 10)
     const [type, setType] = useState<Quotation['type']>(quotation?.type || 'standard')
     const [proposalContent, setProposalContent] = useState<any>(quotation?.proposal_content || {})
-    const [vatExemptStatus, setVatExemptStatus] = useState<'0_percent' | 'exempt'>(quotation?.proposal_content?.vat_exempt_status || '0_percent')
-    const [productNameInContract, setProductNameInContract] = useState<string>(quotation?.proposal_content?.product_name_in_contract || '')
+    const [vatExemptStatus, setVatExemptStatus] = useState<'0_percent' | 'exempt'>((quotation?.vat_exempt_status as any) || (quotation?.proposal_content?.vat_exempt_status) || '0_percent')
+    const [productNameInContract, setProductNameInContract] = useState<string>(quotation?.product_name_in_contract || quotation?.proposal_content?.product_name_in_contract || '')
     const [isImportProposalOpen, setIsImportProposalOpen] = useState(false)
     const [importText, setImportText] = useState('')
     const [isImportJsonOpen, setIsImportJsonOpen] = useState(false)
@@ -651,11 +651,9 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 bank_account_name: bankAccountName,
                 bank_branch: bankBranch,
                 type,
-                proposal_content: {
-                    ...proposalContent,
-                    vat_exempt_status: vatExemptStatus,
-                    product_name_in_contract: productNameInContract
-                },
+                proposal_content: proposalContent,
+                vat_exempt_status: vatExemptStatus,
+                product_name_in_contract: productNameInContract,
                 project_id: projectId,
                 attachments
             })
@@ -695,11 +693,9 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 bank_account_name: bankAccountName || null,
                 bank_branch: bankBranch || null,
                 type,
-                proposal_content: {
-                    ...proposalContent,
-                    vat_exempt_status: vatExemptStatus,
-                    product_name_in_contract: productNameInContract
-                } || null,
+                proposal_content: proposalContent || null,
+                vat_exempt_status: vatExemptStatus || null,
+                product_name_in_contract: productNameInContract || null,
                 project_id: projectId || null,
                 attachments: attachments
             }
@@ -1549,27 +1545,28 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                 <div className="space-y-1">
                                     <p className="text-[11px] text-muted-foreground">Thuế VAT</p>
                                     <div className="flex items-center gap-3">
-                                        <Select value={vatPercent.toString()} onValueChange={(v) => setVatPercent(parseInt(v))}>
-                                            <SelectTrigger className="w-24 h-9 text-xs border-border">
+                                        <Select 
+                                            value={vatPercent === 0 ? (vatExemptStatus === 'exempt' ? 'exempt' : '0') : vatPercent.toString()} 
+                                            onValueChange={(v) => {
+                                                if (v === 'exempt') {
+                                                    setVatPercent(0);
+                                                    setVatExemptStatus('exempt');
+                                                } else {
+                                                    setVatPercent(parseInt(v));
+                                                    setVatExemptStatus('0_percent');
+                                                }
+                                            }}
+                                        >
+                                            <SelectTrigger className="w-32 h-9 text-xs border-border">
                                                 <SelectValue />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="0">0%</SelectItem>
-                                                <SelectItem value="8">8%</SelectItem>
-                                                <SelectItem value="10">10%</SelectItem>
+                                                <SelectItem value="exempt">Không chịu thuế</SelectItem>
+                                                <SelectItem value="0">Thuế 0%</SelectItem>
+                                                <SelectItem value="8">Thuế 8%</SelectItem>
+                                                <SelectItem value="10">Thuế 10%</SelectItem>
                                             </SelectContent>
                                         </Select>
-                                        {vatPercent === 0 && (
-                                            <Select value={vatExemptStatus} onValueChange={(v: any) => setVatExemptStatus(v)}>
-                                                <SelectTrigger className="w-32 h-9 text-xs border-border">
-                                                    <SelectValue />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="0_percent">Thuế 0%</SelectItem>
-                                                    <SelectItem value="exempt">Không chịu thuế</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        )}
                                         <div className="flex items-baseline gap-1">
                                             <span className="text-sm text-foreground">{formatNumber(vatAmount)}</span>
                                             <span className="text-[10px] text-foreground">đ</span>

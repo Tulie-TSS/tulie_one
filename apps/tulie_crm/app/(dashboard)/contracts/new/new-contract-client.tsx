@@ -63,6 +63,11 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
     const [startDate, setStartDate] = useState<Date>()
     const [endDate, setEndDate] = useState<Date>()
     const [terms, setTerms] = useState('')
+    
+    // New fields
+    const [productNameInContract, setProductNameInContract] = useState('')
+    const [vatExemptStatus, setVatExemptStatus] = useState<'0_percent' | 'exempt'>('0_percent')
+    const [vatPercent, setVatPercent] = useState<number>(10)
 
     const [milestones, setMilestones] = useState<Milestone[]>([
         { id: '1', name: 'Đặt cọc 50%', amount: 0, percentage: 50, amount_mode: 'percent', due_date: undefined },
@@ -116,6 +121,10 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
             const newTotal = quote.total_amount
             setTotalValue(newTotal)
             setTitle(`Hợp đồng triển khai - ${quote.quotation_number}`)
+            setProductNameInContract(quote.product_name_in_contract || quote.proposal_content?.product_name_in_contract || '')
+            setVatExemptStatus(quote.vat_exempt_status || quote.proposal_content?.vat_exempt_status || '0_percent')
+            setVatPercent(quote.vat_percent || 10)
+            
             // Recalculate percent-mode milestones
             if (newTotal > 0) {
                 setMilestones(prev => prev.map(m =>
@@ -147,7 +156,10 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                 start_date: startDate?.toISOString(),
                 end_date: endDate?.toISOString(),
                 status: 'active',
-                terms
+                terms,
+                product_name_in_contract: productNameInContract,
+                vat_exempt_status: vatPercent === 0 ? vatExemptStatus : null,
+                brand: selectedQuote?.brand || 'TMM'
             }
 
             const milestoneData = milestones.map(m => ({
@@ -163,9 +175,9 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
             toast.success('Tạo hợp đồng thành công')
             router.push('/contracts')
             router.refresh()
-        } catch (error) {
+        } catch (error: any) {
             console.error('Failed to create contract:', error)
-            toast.error('Có lỗi xảy ra khi tạo hợp đồng')
+            toast.error('Có lỗi xảy ra khi tạo hợp đồng: ' + (error.message || ''))
         } finally {
             setIsLoading(false)
         }
@@ -245,6 +257,42 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                     value={totalValue}
                                     onChange={(e) => handleTotalValueChange(parseInt(e.target.value) || 0)}
                                 />
+                            </div>
+
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label>Tên SP/Dịch vụ hiển thị hợp đồng</Label>
+                                    <Input
+                                        placeholder="Ví dụ: Thiết kế website"
+                                        value={productNameInContract}
+                                        onChange={(e) => setProductNameInContract(e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>Phân loại VAT</Label>
+                                    <Select 
+                                        value={vatPercent === 0 ? (vatExemptStatus === 'exempt' ? 'exempt' : '0') : vatPercent.toString()} 
+                                        onValueChange={(v) => {
+                                            if (v === 'exempt') {
+                                                setVatPercent(0);
+                                                setVatExemptStatus('exempt');
+                                            } else {
+                                                setVatPercent(parseInt(v));
+                                                setVatExemptStatus('0_percent');
+                                            }
+                                        }}
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="exempt">Không chịu thuế</SelectItem>
+                                            <SelectItem value="0">Thuế 0%</SelectItem>
+                                            <SelectItem value="8">Thuế 8%</SelectItem>
+                                            <SelectItem value="10">Thuế 10%</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </div>
 
                             <div className="grid gap-4 sm:grid-cols-2">

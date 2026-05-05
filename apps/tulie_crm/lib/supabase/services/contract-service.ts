@@ -459,7 +459,6 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
         const authUserResponse = await supabase.auth.getUser()
         const authUser = authUserResponse.data.user
 
-        // 4. Create Contract/Order
         const contractPayload: any = {
             contract_number: formattedNum,
             customer_id: quotation.customer_id,
@@ -474,6 +473,8 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
             brand: quotation.brand,
             project_id: quotation.project_id,
             customer_snapshot: customerSnapshot,
+            vat_exempt_status: quotation.vat_exempt_status || quotation.proposal_content?.vat_exempt_status || null,
+            product_name_in_contract: quotation.product_name_in_contract || quotation.proposal_content?.product_name_in_contract || null,
             public_token: 'ct_' + uuidv4().replace(/-/g, '')
         }
 
