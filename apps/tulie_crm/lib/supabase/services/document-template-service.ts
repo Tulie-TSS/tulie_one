@@ -275,7 +275,7 @@ export async function generateDocument(
     additionalVariables?: Record<string, string>
 ) {
     try {
-        const supabase = await createClient()
+        const supabase = createAdminClient()
 
         // Get template
         const template = await getTemplateById(templateId)
@@ -343,7 +343,7 @@ export async function generateDocument(
         const custData = contract?.customer_snapshot || customer || {}
 
         // Extract freelancer initials if it's a freelance contract
-        const isFreelance = template.type === 'freelance_contract'
+        const isFreelance = template.type === 'freelance_contract' || contract?.category === 'freelancer'
         let cleanInitials = ''
         if (isFreelance) {
             const freelancerName = contract?.freelancer_metadata?.name || ''
