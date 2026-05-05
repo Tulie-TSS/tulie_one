@@ -418,7 +418,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                     </div>
                                     <div className="grid gap-4 sm:grid-cols-2">
                                         <div className="space-y-2">
-                                            <Label>% Phạt đơn phương hủy ({{fMeta.termination_penalty_percent || 50}}%)</Label>
+                                            <Label>% Phạt đơn phương hủy ({fMeta.termination_penalty_percent || 50}%)</Label>
                                             <Input 
                                                 type="number"
                                                 value={fMeta.termination_penalty_percent || 50} 
@@ -426,7 +426,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label>Ngày báo trước nghỉ ({{fMeta.notice_days || 15}} ngày)</Label>
+                                            <Label>Ngày báo trước nghỉ ({fMeta.notice_days || 15} ngày)</Label>
                                             <Input 
                                                 type="number"
                                                 value={fMeta.notice_days || 15} 
