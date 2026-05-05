@@ -559,7 +559,6 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
         })
 
         // In-app notification
-        const authUser = (await supabase.auth.getUser()).data.user
         if (authUser?.id) {
             notifyContractCreated({
                 id: contract.id,
