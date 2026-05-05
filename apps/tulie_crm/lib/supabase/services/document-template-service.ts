@@ -280,14 +280,19 @@ export async function generateDocument(
         const template = await getTemplateById(templateId)
         if (!template) throw new Error('Template not found')
 
-        // Get customer data (including abbreviation)
-        const { data: customer, error: custError } = await supabase
-            .from('customers')
-            .select('*')
-            .eq('id', customerId)
-            .single()
-
-        if (custError || !customer) throw new Error('Customer not found')
+        // Get customer data (if customerId exists)
+        let customer: any = null
+        if (customerId) {
+            const { data, error: custError } = await supabase
+                .from('customers')
+                .select('*')
+                .eq('id', customerId)
+                .single()
+            
+            if (!custError && data) {
+                customer = data
+            }
+        }
 
         // Get contract and its source quotation data
         let contract = null
@@ -334,7 +339,7 @@ export async function generateDocument(
             : ''
 
         // Use snapshot from contract if available, otherwise live customer data
-        const custData = contract?.customer_snapshot || customer
+        const custData = contract?.customer_snapshot || customer || {}
 
         // Build document numbers based on format: yyyymmdd/TYPE-TL-ABBR
         const contractDocNumber = (dateStr && abbr)
@@ -350,15 +355,15 @@ export async function generateDocument(
         // Build variables map
         const variables: Record<string, string> = {
             // Customer variables (from snapshot or live)
-            customer_company: custData.company_name || customer.company_name || '',
-            customer_address: custData.address || customer.address || '',
-            customer_tax_code: custData.tax_code || customer.tax_code || '',
-            customer_email: custData.email || customer.email || '',
-            customer_phone: custData.phone || customer.phone || '',
-            customer_representative_title: custData.representative_title || customer.representative_title || '',
-            customer_representative: custData.representative || customer.representative || '',
-            customer_position: custData.position || customer.position || '',
-            customer_invoice_address: custData.invoice_address || custData.address || customer.address || '',
+            customer_company: custData.company_name || customer?.company_name || '',
+            customer_address: custData.address || customer?.address || '',
+            customer_tax_code: custData.tax_code || customer?.tax_code || '',
+            customer_email: custData.email || customer?.email || '',
+            customer_phone: custData.phone || customer?.phone || '',
+            customer_representative_title: custData.representative_title || customer?.representative_title || '',
+            customer_representative: custData.representative || customer?.representative || '',
+            customer_position: custData.position || customer?.position || '',
+            customer_invoice_address: custData.invoice_address || custData.address || customer?.address || '',
             customer_mobile: '',
             customer_bank_account: '',
             customer_bank_name: '',
@@ -426,7 +431,7 @@ export async function generateDocument(
             }
 
             // Auto-fill delivery_address from customer address
-            variables.delivery_address = custData.address || customer.address || ''
+            variables.delivery_address = custData?.address || customer?.address || ''
 
             // Determine VAT status and Product Name early for use in items table and declaration
             const proposalContent = (contract?.quotation?.proposal_content as Record<string, string>) || {}

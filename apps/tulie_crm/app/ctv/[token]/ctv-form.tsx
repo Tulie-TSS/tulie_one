@@ -402,8 +402,8 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                     </div>
                                     <div>
                                         <h2 className="text-xl font-bold text-zinc-800">Đã gửi thành công!</h2>
-                                        <p className="text-zinc-500 text-sm mt-1">
-                                            Thông tin của bạn đã được lưu. Tulie sẽ liên hệ xác nhận và gửi hợp đồng chính thức để ký kết.
+                                        <p className="text-zinc-500 text-sm mt-1 text-balance">
+                                            Thông tin của bạn đã được lưu. Tulie sẽ liên hệ xác nhận và gửi hợp đồng chính thức để ký&nbsp;kết.
                                         </p>
                                     </div>
 
