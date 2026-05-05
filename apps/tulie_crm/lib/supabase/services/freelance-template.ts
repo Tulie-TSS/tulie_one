@@ -229,7 +229,7 @@ export const freelanceTemplate = `
       <td style="height:100px;"></td>
     </tr>
     <tr>
-      <td style="text-align:center; font-weight:bold;">{{freelancer_name}}</td>
+      <td style="text-align:center; font-weight:bold;"></td>
       <td style="text-align:center; font-weight:bold;"></td>
     </tr>
   </table>
