@@ -108,7 +108,7 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
 ]
 
 
-// Get all templates — DB-first, built-in fallback when DB is empty
+// Get all templates — DB-first, built-in fallback when DB is empty or missing types
 export async function getDocumentTemplates() {
     try {
         const supabase = await createClient()
@@ -117,23 +117,31 @@ export async function getDocumentTemplates() {
         const { data, error } = await query
             .order('created_at', { ascending: true })
 
-        if (error || !data || data.length === 0) {
-            // Fallback: return built-in templates (DB not seeded yet)
-            console.warn('No templates in DB, returning built-in defaults. Run POST /api/seed-templates to populate.')
-            return defaultTemplates.map((t, i) => ({
-                ...t,
-                id: `default-${i}`,
-                is_default: true,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
-            })) as DocumentTemplate[]
+        let resultTemplates = data ? (data as DocumentTemplate[]) : []
+
+        if (error || resultTemplates.length === 0) {
+            console.warn('No templates in DB, using built-in defaults.')
         }
 
-        return data as DocumentTemplate[]
+        // Merge missing templates from defaultTemplates
+        const existingTypes = new Set(resultTemplates.map(t => t.type))
+        defaultTemplates.forEach((def, i) => {
+            if (!existingTypes.has(def.type)) {
+                resultTemplates.push({
+                    ...def,
+                    id: `default-${def.type}`,
+                    is_default: true,
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                } as DocumentTemplate)
+            }
+        })
+
+        return resultTemplates
     } catch {
         return defaultTemplates.map((t, i) => ({
             ...t,
-            id: `default-${i}`,
+            id: `default-${t.type}`,
             is_default: true,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()

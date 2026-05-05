@@ -11,10 +11,14 @@ export async function GET(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const authResult = await requireAuth()
-        if (isAuthError(authResult)) return authResult
+        const { id: paramId } = await params
+        const isToken = paramId.length > 36
 
-        const { id: contractId } = await params
+        if (!isToken) {
+            const authResult = await requireAuth()
+            if (isAuthError(authResult)) return authResult
+        }
+
         const url = new URL(request.url)
         const type = url.searchParams.get('type') || 'contract'
         const milestoneIndex = url.searchParams.get('milestone')
@@ -32,12 +36,14 @@ export async function GET(
         const { data: contract, error } = await adminSupabase
             .from('contracts')
             .select('id, customer_id')
-            .eq('id', contractId)
+            .eq(isToken ? 'public_token' : 'id', paramId)
             .single()
 
         if (error || !contract) {
             return new Response('Contract not found', { status: 404 })
         }
+        
+        const contractId = contract.id
 
         const additionalVariables: Record<string, string> = {}
         if (milestoneIndex) {
