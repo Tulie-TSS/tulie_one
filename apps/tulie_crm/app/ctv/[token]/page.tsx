@@ -70,6 +70,7 @@ export default async function CtvPage({ params }: Props) {
                 phone: fMeta.phone || '',
                 email: fMeta.email || '',
                 bank_account: fMeta.bank_account || '',
+                bank_account_name: fMeta.bank_account_name || '',
                 bank_name: fMeta.bank_name || '',
             }}
             isAlreadySubmitted={isAlreadySubmitted}
