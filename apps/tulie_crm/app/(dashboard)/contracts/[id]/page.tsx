@@ -33,6 +33,8 @@ import { CtvLinkButton } from '@/components/contracts/ctv-link-button'
 import { EntityPipelineTracker } from '@/components/shared/entity-pipeline-tracker'
 import { MilestoneConfirmButton } from '@/components/contracts/milestone-confirm-button'
 
+import { CtvContractDetail } from './ctv-contract-detail'
+
 export async function generateMetadata({ params }: any): Promise<Metadata> {
     const { id } = await params
     const contract = await getContractById(id)
@@ -62,6 +64,10 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
     // Get portal URL via contract's public_token
     const portalUrl: string | null = contract.public_token ? `/portal/${contract.public_token}` : null
     const isFreelancerContract = contract.category === 'freelancer'
+
+    if (isFreelancerContract) {
+        return <CtvContractDetail contract={contract} backHref={backHref} progress={progress} paidAmount={paidAmount} />
+    }
 
     return (
         <div className="space-y-6">

@@ -179,38 +179,39 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex flex-col items-center justify-start py-8 px-4">
+        <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-start py-8 px-4">
             {/* Header */}
             <div className="w-full max-w-2xl mb-8">
                 <div className="flex items-center gap-3 mb-6">
-                    <img src="/file/tulie-agency-logo.png" alt="Tulie Agency" className="h-8 w-auto object-contain brightness-0 invert" />
-                    <div className="h-5 w-px bg-white/20" />
-                    <span className="text-white/60 text-sm font-medium">Hợp đồng Cộng tác viên</span>
+                    {/* Dark logo for light theme */}
+                    <img src="/file/tulie-agency-logo.png" alt="Tulie Agency" className="h-8 w-auto object-contain" />
+                    <div className="h-5 w-px bg-slate-300" />
+                    <span className="text-slate-500 text-sm font-medium">Hợp đồng Cộng tác viên</span>
                 </div>
 
                 {/* Contract Summary Card */}
-                <div className="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-5">
+                <div className="bg-white border rounded-2xl p-5 shadow-sm">
                     <div className="flex items-start justify-between gap-4">
                         <div>
-                            <p className="text-white/50 text-xs font-medium uppercase tracking-wider mb-1">
+                            <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-1">
                                 {contract.contract_number || 'Hợp đồng đang chờ ký kết'}
                             </p>
-                            <h1 className="text-white font-semibold text-lg leading-tight">{contract.title}</h1>
+                            <h1 className="text-slate-900 font-semibold text-lg leading-tight">{contract.title}</h1>
                         </div>
                         <div className="text-right shrink-0">
-                            <p className="text-white/50 text-xs mb-1">Giá trị</p>
-                            <p className="text-blue-300 font-bold text-lg">
+                            <p className="text-slate-500 text-xs mb-1">Giá trị</p>
+                            <p className="text-slate-900 font-bold text-lg">
                                 {formatCurrency(contract.total_amount)}
                             </p>
                         </div>
                     </div>
                     {(contract.start_date || contract.end_date) && (
-                        <div className="mt-3 pt-3 border-t border-white/10 flex gap-6 text-sm">
+                        <div className="mt-3 pt-3 border-t flex gap-6 text-sm">
                             {contract.start_date && (
-                                <span className="text-white/50">Bắt đầu: <span className="text-white/80">{formatDate(contract.start_date)}</span></span>
+                                <span className="text-slate-500">Bắt đầu: <span className="text-slate-900 font-medium">{formatDate(contract.start_date)}</span></span>
                             )}
                             {contract.end_date && (
-                                <span className="text-white/50">Kết thúc: <span className="text-white/80">{formatDate(contract.end_date)}</span></span>
+                                <span className="text-slate-500">Kết thúc: <span className="text-slate-900 font-medium">{formatDate(contract.end_date)}</span></span>
                             )}
                         </div>
                     )}
@@ -224,18 +225,18 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                         <div key={s.id} className="flex items-center flex-1">
                             <div className={`flex items-center gap-2 ${i < STEPS.length - 1 ? 'flex-1' : ''}`}>
                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
-                                    step > s.id ? 'bg-green-500 text-white' :
-                                    step === s.id ? 'bg-blue-500 text-white ring-4 ring-blue-500/20' :
-                                    'bg-white/10 text-white/40'
+                                    step > s.id ? 'bg-slate-900 text-white' :
+                                    step === s.id ? 'bg-slate-900 text-white ring-4 ring-slate-900/10' :
+                                    'bg-slate-200 text-slate-400'
                                 }`}>
                                     {step > s.id ? <CheckCircle2 className="w-4 h-4" /> : <s.icon className="w-4 h-4" />}
                                 </div>
-                                <span className={`text-xs font-medium hidden sm:block transition-colors ${step >= s.id ? 'text-white' : 'text-white/30'}`}>
+                                <span className={`text-xs font-medium hidden sm:block transition-colors ${step >= s.id ? 'text-slate-900' : 'text-slate-400'}`}>
                                     {s.label}
                                 </span>
                             </div>
                             {i < STEPS.length - 1 && (
-                                <div className={`flex-1 h-px mx-3 transition-colors ${step > s.id ? 'bg-green-500' : 'bg-white/10'}`} />
+                                <div className={`flex-1 h-px mx-3 transition-colors ${step > s.id ? 'bg-slate-900' : 'bg-slate-200'}`} />
                             )}
                         </div>
                     ))}

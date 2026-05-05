@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
 
         if (error) {
             console.error('[CTV Contract] Insert error:', error)
-            return NextResponse.json({ error: 'Không thể tạo hợp đồng' }, { status: 500 })
+            return NextResponse.json({ error: 'Không thể tạo hợp đồng: ' + error.message }, { status: 500 })
         }
 
         // Insert milestones if provided
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
                 .filter(m => m.label || m.amount > 0)
                 .map((m, i) => ({
                     contract_id: contract.id,
-                    label: m.label || `Đợt ${i + 1}`,
+                    name: m.label || `Đợt ${i + 1}`,
                     amount: m.amount,
                     due_date: m.due_date || null,
                     status: 'pending',
@@ -96,7 +96,11 @@ export async function POST(request: NextRequest) {
                 }))
 
             if (milestoneRows.length > 0) {
-                await supabase.from('contract_milestones').insert(milestoneRows)
+                const { error: msError } = await supabase.from('contract_milestones').insert(milestoneRows)
+                if (msError) {
+                    console.error('[CTV Contract] Milestone insert error:', msError)
+                    return NextResponse.json({ error: 'Không thể tạo đợt thanh toán: ' + msError.message }, { status: 500 })
+                }
             }
         }
 
