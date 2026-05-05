@@ -234,7 +234,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                 </CardContent>
             </Card>
 
-            <ContractDocuments contractId={contract.id} />
+            <ContractDocuments contract={contract} />
         </div>
     )
 }
