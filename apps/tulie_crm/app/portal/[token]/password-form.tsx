@@ -12,7 +12,7 @@ import { Label, Badge } from '@repo/ui' // Added Label and Badge import
 
 import { cn } from '@/lib/utils'
 
-export default function PortalPasswordForm({ token, companyName, isModal = false, type = 'portal' }: { token: string, companyName?: string, isModal?: boolean, type?: 'portal' | 'financial' }) {
+export default function PortalPasswordForm({ token, companyName, isModal = false, type = 'portal', isFreelance = false }: { token: string, companyName?: string, isModal?: boolean, type?: 'portal' | 'financial', isFreelance?: boolean }) {
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -62,7 +62,9 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                     <div className="space-y-1">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Secure Access</p>
                         <h1 className="text-2xl font-bold tracking-tight text-foreground">
-                            {type === 'portal' ? 'Portal Khách Hàng' : 'Tài liệu Tài chính'}
+                            {type === 'portal' 
+                                ? (isFreelance ? 'Portal Cộng tác viên' : 'Portal Khách Hàng') 
+                                : (isFreelance ? 'Hợp đồng & Thanh toán' : 'Tài liệu Tài chính')}
                         </h1>
                     </div>
                 </div>
@@ -76,7 +78,9 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                             {companyName ? (
                                 <>Tài liệu bảo mật dành cho <span className="text-foreground font-bold">{companyName}</span>. Vui lòng xác thực quyền truy cập.</>
                             ) : (
-                                type === 'portal' ? 'Vui lòng nhập mật khẩu bảo mật để tiếp tục truy cập hồ sơ dự án.' : 'Vui lòng nhập mật khẩu cấp 2 để xem Báo giá, Hợp đồng và Hoá đơn.'
+                                type === 'portal' 
+                                    ? (isFreelance ? 'Vui lòng nhập mật khẩu để truy cập thông tin thù lao và hợp đồng.' : 'Vui lòng nhập mật khẩu bảo mật để tiếp tục truy cập hồ sơ dự án.')
+                                    : 'Vui lòng nhập mật khẩu cấp 2 để xem Báo giá, Hợp đồng và Hoá đơn.'
                             )}
                         </CardDescription>
                     </CardHeader>

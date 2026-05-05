@@ -40,6 +40,7 @@ export default async function PublicPortalPage({ params }: Props) {
         const dAny = data as any
         const portalPasswordHash = dAny.contract?.password_hash || dAny.quotation?.password_hash || dAny.project?.password_hash
         const financialPasswordHash = dAny.contract?.financial_password_hash || dAny.quotation?.financial_password_hash || dAny.project?.financial_password_hash
+        const isFreelance = dAny.contract?.category === 'freelancer'
 
         let isPortalAuthenticated = true
         let isFinancialAuthenticated = true
@@ -62,7 +63,10 @@ export default async function PublicPortalPage({ params }: Props) {
         }
 
         if (!isPortalAuthenticated) {
-            return <PortalPasswordForm token={token} companyName={data.customer?.company_name} type="portal" />
+            const displayName = isFreelance 
+                ? (dAny.contract?.freelancer_metadata?.name || 'Cộng tác viên')
+                : (data.customer?.company_name)
+            return <PortalPasswordForm token={token} companyName={displayName} type="portal" isFreelance={isFreelance} />
         }
 
         return <PortalContent data={data} token={token} isFinancialAuthenticated={isFinancialAuthenticated} hasFinancialPassword={hasFinancialPassword} companyName={data.customer?.company_name} />

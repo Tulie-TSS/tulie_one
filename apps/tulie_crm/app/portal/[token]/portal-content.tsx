@@ -80,7 +80,10 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
         }
     }
 
-    const displayName = companyName || customer?.company_name || customer?.full_name || 'Khách hàng'
+    const isFreelance = activeContract?.category === 'freelancer'
+    const displayName = isFreelance 
+        ? (activeContract?.freelancer_metadata?.name || 'Cộng tác viên')
+        : (companyName || customer?.company_name || customer?.full_name || 'Khách hàng')
 
     // Derived Stats
     const completedTasks = tasks.filter((t: any) => t.status === 'completed').length
@@ -111,10 +114,10 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                     <Separator orientation="vertical" className="h-6" />
                     <div className="flex flex-col">
                         <span className="text-base font-bold tracking-tight text-foreground leading-none">
-                            Project Portal
+                            {isFreelance ? 'Freelancer Portal' : 'Project Portal'}
                         </span>
                         <span className="text-[0.65rem] uppercase font-medium text-muted-foreground mt-0.5">
-                            Cổng theo dõi dự án
+                            {isFreelance ? 'Cổng thông tin Cộng tác viên' : 'Cổng theo dõi dự án'}
                         </span>
                     </div>
                 </div>
@@ -160,7 +163,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             {isFinancialAuthenticated && (
                                 <TabsTrigger value="finance" className="gap-2 h-8 px-4 font-medium data-[state=active]:bg-primary/5 data-[state=active]:text-primary">
                                     <Wallet className="w-4 h-4 shrink-0" />
-                                    <span>Tài chính & Pháp lý</span>
+                                    <span>{isFreelance ? 'Thanh toán & Hợp đồng' : 'Tài chính & Pháp lý'}</span>
                                 </TabsTrigger>
                             )}
                         </TabsList>
@@ -335,9 +338,9 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                         <TabsContent value="finance" className="mt-0 space-y-6 focus-visible:outline-none">
                             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                                 {[
-                                    { label: 'Tổng Đầu Tư', value: totalInvestment },
+                                    { label: isFreelance ? 'Tổng Thù Lao' : 'Tổng Đầu Tư', value: totalInvestment },
                                     { label: 'Đã Thanh Toán', value: totalPaid },
-                                    { label: 'Công Nợ', value: balanceDue },
+                                    { label: 'Còn Lại', value: balanceDue },
                                     { label: 'Tiến Độ', value: `${taskProgress}%` },
                                 ].map((stat, i) => (
                                     <Card key={i} className="bg-white border shadow-sm">
