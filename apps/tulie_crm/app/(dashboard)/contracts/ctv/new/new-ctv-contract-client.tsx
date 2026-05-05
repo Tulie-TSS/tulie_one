@@ -14,6 +14,7 @@ interface Milestone {
     id: string
     label: string
     amount: string
+    percent?: string
     due_date: string
 }
 
@@ -35,14 +36,54 @@ export default function NewCtvContractClient() {
 
     // Milestones
     const [milestones, setMilestones] = useState<Milestone[]>([
-        { id: '1', label: 'Đợt 1 - Tạm ứng', amount: '', due_date: '' },
-        { id: '2', label: 'Đợt 2 - Thanh toán cuối', amount: '', due_date: '' },
+        { id: '1', label: 'Đợt 1 - Tạm ứng', percent: '30', amount: '', due_date: '' },
+        { id: '2', label: 'Đợt 2 - Thanh toán cuối', percent: '70', amount: '', due_date: '' },
     ])
+
+    const handleTotalAmountChange = (valRaw: string) => {
+        const val = parseNumber(valRaw)
+        setTotalAmountRaw(val)
+        const t = Number(val)
+        if (t > 0) {
+            setMilestones(prev => prev.map(m => {
+                if (m.percent) {
+                    const p = Number(m.percent)
+                    if (!isNaN(p)) {
+                        return { ...m, amount: Math.round(t * (p / 100)).toString() }
+                    }
+                }
+                return m
+            }))
+        }
+    }
+
+    const handlePercentChange = (id: string, percentValRaw: string) => {
+        const percentVal = percentValRaw.replace(/[^0-9.]/g, '')
+        const p = Number(percentVal)
+        const t = Number(totalAmountRaw)
+        let amountStr = ''
+        if (t > 0 && !isNaN(p)) {
+            amountStr = Math.round(t * (p / 100)).toString()
+        }
+        setMilestones(prev => prev.map(m => m.id === id ? { ...m, percent: percentVal, amount: amountStr } : m))
+    }
+
+    const handleAmountChange = (id: string, amountValRaw: string) => {
+        const amountVal = parseNumber(amountValRaw)
+        const a = Number(amountVal)
+        const t = Number(totalAmountRaw)
+        let percentStr = ''
+        if (t > 0 && !isNaN(a)) {
+            percentStr = ((a / t) * 100).toFixed(1).replace(/\.0$/, '')
+        }
+        setMilestones(prev => prev.map(m => m.id === id ? { ...m, amount: amountVal, percent: percentStr } : m))
+    }
 
     const addMilestone = () => {
         setMilestones(prev => [...prev, {
             id: Date.now().toString(),
             label: `Đợt ${prev.length + 1}`,
+            percent: '',
             amount: '',
             due_date: '',
         }])
@@ -144,7 +185,7 @@ export default function NewCtvContractClient() {
                                     id="totalAmount"
                                     type="text"
                                     value={formatNumber(totalAmountRaw)}
-                                    onChange={e => setTotalAmountRaw(parseNumber(e.target.value))}
+                                    onChange={e => handleTotalAmountChange(e.target.value)}
                                     placeholder="0"
                                 />
                                 {totalAmountRaw && Number(totalAmountRaw) > 0 && (
@@ -194,7 +235,7 @@ export default function NewCtvContractClient() {
                         <CardContent className="space-y-3">
                             {milestones.map((m, i) => (
                                 <div key={m.id} className="flex items-start gap-3 p-3 rounded-lg border bg-muted/30">
-                                    <div className="flex-1 grid grid-cols-3 gap-3">
+                                    <div className="flex-1 grid grid-cols-[1.5fr_0.8fr_1.2fr_1fr] gap-3">
                                         <div className="space-y-1">
                                             <Label className="text-xs">Tên đợt</Label>
                                             <Input
@@ -205,11 +246,21 @@ export default function NewCtvContractClient() {
                                             />
                                         </div>
                                         <div className="space-y-1">
+                                            <Label className="text-xs">Tỷ lệ (%)</Label>
+                                            <Input
+                                                type="text"
+                                                value={m.percent || ''}
+                                                onChange={e => handlePercentChange(m.id, e.target.value)}
+                                                placeholder="0"
+                                                className="h-8 text-sm"
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
                                             <Label className="text-xs">Số tiền (VNĐ)</Label>
                                             <Input
                                                 type="text"
                                                 value={formatNumber(m.amount)}
-                                                onChange={e => updateMilestone(m.id, 'amount', parseNumber(e.target.value))}
+                                                onChange={e => handleAmountChange(m.id, e.target.value)}
                                                 placeholder="0"
                                                 className="h-8 text-sm"
                                             />
