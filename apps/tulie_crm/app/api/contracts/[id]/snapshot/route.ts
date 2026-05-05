@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
-import { requireAuth, isAuthError } from '@/lib/security/auth-guard'
+import { requirePermission, isAuthError } from '@/lib/security/auth-guard'
 
 /**
- * PUT /api/contracts/[id]/snapshot — Save customer_snapshot
+ * PUT /api/contracts/[id]/snapshot — Requires 'edit' on contracts
  * Persists customer info override on the contract
  * Also syncs back to `customers` table and other contracts of the same customer
  */
@@ -11,7 +11,7 @@ export async function PUT(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const authResult = await requireAuth()
+        const authResult = await requirePermission('contracts', 'edit')
         if (isAuthError(authResult)) return authResult
 
         const { id: contractId } = await params

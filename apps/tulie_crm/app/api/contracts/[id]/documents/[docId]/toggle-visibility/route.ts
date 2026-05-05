@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server'
-import { requireAuth, isAuthError } from '@/lib/security/auth-guard'
+import { requirePermission, isAuthError } from '@/lib/security/auth-guard'
 
 export async function POST(
     request: Request,
     { params }: { params: Promise<{ id: string, docId: string }> }
 ) {
     try {
-        const authResult = await requireAuth()
+        const authResult = await requirePermission('contracts', 'edit')
         if (isAuthError(authResult)) return authResult
 
         const { id, docId } = await params

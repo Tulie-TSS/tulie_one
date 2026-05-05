@@ -80,6 +80,9 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
         }
     }
 
+    // Derived data — declare first, then use
+    const activeContract = contract || (data.contracts ? data.contracts[0] : null)
+
     const isFreelance = activeContract?.category === 'freelancer'
     const displayName = isFreelance 
         ? (activeContract?.freelancer_metadata?.name || 'Cộng tác viên')
@@ -90,7 +93,6 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
     const totalTasks = tasks.length
     const taskProgress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
 
-    const activeContract = contract || (data.contracts ? data.contracts[0] : null)
     const totalInvestment = activeContract?.total_amount || 0
     const totalPaid = timeline.filter((t: any) => t.type === 'payment' && t.status === 'completed').reduce((sum: number, t: any) => sum + (t.amount || 0), 0)
     const balanceDue = Math.max(0, totalInvestment - totalPaid)

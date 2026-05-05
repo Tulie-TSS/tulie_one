@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
-import { requireAuth, isAuthError } from '@/lib/security/auth-guard'
+import { requirePermission, isAuthError } from '@/lib/security/auth-guard'
 import { getTemplateById, updateDocumentTemplate, deleteDocumentTemplate, duplicateDocumentTemplate } from '@/lib/supabase/services/document-template-service'
 
 /**
- * GET /api/templates/[id] — Requires authentication
+ * GET /api/templates/[id] — Requires 'view' on templates
  * Returns a single document template by ID
  */
 export async function GET(
@@ -11,7 +11,7 @@ export async function GET(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const authResult = await requireAuth()
+        const authResult = await requirePermission('templates', 'view')
         if (isAuthError(authResult)) return authResult
 
         const { id } = await params
@@ -29,7 +29,7 @@ export async function GET(
 }
 
 /**
- * PUT /api/templates/[id] — Requires authentication
+ * PUT /api/templates/[id] — Requires 'edit' on templates (admin/ceo/project_manager only)
  * Updates a document template
  */
 export async function PUT(
@@ -37,7 +37,7 @@ export async function PUT(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const authResult = await requireAuth()
+        const authResult = await requirePermission('templates', 'edit')
         if (isAuthError(authResult)) return authResult
 
         const { id } = await params
@@ -57,7 +57,7 @@ export async function PUT(
 }
 
 /**
- * DELETE /api/templates/[id] — Requires authentication
+ * DELETE /api/templates/[id] — Requires 'delete' on templates (admin/ceo only)
  * Deletes a document template
  */
 export async function DELETE(
@@ -65,7 +65,7 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const authResult = await requireAuth()
+        const authResult = await requirePermission('templates', 'delete')
         if (isAuthError(authResult)) return authResult
 
         const { id } = await params
@@ -79,7 +79,7 @@ export async function DELETE(
 }
 
 /**
- * POST /api/templates/[id] — Requires authentication
+ * POST /api/templates/[id] — Requires 'create' on templates
  * Duplicates a template
  */
 export async function POST(
@@ -87,7 +87,7 @@ export async function POST(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const authResult = await requireAuth()
+        const authResult = await requirePermission('templates', 'create')
         if (isAuthError(authResult)) return authResult
 
         const { id } = await params

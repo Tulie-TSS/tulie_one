@@ -1,18 +1,40 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { requireAuth, isAuthError } from '@/lib/security/auth-guard'
+import { checkRateLimit } from '@/lib/security/rate-limiter'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
+// Extension map derived from MIME — never trust client-provided extension
+const MIME_TO_EXT: Record<string, string> = {
+    'image/jpeg': 'jpg',
+    'image/png': 'png',
+    'image/webp': 'webp',
+    'image/gif': 'gif',
+    'image/svg+xml': 'svg',
+}
 const BUCKET_NAME = 'feedback-attachments'
 
 /**
  * POST /api/upload
- * Upload an image file to Supabase Storage
+ * Upload an image file to Supabase Storage — requires authentication
  * Accepts FormData with 'file' field
  * Returns { url, name, type, size }
  */
 export async function POST(request: NextRequest) {
     try {
+        // Require authentication — no anonymous uploads
+        const authResult = await requireAuth()
+        if (isAuthError(authResult)) return authResult
+
+        // Rate limit: 20 uploads per minute per user
+        const rateLimitResult = await checkRateLimit(authResult.user.id, {
+            maxRequests: 20,
+            windowSeconds: 60,
+            keyPrefix: 'upload:file',
+        })
+        if (rateLimitResult) return rateLimitResult
+
         const formData = await request.formData()
         const file = formData.get('file') as File | null
 
@@ -50,11 +72,11 @@ export async function POST(request: NextRequest) {
             })
         }
 
-        // Generate unique file path
+        // Generate safe file path — extension derived from MIME, not client filename
         const timestamp = Date.now()
-        const random = Math.random().toString(36).substring(2, 8)
-        const ext = file.name?.split('.').pop() || 'webp'
-        const filePath = `uploads/${timestamp}-${random}.${ext}`
+        const random = crypto.randomUUID().substring(0, 8)
+        const ext = MIME_TO_EXT[file.type] || 'bin'
+        const filePath = `uploads/${authResult.user.id}/${timestamp}-${random}.${ext}`
 
         // Read file as ArrayBuffer for upload
         const arrayBuffer = await file.arrayBuffer()
@@ -80,7 +102,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({
             url: urlData.publicUrl,
-            name: file.name || `image-${timestamp}.${ext}`,
+            name: `image-${timestamp}.${ext}`,
             type: file.type,
             size: file.size,
         })

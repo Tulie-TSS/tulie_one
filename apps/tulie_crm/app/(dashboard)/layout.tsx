@@ -13,12 +13,15 @@ export default async function DashboardLayout({
 }) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
-    
-    if (user) {
-        const { data: dbUser } = await supabase.from('users').select('role').eq('id', user.id).single()
-        if (dbUser?.role === 'partner') {
-            redirect('/partner')
-        }
+
+    // Defense in depth: redirect unauthenticated users even if middleware fails
+    if (!user) {
+        redirect('/system-login')
+    }
+
+    const { data: dbUser } = await supabase.from('users').select('role').eq('id', user.id).single()
+    if (dbUser?.role === 'partner') {
+        redirect('/partner')
     }
 
     return (

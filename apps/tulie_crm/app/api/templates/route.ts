@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
-import { requireAuth, isAuthError } from '@/lib/security/auth-guard'
+import { requirePermission, isAuthError } from '@/lib/security/auth-guard'
 import { getDocumentTemplates } from '@/lib/supabase/services/document-template-service'
 
 export async function GET() {
     try {
-        const authResult = await requireAuth()
+        const authResult = await requirePermission('templates', 'view')
         if (isAuthError(authResult)) return authResult
 
         const templates = await getDocumentTemplates()

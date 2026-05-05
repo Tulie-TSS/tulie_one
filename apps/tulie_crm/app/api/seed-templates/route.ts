@@ -12,7 +12,7 @@ import { quotationTemplate } from '@/lib/supabase/services/quotation-template'
  * Seeds the default document templates into the database.
  * Safe to run multiple times — skips if defaults already exist.
  */
-export async function POST() {
+export async function POST(request: Request) {
     try {
         const authResult = await requireAdmin()
         if (isAuthError(authResult)) return authResult

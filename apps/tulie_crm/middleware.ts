@@ -5,7 +5,7 @@ import { updateSession } from '@/lib/supabase/middleware'
 // PORTAL RATE LIMITING (in-memory, Edge-compatible)
 // Prevents token enumeration on /portal/, /quote/, /order/ paths
 // ============================================
-const PORTAL_PATHS = ['/portal/', '/quote/', '/order/']
+const PORTAL_PATHS = ['/portal/', '/quote/', '/order/', '/ctv/']
 const PORTAL_RATE_LIMIT = 30       // max requests per window
 const PORTAL_RATE_WINDOW = 60_000  // 1 minute in ms
 
@@ -66,9 +66,11 @@ function checkPortalRateLimit(req: NextRequest): NextResponse | null {
 // This replaces 'unsafe-inline' in script-src with a nonce
 // ============================================
 function generateCspHeaders(nonce: string) {
+    // Use nonce-based CSP — 'unsafe-inline' removed to prevent XSS
+    // 'unsafe-eval' kept because Next.js runtime requires it (code splitting, HMR)
     const csp = [
         "default-src 'self'",
-        `script-src 'self' 'unsafe-eval' 'unsafe-inline'`,
+        `script-src 'self' 'nonce-${nonce}' 'unsafe-eval'`,
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src 'self' https://fonts.gstatic.com data:",
         "img-src 'self' data: blob: https:",
@@ -104,7 +106,7 @@ export async function middleware(request: NextRequest) {
         const pathname = request.nextUrl.pathname
         
         let shouldRewrite = true;
-        if (pathname.startsWith('/_next') || pathname.startsWith('/api') || pathname.startsWith('/file') || pathname.startsWith('/portal') || pathname.startsWith('/event-sale')) {
+        if (pathname.startsWith('/_next') || pathname.startsWith('/api') || pathname.startsWith('/file') || pathname.startsWith('/portal') || pathname.startsWith('/ctv') || pathname.startsWith('/event-sale')) {
             shouldRewrite = false;
         }
 

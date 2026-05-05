@@ -97,6 +97,18 @@ export async function createContract(contract: Partial<Contract>, milestones: Pa
         }
     }
 
+    // Auto-generate contract_number server-side if client did not provide one
+    // Uses DB count to ensure uniqueness — safer than Math.random() on client
+    if (!contract.contract_number) {
+        const year = new Date().getFullYear()
+        const { count } = await supabase
+            .from('contracts')
+            .select('id', { count: 'exact', head: true })
+            .eq('type', contract.type || 'contract')
+        const nextNum = ((count || 0) + 1).toString().padStart(3, '0')
+        contract.contract_number = `HD-${year}-${nextNum}`
+    }
+
     // Generate public_token
     const publicToken = 'ct_' + uuidv4().replace(/-/g, '')
     

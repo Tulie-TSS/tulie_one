@@ -59,3 +59,18 @@ tmp_*/
 *.output.txt
 build_output.txt
 schema_output.txt
+
+# Scratch / dev tools (should not be committed to production repo)
+scratch/
+test-*.js
+*.log
+trigger.txt
+add-public-token.js
+test-convert.js
+test-create-contract.js
+test-sanitize.js
+test-schema.js
+test-trigger.js
+
+# Duplicate lock files
+"package-lock 2.json"

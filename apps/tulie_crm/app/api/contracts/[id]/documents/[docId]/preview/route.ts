@@ -1,16 +1,17 @@
-import { requireAuth, isAuthError } from '@/lib/security/auth-guard'
+import { requirePermission, isAuthError } from '@/lib/security/auth-guard'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 /**
  * GET /api/contracts/[id]/documents/[docId]/preview
  * Returns the stored HTML content of a specific generated document
+ * Requires 'view' permission on contracts
  */
 export async function GET(
     request: Request,
     { params }: { params: Promise<{ id: string; docId: string }> }
 ) {
     try {
-        const authResult = await requireAuth()
+        const authResult = await requirePermission('contracts', 'view')
         if (isAuthError(authResult)) return authResult
 
         const { id: contractId, docId } = await params

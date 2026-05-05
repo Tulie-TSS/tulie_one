@@ -152,7 +152,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
         try {
             const selectedQuote = initialQuotations.find(q => q.id === quotationId)
             const contractData = {
-                contract_number: `HD-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+                // contract_number is auto-generated server-side (see contract-service.ts)
                 customer_id: customerId,
                 quotation_id: quotationId || undefined,
                 project_id: selectedQuote?.project_id || undefined,

@@ -28,6 +28,7 @@ import { ContractLifecycle } from '@/components/contracts/contract-lifecycle'
 import { SetPasswordDialog } from '@/components/shared/set-password-dialog'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { createClient } from '@/lib/supabase/server'
+import { CtvLinkButton } from '@/components/contracts/ctv-link-button'
 
 import { EntityPipelineTracker } from '@/components/shared/entity-pipeline-tracker'
 import { MilestoneConfirmButton } from '@/components/contracts/milestone-confirm-button'
@@ -60,6 +61,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
 
     // Get portal URL via contract's public_token
     const portalUrl: string | null = contract.public_token ? `/portal/${contract.public_token}` : null
+    const isFreelancerContract = contract.category === 'freelancer'
 
     return (
         <div className="space-y-6">
@@ -93,6 +95,9 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                         hasFinancialPassword={!!contract.financial_password_hash}
                     />
                     <ContractEmailButton contract={contract} />
+                    {isFreelancerContract && contract.public_token && (
+                        <CtvLinkButton publicToken={contract.public_token} />
+                    )}
                     <Button variant="outline" size="sm" asChild>
                         <Link href={`/contracts/${contract.id}/edit`}>
                             <Edit className="h-4 w-4 mr-2" />

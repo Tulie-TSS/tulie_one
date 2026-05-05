@@ -1,18 +1,19 @@
 import { NextResponse } from 'next/server'
-import { requireAuth, isAuthError } from '@/lib/security/auth-guard'
+import { requirePermission, isAuthError } from '@/lib/security/auth-guard'
 import { getContractDocuments, generateDocumentBundle } from '@/lib/supabase/services/document-template-service'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 /**
  * GET /api/contracts/[id]/documents
  * Returns list of all generated documents for a contract
+ * Requires 'view' permission on contracts
  */
 export async function GET(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const authResult = await requireAuth()
+        const authResult = await requirePermission('contracts', 'view')
         if (isAuthError(authResult)) return authResult
 
         const { id: contractId } = await params
@@ -28,14 +29,14 @@ export async function GET(
 /**
  * POST /api/contracts/[id]/documents
  * Regenerate all draft documents for a contract
- * Accepts optional { include_proposal_appendix: boolean } to toggle proposal appendix
+ * Requires 'edit' permission on contracts
  */
 export async function POST(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const authResult = await requireAuth()
+        const authResult = await requirePermission('contracts', 'edit')
         if (isAuthError(authResult)) return authResult
 
         const { id: contractId } = await params

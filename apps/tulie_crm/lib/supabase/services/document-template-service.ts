@@ -417,7 +417,7 @@ export async function generateDocument(
             variables.delivery_address = custData.address || customer.address || ''
 
             // Determine VAT status and Product Name early for use in items table and declaration
-            const proposalContent = contract?.quotation?.proposal_content as any || {}
+            const proposalContent = (contract?.quotation?.proposal_content as Record<string, string>) || {}
             const vatStatus = contract?.vat_exempt_status || contract?.quotation?.vat_exempt_status || proposalContent.vat_exempt_status || '0_percent'
             const productName = contract?.product_name_in_contract?.trim() || contract?.quotation?.product_name_in_contract?.trim() || proposalContent.product_name_in_contract?.trim() || ''
 
@@ -682,16 +682,19 @@ export async function generateDocument(
             if (fMeta.start_date) variables.start_date = fMeta.start_date
             if (fMeta.end_date) variables.end_date = fMeta.end_date
         }
-        // Generate product_service_declaration
+        // Generate product_service_declaration (always use local const for safety)
+        const proposalContentOuter = (contract?.quotation?.proposal_content as Record<string, string>) || {}
+        const vatStatusOuter = contract?.vat_exempt_status || contract?.quotation?.vat_exempt_status || proposalContentOuter.vat_exempt_status || '0_percent'
+        const productNameOuter = contract?.product_name_in_contract?.trim() || contract?.quotation?.product_name_in_contract?.trim() || proposalContentOuter.product_name_in_contract?.trim() || ''
         let productServiceDeclaration = ''
-        
-        if (productName || vatStatus) {
-            if (productName) {
-                productServiceDeclaration += ` ${productName}`
+
+        if (productNameOuter || vatStatusOuter) {
+            if (productNameOuter) {
+                productServiceDeclaration += ` ${productNameOuter}`
             }
-            if (vatStatus === 'exempt') {
+            if (vatStatusOuter === 'exempt') {
                 productServiceDeclaration += ` (thuộc đối tượng không chịu thuế giá trị gia tăng (GTGT/VAT) theo quy định của pháp luật Việt Nam (theo Thông tư 219/2013/TT-BTC))`
-            } else if (vatStatus === '0_percent') {
+            } else if (vatStatusOuter === '0_percent') {
                 productServiceDeclaration += ` (thuộc đối tượng chịu thuế suất GTGT 0%)`
             }
         }
@@ -719,6 +722,7 @@ export async function generateDocument(
         // Build proposal appendix HTML from quotation.proposal_content
         if (includeProposalAppendix && contract?.quotation?.type === 'proposal') {
             const proposalSections: { label: string; content: string }[] = []
+            const proposalContent = (contract?.quotation?.proposal_content as Record<string, string>) || {}
             if (proposalContent.introduction) proposalSections.push({ label: 'Mục tiêu & Giới thiệu', content: proposalContent.introduction })
             if (proposalContent.scope_of_work) proposalSections.push({ label: 'Phạm vi công việc (Scope of Work)', content: proposalContent.scope_of_work })
             if (proposalContent.methodology) proposalSections.push({ label: 'Phương pháp & Cách tiếp cận', content: proposalContent.methodology })

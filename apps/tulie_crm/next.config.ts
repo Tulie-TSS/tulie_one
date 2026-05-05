@@ -31,7 +31,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
   typescript: {
-    ignoreBuildErrors: true,
+    // ignoreBuildErrors was removed — all TS errors have been fixed.
+    // Build will now fail on type errors, enforcing code quality.
+    ignoreBuildErrors: false,
   },
   async rewrites() {
     return {
