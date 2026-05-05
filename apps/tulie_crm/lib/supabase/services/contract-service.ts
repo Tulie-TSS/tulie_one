@@ -78,6 +78,25 @@ export async function createContract(contract: Partial<Contract>, milestones: Pa
         }
     }
 
+    if (!contract.created_by) {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+            contract.created_by = user.id
+        }
+    }
+
+    if (!contract.type) {
+        contract.type = 'contract'
+    }
+
+    // Try to get brand if missing
+    if (!contract.brand && contract.customer_id) {
+        const { data: custData } = await supabase.from('customers').select('brand').eq('id', contract.customer_id).single()
+        if (custData && custData.brand) {
+            contract.brand = custData.brand
+        }
+    }
+
     // Generate public_token
     const publicToken = 'ct_' + uuidv4().replace(/-/g, '')
     
@@ -437,26 +456,34 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
             position: quotation.customer.position,
         } : null
 
+        const authUserResponse = await supabase.auth.getUser()
+        const authUser = authUserResponse.data.user
+
         // 4. Create Contract/Order
+        const contractPayload: any = {
+            contract_number: formattedNum,
+            customer_id: quotation.customer_id,
+            quotation_id: quotation.id,
+            title: quotation.title || `Đơn hàng từ ${quotation.quotation_number}`,
+            total_amount: quotation.total_amount,
+            status: 'draft',
+            type: type,
+            start_date: new Date().toISOString().split('T')[0],
+            terms: quotation.terms,
+            created_by: authUser?.id || undefined,
+            brand: quotation.brand,
+            project_id: quotation.project_id,
+            customer_snapshot: customerSnapshot,
+            public_token: 'ct_' + uuidv4().replace(/-/g, '')
+        }
+
+        if (type === 'order') {
+            contractPayload.order_number = formattedNum
+        }
+
         const { data: contract, error: cError } = await supabase
             .from('contracts')
-            .insert([{
-                contract_number: formattedNum,
-                order_number: type === 'order' ? formattedNum : null,
-                customer_id: quotation.customer_id,
-                quotation_id: quotation.id,
-                title: quotation.title || `Đơn hàng từ ${quotation.quotation_number}`,
-                total_amount: quotation.total_amount,
-                status: 'draft',
-                type: type,
-                start_date: new Date().toISOString().split('T')[0],
-                terms: quotation.terms,
-                created_by: (await supabase.auth.getUser()).data.user?.id,
-                brand: quotation.brand,
-                project_id: quotation.project_id,
-                customer_snapshot: customerSnapshot,
-                public_token: 'ct_' + uuidv4().replace(/-/g, '')
-            }])
+            .insert([contractPayload])
             .select()
             .single()
 
@@ -464,9 +491,9 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
 
         // 4. Create default milestones if it's an order
         const defaultMilestones = [
-            { name: 'Khởi tạo & Xác nhận', description: 'Tiếp nhận đơn hàng và chuẩn bị triển khai', due_date: new Date().toISOString(), status: 'completed', type: 'work' },
-            { name: 'Triển khai thực tế', description: 'Quá trình thực hiện dịch vụ/sản phẩm', due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), status: 'pending', type: 'work' },
-            { name: 'Nghiệm thu & Bàn giao', description: 'Hoàn thiện và gửi kết quả cho khách hàng', due_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), status: 'pending', type: 'work' }
+            { name: 'Khởi tạo & Xác nhận', description: 'Tiếp nhận đơn hàng và chuẩn bị triển khai', due_date: new Date().toISOString(), status: 'completed', type: 'work', amount: 0 },
+            { name: 'Triển khai thực tế', description: 'Quá trình thực hiện dịch vụ/sản phẩm', due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), status: 'pending', type: 'work', amount: 0 },
+            { name: 'Nghiệm thu & Bàn giao', description: 'Hoàn thiện và gửi kết quả cho khách hàng', due_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), status: 'pending', type: 'work', amount: 0 }
         ]
 
         await supabase.from('contract_milestones').insert(

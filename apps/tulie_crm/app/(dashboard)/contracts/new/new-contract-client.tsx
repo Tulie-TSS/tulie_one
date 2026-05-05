@@ -147,15 +147,14 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                 start_date: startDate?.toISOString(),
                 end_date: endDate?.toISOString(),
                 status: 'active',
-                terms,
-                created_by: '00000000-0000-0000-0000-000000000000'
+                terms
             }
 
             const milestoneData = milestones.map(m => ({
                 name: m.name,
                 amount: m.amount,
                 percentage: m.amount_mode === 'percent' ? m.percentage : undefined,
-                due_date: m.due_date?.toISOString() || "",
+                due_date: m.due_date?.toISOString() || null,
                 status: 'pending' as any
             }))
 
