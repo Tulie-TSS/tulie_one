@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback, Fragment } from 'react'
 import { CheckCircle2, ChevronRight, ChevronLeft, User, CreditCard, FileCheck, Loader2, AlertCircle, Eye, ExternalLink, ShieldCheck } from 'lucide-react'
 
 interface ContractInfo {
@@ -222,10 +222,10 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
 
             {/* Step Indicator */}
             <div className="w-full max-w-2xl mb-8 px-2 sm:px-0">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between w-full">
                     {STEPS.map((s, i) => (
-                        <div key={s.id} className={`flex items-center ${i < STEPS.length - 1 ? 'w-full' : ''}`}>
-                            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
+                        <Fragment key={s.id}>
+                            <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 shrink-0">
                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
                                     step > s.id ? 'bg-slate-900 text-white' :
                                     step === s.id ? 'bg-slate-900 text-white ring-4 ring-slate-900/10' :
@@ -233,14 +233,14 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                 }`}>
                                     {step > s.id ? <CheckCircle2 className="w-4 h-4" /> : <s.icon className="w-4 h-4" />}
                                 </div>
-                                <span className={`text-[10px] sm:text-xs font-medium text-center sm:text-left transition-colors max-w-[70px] sm:max-w-none ${step >= s.id ? 'text-slate-900' : 'text-slate-400'}`}>
+                                <span className={`text-[10px] sm:text-xs font-medium transition-colors whitespace-nowrap ${step >= s.id ? 'text-slate-900' : 'text-slate-400'}`}>
                                     {s.label}
                                 </span>
                             </div>
                             {i < STEPS.length - 1 && (
                                 <div className={`flex-1 h-px mx-2 sm:mx-4 transition-colors ${step > s.id ? 'bg-slate-900' : 'bg-slate-200'}`} />
                             )}
-                        </div>
+                        </Fragment>
                     ))}
                 </div>
             </div>
