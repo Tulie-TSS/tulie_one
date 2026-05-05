@@ -17,6 +17,7 @@ import { paymentTemplate } from './payment-template'
 import { orderTemplate } from './order-template'
 import { deliveryMinutesTemplate } from './delivery-minutes-template'
 import { quotationTemplate } from './quotation-template'
+import { freelanceTemplate } from './freelance-template'
 
 /**
  * Standard templates with common variables for HTML fallback and variable definition
@@ -88,6 +89,20 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
             'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
             'contract_number', 'order_number', 'order_date',
             'delivery_items_table'
+        ]
+    },
+    {
+        name: 'Hợp đồng CTV (Mẫu chuẩn)',
+        type: 'freelance_contract',
+        content: freelanceTemplate,
+        variables: [
+            'contract_number', 'day', 'month', 'year',
+            'freelancer_name', 'freelancer_cccd', 'cccd_date', 'cccd_place', 'freelancer_dob',
+            'freelancer_address', 'freelancer_contact_address', 'freelancer_phone', 'freelancer_email',
+            'freelancer_bank_account', 'freelancer_bank_name',
+            'project_name', 'start_date', 'end_date',
+            'total_amount', 'deposit_amount', 'deposit_percent', 'remaining_amount',
+            'termination_penalty_percent', 'notice_days'
         ]
     }
 ]
@@ -635,6 +650,37 @@ export async function generateDocument(
                     }
                 }
             }
+        }
+
+        // Handle freelance_contract specific variables
+        if (template.type === 'freelance_contract' || (contract as any)?.category === 'freelancer') {
+            const fMeta = (contract as any)?.freelancer_metadata as any || {}
+            variables.freelancer_name = fMeta.name || custData.representative || custData.company_name || ''
+            variables.freelancer_cccd = fMeta.cccd || ''
+            variables.cccd_date = fMeta.cccd_date || ''
+            variables.cccd_place = fMeta.cccd_place || ''
+            variables.freelancer_dob = fMeta.dob || ''
+            variables.freelancer_address = fMeta.address || custData.address || ''
+            variables.freelancer_contact_address = fMeta.contact_address || variables.freelancer_address
+            variables.freelancer_phone = fMeta.phone || custData.phone || ''
+            variables.freelancer_email = fMeta.email || custData.email || ''
+            variables.freelancer_bank_account = fMeta.bank_account || ''
+            variables.freelancer_bank_name = fMeta.bank_name || ''
+            variables.project_name = fMeta.project_name || contract?.title || contract?.quotation?.title || ''
+            variables.total_amount = variables.total_amount_number
+            
+            // Percentage and amounts for milestones
+            const depositPct = fMeta.deposit_percent || 20
+            variables.deposit_percent = depositPct.toString()
+            const totalVal = contract?.total_amount || 0
+            variables.deposit_amount = new Intl.NumberFormat('vi-VN').format(Math.round(totalVal * depositPct / 100))
+            variables.remaining_amount = new Intl.NumberFormat('vi-VN').format(totalVal - Math.round(totalVal * depositPct / 100))
+            
+            variables.termination_penalty_percent = fMeta.termination_penalty_percent || '50'
+            variables.notice_days = fMeta.notice_days || '15'
+            
+            if (fMeta.start_date) variables.start_date = fMeta.start_date
+            if (fMeta.end_date) variables.end_date = fMeta.end_date
         }
         // Generate product_service_declaration
         let productServiceDeclaration = ''

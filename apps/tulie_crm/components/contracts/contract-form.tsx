@@ -102,6 +102,8 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
     const [status, setStatus] = useState(contract.status)
     const [terms, setTerms] = useState(contract.terms || '')
     const [contractType, setContractType] = useState(contract.type || 'contract')
+    const [category, setCategory] = useState<'customer' | 'freelancer'>(contract.category || 'customer')
+    const [fMeta, setFMeta] = useState(contract.freelancer_metadata || {})
 
     const isAdmin = userRole === 'admin' || userRole === 'ceo'
     // Lock entirely when completed/cancelled (unless admin)
@@ -219,6 +221,8 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                 status: status,
                 terms,
                 type: contractType,
+                category: category,
+                freelancer_metadata: category === 'freelancer' ? fMeta : null,
                 order_number: orderNumber || null,
                 project_id: projectId || null,
                 contract_number: contractNumber || null,
@@ -331,6 +335,19 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                     <SelectContent>
                                         <SelectItem value="contract">Hợp đồng</SelectItem>
                                         <SelectItem value="order">Đơn hàng</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label>Đối tượng hợp đồng</Label>
+                                <Select value={category} onValueChange={(v: any) => setCategory(v)}>
+                                    <SelectTrigger>
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="customer">Khách hàng (Bán ra)</SelectItem>
+                                        <SelectItem value="freelancer">Cộng tác viên (Thuê vào)</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -511,6 +528,86 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                             </fieldset>
                         </CardContent>
                     </Card>
+
+                    {/* Freelancer Metadata - Conditional */}
+                    {category === 'freelancer' && (
+                        <Card className="border-blue-200 bg-blue-50/30 dark:bg-blue-950/10 dark:border-blue-900">
+                            <CardHeader>
+                                <CardTitle className="text-blue-700 dark:text-blue-400">Thông tin Cộng tác viên</CardTitle>
+                                <CardDescription>Thông tin chi tiết để điền vào hợp đồng dịch vụ</CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <Label>Họ tên (đầy đủ)</Label>
+                                        <Input 
+                                            value={fMeta.name || ''} 
+                                            onChange={(e) => setFMeta({...fMeta, name: e.target.value})}
+                                            placeholder="Nguyễn Văn A"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Số CCCD</Label>
+                                        <Input 
+                                            value={fMeta.cccd || ''} 
+                                            onChange={(e) => setFMeta({...fMeta, cccd: e.target.value})}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <Label>Ngày cấp CCCD</Label>
+                                        <Input 
+                                            value={fMeta.cccd_date || ''} 
+                                            onChange={(e) => setFMeta({...fMeta, cccd_date: e.target.value})}
+                                            placeholder="dd/mm/yyyy"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Nơi cấp</Label>
+                                        <Input 
+                                            value={fMeta.cccd_place || ''} 
+                                            onChange={(e) => setFMeta({...fMeta, cccd_place: e.target.value})}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <Label>STK Ngân hàng</Label>
+                                        <Input 
+                                            value={fMeta.bank_account || ''} 
+                                            onChange={(e) => setFMeta({...fMeta, bank_account: e.target.value})}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Tên ngân hàng</Label>
+                                        <Input 
+                                            value={fMeta.bank_name || ''} 
+                                            onChange={(e) => setFMeta({...fMeta, bank_name: e.target.value})}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <Label>% Phạt đơn phương hủy ({{fMeta.termination_penalty_percent || 50}}%)</Label>
+                                        <Input 
+                                            type="number"
+                                            value={fMeta.termination_penalty_percent || 50} 
+                                            onChange={(e) => setFMeta({...fMeta, termination_penalty_percent: parseInt(e.target.value)})}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Ngày báo trước nghỉ ({{fMeta.notice_days || 15}} ngày)</Label>
+                                        <Input 
+                                            type="number"
+                                            value={fMeta.notice_days || 15} 
+                                            onChange={(e) => setFMeta({...fMeta, notice_days: parseInt(e.target.value)})}
+                                        />
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
 
                     {/* Milestones */}
                     <Card>

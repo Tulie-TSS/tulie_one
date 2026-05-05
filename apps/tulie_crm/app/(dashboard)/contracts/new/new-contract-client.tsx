@@ -68,6 +68,11 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
     const [productNameInContract, setProductNameInContract] = useState('')
     const [vatExemptStatus, setVatExemptStatus] = useState<'0_percent' | 'exempt'>('0_percent')
     const [vatPercent, setVatPercent] = useState<number>(10)
+    const [category, setCategory] = useState<'customer' | 'freelancer'>('customer')
+    const [fMeta, setFMeta] = useState<any>({
+        termination_penalty_percent: 50,
+        notice_days: 15
+    })
 
     const [milestones, setMilestones] = useState<Milestone[]>([
         { id: '1', name: 'Đặt cọc 50%', amount: 0, percentage: 50, amount_mode: 'percent', due_date: undefined },
@@ -159,6 +164,8 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                 terms,
                 product_name_in_contract: productNameInContract,
                 vat_exempt_status: vatPercent === 0 ? vatExemptStatus : null,
+                category: category,
+                freelancer_metadata: category === 'freelancer' ? fMeta : null,
                 brand: selectedQuote?.brand || 'TMM'
             }
 
@@ -221,6 +228,19 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                                 {q.quotation_number} - {formatCurrency(q.total_amount)}
                                             </SelectItem>
                                         ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label>Đối tượng hợp đồng</Label>
+                                <Select value={category} onValueChange={(v: any) => setCategory(v)}>
+                                    <SelectTrigger>
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="customer">Khách hàng (Bán ra)</SelectItem>
+                                        <SelectItem value="freelancer">Cộng tác viên (Thuê vào)</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -328,15 +348,95 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
 
                             <div className="space-y-2">
                                 <Label>Điều khoản</Label>
-                                <Textarea
-                                    value={terms}
-                                    onChange={(e) => setTerms(e.target.value)}
-                                    placeholder="Các điều khoản của hợp đồng..."
-                                    rows={4}
-                                />
-                            </div>
-                        </CardContent>
-                    </Card>
+                                    <Textarea
+                                        value={terms}
+                                        onChange={(e) => setTerms(e.target.value)}
+                                        placeholder="Các điều khoản của hợp đồng..."
+                                        rows={4}
+                                    />
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Freelancer Metadata - Conditional */}
+                        {category === 'freelancer' && (
+                            <Card className="border-blue-200 bg-blue-50/30 dark:bg-blue-950/10 dark:border-blue-900">
+                                <CardHeader>
+                                    <CardTitle className="text-blue-700 dark:text-blue-400">Thông tin Cộng tác viên</CardTitle>
+                                    <CardDescription>Thông tin chi tiết để điền vào hợp đồng dịch vụ</CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="grid gap-4 sm:grid-cols-2">
+                                        <div className="space-y-2">
+                                            <Label>Họ tên (đầy đủ)</Label>
+                                            <Input 
+                                                value={fMeta.name || ''} 
+                                                onChange={(e) => setFMeta({...fMeta, name: e.target.value})}
+                                                placeholder="Nguyễn Văn A"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Số CCCD</Label>
+                                            <Input 
+                                                value={fMeta.cccd || ''} 
+                                                onChange={(e) => setFMeta({...fMeta, cccd: e.target.value})}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="grid gap-4 sm:grid-cols-2">
+                                        <div className="space-y-2">
+                                            <Label>Ngày cấp CCCD</Label>
+                                            <Input 
+                                                value={fMeta.cccd_date || ''} 
+                                                onChange={(e) => setFMeta({...fMeta, cccd_date: e.target.value})}
+                                                placeholder="dd/mm/yyyy"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Nơi cấp</Label>
+                                            <Input 
+                                                value={fMeta.cccd_place || ''} 
+                                                onChange={(e) => setFMeta({...fMeta, cccd_place: e.target.value})}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="grid gap-4 sm:grid-cols-2">
+                                        <div className="space-y-2">
+                                            <Label>STK Ngân hàng</Label>
+                                            <Input 
+                                                value={fMeta.bank_account || ''} 
+                                                onChange={(e) => setFMeta({...fMeta, bank_account: e.target.value})}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Tên ngân hàng</Label>
+                                            <Input 
+                                                value={fMeta.bank_name || ''} 
+                                                onChange={(e) => setFMeta({...fMeta, bank_name: e.target.value})}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="grid gap-4 sm:grid-cols-2">
+                                        <div className="space-y-2">
+                                            <Label>% Phạt đơn phương hủy ({{fMeta.termination_penalty_percent || 50}}%)</Label>
+                                            <Input 
+                                                type="number"
+                                                value={fMeta.termination_penalty_percent || 50} 
+                                                onChange={(e) => setFMeta({...fMeta, termination_penalty_percent: parseInt(e.target.value)})}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Ngày báo trước nghỉ ({{fMeta.notice_days || 15}} ngày)</Label>
+                                            <Input 
+                                                type="number"
+                                                value={fMeta.notice_days || 15} 
+                                                onChange={(e) => setFMeta({...fMeta, notice_days: parseInt(e.target.value)})}
+                                            />
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )}
 
                     {/* Milestones */}
                     <Card>

@@ -72,6 +72,20 @@ export const contractColumns: ColumnDef<Contract>[] = [
         },
     },
     {
+        accessorKey: 'category',
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Loại" />
+        ),
+        cell: ({ row }) => {
+            const category = row.original.category || 'customer'
+            return (
+                <Badge variant={category === 'freelancer' ? 'outline' : 'secondary'} className="capitalize">
+                    {category === 'freelancer' ? 'CTV' : 'K.Hàng'}
+                </Badge>
+            )
+        },
+    },
+    {
         accessorKey: 'customer',
         header: 'Khách hàng',
         cell: ({ row }) => {

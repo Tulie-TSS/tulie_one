@@ -228,6 +228,26 @@ export interface Contract {
   project_id?: string
   project?: Project
   brand: Brand
+  category?: 'customer' | 'freelancer'
+  freelancer_metadata?: {
+    name?: string
+    cccd?: string
+    cccd_date?: string
+    cccd_place?: string
+    dob?: string
+    address?: string
+    contact_address?: string
+    phone?: string
+    email?: string
+    bank_account?: string
+    bank_name?: string
+    project_name?: string
+    deposit_percent?: number
+    termination_penalty_percent?: number
+    notice_days?: number
+    start_date?: string
+    end_date?: string
+  }
   password_hash?: string
   financial_password_hash?: string
   public_token?: string
@@ -371,7 +391,7 @@ export interface TicketMessage {
 export interface DocumentTemplate {
   id: string
   name: string
-  type: 'contract' | 'invoice' | 'payment_request' | 'quotation' | 'order' | 'delivery_minutes' | 'confirmation'
+  type: 'contract' | 'invoice' | 'payment_request' | 'quotation' | 'order' | 'delivery_minutes' | 'confirmation' | 'freelance_contract'
   content: string 
   variables: string[] 
   is_default?: boolean
