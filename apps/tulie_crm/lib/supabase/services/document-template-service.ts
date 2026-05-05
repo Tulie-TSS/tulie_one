@@ -153,10 +153,14 @@ export async function getDocumentTemplates() {
 // Get template by ID — supports both UUID (DB) and legacy `default-N` format
 export async function getTemplateById(id: string): Promise<DocumentTemplate | null> {
     try {
-        // Legacy built-in ID fallback (pre-DB migration)
+        // Legacy built-in ID fallback (pre-DB migration) and new type-based IDs
         if (id.startsWith('default-')) {
-            const index = parseInt(id.replace('default-', ''))
-            const template = defaultTemplates[index]
+            const idVal = id.replace('default-', '')
+            const index = parseInt(idVal)
+            let template = isNaN(index) 
+                ? defaultTemplates.find(t => t.type === idVal)
+                : defaultTemplates[index]
+                
             if (template) {
                 return {
                     ...template,
