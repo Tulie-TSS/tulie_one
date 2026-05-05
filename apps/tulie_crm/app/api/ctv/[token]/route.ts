@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { checkRateLimit, getClientIp } from '@/lib/security/rate-limiter'
+import { verifyTurnstile } from '@/lib/security/turnstile'
 import { z } from 'zod'
 
 const freelancerInfoSchema = z.object({
@@ -15,6 +16,7 @@ const freelancerInfoSchema = z.object({
     email: z.string().email('Email không hợp lệ').max(200),
     bank_account: z.string().min(6).max(30),
     bank_name: z.string().min(2).max(100),
+    turnstile_token: z.string().optional(), // Cloudflare Turnstile bot challenge
 })
 
 /**
@@ -102,6 +104,12 @@ export async function POST(
         if (rateLimitResult) return rateLimitResult
 
         const body = await request.json()
+
+        // Turnstile bot verification (skipped if TURNSTILE_SECRET_KEY not configured)
+        const turnstileResult = await verifyTurnstile(body?.turnstile_token)
+        if (!turnstileResult.success) {
+            return NextResponse.json({ error: turnstileResult.error }, { status: 400 })
+        }
 
         // Validate input
         const parsed = freelancerInfoSchema.safeParse(body)

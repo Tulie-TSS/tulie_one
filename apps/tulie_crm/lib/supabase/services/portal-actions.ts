@@ -8,6 +8,7 @@ import { cookies } from 'next/headers'
 import crypto from 'crypto'
 
 import { sanitizeText } from '../../security/sanitize'
+import { checkRateLimit } from '../../security/rate-limiter'
 
 // HMAC helper for portal auth cookie signing
 const PORTAL_SECRET = process.env.PORTAL_SECRET || process.env.NEXTAUTH_SECRET
@@ -71,22 +72,27 @@ export async function getEntityPasswordPlain(_tableName: string, _entityId: stri
 }
 
 // ============================================
-// BRUTE-FORCE PROTECTION
+// BRUTE-FORCE PROTECTION — Upstash Redis (distributed)
+// Falls back to in-memory if Redis not configured
 // ============================================
-const passwordAttempts = new Map<string, { count: number; resetAt: number }>()
 const MAX_PASSWORD_ATTEMPTS = 5
-const PASSWORD_WINDOW_MS = 15 * 60 * 1000 // 15 minutes
+const PASSWORD_WINDOW_SECONDS = 15 * 60 // 15 minutes
 
-function checkPasswordRateLimit(token: string): { allowed: boolean; remainingAttempts: number } {
-    const now = Date.now()
-    const entry = passwordAttempts.get(token)
-    if (!entry || now > entry.resetAt) {
-        passwordAttempts.set(token, { count: 1, resetAt: now + PASSWORD_WINDOW_MS })
-        return { allowed: true, remainingAttempts: MAX_PASSWORD_ATTEMPTS - 1 }
+/**
+ * Check brute-force rate limit for portal password attempts.
+ * Uses Upstash Redis for distributed limiting across all serverless instances.
+ * Returns null if allowed, or a blocked response object if exceeded.
+ */
+async function checkPasswordBruteForce(key: string): Promise<{ blocked: boolean; message: string }> {
+    const result = await checkRateLimit(key, {
+        maxRequests: MAX_PASSWORD_ATTEMPTS,
+        windowSeconds: PASSWORD_WINDOW_SECONDS,
+        keyPrefix: 'portal:pwd',
+    })
+    if (result !== null) {
+        return { blocked: true, message: 'Quá nhiều lần thử. Vui lòng đợi 15 phút.' }
     }
-    entry.count++
-    const remaining = Math.max(0, MAX_PASSWORD_ATTEMPTS - entry.count)
-    return { allowed: entry.count <= MAX_PASSWORD_ATTEMPTS, remainingAttempts: remaining }
+    return { blocked: false, message: '' }
 }
 
 // Deprecated: use setEntityPassword
@@ -96,10 +102,10 @@ export async function setQuotationPassword(quotationId: string, password: string
 
 export async function verifyPortalPassword(token: string, password: string, type: 'portal' | 'financial' = 'portal') {
     try {
-        // SECURITY: Brute-force protection
-        const rateCheck = checkPasswordRateLimit(`portal_${type}_${token}`)
-        if (!rateCheck.allowed) {
-            return { success: false, error: 'Quá nhiều lần thử. Vui lòng đợi 15 phút.' }
+        // SECURITY: Distributed brute-force protection via Upstash Redis
+        const bruteForce = await checkPasswordBruteForce(`portal_${type}_${token}`)
+        if (bruteForce.blocked) {
+            return { success: false, error: bruteForce.message }
         }
 
         // SECURITY: Use admin client — portal visitors have no session,
@@ -135,7 +141,7 @@ export async function verifyPortalPassword(token: string, password: string, type
         if (!isValid) {
             return {
                 success: false,
-                error: `Mật khẩu không chính xác. Còn ${rateCheck.remainingAttempts} lần thử.`
+                error: 'Mật khẩu không chính xác.'
             }
         }
 
@@ -166,10 +172,10 @@ export async function verifyPortalPassword(token: string, password: string, type
  */
 export async function verifyQuotePassword(token: string, password: string) {
     try {
-        // SECURITY: Brute-force protection
-        const rateCheck = checkPasswordRateLimit(`quote_${token}`)
-        if (!rateCheck.allowed) {
-            return { success: false, error: 'Quá nhiều lần thử. Vui lòng đợi 15 phút.' }
+        // SECURITY: Distributed brute-force protection via Upstash Redis
+        const bruteForce = await checkPasswordBruteForce(`quote_${token}`)
+        if (bruteForce.blocked) {
+            return { success: false, error: bruteForce.message }
         }
 
         const supabase = createAdminClient()
@@ -193,7 +199,7 @@ export async function verifyQuotePassword(token: string, password: string) {
         if (!isValid) {
             return {
                 success: false,
-                error: `Mật khẩu không chính xác. Còn ${rateCheck.remainingAttempts} lần thử.`
+                error: 'Mật khẩu không chính xác.'
             }
         }
 

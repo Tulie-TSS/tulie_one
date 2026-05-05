@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { CheckCircle2, ChevronRight, ChevronLeft, User, CreditCard, FileCheck, Loader2, AlertCircle, Eye, ExternalLink } from 'lucide-react'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { CheckCircle2, ChevronRight, ChevronLeft, User, CreditCard, FileCheck, Loader2, AlertCircle, Eye, ExternalLink, ShieldCheck } from 'lucide-react'
 
 interface ContractInfo {
     title: string
@@ -62,6 +62,53 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const [form, setForm] = useState<FreelancerInfo>(initialData)
+    const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+    const turnstileRef = useRef<HTMLDivElement>(null)
+    const widgetIdRef = useRef<string | null>(null)
+    const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+
+    // Load Turnstile script and render widget when reaching step 3
+    useEffect(() => {
+        if (step !== 3 || submitted || !siteKey) return
+        
+        const renderWidget = () => {
+            if (!turnstileRef.current || widgetIdRef.current) return
+            // @ts-ignore — Turnstile added to window by script
+            if (typeof window.turnstile === 'undefined') return
+            // @ts-ignore
+            widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
+                sitekey: siteKey,
+                theme: 'light',
+                size: 'normal',
+                callback: (tok: string) => setTurnstileToken(tok),
+                'error-callback': () => setTurnstileToken(null),
+                'expired-callback': () => setTurnstileToken(null),
+            })
+        }
+
+        if (document.getElementById('cf-turnstile-script')) {
+            renderWidget()
+            return
+        }
+
+        const script = document.createElement('script')
+        script.id = 'cf-turnstile-script'
+        script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
+        script.async = true
+        script.defer = true
+        script.onload = renderWidget
+        document.head.appendChild(script)
+
+        return () => {
+            // Reset widget when leaving step 3
+            // @ts-ignore
+            if (widgetIdRef.current && window.turnstile) {
+                // @ts-ignore
+                window.turnstile.remove(widgetIdRef.current)
+                widgetIdRef.current = null
+            }
+        }
+    }, [step, submitted, siteKey])
 
     const set = (field: keyof FreelancerInfo) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setForm(prev => ({ ...prev, [field]: e.target.value }))
@@ -100,13 +147,18 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
     }
 
     const handleSubmit = async () => {
+        // If Turnstile configured but token not ready
+        if (siteKey && !turnstileToken) {
+            setError('Vui lòng đợi xác minh bảo mật hoàn tất.')
+            return
+        }
         setLoading(true)
         setError('')
         try {
             const res = await fetch(`/api/ctv/${token}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(form),
+                body: JSON.stringify({ ...form, turnstile_token: turnstileToken }),
             })
             const json = await res.json()
             if (!res.ok) throw new Error(json.error || 'Có lỗi xảy ra')
@@ -114,6 +166,13 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
             setStep(3)
         } catch (e: any) {
             setError(e.message)
+            // Reset Turnstile on error so user can retry
+            // @ts-ignore
+            if (widgetIdRef.current && window.turnstile) {
+                // @ts-ignore
+                window.turnstile.reset(widgetIdRef.current)
+                setTurnstileToken(null)
+            }
         } finally {
             setLoading(false)
         }
@@ -391,6 +450,25 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                         <div className="bg-slate-50 rounded-xl border p-4 text-sm text-slate-600">
                                             Bằng cách nhấn <strong>Gửi xác nhận</strong>, bạn xác nhận rằng thông tin trên là chính xác và đồng ý sử dụng trong hợp đồng cộng tác viên với Tulie Agency.
                                         </div>
+
+                                        {/* Turnstile Widget */}
+                                        {siteKey && (
+                                            <div className="flex flex-col items-center gap-2">
+                                                <div ref={turnstileRef} className="mx-auto" />
+                                                {!turnstileToken && (
+                                                    <p className="text-xs text-slate-400 flex items-center gap-1">
+                                                        <ShieldCheck className="w-3.5 h-3.5" />
+                                                        Đang xác minh bảo mật...
+                                                    </p>
+                                                )}
+                                                {turnstileToken && (
+                                                    <p className="text-xs text-green-600 flex items-center gap-1">
+                                                        <ShieldCheck className="w-3.5 h-3.5" />
+                                                        Xác minh bảo mật thành công
+                                                    </p>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             )}
@@ -429,7 +507,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                             ) : (
                                 <button
                                     onClick={handleSubmit}
-                                    disabled={loading}
+                                    disabled={loading || (!!siteKey && !turnstileToken)}
                                     className="inline-flex items-center gap-2 bg-green-600 text-white rounded-xl px-6 py-2.5 text-sm font-semibold hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {loading ? (
