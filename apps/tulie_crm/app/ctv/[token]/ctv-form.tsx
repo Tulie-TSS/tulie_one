@@ -22,6 +22,7 @@ interface FreelancerInfo {
     phone: string
     email: string
     bank_account: string
+    bank_account_name: string
     bank_name: string
 }
 
@@ -129,6 +130,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
         if (!form.phone.trim() || form.phone.length < 9) return 'Số điện thoại không hợp lệ'
         if (!form.email.trim() || !form.email.includes('@')) return 'Email không hợp lệ'
         if (!form.bank_account.trim()) return 'Vui lòng nhập số tài khoản ngân hàng'
+        if (!form.bank_account_name.trim()) return 'Vui lòng nhập tên tài khoản ngân hàng'
         if (!form.bank_name.trim()) return 'Vui lòng chọn ngân hàng'
         return null
     }
@@ -369,6 +371,16 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                     />
                                 </Field>
 
+                                <Field label="Chủ tài khoản *" hint="Tên in trên thẻ/tài khoản (Viết hoa không dấu)">
+                                    <input
+                                        type="text"
+                                        value={form.bank_account_name}
+                                        onChange={set('bank_account_name')}
+                                        placeholder="Ví dụ: NGUYEN VAN A"
+                                        className={`${inputCls} uppercase`}
+                                    />
+                                </Field>
+
                                 <div className="rounded-xl bg-slate-100 border border-slate-200 p-4 text-sm text-slate-800">
                                     <p className="font-medium mb-1">⚠️ Lưu ý về thuế thu nhập cá nhân</p>
                                     <p className="text-slate-600 text-xs leading-relaxed">
@@ -402,6 +414,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                         <InfoRow label="Email" value={form.email} />
                                         <InfoRow label="Ngân hàng" value={form.bank_name} />
                                         <InfoRow label="Số TK" value={form.bank_account} />
+                                        <InfoRow label="Chủ TK" value={form.bank_account_name.toUpperCase()} />
                                     </div>
 
                                     <div className="pt-2 flex flex-col gap-3">
@@ -446,6 +459,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                             <InfoRow label="Email" value={form.email} />
                                             <InfoRow label="Ngân hàng" value={form.bank_name} />
                                             <InfoRow label="Số tài khoản" value={form.bank_account} />
+                                            <InfoRow label="Chủ tài khoản" value={form.bank_account_name.toUpperCase()} />
                                         </ReviewSection>
 
                                         <div className="bg-slate-50 rounded-xl border p-4 text-sm text-slate-600">

@@ -99,7 +99,7 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
             'contract_number', 'day', 'month', 'year',
             'freelancer_name', 'freelancer_cccd', 'cccd_date', 'cccd_place', 'freelancer_dob',
             'freelancer_address', 'freelancer_contact_address', 'freelancer_phone', 'freelancer_email',
-            'freelancer_bank_account', 'freelancer_bank_name',
+            'freelancer_bank_account', 'freelancer_bank_account_name', 'freelancer_bank_name',
             'project_name', 'start_date', 'end_date',
             'total_amount', 'deposit_amount', 'deposit_percent', 'remaining_amount',
             'termination_penalty_percent', 'notice_days'
@@ -665,6 +665,7 @@ export async function generateDocument(
             variables.freelancer_phone = fMeta.phone || custData.phone || ''
             variables.freelancer_email = fMeta.email || custData.email || ''
             variables.freelancer_bank_account = fMeta.bank_account || ''
+            variables.freelancer_bank_account_name = fMeta.bank_account_name || ''
             variables.freelancer_bank_name = fMeta.bank_name || ''
             variables.project_name = fMeta.project_name || contract?.title || contract?.quotation?.title || ''
             variables.total_amount = variables.total_amount_number

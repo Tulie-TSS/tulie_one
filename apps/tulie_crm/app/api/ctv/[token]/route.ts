@@ -5,17 +5,18 @@ import { verifyTurnstile } from '@/lib/security/turnstile'
 import { z } from 'zod'
 
 const freelancerInfoSchema = z.object({
-    name: z.string().min(2, 'Tên phải có ít nhất 2 ký tự').max(100),
-    cccd: z.string().min(9).max(12),
-    cccd_date: z.string().min(6),
-    cccd_place: z.string().min(3).max(200),
-    dob: z.string().min(6),
-    address: z.string().min(5).max(300),
+    name: z.string().min(2, 'Tên phải có ít nhất 2 ký tự').max(100, 'Tên quá dài'),
+    cccd: z.string().min(9, 'Số CCCD/CMND không hợp lệ').max(12, 'Số CCCD/CMND không hợp lệ'),
+    cccd_date: z.string().min(6, 'Vui lòng nhập ngày cấp'),
+    cccd_place: z.string().min(3, 'Nơi cấp quá ngắn').max(200, 'Nơi cấp quá dài'),
+    dob: z.string().min(6, 'Vui lòng nhập ngày sinh'),
+    address: z.string().min(5, 'Địa chỉ thường trú quá ngắn (ít nhất 5 ký tự)').max(300, 'Địa chỉ quá dài'),
     contact_address: z.string().max(300).optional(),
-    phone: z.string().min(9).max(15),
+    phone: z.string().min(9, 'Số điện thoại không hợp lệ').max(15, 'Số điện thoại không hợp lệ'),
     email: z.string().email('Email không hợp lệ').max(200),
-    bank_account: z.string().min(6).max(30),
-    bank_name: z.string().min(2).max(100),
+    bank_account: z.string().min(6, 'Số tài khoản không hợp lệ').max(30),
+    bank_account_name: z.string().min(2, 'Tên tài khoản không hợp lệ').max(100),
+    bank_name: z.string().min(2, 'Vui lòng chọn ngân hàng').max(100),
     turnstile_token: z.string().optional(), // Cloudflare Turnstile bot challenge
 })
 
@@ -74,6 +75,7 @@ export async function GET(
                 phone: fMeta.phone || '',
                 email: fMeta.email || '',
                 bank_account: fMeta.bank_account || '',
+                bank_account_name: fMeta.bank_account_name || '',
                 bank_name: fMeta.bank_name || '',
             },
             is_submitted: !!(fMeta.name && fMeta.cccd && fMeta.bank_account),
@@ -154,6 +156,7 @@ export async function POST(
             phone: data.phone,
             email: data.email,
             bank_account: data.bank_account,
+            bank_account_name: data.bank_account_name,
             bank_name: data.bank_name,
             submitted_at: new Date().toISOString(),
         }
