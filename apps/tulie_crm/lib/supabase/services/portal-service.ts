@@ -21,7 +21,7 @@ export async function getPortalDataByToken(token: string) {
         // SECOND: Fallback to old quotation token logic (for backward compatibility)
         const { data: qData } = await supabase
             .from('quotations')
-            .select('*, customer:customers!customer_id(*), items:quotation_items(*), deal:deals(*), project:projects(*)')
+            .select('*, customer:customers!customer_id(*), items:quotation_items(*), project:projects(*)')
             .eq('public_token', token)
             .single()
 

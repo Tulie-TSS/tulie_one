@@ -410,7 +410,7 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
         // 1. Get quotation details
         const { data: quotation, error: qError } = await supabase
             .from('quotations')
-            .select('*, customer:customers(*), items:quotation_items(*), deal:deals(*)')
+            .select('*, customer:customers(*), items:quotation_items(*)')
             .eq('id', quotationId)
             .single()
 
