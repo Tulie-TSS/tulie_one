@@ -193,7 +193,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
     // Validation warnings
     const missingFields: string[] = []
     if (!signedDate) missingFields.push('Ngày ký hợp đồng')
-    if (!customerAbbreviation) missingFields.push('Tên viết tắt khách hàng')
+    if (!customerAbbreviation && category !== 'freelancer') missingFields.push('Tên viết tắt khách hàng')
     if (!totalValue) missingFields.push('Giá trị hợp đồng')
     if (milestones.filter(m => m.type === 'payment').length === 0) missingFields.push('Mốc thanh toán (ít nhất 1 đợt)')
 

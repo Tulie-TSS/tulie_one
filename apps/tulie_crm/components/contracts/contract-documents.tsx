@@ -329,12 +329,14 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
         }
     }, [contract.id, customerInfo])
 
+    const isFreelance = contract.category === 'freelancer'
+
     // Validation warnings for document completeness
     const missingDocFields: string[] = []
     if (!contract.signed_date) missingDocFields.push('Ngày ký hợp đồng')
-    if (!contract.customer?.abbreviation) missingDocFields.push('Tên viết tắt KH (mã giấy tờ)')
+    if (!isFreelance && !contract.customer?.abbreviation) missingDocFields.push('Tên viết tắt KH (mã giấy tờ)')
     if (!contract.milestones?.some(m => m.type === 'payment')) missingDocFields.push('Mốc thanh toán')
-    if (!contract.quotation_id) missingDocFields.push('Báo giá liên kết (danh sách sản phẩm)')
+    if (!isFreelance && !contract.quotation_id) missingDocFields.push('Báo giá liên kết (danh sách sản phẩm)')
 
     return (
         <Card>
@@ -374,6 +376,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                 )}
 
                 {/* Editable customer info form */}
+                {!isFreelance ? (
                 <div className="rounded-lg border border-dashed">
                     <button
                         type="button"
@@ -536,6 +539,11 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                         </div>
                     )}
                 </div>
+                ) : (
+                    <div className="rounded-lg border border-dashed bg-muted/30 p-3 text-center">
+                        <p className="text-[11px] text-muted-foreground">Dữ liệu giấy tờ Cộng tác viên được đồng bộ tự động.</p>
+                    </div>
+                )}
 
                 {/* Document list */}
                 <div className="space-y-2">

@@ -342,15 +342,29 @@ export async function generateDocument(
         // Use snapshot from contract if available, otherwise live customer data
         const custData = contract?.customer_snapshot || customer || {}
 
+        // Extract freelancer initials if it's a freelance contract
+        const isFreelance = template.type === 'freelance_contract'
+        let cleanInitials = ''
+        if (isFreelance) {
+            const freelancerName = contract?.freelancer_metadata?.name || ''
+            if (freelancerName) {
+                const words = freelancerName.trim().split(/\s+/)
+                const initials = words.map((w: string) => w[0]).join('').toUpperCase()
+                // Remove Vietnamese accents and convert to ASCII
+                cleanInitials = initials.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/Đ/g, "D")
+            }
+        }
+
         // Build document numbers based on format: yyyymmdd/TYPE-TL-ABBR
-        const contractDocNumber = (dateStr && abbr)
-            ? `${dateStr}/HDKT-TL-${abbr.toUpperCase()}`
-            : contract?.contract_number || ''
-        const paymentDocNumber = (dateStr && abbr)
-            ? `${dateStr}/DNTT-TL-${abbr.toUpperCase()}`
+        const contractDocNumber = isFreelance
+            ? (dateStr && cleanInitials ? `${dateStr}/HĐCTV-TL-${cleanInitials}` : contract?.contract_number || '')
+            : (dateStr && abbr ? `${dateStr}/HDKT-TL-${abbr.toUpperCase()}` : contract?.contract_number || '')
+            
+        const paymentDocNumber = (dateStr && (abbr || cleanInitials))
+            ? `${dateStr}/DNTT-TL-${(abbr || cleanInitials).toUpperCase()}`
             : ''
-        const deliveryDocNumber = (dateStr && abbr)
-            ? `${dateStr}/BGNT-TL-${abbr.toUpperCase()}`
+        const deliveryDocNumber = (dateStr && (abbr || cleanInitials))
+            ? `${dateStr}/BGNT-TL-${(abbr || cleanInitials).toUpperCase()}`
             : ''
 
         // Build variables map
@@ -707,6 +721,17 @@ export async function generateDocument(
             const depositPct = fMeta.deposit_percent || 20
             variables.deposit_percent = depositPct.toString()
             const totalVal = contract?.total_amount || 0
+            
+            // Tax calculation (10% PIT if total >= 2,000,000)
+            let taxAmt = 0
+            if (totalVal >= 2000000) {
+                taxAmt = Math.round(totalVal * 0.1)
+            }
+            const netAmt = totalVal - taxAmt
+            variables.tax_amount = new Intl.NumberFormat('vi-VN').format(taxAmt)
+            variables.net_amount = new Intl.NumberFormat('vi-VN').format(netAmt)
+            variables.net_amount_in_words = readNumberToWords(netAmt)
+
             variables.deposit_amount = new Intl.NumberFormat('vi-VN').format(Math.round(totalVal * depositPct / 100))
             variables.remaining_amount = new Intl.NumberFormat('vi-VN').format(totalVal - Math.round(totalVal * depositPct / 100))
             
