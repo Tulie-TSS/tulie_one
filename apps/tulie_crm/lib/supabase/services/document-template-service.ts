@@ -347,12 +347,12 @@ export async function generateDocument(
             account_holder: 'CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE',
 
             // Date variables — use signed_date if available
-            day: docDate.getDate().toString(),
-            month: (docDate.getMonth() + 1).toString(),
+            day: docDate.getDate().toString().padStart(2, '0'),
+            month: (docDate.getMonth() + 1).toString().padStart(2, '0'),
             year: docDate.getFullYear().toString(),
             contract_date: signedDate ? signedDate.toLocaleDateString('vi-VN') : '',
-            date_day: docDate.getDate().toString(),
-            date_month: (docDate.getMonth() + 1).toString(),
+            date_day: docDate.getDate().toString().padStart(2, '0'),
+            date_month: (docDate.getMonth() + 1).toString().padStart(2, '0'),
             date_year: docDate.getFullYear().toString(),
             quotation_date: new Date().toLocaleDateString('vi-VN'),
             location: 'Hà Nội',
@@ -490,6 +490,34 @@ export async function generateDocument(
                     </tr>`
                 }
 
+                // Calculate VAT breakdown HTML rows
+                const vatGroupsMap: Record<number, number> = {}
+                items.forEach((item: any) => {
+                    const qty = item.quantity || 1
+                    const unitPrice = item.unit_price || 0
+                    const itemGross = qty * unitPrice
+                    const discountPct = item.discount || 0
+                    const discountAmount = Math.round(itemGross * discountPct / 100)
+                    const afterDiscount = itemGross - discountAmount
+                    const itemVatRate = item.vat_percent 
+                        ? item.vat_percent 
+                        : (contract.quotation?.vat_percent || 0)
+                    const itemVat = Math.round(afterDiscount * itemVatRate / 100)
+                    
+                    if (itemVat > 0 || itemVatRate === 0) {
+                        vatGroupsMap[itemVatRate] = (vatGroupsMap[itemVatRate] || 0) + itemVat
+                    }
+                })
+
+                let vatBreakdownHtml = ''
+                Object.entries(vatGroupsMap).sort((a, b) => Number(a[0]) - Number(b[0])).forEach(([rate, amt]) => {
+                    vatBreakdownHtml += `<tr style="background:#f5f5f5;">
+                        <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Tổng thuế suất GTGT (VAT) ${rate}%:</strong></td>
+                        <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(amt as number)}</td>
+                    </tr>`
+                })
+                variables.vat_breakdown_html = vatBreakdownHtml
+
                 variables.contract_items_table = itemsRowsHtml
                 variables.quotation_items_table = itemsRowsHtml
 
@@ -534,8 +562,8 @@ export async function generateDocument(
                     const pctString = overallDiscountPercent > 0 ? ` (${overallDiscountPercent}%)` : ''
                     variables.discount_row_html = `
                     <tr>
-                      <td style="border:1px solid #000; padding:4px;" colspan="9">Chiết khấu tổng${pctString}</td>
-                      <td style="border:1px solid #000; padding:4px; text-align:right;">-${new Intl.NumberFormat('vi-VN').format(overallDiscountAmount)}</td>
+                      <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Chiết khấu tổng${pctString}</strong></td>
+                      <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold;">-${new Intl.NumberFormat('vi-VN').format(overallDiscountAmount)}</td>
                     </tr>`
                 } else {
                     variables.discount_row_html = ''

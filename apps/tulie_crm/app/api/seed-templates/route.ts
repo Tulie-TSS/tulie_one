@@ -19,16 +19,19 @@ export async function POST() {
 
         const supabase = createAdminClient()
 
-        // Check if templates already seeded (any templates exist = skip)
+        const body = await request.json().catch(() => ({}))
+        const overwrite = body.overwrite === true
+
+        // Check if templates already seeded
         const { data: existing, count } = await supabase
             .from('document_templates')
             .select('id', { count: 'exact' })
             .limit(1)
 
-        if (count && count > 0) {
+        if (count && count > 0 && !overwrite) {
             return NextResponse.json({
                 success: true,
-                message: `Templates already exist (${count} found). No action taken.`,
+                message: `Templates already exist (${count} found). No action taken. Use { "overwrite": true } to sync.`,
                 count: 0
             })
         }
@@ -102,6 +105,10 @@ export async function POST() {
                 ],
             }
         ]
+
+        if (overwrite) {
+            await supabase.from('document_templates').delete().neq('id', '00000000-0000-0000-0000-000000000000') // Delete all
+        }
 
         const { data, error } = await supabase
             .from('document_templates')

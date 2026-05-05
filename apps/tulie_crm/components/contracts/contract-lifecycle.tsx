@@ -114,7 +114,7 @@ function getLifecycleSteps(contract: Contract, project?: Project | null): Lifecy
             steps.push({
                 id: `milestone_${(ms as any).id || index}`,
                 label: `${currentStepNum}. ${(ms as any).name || `Giai đoạn ${index + 1}`}`,
-                description: isPayment ? `Thanh toán theo hợp đồng: ${new Intl.NumberFormat('vi-VN').format((ms as any).amount)} đ` : 'Nghiệm thu tiến độ',
+                description: isPayment ? `Thanh toán theo hợp đồng: ${new Intl.NumberFormat('vi-VN').format(Number((ms as any).amount) || 0)} đ` : 'Nghiệm thu tiến độ',
                 status: stepStatus,
                 date: (ms as any).completed_at || (ms as any).due_date,
                 document: isPayment ? 'Đề nghị thanh toán' : 'Biên bản giao nhận',
@@ -281,7 +281,7 @@ export function ContractLifecycle({ contract, project }: ContractLifecycleProps)
                                 </div>
 
                                 {/* Date */}
-                                {step.date && (
+                                {step.date && !isNaN(new Date(step.date).getTime()) && (
                                     <span className="text-[10px] text-muted-foreground shrink-0 pt-1">
                                         {new Date(step.date).toLocaleDateString('vi-VN')}
                                     </span>

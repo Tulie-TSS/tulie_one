@@ -61,19 +61,19 @@ export const quotationTemplate = `
         <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; width:32px;">CK(%)<br><span style="font-weight:normal; font-size:7pt;">Disc.</span></th>
         <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; width:55px;">Giảm giá<br><span style="font-weight:normal; font-size:7pt;">Discount</span></th>
         <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; width:68px;">Thành tiền<br><span style="font-weight:normal; font-size:7pt;">Amount</span></th>
-        <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; width:45px;">Thuế VAT<br><span style="font-weight:normal; font-size:7pt;">VAT</span></th>
-        <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; width:68px;">Thành tiền sau thuế<br><span style="font-weight:normal; font-size:7pt;">Total</span></th>
+        <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; width:40px;">VAT(%)<br><span style="font-weight:normal; font-size:7pt;">VAT</span></th>
+        <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; width:55px;">Tiền VAT<br><span style="font-weight:normal; font-size:7pt;">Tax</span></th>
+        <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; width:68px;">Tổng cộng<br><span style="font-weight:normal; font-size:7pt;">Total</span></th>
       </tr>
       {{quotation_items_table}}
       <tr style="background:#f5f5f5;">
-        <td style="border:1px solid #000; padding:4px;" colspan="7"><strong>Cộng tiền hàng / Subtotal</strong></td>
+        <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Cộng tiền hàng / Subtotal</strong></td>
         <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold;">{{subtotal}}</td>
-        <td style="border:1px solid #000; padding:4px; text-align:right;">{{vat_total}}</td>
-        <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold;">{{total_after_vat}}</td>
       </tr>
+      {{vat_breakdown_html}}
       {{discount_row_html}}
       <tr style="background:#f5f5f5;">
-        <td style="border:1px solid #000; padding:4px;" colspan="9"><strong>Tổng tiền thanh toán / Grand Total</strong></td>
+        <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Tổng tiền thanh toán / Grand Total</strong></td>
         <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold;">{{total_amount_number}}</td>
       </tr>
     </table>
