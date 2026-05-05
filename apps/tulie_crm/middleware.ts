@@ -70,11 +70,12 @@ function generateCspHeaders(nonce: string) {
     // 'unsafe-eval' kept because Next.js runtime requires it (code splitting, HMR)
     const csp = [
         "default-src 'self'",
-        `script-src 'self' 'nonce-${nonce}' 'unsafe-eval'`,
+        `script-src 'self' 'nonce-${nonce}' 'unsafe-eval' https://challenges.cloudflare.com`,
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src 'self' https://fonts.gstatic.com data:",
         "img-src 'self' data: blob: https:",
-        "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://my.sepay.vn https://api.vietqr.io",
+        "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://my.sepay.vn https://api.vietqr.io https://challenges.cloudflare.com",
+        "frame-src https://challenges.cloudflare.com", // Turnstile renders inside an iframe
         "frame-ancestors 'none'",
         "base-uri 'self'",
         "form-action 'self'",
