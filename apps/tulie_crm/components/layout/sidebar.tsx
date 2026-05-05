@@ -35,7 +35,8 @@ import {
     DollarSign,
     Briefcase,
     Bot,
-    Handshake
+    Handshake,
+    UserRound
 } from 'lucide-react'
 
 // Using the same navigation items
@@ -49,6 +50,7 @@ const navGroups = [
             { title: 'Báo giá', href: '/quotations', icon: FileText },
             { title: 'Portal Báo giá', href: '/quotations/portals', icon: LayoutGrid },
             { title: 'Hợp đồng', href: '/contracts', icon: FilePenLine },
+            { title: 'Hợp đồng Cộng tác viên', href: '/contracts?category=freelancer', icon: UserRound },
             { title: 'Dự án', href: '/projects', icon: Rocket },
 
             { title: 'Helpdesk', href: '/helpdesk', icon: Headphones },
@@ -117,7 +119,18 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 {group.items.map((item) => {
-                                    const isActive = pathname === item.href || (item.href !== '/' && item.href !== '/studio' && pathname.startsWith(item.href + '/'))
+                                    const [itemPath, itemQuery] = item.href.split('?')
+                                    const searchParams = itemQuery ? new URLSearchParams(itemQuery) : null
+                                    let isActive = false
+                                    if (searchParams) {
+                                        // Query-param based route: active only when pathname AND query match
+                                        // e.g. /contracts?category=freelancer
+                                        isActive = pathname === itemPath &&
+                                            typeof window !== 'undefined' &&
+                                            new URLSearchParams(window.location.search).get('category') === searchParams.get('category')
+                                    } else {
+                                        isActive = pathname === item.href || (item.href !== '/' && item.href !== '/studio' && pathname.startsWith(item.href + '/'))
+                                    }
                                     return (
                                         <SidebarMenuItem key={item.title}>
                                             <SidebarMenuButton asChild isActive={isActive} tooltip={item.title}>
