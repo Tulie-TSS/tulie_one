@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
                 brand: 'TMM',
                 public_token: publicToken,
                 freelancer_metadata: data.freelancer_metadata || {},
-                // No customer_id, quotation_id required for CTV contracts
+                created_by: authResult.user.id,
             })
             .select('id, contract_number, public_token')
             .single()
