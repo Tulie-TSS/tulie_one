@@ -482,6 +482,13 @@ export async function generateDocument(
                         </tr>`
                     })
                 })
+                
+                // Add legend for KCT if exempt
+                if (vatStatus === 'exempt') {
+                    itemsRowsHtml += `<tr>
+                        <td style="border:1px solid #000; padding:4px; font-size:7.5pt; font-style:italic;" colspan="11">* Ghi chú: KCT = Không chịu thuế giá trị gia tăng theo quy định của pháp luật.</td>
+                    </tr>`
+                }
 
                 variables.contract_items_table = itemsRowsHtml
                 variables.quotation_items_table = itemsRowsHtml
