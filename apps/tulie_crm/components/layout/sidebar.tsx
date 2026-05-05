@@ -119,18 +119,13 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 {group.items.map((item) => {
-                                    const [itemPath, itemQuery] = item.href.split('?')
-                                    const searchParams = itemQuery ? new URLSearchParams(itemQuery) : null
-                                    let isActive = false
-                                    if (searchParams) {
-                                        // Query-param based route: active only when pathname AND query match
-                                        // e.g. /contracts?category=freelancer
-                                        isActive = pathname === itemPath &&
-                                            typeof window !== 'undefined' &&
-                                            new URLSearchParams(window.location.search).get('category') === searchParams.get('category')
-                                    } else {
-                                        isActive = pathname === item.href || (item.href !== '/' && item.href !== '/studio' && pathname.startsWith(item.href + '/'))
-                                    }
+                                    // exactMatch: true for routes that have sub-routes we don't want to activate
+                                    // e.g. /contracts should NOT be active when on /contracts/ctv
+                                    const EXACT_MATCH_ROUTES = ['/contracts', '/studio']
+                                    const useExact = EXACT_MATCH_ROUTES.includes(item.href)
+                                    const isActive = useExact
+                                        ? pathname === item.href
+                                        : pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href + '/'))
                                     return (
                                         <SidebarMenuItem key={item.title}>
                                             <SidebarMenuButton asChild isActive={isActive} tooltip={item.title}>
