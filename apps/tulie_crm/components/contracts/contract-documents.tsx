@@ -82,6 +82,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
 
     const DOC_META: Record<string, { label: string; description: string; icon: any }> = {
         contract: { label: 'Hợp đồng kinh tế', description: 'Hợp đồng ký kết giữa 2 bên với đầy đủ điều khoản pháp lý', icon: FileText },
+        freelance_contract: { label: contract.title || 'Hợp đồng Cộng tác viên', description: 'Hợp đồng thỏa thuận cung cấp dịch vụ cá nhân', icon: FileText },
         order: { label: 'Đơn đặt hàng', description: 'Đơn đặt hàng chi tiết sản phẩm/dịch vụ', icon: ClipboardList },
         payment_request: { label: 'Đề nghị thanh toán', description: 'Đề nghị thanh toán theo hợp đồng kinh tế', icon: CreditCard },
         delivery_minutes: { label: 'Biên bản giao nhận', description: 'Biên bản xác nhận giao nhận hàng hóa/dịch vụ', icon: Package },
@@ -89,6 +90,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
 
     const isFramework = contract.type === 'contract'
     const isOrder = contract.type === 'order'
+    const isFreelancer = contract.category === 'freelancer'
 
     const docItems: DocItem[] = (() => {
         if (dbDocs.length > 0) {
@@ -137,9 +139,14 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
         }
 
         // Fallback: static doc types based on contract type
-        const types = isOrder 
-            ? ['order', 'payment_request', 'delivery_minutes']
-            : ['contract', 'payment_request', 'delivery_minutes']
+        let types: string[] = []
+        if (isFreelancer) {
+            types = ['freelance_contract']
+        } else if (isOrder) {
+            types = ['order', 'payment_request', 'delivery_minutes']
+        } else {
+            types = ['contract', 'payment_request', 'delivery_minutes']
+        }
         
         return types.map(type => {
             const meta = DOC_META[type]

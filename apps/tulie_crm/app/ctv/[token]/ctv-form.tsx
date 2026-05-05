@@ -347,9 +347,9 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                     </Field>
                                 </div>
 
-                                <div className="rounded-xl bg-blue-50 border border-blue-100 p-4">
-                                    <p className="text-blue-700 text-sm font-medium mb-1">💳 Thông tin tài khoản nhận thù lao</p>
-                                    <p className="text-blue-600 text-xs">Tulie sẽ chuyển khoản thanh toán vào tài khoản này theo đúng lịch trình hợp đồng.</p>
+                                <div className="rounded-xl bg-slate-100 border border-slate-200 p-4">
+                                    <p className="text-slate-700 text-sm font-medium mb-1">💳 Thông tin tài khoản nhận thù lao</p>
+                                    <p className="text-slate-600 text-xs">Tulie sẽ chuyển khoản thanh toán vào tài khoản này theo đúng lịch trình hợp đồng.</p>
                                 </div>
 
                                 <Field label="Tên ngân hàng *">
@@ -369,9 +369,9 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                     />
                                 </Field>
 
-                                <div className="rounded-xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-800">
+                                <div className="rounded-xl bg-slate-100 border border-slate-200 p-4 text-sm text-slate-800">
                                     <p className="font-medium mb-1">⚠️ Lưu ý về thuế thu nhập cá nhân</p>
-                                    <p className="text-amber-700 text-xs leading-relaxed">
+                                    <p className="text-slate-600 text-xs leading-relaxed">
                                         Theo quy định hiện hành, Tulie Agency sẽ khấu trừ <strong>10% thuế TNCN</strong> trên tổng thù lao trước khi thanh toán và thay mặt bạn nộp lên cơ quan thuế. Bạn có thể yêu cầu chứng từ khấu trừ thuế sau khi hợp đồng hoàn thành.
                                     </p>
                                 </div>
@@ -385,8 +385,8 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                             {submitted ? (
                                 // Success State
                                 <div className="p-8 text-center space-y-4">
-                                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                                        <CheckCircle2 className="w-9 h-9 text-green-600" />
+                                    <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto">
+                                        <CheckCircle2 className="w-9 h-9 text-slate-900" />
                                     </div>
                                     <div>
                                         <h2 className="text-xl font-bold text-slate-800">Đã gửi thành công!</h2>
@@ -409,7 +409,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                             href={`/api/contracts/${token}/preview?type=freelance_contract`}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white rounded-xl px-5 py-3 text-sm font-medium hover:bg-blue-700 transition-colors"
+                                            className="inline-flex items-center justify-center gap-2 bg-slate-900 text-slate-50 rounded-xl px-5 py-3 text-sm font-medium hover:bg-slate-900/90 transition-colors"
                                         >
                                             <Eye className="w-4 h-4" />
                                             Xem trước hợp đồng
@@ -463,7 +463,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                                     </p>
                                                 )}
                                                 {turnstileToken && (
-                                                    <p className="text-xs text-green-600 flex items-center gap-1">
+                                                    <p className="text-xs text-slate-900 flex items-center gap-1">
                                                         <ShieldCheck className="w-3.5 h-3.5" />
                                                         Xác minh bảo mật thành công
                                                     </p>
@@ -500,7 +500,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                             {step < 3 ? (
                                 <button
                                     onClick={goNext}
-                                    className="inline-flex items-center gap-2 bg-blue-600 text-white rounded-xl px-6 py-2.5 text-sm font-medium hover:bg-blue-700 transition-colors"
+                                    className="inline-flex items-center gap-2 bg-slate-900 text-slate-50 rounded-xl px-6 py-2.5 text-sm font-medium hover:bg-slate-900/90 transition-colors"
                                 >
                                     Tiếp theo
                                     <ChevronRight className="w-4 h-4" />
@@ -509,7 +509,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                 <button
                                     onClick={handleSubmit}
                                     disabled={loading || (!!siteKey && !turnstileToken)}
-                                    className="inline-flex items-center gap-2 bg-green-600 text-white rounded-xl px-6 py-2.5 text-sm font-semibold hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="inline-flex items-center gap-2 bg-slate-900 text-slate-50 rounded-xl px-6 py-2.5 text-sm font-semibold hover:bg-slate-900/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {loading ? (
                                         <><Loader2 className="w-4 h-4 animate-spin" />Đang gửi...</>
@@ -523,7 +523,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                 </div>
 
                 {/* Footer */}
-                <p className="text-center text-white/30 text-xs mt-6 pb-4">
+                <p className="text-center text-slate-400 text-xs mt-6 pb-4">
                     Thông tin được bảo mật và chỉ dùng cho mục đích hợp đồng — Tulie Agency
                 </p>
             </div>
@@ -533,7 +533,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
 
 // ─── Helpers ──────────────────────────────────────────────
 
-const inputCls = 'w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition'
+const inputCls = 'w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition'
 
 function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
     return (

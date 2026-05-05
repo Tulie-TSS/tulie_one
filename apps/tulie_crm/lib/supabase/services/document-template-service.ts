@@ -789,7 +789,10 @@ export async function generateDocument(
 /**
  * Define which documents each contract type needs
  */
-function getDocTypesForContract(contractType: string): string[] {
+function getDocTypesForContract(contractType: string, category?: string): string[] {
+    if (category === 'freelancer') {
+        return ['freelance_contract']
+    }
     if (contractType === 'order') {
         return ['order', 'payment_request', 'delivery_minutes']
     }
@@ -858,7 +861,7 @@ export async function generateDocumentBundle(contractId: string) {
     }
 
     // 3. Determine which doc types this contract needs
-    const docTypes = getDocTypesForContract(contract.type || 'contract')
+    const docTypes = getDocTypesForContract(contract.type || 'contract', contract.category)
 
     // 4. Find templates
     const templates = await getDocumentTemplates()
@@ -949,7 +952,7 @@ export async function generateDocumentBundle(contractId: string) {
             // Single document (HĐ, ĐĐH, BBGN)
             try {
                 const result = await generateDocument(template.id, contract.customer_id, contractId)
-                const docNum = docType === 'contract' ? result.variables?.contract_number
+                const docNum = (docType === 'contract' || docType === 'freelance_contract') ? result.variables?.contract_number
                     : docType === 'order' ? result.variables?.contract_number
                     : result.variables?.report_number || ''
                 

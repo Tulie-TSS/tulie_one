@@ -35,7 +35,7 @@ export function CtvLinkButton({ publicToken }: CtvLinkButtonProps) {
             variant="outline"
             size="sm"
             onClick={handleCopy}
-            className="gap-2 border-blue-200 text-blue-700 hover:bg-blue-50 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-950"
+            className="gap-2"
         >
             <UserRound className="h-4 w-4" />
             {copied ? (
