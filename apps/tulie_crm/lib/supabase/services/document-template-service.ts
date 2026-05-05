@@ -401,6 +401,11 @@ export async function generateDocument(
             // Auto-fill delivery_address from customer address
             variables.delivery_address = custData.address || customer.address || ''
 
+            // Determine VAT status and Product Name early for use in items table and declaration
+            const proposalContent = contract?.quotation?.proposal_content as any || {}
+            const vatStatus = contract?.vat_exempt_status || contract?.quotation?.vat_exempt_status || proposalContent.vat_exempt_status || '0_percent'
+            const productName = contract?.product_name_in_contract?.trim() || contract?.quotation?.product_name_in_contract?.trim() || proposalContent.product_name_in_contract?.trim() || ''
+
             // Build items table from quotation items
             const items = contract.items || []
             if (items.length > 0) {
@@ -440,9 +445,9 @@ export async function generateDocument(
                         const discountPct = item.discount || 0 // discount is a percentage (0-100)
                         const discountAmount = Math.round(itemGross * discountPct / 100)
                         const afterDiscount = itemGross - discountAmount
-                        const itemVatRate = item.vat_percent !== undefined && item.vat_percent !== null 
+                        const itemVatRate = vatStatus === 'exempt' ? 0 : (item.vat_percent !== undefined && item.vat_percent !== null 
                             ? item.vat_percent 
-                            : (contract.quotation?.vat_percent || 0)
+                            : (contract.quotation?.vat_percent || 0))
                         const itemVat = Math.round(afterDiscount * itemVatRate / 100)
                         const afterVat = afterDiscount + itemVat
                         
@@ -471,7 +476,7 @@ export async function generateDocument(
                             <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${discountPct > 0 ? discountPct + '%' : '-'}</td>
                             <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${discountAmount > 0 ? new Intl.NumberFormat('vi-VN').format(discountAmount) : '-'}</td>
                             <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(afterDiscount)}</td>
-                            <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${itemVatRate > 0 ? itemVatRate + '%' : '0%'}</td>
+                             <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${vatStatus === 'exempt' ? 'KCT' : (itemVatRate > 0 ? itemVatRate + '%' : '0%')}</td>
                             <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${itemVat > 0 ? new Intl.NumberFormat('vi-VN').format(itemVat) : '0'}</td>
                             <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(afterVat)}</td>
                         </tr>`
@@ -597,10 +602,7 @@ export async function generateDocument(
             }
         }
         // Generate product_service_declaration
-        const proposalContent = contract?.quotation?.proposal_content as any || {}
         let productServiceDeclaration = ''
-        const productName = contract?.product_name_in_contract?.trim() || contract?.quotation?.product_name_in_contract?.trim() || proposalContent.product_name_in_contract?.trim() || ''
-        const vatStatus = contract?.vat_exempt_status || contract?.quotation?.vat_exempt_status || proposalContent.vat_exempt_status || '0_percent'
         
         if (productName || vatStatus) {
             if (productName) {
