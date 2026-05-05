@@ -181,28 +181,28 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-start py-8 px-4">
+        <div className="min-h-screen bg-zinc-50 flex flex-col items-center justify-start py-8 px-4">
             {/* Header */}
             <div className="w-full max-w-2xl mb-8">
                 <div className="flex items-center gap-3 mb-6">
                     {/* Dark logo for light theme */}
                     <img src="/file/tulie-agency-logo.png" alt="Tulie Agency" className="h-8 w-auto object-contain" />
-                    <div className="h-5 w-px bg-slate-300" />
-                    <span className="text-slate-500 text-sm font-medium">Hợp đồng Cộng tác viên</span>
+                    <div className="h-5 w-px bg-zinc-300" />
+                    <span className="text-zinc-500 text-sm font-medium">Hợp đồng Cộng tác viên</span>
                 </div>
 
                 {/* Contract Summary Card */}
-                <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm mb-8">
+                <div className="bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm mb-8">
                     <div className="flex items-start justify-between gap-4">
                         <div>
-                            <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mb-1">
+                            <p className="text-zinc-500 text-xs font-medium uppercase tracking-wider mb-1">
                                 {contract.contract_number || 'Hợp đồng đang chờ ký kết'}
                             </p>
-                            <h1 className="text-slate-900 font-semibold text-lg leading-tight">{contract.title}</h1>
+                            <h1 className="text-zinc-900 font-semibold text-lg leading-tight">{contract.title}</h1>
                         </div>
                         <div className="text-right shrink-0">
-                            <p className="text-slate-500 text-xs mb-1">Giá trị</p>
-                            <p className="text-slate-900 font-bold text-lg">
+                            <p className="text-zinc-500 text-xs mb-1">Giá trị</p>
+                            <p className="text-zinc-900 font-bold text-lg">
                                 {formatCurrency(contract.total_amount)}
                             </p>
                         </div>
@@ -210,10 +210,10 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                     {(contract.start_date || contract.end_date) && (
                         <div className="mt-3 pt-3 border-t flex gap-6 text-sm">
                             {contract.start_date && (
-                                <span className="text-slate-500">Bắt đầu: <span className="text-slate-900 font-medium">{formatDate(contract.start_date)}</span></span>
+                                <span className="text-zinc-500">Bắt đầu: <span className="text-zinc-900 font-medium">{formatDate(contract.start_date)}</span></span>
                             )}
                             {contract.end_date && (
-                                <span className="text-slate-500">Kết thúc: <span className="text-slate-900 font-medium">{formatDate(contract.end_date)}</span></span>
+                                <span className="text-zinc-500">Kết thúc: <span className="text-zinc-900 font-medium">{formatDate(contract.end_date)}</span></span>
                             )}
                         </div>
                     )}
@@ -227,18 +227,18 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                         <Fragment key={s.id}>
                             <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 shrink-0">
                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
-                                    step > s.id ? 'bg-slate-900 text-white' :
-                                    step === s.id ? 'bg-slate-900 text-white ring-4 ring-slate-900/10' :
-                                    'bg-slate-100 border border-slate-200 text-slate-400'
+                                    step > s.id ? 'bg-zinc-900 text-white' :
+                                    step === s.id ? 'bg-zinc-900 text-white ring-4 ring-zinc-900/10' :
+                                    'bg-zinc-100 border border-zinc-200 text-zinc-400'
                                 }`}>
                                     {step > s.id ? <CheckCircle2 className="w-4 h-4" /> : <s.icon className="w-4 h-4" />}
                                 </div>
-                                <span className={`text-[10px] sm:text-xs font-medium transition-colors whitespace-nowrap ${step >= s.id ? 'text-slate-900' : 'text-slate-400'}`}>
+                                <span className={`text-[10px] sm:text-xs font-medium transition-colors whitespace-nowrap ${step >= s.id ? 'text-zinc-900' : 'text-zinc-400'}`}>
                                     {s.label}
                                 </span>
                             </div>
                             {i < STEPS.length - 1 && (
-                                <div className={`flex-1 h-px mx-2 sm:mx-4 transition-colors ${step > s.id ? 'bg-slate-900' : 'bg-slate-200'}`} />
+                                <div className={`flex-1 h-px mx-2 sm:mx-4 transition-colors ${step > s.id ? 'bg-zinc-900' : 'bg-zinc-200'}`} />
                             )}
                         </Fragment>
                     ))}
@@ -247,13 +247,13 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
 
             {/* Form Card */}
             <div className="w-full max-w-2xl">
-                <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                <div className="bg-white border border-zinc-200 rounded-2xl shadow-sm overflow-hidden">
                     {/* === STEP 1: Personal Info === */}
                     {step === 1 && (
                         <div>
-                            <div className="bg-slate-50/50 border-b border-slate-200 px-6 py-5">
-                                <h2 className="font-semibold text-slate-900 text-lg">Thông tin cá nhân</h2>
-                                <p className="text-slate-500 text-sm mt-1">Điền chính xác như trên CCCD/CMND của bạn</p>
+                            <div className="bg-zinc-50/50 border-b border-zinc-200 px-6 py-5">
+                                <h2 className="font-semibold text-zinc-900 text-lg">Thông tin cá nhân</h2>
+                                <p className="text-zinc-500 text-sm mt-1">Điền chính xác như trên CCCD/CMND của bạn</p>
                             </div>
                             <div className="p-6 space-y-5">
                                 <Field label="Họ và tên đầy đủ *" hint="Đúng như trên giấy tờ tuỳ thân">
@@ -323,9 +323,9 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                     {/* === STEP 2: Bank Info === */}
                     {step === 2 && (
                         <div>
-                            <div className="bg-slate-50/50 border-b border-slate-200 px-6 py-5">
-                                <h2 className="font-semibold text-slate-900 text-lg">Ngân hàng & Liên hệ</h2>
-                                <p className="text-slate-500 text-sm mt-1">Thông tin để thanh toán thù lao và liên lạc</p>
+                            <div className="bg-zinc-50/50 border-b border-zinc-200 px-6 py-5">
+                                <h2 className="font-semibold text-zinc-900 text-lg">Ngân hàng & Liên hệ</h2>
+                                <p className="text-zinc-500 text-sm mt-1">Thông tin để thanh toán thù lao và liên lạc</p>
                             </div>
                             <div className="p-6 space-y-5">
                                 <div className="grid grid-cols-2 gap-4">
@@ -349,9 +349,9 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                     </Field>
                                 </div>
 
-                                <div className="rounded-xl bg-slate-100 border border-slate-200 p-4">
-                                    <p className="text-slate-700 text-sm font-medium mb-1">💳 Thông tin tài khoản nhận thù lao</p>
-                                    <p className="text-slate-600 text-xs">Tulie sẽ chuyển khoản thanh toán vào tài khoản này theo đúng lịch trình hợp đồng.</p>
+                                <div className="rounded-xl bg-zinc-100 border border-zinc-200 p-4">
+                                    <p className="text-zinc-700 text-sm font-medium mb-1">💳 Thông tin tài khoản nhận thù lao</p>
+                                    <p className="text-zinc-600 text-xs">Tulie sẽ chuyển khoản thanh toán vào tài khoản này theo đúng lịch trình hợp đồng.</p>
                                 </div>
 
                                 <Field label="Tên ngân hàng *">
@@ -381,9 +381,9 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                     />
                                 </Field>
 
-                                <div className="rounded-xl bg-slate-100 border border-slate-200 p-4 text-sm text-slate-800">
+                                <div className="rounded-xl bg-zinc-100 border border-zinc-200 p-4 text-sm text-zinc-800">
                                     <p className="font-medium mb-1">⚠️ Lưu ý về thuế thu nhập cá nhân</p>
-                                    <p className="text-slate-600 text-xs leading-relaxed">
+                                    <p className="text-zinc-600 text-xs leading-relaxed">
                                         Theo quy định hiện hành, Tulie Agency sẽ khấu trừ <strong>10% thuế TNCN</strong> trên tổng thù lao trước khi thanh toán và thay mặt bạn nộp lên cơ quan thuế. Bạn có thể yêu cầu chứng từ khấu trừ thuế sau khi hợp đồng hoàn thành.
                                     </p>
                                 </div>
@@ -397,17 +397,17 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                             {submitted ? (
                                 // Success State
                                 <div className="p-8 text-center space-y-4">
-                                    <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto">
-                                        <CheckCircle2 className="w-9 h-9 text-slate-900" />
+                                    <div className="w-16 h-16 bg-zinc-100 rounded-full flex items-center justify-center mx-auto">
+                                        <CheckCircle2 className="w-9 h-9 text-zinc-900" />
                                     </div>
                                     <div>
-                                        <h2 className="text-xl font-bold text-slate-800">Đã gửi thành công!</h2>
-                                        <p className="text-slate-500 text-sm mt-1">
+                                        <h2 className="text-xl font-bold text-zinc-800">Đã gửi thành công!</h2>
+                                        <p className="text-zinc-500 text-sm mt-1">
                                             Thông tin của bạn đã được lưu. Tulie sẽ liên hệ xác nhận và gửi hợp đồng chính thức để ký kết.
                                         </p>
                                     </div>
 
-                                    <div className="bg-slate-50 rounded-xl p-5 text-left space-y-3 mt-2">
+                                    <div className="bg-zinc-50 rounded-xl p-5 text-left space-y-3 mt-2">
                                         <InfoRow label="Họ tên" value={form.name} />
                                         <InfoRow label="CCCD/CMND" value={form.cccd} />
                                         <InfoRow label="Điện thoại" value={form.phone} />
@@ -422,7 +422,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                             href={`/api/contracts/${token}/preview?type=freelance_contract`}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="inline-flex items-center justify-center gap-2 bg-slate-900 text-slate-50 rounded-xl px-5 py-3 text-sm font-medium hover:bg-slate-900/90 transition-colors"
+                                            className="inline-flex items-center justify-center gap-2 bg-zinc-900 text-zinc-50 rounded-xl px-5 py-3 text-sm font-medium hover:bg-zinc-900/90 transition-colors"
                                         >
                                             <Eye className="w-4 h-4" />
                                             Xem trước hợp đồng
@@ -430,7 +430,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                         </a>
                                         <button
                                             onClick={() => { setSubmitted(false); setStep(1) }}
-                                            className="text-slate-400 text-sm hover:text-slate-600 transition-colors"
+                                            className="text-zinc-400 text-sm hover:text-zinc-600 transition-colors"
                                         >
                                             Cập nhật thông tin
                                         </button>
@@ -439,9 +439,9 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                             ) : (
                                 // Review before submit
                                 <div>
-                                    <div className="bg-slate-50/50 border-b border-slate-200 px-6 py-5">
-                                        <h2 className="font-semibold text-slate-900 text-lg">Xác nhận thông tin</h2>
-                                        <p className="text-slate-500 text-sm mt-1">Kiểm tra lại trước khi gửi — thông tin sẽ được dùng trong hợp đồng</p>
+                                    <div className="bg-zinc-50/50 border-b border-zinc-200 px-6 py-5">
+                                        <h2 className="font-semibold text-zinc-900 text-lg">Xác nhận thông tin</h2>
+                                        <p className="text-zinc-500 text-sm mt-1">Kiểm tra lại trước khi gửi — thông tin sẽ được dùng trong hợp đồng</p>
                                     </div>
                                     <div className="p-6 space-y-4">
                                         <ReviewSection title="Thông tin cá nhân">
@@ -462,7 +462,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                             <InfoRow label="Chủ tài khoản" value={form.bank_account_name.toUpperCase()} />
                                         </ReviewSection>
 
-                                        <div className="bg-slate-50 rounded-xl border p-4 text-sm text-slate-600">
+                                        <div className="bg-zinc-50 rounded-xl border p-4 text-sm text-zinc-600">
                                             Bằng cách nhấn <strong>Gửi xác nhận</strong>, bạn xác nhận rằng thông tin trên là chính xác và đồng ý sử dụng trong hợp đồng cộng tác viên với Tulie Agency.
                                         </div>
 
@@ -471,13 +471,13 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                             <div className="flex flex-col items-center gap-2">
                                                 <div ref={turnstileRef} className="mx-auto" />
                                                 {!turnstileToken && (
-                                                    <p className="text-xs text-slate-400 flex items-center gap-1">
+                                                    <p className="text-xs text-zinc-400 flex items-center gap-1">
                                                         <ShieldCheck className="w-3.5 h-3.5" />
                                                         Đang xác minh bảo mật...
                                                     </p>
                                                 )}
                                                 {turnstileToken && (
-                                                    <p className="text-xs text-slate-900 flex items-center gap-1">
+                                                    <p className="text-xs text-zinc-900 flex items-center gap-1">
                                                         <ShieldCheck className="w-3.5 h-3.5" />
                                                         Xác minh bảo mật thành công
                                                     </p>
@@ -504,7 +504,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                             {step > 1 ? (
                                 <button
                                     onClick={() => { setStep(s => s - 1); setError('') }}
-                                    className="inline-flex items-center gap-2 text-slate-500 text-sm hover:text-slate-800 transition-colors px-4 py-2 rounded-lg hover:bg-slate-100"
+                                    className="inline-flex items-center gap-2 text-zinc-500 text-sm hover:text-zinc-800 transition-colors px-4 py-2 rounded-lg hover:bg-zinc-100"
                                 >
                                     <ChevronLeft className="w-4 h-4" />
                                     Quay lại
@@ -514,7 +514,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                             {step < 3 ? (
                                 <button
                                     onClick={goNext}
-                                    className="inline-flex items-center gap-2 bg-slate-900 text-slate-50 rounded-xl px-6 py-2.5 text-sm font-medium hover:bg-slate-900/90 transition-colors"
+                                    className="inline-flex items-center gap-2 bg-zinc-900 text-zinc-50 rounded-xl px-6 py-2.5 text-sm font-medium hover:bg-zinc-900/90 transition-colors"
                                 >
                                     Tiếp theo
                                     <ChevronRight className="w-4 h-4" />
@@ -523,7 +523,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                 <button
                                     onClick={handleSubmit}
                                     disabled={loading || (!!siteKey && !turnstileToken)}
-                                    className="inline-flex items-center gap-2 bg-slate-900 text-slate-50 rounded-xl px-6 py-2.5 text-sm font-semibold hover:bg-slate-900/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="inline-flex items-center gap-2 bg-zinc-900 text-zinc-50 rounded-xl px-6 py-2.5 text-sm font-semibold hover:bg-zinc-900/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {loading ? (
                                         <><Loader2 className="w-4 h-4 animate-spin" />Đang gửi...</>
@@ -537,7 +537,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                 </div>
 
                 {/* Footer */}
-                <p className="text-center text-slate-400 text-xs mt-6 pb-4">
+                <p className="text-center text-zinc-400 text-xs mt-6 pb-4">
                     Thông tin được bảo mật và chỉ dùng cho mục đích hợp đồng — Tulie Agency
                 </p>
             </div>
@@ -547,13 +547,13 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
 
 // ─── Helpers ──────────────────────────────────────────────
 
-const inputCls = 'w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition'
+const inputCls = 'w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent transition'
 
 function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
     return (
         <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-slate-700">{label}</label>
-            {hint && <p className="text-xs text-slate-400 -mt-0.5">{hint}</p>}
+            <label className="block text-sm font-medium text-zinc-700">{label}</label>
+            {hint && <p className="text-xs text-zinc-400 -mt-0.5">{hint}</p>}
             {children}
         </div>
     )
@@ -562,10 +562,10 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
 function ReviewSection({ title, children }: { title: string; children: React.ReactNode }) {
     return (
         <div className="rounded-xl border bg-white overflow-hidden">
-            <div className="bg-slate-50 border-b px-4 py-2.5">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{title}</p>
+            <div className="bg-zinc-50 border-b px-4 py-2.5">
+                <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">{title}</p>
             </div>
-            <div className="p-4 divide-y divide-slate-100">{children}</div>
+            <div className="p-4 divide-y divide-zinc-100">{children}</div>
         </div>
     )
 }
@@ -573,8 +573,8 @@ function ReviewSection({ title, children }: { title: string; children: React.Rea
 function InfoRow({ label, value }: { label: string; value: string }) {
     return (
         <div className="flex items-start gap-3 py-2 first:pt-0 last:pb-0">
-            <span className="text-slate-400 text-sm w-36 shrink-0">{label}</span>
-            <span className="text-slate-800 text-sm font-medium">{value || '—'}</span>
+            <span className="text-zinc-400 text-sm w-36 shrink-0">{label}</span>
+            <span className="text-zinc-800 text-sm font-medium">{value || '—'}</span>
         </div>
     )
 }
