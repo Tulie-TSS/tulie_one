@@ -112,7 +112,7 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
 // Get all templates — DB-first, built-in fallback when DB is empty or missing types
 export async function getDocumentTemplates() {
     try {
-        const supabase = await createClient()
+        const supabase = createAdminClient()
         // Try to order by is_default first; if column doesn't exist, fallback to created_at only
         let query = supabase.from('document_templates').select('*')
         const { data, error } = await query
@@ -174,7 +174,7 @@ export async function getTemplateById(id: string): Promise<DocumentTemplate | nu
             return null
         }
 
-        const supabase = await createClient()
+        const supabase = createAdminClient()
         const { data, error } = await supabase
             .from('document_templates')
             .select('*')
@@ -195,7 +195,7 @@ export async function getTemplateById(id: string): Promise<DocumentTemplate | nu
 
 // Create template
 export async function createDocumentTemplate(template: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at'>) {
-    const supabase = await createClient()
+    const supabase = createAdminClient()
     const { data, error } = await supabase
         .from('document_templates')
         .insert([template])
@@ -211,7 +211,7 @@ export async function updateDocumentTemplate(id: string, template: Partial<Docum
     // Clean updated_at
     const updatePayload = { ...template, updated_at: new Date().toISOString() }
 
-    const supabase = await createClient()
+    const supabase = createAdminClient()
     const { data, error } = await supabase
         .from('document_templates')
         .update(updatePayload)
@@ -228,7 +228,7 @@ export async function duplicateDocumentTemplate(id: string): Promise<DocumentTem
     const original = await getTemplateById(id)
     if (!original) throw new Error('Template not found')
 
-    const supabase = await createClient()
+    const supabase = createAdminClient()
     const { data, error } = await supabase
         .from('document_templates')
         .insert([{
@@ -246,7 +246,7 @@ export async function duplicateDocumentTemplate(id: string): Promise<DocumentTem
 
 // Delete template
 export async function deleteDocumentTemplate(id: string) {
-    const supabase = await createClient()
+    const supabase = createAdminClient()
     const { error } = await supabase
         .from('document_templates')
         .delete()
@@ -1153,7 +1153,7 @@ export async function getDocumentData(
 
 // Create Document Bundle
 export async function createDocumentBundle(bundle: Omit<DocumentBundle, 'id' | 'created_at' | 'updated_at'>) {
-    const supabase = await createClient()
+    const supabase = createAdminClient()
     const { data, error } = await supabase
         .from('document_bundles')
         .insert([bundle])
@@ -1166,7 +1166,7 @@ export async function createDocumentBundle(bundle: Omit<DocumentBundle, 'id' | '
 
 export async function getDocumentBundles() {
     try {
-        const supabase = await createClient()
+        const supabase = createAdminClient()
         const { data, error } = await supabase
             .from('document_bundles')
             .select('*')
@@ -1181,7 +1181,7 @@ export async function getDocumentBundles() {
 }
 
 export async function deleteDocumentBundle(id: string) {
-    const supabase = await createClient()
+    const supabase = createAdminClient()
     const { error } = await supabase
         .from('document_bundles')
         .delete()
@@ -1190,7 +1190,7 @@ export async function deleteDocumentBundle(id: string) {
 }
 
 export async function updateDocumentBundle(id: string, bundle: Partial<DocumentBundle>) {
-    const supabase = await createClient()
+    const supabase = createAdminClient()
     const { data, error } = await supabase
         .from('document_bundles')
         .update(bundle)
@@ -1203,7 +1203,7 @@ export async function updateDocumentBundle(id: string, bundle: Partial<DocumentB
 
 export async function saveGeneratedDocument(doc: Partial<GeneratedDocument>) {
     try {
-        const supabase = await createClient()
+        const supabase = createAdminClient()
         let query;
 
         if (doc.id) {
@@ -1223,7 +1223,7 @@ export async function saveGeneratedDocument(doc: Partial<GeneratedDocument>) {
 
 export async function getGeneratedDocumentById(id: string) {
     try {
-        const supabase = await createClient()
+        const supabase = createAdminClient()
         const { data, error } = await supabase
             .from('generated_documents')
             .select('*')
