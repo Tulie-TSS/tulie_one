@@ -14,7 +14,11 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
 
-    async function handleAction(formData: FormData) {
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+        if (loading) return
+        
+        const formData = new FormData(e.currentTarget)
         setLoading(true)
         setError(null)
         try {
@@ -37,33 +41,44 @@ export default function LoginPage() {
     }
 
     return (
-        <Card className="border-none shadow-lg">
-            <CardHeader>
-                <CardTitle className="text-2xl">Hệ thống Tulie CRM</CardTitle>
-                <CardDescription>
+        <Card className="border-none shadow-xl overflow-hidden bg-white/80 backdrop-blur-sm">
+            <CardHeader className="pb-8">
+                <CardTitle className="text-2xl font-bold tracking-tight">Hệ thống Tulie CRM</CardTitle>
+                <CardDescription className="text-slate-500 font-medium">
                     Nhập email và mật khẩu để đăng nhập vào hệ thống
                 </CardDescription>
             </CardHeader>
-            <form action={handleAction}>
-                <CardContent className="space-y-4">
+            <form onSubmit={handleSubmit}>
+                <CardContent className="space-y-5">
                     <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input id="email" name="email" type="email" placeholder="admin@tulie.app" required />
+                        <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-slate-500">Email</Label>
+                        <Input 
+                            id="email" 
+                            name="email" 
+                            type="email" 
+                            placeholder="admin@tulie.agency" 
+                            required 
+                            className="h-11 bg-slate-50/50 border-slate-200 focus:border-slate-400 transition-all"
+                            disabled={loading}
+                        />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="password">Mật khẩu</Label>
+                        <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-slate-500">Mật khẩu</Label>
                         <div className="relative">
                             <Input
                                 id="password"
                                 name="password"
                                 type={showPassword ? "text" : "password"}
                                 required
-                                className="pr-10"
+                                className="h-11 pr-11 bg-slate-50/50 border-slate-200 focus:border-slate-400 transition-all"
+                                disabled={loading}
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer p-1"
+                                disabled={loading}
+                                className="absolute right-0 top-0 h-11 w-11 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer disabled:opacity-30"
+                                tabIndex={-1}
                             >
                                 {showPassword ? (
                                     <EyeOff className="h-4 w-4" />
@@ -74,13 +89,17 @@ export default function LoginPage() {
                         </div>
                     </div>
                     {error && (
-                        <div className="text-sm font-medium text-destructive">
+                        <div className="text-sm font-semibold text-red-500 bg-red-50 p-3 rounded-md border border-red-100 flex items-center gap-2 animate-in fade-in slide-in-from-top-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
                             {error}
                         </div>
                     )}
-                    <Button className="w-full" type="submit" disabled={loading}>
-                        {loading && <LoadingSpinner size="sm" className="mr-2" />}
-                        {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+                    <Button className="w-full h-11 font-bold text-sm shadow-lg shadow-slate-200/50 transition-all active:scale-[0.98]" type="submit" disabled={loading}>
+                        {loading ? (
+                            <><LoadingSpinner size="sm" className="mr-2 border-white/30 border-t-white" /> Đang đăng nhập...</>
+                        ) : (
+                            'Đăng nhập'
+                        )}
                     </Button>
                 </CardContent>
             </form>
