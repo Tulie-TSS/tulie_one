@@ -120,14 +120,26 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
     // Editable contract number
     const [contractNumber, setContractNumber] = useState(contract.contract_number || '')
 
-    // Auto-generate contract number from signed_date + abbreviation
+    // Auto-generate contract number from signed_date + abbreviation (or freelancer initials)
     const generateContractNumber = () => {
-        if (!signedDate || !customerAbbreviation) {
-            toast.error('Cần điền Ngày ký và Tên viết tắt KH trước')
-            return
+        if (category === 'freelancer') {
+            if (!signedDate || !fMeta.name) {
+                toast.error('Cần điền Ngày ký và Họ tên CTV trước')
+                return
+            }
+            const dateStr = format(signedDate, 'yyyyMMdd')
+            const words = fMeta.name.trim().split(/\s+/)
+            const initials = words.map((w: string) => w[0]).join('').toUpperCase()
+            const cleanInitials = initials.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/Đ/g, 'D')
+            setContractNumber(`${dateStr}/HĐCTV-TL-${cleanInitials}`)
+        } else {
+            if (!signedDate || !customerAbbreviation) {
+                toast.error('Cần điền Ngày ký và Tên viết tắt KH trước')
+                return
+            }
+            const dateStr = format(signedDate, 'yyyyMMdd')
+            setContractNumber(`${dateStr}/HDKT-TL-${customerAbbreviation.toUpperCase()}`)
         }
-        const dateStr = format(signedDate, 'yyyyMMdd')
-        setContractNumber(`${dateStr}/HDKT-TL-${customerAbbreviation.toUpperCase()}`)
     }
     const [orderNumber, setOrderNumber] = useState(contract.order_number || '')
 
@@ -471,6 +483,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                             </div>
 
                             <div className="grid gap-4 sm:grid-cols-2">
+                                {category !== 'freelancer' && (
                                 <div className="space-y-2">
                                     <Label>Tên viết tắt KH <span className="text-destructive">*</span></Label>
                                     <Input
@@ -480,6 +493,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                     />
                                     <p className="text-[10px] text-muted-foreground">Dùng để tạo mã giấy tờ: HDKT-TL-{customerAbbreviation || 'XXX'}</p>
                                 </div>
+                                )}
                                 <div className="space-y-2">
                                     <Label>Mã hợp đồng</Label>
                                     <div className="flex gap-2">
@@ -499,7 +513,12 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                             Tạo mã
                                         </Button>
                                     </div>
-                                    <p className="text-[10px] text-muted-foreground">Format: yyyymmdd/HDKT-TL-{customerAbbreviation || 'XXX'}</p>
+                                    <p className="text-[10px] text-muted-foreground">
+                                        {category === 'freelancer'
+                                            ? `Format: yyyymmdd/HĐCTV-TL-[Viết tắt tên CTV]`
+                                            : `Format: yyyymmdd/HDKT-TL-${customerAbbreviation || 'XXX'}`
+                                        }
+                                    </p>
                                 </div>
                             </div>
 
