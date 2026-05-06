@@ -109,7 +109,7 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
 ]
 
 // Export built-in default templates (always available, no DB needed)
-export function getDefaultTemplates(): DocumentTemplate[] {
+export async function getDefaultTemplates(): Promise<DocumentTemplate[]> {
     return defaultTemplates.map((t) => ({
         ...t,
         id: `default-${t.type}`,

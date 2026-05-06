@@ -13,7 +13,7 @@ export async function GET() {
         console.error('Error fetching templates:', error)
         // Fallback: always return at least default templates
         try {
-            const defaults = getDefaultTemplates()
+            const defaults = await getDefaultTemplates()
             return NextResponse.json(defaults)
         } catch {
             return NextResponse.json([], { status: 200 })
