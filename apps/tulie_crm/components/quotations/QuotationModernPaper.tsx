@@ -158,7 +158,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                     <div className="bg-slate-50 p-6 rounded-md border border-slate-100 flex flex-col gap-2.5 text-[13px]">
                         <div className="grid grid-cols-[140px_1fr]">
                             <span className="text-slate-700">Đơn vị<span className="text-[0.8em] font-normal opacity-70 ml-1">/ Company</span>:</span>
-                            <span className="font-semibold text-black">{quotation.customer?.company_name || "N/A"}</span>
+                            <span className="font-semibold text-black">{quotation.customer?.company_name || quotation.customer?.full_name || quotation.customer?.name || "N/A"}</span>
                         </div>
                         <div className="grid grid-cols-[140px_1fr]">
                             <span className="text-slate-700">Địa chỉ<span className="text-[0.8em] font-normal opacity-70 ml-1">/ Address</span>:</span>
@@ -166,7 +166,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                         </div>
                         <div className="grid grid-cols-[140px_1fr]">
                             <span className="text-slate-700">Người liên hệ<span className="text-[0.8em] font-normal opacity-70 ml-1">/ Attn</span>:</span>
-                            <span className="font-medium text-black">{quotation.customer?.contact_name || "N/A"}</span>
+                            <span className="font-medium text-black">{quotation.customer?.representative || quotation.customer?.contact_name || quotation.customer?.full_name || "N/A"}</span>
                         </div>
                     </div>
                 </div>

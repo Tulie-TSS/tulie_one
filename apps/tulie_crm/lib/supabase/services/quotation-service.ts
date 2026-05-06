@@ -176,7 +176,10 @@ export async function getQuotationByToken(token: string) {
                 .order('created_at', { ascending: false });
             
             if (siblings) {
-                (quotation as any).siblings = siblings;
+                (quotation as any).siblings = siblings.map(s => ({
+                    ...s,
+                    customer: (quotation as any).customer
+                }));
             }
         }
 

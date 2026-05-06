@@ -635,7 +635,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                             <div className="bg-slate-50/80 p-4 rounded-lg border border-slate-200 flex flex-col gap-2.5 text-[13px]">
                                 <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1">
                                     <span className="text-muted-foreground font-medium">Đơn vị:</span>
-                                    <span className="font-semibold text-slate-900">{currentQuotation.customer?.company_name || "N/A"}</span>
+                                    <span className="font-semibold text-slate-900">{currentQuotation.customer?.company_name || currentQuotation.customer?.full_name || currentQuotation.customer?.name || "N/A"}</span>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1">
                                     <span className="text-muted-foreground font-medium">Địa chỉ:</span>
@@ -643,7 +643,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1">
                                     <span className="text-muted-foreground font-medium">Người liên hệ:</span>
-                                    <span className="font-medium text-slate-900">{currentQuotation.customer?.contact_name || "N/A"}</span>
+                                    <span className="font-medium text-slate-900">{currentQuotation.customer?.representative || currentQuotation.customer?.contact_name || currentQuotation.customer?.full_name || "N/A"}</span>
                                 </div>
                                 {currentQuotation.customer?.tax_code && (
                                     <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1">

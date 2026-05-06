@@ -25,6 +25,7 @@ async function resolveQuotationData(token: string) {
         // Attach siblings and portal.attachments directly
         const siblings = portal.items.map(item => item.quotation ? {
             ...item.quotation,
+            customer: portal.customer,
             is_recommended: item.is_recommended,
             is_default: item.is_default,
             attachments: portal.attachments || [] // Persist portal attachments across all siblings
