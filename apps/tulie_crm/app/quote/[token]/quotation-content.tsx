@@ -58,8 +58,9 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
         position: ''
     })
 
-    // Sibling-related helpers
-    const siblings = (initialQuotation as any).siblings || []
+    // Sibling-related helpers - Filter by visibility (is_recommended)
+    const allSiblings = (initialQuotation as any).siblings || []
+    const siblings = allSiblings.filter((s: any) => s.is_recommended !== false)
     const activeOptions = siblings.filter((s: any) => ['draft', 'sent', 'viewed'].includes(s.status))
     const historyItems = siblings.filter((s: any) => ['accepted', 'rejected', 'expired', 'converted'].includes(s.status))
 
@@ -398,23 +399,41 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                         ? "border-emerald-200 outline-emerald-500/50 bg-emerald-50/30" 
                                                         : "border-slate-200 group-hover:border-slate-300"
                                                 )}>
-                                                    <div className="flex flex-col gap-1.5 overflow-hidden">
-                                                        <div className="flex items-center gap-2">
+                                                    <div className="flex flex-col gap-1.5 overflow-hidden flex-1">
+                                                        <div className="flex items-center gap-2 flex-wrap">
                                                             <span className={cn("font-bold text-sm truncate", isActive ? "text-emerald-900" : "text-slate-900")}>
                                                                 #{item.quotation_number}
                                                             </span>
+                                                            <span className={cn("text-[13px] font-semibold truncate max-w-[150px] sm:max-w-none", isActive ? "text-emerald-800" : "text-slate-700")}>
+                                                                {item.title || item.version_name || 'Bản chào giá'}
+                                                            </span>
+                                                        </div>
+                                                        
+                                                        <div className="flex flex-wrap items-center gap-2">
+                                                            <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground font-medium">
+                                                                <Calendar className="w-3 h-3 text-slate-400" />
+                                                                {formatDate(item.created_at)}
+                                                            </div>
+
                                                             <Badge variant="secondary" className={cn(
-                                                                "text-[10px] px-1.5 py-0 font-medium leading-none border shrink-0",
+                                                                "text-[9px] px-1.5 py-0 font-bold leading-tight border shrink-0",
                                                                 item.status === 'accepted' ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
-                                                                    item.status === 'rejected' ? "bg-rose-50 text-rose-700 border-rose-200" : "bg-slate-50 text-slate-600 border-slate-200"
+                                                                    item.status === 'rejected' ? "bg-rose-50 text-rose-700 border-rose-200" : 
+                                                                    item.status === 'converted' ? "bg-blue-50 text-blue-700 border-blue-200" : "bg-slate-50 text-slate-600 border-slate-200"
                                                             )}>
-                                                                {item.status === 'accepted' ? 'Đã chấp nhận' : item.status === 'rejected' ? 'Đã từ chối' : item.status === 'converted' ? 'Đã chuyển đổi' : item.status === 'expired' ? 'Hết hạn' : item.status}
+                                                                {item.status === 'accepted' ? 'Đã chấp nhận' : 
+                                                                 item.status === 'rejected' ? 'Đã từ chối' : 
+                                                                 item.status === 'converted' ? 'Đã chuyển đổi' : 
+                                                                 item.status === 'expired' ? 'Hết hạn' : item.status}
                                                             </Badge>
                                                         </div>
-                                                        <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground font-medium">
-                                                            <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                                                            {formatDate(item.created_at)}
-                                                        </div>
+
+                                                        {item.status === 'converted' && item.contracts?.[0] && (
+                                                            <div className="mt-0.5 flex items-center gap-1 text-[10px] text-blue-600 font-bold italic">
+                                                                <FileSignature className="w-3 h-3" />
+                                                                Đã chuyển thành {item.contracts[0].type === 'order' ? 'Đơn hàng' : 'Hợp đồng'} {item.contracts[0].contract_number || item.contracts[0].order_number}
+                                                            </div>
+                                                        )}
                                                     </div>
                                                     <div className="shrink-0 flex flex-col items-end gap-1">
                                                         <span className={cn("text-[15px] font-bold tabular-nums tracking-tight", isActive ? "text-emerald-900" : "text-slate-900")}>

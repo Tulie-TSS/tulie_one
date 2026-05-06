@@ -85,7 +85,7 @@ export async function getQuotePortalByToken(token: string) {
                 customer:customers(*),
                 items:quote_portal_items(
                     id, quotation_id, sort_order, is_recommended, is_default,
-                    quotation:quotations(*, items:quotation_items(*))
+                    quotation:quotations(*, items:quotation_items(*), contracts(id, type, contract_number, order_number))
                 )
             `)
             .eq('public_token', token)

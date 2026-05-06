@@ -166,6 +166,7 @@ export function PortalItemsList({
                                 portalId={portalId}
                                 quotationId={item.quotation_id}
                                 isDefault={item.is_default || false}
+                                isRecommended={item.is_recommended || false}
                             />
                         </div>
                     </div>
