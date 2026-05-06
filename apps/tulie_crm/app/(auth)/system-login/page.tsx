@@ -11,34 +11,31 @@ import { Eye, EyeOff } from 'lucide-react'
 
 export default function LoginPage() {
     const [error, setError] = useState<string | null>(null)
-    const [loading, setLoading] = useState(false)
+    const [isPending, startTransition] = React.useTransition()
     const [showPassword, setShowPassword] = useState(false)
 
-    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        if (loading) return
-        
-        const formData = new FormData(e.currentTarget)
-        setLoading(true)
+    function handleAction(formData: FormData) {
         setError(null)
-        try {
-            const result = await login(formData)
-            if (result?.error) {
-                setError(result.error)
-                setLoading(false)
+        startTransition(async () => {
+            try {
+                const result = await login(formData)
+                if (result?.error) {
+                    setError(result.error)
+                }
+            } catch (e) {
+                if (
+                    e instanceof Error &&
+                    (e.message === 'NEXT_REDIRECT' || (e as any).digest?.startsWith('NEXT_REDIRECT') || e.message.includes('NEXT_REDIRECT'))
+                ) {
+                    throw e
+                }
+                console.error('Login error:', e)
+                setError('Đã có lỗi xảy ra. Vui lòng thử lại.')
             }
-        } catch (e) {
-            if (
-                e instanceof Error &&
-                (e.message === 'NEXT_REDIRECT' || (e as any).digest?.startsWith('NEXT_REDIRECT') || e.message.includes('NEXT_REDIRECT'))
-            ) {
-                throw e
-            }
-            console.error('Login error:', e)
-            setError('Đã có lỗi xảy ra. Vui lòng thử lại.')
-            setLoading(false)
-        }
+        })
     }
+
+    const loading = isPending
 
     return (
         <Card className="border-none shadow-xl overflow-hidden bg-white/80 backdrop-blur-sm">
@@ -48,7 +45,7 @@ export default function LoginPage() {
                     Nhập email và mật khẩu để đăng nhập vào hệ thống
                 </CardDescription>
             </CardHeader>
-            <form onSubmit={handleSubmit}>
+            <form action={handleAction} method="POST">
                 <CardContent className="space-y-5">
                     <div className="space-y-2">
                         <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-slate-500">Email</Label>
