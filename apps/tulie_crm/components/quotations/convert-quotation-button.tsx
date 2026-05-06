@@ -42,7 +42,7 @@ export function ConvertQuotationButton({ quotationId }: { quotationId: string })
                     className="h-9 px-4 font-medium flex items-center gap-2"
                 >
                     {isLoading ? <LoadingSpinner size="sm" /> : <ShoppingCart className="h-4 w-4" />}
-                    Chuyển thành Đơn hàng / Hợp đồng
+                    Tạo ĐH/HĐ
                     <ChevronDown className="h-4 w-4 ml-1 opacity-50" />
                 </Button>
             </DropdownMenuTrigger>
@@ -52,7 +52,7 @@ export function ConvertQuotationButton({ quotationId }: { quotationId: string })
                         <ShoppingCart className="h-4 w-4" />
                     </div>
                     <div className="flex flex-col">
-                        <span className="font-semibold text-sm">Chuyển thành Đơn hàng</span>
+                        <span className="font-semibold text-sm">Tạo Đơn hàng</span>
                         <span className="text-[10px] text-muted-foreground">Tạo đơn hàng triển khai (Studio)</span>
                     </div>
                 </DropdownMenuItem>
@@ -61,7 +61,7 @@ export function ConvertQuotationButton({ quotationId }: { quotationId: string })
                         <FileSignature className="h-4 w-4" />
                     </div>
                     <div className="flex flex-col">
-                        <span className="font-semibold text-sm">Chuyển thành Hợp đồng</span>
+                        <span className="font-semibold text-sm">Tạo Hợp đồng</span>
                         <span className="text-[10px] text-muted-foreground">Tạo hợp đồng ký kết (Agency)</span>
                     </div>
                 </DropdownMenuItem>

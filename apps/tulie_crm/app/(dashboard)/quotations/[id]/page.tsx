@@ -214,7 +214,7 @@ export default function QuotationDetailPage() {
                             <DropdownMenuTrigger asChild>
                                 <Button variant="outline" size="default" className="gap-2 font-medium">
                                     <Share2 className="h-4 w-4" />
-                                    Gửi & Chia sẻ
+                                    Chia sẻ
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-64">
