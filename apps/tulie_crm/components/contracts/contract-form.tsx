@@ -211,7 +211,8 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!customerId || !title) {
+        const requiresCustomer = category !== 'freelancer'
+        if ((requiresCustomer && !customerId) || !title) {
             toast.error('Vui lòng điền đầy đủ thông tin bắt buộc')
             return
         }
