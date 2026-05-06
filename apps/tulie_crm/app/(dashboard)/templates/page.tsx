@@ -65,6 +65,9 @@ export default function TemplatesPage() {
             if (res.ok) {
                 const data = await res.json()
                 setTemplates(Array.isArray(data) ? data : data.templates || [])
+            } else {
+                const errorData = await res.json().catch(() => ({}))
+                toast.error(errorData.error || 'Không thể tải danh sách mẫu')
             }
         } catch (err) {
             console.error('Error fetching templates:', err)

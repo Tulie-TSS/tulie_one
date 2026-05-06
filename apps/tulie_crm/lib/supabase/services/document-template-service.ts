@@ -108,6 +108,16 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
     }
 ]
 
+// Export built-in default templates (always available, no DB needed)
+export function getDefaultTemplates(): DocumentTemplate[] {
+    return defaultTemplates.map((t) => ({
+        ...t,
+        id: `default-${t.type}`,
+        is_default: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+    })) as DocumentTemplate[]
+}
 
 // Get all templates — DB-first, built-in fallback when DB is empty or missing types
 export async function getDocumentTemplates() {

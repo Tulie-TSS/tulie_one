@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requirePermission, isAuthError } from '@/lib/security/auth-guard'
-import { getDocumentTemplates } from '@/lib/supabase/services/document-template-service'
+import { getDocumentTemplates, getDefaultTemplates } from '@/lib/supabase/services/document-template-service'
 
 export async function GET() {
     try {
@@ -11,6 +11,12 @@ export async function GET() {
         return NextResponse.json(templates)
     } catch (error: any) {
         console.error('Error fetching templates:', error)
-        return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+        // Fallback: always return at least default templates
+        try {
+            const defaults = getDefaultTemplates()
+            return NextResponse.json(defaults)
+        } catch {
+            return NextResponse.json([], { status: 200 })
+        }
     }
 }
