@@ -4,12 +4,16 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 
-export async function login(formData: FormData) {
+export async function login(prevState: any, formData: FormData) {
     try {
         const supabase = await createClient()
 
         const email = formData.get('email') as string
         const password = formData.get('password') as string
+
+        if (!email || !password) {
+            return { error: 'Vui lòng nhập đầy đủ email và mật khẩu' }
+        }
 
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
@@ -25,7 +29,7 @@ export async function login(formData: FormData) {
             return { error: 'Không tìm thấy thông tin người dùng' }
         }
     } catch (err: any) {
-        console.error('Login action error')
+        console.error('Login action error:', err)
         return { error: 'Lỗi hệ thống. Vui lòng thử lại.' }
     }
 

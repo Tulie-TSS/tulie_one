@@ -10,31 +10,10 @@ import { LoadingSpinner } from '@repo/ui'
 import { Eye, EyeOff } from 'lucide-react'
 
 export default function LoginPage() {
-    const [error, setError] = useState<string | null>(null)
-    const [isPending, startTransition] = React.useTransition()
+    const [state, formAction, isPending] = React.useActionState(login, null)
     const [showPassword, setShowPassword] = useState(false)
 
-    function handleAction(formData: FormData) {
-        setError(null)
-        startTransition(async () => {
-            try {
-                const result = await login(formData)
-                if (result?.error) {
-                    setError(result.error)
-                }
-            } catch (e) {
-                if (
-                    e instanceof Error &&
-                    (e.message === 'NEXT_REDIRECT' || (e as any).digest?.startsWith('NEXT_REDIRECT') || e.message.includes('NEXT_REDIRECT'))
-                ) {
-                    throw e
-                }
-                console.error('Login error:', e)
-                setError('Đã có lỗi xảy ra. Vui lòng thử lại.')
-            }
-        })
-    }
-
+    const error = state?.error
     const loading = isPending
 
     return (
@@ -45,7 +24,7 @@ export default function LoginPage() {
                     Nhập email và mật khẩu để đăng nhập vào hệ thống
                 </CardDescription>
             </CardHeader>
-            <form action={handleAction} method="POST">
+            <form action={formAction}>
                 <CardContent className="space-y-5">
                     <div className="space-y-2">
                         <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-slate-500">Email</Label>
