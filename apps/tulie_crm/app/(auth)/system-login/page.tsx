@@ -35,7 +35,7 @@ export default function LoginPage() {
                     <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-[2px] transition-all duration-200">
                         <div className="flex flex-col items-center gap-3">
                             <LoadingSpinner size="lg" className="border-slate-200 border-t-black h-8 w-8" />
-                            <p className="text-slate-900 text-xs font-bold uppercase tracking-widest">Đang xử lý</p>
+                            <p className="text-slate-900 text-xs font-bold">Đang xử lý...</p>
                         </div>
                     </div>
                 )}
@@ -53,7 +53,7 @@ export default function LoginPage() {
                     <CardContent className="space-y-5 pb-8">
                         {/* Email Field */}
                         <div className="space-y-2">
-                            <Label htmlFor="email" className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                            <Label htmlFor="email" className="text-sm font-medium text-slate-700">
                                 Email
                             </Label>
                             <div className="relative group">
@@ -74,7 +74,7 @@ export default function LoginPage() {
 
                         {/* Password Field */}
                         <div className="space-y-2">
-                            <Label htmlFor="password" className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                            <Label htmlFor="password" className="text-sm font-medium text-slate-700">
                                 Mật khẩu
                             </Label>
                             <div className="relative group">
@@ -116,7 +116,7 @@ export default function LoginPage() {
 
                         {/* Submit Button */}
                         <Button 
-                            className="w-full h-10 font-bold text-xs uppercase tracking-widest bg-black hover:bg-slate-800 text-white shadow-sm border-none transition-all active:scale-[0.98] rounded-md flex items-center justify-center gap-2" 
+                            className="w-full h-10 font-semibold bg-black hover:bg-slate-800 text-white shadow-sm border-none transition-all active:scale-[0.98] rounded-md flex items-center justify-center gap-2" 
                             type="submit" 
                             disabled={loading}
                         >
@@ -128,7 +128,7 @@ export default function LoginPage() {
 
                 {/* Footer */}
                 <div className="px-8 pb-8 pt-0 flex justify-center">
-                    <p className="text-[10px] uppercase tracking-[0.15em] text-slate-400 font-medium">
+                    <p className="text-[11px] text-slate-400 font-medium">
                         Tulie Digital Agency &copy; 2026
                     </p>
                 </div>
@@ -136,8 +136,8 @@ export default function LoginPage() {
             
             {/* Help links */}
             <div className="flex justify-center gap-4">
-                <button className="text-[11px] font-medium text-slate-500 hover:text-black transition-colors underline underline-offset-4">Quên mật khẩu?</button>
-                <button className="text-[11px] font-medium text-slate-500 hover:text-black transition-colors underline underline-offset-4">Hỗ trợ</button>
+                <button className="text-xs font-medium text-slate-500 hover:text-black transition-colors underline underline-offset-4">Quên mật khẩu?</button>
+                <button className="text-xs font-medium text-slate-500 hover:text-black transition-colors underline underline-offset-4">Hỗ trợ</button>
             </div>
         </div>
     )
