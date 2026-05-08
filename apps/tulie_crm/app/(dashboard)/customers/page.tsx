@@ -1,5 +1,4 @@
 import { DataTable } from '@/components/shared/data-table'
-import { customerColumns } from '@/components/customers/customer-columns'
 import { Button } from '@repo/ui'
 import {
     Select,

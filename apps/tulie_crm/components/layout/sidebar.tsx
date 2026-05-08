@@ -60,7 +60,7 @@ const navGroups = [
         title: 'Tulie Studio',
         items: [
             { title: 'Đơn hàng Studio', href: '/studio', icon: Camera },
-            { title: 'Khách Studio', href: '/studio/customers', icon: Users },
+            { title: 'Khách hàng Studio', href: '/studio/customers', icon: Users },
             { title: 'Cấu hình Sự kiện', href: '/studio/events', icon: ExternalLink },
         ]
     },

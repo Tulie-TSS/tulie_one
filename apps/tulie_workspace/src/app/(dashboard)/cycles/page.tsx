@@ -82,20 +82,20 @@ export default function CyclesPage() {
                       <div className="space-y-2">
                         <div className="flex items-center justify-between text-xs">
                           <span className="font-medium text-foreground">{t('cycles.goals')}</span>
-                          <span className={`font-semibold ${avgProgress >= 80 ? 'text-emerald-600' : 'text-muted-foreground'}`}>
+                          <span className={`font-semibold ${avgProgress >= 80 ? 'text-foreground' : 'text-muted-foreground'}`}>
                             {avgProgress}% avg
                           </span>
                         </div>
                         {goals.map((g: any, i: number) => (
                           <div key={i} className="flex items-center gap-3">
                             {g.progress >= 100
-                              ? <CheckCircle2 className="size-3 text-emerald-500 flex-shrink-0" />
+                              ? <CheckCircle2 className="size-3 text-foreground flex-shrink-0" />
                               : <div className="size-3 rounded-full border border-border flex-shrink-0" />
                             }
                             <span className="text-xs text-muted-foreground flex-1 truncate">{g.title}</span>
                             <Progress
                               value={g.progress}
-                              className={`w-24 h-1.5 ${g.progress >= 80 ? '[&>div]:bg-emerald-500' : ''}`}
+                              className={`w-24 h-1.5 ${g.progress >= 80 ? '[&>div]:bg-primary' : ''}`}
                             />
                             <span className="text-xs text-muted-foreground w-8 text-right">{g.progress}%</span>
                           </div>
@@ -108,7 +108,7 @@ export default function CyclesPage() {
                       <div className="flex items-center gap-2 flex-wrap">
                         {cycle.milestones.map(ms => (
                           <div key={ms.id} className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <span className={`w-1.5 h-1.5 rounded-full ${ms.completion_rate >= 100 ? 'bg-emerald-500' : ms.completion_rate > 0 ? 'bg-amber-500' : 'bg-border'}`} />
+                            <span className={`w-1.5 h-1.5 rounded-full ${ms.completion_rate >= 100 ? 'bg-primary' : ms.completion_rate > 0 ? 'bg-foreground/50' : 'bg-border'}`} />
                             <span>{ms.name}</span>
                             <span className="text-foreground font-medium">{ms.completion_rate}%</span>
                           </div>
