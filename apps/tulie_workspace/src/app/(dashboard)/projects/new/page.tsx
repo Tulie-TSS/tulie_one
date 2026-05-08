@@ -104,85 +104,52 @@ export default function NewProjectPage() {
     }
 
     return (
-        <div className="max-w-2xl mx-auto space-y-8 py-4 px-4">
-            <div className="flex items-center gap-4">
-                <Button variant="ghost" size="icon" asChild className="rounded-full hover:bg-muted/50">
-                    <Link href="/projects">
-                        <ArrowLeft className="size-5" />
-                    </Link>
+        <div className="max-w-2xl mx-auto py-8 px-4">
+            <div className="flex items-center gap-2 mb-8">
+                <Button variant="ghost" size="icon" onClick={() => router.back()} className="rounded-full">
+                    <ArrowLeft className="size-4" />
                 </Button>
-                <div className="space-y-1">
-                    <h1 className="text-3xl font-bold tracking-tight">Khởi tạo Dự án</h1>
-                    <p className="text-sm text-muted-foreground">
-                        Triển khai dự án mới cho chu kỳ <span className="font-semibold text-foreground underline decoration-primary/30">{activeCycle?.name || 'hiện tại'}</span>
-                    </p>
-                </div>
+                <h1 className="text-3xl font-bold tracking-tight">{t('projects.newProject')}</h1>
             </div>
 
-            <Card className="border-none shadow-2xl shadow-primary/5 bg-card/40 backdrop-blur-md overflow-hidden">
-                <div className="h-1.5 w-full bg-primary/20" />
-                <CardHeader className="pb-4">
-                    <CardTitle className="text-xl font-bold flex items-center gap-2">
-                        Thông tin chi tiết
-                    </CardTitle>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Thông tin dự án</CardTitle>
+                    <CardDescription>Điền thông tin chi tiết để bắt đầu một dự án mới.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Name */}
-                        <div className="space-y-2.5">
-                            <Label htmlFor="name" className="text-sm font-semibold">Tên dự án</Label>
+                        <div className="space-y-2">
+                            <Label htmlFor="name">Tên dự án</Label>
                             <Input 
                                 id="name"
-                                placeholder="VD: Thiết kế App Mobile, Chiến dịch Marketing..."
+                                placeholder="VD: Tên chiến dịch, tên khách hàng..."
                                 value={formData.name}
                                 onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
                                 required
-                                className="h-12 bg-muted/30 border-none focus-visible:ring-primary/20 text-base"
                             />
                         </div>
 
-                        {/* Description */}
-                        <div className="space-y-2.5">
-                            <Label htmlFor="description" className="text-sm font-semibold">Mô tả mục tiêu</Label>
+                        <div className="space-y-2">
+                            <Label htmlFor="description">Mô tả ngắn</Label>
                             <Textarea 
                                 id="description"
-                                rows={4}
-                                placeholder="Mục tiêu cốt lõi, phạm vi dự án và các kết quả mong đợi..."
-                                className="bg-muted/30 border-none focus-visible:ring-primary/20 resize-none text-base"
+                                rows={3}
+                                placeholder="Mục tiêu chính của dự án này là gì?"
                                 value={formData.description}
                                 onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
                             />
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Priority */}
-                            <div className="space-y-2.5">
-                                <Label className="text-sm font-semibold">Độ ưu tiên</Label>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label>Chủ trì dự án</Label>
                                 <Select 
-                                    value={formData.priority} 
-                                    onValueChange={v => setFormData(prev => ({ ...prev, priority: v }))}
+                                    value={formData.lead_id} 
+                                    onValueChange={v => setFormData(prev => ({ ...prev, lead_id: v }))}
                                 >
-                                    <SelectTrigger className="h-12 bg-muted/30 border-none">
-                                        <SelectValue placeholder="Chọn độ ưu tiên" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="critical">Khẩn cấp (Critical)</SelectItem>
-                                        <SelectItem value="high">Cao (High)</SelectItem>
-                                        <SelectItem value="medium">Trung bình (Medium)</SelectItem>
-                                        <SelectItem value="low">Thấp (Low)</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            {/* Owner */}
-                            <div className="space-y-2.5">
-                                <Label className="text-sm font-semibold">Chủ dự án (PM)</Label>
-                                <Select 
-                                    value={formData.owner_id} 
-                                    onValueChange={v => setFormData(prev => ({ ...prev, owner_id: v }))}
-                                >
-                                    <SelectTrigger className="h-12 bg-muted/30 border-none">
-                                        <SelectValue placeholder="Chọn người phụ trách" />
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Chọn người dẫn dắt" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {users.map(u => (
@@ -191,20 +158,26 @@ export default function NewProjectPage() {
                                     </SelectContent>
                                 </Select>
                             </div>
+
+                            <div className="space-y-2">
+                                <Label>Chu kỳ hiện tại</Label>
+                                <div className="h-10 px-3 flex items-center rounded-md border border-input bg-muted/50 text-sm">
+                                    {activeCycle?.name || 'Chưa có chu kỳ hoạt động'}
+                                </div>
+                            </div>
                         </div>
 
-
-                        <div className="flex justify-end gap-3 pt-6 border-t border-muted/50">
-                            <Button variant="ghost" type="button" onClick={() => router.back()} disabled={loading} className="h-12 px-6">
+                        <div className="flex justify-end gap-3 pt-4 border-t">
+                            <Button variant="outline" type="button" onClick={() => router.back()} disabled={loading}>
                                 Hủy bỏ
                             </Button>
-                            <Button type="submit" disabled={loading} className="h-12 px-10 shadow-lg shadow-primary/20 font-bold">
+                            <Button type="submit" disabled={loading} className="px-8">
                                 {loading ? (
-                                    <Loader2 className="size-5 animate-spin" />
+                                    <Loader2 className="size-4 animate-spin" />
                                 ) : (
                                     <>
-                                        <Save className="mr-2 size-5" />
-                                        Khởi tạo Dự án
+                                        <Save className="mr-2 size-4" />
+                                        Tạo dự án
                                     </>
                                 )}
                             </Button>
@@ -215,4 +188,3 @@ export default function NewProjectPage() {
         </div>
     )
 }
-
