@@ -29,6 +29,7 @@ export const translations = {
   "nav.strategy": { vi: "Chiến lược", en: "Strategy" },
   "nav.settings": { vi: "Cài đặt", en: "Settings" },
   "nav.search": { vi: "Tìm kiếm", en: "Search" },
+  "nav.resources": { vi: "Tài liệu & Nhúng", en: "Resources & Embeds" },
 
   // ============================================
   // Trạng thái Task / Task Statuses
@@ -115,7 +116,7 @@ export const translations = {
     vi: "Kéo thả công việc giữa các cột",
     en: "Drag and drop tasks between columns",
   },
-  "board.createTask": { vi: "+ Tạo công việc", en: "+ Create task" },
+  "board.createTask": { vi: "Tạo công việc", en: "Create task" },
   "board.dragHere": { vi: "Kéo công việc vào đây", en: "Drag tasks here" },
 
   // ============================================
@@ -194,7 +195,7 @@ export const translations = {
   "tasks.title": { vi: "Công việc", en: "Tasks" },
   "tasks.subtitle": { vi: "Danh sách tất cả công việc", en: "All tasks list" },
   "tasks.all": { vi: "Tất cả", en: "All" },
-  "tasks.createTask": { vi: "+ Tạo công việc", en: "+ Create task" },
+  "tasks.createTask": { vi: "Tạo công việc", en: "Create task" },
   "tasks.backToList": { vi: "← Quay lại danh sách", en: "← Back to list" },
   "tasks.transitionTo": { vi: "Chuyển sang:", en: "Transition to:" },
   "tasks.comments": { vi: "Bình luận", en: "Comments" },

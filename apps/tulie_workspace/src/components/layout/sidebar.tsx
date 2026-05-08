@@ -56,6 +56,7 @@ const NAV_ITEMS = [
   { href: "/analytics", labelKey: "nav.analytics", icon: BarChart3, allowedRoles: ['admin', 'manager'] },
   { href: "/templates", labelKey: "nav.templates", icon: LayoutTemplate, allowedRoles: ['admin', 'manager'] },
   { href: "/strategy", labelKey: "nav.strategy", icon: TrendingUp, allowedRoles: ['admin', 'manager'] },
+  { href: "/resources", labelKey: "nav.resources", icon: LayoutTemplate, allowedRoles: ['admin', 'manager', 'maker', 'observer'] },
   { type: "divider" },
   {
     href: "/settings",
