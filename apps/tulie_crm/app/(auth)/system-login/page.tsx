@@ -20,8 +20,8 @@ export default function LoginPage() {
         <div className="space-y-6 animate-in fade-in duration-500">
             {/* Logo and Brand */}
             <div className="text-center space-y-1 mb-8">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-black shadow-sm mb-4">
-                    <ShieldCheck className="w-6 h-6 text-white" />
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-white border border-slate-200 shadow-sm mb-4">
+                    <img src="/logo-icon.png" alt="Tulie" className="w-8 h-8 object-contain" />
                 </div>
                 <h1 className="text-2xl font-bold tracking-tight text-slate-900">
                     Tulie CRM
@@ -120,8 +120,17 @@ export default function LoginPage() {
                             type="submit" 
                             disabled={loading}
                         >
-                            Đăng nhập
-                            <ArrowRight className="w-4 h-4" />
+                            {loading ? (
+                                <>
+                                    <LoadingSpinner size="sm" className="border-slate-400 border-t-white" />
+                                    Đang xử lý...
+                                </>
+                            ) : (
+                                <>
+                                    Đăng nhập
+                                    <ArrowRight className="w-4 h-4" />
+                                </>
+                            )}
                         </Button>
                     </CardContent>
                 </form>

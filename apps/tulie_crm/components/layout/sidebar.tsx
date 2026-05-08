@@ -86,8 +86,8 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <Link href="/dashboard">
-                                <div className="flex bg-primary text-primary-foreground aspect-square size-8 items-center justify-center rounded-lg">
-                                    <LayoutGrid className="size-4" />
+                                <div className="flex bg-white border border-border aspect-square size-8 items-center justify-center rounded-lg">
+                                    <img src="/logo-icon.png" alt="Tulie" className="size-6 object-contain" />
                                 </div>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-semibold">Tulie CRM</span>
