@@ -64,52 +64,60 @@ export default function DashboardPage() {
         <StatCard title={t('dashboard.completed')} value={doneTasks.length} />
       </StatGrid>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         {/* Doing Tasks */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-base font-medium">{t('dashboard.doingTasks')}</h2>
-            <Link href="/board" className="text-sm font-medium text-primary hover:underline">{t('dashboard.viewBoard')}</Link>
-          </div>
-          <div className="space-y-3">
-            {tasksLoading ? (
-              <div className="space-y-2">
-                {[1, 2].map(i => (
-                  <div key={i} className="h-16 rounded-lg bg-muted animate-pulse" />
-                ))}
-              </div>
-            ) : doingTasks.length === 0 ? (
-              <EmptyState icon={KanbanSquare} title={t('dashboard.noDoingTasks')} />
-            ) : doingTasks.map(task => (
-              <Link key={task.id} href={`/tasks/${task.id}`} className="block group">
-                <Card className="hover:border-primary/50 transition-colors">
-                  <CardContent className="flex items-center justify-between gap-4 py-3">
-                    <div className="flex-1 min-w-0">
-                      <div className="font-medium text-sm text-foreground truncate mb-1.5 group-hover:text-primary transition-colors">
-                        {task.title}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <StatusBadge status={task.status} label={t(`status.${task.status}` as any)} className="text-[10px] h-5" />
-                        {task.tags?.map(tag => (
-                          <Badge key={tag.id} variant="outline" className="text-[10px] font-medium px-1.5 py-0 h-5 border-transparent" style={{ backgroundColor: tag.color + '15', color: tag.color }}>
-                            {tag.name}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    {task.assignee && (
-                      <Avatar className="size-8 shrink-0">
-                        <AvatarFallback className="text-xs font-semibold">
-                          {task.assignee.full_name.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                    )}
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </div>
+        <Card className="lg:col-span-2 border-none bg-transparent shadow-none">
+          <CardHeader className="px-0 pt-0 pb-4 flex-row items-center justify-between">
+            <CardTitle className="text-base font-medium">{t('dashboard.doingTasks')}</CardTitle>
+            <CardAction>
+              <Link href="/board" className="text-sm font-medium text-primary hover:underline">{t('dashboard.viewBoard')}</Link>
+            </CardAction>
+          </CardHeader>
+          <CardContent className="px-0 pb-0">
+            <div className="space-y-3">
+              {tasksLoading ? (
+                <div className="space-y-2">
+                  {[1, 2].map(i => (
+                    <div key={i} className="h-16 rounded-lg bg-muted animate-pulse" />
+                  ))}
+                </div>
+              ) : doingTasks.length === 0 ? (
+                <EmptyState icon={KanbanSquare} title={t('dashboard.noDoingTasks')} className="bg-card border shadow-sm h-[280px]" />
+              ) : (
+                <div className="space-y-3">
+                  {doingTasks.map(task => (
+                    <Link key={task.id} href={`/tasks/${task.id}`} className="block group">
+                      <Card className="hover:border-primary/50 transition-colors">
+                        <CardContent className="flex items-center justify-between gap-4 py-3">
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium text-sm text-foreground truncate mb-1.5 group-hover:text-primary transition-colors">
+                              {task.title}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <StatusBadge status={task.status} label={t(`status.${task.status}` as any)} className="text-[10px] h-5" />
+                              {task.tags?.map(tag => (
+                                <Badge key={tag.id} variant="outline" className="text-[10px] font-medium px-1.5 py-0 h-5 border-transparent" style={{ backgroundColor: tag.color + '15', color: tag.color }}>
+                                  {tag.name}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                          {task.assignee && (
+                            <Avatar className="size-8 shrink-0">
+                              <AvatarFallback className="text-xs font-semibold">
+                                {task.assignee.full_name.charAt(0)}
+                              </AvatarFallback>
+                            </Avatar>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Right Column */}
         <div className="space-y-6">
