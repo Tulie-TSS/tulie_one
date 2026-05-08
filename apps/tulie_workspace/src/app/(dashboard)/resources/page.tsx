@@ -17,7 +17,7 @@ interface Resource {
 
 export default function ResourcesPage() {
     const { t } = useLocaleStore()
-    const { isAdmin, isManager, user } = useCurrentUser()
+    const { isAdmin, isManager, isMaker, user } = useCurrentUser()
     const [resources, setResources] = useState<Resource[]>([])
     const [loading, setLoading] = useState(true)
     const [selectedResource, setSelectedResource] = useState<Resource | null>(null)
@@ -98,7 +98,7 @@ export default function ResourcesPage() {
                     <h1 className="text-2xl font-bold tracking-tight">Tài liệu & Nhúng</h1>
                     <p className="text-sm text-muted-foreground">Truy cập nhanh các tài liệu Google Sheets, Lịch, Lark...</p>
                 </div>
-                {(isAdmin || isManager) && (
+                {(isAdmin || isManager || isMaker) && (
                     <Button onClick={() => setIsAdding(!isAdding)} size="sm">
                         <Plus className="size-4" />
                         Thêm tài liệu
@@ -177,7 +177,7 @@ export default function ResourcesPage() {
                                     {getIcon(r.type)}
                                     <span className="truncate flex-1">{r.name}</span>
                                 </button>
-                                {(isAdmin || isManager) && (
+                                {(isAdmin || isManager || isMaker) && (
                                     <button 
                                         onClick={(e) => { e.stopPropagation(); handleDelete(r.id); }}
                                         className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
