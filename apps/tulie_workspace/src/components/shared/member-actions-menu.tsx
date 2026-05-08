@@ -90,7 +90,13 @@ export function MemberActionsMenu({
       const res = await fetch(`/api/users/${member.id}/resend-invite`, { method: 'POST' })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
-      onToast(`Đã gửi lại lời mời đến ${member.email}`)
+      
+      if (data.inviteLink) {
+        navigator.clipboard.writeText(data.inviteLink)
+        onToast(`Đã gửi lại email & SAO CHÉP link mời vào clipboard cho ${member.email}`)
+      } else {
+        onToast(`Đã gửi lại lời mời đến ${member.email}`)
+      }
     } catch (e: any) {
       onToast(e.message || 'Gửi thất bại', 'error')
     } finally { setLoading(null) }

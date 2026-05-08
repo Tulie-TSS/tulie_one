@@ -38,16 +38,20 @@ export async function POST(
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://workspace.tulie.app'
 
-    // Re-invite by email (Supabase will resend the invite)
-    const { error } = await adminClient.auth.admin.inviteUserByEmail(profile.email, {
-      redirectTo: `${siteUrl}/auth/callback`
+    // Re-invite by email using generateLink to get the link manually
+    const { data: inviteData, error } = await adminClient.auth.admin.generateLink({
+      type: 'invite',
+      email: profile.email,
+      options: {
+        redirectTo: `${siteUrl}/auth/callback`
+      }
     })
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 })
     }
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ success: true, inviteLink: inviteData.properties.action_link })
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Lỗi server.' }, { status: 500 })
   }

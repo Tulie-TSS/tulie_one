@@ -28,14 +28,16 @@ export async function POST(request: Request) {
 
     const adminAuthClient = createAdminClient()
 
-    // 1. Invite user via Supabase Auth Admin
-    // Use NEXT_PUBLIC_SITE_URL to ensure the invite link points to production, not localhost
+    // 1. Generate invite link via Supabase Auth Admin
+    // This allows us to get the link manually in case email is rate limited
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://workspace.tulie.app'
-    const { data: inviteData, error: inviteError } = await adminAuthClient.auth.admin.inviteUserByEmail(email, {
-      data: {
-        full_name: full_name,
-      },
-      redirectTo: `${siteUrl}/auth/callback`
+    const { data: inviteData, error: inviteError } = await adminAuthClient.auth.admin.generateLink({
+      type: 'invite',
+      email,
+      options: {
+        data: { full_name: full_name },
+        redirectTo: `${siteUrl}/auth/callback`
+      }
     })
 
     if (inviteError) {
@@ -43,6 +45,7 @@ export async function POST(request: Request) {
     }
 
     const newUserId = inviteData.user.id
+    const inviteLink = inviteData.properties.action_link
 
     // 2. Add user to user_profiles table if trigger doesn't do it, or update it
     // Usually there's a trigger on auth.users -> user_profiles, but we need to set the role_type.
@@ -70,7 +73,7 @@ export async function POST(request: Request) {
         .eq('id', newUserId)
     }
 
-    return NextResponse.json({ success: true, user: inviteData.user })
+    return NextResponse.json({ success: true, user: inviteData.user, inviteLink })
 
   } catch (error: any) {
     console.error('Invite error:', error)
