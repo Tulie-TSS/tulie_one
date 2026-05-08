@@ -37,6 +37,7 @@ export function MemberActionsMenu({
   const [pos, setPos] = useState<MenuPos | null>(null)
   const [loading, setLoading] = useState<string | null>(null)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [showLink, setShowLink] = useState<string | null>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
 
   const isSelf = member.id === currentUserId
@@ -61,15 +62,17 @@ export function MemberActionsMenu({
     calcPos()
     setOpen(o => !o)
     setConfirmDelete(false)
+    setShowLink(null)
   }
 
   useEffect(() => {
-    if (!open) return
+    if (!open && !showLink) return
     const handleClose = (e: MouseEvent | KeyboardEvent) => {
       if (e instanceof KeyboardEvent && e.key !== 'Escape') return
       if (e instanceof MouseEvent && btnRef.current?.contains(e.target as Node)) return
       setOpen(false)
       setConfirmDelete(false)
+      // We don't close showLink on click outside to avoid accidental loss of link
     }
     const handleScroll = () => calcPos()
     document.addEventListener('mousedown', handleClose)
@@ -80,7 +83,7 @@ export function MemberActionsMenu({
       document.removeEventListener('keydown', handleClose)
       window.removeEventListener('scroll', handleScroll, true)
     }
-  }, [open, calcPos])
+  }, [open, showLink, calcPos])
 
   if (!canAct) return null
 
@@ -92,8 +95,8 @@ export function MemberActionsMenu({
       if (!res.ok) throw new Error(data.error)
       
       if (data.inviteLink) {
-        navigator.clipboard.writeText(data.inviteLink)
-        onToast(`Đã gửi lại email & SAO CHÉP link mời vào clipboard cho ${member.email}`)
+        setShowLink(data.inviteLink)
+        onToast(`Đã tạo link mời mới cho ${member.email}`)
       } else {
         onToast(`Đã gửi lại lời mời đến ${member.email}`)
       }
@@ -153,7 +156,7 @@ export function MemberActionsMenu({
           className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-muted transition-colors text-foreground text-left"
         >
           <Mail className="size-3.5 text-muted-foreground shrink-0" />
-          Gửi lại lời mời
+          Gửi lại lời mời (Lấy link)
         </button>
       )}
 
@@ -182,6 +185,39 @@ export function MemberActionsMenu({
     </div>
   ) : null
 
+  const linkOverlay = showLink ? (
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4">
+      <div className="w-full max-w-md bg-popover border rounded-xl shadow-2xl p-6 animate-in zoom-in-95 duration-200">
+        <h3 className="text-lg font-semibold mb-2">Link mời thành viên</h3>
+        <p className="text-sm text-muted-foreground mb-4">Bạn có thể gửi link này cho <b>{member.full_name}</b>:</p>
+        
+        <div className="flex gap-2 mb-4">
+          <input 
+            readOnly 
+            value={showLink}
+            className="flex-1 p-2 text-xs rounded-md border bg-muted font-mono truncate"
+          />
+          <button 
+            onClick={() => {
+              navigator.clipboard.writeText(showLink)
+              alert('Đã sao chép!')
+            }}
+            className="px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-md"
+          >
+            Copy
+          </button>
+        </div>
+        
+        <button 
+          onClick={() => setShowLink(null)}
+          className="w-full py-2 bg-muted hover:bg-muted/80 text-sm font-medium rounded-lg transition-colors"
+        >
+          Đóng
+        </button>
+      </div>
+    </div>
+  ) : null
+
   return (
     <>
       <button
@@ -198,6 +234,11 @@ export function MemberActionsMenu({
 
       {typeof document !== 'undefined' && dropdown
         ? createPortal(dropdown, document.body)
+        : null
+      }
+
+      {typeof document !== 'undefined' && linkOverlay
+        ? createPortal(linkOverlay, document.body)
         : null
       }
     </>
