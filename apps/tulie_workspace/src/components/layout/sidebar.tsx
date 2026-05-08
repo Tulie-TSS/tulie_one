@@ -149,7 +149,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const bottomNav = cleanNav.filter((n) => "isBottom" in n && n.isBottom);
 
   return (
-    <Sidebar variant="sidebar" {...props}>
+    <Sidebar variant="sidebar" collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
