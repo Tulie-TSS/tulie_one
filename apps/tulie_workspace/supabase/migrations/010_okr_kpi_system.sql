@@ -2,8 +2,21 @@
 -- Description: Implement hierarchical OKR/KPI system with operational alignment
 -- Date: 2026-05-09
 
+-- Cleanup if needed to ensure clean schema (ONLY for these new tables)
+DROP TRIGGER IF EXISTS trg_update_objective_progress ON key_results;
+DROP FUNCTION IF EXISTS update_objective_progress();
+DROP TABLE IF EXISTS kr_links;
+DROP TABLE IF EXISTS key_results;
+DROP TABLE IF EXISTS objectives;
+DROP TABLE IF EXISTS departments;
+DO $$ BEGIN
+    IF EXISTS (SELECT 1 FROM pg_type WHERE typname = 'okr_level') THEN
+        DROP TYPE okr_level;
+    END IF;
+END $$;
+
 -- 1. Departments Hierarchy
-CREATE TABLE IF NOT EXISTS departments (
+CREATE TABLE departments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     parent_id UUID REFERENCES departments(id) ON DELETE SET NULL,
@@ -15,12 +28,16 @@ CREATE TABLE IF NOT EXISTS departments (
 );
 
 -- 2. Update user_profiles to link with departments
-ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS department_id UUID REFERENCES departments(id) ON DELETE SET NULL;
+DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'user_profiles' AND column_name = 'department_id') THEN
+        ALTER TABLE user_profiles ADD COLUMN department_id UUID REFERENCES departments(id) ON DELETE SET NULL;
+    END IF;
+END $$;
 
 -- 3. OKR Objectives
 CREATE TYPE okr_level AS ENUM ('company', 'department', 'team', 'individual');
 
-CREATE TABLE IF NOT EXISTS objectives (
+CREATE TABLE objectives (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     cycle_id UUID REFERENCES cycles(id) ON DELETE SET NULL, -- Link to 12-week cycles
@@ -41,7 +58,7 @@ CREATE TABLE IF NOT EXISTS objectives (
 );
 
 -- 4. Key Results
-CREATE TABLE IF NOT EXISTS key_results (
+CREATE TABLE key_results (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     objective_id UUID NOT NULL REFERENCES objectives(id) ON DELETE CASCADE,
     
@@ -60,7 +77,7 @@ CREATE TABLE IF NOT EXISTS key_results (
 );
 
 -- 5. KR Operational Links (Connect to Projects/Tasks)
-CREATE TABLE IF NOT EXISTS kr_links (
+CREATE TABLE kr_links (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     key_result_id UUID NOT NULL REFERENCES key_results(id) ON DELETE CASCADE,
     
@@ -82,12 +99,9 @@ CREATE POLICY "Org members can read departments" ON departments
   FOR SELECT USING (organization_id IN (SELECT organization_id FROM user_profiles WHERE id = auth.uid()));
 
 -- Objectives: 
--- 1. Everyone in org can see company/dept objectives
--- 2. Individuals see their own and their teams
 CREATE POLICY "Org members can read objectives" ON objectives
   FOR SELECT USING (organization_id IN (SELECT organization_id FROM user_profiles WHERE id = auth.uid()));
 
--- Insert/Update: Owners and Managers
 CREATE POLICY "Owners and managers can manage objectives" ON objectives
   FOR ALL USING (
     owner_id = auth.uid() 
@@ -114,13 +128,13 @@ BEGIN
             END
         ) / NULLIF(SUM(weight), 0), 0)
         FROM key_results
-        WHERE objective_id = NEW.objective_id
+        WHERE objective_id = (CASE WHEN TG_OP = 'DELETE' THEN OLD.objective_id ELSE NEW.objective_id END)
     )
-    WHERE id = NEW.objective_id;
+    WHERE id = (CASE WHEN TG_OP = 'DELETE' THEN OLD.objective_id ELSE NEW.objective_id END);
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_update_objective_progress
-AFTER INSERT OR UPDATE ON key_results
+AFTER INSERT OR UPDATE OR DELETE ON key_results
 FOR EACH ROW EXECUTE PROCEDURE update_objective_progress();
