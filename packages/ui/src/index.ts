@@ -64,7 +64,7 @@ export { Alert, AlertTitle, AlertDescription } from "./components/alert"
 // Feedback
 export { LoadingSpinner } from "./components/loading-spinner"
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "./components/tooltip"
-export { Toaster as Sonner } from "./components/sonner"
+export { Toaster as Sonner, toast } from "./components/sonner"
 
 // Overlay / Modal
 export {
