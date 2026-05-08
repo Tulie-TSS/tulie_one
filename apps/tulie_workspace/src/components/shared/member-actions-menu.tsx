@@ -45,7 +45,7 @@ export function MemberActionsMenu({
   const canAct = canManage && !isSelf && !(isTargetAdmin && !isAdmin)
 
   const MENU_HEIGHT = isAdmin ? 260 : 144 // Increased height for new item
-  const MENU_WIDTH = 208
+  const MENU_WIDTH = 260
 
   const calcPos = useCallback(() => {
     if (!btnRef.current) return
