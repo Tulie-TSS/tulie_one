@@ -19,6 +19,7 @@ import {
   User,
   ChevronsUpDown,
   TrendingUp,
+  Network
 } from "lucide-react";
 
 import {
@@ -57,6 +58,7 @@ const NAV_ITEMS = [
   { href: "/analytics", labelKey: "nav.analytics", icon: BarChart3, allowedRoles: ['admin', 'manager'] },
   { href: "/templates", labelKey: "nav.templates", icon: LayoutTemplate, allowedRoles: ['admin', 'manager'] },
   { href: "/strategy", labelKey: "nav.strategy", icon: TrendingUp, allowedRoles: ['admin', 'manager'] },
+  { href: "/strategy/okrs", labelKey: "nav.okrs", icon: Network, allowedRoles: ['admin', 'manager', 'maker', 'observer'] },
   { href: "/resources", labelKey: "nav.resources", icon: LayoutTemplate, allowedRoles: ['admin', 'manager', 'maker', 'observer'] },
   { type: "divider" },
   {

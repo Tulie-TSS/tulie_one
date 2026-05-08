@@ -27,6 +27,7 @@ export const translations = {
   "nav.analytics": { vi: "Phân tích", en: "Analytics" },
   "nav.templates": { vi: "Mẫu", en: "Templates" },
   "nav.strategy": { vi: "Chiến lược", en: "Strategy" },
+  "nav.okrs": { vi: "KPI & OKRs", en: "KPI & OKRs" },
   "nav.settings": { vi: "Cài đặt", en: "Settings" },
   "nav.search": { vi: "Tìm kiếm", en: "Search" },
   "nav.resources": { vi: "Tài liệu & Nhúng", en: "Resources & Embeds" },
