@@ -154,8 +154,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="/dashboard">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-foreground text-background">
-                  <img src="/logo.png" alt="Tulie Logo" className="size-6 object-contain invert dark:invert-0" />
+                <div className="flex aspect-square size-8 items-center justify-center overflow-hidden">
+                  <img src="/logo.png" alt="Tulie Logo" className="size-8 object-contain" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold text-foreground">
