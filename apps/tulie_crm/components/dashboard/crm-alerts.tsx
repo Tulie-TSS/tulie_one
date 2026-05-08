@@ -38,7 +38,7 @@ export function CRMAlerts({ alerts }: CRMAlertsProps) {
     }
 
     return (
-        <Card className="h-full">
+        <Card className="h-full flex flex-col">
             <CardHeader className="pb-3 flex flex-row items-center justify-between">
                 <CardTitle className="text-base font-medium flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4 text-foreground" />
@@ -50,7 +50,7 @@ export function CRMAlerts({ alerts }: CRMAlertsProps) {
                     </Badge>
                 )}
             </CardHeader>
-            <CardContent className="px-0 pb-0">
+            <CardContent className="px-0 pb-0 flex-1">
                 {alerts.length === 0 ? (
                     <div className="flex flex-col items-center justify-center p-6 text-center text-muted-foreground opacity-70 min-h-[300px]">
                         <div className="h-12 w-12 rounded-full border flex items-center justify-center mb-3">
@@ -60,7 +60,7 @@ export function CRMAlerts({ alerts }: CRMAlertsProps) {
                         <p className="text-[13px] mt-1 text-muted-foreground">Mọi cơ hội và hóa đơn đều đang đi đúng hướng.</p>
                     </div>
                 ) : (
-                    <ScrollArea className="h-[340px]">
+                    <ScrollArea className="h-[500px]">
                         <div className="flex flex-col gap-4 px-6 pb-6">
                             {alerts.map((alert) => (
                                 <Link 

@@ -36,12 +36,12 @@ const getActivityIcon = (type: ActivityLog['action']) => {
 
 export function RecentActivities({ data }: RecentActivitiesProps) {
     return (
-        <Card className="shadow-sm">
+        <Card className="h-full shadow-sm flex flex-col">
             <CardHeader className="pb-3">
                 <CardTitle className="text-base font-medium">Hoạt động gần đây</CardTitle>
             </CardHeader>
-            <CardContent className="px-0 pb-0">
-                <ScrollArea className="h-[340px]">
+            <CardContent className="px-0 pb-0 flex-1">
+                <ScrollArea className="h-[500px]">
                     <div className="flex flex-col gap-4 px-6 pb-6">
                         {data.length > 0 ? (
                             data.map((activity) => (
