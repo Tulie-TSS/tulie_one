@@ -109,14 +109,43 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const role = userProfile?.role_type || 'observer';
 
-  const filteredNav = NAV_ITEMS.filter((item) => {
-    if ("type" in item && item.type === "divider") return true;
-    const navItem = item as any;
-    return navItem.allowedRoles.includes(role);
-  });
+  const filteredNav = NAV_ITEMS.reduce((acc: any[], item, idx) => {
+    // If it's a real item, check role
+    if (!("type" in item)) {
+      if (item.allowedRoles.includes(role)) {
+        acc.push(item);
+      }
+    } else {
+      // It's a divider
+      acc.push(item);
+    }
+    return acc;
+  }, []);
 
-  const mainNav = filteredNav.filter((n) => !("isBottom" in n) || !n.isBottom);
-  const bottomNav = filteredNav.filter((n) => "isBottom" in n && n.isBottom);
+  // Clean up dividers: remove if at start, end, or consecutive
+  const cleanNav = filteredNav.reduce((acc: any[], item, idx, arr) => {
+    if ("type" in item && item.type === "divider") {
+      // Skip if it's the first item
+      if (acc.length === 0) return acc;
+      // Skip if the previous item was also a divider
+      if (acc[acc.length - 1].type === "divider") return acc;
+      // Skip if it's the last item (will check at the end)
+      if (idx === arr.length - 1) return acc;
+      
+      acc.push(item);
+    } else {
+      acc.push(item);
+    }
+    return acc;
+  }, []);
+
+  // Final pass: remove trailing divider if any
+  if (cleanNav.length > 0 && cleanNav[cleanNav.length - 1].type === "divider") {
+    cleanNav.pop();
+  }
+
+  const mainNav = cleanNav.filter((n) => !("isBottom" in n) || !n.isBottom);
+  const bottomNav = cleanNav.filter((n) => "isBottom" in n && n.isBottom);
 
   return (
     <Sidebar variant="sidebar" {...props}>
