@@ -96,20 +96,20 @@ export default async function StudioCustomerDetailPage({ params }: any) {
             <div className="grid gap-6 lg:grid-cols-3 lg:items-stretch">
                 {/* Contact Info */}
                 <Card className="lg:col-span-2">
-                    <CardHeader className="pb-3">
+                    <CardHeader className="pb-3 border-b bg-muted/5">
                         <CardTitle className="text-lg font-medium flex items-center gap-2">
                             <Package className="h-5 w-5 text-muted-foreground" />
                             Thông tin cá nhân
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="grid gap-6 sm:grid-cols-2">
+                    <CardContent className="grid gap-6 sm:grid-cols-2 pt-6">
                         <div className="flex items-center gap-3">
                             <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center shrink-0">
                                 <Phone className="h-5 w-5 text-muted-foreground" />
                             </div>
                             <div>
-                                <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Số điện thoại</p>
-                                <a href={`tel:${customer.phone}`} className="font-medium hover:underline text-lg">
+                                <p className="text-[11px] text-muted-foreground font-medium tracking-tight">Số điện thoại</p>
+                                <a href={`tel:${customer.phone}`} className="font-semibold hover:underline text-base">
                                     {customer.phone || 'Chưa cập nhật'}
                                 </a>
                             </div>
@@ -119,8 +119,8 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                                 <Mail className="h-5 w-5 text-muted-foreground" />
                             </div>
                             <div>
-                                <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Email</p>
-                                <a href={`mailto:${customer.email}`} className="font-medium hover:underline">
+                                <p className="text-[11px] text-muted-foreground font-medium tracking-tight">Email</p>
+                                <a href={`mailto:${customer.email}`} className="font-semibold hover:underline">
                                     {customer.email || 'Chưa cập nhật'}
                                 </a>
                             </div>
@@ -130,47 +130,51 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                                 <MapPin className="h-5 w-5 text-muted-foreground" />
                             </div>
                             <div>
-                                <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Địa chỉ giao hàng</p>
+                                <p className="text-[11px] text-muted-foreground font-medium tracking-tight">Địa chỉ giao hàng</p>
                                 <p className="font-medium">{customer.address || 'Chưa cập nhật'}</p>
                             </div>
                         </div>
                         <Separator className="sm:col-span-2" />
-                        <div className="flex items-center gap-3">
-                            <Calendar className="h-5 w-5 text-muted-foreground" />
-                            <div>
-                                <p className="text-sm text-muted-foreground">Liên hệ lần cuối</p>
-                                <p className="font-medium">{customer.last_contact_at ? formatRelativeTime(customer.last_contact_at) : 'Chưa có'}</p>
+                        <div className="grid grid-cols-2 gap-4 sm:col-span-2">
+                            <div className="flex items-center gap-3">
+                                <Calendar className="h-4 w-4 text-muted-foreground" />
+                                <div>
+                                    <p className="text-[11px] text-muted-foreground">Liên hệ lần cuối</p>
+                                    <p className="text-sm font-medium">{customer.last_contact_at ? formatRelativeTime(customer.last_contact_at) : 'Chưa có'}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <ShoppingBag className="h-5 w-5 text-muted-foreground" />
-                            <div>
-                                <p className="text-sm text-muted-foreground">Tổng đơn hàng</p>
-                                <p className="font-medium">{orders.length} đơn</p>
+                            <div className="flex items-center gap-3">
+                                <ShoppingBag className="h-4 w-4 text-muted-foreground" />
+                                <div>
+                                    <p className="text-[11px] text-muted-foreground">Tổng đơn hàng</p>
+                                    <p className="text-sm font-medium">{orders.length} đơn</p>
+                                </div>
                             </div>
                         </div>
                     </CardContent>
                 </Card>
 
                 {/* Lifetime Value */}
-                <Card className="bg-zinc-900 text-white border-none shadow-xl">
-                    <CardHeader>
-                        <CardTitle className="text-zinc-400 text-sm font-medium uppercase tracking-widest">Giá trị vòng đời (LTV)</CardTitle>
+                <Card className="flex flex-col">
+                    <CardHeader className="pb-3 border-b bg-muted/5">
+                        <CardTitle className="text-sm font-medium text-muted-foreground">Giá trị vòng đời (LTV)</CardTitle>
                     </CardHeader>
-                    <CardContent className="flex flex-col items-center justify-center py-6">
-                        <p className="text-4xl font-bold tracking-tighter">
-                            {formatCurrency(totalSpent)}
-                        </p>
-                        <p className="text-zinc-500 text-xs mt-2 font-medium">Tổng chi tiêu đã ghi nhận</p>
+                    <CardContent className="flex flex-col items-center justify-center flex-1 py-8">
+                        <div className="text-center space-y-1">
+                            <p className="text-3xl font-bold tracking-tight">
+                                {formatCurrency(totalSpent)}
+                            </p>
+                            <p className="text-muted-foreground text-[12px]">Tổng chi tiêu đã ghi nhận</p>
+                        </div>
                         
-                        <div className="w-full mt-8 space-y-3">
-                            <div className="flex justify-between text-xs border-b border-zinc-800 pb-2">
-                                <span className="text-zinc-500">Hạng khách hàng</span>
-                                <span className="font-bold text-amber-400 uppercase">{totalSpent > 10000000 ? 'VIP' : 'Thành viên'}</span>
+                        <div className="w-full mt-auto pt-6 space-y-3">
+                            <div className="flex justify-between items-center text-xs border-b pb-2">
+                                <span className="text-muted-foreground">Hạng khách hàng</span>
+                                <span className="font-bold text-amber-600">{totalSpent > 10000000 ? 'VIP' : 'Thành viên'}</span>
                             </div>
-                            <div className="flex justify-between text-xs border-b border-zinc-800 pb-2">
-                                <span className="text-zinc-500">Phụ trách</span>
-                                <span className="font-medium">{customer.assigned_user?.full_name || 'Hệ thống'}</span>
+                            <div className="flex justify-between items-center text-xs">
+                                <span className="text-muted-foreground">Phụ trách</span>
+                                <span className="font-medium text-foreground">{customer.assigned_user?.full_name || 'Hệ thống Quản trị'}</span>
                             </div>
                         </div>
                     </CardContent>
