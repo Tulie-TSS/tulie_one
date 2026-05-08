@@ -4,69 +4,134 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useLocaleStore } from '@/lib/stores/locale-store'
+import { Card, CardContent, CardHeader, CardTitle, Button, Label, Input } from '@repo/ui'
+import { Shield, Loader2, ArrowRight } from 'lucide-react'
 
 export default function LoginPage() {
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
     const router = useRouter()
     const { t } = useLocaleStore()
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
+        setError(null)
         
         const formData = new FormData(e.target as HTMLFormElement)
         const email = formData.get('email') as string
         const password = formData.get('password') as string
 
-        const { createClient } = await import('@/lib/supabase')
-        const supabase = createClient()
-        
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        })
+        try {
+            const { createClient } = await import('@/lib/supabase')
+            const supabase = createClient()
+            
+            const { error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            })
 
-        if (error) {
-            alert(error.message)
+            if (error) {
+                throw error
+            } else {
+                router.push('/dashboard')
+                router.refresh()
+            }
+        } catch (err: any) {
+            setError(err.message || 'Lỗi đăng nhập.')
             setLoading(false)
-        } else {
-            router.push('/dashboard')
-            router.refresh()
         }
     }
 
     return (
-        <div className="text-center">
-            <div className="flex items-center justify-center gap-3 mb-2">
-                <div className="w-10 h-9 rounded-md flex items-center justify-center" style={{ backgroundColor: 'var(--color-info)', color: 'white' }}>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                    </svg>
+        <div className="min-h-[80vh] flex flex-col items-center justify-center p-4">
+            <div className="w-full max-w-md space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <div className="flex flex-col items-center text-center space-y-2">
+                    <div className="size-12 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+                        <Shield className="size-7 text-primary-foreground" />
+                    </div>
+                    <h1 className="text-3xl font-bold tracking-tight text-foreground">TULIE One</h1>
+                    <p className="text-muted-foreground text-sm max-w-[280px]">
+                        Hệ thống quản trị hợp nhất dành cho Agency chuyên nghiệp
+                    </p>
                 </div>
-                <span className="text-2xl" style={{ color: 'var(--color-fg)' }}>FlowGuard</span>
-            </div>
-            <p className="mb-8" style={{ color: 'var(--color-fg-secondary)', fontSize: 'var(--text-sm)' }}>{t('app.tagline')}</p>
 
-            <div className="p-8 rounded-md" style={{ backgroundColor: 'var(--color-bg)', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--color-border)', maxWidth: '400px', margin: '0 auto' }}>
-                <h2 className="text-xl font-semibold mb-6 text-left" style={{ color: 'var(--color-fg)' }}>{t('auth.login')}</h2>
-                <form onSubmit={handleLogin} className="space-y-4">
-                    <div className="text-left">
-                        <label className="block mb-1.5 font-medium" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-fg)' }}>{t('auth.email')}</label>
-                        <input type="email" name="email" defaultValue="admin@curtis.com" className="w-full px-3 py-2.5"
-                            style={{ border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--color-surface)', color: 'var(--color-fg)', fontSize: 'var(--text-sm)', outline: 'none' }} />
-                    </div>
-                    <div className="text-left">
-                        <label className="block mb-1.5 font-medium" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-fg)' }}>{t('auth.password')}</label>
-                        <input type="password" name="password" defaultValue="password123" className="w-full px-3 py-2.5"
-                            style={{ border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--color-surface)', color: 'var(--color-fg)', fontSize: 'var(--text-sm)', outline: 'none' }} />
-                    </div>
-                    <button type="submit" disabled={loading} className="w-full py-2.5 font-medium cursor-pointer"
-                        style={{ backgroundColor: 'var(--color-info)', color: 'white', borderRadius: 'var(--radius-md)', border: 'none', fontSize: 'var(--text-sm)', opacity: loading ? 0.7 : 1 }}>
-                        {loading ? t('auth.loggingIn') : t('auth.login')}
-                    </button>
-                </form>
-                <p className="mt-4" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-fg-secondary)' }}>
-                    {t('auth.noAccount')} <Link href="/register" style={{ color: 'var(--color-info)' }}>{t('auth.register')}</Link>
+                <Card className="border-none shadow-2xl bg-background/60 backdrop-blur-xl">
+                    <CardHeader className="space-y-1">
+                        <CardTitle className="text-xl font-semibold">Đăng nhập</CardTitle>
+                        <p className="text-xs text-muted-foreground">Nhập email và mật khẩu của bạn để truy cập hệ thống</p>
+                    </CardHeader>
+                    <CardContent>
+                        <form onSubmit={handleLogin} className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="email">{t('auth.email')}</Label>
+                                <Input 
+                                    id="email"
+                                    name="email" 
+                                    type="email"
+                                    placeholder="name@company.com" 
+                                    required 
+                                    className="h-11 bg-background/50"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <Label htmlFor="password">{t('auth.password')}</Label>
+                                    <Link 
+                                        href="/forgot-password" 
+                                        className="text-xs text-muted-foreground hover:text-primary transition-colors"
+                                    >
+                                        Quên mật khẩu?
+                                    </Link>
+                                </div>
+                                <Input 
+                                    id="password"
+                                    name="password" 
+                                    type="password" 
+                                    required 
+                                    className="h-11 bg-background/50"
+                                />
+                            </div>
+
+                            {error && (
+                                <div className="p-3 text-xs font-medium text-destructive bg-destructive/10 rounded-md border border-destructive/20 animate-in shake duration-300">
+                                    {error}
+                                </div>
+                            )}
+
+                            <Button 
+                                type="submit" 
+                                className="w-full h-11 text-base font-semibold group" 
+                                disabled={loading}
+                            >
+                                {loading ? (
+                                    <>
+                                        <Loader2 className="mr-2 size-4 animate-spin" />
+                                        Đang đăng nhập...
+                                    </>
+                                ) : (
+                                    <>
+                                        Đăng nhập
+                                        <ArrowRight className="ml-2 size-4 group-hover:translate-x-1 transition-transform" />
+                                    </>
+                                )}
+                            </Button>
+                        </form>
+                        
+                        <div className="mt-6 text-center text-sm">
+                            <span className="text-muted-foreground">{t('auth.noAccount')} </span>
+                            <Link 
+                                href="/register" 
+                                className="font-medium text-primary hover:underline underline-offset-4"
+                            >
+                                {t('auth.register')}
+                            </Link>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                <p className="text-center text-[10px] text-muted-foreground uppercase tracking-widest pt-4">
+                    &copy; 2026 TULIE Digital Solutions. All rights reserved.
                 </p>
             </div>
         </div>

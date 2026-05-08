@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
-import { MoreHorizontal, Pencil, Mail, Ban, Trash2, CheckCircle, Loader2 } from 'lucide-react'
+import { MoreHorizontal, Pencil, Mail, Ban, Trash2, CheckCircle, Loader2, Shield } from 'lucide-react'
 
 type Role = 'admin' | 'manager' | 'maker' | 'observer'
 
