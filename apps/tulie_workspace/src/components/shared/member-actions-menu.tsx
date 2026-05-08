@@ -37,14 +37,14 @@ export function MemberActionsMenu({
   const [pos, setPos] = useState<MenuPos | null>(null)
   const [loading, setLoading] = useState<string | null>(null)
   const [confirmDelete, setConfirmDelete] = useState(false)
-  const [showLink, setShowLink] = useState<string | null>(null)
+  const [showLink, setShowLink] = useState<{ url: string; title: string } | null>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
 
   const isSelf = member.id === currentUserId
   const isTargetAdmin = member.role_type === 'admin'
   const canAct = canManage && !isSelf && !(isTargetAdmin && !isAdmin)
 
-  const MENU_HEIGHT = isAdmin ? 224 : 144
+  const MENU_HEIGHT = isAdmin ? 260 : 144 // Increased height for new item
   const MENU_WIDTH = 208
 
   const calcPos = useCallback(() => {
@@ -72,7 +72,6 @@ export function MemberActionsMenu({
       if (e instanceof MouseEvent && btnRef.current?.contains(e.target as Node)) return
       setOpen(false)
       setConfirmDelete(false)
-      // We don't close showLink on click outside to avoid accidental loss of link
     }
     const handleScroll = () => calcPos()
     document.addEventListener('mousedown', handleClose)
@@ -95,13 +94,31 @@ export function MemberActionsMenu({
       if (!res.ok) throw new Error(data.error)
       
       if (data.inviteLink) {
-        setShowLink(data.inviteLink)
+        setShowLink({ url: data.inviteLink, title: 'Link mời thành viên' })
         onToast(`Đã tạo link mời mới cho ${member.email}`)
       } else {
         onToast(`Đã gửi lại lời mời đến ${member.email}`)
       }
     } catch (e: any) {
       onToast(e.message || 'Gửi thất bại', 'error')
+    } finally { setLoading(null) }
+  }
+
+  const handleResetPassword = async () => {
+    setLoading('reset-pwd'); setOpen(false)
+    try {
+      const res = await fetch(`/api/users/${member.id}/reset-password`, { method: 'POST' })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error)
+      
+      if (data.recoveryLink) {
+        setShowLink({ url: data.recoveryLink, title: 'Link Reset mật khẩu' })
+        onToast(`Đã tạo link reset mật khẩu cho ${member.email}`)
+      } else {
+        onToast(`Đã gửi email reset mật khẩu đến ${member.email}`)
+      }
+    } catch (e: any) {
+      onToast(e.message || 'Thao tác thất bại', 'error')
     } finally { setLoading(null) }
   }
 
@@ -151,13 +168,22 @@ export function MemberActionsMenu({
       </button>
 
       {isAdmin && (
-        <button
-          onClick={handleResendInvite}
-          className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-muted transition-colors text-foreground text-left"
-        >
-          <Mail className="size-3.5 text-muted-foreground shrink-0" />
-          Gửi lại lời mời (Lấy link)
-        </button>
+        <>
+          <button
+            onClick={handleResendInvite}
+            className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-muted transition-colors text-foreground text-left"
+          >
+            <Mail className="size-3.5 text-muted-foreground shrink-0" />
+            Gửi lại lời mời (Lấy link)
+          </button>
+          <button
+            onClick={handleResetPassword}
+            className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-muted transition-colors text-foreground text-left"
+          >
+            <Shield className="size-3.5 text-muted-foreground shrink-0" />
+            Reset mật khẩu (Lấy link)
+          </button>
+        </>
       )}
 
       <div className="my-1 border-t" />
@@ -188,19 +214,19 @@ export function MemberActionsMenu({
   const linkOverlay = showLink ? (
     <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4">
       <div className="w-full max-w-md bg-popover border rounded-xl shadow-2xl p-6 animate-in zoom-in-95 duration-200">
-        <h3 className="text-lg font-semibold mb-2">Link mời thành viên</h3>
+        <h3 className="text-lg font-semibold mb-2">{showLink.title}</h3>
         <p className="text-sm text-muted-foreground mb-4">Bạn có thể gửi link này cho <b>{member.full_name}</b>:</p>
         
         <div className="flex gap-2 mb-4">
           <input 
             readOnly 
-            value={showLink}
+            value={showLink.url}
             className="flex-1 p-2 text-xs rounded-md border bg-muted font-mono truncate"
           />
           <button 
             onClick={() => {
-              navigator.clipboard.writeText(showLink)
-              alert('Đã sao chép!')
+              navigator.clipboard.writeText(showLink.url)
+              onToast(showLink.title === 'Link Reset mật khẩu' ? 'Đã sao chép link reset!' : 'Đã sao chép link mời!')
             }}
             className="px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-md"
           >

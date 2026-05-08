@@ -13,6 +13,7 @@ interface InviteMemberDialogProps {
   open: boolean
   onClose: () => void
   onSuccess: () => void
+  onToast?: (msg: string, type?: 'success' | 'error') => void
 }
 
 const ROLE_OPTIONS: { value: Role; label: string; desc: string }[] = [
@@ -22,7 +23,7 @@ const ROLE_OPTIONS: { value: Role; label: string; desc: string }[] = [
   { value: 'observer', label: 'Quan sát viên', desc: 'Xem read-only, export báo cáo' },
 ]
 
-export function InviteMemberDialog({ open, onClose, onSuccess }: InviteMemberDialogProps) {
+export function InviteMemberDialog({ open, onClose, onSuccess, onToast }: InviteMemberDialogProps) {
   const { t } = useLocaleStore()
   const [email, setEmail] = useState('')
   const [fullName, setFullName] = useState('')
@@ -85,7 +86,7 @@ export function InviteMemberDialog({ open, onClose, onSuccess }: InviteMemberDia
   const copyLink = () => {
     if (successLink) {
       navigator.clipboard.writeText(successLink)
-      alert('Đã sao chép link mời!')
+      onToast?.('Đã sao chép link mời!')
     }
   }
 

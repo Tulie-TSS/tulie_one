@@ -210,6 +210,7 @@ export default function TeamSettingsPage() {
           showToast('Đã gửi lời mời thành công.')
           fetchUsers()
         }}
+        onToast={showToast}
       />
 
       {toast && (
