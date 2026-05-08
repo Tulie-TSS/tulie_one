@@ -66,14 +66,14 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         {/* Doing Tasks */}
-        <Card className="lg:col-span-2 border-none bg-transparent shadow-none">
-          <CardHeader className="px-0 pt-0 pb-4 flex-row items-center justify-between">
+        <Card className="lg:col-span-2 shadow-sm">
+          <CardHeader className="flex-row items-center justify-between">
             <CardTitle className="text-base font-medium">{t('dashboard.doingTasks')}</CardTitle>
             <CardAction>
               <Link href="/board" className="text-sm font-medium text-primary hover:underline">{t('dashboard.viewBoard')}</Link>
             </CardAction>
           </CardHeader>
-          <CardContent className="px-0 pb-0">
+          <CardContent>
             <div className="space-y-3">
               {tasksLoading ? (
                 <div className="space-y-2">
@@ -82,13 +82,13 @@ export default function DashboardPage() {
                   ))}
                 </div>
               ) : doingTasks.length === 0 ? (
-                <EmptyState icon={KanbanSquare} title={t('dashboard.noDoingTasks')} className="bg-card border shadow-sm h-[280px]" />
+                <EmptyState icon={KanbanSquare} title={t('dashboard.noDoingTasks')} className="h-[280px] bg-muted/20 border-none shadow-none" />
               ) : (
                 <div className="space-y-3">
                   {doingTasks.map(task => (
                     <Link key={task.id} href={`/tasks/${task.id}`} className="block group">
-                      <Card className="hover:border-primary/50 transition-colors">
-                        <CardContent className="flex items-center justify-between gap-4 py-3">
+                      <Card className="hover:border-primary/50 transition-colors shadow-none border-muted/60">
+                        <CardContent className="flex items-center justify-between gap-4 py-3 px-4">
                           <div className="flex-1 min-w-0">
                             <div className="font-medium text-sm text-foreground truncate mb-1.5 group-hover:text-primary transition-colors">
                               {task.title}
