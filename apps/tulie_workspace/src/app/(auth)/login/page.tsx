@@ -146,7 +146,6 @@ export default function LoginPage() {
                 <p className="text-center text-[10px] text-muted-foreground uppercase tracking-widest pt-4">
                     &copy; 2026 Tulie Digital Solutions. All rights reserved.
                 </p>
-            </div>
         </div>
     )
 }
