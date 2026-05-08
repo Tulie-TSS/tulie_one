@@ -13,7 +13,7 @@ import type { TaskStatus } from '@/types/database.types'
 
 export default function BoardPage() {
   const { t } = useLocaleStore()
-  const { user, canManage } = useCurrentUser()
+  const { user, canManage, isAdmin, isManager, isMaker } = useCurrentUser()
   const { tasks, loading, updateTaskStatus, refetch } = useTasks()
 
   const [wipDialog, setWipDialog] = useState<{
@@ -81,7 +81,7 @@ export default function BoardPage() {
           <h1 className="text-lg font-semibold text-foreground">{t('board.title')}</h1>
           <p className="text-xs text-muted-foreground">{t('board.subtitle')}</p>
         </div>
-        {canManage && (
+        {(isAdmin || isManager || isMaker) && (
           <Button asChild>
             <Link href="/tasks/new">
               <Plus className="size-4" />

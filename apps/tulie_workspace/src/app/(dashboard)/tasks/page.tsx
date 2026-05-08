@@ -20,7 +20,7 @@ export default function TasksPage() {
   const [filter, setFilter] = useState<string>('all')
   const [search, setSearch] = useState('')
   const { t } = useLocaleStore()
-  const { canManage } = useCurrentUser()
+  const { canManage, isAdmin, isManager, isMaker } = useCurrentUser()
   const { tasks, loading } = useTasks()
 
   const filteredTasks = useMemo(() => {
@@ -39,7 +39,7 @@ export default function TasksPage() {
   return (
     <div className="space-y-6">
       <PageHeader title={t('tasks.title')} description={t('tasks.subtitle')}>
-        {canManage && (
+        {(isAdmin || isManager || isMaker) && (
           <Button asChild>
             <Link href="/tasks/new">
               <Plus className="size-4" />

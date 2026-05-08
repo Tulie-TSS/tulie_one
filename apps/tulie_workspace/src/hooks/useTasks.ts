@@ -82,11 +82,11 @@ export function useTasks(filters?: { status?: TaskStatus; assignedTo?: string })
       }
 
       // Role-based filtering
-      if (isMakerOrObserver) {
-        // Makers/Observers only see their own tasks
+      if (profile?.role_type === 'observer') {
+        // Observers only see their own tasks
         query = query.eq('assigned_to', authUser.id)
       } else if (filters?.assignedTo) {
-        // Admins/Managers can filter by any user
+        // Admins/Managers/Makers can filter by any user
         query = query.eq('assigned_to', filters.assignedTo)
       }
 
