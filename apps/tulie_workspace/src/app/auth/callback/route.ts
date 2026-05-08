@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      const redirectUrl = (type === 'invite' || type === 'recovery') ? `${origin}/settings` : `${origin}${next}`
+      const redirectUrl = (type === 'invite' || type === 'recovery') ? `${origin}/auth/set-password` : `${origin}${next}`
       return NextResponse.redirect(redirectUrl)
     }
   } else if (token_hash && type) {
@@ -22,7 +22,7 @@ export async function GET(request: Request) {
       type,
     })
     if (!error) {
-      const redirectUrl = (type === 'invite' || type === 'recovery') ? `${origin}/settings` : `${origin}${next}`
+      const redirectUrl = (type === 'invite' || type === 'recovery') ? `${origin}/auth/set-password` : `${origin}${next}`
       return NextResponse.redirect(redirectUrl)
     }
   }
