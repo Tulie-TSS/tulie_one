@@ -45,7 +45,8 @@ export async function POST(request: Request) {
     }
 
     const newUserId = inviteData.user.id
-    const inviteLink = inviteData.properties.action_link
+    const hashedToken = inviteData.properties.hashed_token
+    const inviteLink = `${siteUrl}/auth/callback?token_hash=${hashedToken}&type=invite`
 
     // 2. Add user to user_profiles table if trigger doesn't do it, or update it
     // Usually there's a trigger on auth.users -> user_profiles, but we need to set the role_type.

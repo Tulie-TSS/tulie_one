@@ -47,11 +47,8 @@ export async function POST(
       }
     })
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 400 })
-    }
-
-    return NextResponse.json({ success: true, inviteLink: inviteData.properties.action_link })
+    const hashedToken = inviteData.properties.hashed_token
+    return NextResponse.json({ success: true, inviteLink: `${siteUrl}/auth/callback?token_hash=${hashedToken}&type=invite` })
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Lỗi server.' }, { status: 500 })
   }

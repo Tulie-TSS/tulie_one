@@ -47,13 +47,10 @@ export async function POST(
       }
     })
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 400 })
-    }
-
+    const hashedToken = recoveryData.properties.hashed_token
     return NextResponse.json({ 
       success: true, 
-      recoveryLink: recoveryData.properties.action_link 
+      recoveryLink: `${siteUrl}/auth/callback?token_hash=${hashedToken}&type=recovery&next=/settings/profile`
     })
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Lỗi server.' }, { status: 500 })
