@@ -9,12 +9,14 @@ import { useCycles } from '@/hooks/useCycles'
 import { 
     Card, 
     CardContent, 
+    CardDescription,
     CardHeader, 
     CardTitle, 
     Button, 
     Label, 
     Input,
     Textarea,
+    Checkbox,
     Select,
     SelectContent,
     SelectItem,
@@ -40,8 +42,9 @@ export default function NewProjectPage() {
         name: '',
         description: '',
         priority: 'medium',
-        status: 'active',
+        status: 'planning',
         owner_id: '',
+        member_ids: [] as string[],
     })
 
     useEffect(() => {
@@ -76,15 +79,34 @@ export default function NewProjectPage() {
 
         try {
             const supabase = createClient()
-            const { error: insertError } = await supabase
+            const { data, error: insertError } = await supabase
                 .from('projects')
                 .insert({
-                    ...formData,
+                    name: formData.name,
+                    description: formData.description,
+                    priority: formData.priority,
+                    status: formData.status,
+                    owner_id: formData.owner_id,
                     cycle_id: activeCycle.id,
-                    organization_id: user?.organization_id,
+                    organization_id: user.organization_id,
                 })
+                .select()
+                .single()
 
             if (insertError) throw insertError
+            
+            // Add members
+            if (data && formData.member_ids.length > 0) {
+                const memberInserts = formData.member_ids.map(uid => ({
+                    project_id: data.id,
+                    user_id: uid,
+                    role: 'member'
+                }))
+                const { error: memberError } = await supabase
+                    .from('project_members')
+                    .insert(memberInserts)
+                if (memberError) console.error('Error adding members:', memberError)
+            }
 
             toast.success('Đã khởi tạo dự án thành công')
             router.push('/projects')
@@ -143,10 +165,10 @@ export default function NewProjectPage() {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label>Chủ trì dự án</Label>
+                                <Label>Chủ trì dự án (Owner)</Label>
                                 <Select 
-                                    value={formData.lead_id} 
-                                    onValueChange={v => setFormData(prev => ({ ...prev, lead_id: v }))}
+                                    value={formData.owner_id} 
+                                    onValueChange={v => setFormData(prev => ({ ...prev, owner_id: v }))}
                                 >
                                     <SelectTrigger>
                                         <SelectValue placeholder="Chọn người dẫn dắt" />
@@ -160,11 +182,38 @@ export default function NewProjectPage() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label>Chu kỳ hiện tại</Label>
+                                <Label>Chu kỳ áp dụng</Label>
                                 <div className="h-10 px-3 flex items-center rounded-md border border-input bg-muted/50 text-sm">
-                                    {activeCycle?.name || 'Chưa có chu kỳ hoạt động'}
+                                    {activeCycle?.name || 'Phase 1: Bootstrap'}
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Member Selection */}
+                        <div className="space-y-3">
+                            <Label>Thành viên tham gia</Label>
+                            <div className="grid grid-cols-2 gap-2 p-3 border rounded-md max-h-[200px] overflow-y-auto bg-muted/10">
+                                {users.map(u => (
+                                    <div key={u.id} className="flex items-center space-x-2">
+                                        <Checkbox 
+                                            id={`user-${u.id}`}
+                                            checked={formData.member_ids.includes(u.id)}
+                                            onCheckedChange={(checked) => {
+                                                setFormData(prev => ({
+                                                    ...prev,
+                                                    member_ids: checked 
+                                                        ? [...prev.member_ids, u.id]
+                                                        : prev.member_ids.filter(id => id !== u.id)
+                                                }))
+                                            }}
+                                        />
+                                        <label htmlFor={`user-${u.id}`} className="text-sm font-medium leading-none cursor-pointer">
+                                            {u.full_name}
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-[12px] text-muted-foreground">Chọn những thành viên sẽ trực tiếp tham gia vào dự án này.</p>
                         </div>
 
                         <div className="flex justify-end gap-3 pt-4 border-t">
