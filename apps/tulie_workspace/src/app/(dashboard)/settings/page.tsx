@@ -102,7 +102,7 @@ export default function SettingsPage() {
                         }
 
                         // We can use supabase client here
-                        const { createClient } = await import('@/lib/supabase-client')
+                        const { createClient } = await import('@/lib/supabase')
                         const supabase = createClient()
                         const { error } = await supabase.auth.updateUser({ password })
                         

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle, Button, Label, Input } from '@repo/ui'
-import { createClient } from '@/lib/supabase-client'
+import { createClient } from '@/lib/supabase'
 import { ShieldCheck, Loader2, ArrowRight, Lock } from 'lucide-react'
 
 export default function SetPasswordPage() {
