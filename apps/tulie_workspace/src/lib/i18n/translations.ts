@@ -4,7 +4,7 @@ export const translations = {
   // ============================================
   // Chung / Common
   // ============================================
-  "app.name": { vi: "FlowGuard", en: "FlowGuard" },
+  "app.name": { vi: "Tulie Workspace", en: "Tulie Workspace" },
   "app.tagline": {
     vi: "Bảo vệ Dòng chảy công việc của bạn",
     en: "Protect your workflow",

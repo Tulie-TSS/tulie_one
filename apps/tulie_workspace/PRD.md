@@ -1,6 +1,6 @@
 # TÀI LIỆU YÊU CẦU SẢN PHẨM (PRD)
 
-## FlowGuard — Hệ thống Quản trị Task/Project định hướng Dòng chảy
+## Tulie Workspace — Hệ thống Quản trị Task/Project định hướng Dòng chảy
 
 **Phiên bản:** 1.0  
 **Ngày:** 2026-03-18  
@@ -38,8 +38,8 @@
 
 ### 1.1 Tuyên ngôn Sản phẩm
 
-> FlowGuard **không** hướng tới giúp con người "làm được nhiều việc hơn cùng lúc".  
-> FlowGuard hướng tới giúp họ **"hoàn thành trọn vẹn từng việc một"** với chất lượng cao nhất, không kiệt sức, và luôn kiểm soát được nhịp độ.
+> Tulie Workspace **không** hướng tới giúp con người "làm được nhiều việc hơn cùng lúc".  
+> Tulie Workspace hướng tới giúp họ **"hoàn thành trọn vẹn từng việc một"** với chất lượng cao nhất, không kiệt sức, và luôn kiểm soát được nhịp độ.
 
 ### 1.2 Vấn đề Cần giải quyết
 
@@ -1067,7 +1067,7 @@ erDiagram
 
 - Slack / Teams: gửi notification theo quy tắc §9.
 - Khi Maker trong Focus Mode → set Slack status "🔴 Deep Work — Do Not Disturb".
-- Slash commands: `/flowguard done` (mark task done từ Slack), `/flowguard quick [mô tả]` (Quick Strike).
+- Slash commands: `/tulie-workspace done` (mark task done từ Slack), `/tulie-workspace quick [mô tả]` (Quick Strike).
 - Bot alerts: WIP violation, Quarantine mới, Cycle milestone.
 
 ### 11.3 Dev Tools Integration
@@ -1379,7 +1379,7 @@ erDiagram
 
 ### 15.2 Contextual Help
 
-- **Tooltips:** Hover trên mọi khái niệm FlowGuard (WIP, Quarantine, Quadrant...) → hiện giải thích ngắn.
+- **Tooltips:** Hover trên mọi khái niệm Tulie Workspace (WIP, Quarantine, Quadrant...) → hiện giải thích ngắn.
 - **Empty State Education:** Khi chưa có data → hiển thị hướng dẫn + illustrations thay vì blank screen.
 - **In-app Announcements:** Feature mới → tooltip highlight lần đầu sử dụng.
 

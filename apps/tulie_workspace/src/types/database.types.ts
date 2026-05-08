@@ -1,5 +1,5 @@
 // ============================================
-// FlowGuard — TypeScript Type Definitions
+// Tulie Workspace — TypeScript Type Definitions
 // Generated from: docs/02_DATABASE_SCHEMA.md
 // ============================================
 

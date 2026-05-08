@@ -1,10 +1,10 @@
 ---
-description: Quy trình bắt buộc khi phát triển hoặc điều chỉnh giao diện FlowGuard
+description: Quy trình bắt buộc khi phát triển hoặc điều chỉnh giao diện Tulie Workspace
 ---
 
 # UI Development Workflow
 
-> **BẮT BUỘC** tuân theo khi tạo mới, chỉnh sửa, hoặc mở rộng bất kỳ chức năng/giao diện nào trong FlowGuard.
+> **BẮT BUỘC** tuân theo khi tạo mới, chỉnh sửa, hoặc mở rộng bất kỳ chức năng/giao diện nào trong Tulie Workspace.
 
 ## Bước 1: Đọc PRD — Hiểu Context & Yêu cầu
 

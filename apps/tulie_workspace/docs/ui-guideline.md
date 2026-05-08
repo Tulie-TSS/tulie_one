@@ -1,4 +1,4 @@
-# FlowGuard — UI Design Guideline
+# Tulie Workspace — UI Design Guideline
 
 > **Phiên bản:** 1.0  
 > **Ngày:** 2026-03-19  
@@ -25,7 +25,7 @@
 
 ## 1. Triết lý Thiết kế
 
-Giao diện FlowGuard phục vụ một mục đích duy nhất: **bảo vệ Flow State của người dùng**.
+Giao diện Tulie Workspace phục vụ một mục đích duy nhất: **bảo vệ Flow State của người dùng**.
 
 ### 5 Nguyên tắc Cốt lõi (từ PRD §6.1)
 

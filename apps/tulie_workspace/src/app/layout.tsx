@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-    title: 'FlowGuard — Quản trị Task/Project định hướng Dòng chảy',
+    title: 'Tulie Workspace — Quản trị Task/Project định hướng Dòng chảy',
     description: 'Hệ thống quản lý công việc bảo vệ Flow State qua giới hạn WIP. Hoàn thành trọn vẹn từng việc một.',
     keywords: ['task management', 'project management', 'WIP limit', 'flow state', 'productivity'],
 }

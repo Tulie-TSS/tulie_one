@@ -1,8 +1,8 @@
-# ENGINEERING GUIDELINES — FlowGuard
+# ENGINEERING GUIDELINES — Tulie Workspace
 
 **Phiên bản:** 1.0  
 **Ngày:** 2026-03-19  
-**Áp dụng cho:** Toàn bộ codebase FlowGuard
+**Áp dụng cho:** Toàn bộ codebase Tulie Workspace
 
 ---
 
@@ -439,7 +439,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJh...       # Server-only
 
 # App
 NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_APP_NAME=FlowGuard
+NEXT_PUBLIC_APP_NAME=Tulie Workspace
 
 # Email
 RESEND_API_KEY=re_...                    # Server-only

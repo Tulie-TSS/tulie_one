@@ -199,8 +199,12 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                             </thead>
                             <tbody className="[&_tr:last-child]:border-0">
                                 {orders.map((order) => (
-                                    <tr key={order.id} className="border-b transition-colors hover:bg-muted/50 cursor-pointer" onClick={() => window.location.href = `/studio/orders/${order.id}`}>
-                                        <td className="p-4 align-middle font-medium">{order.order_number}</td>
+                                    <tr key={order.id} className="border-b transition-colors hover:bg-muted/50">
+                                        <td className="p-4 align-middle font-medium text-primary hover:underline">
+                                            <Link href={`/studio/orders/${order.id}`}>
+                                                {order.order_number}
+                                            </Link>
+                                        </td>
                                         <td className="p-4 align-middle text-muted-foreground">{formatDate(order.created_at)}</td>
                                         <td className="p-4 align-middle">
                                             <StatusBadge status={order.order_status} entityType="retail_order" />

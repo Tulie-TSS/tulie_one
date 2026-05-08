@@ -1,4 +1,4 @@
-# DATABASE SCHEMA — FlowGuard
+# DATABASE SCHEMA — Tulie Workspace
 
 **Phiên bản:** 1.0  
 **Ngày:** 2026-03-19  
@@ -60,7 +60,7 @@ erDiagram
 
 ```sql
 -- Migration: 001_initial_schema.sql
--- Description: Core tables for FlowGuard
+-- Description: Core tables for Tulie Workspace
 -- Date: 2026-03-19
 
 -- ============================================
@@ -898,16 +898,16 @@ CREATE POLICY "Create comments on accessible tasks"
 
 -- Organization
 INSERT INTO organizations (id, name, slug) VALUES
-    ('org-001', 'FlowGuard Demo', 'flowguard-demo');
+    ('org-001', 'Tulie Workspace Demo', 'tulie-workspace-demo');
 
 -- Users (assume auth.users already created via Supabase Auth)
 -- These reference auth.users entries
 INSERT INTO users (id, email, full_name, role_type, organization_id) VALUES
-    ('user-admin', 'admin@flowguard.dev', 'Admin User', 'admin', 'org-001'),
-    ('user-pm', 'pm@flowguard.dev', 'Project Manager', 'manager', 'org-001'),
-    ('user-dev1', 'dev1@flowguard.dev', 'Developer One', 'maker', 'org-001'),
-    ('user-dev2', 'dev2@flowguard.dev', 'Developer Two', 'maker', 'org-001'),
-    ('user-observer', 'observer@flowguard.dev', 'Client Observer', 'observer', 'org-001');
+    ('user-admin', 'admin@tulie-workspace.dev', 'Admin User', 'admin', 'org-001'),
+    ('user-pm', 'pm@tulie-workspace.dev', 'Project Manager', 'manager', 'org-001'),
+    ('user-dev1', 'dev1@tulie-workspace.dev', 'Developer One', 'maker', 'org-001'),
+    ('user-dev2', 'dev2@tulie-workspace.dev', 'Developer Two', 'maker', 'org-001'),
+    ('user-observer', 'observer@tulie-workspace.dev', 'Client Observer', 'observer', 'org-001');
 
 -- WIP Rules
 INSERT INTO wip_rules (scope_type, scope_id, max_doing) VALUES

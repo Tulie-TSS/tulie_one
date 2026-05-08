@@ -1,8 +1,8 @@
-# API SPECIFICATION — FlowGuard
+# API SPECIFICATION — Tulie Workspace
 
 **Phiên bản:** 1.0  
 **Ngày:** 2026-03-19  
-**Base URL:** `https://app.flowguard.app/api/v1`  
+**Base URL:** `https://app.tulie-workspace.app/api/v1`  
 **Auth:** Bearer Token (JWT) hoặc API Key  
 **Tham chiếu:** [PRD.md](../PRD.md) §11
 
@@ -130,7 +130,7 @@ GET /api/v1/tasks/{task_id}
         },
         "project": {
             "id": "proj-uuid-001",
-            "name": "FlowGuard MVP"
+            "name": "Tulie Workspace MVP"
         },
         "tags": [
             {"id": "tag-001", "name": "frontend", "color": "#1E88E5"}
@@ -557,7 +557,7 @@ POST /api/v1/webhooks
 **Signature Verification:**
 
 ```
-X-FlowGuard-Signature: sha256=HMAC(payload, secret)
+X-Tulie Workspace-Signature: sha256=HMAC(payload, secret)
 ```
 
 **Retry Policy:** 3 attempts with exponential backoff (1s, 5s, 25s).
@@ -585,7 +585,7 @@ X-FlowGuard-Signature: sha256=HMAC(payload, secret)
 
 ```javascript
 // Client-side connection
-const ws = new WebSocket('wss://app.flowguard.app/ws?token=<jwt>')
+const ws = new WebSocket('wss://app.tulie-workspace.app/ws?token=<jwt>')
 ```
 
 ### 9.2 Subscribe / Unsubscribe

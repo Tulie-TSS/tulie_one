@@ -1,4 +1,4 @@
-# KIẾN TRÚC HỆ THỐNG — FlowGuard
+# KIẾN TRÚC HỆ THỐNG — Tulie Workspace
 
 **Phiên bản:** 1.0  
 **Ngày:** 2026-03-19  
@@ -8,7 +8,7 @@
 
 ## 1. Tổng quan Kiến trúc
 
-FlowGuard sử dụng kiến trúc **Fullstack Monolith** với Next.js, kết hợp Supabase làm Backend-as-a-Service. Đây là lựa chọn tối ưu cho giai đoạn MVP → Scale (Phase 1-3).
+Tulie Workspace sử dụng kiến trúc **Fullstack Monolith** với Next.js, kết hợp Supabase làm Backend-as-a-Service. Đây là lựa chọn tối ưu cho giai đoạn MVP → Scale (Phase 1-3).
 
 ### 1.1 Triết lý Kiến trúc
 
@@ -154,7 +154,7 @@ graph TB
 ## 3. Cấu trúc Thư mục (Project Structure)
 
 ```
-flowguard/
+tulie-workspace/
 ├── .github/
 │   ├── workflows/
 │   │   ├── ci.yml                    # Lint + Test on PR
@@ -418,8 +418,8 @@ sequenceDiagram
 |-------------|-----|--------|----------|----------|
 | Local Dev | `localhost:3000` | `*` | Supabase local | Development |
 | Preview | `*.vercel.app` | PR branches | Supabase staging | PR review |
-| Staging | `staging.flowguard.app` | `develop` | Supabase staging | QA testing |
-| Production | `app.flowguard.app` | `main` | Supabase production | Live users |
+| Staging | `staging.tulie-workspace.app` | `develop` | Supabase staging | QA testing |
+| Production | `app.tulie-workspace.app` | `main` | Supabase production | Live users |
 
 ### 5.2 CI/CD Pipeline
 
@@ -445,7 +445,7 @@ flowchart LR
 
 ### 6.1 WebSocket Events
 
-FlowGuard sử dụng Supabase Realtime cho các events cần cập nhật tức thì:
+Tulie Workspace sử dụng Supabase Realtime cho các events cần cập nhật tức thì:
 
 | Channel | Event | Data | Subscribers |
 |---------|-------|------|-------------|

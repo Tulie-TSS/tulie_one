@@ -19,6 +19,6 @@ export const useLocaleStore = create<LocaleStore>()(
                 return entry?.[get().locale] || key
             },
         }),
-        { name: 'flowguard-locale' }
+        { name: 'tulie-workspace-locale' }
     )
 )
