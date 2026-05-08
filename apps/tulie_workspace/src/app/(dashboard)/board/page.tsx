@@ -76,13 +76,13 @@ export default function BoardPage() {
   return (
     <div className="-m-3 md:-m-5 flex flex-col" style={{ height: 'calc(100vh - var(--header-height))' }}>
       {/* Top Bar */}
-      <div className="flex items-center justify-between px-5 py-3 flex-shrink-0 border-b bg-background">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between px-5 py-3 gap-3 flex-shrink-0 border-b bg-background">
         <div>
           <h1 className="text-lg font-semibold text-foreground">{t('board.title')}</h1>
           <p className="text-xs text-muted-foreground">{t('board.subtitle')}</p>
         </div>
         {(isAdmin || isManager || isMaker) && (
-          <Button asChild>
+          <Button asChild className="w-full sm:w-auto">
             <Link href="/tasks/new">
               <Plus className="size-4" />
               {t('board.createTask')}

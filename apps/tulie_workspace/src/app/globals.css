@@ -218,13 +218,38 @@
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: oklch(80% .01 270);
-  border-radius: 3px;
+  border-radius: 6px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: oklch(65% .01 270);
 }
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  .card-content {
+    padding: 1rem !important;
+  }
+}
+
+/* Specific horizontal scrollbar for boards */
+.overflow-x-auto {
+  scrollbar-width: thin;
+}
+

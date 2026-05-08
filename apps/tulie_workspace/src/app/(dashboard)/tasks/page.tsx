@@ -51,23 +51,33 @@ export default function TasksPage() {
 
       {/* Search + Filter */}
       <div className="space-y-3">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-          <input
-            type="text"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder="Tìm kiếm công việc..."
-            className="w-full pl-9 pr-4 py-2 text-sm rounded-md border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
-          />
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Tìm kiếm công việc..."
+              className="w-full pl-9 pr-4 py-2 h-10 text-sm rounded-md border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
+            />
+          </div>
+          {(isAdmin || isManager || isMaker) && (
+            <Button asChild className="sm:hidden w-full">
+              <Link href="/tasks/new">
+                <Plus className="size-4" />
+                {t('tasks.createTask')}
+              </Link>
+            </Button>
+          )}
         </div>
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
           {FILTER_STATUSES.map(s => (
             <Button
               key={s}
               variant={filter === s ? 'default' : 'outline'}
               size="sm"
-              className="rounded-full"
+              className="rounded-full flex-shrink-0"
               onClick={() => setFilter(s)}
             >
               {s === 'all' ? t('tasks.all') : t(`status.${s}` as const)}

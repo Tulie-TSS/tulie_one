@@ -72,9 +72,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const { t } = useLocaleStore();
   const router = useRouter();
-  const { state } = useSidebar();
+  const { state, setOpenMobile } = useSidebar();
   const [userProfile, setUserProfile] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(true);
+
+  const handleLinkClick = () => {
+    setOpenMobile(false);
+  };
 
   React.useEffect(() => {
     async function fetchProfile() {
@@ -155,7 +159,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
+            <SidebarMenuButton size="lg" asChild onClick={handleLinkClick}>
               <Link href="/dashboard">
                 <div className="flex aspect-square size-8 items-center justify-center overflow-hidden">
                   <img src="/logo.png" alt="Tulie Logo" className="size-8 object-contain" />
@@ -201,6 +205,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       asChild
                       isActive={active}
                       tooltip={t(navItem.labelKey as any)}
+                      onClick={handleLinkClick}
                     >
                       <Link href={navItem.href}>
                         <navItem.icon className="size-4" />
@@ -229,6 +234,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   asChild
                   isActive={active}
                   tooltip={t(navItem.labelKey as any)}
+                  onClick={handleLinkClick}
                 >
                   <Link href={navItem.href}>
                     <navItem.icon className="size-4" />

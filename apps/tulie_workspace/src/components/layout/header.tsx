@@ -57,6 +57,13 @@ export function Header() {
                 </Link>
             </Button>
 
+            {/* Mobile Search Icon */}
+            <Button variant="ghost" size="icon" asChild className="md:hidden ml-1">
+                <Link href="/search">
+                    <Search className="size-5" />
+                </Link>
+            </Button>
+
             <div className="flex flex-1 items-center justify-end gap-2 md:gap-4 ml-auto">
                 {/* Notification Bell */}
                 <Popover open={open} onOpenChange={setOpen}>
@@ -118,7 +125,7 @@ export function Header() {
                     </PopoverContent>
                 </Popover>
 
-                <Badge variant="secondary" className="hidden md:inline-flex text-xs font-semibold">
+                <Badge variant="secondary" className="hidden sm:inline-flex text-[10px] md:text-xs font-semibold">
                     WIP: 1/2
                 </Badge>
             </div>

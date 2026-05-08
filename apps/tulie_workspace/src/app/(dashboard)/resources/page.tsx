@@ -154,9 +154,9 @@ export default function ResourcesPage() {
                 </Card>
             )}
 
-            <div className="flex-1 flex gap-4 min-h-0">
-                {/* Sidebar list */}
-                <div className="w-64 flex flex-col gap-2 overflow-y-auto shrink-0 pr-2 border-r">
+            <div className="flex-1 flex flex-col md:flex-row gap-4 min-h-0 overflow-hidden">
+                {/* Sidebar list - scrollable horizontally on mobile, vertically on desktop */}
+                <div className="w-full md:w-64 flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-y-auto shrink-0 pb-2 md:pb-0 md:pr-2 border-b md:border-b-0 md:border-r">
                     {loading ? (
                         <div className="flex justify-center py-10">
                             <Loader2 className="size-6 animate-spin text-muted-foreground" />
@@ -168,7 +168,7 @@ export default function ResourcesPage() {
                             <div key={r.id} className="group relative">
                                 <button
                                     onClick={() => setSelectedResource(r)}
-                                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-left ${
+                                    className={`w-full flex items-center gap-2 md:gap-3 px-3 py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-medium transition-all text-left whitespace-nowrap md:whitespace-normal ${
                                         selectedResource?.id === r.id 
                                         ? 'bg-primary text-primary-foreground shadow-md' 
                                         : 'hover:bg-muted text-muted-foreground hover:text-foreground'
