@@ -17,9 +17,9 @@ export function RetailCustomerSyncButton() {
             const result = await syncAllRetailOrdersToCustomers()
             toast.success(`Đã đồng bộ thành công ${result.count} khách hàng từ đơn hàng cũ`)
             router.refresh()
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error syncing customers:', error)
-            toast.error('Có lỗi xảy ra khi đồng bộ dữ liệu')
+            toast.error(error.message || 'Có lỗi xảy ra khi đồng bộ dữ liệu')
         } finally {
             setIsLoading(false)
         }

@@ -658,6 +658,7 @@ export async function deleteRetailOrders(ids: string[]) {
 export async function syncAllRetailOrdersToCustomers() {
     try {
         const supabase = await createClient()
+        const { data: { user } } = await supabase.auth.getUser()
         
         // 1. Fetch all retail orders
         const { data: orders, error: ordersError } = await supabase
@@ -678,24 +679,34 @@ export async function syncAllRetailOrdersToCustomers() {
         // 3. Group unique customers by phone from orders
         const newCustomersMap = new Map<string, any>()
         
+        // Find a fallback admin ID if needed
+        let fallbackUserId = user?.id
+        if (!fallbackUserId) {
+            const { data: admin } = await supabase.from('users').select('id').eq('role', 'admin').limit(1).single()
+            fallbackUserId = admin?.id
+        }
+
         for (const order of orders) {
             if (!order.customer_phone || existingPhones.has(order.customer_phone)) continue
             
             if (!newCustomersMap.has(order.customer_phone)) {
                 newCustomersMap.set(order.customer_phone, {
-                    company_name: order.customer_name,
+                    company_name: order.customer_name || 'Khách lẻ',
                     phone: order.customer_phone,
-                    email: order.customer_email,
+                    email: order.customer_email || null,
                     customer_type: 'individual',
                     status: 'customer',
                     address: order.shipping_info?.address || order.metadata?.address || '',
-                    created_by: order.created_by,
-                    assigned_to: order.created_by
+                    is_info_unlocked: true,
+                    created_by: order.created_by || fallbackUserId,
+                    assigned_to: order.created_by || fallbackUserId
                 })
             }
         }
 
         if (newCustomersMap.size === 0) return { count: 0 }
+
+        console.log(`[syncAllRetailOrdersToCustomers] Attempting to insert ${newCustomersMap.size} new customers`)
 
         // 4. Batch insert new customers
         const { data: inserted, error: insertError } = await supabase
@@ -705,12 +716,13 @@ export async function syncAllRetailOrdersToCustomers() {
 
         if (insertError) {
             console.error('[syncAllRetailOrdersToCustomers] Insert error:', insertError)
-            throw insertError
+            // Return error details to help debugging
+            throw new Error(`Insert failed: ${insertError.message} (${insertError.code})`)
         }
 
         revalidatePath('/studio/customers')
         return { count: inserted?.length || 0 }
-    } catch (err) {
+    } catch (err: any) {
         console.error('Error syncing orders to customers:', err)
         throw err
     }
