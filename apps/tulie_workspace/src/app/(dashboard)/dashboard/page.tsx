@@ -48,7 +48,7 @@ export default function DashboardPage() {
 
       {/* Quarantine Alert — only managers see it */}
       {canManage && quarantineTasks.length > 0 && (
-        <Link href="/quarantine" className="flex items-center gap-3 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 hover:bg-amber-500/15 transition-colors">
+        <Link href="/quarantine" className="flex items-center gap-3 p-4 rounded-xl bg-primary/10 border border-primary/20 text-primary hover:bg-primary/15 transition-colors">
           <AlertCircle className="h-5 w-5 flex-shrink-0" />
           <span className="font-medium text-sm">
             {quarantineTasks.length} {t('dashboard.tasksTriage')}
@@ -137,7 +137,7 @@ export default function DashboardPage() {
                       <span className="font-medium text-foreground">{g.title}</span>
                       <span className="text-muted-foreground">{g.progress}%</span>
                     </div>
-                    <Progress value={g.progress} className={`h-1.5 ${g.progress >= 80 ? '[&>div]:bg-emerald-500' : ''}`} />
+                    <Progress value={g.progress} className={`h-1.5 ${g.progress >= 80 ? '[&>div]:bg-primary' : ''}`} />
                   </div>
                 ))}
               </CardContent>

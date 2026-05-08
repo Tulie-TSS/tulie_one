@@ -16,7 +16,8 @@ import {
     Package,
     Calendar,
     ShoppingBag,
-    History
+    History,
+    Plus
 } from 'lucide-react'
 import { getCustomerById } from '@/lib/supabase/services/customer-service'
 import { getRetailOrdersByCustomerPhone } from '@/lib/supabase/services/retail-order-service'

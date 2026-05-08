@@ -144,7 +144,7 @@ export default function BoardPage() {
 
                           {/* Carried-over warning */}
                           {task.carried_over_count > 0 && (
-                            <div className="flex items-center gap-1 mb-2 text-xs text-amber-600">
+                            <div className="flex items-center gap-1 mb-2 text-xs text-foreground/70">
                               <AlertTriangle className="size-3" />
                               <span>Chuyển tiếp {task.carried_over_count} lần</span>
                             </div>
@@ -183,7 +183,7 @@ export default function BoardPage() {
                                 → Backlog
                               </button>
                               <button
-                                className="text-[10px] px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 transition-colors"
+                                className="text-[10px] px-2 py-0.5 rounded bg-foreground/10 text-foreground hover:bg-foreground/20 transition-colors"
                                 onClick={() => handleStatusChange(task.id, 'quarantine')}
                               >
                                 → Cách ly
@@ -203,7 +203,7 @@ export default function BoardPage() {
                           {status === 'doing' && (
                             <div className="mt-2 flex gap-1">
                               <button
-                                className="text-[10px] flex-1 px-2 py-1 rounded bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+                                className="text-[10px] flex-1 px-2 py-1 rounded bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                                 onClick={() => handleStatusChange(task.id, 'in_review')}
                               >
                                 ✓ Gửi review
@@ -219,7 +219,7 @@ export default function BoardPage() {
                           {status === 'in_review' && canManage && (
                             <div className="mt-2 flex gap-1">
                               <button
-                                className="text-[10px] flex-1 px-2 py-1 rounded bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+                                className="text-[10px] flex-1 px-2 py-1 rounded bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                                 onClick={() => handleStatusChange(task.id, 'done')}
                               >
                                 ✓ Duyệt

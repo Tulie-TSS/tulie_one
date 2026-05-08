@@ -93,7 +93,7 @@ export default function QuarantinePage() {
       ) : (
         <div className="space-y-4">
           {quarantineTasks.map(task => (
-            <Card key={task.id} className="border-amber-500/50 hover:border-amber-500 transition-colors">
+            <Card key={task.id} className="border-border hover:border-primary/50 transition-colors">
               <CardContent className="p-6">
                 <div className="flex items-center gap-2 mb-3">
                   <StatusBadge status="quarantine" label={t('status.quarantine')} />
@@ -200,7 +200,7 @@ export default function QuarantinePage() {
                 ) : (
                   <RadioGroup value={selectedSwap || ''} onValueChange={setSelectedSwap}>
                     {doingTasks.map(task => (
-                      <label key={task.id} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors border-2 ${selectedSwap === task.id ? 'border-amber-500 bg-amber-500/5' : 'border-transparent bg-muted/50'}`}>
+                      <label key={task.id} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors border-2 ${selectedSwap === task.id ? 'border-primary bg-primary/5' : 'border-transparent bg-muted/50'}`}>
                         <RadioGroupItem value={task.id} />
                         <div className="flex-1">
                           <div className="font-medium text-sm line-clamp-1">{task.title}</div>

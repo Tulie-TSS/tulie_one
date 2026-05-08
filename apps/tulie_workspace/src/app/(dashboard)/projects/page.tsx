@@ -32,10 +32,10 @@ export default function ProjectsPage() {
   }
 
   const statusColor: Record<string, string> = {
-    active: 'bg-emerald-500',
-    paused: 'bg-amber-500',
-    completed: 'bg-muted-foreground',
-    cancelled: 'bg-destructive',
+    active: 'bg-primary',
+    paused: 'bg-muted-foreground/50',
+    completed: 'bg-foreground/20',
+    cancelled: 'bg-destructive/50',
   }
 
   return (
@@ -86,13 +86,13 @@ export default function ProjectsPage() {
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
                         <span>{p.done_count}/{p.task_count} công việc hoàn thành</span>
-                        <span className={`font-semibold ${pct >= 80 ? 'text-emerald-600' : pct >= 40 ? 'text-amber-600' : 'text-foreground'}`}>
+                        <span className={`font-semibold ${pct >= 80 ? 'text-foreground' : pct >= 40 ? 'text-foreground/70' : 'text-foreground/50'}`}>
                           {pct}%
                         </span>
                       </div>
                       <Progress
                         value={pct}
-                        className={`h-1.5 ${pct >= 80 ? '[&>div]:bg-emerald-500' : pct >= 40 ? '[&>div]:bg-amber-500' : ''}`}
+                        className={`h-1.5 ${pct >= 80 ? '[&>div]:bg-primary' : pct >= 40 ? '[&>div]:bg-foreground/40' : ''}`}
                       />
                     </div>
                     {p.owner && (
