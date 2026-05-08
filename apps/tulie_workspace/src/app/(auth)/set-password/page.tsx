@@ -155,7 +155,7 @@ export default function SetPasswordPage() {
         </Card>
 
         <p className="text-center text-[10px] text-muted-foreground uppercase tracking-widest pt-4">
-            &copy; 2026 TULIE Digital Solutions.
+            &copy; 2026 Tulie Digital Solutions.
         </p>
     </div>
   )

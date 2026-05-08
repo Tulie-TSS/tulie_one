@@ -50,7 +50,7 @@ export default function LoginPage() {
                     <div className="size-16 flex items-center justify-center mb-2">
                         <img src="/logo.png" alt="Tulie Logo" className="size-14 object-contain invert dark:invert-0" />
                     </div>
-                    <h1 className="text-3xl font-bold tracking-tight text-foreground">TULIE One</h1>
+                    <h1 className="text-3xl font-bold tracking-tight text-foreground">Tulie Workspace</h1>
                     <p className="text-muted-foreground text-sm max-w-[280px]">
                         Hệ thống quản trị hợp nhất dành cho Agency chuyên nghiệp
                     </p>
@@ -144,7 +144,7 @@ export default function LoginPage() {
                 </Card>
 
                 <p className="text-center text-[10px] text-muted-foreground uppercase tracking-widest pt-4">
-                    &copy; 2026 TULIE Digital Solutions. All rights reserved.
+                    &copy; 2026 Tulie Digital Solutions. All rights reserved.
                 </p>
             </div>
         </div>

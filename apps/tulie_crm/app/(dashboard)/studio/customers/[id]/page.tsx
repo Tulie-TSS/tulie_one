@@ -96,9 +96,9 @@ export default async function StudioCustomerDetailPage({ params }: any) {
             <div className="grid gap-6 lg:grid-cols-3 lg:items-stretch">
                 {/* Contact Info */}
                 <Card className="lg:col-span-2">
-                    <CardHeader className="pb-3 border-b bg-muted/5">
-                        <CardTitle className="text-lg font-medium flex items-center gap-2">
-                            <Package className="h-5 w-5 text-muted-foreground" />
+                    <CardHeader className="h-14 flex flex-row items-center pb-3 border-b bg-muted/5 space-y-0">
+                        <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                            <Package className="h-4 w-4 text-muted-foreground" />
                             Thông tin cá nhân
                         </CardTitle>
                     </CardHeader>
@@ -109,7 +109,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                             </div>
                             <div>
                                 <p className="text-[11px] text-muted-foreground font-medium tracking-tight">Số điện thoại</p>
-                                <a href={`tel:${customer.phone}`} className="font-semibold hover:underline text-base">
+                                <a href={`tel:${customer.phone}`} className="font-semibold hover:underline text-base text-foreground">
                                     {customer.phone || 'Chưa cập nhật'}
                                 </a>
                             </div>
@@ -120,7 +120,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                             </div>
                             <div>
                                 <p className="text-[11px] text-muted-foreground font-medium tracking-tight">Email</p>
-                                <a href={`mailto:${customer.email}`} className="font-semibold hover:underline">
+                                <a href={`mailto:${customer.email}`} className="font-semibold hover:underline text-foreground">
                                     {customer.email || 'Chưa cập nhật'}
                                 </a>
                             </div>
@@ -131,7 +131,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                             </div>
                             <div>
                                 <p className="text-[11px] text-muted-foreground font-medium tracking-tight">Địa chỉ giao hàng</p>
-                                <p className="font-medium">{customer.address || 'Chưa cập nhật'}</p>
+                                <p className="font-medium text-foreground">{customer.address || 'Chưa cập nhật'}</p>
                             </div>
                         </div>
                         <Separator className="sm:col-span-2" />
@@ -156,8 +156,8 @@ export default async function StudioCustomerDetailPage({ params }: any) {
 
                 {/* Lifetime Value */}
                 <Card className="flex flex-col">
-                    <CardHeader className="pb-3 border-b bg-muted/5">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Giá trị vòng đời (LTV)</CardTitle>
+                    <CardHeader className="h-14 flex flex-row items-center pb-3 border-b bg-muted/5 space-y-0">
+                        <CardTitle className="text-sm font-semibold text-foreground">Giá trị vòng đời (LTV)</CardTitle>
                     </CardHeader>
                     <CardContent className="flex flex-col items-center justify-center flex-1 py-8">
                         <div className="text-center space-y-1">

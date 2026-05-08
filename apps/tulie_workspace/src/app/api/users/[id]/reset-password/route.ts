@@ -47,6 +47,10 @@ export async function POST(
       }
     })
 
+    if (error || !recoveryData?.properties) {
+      return NextResponse.json({ error: error?.message || 'Không thể tạo link reset mật khẩu.' }, { status: 400 })
+    }
+
     const hashedToken = recoveryData.properties.hashed_token
     return NextResponse.json({ 
       success: true, 

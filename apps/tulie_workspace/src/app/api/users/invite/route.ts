@@ -40,8 +40,8 @@ export async function POST(request: Request) {
       }
     })
 
-    if (inviteError) {
-      return NextResponse.json({ error: inviteError.message }, { status: 400 })
+    if (inviteError || !inviteData?.properties) {
+      return NextResponse.json({ error: inviteError?.message || 'Không thể tạo link mời.' }, { status: 400 })
     }
 
     const newUserId = inviteData.user.id

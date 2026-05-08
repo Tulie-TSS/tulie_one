@@ -47,6 +47,10 @@ export async function POST(
       }
     })
 
+    if (error || !inviteData?.properties) {
+      return NextResponse.json({ error: error?.message || 'Không thể tạo link mời.' }, { status: 400 })
+    }
+
     const hashedToken = inviteData.properties.hashed_token
     return NextResponse.json({ success: true, inviteLink: `${siteUrl}/auth/callback?token_hash=${hashedToken}&type=invite` })
   } catch (error: any) {
