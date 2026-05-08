@@ -20,8 +20,8 @@ export default function LoginPage() {
         <div className="space-y-6 animate-in fade-in duration-500">
             {/* Logo and Brand */}
             <div className="text-center space-y-1 mb-8">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-white border border-slate-200 shadow-sm mb-4">
-                    <img src="/logo-icon.png" alt="Tulie" className="w-8 h-8 object-contain" />
+                <div className="inline-flex items-center justify-center w-12 h-12 mb-4">
+                    <img src="/logo-icon.png" alt="Tulie" className="w-12 h-12 object-contain" />
                 </div>
                 <h1 className="text-2xl font-bold tracking-tight text-slate-900">
                     Tulie CRM
