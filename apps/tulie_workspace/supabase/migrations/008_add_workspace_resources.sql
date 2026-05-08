@@ -24,11 +24,11 @@ CREATE POLICY "Users can view resources of their organization"
     ON workspace_resources FOR SELECT 
     USING (organization_id = (SELECT organization_id FROM user_profiles WHERE id = auth.uid()));
 
-CREATE POLICY "Admins and Managers can manage resources" 
+CREATE POLICY "Admins, Managers and Makers can manage resources" 
     ON workspace_resources FOR ALL 
     USING (
         organization_id = (SELECT organization_id FROM user_profiles WHERE id = auth.uid())
-        AND (SELECT role_type FROM user_profiles WHERE id = auth.uid()) IN ('admin', 'manager')
+        AND (SELECT role_type FROM user_profiles WHERE id = auth.uid()) IN ('admin', 'manager', 'maker')
     );
 
 -- Initial Data
