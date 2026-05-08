@@ -11,6 +11,7 @@ import { PageHeader, Card, CardContent, Button, Badge } from '@repo/ui'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { Avatar, AvatarFallback } from '@repo/ui'
 import { Loader2, Plus, Search } from 'lucide-react'
+import { useNewTaskStore } from '@/lib/stores/use-new-task-store'
 
 const FILTER_STATUSES: (TaskStatus | 'all')[] = [
   'all', 'backlog', 'ready', 'doing', 'in_review', 'done', 'quarantine', 'on_hold'
@@ -22,6 +23,7 @@ export default function TasksPage() {
   const { t } = useLocaleStore()
   const { canManage, isAdmin, isManager, isMaker } = useCurrentUser()
   const { tasks, loading } = useTasks()
+  const { setOpen: setOpenTaskSheet } = useNewTaskStore()
 
   const filteredTasks = useMemo(() => {
     let result = filter === 'all' ? tasks : tasks.filter(t => t.status === filter)
@@ -40,11 +42,9 @@ export default function TasksPage() {
     <div className="space-y-6">
       <PageHeader title={t('tasks.title')} description={t('tasks.subtitle')}>
         {(isAdmin || isManager || isMaker) && (
-          <Button asChild>
-            <Link href="/tasks/new">
-              <Plus className="size-4" />
-              {t('tasks.createTask')}
-            </Link>
+          <Button onClick={() => setOpenTaskSheet(true)}>
+            <Plus className="size-4" />
+            {t('tasks.createTask')}
           </Button>
         )}
       </PageHeader>
@@ -63,11 +63,9 @@ export default function TasksPage() {
             />
           </div>
           {(isAdmin || isManager || isMaker) && (
-            <Button asChild className="sm:hidden w-full">
-              <Link href="/tasks/new">
-                <Plus className="size-4" />
-                {t('tasks.createTask')}
-              </Link>
+            <Button onClick={() => setOpenTaskSheet(true)} className="sm:hidden w-full">
+              <Plus className="size-4" />
+              {t('tasks.createTask')}
             </Button>
           )}
         </div>

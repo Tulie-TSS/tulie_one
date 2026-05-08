@@ -9,12 +9,14 @@ import { useLocaleStore } from '@/lib/stores/locale-store'
 import { PageHeader, Card, CardContent, Button, Badge, Avatar, AvatarFallback } from '@repo/ui'
 import { WipBlockDialog } from '@/components/shared/wip-block-dialog'
 import { Plus, AlertTriangle } from 'lucide-react'
+import { useNewTaskStore } from '@/lib/stores/use-new-task-store'
 import type { TaskStatus } from '@/types/database.types'
 
 export default function BoardPage() {
   const { t } = useLocaleStore()
   const { user, canManage, isAdmin, isManager, isMaker } = useCurrentUser()
   const { tasks, loading, updateTaskStatus, refetch } = useTasks()
+  const { setOpen: setOpenTaskSheet } = useNewTaskStore()
 
   const [wipDialog, setWipDialog] = useState<{
     open: boolean
@@ -82,11 +84,9 @@ export default function BoardPage() {
           <p className="text-xs text-muted-foreground">{t('board.subtitle')}</p>
         </div>
         {(isAdmin || isManager || isMaker) && (
-          <Button asChild className="w-full sm:w-auto">
-            <Link href="/tasks/new">
-              <Plus className="size-4" />
-              {t('board.createTask')}
-            </Link>
+          <Button onClick={() => setOpenTaskSheet(true)} className="w-full sm:w-auto">
+            <Plus className="size-4" />
+            {t('board.createTask')}
           </Button>
         )}
       </div>
