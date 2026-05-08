@@ -79,7 +79,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                 </div>
                 <div className="flex items-center gap-2 shrink-0 ml-11 sm:ml-0">
                     <Button variant="outline" size="sm" asChild>
-                        <Link href={`/studio/orders/new?customer_phone=${customer.phone}`}>
+                        <Link href={`/studio/new?customer_phone=${customer.phone}`}>
                             <Plus className="mr-1.5 h-4 w-4" />
                             Tạo đơn mới
                         </Link>
@@ -97,8 +97,8 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                 {/* Contact Info */}
                 <Card className="lg:col-span-2">
                     <CardHeader className="h-14 flex flex-row items-center pb-3 border-b bg-muted/5 space-y-0">
-                        <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                            <Package className="h-4 w-4 text-muted-foreground" />
+                        <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                            <Package className="h-5 w-5 text-muted-foreground" />
                             Thông tin cá nhân
                         </CardTitle>
                     </CardHeader>
@@ -157,7 +157,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                 {/* Lifetime Value */}
                 <Card className="flex flex-col">
                     <CardHeader className="h-14 flex flex-row items-center pb-3 border-b bg-muted/5 space-y-0">
-                        <CardTitle className="text-sm font-semibold text-foreground">Giá trị vòng đời (LTV)</CardTitle>
+                        <CardTitle className="text-lg font-semibold text-foreground">Giá trị vòng đời (LTV)</CardTitle>
                     </CardHeader>
                     <CardContent className="flex flex-col items-center justify-center flex-1 py-8">
                         <div className="text-center space-y-1">
@@ -183,8 +183,8 @@ export default async function StudioCustomerDetailPage({ params }: any) {
 
             {/* Order History Table */}
             <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                    <CardTitle className="text-lg font-medium flex items-center gap-2">
+                <CardHeader className="h-14 flex flex-row items-center pb-3 border-b bg-muted/5 space-y-0">
+                    <CardTitle className="text-lg font-semibold flex items-center gap-2">
                         <History className="h-5 w-5 text-muted-foreground" />
                         Lịch sử mua hàng
                     </CardTitle>
@@ -205,7 +205,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                                 {orders.map((order) => (
                                     <tr key={order.id} className="border-b transition-colors hover:bg-muted/50">
                                         <td className="p-4 align-middle font-medium text-primary hover:underline">
-                                            <Link href={`/studio/orders/${order.id}`}>
+                                            <Link href={`/studio/${order.id}`}>
                                                 {order.order_number}
                                             </Link>
                                         </td>
