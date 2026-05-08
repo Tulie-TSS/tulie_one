@@ -35,7 +35,7 @@ import {
 } from 'lucide-react'
 import { TASK_STATUS_LABELS } from '@/lib/constants/task-status'
 import { EditCycleDialog } from '@/components/cycles/edit-cycle-dialog'
-import { useNewTask } from '@/lib/stores/use-new-task-store'
+import { useNewTaskStore } from '@/lib/stores/use-new-task-store'
 
 export default function CycleDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params)
@@ -43,7 +43,7 @@ export default function CycleDetailPage({ params }: { params: Promise<{ id: stri
     const { t } = useLocaleStore()
     const { cycle, projects, tasks, loading, error, refetch } = useCycle(id)
     const [editOpen, setEditOpen] = React.useState(false)
-    const openNewTask = useNewTask(state => state.openWithDefaults)
+    const openNewTask = useNewTaskStore(state => state.openWithDefaults)
 
     if (loading) {
         return (
