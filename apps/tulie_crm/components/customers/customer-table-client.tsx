@@ -1,7 +1,7 @@
 'use client'
 
 import { DataTable } from '@/components/shared/data-table'
-import { customerColumns } from './customer-columns'
+import { getCustomerColumns } from './customer-columns'
 import { Tag, UserPlus, Building2, User } from 'lucide-react'
 import { deleteCustomers, updateCustomersStatus, reassignCustomers } from '@/lib/supabase/services/customer-service'
 import { Tabs, TabsList, TabsTrigger } from '@repo/ui'
@@ -12,13 +12,15 @@ interface CustomerTableClientProps {
     users: any[]
     defaultTab?: 'business' | 'individual'
     hideTabs?: boolean
+    isStudio?: boolean
 }
 
 export function CustomerTableClient({
     data,
     users,
     defaultTab = 'business',
-    hideTabs = false
+    hideTabs = false,
+    isStudio = false
 }: CustomerTableClientProps) {
     const handleDelete = async (rows: any[]) => {
         const ids = rows.map((r) => r.id)
@@ -78,7 +80,7 @@ export function CustomerTableClient({
             )}
 
             <DataTable
-                columns={customerColumns}
+                columns={getCustomerColumns(isStudio)}
                 data={filteredData}
                 searchKey={hideTabs ? (defaultTab === 'business' ? "company_name" : "representative") : (activeTab === 'business' ? "company_name" : "representative")}
                 searchPlaceholder={hideTabs ? (defaultTab === 'business' ? "Tìm theo tên công ty..." : "Tìm tên khách hàng...") : (activeTab === 'business' ? "Tìm theo tên công ty..." : "Tìm tên khách hàng...")}

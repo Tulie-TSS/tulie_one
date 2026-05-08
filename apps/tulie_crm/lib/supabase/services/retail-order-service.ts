@@ -105,6 +105,40 @@ export async function getRetailOrderById(id: string) {
     }
 }
 
+export async function getRetailOrdersByCustomerId(customerId: string) {
+    try {
+        const supabase = await createClient()
+        const { data, error } = await supabase
+            .from('retail_orders')
+            .select('*, creator:users(*)')
+            .eq('customer_id', customerId)
+            .order('created_at', { ascending: false })
+
+        if (error) throw error
+        return data as RetailOrder[]
+    } catch (err) {
+        console.error('Error in getRetailOrdersByCustomerId:', err)
+        return []
+    }
+}
+
+export async function getRetailOrdersByCustomerPhone(phone: string) {
+    try {
+        const supabase = await createClient()
+        const { data, error } = await supabase
+            .from('retail_orders')
+            .select('*, creator:users(*)')
+            .eq('customer_phone', phone)
+            .order('created_at', { ascending: false })
+
+        if (error) throw error
+        return data as RetailOrder[]
+    } catch (err) {
+        console.error('Error in getRetailOrdersByCustomerPhone:', err)
+        return []
+    }
+}
+
 export async function createRetailOrder(order: Partial<RetailOrder>) {
     try {
         const supabase = await createClient()
@@ -177,6 +211,31 @@ export async function createRetailOrder(order: Partial<RetailOrder>) {
                 customer_name: insertedOrder.customer_name,
                 total_amount: insertedOrder.total_amount,
             }).catch(() => {})
+        }
+
+        // Link or update customer and update last contact
+        if (insertedOrder.customer_phone) {
+            const { data: customer } = await supabase
+                .from('customers')
+                .select('id')
+                .eq('phone', insertedOrder.customer_phone)
+                .maybeSingle()
+
+            if (customer) {
+                await supabase
+                    .from('customers')
+                    .update({ 
+                        last_contact_at: insertedOrder.created_at,
+                        company_name: insertedOrder.customer_name 
+                    })
+                    .eq('id', customer.id)
+                
+                // Update order to link to customer_id
+                await supabase
+                    .from('retail_orders')
+                    .update({ customer_id: customer.id })
+                    .eq('id', insertedOrder.id)
+            }
         }
 
         return insertedOrder as RetailOrder
@@ -267,6 +326,32 @@ export async function createPublicRetailOrder(order: Partial<RetailOrder>) {
         }
 
         revalidatePath('/studio')
+
+        // Link or update customer and update last contact
+        if (insertedOrder.customer_phone) {
+            const { data: customer } = await supabase
+                .from('customers')
+                .select('id')
+                .eq('phone', insertedOrder.customer_phone)
+                .maybeSingle()
+
+            if (customer) {
+                await supabase
+                    .from('customers')
+                    .update({ 
+                        last_contact_at: insertedOrder.created_at,
+                        company_name: insertedOrder.customer_name
+                    })
+                    .eq('id', customer.id)
+                
+                // Update order to link to customer_id
+                await supabase
+                    .from('retail_orders')
+                    .update({ customer_id: customer.id })
+                    .eq('id', insertedOrder.id)
+            }
+        }
+
         return insertedOrder as RetailOrder
     } catch (err) {
         console.error('Error creating public retail order:', err)
@@ -660,10 +745,11 @@ export async function syncAllRetailOrdersToCustomers() {
         const supabase = await createClient()
         const { data: { user } } = await supabase.auth.getUser()
         
-        // 1. Fetch all retail orders
+        // 1. Fetch all retail orders, ordered by created_at desc to get latest info first
         const { data: orders, error: ordersError } = await supabase
             .from('retail_orders')
-            .select('customer_name, customer_phone, customer_email, created_by, shipping_info, metadata')
+            .select('customer_name, customer_phone, customer_email, created_by, shipping_info, metadata, created_at')
+            .order('created_at', { ascending: false })
 
         if (ordersError) throw ordersError
         if (!orders || orders.length === 0) return { count: 0 }
@@ -699,7 +785,8 @@ export async function syncAllRetailOrdersToCustomers() {
                     address: order.shipping_info?.address || order.metadata?.address || '',
                     is_info_unlocked: true,
                     created_by: order.created_by || fallbackUserId,
-                    assigned_to: order.created_by || fallbackUserId
+                    assigned_to: order.created_by || fallbackUserId,
+                    last_contact_at: order.created_at // Use order date as last contact
                 })
             }
         }
@@ -716,7 +803,6 @@ export async function syncAllRetailOrdersToCustomers() {
 
         if (insertError) {
             console.error('[syncAllRetailOrdersToCustomers] Insert error:', insertError)
-            // Return error details to help debugging
             throw new Error(`Insert failed: ${insertError.message} (${insertError.code})`)
         }
 

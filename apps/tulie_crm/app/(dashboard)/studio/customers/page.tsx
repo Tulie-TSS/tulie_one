@@ -43,7 +43,7 @@ export default async function StudioCustomersPage() {
                 </div>
             </div>
 
-            <CustomerTableClient data={customers} users={users} defaultTab="individual" hideTabs={true} />
+            <CustomerTableClient data={customers} users={users} defaultTab="individual" hideTabs={true} isStudio={true} />
         </div>
     )
 }

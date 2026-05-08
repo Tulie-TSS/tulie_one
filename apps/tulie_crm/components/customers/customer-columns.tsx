@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { CellAction } from './cell-action'
 
-export const customerColumns: ColumnDef<Customer>[] = [
+export const getCustomerColumns = (isStudio = false): ColumnDef<Customer>[] => [
     {
         id: 'select',
         header: ({ table }) => (
@@ -43,22 +43,24 @@ export const customerColumns: ColumnDef<Customer>[] = [
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                     className="-ml-4"
                 >
-                    Công ty
+                    {isStudio ? 'Khách hàng' : 'Công ty'}
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             )
         },
         cell: ({ row }) => {
             const customer = row.original
+            const displayName = customer.customer_type === 'individual' 
+                ? (customer.company_name || customer.representative || 'Chưa đặt tên')
+                : customer.company_name
+
             return (
                 <div className="py-1">
                     <Link
-                        href={`/customers/${customer.id}`}
+                        href={isStudio ? `/studio/customers/${customer.id}` : `/customers/${customer.id}`}
                         className="text-sm font-medium text-foreground hover:underline"
                     >
-                        {customer.customer_type === 'individual'
-                            ? (customer.representative || 'Chưa đặt tên')
-                            : customer.company_name}
+                        {displayName}
                     </Link>
                     {customer.customer_type === 'business' && customer.tax_code && (
                         <p className="text-xs text-muted-foreground mt-0.5">MST: {customer.tax_code}</p>
