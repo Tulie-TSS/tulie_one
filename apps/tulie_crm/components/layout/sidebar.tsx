@@ -14,6 +14,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarRail,
+    useSidebar,
 } from '@repo/ui'
 import {
     LayoutGrid,
@@ -78,13 +79,18 @@ const navGroups = [
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     const pathname = usePathname()
+    const { setOpenMobile } = useSidebar()
+
+    const handleLinkClick = () => {
+        setOpenMobile(false)
+    }
 
     return (
         <Sidebar collapsible="icon" {...props}>
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
+                        <SidebarMenuButton size="lg" asChild onClick={handleLinkClick}>
                             <Link href="/dashboard">
                                 <div className="flex aspect-square size-8 items-center justify-center">
                                     <img src="/logo-icon.png" alt="Tulie" className="size-8 object-contain" />
@@ -103,7 +109,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 <SidebarGroup>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton asChild isActive={pathname === '/dashboard'} tooltip="Dashboard">
+                            <SidebarMenuButton asChild isActive={pathname === '/dashboard'} tooltip="Dashboard" onClick={handleLinkClick}>
                                 <Link href="/dashboard">
                                     <LayoutGrid />
                                     <span>Dashboard</span>
@@ -128,7 +134,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                                         : pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href + '/'))
                                     return (
                                         <SidebarMenuItem key={item.title}>
-                                            <SidebarMenuButton asChild isActive={isActive} tooltip={item.title}>
+                                            <SidebarMenuButton asChild isActive={isActive} tooltip={item.title} onClick={handleLinkClick}>
                                                 <Link href={item.href}>
                                                     <item.icon />
                                                     <span>{item.title}</span>
