@@ -5,10 +5,9 @@ import Link from 'next/link'
 import { useLocaleStore } from '@/lib/stores/locale-store'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { Button, Badge } from '@repo/ui'
-import {
-  Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
-} from '@repo/ui'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@repo/ui'
 import { EditMemberDialog } from '@/components/shared/edit-member-dialog'
+import { InviteMemberDialog } from '@/components/shared/invite-member-dialog'
 import { Loader2, UserPlus, Shield } from 'lucide-react'
 
 type Role = 'admin' | 'manager' | 'maker' | 'observer'
@@ -28,6 +27,7 @@ export default function TeamSettingsPage() {
   const [users, setUsers] = React.useState<Member[]>([])
   const [loading, setLoading] = React.useState(true)
   const [editTarget, setEditTarget] = useState<Member | null>(null)
+  const [inviteOpen, setInviteOpen] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
 
   const showToast = (msg: string) => {
@@ -35,19 +35,21 @@ export default function TeamSettingsPage() {
     setTimeout(() => setToast(null), 3000)
   }
 
-  React.useEffect(() => {
-    async function fetchUsers() {
-      const { createClient } = await import('@/lib/supabase')
-      const supabase = createClient()
-      const { data } = await supabase
-        .from('user_profiles')
-        .select('id, full_name, email, role_type, personal_wip_limit, is_active')
-        .order('full_name')
-      if (data) setUsers(data as Member[])
-      setLoading(false)
-    }
-    fetchUsers()
+  const fetchUsers = React.useCallback(async () => {
+    setLoading(true)
+    const { createClient } = await import('@/lib/supabase')
+    const supabase = createClient()
+    const { data } = await supabase
+      .from('user_profiles')
+      .select('id, full_name, email, role_type, personal_wip_limit, is_active')
+      .order('full_name')
+    if (data) setUsers(data as Member[])
+    setLoading(false)
   }, [])
+
+  React.useEffect(() => {
+    fetchUsers()
+  }, [fetchUsers])
 
   const handleSave = async (data: { role_type: Role; personal_wip_limit: number; is_active: boolean }) => {
     if (!editTarget) return
@@ -86,7 +88,7 @@ export default function TeamSettingsPage() {
           <p className="text-sm text-muted-foreground mt-0.5">Quản lý thành viên và phân quyền hệ thống</p>
         </div>
         {isAdmin && (
-          <Button size="sm" onClick={() => showToast('Tính năng mời qua email đang được phát triển.')}>
+          <Button size="sm" onClick={() => setInviteOpen(true)}>
             <UserPlus className="size-4" />
             {t('settings.inviteMember')}
           </Button>
@@ -199,6 +201,15 @@ export default function TeamSettingsPage() {
         member={editTarget}
         currentUserRole={currentUser?.role_type ?? 'observer'}
         onSave={handleSave}
+      />
+
+      <InviteMemberDialog
+        open={inviteOpen}
+        onClose={() => setInviteOpen(false)}
+        onSuccess={() => {
+          showToast('Đã gửi lời mời thành công.')
+          fetchUsers()
+        }}
       />
 
       {toast && (
