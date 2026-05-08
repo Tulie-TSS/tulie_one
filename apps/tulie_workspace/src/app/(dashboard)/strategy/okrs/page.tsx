@@ -42,17 +42,19 @@ import {
     LayoutGrid,
     List
 } from 'lucide-react'
+import { NewOkrDialog } from '@/components/strategy/new-okr-dialog'
 
 export default function OkrPage() {
     const { t } = useLocaleStore()
     const { user } = useCurrentUser()
     const { cycles } = useCycles()
     const [selectedCycleId, setSelectedCycleId] = useState<string>('all')
-    const { objectives, loading, error } = useOkrs({ 
+    const { objectives, loading, error, refetch } = useOkrs({ 
         cycleId: selectedCycleId === 'all' ? undefined : selectedCycleId 
     })
 
     const [viewMode, setViewMode] = useState<'list' | 'cascade'>('cascade')
+    const [newOkrOpen, setNewOkrOpen] = useState(false)
 
     if (loading) {
         return (
@@ -85,12 +87,18 @@ export default function OkrPage() {
                             ))}
                         </SelectContent>
                     </Select>
-                    <Button>
+                    <Button onClick={() => setNewOkrOpen(true)}>
                         <Plus className="size-4 mr-2" />
                         Tạo OKR mới
                     </Button>
                 </div>
             </PageHeader>
+
+            <NewOkrDialog 
+                open={newOkrOpen} 
+                onOpenChange={setNewOkrOpen} 
+                onSuccess={refetch}
+            />
 
             <Tabs defaultValue="my" className="w-full">
                 <div className="flex items-center justify-between mb-4">
