@@ -65,15 +65,15 @@ export const translations = {
   // Vai trò / Roles
   // ============================================
   "role.maker": {
-    vi: "Thực thi (Developer/Designer)",
-    en: "Maker (Developer/Designer)",
+    vi: "Nhân viên (Maker)",
+    en: "Staff (Maker)",
   },
-  "role.manager": { vi: "Quản lý (PM/Lead)", en: "Manager (PM/Lead)" },
+  "role.manager": { vi: "CEO / Quản lý", en: "CEO / Manager" },
   "role.observer": {
     vi: "Quan sát (Stakeholder)",
     en: "Observer (Stakeholder)",
   },
-  "role.admin": { vi: "Quản trị viên", en: "Admin" },
+  "role.admin": { vi: "Quản trị viên (Admin)", en: "Admin" },
 
   // ============================================
   // Tổng quan / Dashboard

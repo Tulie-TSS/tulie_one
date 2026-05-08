@@ -10,10 +10,29 @@ export default function LoginPage() {
     const router = useRouter()
     const { t } = useLocaleStore()
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
-        setTimeout(() => router.push('/dashboard'), 800)
+        
+        const formData = new FormData(e.target as HTMLFormElement)
+        const email = formData.get('email') as string
+        const password = formData.get('password') as string
+
+        const { createClient } = await import('@/lib/supabase')
+        const supabase = createClient()
+        
+        const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        })
+
+        if (error) {
+            alert(error.message)
+            setLoading(false)
+        } else {
+            router.push('/dashboard')
+            router.refresh()
+        }
     }
 
     return (
@@ -33,12 +52,12 @@ export default function LoginPage() {
                 <form onSubmit={handleLogin} className="space-y-4">
                     <div className="text-left">
                         <label className="block mb-1.5 font-medium" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-fg)' }}>{t('auth.email')}</label>
-                        <input type="email" defaultValue="admin@curtis.com" className="w-full px-3 py-2.5"
+                        <input type="email" name="email" defaultValue="admin@curtis.com" className="w-full px-3 py-2.5"
                             style={{ border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--color-surface)', color: 'var(--color-fg)', fontSize: 'var(--text-sm)', outline: 'none' }} />
                     </div>
                     <div className="text-left">
                         <label className="block mb-1.5 font-medium" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-fg)' }}>{t('auth.password')}</label>
-                        <input type="password" defaultValue="password123" className="w-full px-3 py-2.5"
+                        <input type="password" name="password" defaultValue="password123" className="w-full px-3 py-2.5"
                             style={{ border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--color-surface)', color: 'var(--color-fg)', fontSize: 'var(--text-sm)', outline: 'none' }} />
                     </div>
                     <button type="submit" disabled={loading} className="w-full py-2.5 font-medium cursor-pointer"

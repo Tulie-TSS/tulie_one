@@ -44,24 +44,25 @@ import { getMockCurrentUser } from "@/lib/mock/data";
 import { useRouter } from "next/navigation";
 
 const NAV_ITEMS = [
-  { href: "/dashboard", labelKey: "nav.overview", icon: LayoutDashboard },
-  { href: "/board", labelKey: "nav.board", icon: KanbanSquare },
-  { href: "/focus", labelKey: "nav.focus", icon: Target },
-  { href: "/quarantine", labelKey: "nav.quarantine", icon: ShieldAlert },
+  { href: "/dashboard", labelKey: "nav.overview", icon: LayoutDashboard, allowedRoles: ['admin', 'manager', 'maker', 'observer'] },
+  { href: "/board", labelKey: "nav.board", icon: KanbanSquare, allowedRoles: ['admin', 'manager', 'maker'] },
+  { href: "/focus", labelKey: "nav.focus", icon: Target, allowedRoles: ['admin', 'manager', 'maker'] },
+  { href: "/quarantine", labelKey: "nav.quarantine", icon: ShieldAlert, allowedRoles: ['admin', 'manager'] },
   { type: "divider" },
-  { href: "/tasks", labelKey: "nav.tasks", icon: CheckSquare },
-  { href: "/projects", labelKey: "nav.projects", icon: FolderKanban },
-  { href: "/cycles", labelKey: "nav.cycles", icon: RefreshCw },
+  { href: "/tasks", labelKey: "nav.tasks", icon: CheckSquare, allowedRoles: ['admin', 'manager', 'maker', 'observer'] },
+  { href: "/projects", labelKey: "nav.projects", icon: FolderKanban, allowedRoles: ['admin', 'manager', 'maker', 'observer'] },
+  { href: "/cycles", labelKey: "nav.cycles", icon: RefreshCw, allowedRoles: ['admin', 'manager', 'maker', 'observer'] },
   { type: "divider" },
-  { href: "/analytics", labelKey: "nav.analytics", icon: BarChart3 },
-  { href: "/templates", labelKey: "nav.templates", icon: LayoutTemplate },
-  { href: "/strategy", labelKey: "nav.strategy", icon: TrendingUp },
+  { href: "/analytics", labelKey: "nav.analytics", icon: BarChart3, allowedRoles: ['admin', 'manager'] },
+  { href: "/templates", labelKey: "nav.templates", icon: LayoutTemplate, allowedRoles: ['admin', 'manager'] },
+  { href: "/strategy", labelKey: "nav.strategy", icon: TrendingUp, allowedRoles: ['admin', 'manager'] },
   { type: "divider" },
   {
     href: "/settings",
     labelKey: "nav.settings",
     icon: Settings,
     isBottom: true,
+    allowedRoles: ['admin', 'manager', 'maker', 'observer']
   },
 ];
 
@@ -69,16 +70,33 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const { t } = useLocaleStore();
   const router = useRouter();
-  const [userEmail, setUserEmail] = React.useState<string | null>(null);
+  const [userProfile, setUserProfile] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    const user = getMockCurrentUser();
-    if (user) {
-      setUserEmail(user.email ?? null);
+    async function fetchProfile() {
+      const { createClient } = await import("@/lib/supabase");
+      const supabase = createClient();
+      
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profile } = await supabase
+          .from("user_profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+        
+        setUserProfile(profile);
+      }
+      setLoading(false);
     }
+    fetchProfile();
   }, []);
 
   const handleSignOut = async () => {
+    const { createClient } = await import("@/lib/supabase");
+    const supabase = createClient();
+    await supabase.auth.signOut();
     router.push("/login");
     router.refresh();
   };
@@ -89,8 +107,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return pathname.startsWith(href);
   };
 
-  const mainNav = NAV_ITEMS.filter((n) => !("isBottom" in n) || !n.isBottom);
-  const bottomNav = NAV_ITEMS.filter((n) => "isBottom" in n && n.isBottom);
+  const role = userProfile?.role_type || 'observer';
+
+  const filteredNav = NAV_ITEMS.filter((item) => {
+    if ("type" in item && item.type === "divider") return true;
+    const navItem = item as any;
+    return navItem.allowedRoles.includes(role);
+  });
+
+  const mainNav = filteredNav.filter((n) => !("isBottom" in n) || !n.isBottom);
+  const bottomNav = filteredNav.filter((n) => "isBottom" in n && n.isBottom);
 
   return (
     <Sidebar variant="sidebar" {...props}>
@@ -187,15 +213,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarFallback className="rounded-lg">
-                      {userEmail?.charAt(0).toUpperCase() || "U"}
+                      {userProfile?.full_name?.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">
-                      {userEmail ? userEmail.split("@")[0] : "User"}
+                      {userProfile?.full_name || "User"}
                     </span>
                     <span className="truncate text-xs text-muted-foreground">
-                      {userEmail || "Loading..."}
+                      {t(`role.${userProfile?.role_type || 'observer'}` as any)}
                     </span>
                   </div>
                   <ChevronsUpDown className="ml-auto size-4" />
