@@ -73,6 +73,8 @@ interface DataTableProps<TData, TValue> {
     filters?: DataTableFilter[]
     onDelete?: (rows: TData[]) => Promise<void>
     bulkActions?: DataTableBulkAction<TData>[]
+    extraActions?: (rows: TData[]) => React.ReactNode
+    toolbarActions?: (rows: TData[]) => React.ReactNode
 }
 
 export function DataTable<TData, TValue>({
@@ -83,6 +85,8 @@ export function DataTable<TData, TValue>({
     filters,
     onDelete,
     bulkActions = [],
+    extraActions,
+    toolbarActions,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -264,6 +268,7 @@ export function DataTable<TData, TValue>({
                 </div>
 
                 <div className="flex items-center gap-2">
+                    {toolbarActions && toolbarActions(table.getFilteredRowModel().rows.map((row) => row.original))}
                     {hasSelection && (
                         <div className="flex items-center gap-2">
                             {onDelete && (
@@ -277,6 +282,8 @@ export function DataTable<TData, TValue>({
                                     Xóa ({selectedRows.length})
                                 </Button>
                             )}
+
+                            {extraActions && extraActions(selectedRows.map((row) => row.original))}
 
                             {bulkActions.length > 0 && (
                                 <DropdownMenu>

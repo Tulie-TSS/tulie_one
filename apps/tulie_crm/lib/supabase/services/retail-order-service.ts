@@ -71,6 +71,23 @@ export async function getRetailOrders() {
     }
 }
 
+export async function getRetailOrdersWithItems(ids: string[]) {
+    try {
+        const supabase = await createClient()
+        const { data, error } = await supabase
+            .from('retail_orders')
+            .select('*, items:retail_order_items(*)')
+            .in('id', ids)
+            .order('stt', { ascending: true })
+
+        if (error) throw error
+        return data as RetailOrder[]
+    } catch (err) {
+        console.error('Error in getRetailOrdersWithItems:', err)
+        return []
+    }
+}
+
 export async function getRetailOrderById(id: string) {
     try {
         const supabase = await createClient()

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { deleteRetailOrders, updateRetailOrder } from '@/lib/supabase/services/retail-order-service'
 import { Ban } from 'lucide-react'
+import { RetailOrderExportButton } from './order-export-button'
 
 interface RetailOrderListProps {
     initialData: RetailOrder[]
@@ -44,6 +45,39 @@ export function RetailOrderList({ initialData }: RetailOrderListProps) {
                 data={initialData}
                 searchKey="order_number"
                 searchPlaceholder="Tìm theo mã đơn (Ví dụ: ORD-001)..."
+                filters={[
+                    {
+                        columnId: 'order_status',
+                        title: 'Trạng thái đơn',
+                        options: [
+                            { label: 'Chờ xử lý', value: 'pending' },
+                            { label: 'Đang chỉnh sửa', value: 'editing' },
+                            { label: 'Xong chỉnh sửa', value: 'edit_done' },
+                            { label: 'Chờ giao hàng', value: 'waiting_ship' },
+                            { label: 'Đang giao hàng', value: 'shipping' },
+                            { label: 'Hoàn thành', value: 'completed' },
+                            { label: 'Đã hủy', value: 'cancelled' },
+                        ],
+                    },
+                    {
+                        columnId: 'brand',
+                        title: 'Thương hiệu',
+                        options: [
+                            { label: 'Agency', value: 'agency' },
+                            { label: 'Studio', value: 'studio' },
+                            { label: 'Academy', value: 'academy' },
+                        ],
+                    },
+                    {
+                        columnId: 'payment_status',
+                        title: 'Thanh toán',
+                        options: [
+                            { label: 'Chờ thanh toán', value: 'pending' },
+                            { label: 'Thanh toán một phần', value: 'partial' },
+                            { label: 'Đã thanh toán', value: 'paid' },
+                        ],
+                    },
+                ]}
                 onDelete={handleDelete}
                 bulkActions={[
                     {
@@ -53,6 +87,20 @@ export function RetailOrderList({ initialData }: RetailOrderListProps) {
                         variant: 'destructive',
                     },
                 ]}
+                extraActions={(rows) => (
+                    <RetailOrderExportButton 
+                        orderIds={rows.map(r => r.id)} 
+                        variant="outline"
+                        label={`Xuất ${rows.length} đơn đã chọn`}
+                    />
+                )}
+                toolbarActions={(rows) => (
+                    <RetailOrderExportButton 
+                        orderIds={rows.map(r => r.id)} 
+                        variant="secondary"
+                        label={`Xuất ${rows.length} đơn theo bộ lọc`}
+                    />
+                )}
             />
         </div>
     )
