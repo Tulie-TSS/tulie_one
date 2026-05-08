@@ -38,6 +38,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  useSidebar,
 } from "@repo/ui";
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui";
 import { getMockCurrentUser } from "@/lib/mock/data";
@@ -71,6 +72,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const { t } = useLocaleStore();
   const router = useRouter();
+  const { state } = useSidebar();
   const [userProfile, setUserProfile] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(true);
 
@@ -158,14 +160,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <div className="flex aspect-square size-8 items-center justify-center overflow-hidden">
                   <img src="/logo.png" alt="Tulie Logo" className="size-8 object-contain" />
                 </div>
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold text-foreground">
-                    Tulie Workspace
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    Productivity
-                  </span>
-                </div>
+                {state === "expanded" && (
+                  <div className="flex flex-col gap-0.5 leading-none">
+                    <span className="font-semibold text-foreground">
+                      Tulie Workspace
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      Productivity
+                    </span>
+                  </div>
+                )}
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -246,14 +250,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       {userProfile?.full_name?.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">
-                      {userProfile?.full_name || "User"}
-                    </span>
-                    <span className="truncate text-xs text-muted-foreground">
-                      {t(`role.${userProfile?.role_type || 'observer'}` as any)}
-                    </span>
-                  </div>
+                  {state === "expanded" && (
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-semibold">
+                        {userProfile?.full_name || "User"}
+                      </span>
+                      <span className="truncate text-xs text-muted-foreground">
+                        {t(`role.${userProfile?.role_type || 'observer'}` as any)}
+                      </span>
+                    </div>
+                  )}
                   <ChevronsUpDown className="ml-auto size-4" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
