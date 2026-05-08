@@ -4,6 +4,7 @@ import { Plus, Upload, Download, Users, Camera } from 'lucide-react'
 import { Button } from '@repo/ui'
 import Link from 'next/link'
 import { CustomerTableClient } from '@/components/customers/customer-table-client'
+import { RetailCustomerSyncButton } from '@/components/studio/customer-sync-button'
 
 export const dynamic = 'force-dynamic'
 
@@ -28,6 +29,7 @@ export default async function StudioCustomersPage() {
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
+                    <RetailCustomerSyncButton />
                     <Button variant="outline" size="sm">
                         <Download className="h-4 w-4" />
                         Xuất file

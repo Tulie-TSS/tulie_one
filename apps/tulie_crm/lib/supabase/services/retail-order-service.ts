@@ -650,3 +650,42 @@ export async function deleteRetailOrders(ids: string[]) {
         throw err
     }
 }
+
+/**
+ * Manually sync all historical retail orders to the customers table.
+ * This is useful after adding the customer linking logic to populate
+ * the customers table from old orders.
+ */
+export async function syncAllRetailOrdersToCustomers() {
+    try {
+        const supabase = await createClient()
+        
+        // Fetch all orders that don't have a customer_id yet
+        const { data: orders, error } = await supabase
+            .from('retail_orders')
+            .select('id, customer_name, customer_phone, customer_email, created_by, shipping_info, metadata')
+            .is('customer_id', null)
+
+        if (error) throw error
+        if (!orders || orders.length === 0) return { count: 0 }
+
+        console.log(`[syncAllRetailOrdersToCustomers] Found ${orders.length} orders to sync`)
+
+        let syncedCount = 0
+        for (const order of orders) {
+            // Updating each order will trigger the database trigger we created
+            const { error: updateError } = await supabase
+                .from('retail_orders')
+                .update({ customer_phone: order.customer_phone }) // Touching the record to fire trigger
+                .eq('id', order.id)
+
+            if (!updateError) syncedCount++
+        }
+
+        revalidatePath('/studio/customers')
+        return { count: syncedCount }
+    } catch (err) {
+        console.error('Error syncing orders to customers:', err)
+        throw err
+    }
+}
