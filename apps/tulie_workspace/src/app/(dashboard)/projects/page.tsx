@@ -42,9 +42,11 @@ export default function ProjectsPage() {
     <div className="space-y-6">
       <PageHeader title={t('projects.title')} description={t('projects.subtitle')}>
         {canManage && (
-          <Button>
-            <Plus className="size-4" />
-            {t('projects.create')}
+          <Button asChild>
+            <Link href="/projects/new">
+              <Plus className="size-4" />
+              {t('projects.create')}
+            </Link>
           </Button>
         )}
       </PageHeader>
@@ -57,7 +59,14 @@ export default function ProjectsPage() {
         <div className="flex flex-col items-center justify-center py-20 gap-3 text-muted-foreground">
           <FolderKanban className="size-10 opacity-30" />
           <p className="text-sm">Chưa có dự án nào trong chu kỳ hiện tại</p>
-          {canManage && <Button size="sm"><Plus className="size-3" /> Tạo dự án đầu tiên</Button>}
+          {canManage && (
+            <Button size="sm" asChild>
+              <Link href="/projects/new">
+                <Plus className="size-3" /> 
+                Tạo dự án đầu tiên
+              </Link>
+            </Button>
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
