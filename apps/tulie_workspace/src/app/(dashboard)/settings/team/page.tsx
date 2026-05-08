@@ -77,7 +77,7 @@ export default function TeamSettingsPage() {
   return (
     <div>
       <Link href="/settings" className="inline-flex items-center gap-1 no-underline mb-4 text-sm text-muted-foreground hover:text-foreground transition-colors">
-        ← {t('settings.backToSettings')}
+        {t('settings.backToSettings')}
       </Link>
 
       <div className="flex items-center justify-between mb-6">
@@ -86,7 +86,7 @@ export default function TeamSettingsPage() {
           <p className="text-sm text-muted-foreground mt-0.5">Quản lý thành viên và phân quyền hệ thống</p>
         </div>
         {isAdmin && (
-          <Button size="sm">
+          <Button size="sm" onClick={() => showToast('Tính năng mời qua email đang được phát triển.')}>
             <UserPlus className="size-4" />
             {t('settings.inviteMember')}
           </Button>
