@@ -75,7 +75,7 @@ export function RetailOrderExportButton({
                     index + 1,
                     order.order_number,
                     order.customer_name,
-                    order.customer_phone || "",
+                    order.customer_phone ? `="${order.customer_phone}"` : "",
                     address.replace(/"/g, '""'),
                     itemsText.replace(/"/g, '""'),
                     order.total_amount,
@@ -86,7 +86,13 @@ export function RetailOrderExportButton({
 
             // Convert to CSV with quotes and UTF-8 BOM
             const csvContent = "\ufeff" + [headers, ...rows].map(row => 
-                row.map(cell => `"${cell}"`).join(",")
+                row.map(cell => {
+                    // If cell is already a formula-like string (like phone number ="..."), don't wrap it again in quotes
+                    if (typeof cell === 'string' && cell.startsWith('="') && cell.endsWith('"')) {
+                        return cell;
+                    }
+                    return `"${cell}"`;
+                }).join(",")
             ).join("\n");
 
             // Create download link
