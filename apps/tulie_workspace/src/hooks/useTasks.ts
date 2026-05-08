@@ -50,6 +50,23 @@ export function useTasks(filters?: { status?: TaskStatus; assignedTo?: string })
     setError(null)
     try {
       const supabase = createClient()
+      
+      // Get current user to check role
+      const { data: { user: authUser } } = await supabase.auth.getUser()
+      if (!authUser) {
+        setTasks([])
+        setLoading(false)
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('role_type')
+        .eq('id', authUser.id)
+        .single()
+
+      const isMakerOrObserver = profile?.role_type === 'maker' || profile?.role_type === 'observer'
+
       let query = supabase
         .from('tasks')
         .select(`
@@ -63,7 +80,13 @@ export function useTasks(filters?: { status?: TaskStatus; assignedTo?: string })
       if (filters?.status) {
         query = query.eq('status', filters.status)
       }
-      if (filters?.assignedTo) {
+
+      // Role-based filtering
+      if (isMakerOrObserver) {
+        // Makers/Observers only see their own tasks
+        query = query.eq('assigned_to', authUser.id)
+      } else if (filters?.assignedTo) {
+        // Admins/Managers can filter by any user
         query = query.eq('assigned_to', filters.assignedTo)
       }
 

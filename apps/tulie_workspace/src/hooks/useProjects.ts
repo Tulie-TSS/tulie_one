@@ -36,6 +36,23 @@ export function useProjects(cycleId?: string): UseProjectsResult {
     setError(null)
     try {
       const supabase = createClient()
+
+      // Get current user to check role
+      const { data: { user: authUser } } = await supabase.auth.getUser()
+      if (!authUser) {
+        setProjects([])
+        setLoading(false)
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('role_type')
+        .eq('id', authUser.id)
+        .single()
+
+      const isMakerOrObserver = profile?.role_type === 'maker' || profile?.role_type === 'observer'
+
       let query = supabase
         .from('projects')
         .select(`
@@ -46,6 +63,26 @@ export function useProjects(cycleId?: string): UseProjectsResult {
 
       if (cycleId) {
         query = query.eq('cycle_id', cycleId)
+      }
+
+      // Role-based filtering for projects
+      if (isMakerOrObserver) {
+        // Only show projects where the user has at least one task assigned
+        const { data: userTasks } = await supabase
+          .from('tasks')
+          .select('project_id')
+          .eq('assigned_to', authUser.id)
+          .not('project_id', 'is', null)
+
+        const projectIds = Array.from(new Set((userTasks || []).map(t => t.project_id)))
+        
+        if (projectIds.length === 0) {
+          setProjects([])
+          setLoading(false)
+          return
+        }
+        
+        query = query.in('id', projectIds)
       }
 
       const { data, error: err } = await query

@@ -46,13 +46,53 @@ export function useCycles(): UseCyclesResult {
     setError(null)
     try {
       const supabase = createClient()
-      const { data, error: err } = await supabase
+      
+      // Get current user to check role
+      const { data: { user: authUser } } = await supabase.auth.getUser()
+      if (!authUser) {
+        setCycles([])
+        setLoading(false)
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('role_type')
+        .eq('id', authUser.id)
+        .single()
+
+      const isMakerOrObserver = profile?.role_type === 'maker' || profile?.role_type === 'observer'
+
+      let query = supabase
         .from('cycles')
         .select(`
           *,
           milestones(*)
         `)
         .order('start_date', { ascending: false })
+
+      // Role-based filtering for cycles
+      if (isMakerOrObserver) {
+        // Only show cycles where the user has at least one task assigned
+        // We use a separate query to get cycle IDs first for simplicity and reliability with current schema
+        const { data: userTasks } = await supabase
+          .from('tasks')
+          .select('cycle_id')
+          .eq('assigned_to', authUser.id)
+          .not('cycle_id', 'is', null)
+
+        const cycleIds = Array.from(new Set((userTasks || []).map(t => t.cycle_id)))
+        
+        if (cycleIds.length === 0) {
+          setCycles([])
+          setLoading(false)
+          return
+        }
+        
+        query = query.in('id', cycleIds)
+      }
+
+      const { data, error: err } = await query
 
       if (err) throw err
       setCycles(data || [])
