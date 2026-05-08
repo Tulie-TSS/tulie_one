@@ -97,7 +97,6 @@ export default async function StudioCustomerDetailPage({ params }: any) {
             </div>
 
             <div className="grid gap-6 lg:grid-cols-3 lg:items-stretch">
-            <div className="grid gap-6 lg:grid-cols-3 lg:items-stretch">
                 {/* Contact Info */}
                 <Card className="lg:col-span-2">
                     <CardHeader className="h-14 flex flex-row items-center pb-3 border-b bg-muted/5 space-y-0">
