@@ -8,6 +8,7 @@ import { Button, Badge } from '@repo/ui'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@repo/ui'
 import { EditMemberDialog } from '@/components/shared/edit-member-dialog'
 import { InviteMemberDialog } from '@/components/shared/invite-member-dialog'
+import { MemberActionsMenu } from '@/components/shared/member-actions-menu'
 import { Loader2, UserPlus, Shield } from 'lucide-react'
 
 type Role = 'admin' | 'manager' | 'maker' | 'observer'
@@ -28,11 +29,11 @@ export default function TeamSettingsPage() {
   const [loading, setLoading] = React.useState(true)
   const [editTarget, setEditTarget] = useState<Member | null>(null)
   const [inviteOpen, setInviteOpen] = useState(false)
-  const [toast, setToast] = useState<string | null>(null)
+  const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' } | null>(null)
 
-  const showToast = (msg: string) => {
-    setToast(msg)
-    setTimeout(() => setToast(null), 3000)
+  const showToast = (msg: string, type: 'success' | 'error' = 'success') => {
+    setToast({ msg, type })
+    setTimeout(() => setToast(null), 3500)
   }
 
   const fetchUsers = React.useCallback(async () => {
@@ -136,56 +137,55 @@ export default function TeamSettingsPage() {
                 </TableCell>
               </TableRow>
             ) : (
-              users.map(user => (
-                <TableRow key={user.id} className={!user.is_active ? 'opacity-50' : ''}>
+              users.map(member => (
+                <TableRow key={member.id} className={!member.is_active ? 'opacity-50' : ''}>
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full flex items-center justify-center bg-primary text-primary-foreground text-[11px] font-semibold shrink-0">
-                        {user.full_name?.charAt(0) || '?'}
+                        {member.full_name?.charAt(0) || '?'}
                       </div>
                       <div>
-                        <span className="font-medium text-foreground text-sm">{user.full_name}</span>
-                        {user.id === currentUser?.id && (
+                        <span className="font-medium text-foreground text-sm">{member.full_name}</span>
+                        {member.id === currentUser?.id && (
                           <span className="ml-1 text-[10px] text-primary">(bạn)</span>
                         )}
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="text-muted-foreground text-sm">{user.email}</TableCell>
+                  <TableCell className="text-muted-foreground text-sm">{member.email}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1">
-                      {user.role_type === 'admin' && <Shield className="size-3 text-destructive" />}
-                      <Badge variant={roleColors[user.role_type]}>
-                        {t(`role.${user.role_type}` as any)}
+                      {member.role_type === 'admin' && <Shield className="size-3 text-destructive" />}
+                      <Badge variant={roleColors[member.role_type]}>
+                        {t(`role.${member.role_type}` as any)}
                       </Badge>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1">
-                      <span className="font-semibold text-foreground">{user.personal_wip_limit}</span>
+                      <span className="font-semibold text-foreground">{member.personal_wip_limit}</span>
                       <span className="text-xs text-muted-foreground">task</span>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1.5">
-                      <span className={`w-2 h-2 rounded-full inline-block ${user.is_active ? 'bg-emerald-500' : 'bg-muted-foreground/40'}`} />
-                      <span className={`text-xs ${user.is_active ? 'text-emerald-600' : 'text-muted-foreground'}`}>
-                        {user.is_active ? t('team.active') : t('team.inactive')}
+                      <span className={`w-2 h-2 rounded-full inline-block ${member.is_active ? 'bg-emerald-500' : 'bg-muted-foreground/40'}`} />
+                      <span className={`text-xs ${member.is_active ? 'text-emerald-600' : 'text-muted-foreground'}`}>
+                        {member.is_active ? t('team.active') : t('team.inactive')}
                       </span>
                     </div>
                   </TableCell>
                   {canManage && (
                     <TableCell className="text-right">
-                      {/* Can't edit yourself if you're admin, or edit other admins if you're manager */}
-                      {(user.id !== currentUser?.id && !(user.role_type === 'admin' && !isAdmin)) && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setEditTarget(user)}
-                        >
-                          Chỉnh sửa
-                        </Button>
-                      )}
+                      <MemberActionsMenu
+                        member={member}
+                        currentUserId={currentUser?.id ?? ''}
+                        isAdmin={isAdmin}
+                        canManage={canManage}
+                        onEdit={() => setEditTarget(member)}
+                        onRefresh={fetchUsers}
+                        onToast={showToast}
+                      />
                     </TableCell>
                   )}
                 </TableRow>
@@ -213,8 +213,10 @@ export default function TeamSettingsPage() {
       />
 
       {toast && (
-        <div className="fixed bottom-6 right-6 px-4 py-3 rounded-lg bg-foreground text-background text-sm font-medium shadow-lg z-[100] animate-in slide-in-from-bottom-2">
-          ✓ {toast}
+        <div className={`fixed bottom-6 right-6 px-4 py-3 rounded-lg text-sm font-medium shadow-lg z-[100] animate-in slide-in-from-bottom-2 ${
+          toast.type === 'error' ? 'bg-destructive text-destructive-foreground' : 'bg-foreground text-background'
+        }`}>
+          {toast.type === 'error' ? '✗' : '✓'} {toast.msg}
         </div>
       )}
     </div>
