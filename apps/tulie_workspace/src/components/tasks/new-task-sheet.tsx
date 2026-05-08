@@ -21,6 +21,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
+    toast,
 } from '@repo/ui'
 import { Loader2, Send } from 'lucide-react'
 import { createClient } from '@/lib/supabase'
@@ -38,7 +39,6 @@ export function NewTaskSheet({ open, onOpenChange, onSuccess }: NewTaskSheetProp
     const { projects, loading: projectsLoading } = useProjects()
     
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState<string | null>(null)
     const [users, setUsers] = useState<{ id: string; full_name: string }[]>([])
     const [usersLoading, setUsersLoading] = useState(true)
 
@@ -81,7 +81,6 @@ export function NewTaskSheet({ open, onOpenChange, onSuccess }: NewTaskSheetProp
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
-        setError(null)
 
         try {
             const res = await fetch('/api/tasks', {
@@ -112,9 +111,10 @@ export function NewTaskSheet({ open, onOpenChange, onSuccess }: NewTaskSheetProp
                 requested_deadline: '',
             })
             if (onSuccess) onSuccess()
+            toast.success('Đã tạo công việc thành công')
             router.refresh()
         } catch (err: any) {
-            setError(err.message)
+            toast.error(err.message || 'Lỗi khi tạo công việc')
         } finally {
             setLoading(false)
         }
@@ -242,11 +242,6 @@ export function NewTaskSheet({ open, onOpenChange, onSuccess }: NewTaskSheetProp
                         />
                     </div>
 
-                    {error && (
-                        <div className="p-3 text-xs text-destructive bg-destructive/10 rounded-lg border border-destructive/20 font-medium">
-                            {error}
-                        </div>
-                    )}
 
                     <SheetFooter className="pt-6">
                         <Button variant="ghost" type="button" onClick={() => onOpenChange(false)} disabled={loading}>

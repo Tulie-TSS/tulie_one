@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useLocaleStore } from '@/lib/stores/locale-store'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
-import { PageHeader, Card, CardContent, Button, Input, Label } from '@repo/ui'
+import { PageHeader, Card, CardContent, Button, Input, Label, toast, useConfirm } from '@repo/ui'
 import { Loader2, Plus, ExternalLink, Trash2, Globe, Calendar, FileSpreadsheet } from 'lucide-react'
 import { createClient } from '@/lib/supabase'
 
@@ -18,6 +18,7 @@ interface Resource {
 export default function ResourcesPage() {
     const { t } = useLocaleStore()
     const { isAdmin, isManager, isMaker, user } = useCurrentUser()
+    const confirm = useConfirm()
     const [resources, setResources] = useState<Resource[]>([])
     const [loading, setLoading] = useState(true)
     const [selectedResource, setSelectedResource] = useState<Resource | null>(null)
@@ -68,17 +69,34 @@ export default function ResourcesPage() {
             setIsAdding(false)
             setNewResource({ name: '', url: '', type: 'other', is_embedded: true })
             setSelectedResource(data)
+            toast.success('Đã thêm tài liệu mới')
+        } else if (error) {
+            toast.error('Lỗi khi thêm tài liệu: ' + error.message)
         }
     }
 
     const handleDelete = async (id: string) => {
-        if (!confirm('Bạn có chắc chắn muốn xóa tài liệu này?')) return
+        const isConfirmed = await confirm({
+            title: 'Xóa tài liệu',
+            description: 'Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác.',
+            variant: 'destructive'
+        })
+        
+        if (!isConfirmed) return
+
         const supabase = createClient()
-        await supabase.from('workspace_resources').delete().eq('id', id)
+        const { error } = await supabase.from('workspace_resources').delete().eq('id', id)
+        
+        if (error) {
+            toast.error('Lỗi khi xóa tài liệu: ' + error.message)
+            return
+        }
+
         setResources(resources.filter(r => r.id !== id))
         if (selectedResource?.id === id) {
             setSelectedResource(resources.find(r => r.id !== id) || null)
         }
+        toast.success('Đã xóa tài liệu')
     }
 
     const getIcon = (type: string) => {

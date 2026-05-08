@@ -7,6 +7,8 @@ export const metadata: Metadata = {
     keywords: ['task management', 'project management', 'WIP limit', 'flow state', 'productivity'],
 }
 
+import { Sonner, ConfirmProvider } from '@repo/ui'
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="vi" suppressHydrationWarning>
@@ -19,7 +21,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <a href="#main-content" className="skip-link">
                     Bỏ qua đến nội dung chính
                 </a>
-                {children}
+                <ConfirmProvider>
+                    {children}
+                </ConfirmProvider>
+                <Sonner position="top-right" expand={false} richColors />
             </body>
         </html>
     )

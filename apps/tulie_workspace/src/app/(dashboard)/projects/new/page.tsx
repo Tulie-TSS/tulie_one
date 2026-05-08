@@ -20,6 +20,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
+    toast,
 } from '@repo/ui'
 import { Loader2, ArrowLeft, Save } from 'lucide-react'
 import { createClient } from '@/lib/supabase'
@@ -31,7 +32,6 @@ export default function NewProjectPage() {
     const { activeCycle } = useCycles()
     
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState<string | null>(null)
     const [users, setUsers] = useState<{ id: string; full_name: string }[]>([])
     const [usersLoading, setUsersLoading] = useState(true)
 
@@ -73,7 +73,6 @@ export default function NewProjectPage() {
         }
 
         setLoading(true)
-        setError(null)
 
         try {
             const supabase = createClient()
@@ -87,10 +86,11 @@ export default function NewProjectPage() {
 
             if (insertError) throw insertError
 
+            toast.success('Đã khởi tạo dự án thành công')
             router.push('/projects')
             router.refresh()
         } catch (err: any) {
-            setError(err.message)
+            toast.error(err.message || 'Lỗi khi tạo dự án')
             setLoading(false)
         }
     }
@@ -193,11 +193,6 @@ export default function NewProjectPage() {
                             </div>
                         </div>
 
-                        {error && (
-                            <div className="p-4 text-sm text-destructive bg-destructive/10 rounded-xl border border-destructive/20 font-medium">
-                                {error}
-                            </div>
-                        )}
 
                         <div className="flex justify-end gap-3 pt-6 border-t border-muted/50">
                             <Button variant="ghost" type="button" onClick={() => router.back()} disabled={loading} className="h-12 px-6">
