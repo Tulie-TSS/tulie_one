@@ -300,6 +300,7 @@ export interface RetailOrder {
   customer_name: string
   customer_phone?: string
   customer_email?: string
+  customer_id?: string
   source_system?: string 
   external_id?: string 
   brand: Brand
