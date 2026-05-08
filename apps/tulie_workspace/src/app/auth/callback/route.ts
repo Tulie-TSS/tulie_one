@@ -15,6 +15,8 @@ export async function GET(request: Request) {
     if (!error) {
       const redirectUrl = (type === 'invite' || type === 'recovery') ? `${origin}/set-password` : `${origin}${next}`
       return NextResponse.redirect(redirectUrl)
+    } else {
+      console.error('Auth callback error (code):', error)
     }
   } else if (token_hash && type) {
     const { error } = await supabase.auth.verifyOtp({
@@ -24,6 +26,8 @@ export async function GET(request: Request) {
     if (!error) {
       const redirectUrl = (type === 'invite' || type === 'recovery') ? `${origin}/set-password` : `${origin}${next}`
       return NextResponse.redirect(redirectUrl)
+    } else {
+      console.error('Auth callback error (token_hash):', error)
     }
   }
 
