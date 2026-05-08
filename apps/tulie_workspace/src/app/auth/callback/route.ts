@@ -13,7 +13,8 @@ export async function GET(request: Request) {
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}`)
+      const redirectUrl = (type === 'invite' || type === 'recovery') ? `${origin}/settings` : `${origin}${next}`
+      return NextResponse.redirect(redirectUrl)
     }
   } else if (token_hash && type) {
     const { error } = await supabase.auth.verifyOtp({
@@ -21,7 +22,8 @@ export async function GET(request: Request) {
       type,
     })
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}`)
+      const redirectUrl = (type === 'invite' || type === 'recovery') ? `${origin}/settings` : `${origin}${next}`
+      return NextResponse.redirect(redirectUrl)
     }
   }
 

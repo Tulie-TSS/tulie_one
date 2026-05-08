@@ -84,6 +84,58 @@ export default function SettingsPage() {
                     <Button>{t('settings.save')}</Button>
                 </CardContent>
             </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-base">Bảo mật</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-5 max-w-xl">
+                    <form className="space-y-4" onSubmit={async (e) => {
+                        e.preventDefault()
+                        const form = e.target as HTMLFormElement
+                        const password = (form.elements.namedItem('password') as HTMLInputElement).value
+                        const confirm = (form.elements.namedItem('confirm') as HTMLInputElement).value
+                        
+                        if (password !== confirm) {
+                            alert('Mật khẩu xác nhận không khớp')
+                            return
+                        }
+
+                        // We can use supabase client here
+                        const { createClient } = await import('@/lib/supabase-client')
+                        const supabase = createClient()
+                        const { error } = await supabase.auth.updateUser({ password })
+                        
+                        if (error) {
+                            alert(error.message)
+                        } else {
+                            alert('Cập nhật mật khẩu thành công!')
+                            form.reset()
+                        }
+                    }}>
+                        <div className="space-y-2">
+                            <Label>Mật khẩu mới</Label>
+                            <input 
+                                name="password"
+                                type="password" 
+                                required
+                                className="w-full p-2 text-sm rounded-md border bg-background"
+                                placeholder="Tối thiểu 6 ký tự"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Xác nhận mật khẩu</Label>
+                            <input 
+                                name="confirm"
+                                type="password" 
+                                required
+                                className="w-full p-2 text-sm rounded-md border bg-background"
+                            />
+                        </div>
+                        <Button type="submit">Cập nhật mật khẩu</Button>
+                    </form>
+                </CardContent>
+            </Card>
         </div>
     )
 }
