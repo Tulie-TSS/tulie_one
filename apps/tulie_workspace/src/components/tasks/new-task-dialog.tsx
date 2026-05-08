@@ -6,12 +6,12 @@ import { useLocaleStore } from '@/lib/stores/locale-store'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { useProjects } from '@/hooks/useProjects'
 import { 
-    Sheet, 
-    SheetContent, 
-    SheetHeader, 
-    SheetTitle, 
-    SheetDescription,
-    SheetFooter,
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
     Button, 
     Label, 
     Input,
@@ -23,16 +23,16 @@ import {
     SelectValue,
     toast,
 } from '@repo/ui'
-import { Loader2, Send } from 'lucide-react'
+import { Loader2, Send, Calendar as CalendarIcon } from 'lucide-react'
 import { createClient } from '@/lib/supabase'
 
-interface NewTaskSheetProps {
+interface NewTaskDialogProps {
     open: boolean
     onOpenChange: (open: boolean) => void
     onSuccess?: () => void
 }
 
-export function NewTaskSheet({ open, onOpenChange, onSuccess }: NewTaskSheetProps) {
+export function NewTaskDialog({ open, onOpenChange, onSuccess }: NewTaskDialogProps) {
     const router = useRouter()
     const { t } = useLocaleStore()
     const { user } = useCurrentUser()
@@ -68,7 +68,6 @@ export function NewTaskSheet({ open, onOpenChange, onSuccess }: NewTaskSheetProp
         fetchUsers()
     }, [open])
 
-    // Set default project and assignee
     useEffect(() => {
         if (!projectsLoading && projects.length > 0 && !formData.project_id) {
             setFormData(prev => ({ ...prev, project_id: projects[0].id }))
@@ -100,6 +99,7 @@ export function NewTaskSheet({ open, onOpenChange, onSuccess }: NewTaskSheetProp
                 throw new Error(err.error || 'Lỗi khi tạo công việc')
             }
 
+            toast.success('Đã tạo công việc thành công')
             onOpenChange(false)
             setFormData({
                 title: '',
@@ -111,61 +111,60 @@ export function NewTaskSheet({ open, onOpenChange, onSuccess }: NewTaskSheetProp
                 requested_deadline: '',
             })
             if (onSuccess) onSuccess()
-            toast.success('Đã tạo công việc thành công')
             router.refresh()
         } catch (err: any) {
-            toast.error(err.message || 'Lỗi khi tạo công việc')
+            toast.error(err.message)
         } finally {
             setLoading(false)
         }
     }
 
     return (
-        <Sheet open={open} onOpenChange={onOpenChange}>
-            <SheetContent className="sm:max-w-md overflow-y-auto">
-                <SheetHeader className="mb-6">
-                    <SheetTitle>{t('tasks.createTask')}</SheetTitle>
-                    <SheetDescription>
-                        Thêm một công việc mới vào hệ thống quản lý Flow của bạn.
-                    </SheetDescription>
-                </SheetHeader>
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            <DialogContent className="sm:max-w-[600px] p-0 overflow-hidden border-none shadow-2xl">
+                <DialogHeader className="p-6 bg-muted/30 border-b">
+                    <DialogTitle className="text-xl font-bold">{t('tasks.createTask')}</DialogTitle>
+                    <DialogDescription className="text-xs">
+                        Triển khai công việc mới vào hệ thống quản lý Flow State.
+                    </DialogDescription>
+                </DialogHeader>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="p-6 space-y-6">
                     {/* Title */}
                     <div className="space-y-2">
-                        <Label htmlFor="title" className="text-sm font-semibold">Tiêu đề</Label>
+                        <Label htmlFor="title" className="text-[13px] font-bold uppercase tracking-wider text-muted-foreground/80">Tiêu đề công việc</Label>
                         <Input 
                             id="title"
                             placeholder="VD: Thiết kế UI trang Dashboard..."
                             value={formData.title}
                             onChange={e => setFormData(prev => ({ ...prev, title: e.target.value }))}
                             required
-                            className="bg-muted/30 border-none focus-visible:ring-primary/20"
+                            className="h-12 px-4 bg-background border-muted-foreground/20 focus-visible:ring-primary/20 text-base"
                         />
                     </div>
 
                     {/* Description */}
                     <div className="space-y-2">
-                        <Label htmlFor="description" className="text-sm font-semibold">Mô tả</Label>
+                        <Label htmlFor="description" className="text-[13px] font-bold uppercase tracking-wider text-muted-foreground/80">Mô tả chi tiết</Label>
                         <Textarea 
                             id="description"
-                            rows={3}
-                            placeholder="Chi tiết công việc..."
-                            className="bg-muted/30 border-none focus-visible:ring-primary/20 resize-none"
+                            rows={4}
+                            placeholder="Mục tiêu, yêu cầu kỹ thuật, tài liệu liên quan..."
+                            className="px-4 py-3 bg-background border-muted-foreground/20 focus-visible:ring-primary/20 resize-none text-sm leading-relaxed"
                             value={formData.description}
                             onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
                         />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Project */}
                         <div className="space-y-2">
-                            <Label className="text-sm font-semibold">Dự án</Label>
+                            <Label className="text-[13px] font-bold uppercase tracking-wider text-muted-foreground/80">Dự án</Label>
                             <Select 
                                 value={formData.project_id} 
                                 onValueChange={v => setFormData(prev => ({ ...prev, project_id: v }))}
                             >
-                                <SelectTrigger className="bg-muted/30 border-none">
+                                <SelectTrigger className="h-11 px-4 bg-background border-muted-foreground/20">
                                     <SelectValue placeholder="Chọn dự án" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -178,13 +177,13 @@ export function NewTaskSheet({ open, onOpenChange, onSuccess }: NewTaskSheetProp
 
                         {/* Assignee */}
                         <div className="space-y-2">
-                            <Label className="text-sm font-semibold">Người thực hiện</Label>
+                            <Label className="text-[13px] font-bold uppercase tracking-wider text-muted-foreground/80">Người thực hiện</Label>
                             <Select 
                                 value={formData.assigned_to} 
                                 onValueChange={v => setFormData(prev => ({ ...prev, assigned_to: v }))}
                             >
-                                <SelectTrigger className="bg-muted/30 border-none">
-                                    <SelectValue placeholder="Người thực hiện" />
+                                <SelectTrigger className="h-11 px-4 bg-background border-muted-foreground/20">
+                                    <SelectValue placeholder="Chọn thành viên" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {users.map(u => (
@@ -195,59 +194,61 @@ export function NewTaskSheet({ open, onOpenChange, onSuccess }: NewTaskSheetProp
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Eisenhower */}
                         <div className="space-y-2">
-                            <Label className="text-sm font-semibold">Phân loại</Label>
+                            <Label className="text-[13px] font-bold uppercase tracking-wider text-muted-foreground/80">Phân loại (Eisenhower)</Label>
                             <Select 
                                 value={formData.eisenhower_quadrant} 
                                 onValueChange={v => setFormData(prev => ({ ...prev, eisenhower_quadrant: v }))}
                             >
-                                <SelectTrigger className="bg-muted/30 border-none">
-                                    <SelectValue placeholder="Chọn độ ưu tiên" />
+                                <SelectTrigger className="h-11 px-4 bg-background border-muted-foreground/20">
+                                    <SelectValue placeholder="Độ ưu tiên" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Q1">Q1: Khẩn cấp & Quan trọng</SelectItem>
-                                    <SelectItem value="Q2">Q2: Quan trọng (Không khẩn cấp)</SelectItem>
-                                    <SelectItem value="Q3">Q3: Khẩn cấp (Không quan trọng)</SelectItem>
-                                    <SelectItem value="Q4">Q4: Không quan trọng & Không khẩn cấp</SelectItem>
+                                    <SelectItem value="Q2">Q2: Quan trọng (Dài hạn)</SelectItem>
+                                    <SelectItem value="Q3">Q3: Khẩn cấp (Phát sinh)</SelectItem>
+                                    <SelectItem value="Q4">Q4: Không quan trọng/khẩn cấp</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
 
-                        {/* Effort */}
-                        <div className="space-y-2">
-                            <Label htmlFor="effort" className="text-sm font-semibold">Ước tính (h)</Label>
-                            <Input 
-                                id="effort"
-                                type="number"
-                                min="0.5"
-                                step="0.5"
-                                value={formData.estimated_effort_hours}
-                                onChange={e => setFormData(prev => ({ ...prev, estimated_effort_hours: e.target.value }))}
-                                className="bg-muted/30 border-none focus-visible:ring-primary/20"
-                            />
+                        {/* Effort & Deadline */}
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="effort" className="text-[13px] font-bold uppercase tracking-wider text-muted-foreground/80">Ước tính (h)</Label>
+                                <Input 
+                                    id="effort"
+                                    type="number"
+                                    min="0.5"
+                                    step="0.5"
+                                    value={formData.estimated_effort_hours}
+                                    onChange={e => setFormData(prev => ({ ...prev, estimated_effort_hours: e.target.value }))}
+                                    className="h-11 px-4 bg-background border-muted-foreground/20"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="deadline" className="text-[13px] font-bold uppercase tracking-wider text-muted-foreground/80">Hạn chót</Label>
+                                <div className="relative">
+                                    <Input 
+                                        id="deadline"
+                                        type="date"
+                                        value={formData.requested_deadline}
+                                        onChange={e => setFormData(prev => ({ ...prev, requested_deadline: e.target.value }))}
+                                        className="h-11 pl-4 pr-10 bg-background border-muted-foreground/20"
+                                    />
+                                    <CalendarIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Deadline */}
-                    <div className="space-y-2">
-                        <Label htmlFor="deadline" className="text-sm font-semibold">Hạn chót</Label>
-                        <Input 
-                            id="deadline"
-                            type="date"
-                            value={formData.requested_deadline}
-                            onChange={e => setFormData(prev => ({ ...prev, requested_deadline: e.target.value }))}
-                            className="bg-muted/30 border-none focus-visible:ring-primary/20"
-                        />
-                    </div>
-
-
-                    <SheetFooter className="pt-6">
-                        <Button variant="ghost" type="button" onClick={() => onOpenChange(false)} disabled={loading}>
+                    <DialogFooter className="pt-4 border-t gap-3">
+                        <Button variant="ghost" type="button" onClick={() => onOpenChange(false)} disabled={loading} className="h-11 px-6">
                             Hủy bỏ
                         </Button>
-                        <Button type="submit" disabled={loading} className="flex-1 shadow-lg shadow-primary/20">
+                        <Button type="submit" disabled={loading} className="h-11 px-10 shadow-xl shadow-primary/20 font-bold flex-1 md:flex-none">
                             {loading ? (
                                 <Loader2 className="size-4 animate-spin" />
                             ) : (
@@ -257,9 +258,9 @@ export function NewTaskSheet({ open, onOpenChange, onSuccess }: NewTaskSheetProp
                                 </>
                             )}
                         </Button>
-                    </SheetFooter>
+                    </DialogFooter>
                 </form>
-            </SheetContent>
-        </Sheet>
+            </DialogContent>
+        </Dialog>
     )
 }

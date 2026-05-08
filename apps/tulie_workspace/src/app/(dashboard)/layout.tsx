@@ -5,7 +5,7 @@ import { AppSidebar } from '@/components/layout/sidebar'
 import { Header } from '@/components/layout/header'
 import { useQuickStrikeStore } from '@/lib/stores/quick-strike-store'
 import { useLocaleStore } from '@/lib/stores/locale-store'
-import { NewTaskSheet } from '@/components/tasks/new-task-sheet'
+import { NewTaskDialog } from '@/components/tasks/new-task-dialog'
 import { useNewTaskStore } from '@/lib/stores/use-new-task-store'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -26,7 +26,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     placeholder={t('quickStrike.placeholder')}
                     position="bottom"
                 />
-                <NewTaskSheet open={isOpen} onOpenChange={setOpen} />
+                <NewTaskDialog open={isOpen} onOpenChange={setOpen} />
             </SidebarInset>
         </SidebarProvider>
     )
