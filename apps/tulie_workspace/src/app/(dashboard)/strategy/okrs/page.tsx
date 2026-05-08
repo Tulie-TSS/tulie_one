@@ -43,6 +43,8 @@ import {
     List
 } from 'lucide-react'
 import { NewOkrDialog } from '@/components/strategy/new-okr-dialog'
+import { OkrDetailDialog } from '@/components/strategy/okr-detail-dialog'
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts'
 
 export default function OkrPage() {
     const { t } = useLocaleStore()
@@ -55,6 +57,13 @@ export default function OkrPage() {
 
     const [viewMode, setViewMode] = useState<'list' | 'cascade'>('cascade')
     const [newOkrOpen, setNewOkrOpen] = useState(false)
+    const [detailOpen, setDetailOpen] = useState(false)
+    const [selectedOkr, setSelectedOkr] = useState<Objective | null>(null)
+
+    const handleOpenDetail = (okr: Objective) => {
+        setSelectedOkr(okr)
+        setDetailOpen(true)
+    }
 
     if (loading) {
         return (
@@ -100,6 +109,14 @@ export default function OkrPage() {
                 onSuccess={refetch}
             />
 
+            <OkrDetailDialog
+                okr={selectedOkr}
+                open={detailOpen}
+                onOpenChange={setDetailOpen}
+                onSuccess={refetch}
+                allObjectives={objectives}
+            />
+
             <Tabs defaultValue="my" className="w-full">
                 <div className="flex items-center justify-between mb-4">
                     <TabsList>
@@ -143,10 +160,25 @@ export default function OkrPage() {
                     {myOkrs.length === 0 ? (
                         <EmptyOkrs level="cá nhân" />
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {myOkrs.map(okr => (
-                                <OkrCard key={okr.id} okr={okr} allObjectives={objectives} />
-                            ))}
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div className="lg:col-span-1">
+                                <Card className="h-full">
+                                    <CardHeader>
+                                        <CardTitle className="text-base flex items-center gap-2">
+                                            <Target className="size-4 text-primary" />
+                                            Life Balance Radar
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <LifeBalanceRadar okrs={myOkrs} />
+                                    </CardContent>
+                                </Card>
+                            </div>
+                            <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-max">
+                                {myOkrs.map(okr => (
+                                    <OkrCard key={okr.id} okr={okr} allObjectives={objectives} onOpenDetail={handleOpenDetail} />
+                                ))}
+                            </div>
                         </div>
                     )}
                 </TabsContent>
@@ -157,7 +189,7 @@ export default function OkrPage() {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {deptOkrs.map(okr => (
-                                <OkrCard key={okr.id} okr={okr} allObjectives={objectives} />
+                                <OkrCard key={okr.id} okr={okr} allObjectives={objectives} onOpenDetail={handleOpenDetail} />
                             ))}
                         </div>
                     )}
@@ -169,7 +201,7 @@ export default function OkrPage() {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {companyOkrs.map(okr => (
-                                <OkrCard key={okr.id} okr={okr} allObjectives={objectives} />
+                                <OkrCard key={okr.id} okr={okr} allObjectives={objectives} onOpenDetail={handleOpenDetail} />
                             ))}
                         </div>
                     )}
@@ -179,17 +211,27 @@ export default function OkrPage() {
     )
 }
 
-function OkrCard({ okr, allObjectives }: { okr: Objective; allObjectives: Objective[] }) {
+function OkrCard({ okr, allObjectives, onOpenDetail }: { okr: Objective; allObjectives: Objective[]; onOpenDetail: (okr: Objective) => void }) {
     const parent = allObjectives.find(o => o.id === okr.parent_objective_id)
     
     return (
-        <Card className="hover:border-primary/40 transition-all group">
+        <Card className="hover:border-primary/40 transition-all group cursor-pointer" onClick={() => onOpenDetail(okr)}>
             <CardHeader className="pb-3">
                 <div className="flex items-start justify-between mb-2">
                     <Badge variant="outline" className="capitalize text-[10px]">
                         {okr.level}
                     </Badge>
                     <div className="flex -space-x-2">
+                        {okr.category && (
+                            <Badge variant="secondary" className="mr-2 text-[10px] bg-muted/50">
+                                {okr.category === 'work' ? '💼 Work' : 
+                                 okr.category === 'personal' ? '🌱 Growth' : 
+                                 okr.category === 'health' ? '🏃 Health' : 
+                                 okr.category === 'family' ? '👨‍👩‍👧 Family' : 
+                                 okr.category === 'finance' ? '💰 Finance' : 
+                                 okr.category === 'hobby' ? '🎨 Hobby' : okr.category}
+                            </Badge>
+                        )}
                         <Avatar className="size-6 border-2 border-background">
                             <AvatarImage src={okr.owner?.avatar_url || ''} />
                             <AvatarFallback className="text-[10px]">{okr.owner?.full_name?.charAt(0)}</AvatarFallback>
@@ -238,7 +280,12 @@ function OkrCard({ okr, allObjectives }: { okr: Objective; allObjectives: Object
                             3 Projects
                         </div>
                     </div>
-                    <Button variant="ghost" size="sm" className="h-7 text-[11px] px-2 hover:bg-primary/10 hover:text-primary">
+                    <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-7 text-[11px] px-2 hover:bg-primary/10 hover:text-primary"
+                        onClick={(e) => { e.stopPropagation(); onOpenDetail(okr); }}
+                    >
                         Chi tiết <ArrowRight className="size-3 ml-1" />
                     </Button>
                 </div>
@@ -266,5 +313,50 @@ function EmptyOkrs({ level }: { level: string }) {
                 </Button>
             </CardContent>
         </Card>
+    )
+}
+
+function LifeBalanceRadar({ okrs }: { okrs: Objective[] }) {
+    const data = [
+        { subject: 'Work', category: 'work', value: 0, fullMark: 100 },
+        { subject: 'Growth', category: 'personal', value: 0, fullMark: 100 },
+        { subject: 'Health', category: 'health', value: 0, fullMark: 100 },
+        { subject: 'Family', category: 'family', value: 0, fullMark: 100 },
+        { subject: 'Finance', category: 'finance', value: 0, fullMark: 100 },
+        { subject: 'Hobby', category: 'hobby', value: 0, fullMark: 100 },
+    ]
+
+    data.forEach(item => {
+        const matchingOkrs = okrs.filter(o => (o.category || 'work') === item.category)
+        if (matchingOkrs.length > 0) {
+            const avgProgress = matchingOkrs.reduce((acc, o) => acc + o.progress_percentage, 0) / matchingOkrs.length
+            item.value = Math.round(avgProgress)
+        }
+    })
+
+    return (
+        <div className="h-[250px] w-full mt-4">
+            <ResponsiveContainer width="100%" height="100%">
+                <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
+                    <PolarGrid stroke="hsl(var(--muted-foreground))" strokeOpacity={0.2} />
+                    <PolarAngleAxis dataKey="subject" tick={{ fill: 'hsl(var(--foreground))', fontSize: 11 }} />
+                    <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                    <RechartsTooltip 
+                        contentStyle={{ borderRadius: '8px', border: '1px solid hsl(var(--border))', backgroundColor: 'hsl(var(--background))' }} 
+                        itemStyle={{ color: 'hsl(var(--foreground))' }}
+                    />
+                    <Radar
+                        name="Tiến độ"
+                        dataKey="value"
+                        stroke="hsl(var(--primary))"
+                        fill="hsl(var(--primary))"
+                        fillOpacity={0.3}
+                    />
+                </RadarChart>
+            </ResponsiveContainer>
+            <p className="text-xs text-muted-foreground text-center mt-2 italic">
+                Biểu đồ phân bổ tiến độ Life Pillars của bạn
+            </p>
+        </div>
     )
 }

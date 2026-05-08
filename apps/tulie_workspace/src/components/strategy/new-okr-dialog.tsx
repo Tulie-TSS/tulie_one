@@ -19,7 +19,8 @@ import {
     SelectValue,
     toast,
     Badge,
-    Separator
+    Separator,
+    Card
 } from '@repo/ui'
 import { Loader2, Plus, Target, Trash2, Network } from 'lucide-react'
 import { useCycles } from '@/hooks/useCycles'
@@ -47,7 +48,8 @@ export function NewOkrDialog({ open, onOpenChange, onSuccess }: NewOkrDialogProp
         cycle_id: 'none',
         department_id: 'none',
         owner_id: '',
-        parent_objective_id: 'none'
+        parent_objective_id: 'none',
+        category: 'work'
     })
 
     const [keyResults, setKeyResults] = useState([
@@ -104,6 +106,7 @@ export function NewOkrDialog({ open, onOpenChange, onSuccess }: NewOkrDialogProp
                     department_id: objective.department_id === 'none' ? null : objective.department_id,
                     owner_id: objective.owner_id,
                     parent_objective_id: objective.parent_objective_id === 'none' ? null : objective.parent_objective_id,
+                    category: objective.level === 'individual' ? objective.category : 'work'
                 })
                 .select()
                 .single()
@@ -139,7 +142,8 @@ export function NewOkrDialog({ open, onOpenChange, onSuccess }: NewOkrDialogProp
                 cycle_id: 'none',
                 department_id: 'none',
                 owner_id: '',
-                parent_objective_id: 'none'
+                parent_objective_id: 'none',
+                category: 'work'
             })
             setKeyResults([{ title: '', initial_value: 0, target_value: 100, unit: '%', weight: 1 }])
 
@@ -250,6 +254,25 @@ export function NewOkrDialog({ open, onOpenChange, onSuccess }: NewOkrDialogProp
                                 </SelectContent>
                             </Select>
                         </div>
+
+                        {objective.level === 'individual' && (
+                            <div className="space-y-2">
+                                <Label>Phân loại (Life Pillars)</Label>
+                                <Select value={objective.category} onValueChange={(val) => setObjective({ ...objective, category: val })}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Chọn phân loại mục tiêu" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="work">💼 Công việc</SelectItem>
+                                        <SelectItem value="personal">🌱 Phát triển cá nhân</SelectItem>
+                                        <SelectItem value="health">🏃 Sức khỏe</SelectItem>
+                                        <SelectItem value="family">👨‍👩‍👧 Gia đình</SelectItem>
+                                        <SelectItem value="finance">💰 Tài chính</SelectItem>
+                                        <SelectItem value="hobby">🎨 Sở thích / Đam mê</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        )}
                     </div>
 
                     <Separator />

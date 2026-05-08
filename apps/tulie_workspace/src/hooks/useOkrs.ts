@@ -14,6 +14,7 @@ export interface Objective {
   cycle_id: string | null
   status: string
   progress_percentage: number
+  category?: 'work' | 'personal' | 'health' | 'family' | 'finance' | 'hobby' | string
   key_results?: KeyResult[]
   owner?: { full_name: string; avatar_url: string | null }
 }
