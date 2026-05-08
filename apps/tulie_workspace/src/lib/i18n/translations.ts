@@ -220,7 +220,7 @@ export const translations = {
     vi: "Quản lý các dự án trong chu kỳ",
     en: "Manage projects in cycle",
   },
-  "projects.create": { vi: "+ Tạo dự án", en: "+ Create project" },
+  "projects.create": { vi: "Tạo dự án", en: "Create project" },
   "projects.backToList": { vi: "← Quay lại danh sách", en: "← Back to list" },
   "projects.tasks": { vi: "Công việc", en: "Tasks" },
 
@@ -232,7 +232,7 @@ export const translations = {
     vi: "Chu kỳ 12 tuần — Kế hoạch theo giai đoạn",
     en: "12-Week Cycles — Phase-based planning",
   },
-  "cycles.create": { vi: "+ Tạo chu kỳ", en: "+ Create cycle" },
+  "cycles.create": { vi: "Tạo chu kỳ", en: "Create cycle" },
   "cycles.backToList": { vi: "← Quay lại danh sách", en: "← Back to list" },
   "cycles.start": { vi: "Bắt đầu", en: "Start" },
   "cycles.end": { vi: "Kết thúc", en: "End" },
@@ -290,7 +290,7 @@ export const translations = {
   "settings.language": { vi: "Ngôn ngữ", en: "Language" },
   "settings.timezone": { vi: "Múi giờ", en: "Timezone" },
   "settings.save": { vi: "Lưu thay đổi", en: "Save changes" },
-  "settings.inviteMember": { vi: "+ Mời thành viên", en: "+ Invite member" },
+  "settings.inviteMember": { vi: "Mời thành viên", en: "Invite member" },
   "settings.backToSettings": {
     vi: "← Quay lại Cài đặt",
     en: "← Back to Settings",
@@ -336,7 +336,7 @@ export const translations = {
     vi: "Tạo công việc nhanh từ các mẫu có sẵn",
     en: "Quickly create tasks from predefined templates",
   },
-  "templates.create": { vi: "+ Tạo mẫu", en: "+ Create template" },
+  "templates.create": { vi: "Tạo mẫu", en: "Create template" },
   "templates.defaultEffort": { vi: "Nỗ lực mặc định", en: "Default effort" },
 
   // ============================================
