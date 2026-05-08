@@ -29,7 +29,7 @@ export default function FocusPage() {
                             {isPaused ? <Play className="size-4 mr-2" /> : <Pause className="size-4 mr-2" />}
                             {isPaused ? t('focus.resume') : t('focus.pause')}
                         </Button>
-                        <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                        <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
                             <CheckCircle className="size-4 mr-2" />
                             {t('focus.complete')}
                         </Button>

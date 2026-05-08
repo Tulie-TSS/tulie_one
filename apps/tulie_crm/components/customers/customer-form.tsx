@@ -58,10 +58,11 @@ const customerSchema = z.object({
 type CustomerFormData = z.infer<typeof customerSchema>
 
 interface CustomerFormProps {
- customer: Customer
+    customer: Customer
+    isStudio?: boolean
 }
 
-export function CustomerForm({ customer }: CustomerFormProps) {
+export function CustomerForm({ customer, isStudio = false }: CustomerFormProps) {
  const router = useRouter()
  const [isLoading, setIsLoading] = useState(false)
  const [isDeleting, setIsDeleting] = useState(false)
@@ -104,7 +105,8 @@ export function CustomerForm({ customer }: CustomerFormProps) {
  try {
  await updateCustomer(customer.id, data)
  toast.success('Cập nhật khách hàng thành công')
- router.push(`/customers/${customer.id}`)
+ const redirectPath = isStudio ? `/studio/customers/${customer.id}` : `/customers/${customer.id}`
+ router.push(redirectPath)
  router.refresh()
  } catch (error) {
  console.error('Failed to update customer:', error)
@@ -119,7 +121,7 @@ export function CustomerForm({ customer }: CustomerFormProps) {
  setIsDeleting(true)
  await deleteCustomer(customer.id)
  toast.success('Xóa khách hàng thành công')
- router.push('/customers')
+ router.push(isStudio ? '/studio/customers' : '/customers')
  router.refresh()
  } catch (error) {
  console.error('Failed to delete customer:', error)
@@ -163,7 +165,7 @@ export function CustomerForm({ customer }: CustomerFormProps) {
  <div className="flex items-center justify-between">
  <div className="flex items-center gap-4">
  <Button variant="ghost" size="icon" asChild>
- <Link href={`/customers/${customer.id}`}>
+ <Link href={isStudio ? `/studio/customers/${customer.id}` : `/customers/${customer.id}`}>
  <ArrowLeft className="h-5 w-5" />
  </Link>
  </Button>
@@ -202,7 +204,7 @@ export function CustomerForm({ customer }: CustomerFormProps) {
  </div>
 
  <div className="space-y-2">
- <Label htmlFor="tax_code">Mã số thuế</Label>
+ <Label htmlFor="tax_code">{isStudio ? 'Số CCCD' : 'Mã số thuế'}</Label>
  <Input id="tax_code" {...register('tax_code')} />
  </div>
 
@@ -328,7 +330,7 @@ export function CustomerForm({ customer }: CustomerFormProps) {
  {/* Actions */}
  <div className="flex items-center justify-end gap-4">
  <Button type="button" variant="outline" asChild>
- <Link href={`/customers/${customer.id}`}>Hủy</Link>
+ <Link href={isStudio ? `/studio/customers/${customer.id}` : `/customers/${customer.id}`}>Hủy</Link>
  </Button>
  <Button type="submit" disabled={isLoading}>
  {isLoading && <LoadingSpinner size="sm" className="mr-2" />}

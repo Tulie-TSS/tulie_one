@@ -5,13 +5,18 @@ import { revalidatePath } from 'next/cache'
 import { createNotification } from './notification-service'
 import { logActivity, logDestructiveAction, logStatusChange, logReassign } from './activity-service'
 
-export async function getCustomers() {
+export async function getCustomers(type?: 'individual' | 'business') {
     try {
         const supabase = await createClient()
-        const { data, error } = await supabase
+        let query = supabase
             .from('customers')
             .select('*, assigned_user:users!assigned_to(*)')
-            .order('created_at', { ascending: false })
+
+        if (type) {
+            query = query.eq('customer_type', type)
+        }
+
+        const { data, error } = await query.order('created_at', { ascending: false })
 
         if (error) {
             console.error('[getCustomers] Error fetching customers:', error)

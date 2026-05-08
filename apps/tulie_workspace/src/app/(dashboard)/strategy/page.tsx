@@ -98,10 +98,10 @@ export default function StrategyPage() {
   const currentMrrActual = growthTargets[0]?.mrr_actual ?? 0;
 
   const pillarColors: Record<string, string> = {
-    showcase: "bg-blue-500",
-    educate: "bg-emerald-500",
-    trust: "bg-amber-500",
-    convert: "bg-rose-500",
+    showcase: "bg-foreground",
+    educate: "bg-foreground/80",
+    trust: "bg-foreground/60",
+    convert: "bg-foreground/40",
   };
 
   return (
@@ -137,7 +137,7 @@ export default function StrategyPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <SectionIcon icon={Flag} className="text-emerald-500" />
+              <SectionIcon icon={Flag} className="text-foreground" />
               <CardTitle className="text-base">Growth Targets (MRR)</CardTitle>
             </div>
           </CardHeader>
@@ -165,7 +165,7 @@ export default function StrategyPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <SectionIcon icon={Package} className="text-blue-500" />
+              <SectionIcon icon={Package} className="text-foreground" />
               <CardTitle className="text-base">Products & Pricing</CardTitle>
             </div>
           </CardHeader>
@@ -182,7 +182,7 @@ export default function StrategyPage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="font-semibold text-sm text-emerald-600 dark:text-emerald-400">
+                  <div className="font-semibold text-sm text-foreground font-semibold">
                     {product.price_min && product.price_max
                       ? `${formatCurrencyCompact(product.price_min)} - ${formatCurrencyCompact(product.price_max)}`
                       : product.price_min
@@ -203,7 +203,7 @@ export default function StrategyPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <SectionIcon icon={Zap} className="text-amber-500" />
+            <SectionIcon icon={Zap} className="text-foreground/80" />
             <CardTitle className="text-base">Strategy Milestones</CardTitle>
           </div>
         </CardHeader>
@@ -213,8 +213,8 @@ export default function StrategyPage() {
               <div
                 key={milestone.id}
                 className={`p-2 rounded-md text-center ${
-                  milestone.status === 'completed' ? 'bg-emerald-500/10' :
-                  milestone.status === 'in_progress' ? 'bg-blue-500/10' :
+                  milestone.status === 'completed' ? 'bg-muted' :
+                  milestone.status === 'in_progress' ? 'bg-muted/80' :
                   milestone.status === 'delayed' ? 'bg-destructive/10' : 'bg-muted/50'
                 }`}
                 title={`${milestone.name} - ${MILESTONE_STATUS_LABELS[milestone.status][locale]} (${MILESTONE_PHASE_LABELS[milestone.phase][locale]})`}
@@ -234,7 +234,7 @@ export default function StrategyPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <SectionIcon icon={BarChart3} className="text-blue-500" />
+              <SectionIcon icon={BarChart3} className="text-foreground" />
               <CardTitle className="text-base">Content Pillars</CardTitle>
             </div>
           </CardHeader>
@@ -259,7 +259,7 @@ export default function StrategyPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <SectionIcon icon={Search} className="text-emerald-500" />
+              <SectionIcon icon={Search} className="text-foreground" />
               <CardTitle className="text-base">SEO Keywords</CardTitle>
             </div>
           </CardHeader>
@@ -292,7 +292,7 @@ export default function StrategyPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <SectionIcon icon={TrendingUp} className="text-emerald-500" />
+            <SectionIcon icon={TrendingUp} className="text-foreground" />
             <CardTitle className="text-base">Marketing Channels (CAC & LTV)</CardTitle>
           </div>
         </CardHeader>
@@ -314,7 +314,7 @@ export default function StrategyPage() {
                   </div>
                   <div className="flex justify-between text-xs">
                     <span className="text-muted-foreground">LTV:CAC:</span>
-                    <span className={`font-medium ${(channel.ltv_cac_ratio_target ?? 0) >= 3 ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'}`}>
+                    <span className={`font-medium ${(channel.ltv_cac_ratio_target ?? 0) >= 3 ? 'text-foreground font-semibold' : 'text-amber-600 dark:text-amber-400'}`}>
                       {channel.ltv_cac_ratio_target ? `${channel.ltv_cac_ratio_target}:1` : "-"}
                     </span>
                   </div>
@@ -330,7 +330,7 @@ export default function StrategyPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <SectionIcon icon={Briefcase} className="text-blue-500" />
+              <SectionIcon icon={Briefcase} className="text-foreground" />
               <CardTitle className="text-base">{t("strategy.dealsPipeline")}</CardTitle>
             </div>
           </CardHeader>
@@ -350,7 +350,7 @@ export default function StrategyPage() {
                       <div key={deal.id} className="p-3 rounded-md bg-muted/50">
                         <div className="flex items-center justify-between">
                           <span className="font-medium text-sm">{deal.name}</span>
-                          <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                          <span className="text-sm font-semibold text-foreground font-semibold">
                             {formatCurrency(deal.value)}
                           </span>
                         </div>
@@ -369,7 +369,7 @@ export default function StrategyPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <SectionIcon icon={Target} className="text-emerald-500" />
+              <SectionIcon icon={Target} className="text-foreground" />
               <CardTitle className="text-base">{t("strategy.salesTargets")}</CardTitle>
             </div>
           </CardHeader>
@@ -397,7 +397,7 @@ export default function StrategyPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <SectionIcon icon={Users} className="text-amber-500" />
+              <SectionIcon icon={Users} className="text-foreground/80" />
               <CardTitle className="text-base">{t("strategy.hiringPlans")}</CardTitle>
             </div>
           </CardHeader>
@@ -424,7 +424,7 @@ export default function StrategyPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <SectionIcon icon={Calendar} className="text-blue-500" />
+              <SectionIcon icon={Calendar} className="text-foreground" />
               <CardTitle className="text-base">{t("strategy.contentCalendar")}</CardTitle>
             </div>
           </CardHeader>
@@ -454,7 +454,7 @@ export default function StrategyPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <SectionIcon icon={TrendingUp} className="text-emerald-500" />
+            <SectionIcon icon={TrendingUp} className="text-foreground" />
             <CardTitle className="text-base">{t("strategy.monthlyFinance")}</CardTitle>
           </div>
         </CardHeader>
@@ -465,7 +465,7 @@ export default function StrategyPage() {
                 <div className="text-xs text-muted-foreground mb-1">
                   {new Date(item.month).toLocaleDateString(locale === "vi" ? "vi-VN" : "en-US", { month: "short" })}
                 </div>
-                <div className={`font-semibold text-sm ${item.net_profit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-destructive'}`}>
+                <div className={`font-semibold text-sm ${item.net_profit >= 0 ? 'text-foreground font-semibold' : 'text-destructive'}`}>
                   {formatCurrency(item.net_profit)}
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">

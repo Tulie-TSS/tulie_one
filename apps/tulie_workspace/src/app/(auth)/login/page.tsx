@@ -47,9 +47,8 @@ export default function LoginPage() {
     return (
         <div className="min-h-[80vh] flex flex-col items-center justify-center p-4">
             <div className="w-full max-w-md space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                <div className="flex flex-col items-center text-center space-y-2">
-                    <div className="size-12 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-                        <Shield className="size-7 text-primary-foreground" />
+                    <div className="size-16 flex items-center justify-center mb-2">
+                        <img src="/logo.png" alt="Tulie Logo" className="size-14 object-contain invert dark:invert-0" />
                     </div>
                     <h1 className="text-3xl font-bold tracking-tight text-foreground">TULIE One</h1>
                     <p className="text-muted-foreground text-sm max-w-[280px]">

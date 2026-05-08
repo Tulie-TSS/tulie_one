@@ -42,6 +42,11 @@ export default async function StudioCustomerDetailPage({ params }: any) {
         notFound()
     }
 
+    if (customer.customer_type === 'business') {
+        const { redirect } = await import('next/navigation')
+        redirect(`/customers/${id}`)
+    }
+
     // For Studio/B2C, we fetch order history by phone (since customers are synced by phone)
     const orders = customer.phone ? await getRetailOrdersByCustomerPhone(customer.phone) : []
     const totalSpent = orders.reduce((sum, order) => sum + (order.paid_amount || 0), 0)
@@ -79,7 +84,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                         </Link>
                     </Button>
                     <Button variant="outline" size="sm" asChild>
-                        <Link href={`/customers/${customer.id}/edit?redirect=/studio/customers/${customer.id}`}>
+                        <Link href={`/studio/customers/${customer.id}/edit`}>
                             <Edit className="mr-1.5 h-4 w-4" />
                             Chỉnh sửa
                         </Link>

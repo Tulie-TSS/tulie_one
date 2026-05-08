@@ -52,6 +52,11 @@ export default async function CustomerDetailPage({ params }: any) {
         notFound()
     }
 
+    if (customer.customer_type === 'individual') {
+        const { redirect } = await import('next/navigation')
+        redirect(`/studio/customers/${id}`)
+    }
+
     const [quotations, contracts, contacts] = await Promise.all([
         getQuotations(id),
         getContracts(id),

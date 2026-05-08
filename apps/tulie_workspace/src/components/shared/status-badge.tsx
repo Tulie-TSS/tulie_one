@@ -43,24 +43,24 @@ function getIconConfig(colorClass?: string, status?: string) {
     // Status map overrides
     if (s === 'completed' || s === 'success' || s === 'done' || s === 'active' || s === 'ready' || s === 'approved' || c.includes('emerald') || c.includes('success')) {
         icon = CheckCircle2
-        color = 'text-emerald-500'
+        color = 'text-foreground'
     } else if (s === 'in_progress' || s === 'running' || s === 'processing' || s === 'changes_requested' || c.includes('blue') || c.includes('info')) {
         icon = CircleDashed
-        color = 'text-muted-foreground'
+        color = 'text-foreground/70'
     } else if (s === 'failed' || s === 'cancelled' || s === 'error' || s === 'rejected' || c.includes('rose') || c.includes('destructive') || c.includes('failed')) {
         icon = XCircle
-        color = 'text-rose-500'
+        color = 'text-foreground/50'
     } else if (s === 'urgent' || s === 'high' || s === 'medium' || s === 'pending_review' || c.includes('amber') || c.includes('warning') || c.includes('orange')) {
         icon = AlertCircle
-        color = 'text-amber-500'
+        color = 'text-foreground/80'
     } else if (s === 'pending' || s === 'idle' || s === 'draft' || c.includes('zinc') || c.includes('muted')) {
         icon = Clock
-        color = 'text-zinc-400'
+        color = 'text-muted-foreground'
     }
 
     if (s === 'todo' || s === 'low') {
         icon = Circle
-        color = 'text-zinc-400'
+        color = 'text-muted-foreground'
     }
 
     return { icon, color }
