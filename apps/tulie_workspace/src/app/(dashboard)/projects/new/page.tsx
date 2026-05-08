@@ -136,13 +136,13 @@ export default function NewProjectPage() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Thông tin dự án</CardTitle>
-                    <CardDescription>Điền thông tin chi tiết để bắt đầu một dự án mới.</CardDescription>
+                    <CardTitle>{t('projects.info')}</CardTitle>
+                    <CardDescription>{t('projects.details')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
-                            <Label htmlFor="name">Tên dự án</Label>
+                            <Label htmlFor="name">{t('projects.name')}</Label>
                             <Input 
                                 id="name"
                                 placeholder="VD: Tên chiến dịch, tên khách hàng..."
@@ -153,7 +153,7 @@ export default function NewProjectPage() {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="description">Mô tả ngắn</Label>
+                            <Label htmlFor="description">{t('projects.description')}</Label>
                             <Textarea 
                                 id="description"
                                 rows={3}
@@ -165,7 +165,7 @@ export default function NewProjectPage() {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label>Chủ trì dự án (Owner)</Label>
+                                <Label>{t('projects.owner')}</Label>
                                 <Select 
                                     value={formData.owner_id} 
                                     onValueChange={v => setFormData(prev => ({ ...prev, owner_id: v }))}
@@ -191,7 +191,7 @@ export default function NewProjectPage() {
 
                         {/* Member Selection */}
                         <div className="space-y-3">
-                            <Label>Thành viên tham gia</Label>
+                            <Label>{t('projects.members')}</Label>
                             <div className="grid grid-cols-2 gap-2 p-3 border rounded-md max-h-[200px] overflow-y-auto bg-muted/10">
                                 {users.map(u => (
                                     <div key={u.id} className="flex items-center space-x-2">
