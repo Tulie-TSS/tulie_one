@@ -17,7 +17,10 @@ import {
     Calendar,
     ShoppingBag,
     History,
-    Plus
+    Plus,
+    MessageCircle,
+    MessageSquare,
+    BadgeCheck
 } from 'lucide-react'
 import { getCustomerById } from '@/lib/supabase/services/customer-service'
 import { getRetailOrdersByCustomerPhone } from '@/lib/supabase/services/retail-order-service'
@@ -94,6 +97,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
             </div>
 
             <div className="grid gap-6 lg:grid-cols-3 lg:items-stretch">
+            <div className="grid gap-6 lg:grid-cols-3 lg:items-stretch">
                 {/* Contact Info */}
                 <Card className="lg:col-span-2">
                     <CardHeader className="h-14 flex flex-row items-center pb-3 border-b bg-muted/5 space-y-0">
@@ -107,11 +111,27 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                             <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center shrink-0">
                                 <Phone className="h-5 w-5 text-muted-foreground" />
                             </div>
-                            <div>
+                            <div className="flex-1">
                                 <p className="text-[11px] text-muted-foreground font-medium tracking-tight">Số điện thoại</p>
-                                <a href={`tel:${customer.phone}`} className="font-semibold hover:underline text-base text-foreground">
-                                    {customer.phone || 'Chưa cập nhật'}
-                                </a>
+                                <div className="flex items-center justify-between">
+                                    <a href={`tel:${customer.phone}`} className="font-semibold hover:underline text-base text-foreground">
+                                        {customer.phone || 'Chưa cập nhật'}
+                                    </a>
+                                    {customer.phone && (
+                                        <div className="flex items-center gap-2">
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-blue-500 hover:text-blue-600 hover:bg-blue-50" asChild>
+                                                <a href={`https://zalo.me/${customer.phone.replace(/^0/, '84')}`} target="_blank" rel="noreferrer">
+                                                    <MessageCircle className="h-4 w-4" />
+                                                </a>
+                                            </Button>
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-zinc-500 hover:bg-zinc-100" asChild>
+                                                <a href={`sms:${customer.phone}`}>
+                                                    <MessageSquare className="h-4 w-4" />
+                                                </a>
+                                            </Button>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
@@ -125,13 +145,22 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                                 </a>
                             </div>
                         </div>
-                        <div className="flex items-center gap-3 sm:col-span-2">
+                        <div className="flex items-center gap-3">
                             <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center shrink-0">
                                 <MapPin className="h-5 w-5 text-muted-foreground" />
                             </div>
                             <div>
                                 <p className="text-[11px] text-muted-foreground font-medium tracking-tight">Địa chỉ giao hàng</p>
                                 <p className="font-medium text-foreground">{customer.address || 'Chưa cập nhật'}</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center shrink-0">
+                                <BadgeCheck className="h-5 w-5 text-muted-foreground" />
+                            </div>
+                            <div>
+                                <p className="text-[11px] text-muted-foreground font-medium tracking-tight">Số CCCD</p>
+                                <p className="font-medium text-foreground">{customer.tax_code || 'Chưa cập nhật'}</p>
                             </div>
                         </div>
                         <Separator className="sm:col-span-2" />
