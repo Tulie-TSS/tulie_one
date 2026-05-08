@@ -7,11 +7,13 @@ import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { useLocaleStore } from '@/lib/stores/locale-store'
 import { PageHeader, Card, CardContent, CardHeader, CardTitle, Button, Badge, Progress } from '@repo/ui'
 import { Loader2, Plus, RefreshCw, Calendar, CheckCircle2 } from 'lucide-react'
+import { NewCycleDialog } from '@/components/cycles/new-cycle-dialog'
 
 export default function CyclesPage() {
   const { t } = useLocaleStore()
   const { canManage } = useCurrentUser()
-  const { cycles, loading } = useCycles()
+  const { cycles, loading, refetch } = useCycles()
+  const [createOpen, setCreateOpen] = React.useState(false)
 
   const statusBadge: Record<string, { label: string; variant: 'default' | 'secondary' | 'outline' }> = {
     active: { label: 'Đang hoạt động', variant: 'default' },
@@ -24,7 +26,7 @@ export default function CyclesPage() {
     <div className="space-y-6">
       <PageHeader title={t('cycles.title')} description={t('cycles.subtitle')}>
         {canManage && (
-          <Button>
+          <Button onClick={() => setCreateOpen(true)}>
             <Plus className="size-4" />
             {t('cycles.create')}
           </Button>
@@ -39,7 +41,7 @@ export default function CyclesPage() {
         <div className="flex flex-col items-center justify-center py-20 gap-3 text-muted-foreground">
           <RefreshCw className="size-10 opacity-30" />
           <p className="text-sm">Chưa có chu kỳ nào</p>
-          {canManage && <Button size="sm"><Plus className="size-3" /> Tạo chu kỳ đầu tiên</Button>}
+          {canManage && <Button size="sm" onClick={() => setCreateOpen(true)}><Plus className="size-3" /> Tạo chu kỳ đầu tiên</Button>}
         </div>
       ) : (
         <div className="space-y-4">
@@ -122,6 +124,11 @@ export default function CyclesPage() {
           })}
         </div>
       )}
+      <NewCycleDialog 
+        open={createOpen} 
+        onOpenChange={setCreateOpen} 
+        onSuccess={refetch} 
+      />
     </div>
   )
 }
