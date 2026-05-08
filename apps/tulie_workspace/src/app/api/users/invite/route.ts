@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 
     // 1. Invite user via Supabase Auth Admin
     // Use NEXT_PUBLIC_SITE_URL to ensure the invite link points to production, not localhost
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tulie-workspace-git-main-tung68nts-projects.vercel.app'
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://workspace.tulie.app'
     const { data: inviteData, error: inviteError } = await adminAuthClient.auth.admin.inviteUserByEmail(email, {
       data: {
         full_name: full_name,
