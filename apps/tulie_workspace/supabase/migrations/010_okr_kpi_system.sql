@@ -2,16 +2,17 @@
 -- Description: Implement hierarchical OKR/KPI system with operational alignment
 -- Date: 2026-05-09
 
--- Cleanup if needed to ensure clean schema (ONLY for these new tables)
+-- Cleanup with CASCADE to handle dependencies
+-- This ensures a clean slate for the OKR system
 DROP TRIGGER IF EXISTS trg_update_objective_progress ON key_results;
-DROP FUNCTION IF EXISTS update_objective_progress();
-DROP TABLE IF EXISTS kr_links;
-DROP TABLE IF EXISTS key_results;
-DROP TABLE IF EXISTS objectives;
-DROP TABLE IF EXISTS departments;
+DROP FUNCTION IF EXISTS update_objective_progress() CASCADE;
+DROP TABLE IF EXISTS kr_links CASCADE;
+DROP TABLE IF EXISTS key_results CASCADE;
+DROP TABLE IF EXISTS objectives CASCADE;
+DROP TABLE IF EXISTS departments CASCADE;
 DO $$ BEGIN
     IF EXISTS (SELECT 1 FROM pg_type WHERE typname = 'okr_level') THEN
-        DROP TYPE okr_level;
+        DROP TYPE okr_level CASCADE;
     END IF;
 END $$;
 
