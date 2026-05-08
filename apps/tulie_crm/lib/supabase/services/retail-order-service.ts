@@ -653,37 +653,63 @@ export async function deleteRetailOrders(ids: string[]) {
 
 /**
  * Manually sync all historical retail orders to the customers table.
- * This is useful after adding the customer linking logic to populate
- * the customers table from old orders.
+ * This version is self-contained and doesn't rely on database triggers.
  */
 export async function syncAllRetailOrdersToCustomers() {
     try {
         const supabase = await createClient()
         
-        // Fetch all orders that don't have a customer_id yet
-        const { data: orders, error } = await supabase
+        // 1. Fetch all retail orders
+        const { data: orders, error: ordersError } = await supabase
             .from('retail_orders')
-            .select('id, customer_name, customer_phone, customer_email, created_by, shipping_info, metadata')
-            .is('customer_id', null)
+            .select('customer_name, customer_phone, customer_email, created_by, shipping_info, metadata')
 
-        if (error) throw error
+        if (ordersError) throw ordersError
         if (!orders || orders.length === 0) return { count: 0 }
 
-        console.log(`[syncAllRetailOrdersToCustomers] Found ${orders.length} orders to sync`)
+        // 2. Get all existing customers to avoid duplicates
+        const { data: existingCustomers, error: customersError } = await supabase
+            .from('customers')
+            .select('phone')
+        
+        if (customersError) throw customersError
+        const existingPhones = new Set(existingCustomers?.map(c => c.phone).filter(Boolean))
 
-        let syncedCount = 0
+        // 3. Group unique customers by phone from orders
+        const newCustomersMap = new Map<string, any>()
+        
         for (const order of orders) {
-            // Updating each order will trigger the database trigger we created
-            const { error: updateError } = await supabase
-                .from('retail_orders')
-                .update({ customer_phone: order.customer_phone }) // Touching the record to fire trigger
-                .eq('id', order.id)
+            if (!order.customer_phone || existingPhones.has(order.customer_phone)) continue
+            
+            if (!newCustomersMap.has(order.customer_phone)) {
+                newCustomersMap.set(order.customer_phone, {
+                    company_name: order.customer_name,
+                    phone: order.customer_phone,
+                    email: order.customer_email,
+                    customer_type: 'individual',
+                    status: 'customer',
+                    address: order.shipping_info?.address || order.metadata?.address || '',
+                    created_by: order.created_by,
+                    assigned_to: order.created_by
+                })
+            }
+        }
 
-            if (!updateError) syncedCount++
+        if (newCustomersMap.size === 0) return { count: 0 }
+
+        // 4. Batch insert new customers
+        const { data: inserted, error: insertError } = await supabase
+            .from('customers')
+            .insert(Array.from(newCustomersMap.values()))
+            .select()
+
+        if (insertError) {
+            console.error('[syncAllRetailOrdersToCustomers] Insert error:', insertError)
+            throw insertError
         }
 
         revalidatePath('/studio/customers')
-        return { count: syncedCount }
+        return { count: inserted?.length || 0 }
     } catch (err) {
         console.error('Error syncing orders to customers:', err)
         throw err
