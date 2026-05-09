@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useLocaleStore } from '@/lib/stores/locale-store'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { PageHeader, Card, CardContent, Button, Input, Label, toast, useConfirm } from '@repo/ui'
-import { Loader2, Plus, ExternalLink, Trash2, Globe, Calendar, FileSpreadsheet } from 'lucide-react'
+import { Loader2, Plus, ExternalLink, Trash2, Globe, Calendar, FileSpreadsheet, Maximize2, Minimize2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase'
 
 interface Resource {
@@ -13,6 +13,10 @@ interface Resource {
     url: string
     type: 'google_sheets' | 'google_calendar' | 'lark' | 'excel_online' | 'other'
     is_embedded: boolean
+    security_level: 'public' | 'internal' | 'confidential' | 'restricted'
+    tags: string[]
+    description?: string
+    allowed_roles: string[]
 }
 
 export default function ResourcesPage() {
@@ -23,11 +27,16 @@ export default function ResourcesPage() {
     const [loading, setLoading] = useState(true)
     const [selectedResource, setSelectedResource] = useState<Resource | null>(null)
     const [isAdding, setIsAdding] = useState(false)
+    const [isFullscreen, setIsFullscreen] = useState(false)
+    const containerRef = React.useRef<HTMLDivElement>(null)
+    const [viewMode, setViewMode] = useState<'list' | 'graph'>('list')
     const [newResource, setNewResource] = useState({
         name: '',
         url: '',
         type: 'other' as Resource['type'],
-        is_embedded: true
+        is_embedded: true,
+        security_level: 'internal' as Resource['security_level'],
+        tags: [] as string[]
     })
 
     const fetchResources = async () => {
@@ -54,12 +63,42 @@ export default function ResourcesPage() {
     const handleAdd = async (e: React.FormEvent) => {
         e.preventDefault()
         const supabase = createClient()
+        
+        let finalUrl = newResource.url
+        // Tự động chuyển đổi link Google Sheets sang dạng nhúng nếu cần
+        if (newResource.type === 'google_sheets' && finalUrl.includes('docs.google.com/spreadsheets')) {
+            if (finalUrl.includes('/edit')) {
+                finalUrl = finalUrl.replace(/\/edit.*$/, '/preview')
+            } else if (!finalUrl.endsWith('/preview')) {
+                finalUrl = finalUrl.endsWith('/') ? finalUrl + 'preview' : finalUrl + '/preview'
+            }
+        }
+
+        console.log('Adding resource:', {
+            ...newResource,
+            url: finalUrl,
+            organization_id: user?.organization_id,
+            created_by: user?.id
+        })
+
+        if (!user?.organization_id) {
+            toast.error('Tài khoản của bạn chưa được gắn vào Tổ chức (Organization). Vui lòng liên hệ Admin hoặc chạy script fix dữ liệu.')
+            return
+        }
+
+        // Nếu là tài liệu bảo mật, mặc định chỉ cho admin và manager
+        const allowedRoles = newResource.security_level === 'confidential' 
+            ? ['admin', 'manager'] 
+            : ['admin', 'manager', 'maker', 'observer']
+
         const { data, error } = await supabase
             .from('workspace_resources')
             .insert({
                 ...newResource,
-                organization_id: user?.organization_id,
-                created_by: user?.id
+                url: finalUrl,
+                organization_id: user.organization_id,
+                created_by: user.id,
+                allowed_roles: allowedRoles
             })
             .select()
             .single()
@@ -98,6 +137,28 @@ export default function ResourcesPage() {
         }
         toast.success('Đã xóa tài liệu')
     }
+
+    const toggleFullscreen = () => {
+        if (!containerRef.current) return
+
+        if (!document.fullscreenElement) {
+            containerRef.current.requestFullscreen().catch(err => {
+                toast.error(`Không thể mở toàn màn hình: ${err.message}`)
+            })
+            setIsFullscreen(true)
+        } else {
+            document.exitFullscreen()
+            setIsFullscreen(false)
+        }
+    }
+
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullscreen(!!document.fullscreenElement)
+        }
+        document.addEventListener('fullscreenchange', handleFullscreenChange)
+        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange)
+    }, [])
 
     const getIcon = (type: string) => {
         switch (type) {
@@ -148,19 +209,21 @@ export default function ResourcesPage() {
                                     required
                                 />
                             </div>
-                            <div className="space-y-1">
-                                <Label htmlFor="type" className="text-xs">Loại</Label>
-                                <select 
-                                    id="type"
-                                    className="w-full h-10 rounded-md border border-input bg-background px-3 py-1 text-sm outline-none focus:ring-2 focus:ring-primary/20"
-                                    value={newResource.type}
-                                    onChange={e => setNewResource({...newResource, type: e.target.value as any})}
-                                >
-                                    <option value="other">Khác</option>
-                                    <option value="google_sheets">Google Sheets</option>
-                                    <option value="google_calendar">Google Calendar</option>
-                                    <option value="lark">Lark</option>
                                     <option value="excel_online">Excel Online</option>
+                                </select>
+                            </div>
+                            <div className="space-y-1">
+                                <Label htmlFor="security" className="text-xs">Bảo mật</Label>
+                                <select 
+                                    id="security"
+                                    className="w-full h-10 rounded-md border border-input bg-background px-3 py-1 text-sm outline-none focus:ring-2 focus:ring-primary/20"
+                                    value={newResource.security_level}
+                                    onChange={e => setNewResource({...newResource, security_level: e.target.value as any})}
+                                >
+                                    <option value="public">Công khai (Public)</option>
+                                    <option value="internal">Nội bộ (Internal)</option>
+                                    <option value="confidential">Bảo mật (CEO/Admin)</option>
+                                    <option value="restricted">Hạn chế (Restricted)</option>
                                 </select>
                             </div>
                             <div className="flex gap-2">
@@ -209,19 +272,37 @@ export default function ResourcesPage() {
                 </div>
 
                 {/* Content View */}
-                <div className="flex-1 rounded-xl border bg-muted/30 overflow-hidden relative">
+                <div 
+                    ref={containerRef}
+                    className={`flex-1 rounded-xl border bg-muted/30 overflow-hidden relative ${isFullscreen ? 'bg-background p-0' : ''}`}
+                >
                     {selectedResource ? (
                         <div className="w-full h-full flex flex-col">
-                            <div className="p-2 border-b bg-background flex items-center justify-between px-4">
+                            <div className="p-2 border-b bg-background flex items-center justify-between px-4 shrink-0">
                                 <span className="text-xs font-semibold text-muted-foreground truncate mr-4">
                                     {selectedResource.url}
                                 </span>
-                                <Button variant="ghost" size="sm" asChild className="h-7 text-[10px]">
-                                    <a href={selectedResource.url} target="_blank" rel="noopener noreferrer">
-                                        Mở tab mới
-                                        <ExternalLink className="ml-1 size-3" />
-                                    </a>
-                                </Button>
+                                <div className="flex gap-2">
+                                    <Button variant="ghost" size="sm" onClick={toggleFullscreen} className="h-7 text-[10px]">
+                                        {isFullscreen ? (
+                                            <>
+                                                <Minimize2 className="mr-1 size-3" />
+                                                Thoát
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Maximize2 className="mr-1 size-3" />
+                                                Toàn màn hình
+                                            </>
+                                        )}
+                                    </Button>
+                                    <Button variant="ghost" size="sm" asChild className="h-7 text-[10px]">
+                                        <a href={selectedResource.url} target="_blank" rel="noopener noreferrer">
+                                            Mở tab mới
+                                            <ExternalLink className="ml-1 size-3" />
+                                        </a>
+                                    </Button>
+                                </div>
                             </div>
                             <iframe 
                                 src={selectedResource.url} 
