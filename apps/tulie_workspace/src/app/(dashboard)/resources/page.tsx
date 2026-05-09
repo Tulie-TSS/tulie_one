@@ -208,7 +208,18 @@ export default function ResourcesPage() {
                                     placeholder="https://docs.google.com/..." 
                                     required
                                 />
-                            </div>
+                            <div className="space-y-1">
+                                <Label htmlFor="type" className="text-xs">Loại</Label>
+                                <select 
+                                    id="type"
+                                    className="w-full h-10 rounded-md border border-input bg-background px-3 py-1 text-sm outline-none focus:ring-2 focus:ring-primary/20"
+                                    value={newResource.type}
+                                    onChange={e => setNewResource({...newResource, type: e.target.value as any})}
+                                >
+                                    <option value="other">Khác</option>
+                                    <option value="google_sheets">Google Sheets</option>
+                                    <option value="google_calendar">Google Calendar</option>
+                                    <option value="lark">Lark</option>
                                     <option value="excel_online">Excel Online</option>
                                 </select>
                             </div>
@@ -276,13 +287,42 @@ export default function ResourcesPage() {
                     ref={containerRef}
                     className={`flex-1 rounded-xl border bg-muted/30 overflow-hidden relative ${isFullscreen ? 'bg-background p-0' : ''}`}
                 >
-                    {selectedResource ? (
+                    {viewMode === 'graph' ? (
+                        <div className="w-full h-full p-8 flex flex-col items-center justify-center bg-background/50">
+                            <div className="text-center space-y-4 max-w-md">
+                                <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                                    <Globe className="size-8 text-primary animate-pulse" />
+                                </div>
+                                <h3 className="text-lg font-semibold">Bản đồ tri thức (Data Graph)</h3>
+                                <p className="text-sm text-muted-foreground">
+                                    Tính năng đang được tối ưu để hiển thị mối liên kết giữa {resources.length} tài liệu của bạn theo phong cách Obsidian.
+                                </p>
+                                <Button variant="outline" onClick={() => setViewMode('list')}>Quay lại danh sách</Button>
+                            </div>
+                        </div>
+                    ) : selectedResource ? (
                         <div className="w-full h-full flex flex-col">
                             <div className="p-2 border-b bg-background flex items-center justify-between px-4 shrink-0">
-                                <span className="text-xs font-semibold text-muted-foreground truncate mr-4">
-                                    {selectedResource.url}
-                                </span>
+                                <div className="flex items-center gap-2">
+                                    {selectedResource.security_level === 'confidential' && (
+                                        <div className="px-2 py-0.5 rounded bg-destructive/10 text-destructive text-[10px] font-bold uppercase">
+                                            Bảo mật
+                                        </div>
+                                    )}
+                                    <span className="text-xs font-semibold text-muted-foreground truncate max-w-[200px] md:max-w-md">
+                                        {selectedResource.url}
+                                    </span>
+                                </div>
                                 <div className="flex gap-2">
+                                    <Button 
+                                        variant="ghost" 
+                                        size="sm" 
+                                        onClick={() => setViewMode(viewMode === 'list' ? 'graph' : 'list')}
+                                        className="h-7 text-[10px]"
+                                    >
+                                        <Globe className="mr-1 size-3" />
+                                        Graph
+                                    </Button>
                                     <Button variant="ghost" size="sm" onClick={toggleFullscreen} className="h-7 text-[10px]">
                                         {isFullscreen ? (
                                             <>
@@ -312,9 +352,15 @@ export default function ResourcesPage() {
                             />
                         </div>
                     ) : (
-                        <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground space-y-2">
-                            <Globe className="size-12 opacity-20" />
-                            <p className="text-sm">Chọn một tài liệu để xem nội dung</p>
+                        <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground space-y-4">
+                            <div className="flex flex-col items-center gap-2">
+                                <Globe className="size-12 opacity-20" />
+                                <p className="text-sm">Chọn một tài liệu để xem nội dung</p>
+                            </div>
+                            <Button variant="outline" size="sm" onClick={() => setViewMode('graph')}>
+                                <Globe className="mr-1 size-3" />
+                                Xem Bản đồ tri thức
+                            </Button>
                         </div>
                     )}
                 </div>
