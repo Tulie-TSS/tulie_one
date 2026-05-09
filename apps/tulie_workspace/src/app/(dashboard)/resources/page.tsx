@@ -208,6 +208,7 @@ export default function ResourcesPage() {
                                     placeholder="https://docs.google.com/..." 
                                     required
                                 />
+                            </div>
                             <div className="space-y-1">
                                 <Label htmlFor="type" className="text-xs">Loại</Label>
                                 <select 
