@@ -58,7 +58,5 @@ export function extractOrderCode(content: string, paymentCode?: string | null): 
  */
 export function generatePaymentContent(orderNumber: string, system: 'studio' | 'lab' = 'studio'): string {
     const prefix = system === 'studio' ? 'TLS' : 'TLL'
-    // Remove underscores to make it more compact and the font larger on QR
-    const cleanNumber = orderNumber.replace(/_/g, '')
-    return `${prefix} ${cleanNumber}`
+    return `SEVQR ${prefix} ${orderNumber}`
 }
