@@ -165,8 +165,51 @@ export async function getQuotationByToken(token: string) {
 
         const quotation = data as Quotation;
 
-        // Fetch sibling quotations for the same deal (or project if no deal)
+        // Fetch sibling quotations and portal settings
+        let portal = null;
         if (quotation.deal_id || quotation.project_id) {
+            let portalQuery = supabase
+                .from('quote_portals')
+                .select(`
+                    *,
+                    items:quote_portal_items(
+                        id, quotation_id, sort_order, is_recommended, is_default,
+                        quotation:quotations(*, items:quotation_items(*), contracts(id, type, contract_number, order_number))
+                    )
+                `)
+                .eq('is_active', true)
+                .order('created_at', { ascending: false })
+                .limit(1);
+
+            if (quotation.deal_id) {
+                portalQuery = portalQuery.eq('deal_id', quotation.deal_id);
+            } else {
+                portalQuery = portalQuery.eq('project_id', quotation.project_id);
+            }
+
+            const { data: portalData } = await portalQuery.maybeSingle();
+            portal = portalData;
+        }
+
+        if (portal && portal.items) {
+            // Sort items: first by is_default (true comes first), then by sort_order
+            const sortedItems = portal.items.sort((a: any, b: any) => {
+                if (a.is_default && !b.is_default) return -1;
+                if (!a.is_default && b.is_default) return 1;
+                return a.sort_order - b.sort_order;
+            });
+
+            (quotation as any).siblings = sortedItems.map((item: any) => item.quotation ? ({
+                ...item.quotation,
+                customer: (quotation as any).customer,
+                is_recommended: item.is_recommended,
+                is_default: item.is_default,
+                attachments: portal.attachments || []
+            }) : null).filter(Boolean);
+            
+            (quotation as any).attachments = portal.attachments || [];
+        } else if (quotation.deal_id || quotation.project_id) {
+            // Fallback for legacy or quotations not yet in a portal
             const queryField = quotation.deal_id ? 'deal_id' : 'project_id'
             const queryValue = quotation.deal_id || quotation.project_id
             const { data: siblings } = await supabase
@@ -178,7 +221,8 @@ export async function getQuotationByToken(token: string) {
             if (siblings) {
                 (quotation as any).siblings = siblings.map(s => ({
                     ...s,
-                    customer: (quotation as any).customer
+                    customer: (quotation as any).customer,
+                    is_recommended: true // Default to true if no portal settings
                 }));
             }
         }

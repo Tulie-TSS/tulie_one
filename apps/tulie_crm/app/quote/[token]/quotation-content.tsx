@@ -680,19 +680,18 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
 
                                                 {/* Content Card */}
                                                 <Card className="border-slate-200 shadow-sm overflow-hidden">
-                                                    {/* Card Header */}
-                                                    <CardHeader className="p-0">
-                                                        <div className="flex items-center gap-2.5 px-4 py-2.5 border-b bg-slate-50 border-slate-100 text-foreground"
+                                                    {/* Card Header - Replaced CardHeader with plain div to remove potential spacing issues */}
+                                                    <div className="flex items-center gap-2.5 px-4 h-12 border-b bg-slate-50 border-slate-100 text-foreground"
+                                                        style={{ WebkitPrintColorAdjust: 'exact' }}>
+                                                        <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-slate-900 text-white shadow-sm"
                                                             style={{ WebkitPrintColorAdjust: 'exact' }}>
-                                                            <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-slate-900 text-white shadow-sm"
-                                                                style={{ WebkitPrintColorAdjust: 'exact' }}>
-                                                                {icon}
-                                                            </span>
-                                                            <CardTitle className="text-[13px] font-bold leading-tight">
-                                                                {section.label}
-                                                            </CardTitle>
-                                                        </div>
-                                                    </CardHeader>
+                                                            {icon}
+                                                        </span>
+                                                        <h4 className="text-[13px] font-bold leading-tight">
+                                                            {section.label}
+                                                        </h4>
+                                                    </div>
+                                                    
                                                     {/* Card Body */}
                                                     <CardContent className="px-5 py-4">
                                                         <div className="text-[12px] text-slate-700 leading-relaxed space-y-2">
