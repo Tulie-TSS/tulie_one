@@ -87,6 +87,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
   const [customerName, setCustomerName] = useState('')
   const [customerPhone, setCustomerPhone] = useState('')
   const [orderMode, setOrderMode] = useState<'edit_print' | 'print_only'>('edit_print')
+  const [lastEditQuantities, setLastEditQuantities] = useState<Record<string, number>>({})
   const draftSaving = useRef(false)
 
   // Auto-save draft when customer fills in name + phone
@@ -366,43 +367,51 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
       <form onSubmit={handleSubmit}>
         <main className="max-w-5xl mx-auto px-4 sm:px-6 mt-6 sm:mt-10 space-y-6 sm:space-y-8">
           
-          {/* Order Mode Selector */}
-          <div className="grid grid-cols-2 gap-3 p-1.5 bg-white rounded-2xl border border-border shadow-sm">
+          {/* Order Mode Selector — Compact Horizontal */}
+          <div className="grid grid-cols-2 gap-2 p-1.5 bg-white rounded-xl border border-zinc-200/60 shadow-sm">
             <button
               type="button"
               onClick={() => {
+                if (orderMode === 'edit_print') return
                 setOrderMode('edit_print')
+                setPkgQuantities(lastEditQuantities)
                 setWantPrint(true)
               }}
               className={cn(
-                "flex flex-col items-center justify-center py-4 px-4 rounded-xl transition-all duration-300",
+                "flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg transition-all duration-300",
                 orderMode === 'edit_print' 
-                  ? "bg-zinc-900 shadow-xl shadow-zinc-900/20 text-white" 
+                  ? "bg-zinc-900 shadow-lg shadow-zinc-900/10 text-white" 
                   : "text-muted-foreground hover:text-zinc-600 hover:bg-muted"
               )}
             >
-              <Sparkles className={cn("size-5 mb-2", orderMode === 'edit_print' ? "text-primary" : "text-muted-foreground")} />
-              <span className="text-sm font-bold">Gói sửa ảnh tặng kèm in</span>
-              <span className="text-[10px] font-medium opacity-70 mt-0.5">Chỉnh sửa chuyên nghiệp + Tặng in vỉ</span>
+              <Sparkles className={cn("size-3.5", orderMode === 'edit_print' ? "text-primary" : "text-muted-foreground")} />
+              <div className="text-left">
+                <p className="text-xs font-bold leading-none">Sửa ảnh + In</p>
+                <p className="text-[9px] font-medium opacity-60 mt-0.5 hidden sm:block">Chỉnh sửa chuyên nghiệp</p>
+              </div>
             </button>
             <button
               type="button"
               onClick={() => {
+                if (orderMode === 'print_only') return
+                setLastEditQuantities(pkgQuantities)
                 setOrderMode('print_only')
                 setPkgQuantities({})
                 setWantPrint(true)
                 if (extraViCount === 0) setExtraViCount(1)
               }}
               className={cn(
-                "flex flex-col items-center justify-center py-4 px-4 rounded-xl transition-all duration-300",
+                "flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg transition-all duration-300",
                 orderMode === 'print_only' 
-                  ? "bg-zinc-900 shadow-xl shadow-zinc-900/20 text-white" 
+                  ? "bg-zinc-900 shadow-lg shadow-zinc-900/10 text-white" 
                   : "text-muted-foreground hover:text-zinc-600 hover:bg-muted"
               )}
             >
-              <Printer className={cn("size-5 mb-2", orderMode === 'print_only' ? "text-primary" : "text-muted-foreground")} />
-              <span className="text-sm font-bold">Gói chỉ in ảnh</span>
-              <span className="text-[10px] font-medium opacity-70 mt-0.5">In vỉ từ file có sẵn của bạn</span>
+              <Printer className={cn("size-3.5", orderMode === 'print_only' ? "text-primary" : "text-muted-foreground")} />
+              <div className="text-left">
+                <p className="text-xs font-bold leading-none">Chỉ in ảnh</p>
+                <p className="text-[9px] font-medium opacity-60 mt-0.5 hidden sm:block">In từ file có sẵn</p>
+              </div>
             </button>
           </div>
 
