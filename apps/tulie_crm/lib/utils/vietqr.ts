@@ -63,7 +63,7 @@ export function buildVietQrUrl(params: {
     addInfo: string
 }): string {
     const bin = getBankBin(params.bankName)
-    return `https://img.vietqr.io/image/${bin}-${params.accountNo}-compact.png?amount=${params.amount}&addInfo=${encodeURIComponent(params.addInfo)}&accountName=${encodeURIComponent(params.accountName)}`
+    return `https://img.vietqr.io/image/${bin}-${params.accountNo}-print.png?amount=${params.amount}&addInfo=${encodeURIComponent(params.addInfo)}&accountName=${encodeURIComponent(params.accountName)}`
 }
 
 /**
