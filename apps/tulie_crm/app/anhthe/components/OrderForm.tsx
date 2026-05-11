@@ -132,12 +132,11 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
     }
   }), [products])
 
-  // Multi-package state: {id: qty} — default 0 for all, 1 for popular
+  // Multi-package state: {id: qty} — default 0 for all
   const [pkgQuantities, setPkgQuantities] = useState<Record<string, number>>(() => {
     const init: Record<string, number> = {}
     products.forEach(p => {
-      const meta = getPackageMeta(p)
-      init[p.id] = meta.popular ? 1 : 0
+      init[p.id] = 0
     })
     return init
   })
@@ -653,16 +652,15 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                     {/* Note field — shown when qty > 0 */}
                     {isSelected && (
                       <div className="px-4 sm:px-5 pb-4 sm:pb-5">
-                        <div className="bg-muted rounded-lg p-3 border border-border space-y-2">
-                          <Label className="text-[11px] font-semibold text-muted-foreground">
+                        <div className="bg-muted/50 rounded-xl p-4 border border-zinc-200/50 space-y-2">
+                          <Label className="text-[11px] font-bold text-muted-foreground uppercase tracking-tight">
                             Ghi chú gói này (size in, yêu cầu đặc biệt…)
                           </Label>
-                          <p className="text-[11px] text-muted-foreground font-normal">Với size in, khách hàng có thể chọn cụ thể ở mục bên dưới</p>
                           <Textarea
                             value={pkgNotes[pkg.id] || ''}
                             onChange={(e) => setPkgNotes(prev => ({ ...prev, [pkg.id]: e.target.value }))}
                             placeholder={`VD: In vỉ 3x4, ghép áo vest xanh đen...`}
-                            className="min-h-[60px] text-xs bg-white border-border rounded-lg resize-none placeholder:text-zinc-300"
+                            className="min-h-[80px] text-sm bg-white border-zinc-200 rounded-xl resize-none placeholder:text-zinc-300 shadow-sm focus:ring-zinc-900/5"
                             rows={2}
                           />
                         </div>
@@ -1086,35 +1084,39 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
           </Card>
           )}
 
-          {/* Order Summary + Submit */}
-          <Card className="sticky bottom-4 z-10 shadow-lg shadow-black/5">
-            <CardContent className="px-4 py-3 sm:p-6 flex items-center justify-between gap-3">
+          {/* Order Summary + Submit (Compact Sticky) */}
+          <Card className="sticky bottom-4 z-50 shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-zinc-200/50 backdrop-blur-sm bg-white/95">
+            <CardContent className="px-4 py-2.5 sm:px-6 sm:py-3 flex items-center justify-between gap-4">
               <div className="min-w-0">
-                <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground tracking-widest">Tổng cộng (tạm tính)</p>
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter opacity-70">Tạm tính</p>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-xl sm:text-3xl font-bold text-foreground tracking-tighter tabular-nums">
+                  <span className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tighter tabular-nums">
                     {new Intl.NumberFormat('vi-VN').format(totalPrice)}
                   </span>
-                  <span className="text-xs sm:text-sm font-semibold text-muted-foreground">đ</span>
+                  <span className="text-[10px] font-bold text-muted-foreground">đ</span>
                 </div>
-                <p className="text-[10px] sm:text-[11px] text-muted-foreground font-medium truncate">
-                  {totalPkgCount > 0 ? `${totalPkgCount} gói` : ''}
-                  {wantPrint && totalPrintQty > 0 && `${totalPkgCount > 0 ? ' · ' : ''}${totalPrintQty} vỉ in`}
-                  {wantPrint && hasFreeShipping && ' · free ship'}
-                  {discountAmount > 0 && (
-                    <span className="text-emerald-600 font-semibold"> · -{new Intl.NumberFormat('vi-VN').format(discountAmount)}đ</span>
-                  )}
-                </p>
               </div>
-              <Button
-                type="submit"
-                size="lg"
-                disabled={isSubmitting || (totalPkgCount === 0 && !(wantPrint && (totalFreePrints + extraViCount) > 0))}
-                className="shrink-0 font-bold text-[13px] h-11 sm:h-12 px-6 sm:px-10 transition-all disabled:opacity-40"
-              >
-                {isSubmitting ? <LoadingSpinner size="sm" className="mr-2" /> : null}
-                {isSubmitting ? 'Đang gửi...' : 'Gửi đơn hàng'}
-              </Button>
+              
+              <div className="flex items-center gap-3 shrink-0">
+                <div className="hidden md:block text-right">
+                  <p className="text-[10px] text-muted-foreground font-medium leading-tight">
+                    {totalPkgCount > 0 ? `${totalPkgCount} gói` : ''}
+                    {wantPrint && totalPrintQty > 0 && `${totalPkgCount > 0 ? ' · ' : ''}${totalPrintQty} vỉ in`}
+                  </p>
+                  {discountAmount > 0 && (
+                    <p className="text-[10px] text-emerald-600 font-bold">-{new Intl.NumberFormat('vi-VN').format(discountAmount)}đ</p>
+                  )}
+                </div>
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={isSubmitting || (totalPkgCount === 0 && !(wantPrint && (totalFreePrints + extraViCount) > 0))}
+                  className="font-bold text-xs h-10 px-6 sm:px-8 rounded-xl shadow-lg shadow-zinc-900/10 active:scale-95 transition-all"
+                >
+                  {isSubmitting ? <LoadingSpinner size="sm" className="mr-2" /> : null}
+                  {isSubmitting ? 'Đang gửi...' : 'Gửi đơn hàng'}
+                </Button>
+              </div>
             </CardContent>
           </Card>
 

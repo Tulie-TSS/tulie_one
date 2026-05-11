@@ -19,7 +19,7 @@ import {
     CheckCircle2,
     Sparkles,
     Download,
-    QrCode,
+    RefreshCw,
     History,
     Send,
     Building2,
