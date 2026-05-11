@@ -671,29 +671,28 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                     {proposalSections.map((section, idx) => {
                                         const icon = sectionIcons[section.label] || <Info className="w-4 h-4" />;
                                         return (
-                                            <div key={idx} className="proposal-section relative mb-5 last:mb-0">
+                                            <div key={idx} className="proposal-section relative mb-8 last:mb-0 flex items-start p-0">
                                                 {/* Timeline dot */}
-                                                <div className="absolute -left-8 top-[24px] -translate-y-1/2 w-[22px] h-[22px] rounded-full flex items-center justify-center text-white bg-slate-900 text-[9px] font-bold z-10"
+                                                <div className="absolute -left-8 top-6 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center text-white bg-slate-900 text-[10px] font-bold z-10"
                                                     style={{ WebkitPrintColorAdjust: 'exact' }}>
                                                     {idx + 1}
                                                 </div>
 
-                                                {/* Content Card */}
-                                                <Card className="border-slate-200 shadow-sm overflow-hidden">
-                                                    {/* Card Header - Replaced CardHeader with plain div to remove potential spacing issues */}
-                                                    <div className="flex items-center gap-2.5 px-4 h-12 border-b bg-slate-50 border-slate-100 text-foreground"
+                                                <div className="flex-1 border border-slate-200 rounded-xl bg-white shadow-sm overflow-hidden m-0">
+                                                    {/* Header - Flush with top */}
+                                                    <div className="flex items-center gap-3 px-4 h-12 border-b bg-slate-50 border-slate-100 text-foreground"
                                                         style={{ WebkitPrintColorAdjust: 'exact' }}>
-                                                        <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-slate-900 text-white shadow-sm"
+                                                        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-900 text-white shadow-sm"
                                                             style={{ WebkitPrintColorAdjust: 'exact' }}>
                                                             {icon}
-                                                        </span>
-                                                        <h4 className="text-[13px] font-bold leading-tight">
+                                                        </div>
+                                                        <h4 className="text-[14px] font-bold leading-none">
                                                             {section.label}
                                                         </h4>
                                                     </div>
                                                     
-                                                    {/* Card Body */}
-                                                    <CardContent className="px-5 py-4">
+                                                    {/* Body */}
+                                                    <div className="px-6 py-5">
                                                         <div className="text-[12px] text-slate-700 leading-relaxed space-y-2">
                                                             {section.content.split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
                                                                 <div key={i} className="flex gap-2.5 pl-1 items-start">
@@ -704,8 +703,8 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                                 </div>
                                                             ))}
                                                         </div>
-                                                    </CardContent>
-                                                </Card>
+                                                    </div>
+                                                </div>
                                             </div>
                                         );
                                     })}
