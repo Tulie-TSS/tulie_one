@@ -657,23 +657,10 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                     <Button
                                         variant="outline"
                                         className="rounded-lg text-xs border-emerald-200 text-emerald-700 hover:bg-emerald-50"
-                                        onClick={async () => {
-                                            try {
-                                                const res = await fetch(qrUrl)
-                                                const blob = await res.blob()
-                                                // Convert to PNG blob for clipboard
-                                                const pngBlob = new Blob([blob], { type: 'image/png' })
-                                                await navigator.clipboard.write([
-                                                    new ClipboardItem({ 'image/png': pngBlob })
-                                                ])
-                                                toast.success('Đã copy mã QR — dán vào Zalo')
-                                            } catch {
-                                                toast.error('Không thể copy ảnh, thử click phải vào mã QR → Copy Image')
-                                            }
-                                        }}
+                                        onClick={() => window.location.reload()}
                                     >
-                                        <QrCode className="mr-1.5 h-3.5 w-3.5" />
-                                        Copy mã QR
+                                        <RefreshCw className="mr-1.5 h-3.5 w-3.5" />
+                                        Tạo lại mã QR
                                     </Button>
                                 </div>
 

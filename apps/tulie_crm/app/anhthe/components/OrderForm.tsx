@@ -86,6 +86,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
   const [draftId, setDraftId] = useState<string | null>(null)
   const [customerName, setCustomerName] = useState('')
   const [customerPhone, setCustomerPhone] = useState('')
+  const [orderMode, setOrderMode] = useState<'edit_print' | 'print_only'>('edit_print')
   const draftSaving = useRef(false)
 
   // Auto-save draft when customer fills in name + phone
@@ -365,6 +366,46 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
 
       <form onSubmit={handleSubmit}>
         <main className="max-w-5xl mx-auto px-4 sm:px-6 mt-6 sm:mt-10 space-y-6 sm:space-y-8">
+          
+          {/* Order Mode Selector */}
+          <div className="grid grid-cols-2 gap-3 p-1.5 bg-white rounded-2xl border border-border shadow-sm">
+            <button
+              type="button"
+              onClick={() => {
+                setOrderMode('edit_print')
+                setWantPrint(true)
+              }}
+              className={cn(
+                "flex flex-col items-center justify-center py-4 px-4 rounded-xl transition-all duration-300",
+                orderMode === 'edit_print' 
+                  ? "bg-zinc-900 shadow-xl shadow-zinc-900/20 text-white" 
+                  : "text-muted-foreground hover:text-zinc-600 hover:bg-muted"
+              )}
+            >
+              <Sparkles className={cn("size-5 mb-2", orderMode === 'edit_print' ? "text-primary" : "text-muted-foreground")} />
+              <span className="text-sm font-bold">Gói sửa ảnh tặng kèm in</span>
+              <span className="text-[10px] font-medium opacity-70 mt-0.5">Chỉnh sửa chuyên nghiệp + Tặng in vỉ</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setOrderMode('print_only')
+                setPkgQuantities({})
+                setWantPrint(true)
+                if (extraViCount === 0) setExtraViCount(1)
+              }}
+              className={cn(
+                "flex flex-col items-center justify-center py-4 px-4 rounded-xl transition-all duration-300",
+                orderMode === 'print_only' 
+                  ? "bg-zinc-900 shadow-xl shadow-zinc-900/20 text-white" 
+                  : "text-muted-foreground hover:text-zinc-600 hover:bg-muted"
+              )}
+            >
+              <Printer className={cn("size-5 mb-2", orderMode === 'print_only' ? "text-primary" : "text-muted-foreground")} />
+              <span className="text-sm font-bold">Gói chỉ in ảnh</span>
+              <span className="text-[10px] font-medium opacity-70 mt-0.5">In vỉ từ file có sẵn của bạn</span>
+            </button>
+          </div>
 
           {/* Section 1: Customer Info */}
           <Card>
@@ -521,8 +562,9 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
           </Card>
 
           {/* Section 2: Package Selection — Multi-quantity */}
-          <Card className="bg-transparent border-0 shadow-none ring-0 p-0">
-            <CardHeader className="flex flex-row items-center gap-3 space-y-0 px-1 py-0 mb-4 sm:mb-5">
+          {orderMode === 'edit_print' && (
+            <Card className="bg-transparent border-0 shadow-none ring-0 p-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <CardHeader className="flex flex-row items-center gap-3 space-y-0 px-1 py-0 mb-4 sm:mb-5">
               <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
                 <span className="text-sm font-bold text-white">2</span>
               </div>
@@ -631,6 +673,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
               })}
             </CardContent>
           </Card>
+          )}
 
           {/* Section 3: Print Options */}
           <Card className="bg-transparent border-0 shadow-none ring-0 p-0">

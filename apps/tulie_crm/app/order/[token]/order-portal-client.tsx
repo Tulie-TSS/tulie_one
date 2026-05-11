@@ -347,12 +347,18 @@ export default function OrderPortalClient({ order: initialOrder }: OrderPortalCl
                                     </div>
                                 ) : (
                                     <>
-                                        <div className="bg-muted/30 p-4 rounded-md inline-block border">
-                                            <img
-                                                src={qrUrl}
-                                                alt="Payment QR"
-                                                className="w-56 h-56 object-contain"
-                                            />
+                                        <div className="bg-white p-6 rounded-xl border shadow-sm space-y-4">
+                                            <div className="space-y-1">
+                                                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Thông tin đơn hàng</p>
+                                                <p className="text-xl font-bold font-mono text-primary">{order.order_number}</p>
+                                            </div>
+                                            <div className="bg-muted/30 p-2 rounded-lg inline-block">
+                                                <img
+                                                    src={qrUrl}
+                                                    alt="Payment QR"
+                                                    className="w-64 h-auto object-contain mx-auto"
+                                                />
+                                            </div>
                                         </div>
                                         <div className="space-y-1">
                                             <p className="text-xs text-muted-foreground">Quét mã VietQR để thanh toán</p>
