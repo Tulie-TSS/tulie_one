@@ -222,7 +222,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
 
   // Shipping fee logic
   const shippingFee = useMemo(() => {
-    if (!wantPrint) return 0
+    if (!wantPrint || cartTotal === 0) return 0
     if (shippingRegion === 'vinhomes') {
       return cartTotal >= 79000 ? 0 : 5000
     } else {
@@ -376,6 +376,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                 setOrderMode('edit_print')
                 setPkgQuantities(lastEditQuantities)
                 setWantPrint(true)
+                setExtraViCount(0) // Reset extra vỉ when going to edit mode
               }}
               className={cn(
                 "flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg transition-all duration-300",
@@ -384,10 +385,10 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                   : "text-muted-foreground hover:text-zinc-600 hover:bg-muted"
               )}
             >
-              <Sparkles className={cn("size-3.5", orderMode === 'edit_print' ? "text-primary" : "text-muted-foreground")} />
-              <div className="text-left">
-                <p className="text-xs font-bold leading-none">Sửa ảnh + In</p>
-                <p className="text-[9px] font-medium opacity-60 mt-0.5 hidden sm:block">Chỉnh sửa chuyên nghiệp</p>
+              <CheckCircle2 className={cn("size-3.5 shrink-0", orderMode === 'edit_print' ? "text-yellow-400" : "text-muted-foreground")} />
+              <div className="text-left min-w-0">
+                <p className="text-xs font-bold leading-none truncate">Sửa ảnh + In</p>
+                <p className="text-[9px] font-medium opacity-60 mt-0.5 hidden sm:block truncate">Chỉnh sửa chuyên nghiệp</p>
               </div>
             </button>
             <button
@@ -398,7 +399,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                 setOrderMode('print_only')
                 setPkgQuantities({})
                 setWantPrint(true)
-                if (extraViCount === 0) setExtraViCount(1)
+                setExtraViCount(1) // Default to 1 vỉ when going to print only mode
               }}
               className={cn(
                 "flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg transition-all duration-300",
@@ -407,10 +408,10 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                   : "text-muted-foreground hover:text-zinc-600 hover:bg-muted"
               )}
             >
-              <Printer className={cn("size-3.5", orderMode === 'print_only' ? "text-primary" : "text-muted-foreground")} />
-              <div className="text-left">
-                <p className="text-xs font-bold leading-none">Chỉ in ảnh</p>
-                <p className="text-[9px] font-medium opacity-60 mt-0.5 hidden sm:block">In từ file có sẵn</p>
+              <Printer className={cn("size-3.5 shrink-0", orderMode === 'print_only' ? "text-yellow-400" : "text-muted-foreground")} />
+              <div className="text-left min-w-0">
+                <p className="text-xs font-bold leading-none truncate">Chỉ in ảnh</p>
+                <p className="text-[9px] font-medium opacity-60 mt-0.5 hidden sm:block truncate">In từ file có sẵn</p>
               </div>
             </button>
           </div>
