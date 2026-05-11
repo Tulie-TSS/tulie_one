@@ -843,7 +843,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                                 {formatCurrency(item.quantity * item.unit_price * (1 - (item.discount || 0) / 100))}
                                                             </td>
                                                             <td className="px-2 text-center text-slate-500 align-top py-2 text-[10px]">
-                                                                {item.vat_percent || 0}%
+                                                                {currentQuotation.vat_exempt_status === 'exempt' ? 'KCT' : `${item.vat_percent || 0}%`}
                                                             </td>
                                                             <td className="px-3 text-right font-bold text-slate-900 align-top py-2">
                                                                 {formatCurrency((item.total_price || (item.quantity * item.unit_price * (1 - (item.discount || 0) / 100))) * (1 + (item.vat_percent || 0) / 100))}
@@ -879,7 +879,9 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                             <span className="font-semibold text-slate-900 tabular-nums">{formatCurrency(subtotalNet)}</span>
                                         </div>
                                         <div className="flex justify-between py-2 text-[13px]">
-                                            <span className="text-muted-foreground font-medium">Tổng thuế VAT ({currentQuotation.vat_percent}%)</span>
+                                            <span className="text-muted-foreground font-medium">
+                                                {currentQuotation.vat_exempt_status === 'exempt' ? 'Không chịu thuế' : `Tổng thuế VAT (${currentQuotation.vat_percent}%)`}
+                                            </span>
                                             <span className="font-medium text-slate-900 tabular-nums">{formatCurrency(vatAmount)}</span>
                                         </div>
                                         <div className="flex justify-between items-center py-3 bg-slate-50 -mx-4 px-4 rounded-b-lg">

@@ -329,7 +329,9 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                         const sortedRates = Object.keys(vatGroups).map(Number).sort((a, b) => a - b);
                         return sortedRates.map(rate => (
                             <div key={rate} className="flex justify-between items-center text-[11px] px-2">
-                                <span className="text-slate-500 uppercase">VAT ({rate}%)</span>
+                                <span className="text-slate-500 uppercase">
+                                    {rate === 0 && quotation.vat_exempt_status === 'exempt' ? 'Không chịu thuế' : `VAT (${rate}%)`}
+                                </span>
                                 <span className="text-foreground">{formatCurrency(vatGroups[rate])}</span>
                             </div>
                         ));

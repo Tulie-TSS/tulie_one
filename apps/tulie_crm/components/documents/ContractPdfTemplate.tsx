@@ -130,7 +130,7 @@ const ContractPdfTemplate: React.FC<ContractPdfTemplateProps> = ({ data }) => {
                 </View>
 
                 <Text style={styles.subtitle}>Điều 2: Giá trị hợp đồng và phương thức thanh toán</Text>
-                <Text style={styles.text}>2.1. Tổng giá trị hợp đồng (đã bao gồm thuế GTGT): <Text style={styles.bold}>{formatCurrency(total_amount)}</Text></Text>
+                <Text style={styles.text}>2.1. Tổng giá trị hợp đồng ({data.vat_exempt_status === 'exempt' ? 'Không chịu thuế GTGT' : 'đã bao gồm thuế GTGT'}): <Text style={styles.bold}>{formatCurrency(total_amount)}</Text></Text>
                 <Text style={styles.text}>(Bằng chữ: <Text>{amount_in_words}</Text>)</Text>
                 <Text style={styles.text}>2.2. Hình thức thanh toán: Chuyển khoản hoặc tiền mặt.</Text>
                 <Text style={styles.text}>2.3. Thời hạn thanh toán: Trong vòng 05 ngày kể từ ngày nhận đầy đủ hóa đơn.</Text>

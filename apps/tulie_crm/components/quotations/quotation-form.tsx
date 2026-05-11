@@ -1620,10 +1620,12 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                         </Select>
                                         <div className="flex flex-col gap-1 min-w-[120px]">
                                             {Object.entries(vatGroups).sort((a, b) => Number(a[0]) - Number(b[0])).map(([rate, amt]) => (
-                                                <div key={rate} className="flex items-center justify-between gap-4">
-                                                    <span className="text-[10px] text-muted-foreground whitespace-nowrap">VAT {rate}%:</span>
-                                                    <span className="text-[13px] font-medium text-foreground tabular-nums">{formatNumber(amt as number)} <span className="text-[10px]">đ</span></span>
-                                                </div>
+                                                    <div key={rate} className="flex items-center justify-between gap-4">
+                                                        <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                                                            {rate === "0" && vatExemptStatus === 'exempt' ? 'K.chịu thuế:' : `VAT ${rate}%:`}
+                                                        </span>
+                                                        <span className="text-[13px] font-medium text-foreground tabular-nums">{formatNumber(amt as number)} <span className="text-[10px]">đ</span></span>
+                                                    </div>
                                             ))}
                                             {Object.keys(vatGroups).length > 1 && (
                                                 <div className="flex items-center justify-between gap-4 border-t border-border pt-1 mt-1">

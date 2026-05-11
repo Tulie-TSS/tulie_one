@@ -287,7 +287,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                                     <td className="px-1 text-center text-muted-foreground align-top py-3 text-[10px]">{discountPct > 0 ? `${discountPct}%` : '-'}</td>
                                                     <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums">{discountAmt > 0 ? formatCurrency(discountAmt).replace('₫', '') : '-'}</td>
                                                     <td className="px-2 text-right text-zinc-800 align-top py-3 text-[10px] tabular-nums">{formatCurrency(afterDiscount).replace('₫', '')}</td>
-                                                    <td className="px-1 text-center text-muted-foreground align-top py-3 text-[10px]">{vatRate > 0 ? `${vatRate}%` : '0%'}</td>
+                                                    <td className="px-1 text-center text-muted-foreground align-top py-3 text-[10px]">{vatRate > 0 ? `${vatRate}%` : (quotation.vat_exempt_status === 'exempt' ? 'KCT' : '0%')}</td>
                                                     <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums">{vatAmt > 0 ? formatCurrency(vatAmt).replace('₫', '') : '0'}</td>
                                                     <td className="px-3 text-right text-foreground align-top py-3 text-[11px] tabular-nums">{formatCurrency(afterVat).replace('₫', '')}</td>
                                                 </tr>
@@ -331,7 +331,9 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                 const sortedRates = Object.keys(vatGroups).map(Number).sort((a, b) => a - b);
                                 return sortedRates.map(rate => (
                                     <div key={rate} className="flex justify-between text-[13px]">
-                                        <span className="text-slate-500 font-medium">Tổng thuế VAT ({rate}%)</span>
+                                        <span className="text-slate-500 font-medium">
+                                            {rate === 0 && quotation.vat_exempt_status === 'exempt' ? 'Không chịu thuế' : `Tổng thuế VAT (${rate}%)`}
+                                        </span>
                                         <span className="font-semibold text-slate-950">{formatCurrency(vatGroups[rate])}</span>
                                     </div>
                                 ));
