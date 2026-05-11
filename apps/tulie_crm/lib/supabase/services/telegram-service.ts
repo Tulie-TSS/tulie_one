@@ -72,23 +72,61 @@ function fillTemplate(template: string, vars: Record<string, any>) {
 // Helper formats for common events - individual async functions satisfy "use server"
 export async function formatNewRetailOrder(order: any) {
     const config = await getTelegramConfig()
+    const supabase = createAdminClient()
+    
+    // Fetch items for detailed summary
+    const { data: items } = await supabase
+        .from('retail_order_items')
+        .select('*')
+        .eq('order_id', order.id)
+        .order('sort_order', { ascending: true })
+
+    const metadata = order.metadata || {}
+    const shipping = metadata.shipping || {}
+    const viSizes = metadata.vi_sizes || []
+    const viLabels = metadata.vi_labels || []
+    
+    const SIZE_NAMES: Record<string, string> = {
+        'mix': 'Mix', '2x3': '2x3cm', '3x4': '3x4cm', '4x6': '4x6cm',
+        '3.5x4.5': '3.5x4.5cm', '3.3x4.8': '3.3x4.8cm', '4.5x4.5': '4.5x4.5cm', '5x5': '5x5cm',
+    }
+
+    const printInfo = viSizes.length > 0 
+        ? `✅ Có in (${viSizes.length} vỉ): ${viSizes.map((s: string, i: number) => `${SIZE_NAMES[s] || s}${viLabels[i] ? `[${viLabels[i]}]` : ''}`).join(', ')}`
+        : '❌ Không in (Chỉ lấy file)'
+
+    const address = shipping.address 
+        ? `${shipping.address}${shipping.region === 'vinhomes' ? ' (Vinhomes)' : ''}`
+        : 'Lấy tại studio'
+
+    const itemSummary = (items || []).map(item => `- ${item.quantity}x ${item.product_name}`).join('\n')
+
     const vars = {
         order_number: order.order_number,
         customer_name: order.customer_name,
         customer_phone: order.customer_phone || 'N/A',
         total_amount: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.total_amount),
         payment_status: order.payment_status === 'paid' ? '✅ Đã thanh toán' : '⏳ Chờ thanh toán',
-        order_status: order.order_status
+        order_status: order.order_status,
+        address: address,
+        print_info: printInfo,
+        item_summary: itemSummary || 'Chưa rõ sản phẩm'
     }
+
     const tpl = (config as any)?.template_new_retail_order || `
 <b>🛍️ ĐƠN HÀNG MỚI (STUDIO)</b>
 ━━━━━━━━━━━━━━━━━━
 🆔 Mã đơn: <code>{order_number}</code>
 👤 Khách hàng: <b>{customer_name}</b>
-📞 SĐT: {customer_phone}
+📞 SĐT: <code>{customer_phone}</code>
 💰 Tổng đơn: <b>{total_amount}</b>
 💳 Trạng thái: {payment_status}
-📍 Tình trạng: <b>{order_status}</b>
+
+📦 <b>Chi tiết sản phẩm:</b>
+{item_summary}
+
+🖼️ <b>In ấn:</b> {print_info}
+📍 <b>Địa chỉ:</b> {address}
 ━━━━━━━━━━━━━━━━━━
 <i>Check ngay tại Tulie CRM!</i>`
     return fillTemplate(tpl, vars).trim()
@@ -97,12 +135,17 @@ export async function formatNewRetailOrder(order: any) {
 export async function formatPaymentReceived(order: any, amount: number, isB2B: boolean = false) {
     const config = await getTelegramConfig()
 
+    const remaining = order.total_amount - (order.paid_amount || 0)
+    const isFullyPaid = remaining <= 0
+
     const vars = {
         amount: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount),
         order_number: order.order_number || '',
         contract_number: order.contract_number || '',
         customer_name: order.customer_name || '',
-        company_name: order.customer?.company_name || ''
+        customer_phone: order.customer_phone || '',
+        company_name: order.customer?.company_name || '',
+        status_text: isFullyPaid ? '✅ ĐÃ THANH TOÁN XONG' : `⏳ Còn thiếu: ${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(remaining)}`
     }
 
     if (isB2B) {
@@ -122,6 +165,8 @@ export async function formatPaymentReceived(order: any, amount: number, isB2B: b
 🏦 Số tiền: <b>+{amount}</b>
 📄 Mã đơn: <code>{order_number}</code>
 👤 Khách hàng: <b>{customer_name}</b>
+📞 SĐT: <code>{customer_phone}</code>
+💳 Trạng thái: <b>{status_text}</b>
 ━━━━━━━━━━━━━━━━━━
 <i>Ting ting! Chúc mừng team! 🥂</i>`
         return fillTemplate(tplB2C, vars).trim()

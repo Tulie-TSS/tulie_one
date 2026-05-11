@@ -592,19 +592,21 @@ export async function recordRetailPayment(id: string, amount: number) {
             console.warn(`[recordRetailPayment] Overpayment prevented: ${newPaidAmount} > ${order.total_amount} for ${order.order_number}. Capped to ${cappedPaidAmount}`)
         }
 
-        const { error } = await supabase
+        const { data: updatedOrder, error } = await supabase
             .from('retail_orders')
             .update({
                 paid_amount: cappedPaidAmount,
                 payment_status: paymentStatus
             })
             .eq('id', id)
+            .select('*')
+            .single()
 
-        if (error) throw error
+        if (error || !updatedOrder) throw error || new Error('Failed to update order')
 
         // Non-blocking: send Telegram notification
         try {
-            await sendTelegramNotification(await formatPaymentReceived(order, amount), 'notify_retail_payment')
+            await sendTelegramNotification(await formatPaymentReceived(updatedOrder, amount), 'notify_retail_payment')
         } catch (notifErr) {
             console.error('Telegram notification failed (payment still recorded):', notifErr)
         }
