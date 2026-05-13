@@ -106,14 +106,14 @@ export function CtvCollaborationCard({ group }: { group: CtvGroup }) {
                             <Table>
                                 <TableHeader className="bg-muted/50">
                                     <TableRow className="hover:bg-transparent">
-                                        <TableHead className="pl-6 text-[11px] uppercase font-bold text-muted-foreground h-10">Mã hợp đồng</TableHead>
-                                        <TableHead className="text-[11px] uppercase font-bold text-muted-foreground h-10">Dự án / Nội dung</TableHead>
-                                        <TableHead className="text-[11px] uppercase font-bold text-muted-foreground h-10">Giá trị</TableHead>
-                                        <TableHead className="text-[11px] uppercase font-bold text-muted-foreground h-10 text-center">Thuế TNCN</TableHead>
-                                        <TableHead className="text-[11px] uppercase font-bold text-muted-foreground h-10">Thực nhận</TableHead>
-                                        <TableHead className="text-[11px] uppercase font-bold text-muted-foreground h-10">Thời hạn</TableHead>
-                                        <TableHead className="text-[11px] uppercase font-bold text-muted-foreground h-10">Trạng thái</TableHead>
-                                        <TableHead className="pr-6 text-[11px] uppercase font-bold text-muted-foreground h-10 text-right">Thao tác</TableHead>
+                                        <TableHead className="pl-6 text-[11px] font-bold text-muted-foreground h-10">Mã hợp đồng</TableHead>
+                                        <TableHead className="text-[11px] font-bold text-muted-foreground h-10">Dự án / Nội dung</TableHead>
+                                        <TableHead className="text-[11px] font-bold text-muted-foreground h-10">Giá trị</TableHead>
+                                        <TableHead className="text-[11px] font-bold text-muted-foreground h-10 text-center">Thuế TNCN</TableHead>
+                                        <TableHead className="text-[11px] font-bold text-muted-foreground h-10">Thực nhận</TableHead>
+                                        <TableHead className="text-[11px] font-bold text-muted-foreground h-10">Thời hạn</TableHead>
+                                        <TableHead className="text-[11px] font-bold text-muted-foreground h-10">Trạng thái</TableHead>
+                                        <TableHead className="pr-6 text-[11px] font-bold text-muted-foreground h-10 text-right">Thao tác</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
