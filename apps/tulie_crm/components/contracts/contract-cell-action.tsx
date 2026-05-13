@@ -34,12 +34,15 @@ import {
 
 interface ContractCellActionProps {
     data: Contract
+    from?: string
 }
 
-export function ContractCellAction({ data }: ContractCellActionProps) {
+export function ContractCellAction({ data, from }: ContractCellActionProps) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
+    
+    const queryParams = from ? `?from=${from}` : ''
 
     const onDelete = async () => {
         try {
@@ -94,13 +97,13 @@ export function ContractCellAction({ data }: ContractCellActionProps) {
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Hành động</DropdownMenuLabel>
                     <DropdownMenuItem asChild>
-                        <Link href={`/contracts/${data.id}`}>
+                        <Link href={`/contracts/${data.id}${queryParams}`}>
                             <Eye className="h-4 w-4" />
                             Xem chi tiết
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link href={`/contracts/${data.id}/edit`}>
+                        <Link href={`/contracts/${data.id}/edit${queryParams}`}>
                             <Edit className="h-4 w-4" />
                             Chỉnh sửa
                         </Link>

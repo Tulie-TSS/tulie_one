@@ -50,7 +50,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                         <CtvLinkButton publicToken={contract.public_token} />
                     )}
                     <Button variant="outline" size="sm" asChild>
-                        <Link href={`/contracts/${contract.id}/edit`}>
+                        <Link href={`/contracts/${contract.id}/edit?from=/contracts/ctv`}>
                             <Edit className="h-4 w-4 mr-2" />
                             Chỉnh sửa
                         </Link>

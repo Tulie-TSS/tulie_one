@@ -125,7 +125,7 @@ export function CtvCollaborationCard({ group }: { group: CtvGroup }) {
                                             <TableRow key={c.id} className="group transition-colors">
                                                 <TableCell className="pl-6">
                                                     <Link
-                                                        href={`/contracts/${c.id}`}
+                                                        href={`/contracts/${c.id}?from=/contracts/ctv`}
                                                         className="font-mono text-[11px] font-bold hover:text-primary transition-colors"
                                                     >
                                                         {c.contract_number || '—'}
@@ -157,11 +157,11 @@ export function CtvCollaborationCard({ group }: { group: CtvGroup }) {
                                                 <TableCell className="pr-6 text-right">
                                                     <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                                         <Button asChild variant="outline" size="icon" className="h-7 w-7">
-                                                            <Link href={`/contracts/${c.id}`}>
+                                                            <Link href={`/contracts/${c.id}?from=/contracts/ctv`}>
                                                                 <FileText className="h-3.5 w-3.5" />
                                                             </Link>
                                                         </Button>
-                                                        <ContractCellAction data={c} />
+                                                        <ContractCellAction data={c} from="/contracts/ctv" />
                                                     </div>
                                                 </TableCell>
                                             </TableRow>
