@@ -1,15 +1,11 @@
-import {
-    Card, CardContent,
-    Button,
-} from '@repo/ui'
-import {
-    UserRound, Plus
-} from 'lucide-react'
-import Link from 'next/link'
+import { StatsCard } from '@/components/dashboard/stats-card'
 import { getContracts } from '@/lib/supabase/services/contract-service'
 import { formatCurrency } from '@/lib/utils/format'
 import { Contract } from '@/types'
 import { CtvCollaborationCard } from '@/components/contracts/ctv-collaboration-card'
+import { Card, CardContent, Button } from '@repo/ui'
+import { Plus, Users, UserRound } from 'lucide-react'
+import Link from 'next/link'
 
 export const metadata = {
     title: 'Hợp đồng Cộng tác viên | Tulie CRM',
@@ -87,17 +83,17 @@ export default async function CtvContractsPage() {
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center border">
-                        <UserRound className="h-5 w-5 text-foreground" />
+                    <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center border border-border">
+                        <Users className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-xl font-semibold tracking-tight">Hợp đồng Cộng tác viên</h1>
-                        <p className="text-sm text-muted-foreground mt-0.5">
+                        <h1 className="text-2xl font-semibold tracking-tight">Hợp đồng Cộng tác viên</h1>
+                        <p className="text-sm font-medium text-muted-foreground mt-1">
                             {groups.length} CTV · {contracts.length} hợp đồng
                         </p>
                     </div>
                 </div>
-                <Button asChild size="sm">
+                <Button asChild>
                     <Link href="/contracts/ctv/new">
                         <Plus className="h-4 w-4" />
                         Tạo hợp đồng CTV
@@ -105,41 +101,21 @@ export default async function CtvContractsPage() {
                 </Button>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                <Card>
-                    <CardContent className="p-4">
-                        <p className="text-xs text-muted-foreground font-medium">Tổng CTV</p>
-                        <p className="text-2xl font-bold mt-1">{groups.length}</p>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardContent className="p-4">
-                        <p className="text-xs text-muted-foreground font-medium">Đang thực hiện</p>
-                        <p className="text-2xl font-bold mt-1">{activeCount}</p>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardContent className="p-4">
-                        <p className="text-xs text-muted-foreground font-medium">Tổng giá trị chi trả</p>
-                        <p className="text-lg font-bold mt-1">{formatCurrency(totalValue)}</p>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardContent className="p-4">
-                        <p className="text-xs text-muted-foreground font-medium">Chờ điền thông tin</p>
-                        <p className="text-2xl font-bold mt-1">{pendingInfo}</p>
-                    </CardContent>
-                </Card>
+            {/* Stats Summary */}
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+                <StatsCard title="Tổng CTV" value={groups.length} />
+                <StatsCard title="Đang thực hiện" value={activeCount} />
+                <StatsCard title="Tổng giá trị chi trả" value={formatCurrency(totalValue)} />
+                <StatsCard title="Chờ điền thông tin" value={pendingInfo} />
             </div>
 
             {/* CTV List */}
-            <div className="space-y-3">
+            <div className="space-y-6">
                 {groups.length === 0 ? (
                     <Card>
                         <CardContent className="py-16 text-center">
                             <UserRound className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
-                            <p className="text-muted-foreground text-sm">Chưa có hợp đồng cộng tác viên nào.</p>
+                            <p className="text-muted-foreground text-sm font-medium">Chưa có hợp đồng cộng tác viên nào.</p>
                             <Button asChild size="sm" className="mt-4">
                                 <Link href="/contracts/ctv/new">Tạo hợp đồng CTV đầu tiên</Link>
                             </Button>

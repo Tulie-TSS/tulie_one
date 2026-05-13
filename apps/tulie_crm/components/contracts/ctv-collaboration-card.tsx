@@ -106,14 +106,14 @@ export function CtvCollaborationCard({ group }: { group: CtvGroup }) {
                             <Table>
                                 <TableHeader className="bg-muted/50">
                                     <TableRow className="hover:bg-transparent">
-                                        <TableHead className="pl-6 text-[11px] font-bold text-muted-foreground h-10">Mã hợp đồng</TableHead>
-                                        <TableHead className="text-[11px] font-bold text-muted-foreground h-10">Dự án / Nội dung</TableHead>
-                                        <TableHead className="text-[11px] font-bold text-muted-foreground h-10">Giá trị</TableHead>
-                                        <TableHead className="text-[11px] font-bold text-muted-foreground h-10 text-center">Thuế TNCN</TableHead>
-                                        <TableHead className="text-[11px] font-bold text-muted-foreground h-10">Thực nhận</TableHead>
-                                        <TableHead className="text-[11px] font-bold text-muted-foreground h-10">Thời hạn</TableHead>
-                                        <TableHead className="text-[11px] font-bold text-muted-foreground h-10">Trạng thái</TableHead>
-                                        <TableHead className="pr-6 text-[11px] font-bold text-muted-foreground h-10 text-right">Thao tác</TableHead>
+                                        <TableHead className="pl-6 text-xs font-medium text-muted-foreground h-10">Mã hợp đồng</TableHead>
+                                        <TableHead className="text-xs font-medium text-muted-foreground h-10">Dự án / Nội dung</TableHead>
+                                        <TableHead className="text-xs font-medium text-muted-foreground h-10">Giá trị</TableHead>
+                                        <TableHead className="text-xs font-medium text-muted-foreground h-10 text-center">Thuế TNCN</TableHead>
+                                        <TableHead className="text-xs font-medium text-muted-foreground h-10">Thực nhận</TableHead>
+                                        <TableHead className="text-xs font-medium text-muted-foreground h-10">Thời hạn</TableHead>
+                                        <TableHead className="text-xs font-medium text-muted-foreground h-10">Trạng thái</TableHead>
+                                        <TableHead className="pr-6 text-xs font-medium text-muted-foreground h-10 text-right">Thao tác</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -123,42 +123,42 @@ export function CtvCollaborationCard({ group }: { group: CtvGroup }) {
                                         const statusCfg = STATUS_CONFIG[c.status] ?? { label: c.status, variant: 'secondary' as const }
                                         return (
                                             <TableRow key={c.id} className="group transition-colors">
-                                                <TableCell className="pl-6">
+                                                <TableCell className="pl-6 py-3">
                                                     <Link
                                                         href={`/contracts/${c.id}?from=/contracts/ctv`}
-                                                        className="font-mono text-[11px] font-bold hover:text-primary transition-colors"
+                                                        className="font-medium text-sm hover:text-primary transition-colors"
                                                     >
                                                         {c.contract_number || '—'}
                                                     </Link>
                                                 </TableCell>
-                                                <TableCell>
-                                                    <div className="text-xs font-medium max-w-[200px] truncate">{c.title}</div>
+                                                <TableCell className="py-3">
+                                                    <div className="text-sm max-w-[200px] truncate">{c.title}</div>
                                                 </TableCell>
-                                                <TableCell>
-                                                    <span className="text-xs font-semibold">{formatCurrency(c.total_amount)}</span>
+                                                <TableCell className="py-3">
+                                                    <span className="text-sm font-medium">{formatCurrency(c.total_amount)}</span>
                                                 </TableCell>
-                                                <TableCell className="text-center">
-                                                    <span className="text-[10px] text-muted-foreground">- {formatCurrency(tax)}</span>
+                                                <TableCell className="text-center py-3">
+                                                    <span className="text-xs text-muted-foreground">- {formatCurrency(tax)}</span>
                                                 </TableCell>
-                                                <TableCell>
-                                                    <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">{formatCurrency(net)}</span>
+                                                <TableCell className="py-3">
+                                                    <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">{formatCurrency(net)}</span>
                                                 </TableCell>
-                                                <TableCell>
-                                                    <div className="text-[10px] text-muted-foreground leading-tight">
+                                                <TableCell className="py-3">
+                                                    <div className="text-xs text-muted-foreground leading-tight">
                                                         <div>{c.start_date ? formatDate(c.start_date) : '—'}</div>
-                                                        {c.end_date && <div className="text-[9px] opacity-70">đến {formatDate(c.end_date)}</div>}
+                                                        {c.end_date && <div className="text-[10px] opacity-70">đến {formatDate(c.end_date)}</div>}
                                                     </div>
                                                 </TableCell>
-                                                <TableCell>
-                                                    <Badge variant={statusCfg.variant} className="text-[9px] px-1.5 h-4 font-bold uppercase">
+                                                <TableCell className="py-3">
+                                                    <Badge variant={statusCfg.variant} className="text-[10px] px-1.5 h-5 font-medium">
                                                         {statusCfg.label}
                                                     </Badge>
                                                 </TableCell>
-                                                <TableCell className="pr-6 text-right">
+                                                <TableCell className="pr-6 text-right py-3">
                                                     <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <Button asChild variant="outline" size="icon" className="h-7 w-7">
+                                                        <Button asChild variant="outline" size="icon" className="h-8 w-8">
                                                             <Link href={`/contracts/${c.id}?from=/contracts/ctv`}>
-                                                                <FileText className="h-3.5 w-3.5" />
+                                                                <FileText className="h-4 w-4" />
                                                             </Link>
                                                         </Button>
                                                         <ContractCellAction data={c} from="/contracts/ctv" />
