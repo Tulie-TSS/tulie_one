@@ -15,8 +15,9 @@ import { DataTable } from '@/components/shared/data-table'
 import { contractColumns } from '@/components/contracts/contract-columns'
 
 export default async function ContractsPage() {
-    // Filter by type 'contract'
-    const contracts = await getContracts(undefined, 'contract', 'agency')
+    // Filter by type 'contract', exclude freelancer category
+    const allContracts = await getContracts(undefined, 'contract', 'agency')
+    const contracts = allContracts.filter(c => c.category !== 'freelancer')
 
     const activeContracts = contracts.filter((c) => c.status === 'active').length
     const completedContracts = contracts.filter((c) => c.status === 'completed').length

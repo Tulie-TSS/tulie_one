@@ -92,7 +92,6 @@ export async function POST(request: NextRequest) {
                     amount: m.amount,
                     due_date: m.due_date || null,
                     status: 'pending',
-                    order: i,
                 }))
 
             if (milestoneRows.length > 0) {

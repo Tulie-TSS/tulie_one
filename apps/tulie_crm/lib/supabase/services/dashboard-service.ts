@@ -34,21 +34,24 @@ export async function getDashboardStats(): Promise<DashboardStats> {
 
         if (custError) console.error('Error fetching customer count:', custError)
 
-        // Fetch contracts stats
+        // Fetch contracts stats (excluding freelancer contracts)
         const { count: activeContractsCount, error: contError } = await supabase
             .from('contracts')
             .select('*', { count: 'exact', head: true })
             .eq('status', 'active')
+            .neq('category', 'freelancer')
 
         const { count: pendingContractsCount } = await supabase
             .from('contracts')
             .select('*', { count: 'exact', head: true })
             .eq('status', 'draft')
+            .neq('category', 'freelancer')
 
         const { count: completedContractsCount } = await supabase
             .from('contracts')
             .select('*', { count: 'exact', head: true })
             .eq('status', 'completed')
+            .neq('category', 'freelancer')
 
         if (contError) console.error('Error fetching contract count:', contError)
 
@@ -92,11 +95,12 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         // Total = SePay (B2C) + unmatched invoices/orders (B2B)
         const totalRevenue = sepayRevenue + unmatchedInvRevenue + unmatchedRetailRevenue
 
-        // Fetch total value from active contracts
+        // Fetch total value from active contracts (excluding freelancers)
         const { data: activeContracts } = await supabase
             .from('contracts')
             .select('total_amount')
             .eq('status', 'active')
+            .neq('category', 'freelancer')
 
         const contractTotalValue = activeContracts?.reduce((sum, c) => sum + (c.total_amount || 0), 0) || 0
 
