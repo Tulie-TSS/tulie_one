@@ -1,18 +1,15 @@
 import {
-    Card, CardContent, CardHeader,
-    Badge,
-    Separator,
-    Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+    Card, CardContent,
+    Button,
 } from '@repo/ui'
 import {
-    UserRound, Plus, FileText, Phone, Mail,
-    Landmark, TrendingUp, Clock, CheckCircle2, FileWarning
+    UserRound, Plus
 } from 'lucide-react'
 import Link from 'next/link'
-import { Button } from '@repo/ui'
 import { getContracts } from '@/lib/supabase/services/contract-service'
-import { formatCurrency, formatDate } from '@/lib/utils/format'
+import { formatCurrency } from '@/lib/utils/format'
 import { Contract } from '@/types'
+import { CtvCollaborationCard } from '@/components/contracts/ctv-collaboration-card'
 
 export const metadata = {
     title: 'Hợp đồng Cộng tác viên | Tulie CRM',
@@ -77,15 +74,6 @@ function groupByCTV(contracts: Contract[]): CtvGroup[] {
     return Array.from(map.values()).sort((a, b) => b.contracts.length - a.contracts.length)
 }
 
-const STATUS_CONFIG: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-    draft:     { label: 'Nháp',           variant: 'secondary' },
-    active:    { label: 'Đang thực hiện', variant: 'default' },
-    completed: { label: 'Hoàn thành',     variant: 'outline' },
-    cancelled: { label: 'Đã hủy',         variant: 'destructive' },
-    signed:    { label: 'Đã ký',          variant: 'outline' },
-    sent:      { label: 'Đã gửi',         variant: 'secondary' },
-}
-
 export default async function CtvContractsPage() {
     const contracts = await getContracts(undefined, undefined, undefined, 'freelancer')
     const groups = groupByCTV(contracts)
@@ -133,7 +121,7 @@ export default async function CtvContractsPage() {
                 </Card>
                 <Card>
                     <CardContent className="p-4">
-                        <p className="text-xs text-muted-foreground font-medium">Tổng giá trị</p>
+                        <p className="text-xs text-muted-foreground font-medium">Tổng giá trị chi trả</p>
                         <p className="text-lg font-bold mt-1">{formatCurrency(totalValue)}</p>
                     </CardContent>
                 </Card>
@@ -146,7 +134,7 @@ export default async function CtvContractsPage() {
             </div>
 
             {/* CTV List */}
-            <div className="space-y-4">
+            <div className="space-y-3">
                 {groups.length === 0 ? (
                     <Card>
                         <CardContent className="py-16 text-center">
@@ -159,131 +147,13 @@ export default async function CtvContractsPage() {
                     </Card>
                 ) : (
                     groups.map((group) => (
-                        <CtvCard key={group.key} group={group} />
+                        <CtvCollaborationCard key={group.key} group={group} />
                     ))
                 )}
             </div>
         </div>
     )
 }
-
-function CtvCard({ group }: { group: CtvGroup }) {
-    const activeCount = group.contracts.filter(c => c.status === 'active').length
-    const completedCount = group.contracts.filter(c => c.status === 'completed').length
-
-    return (
-        <Card>
-            <CardHeader className="pb-0 pt-4 px-5">
-                <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                        <div className="h-9 w-9 rounded-full bg-muted border flex items-center justify-center shrink-0">
-                            <span className="text-sm font-semibold">
-                                {group.name.charAt(0).toUpperCase()}
-                            </span>
-                        </div>
-                        <div>
-                            <div className="flex items-center gap-2">
-                                <h3 className="font-semibold text-sm">{group.name}</h3>
-                                {!group.hasInfo && (
-                                    <Badge variant="outline" className="text-xs">
-                                        Chưa có thông tin
-                                    </Badge>
-                                )}
-                            </div>
-                            <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-0.5">
-                                {group.phone && (
-                                    <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                        <Phone className="h-3 w-3" />{group.phone}
-                                    </span>
-                                )}
-                                {group.email && (
-                                    <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                        <Mail className="h-3 w-3" />{group.email}
-                                    </span>
-                                )}
-                                {group.bank_name && group.bank_account && (
-                                    <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                        <Landmark className="h-3 w-3" />{group.bank_name} · {group.bank_account}
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="text-right shrink-0">
-                        <p className="text-sm font-semibold">{formatCurrency(group.totalValue)}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                            {group.contracts.length} hợp đồng
-                            {activeCount > 0 && ` · ${activeCount} đang thực hiện`}
-                            {completedCount > 0 && ` · ${completedCount} hoàn thành`}
-                        </p>
-                    </div>
-                </div>
-            </CardHeader>
-
-            <Separator className="mt-4" />
-
-            <CardContent className="p-0">
-                <Table>
-                    <TableHeader>
-                        <TableRow className="hover:bg-transparent">
-                            <TableHead className="pl-5 text-xs">Mã hợp đồng</TableHead>
-                            <TableHead className="text-xs">Tiêu đề dự án</TableHead>
-                            <TableHead className="text-xs">Giá trị</TableHead>
-                            <TableHead className="text-xs">Thuế TNCN 10%</TableHead>
-                            <TableHead className="text-xs">Nhận thực tế</TableHead>
-                            <TableHead className="text-xs">Thời hạn</TableHead>
-                            <TableHead className="text-xs">Trạng thái</TableHead>
-                            <TableHead className="pr-5 text-xs text-right">Thao tác</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {group.contracts.map((c) => {
-                            const tax = (c.total_amount || 0) * 0.1
-                            const net = (c.total_amount || 0) - tax
-                            const statusCfg = STATUS_CONFIG[c.status] ?? { label: c.status, variant: 'secondary' as const }
-                            return (
-                                <TableRow key={c.id}>
-                                    <TableCell className="pl-5">
-                                        <Link
-                                            href={`/contracts/${c.id}`}
-                                            className="font-mono text-xs font-semibold hover:underline"
-                                        >
-                                            {c.contract_number || '—'}
-                                        </Link>
-                                    </TableCell>
-                                    <TableCell>
-                                        <span className="text-xs line-clamp-2 max-w-[180px] block">{c.title}</span>
-                                    </TableCell>
-                                    <TableCell>
-                                        <span className="text-xs">{formatCurrency(c.total_amount)}</span>
-                                    </TableCell>
-                                    <TableCell>
-                                        <span className="text-xs text-muted-foreground">- {formatCurrency(tax)}</span>
-                                    </TableCell>
-                                    <TableCell>
-                                        <span className="text-xs font-medium">{formatCurrency(net)}</span>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="text-xs text-muted-foreground space-y-0.5">
-                                            <div>{c.start_date ? formatDate(c.start_date) : '—'}</div>
-                                            {c.end_date && <div>→ {formatDate(c.end_date)}</div>}
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Badge variant={statusCfg.variant} className="text-xs">
-                                            {statusCfg.label}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell className="pr-5 text-right">
-                                        <Button asChild variant="ghost" size="sm" className="h-7 text-xs">
-                                            <Link href={`/contracts/${c.id}`}>
-                                                <FileText className="h-3.5 w-3.5 mr-1" />
-                                                Chi tiết
-                                            </Link>
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
                             )
                         })}
                     </TableBody>
