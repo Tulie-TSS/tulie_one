@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation'
 import {
     Card, CardContent, CardHeader, CardTitle, CardDescription,
     Label, Input, Textarea, Button, Separator,
+    Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from '@repo/ui'
 import { toast } from 'sonner'
-import { ArrowLeft, Plus, Trash2 } from 'lucide-react'
+import { ArrowLeft, Plus, Trash2, User } from 'lucide-react'
 import Link from 'next/link'
 
 interface Milestone {
@@ -22,9 +23,17 @@ interface Milestone {
 const parseNumber = (val: string) => val.replace(/[^0-9]/g, '')
 const formatNumber = (val: string) => val ? Number(val).toLocaleString('vi-VN') : ''
 
-export default function NewCtvContractClient() {
+export default function NewCtvContractClient({ freelancers = [] }: { freelancers?: any[] }) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
+
+    // Freelancer selection
+    const [selectedFreelancer, setSelectedFreelancer] = useState<string>('new')
+    const [freelancerInfo, setFreelancerInfo] = useState({
+        name: '',
+        email: '',
+        phone: '',
+    })
 
     // Basic fields
     const [title, setTitle] = useState('')
@@ -97,6 +106,22 @@ export default function NewCtvContractClient() {
         setMilestones(prev => prev.map(m => m.id === id ? { ...m, [field]: value } : m))
     }
 
+    const handleFreelancerSelect = (val: string) => {
+        setSelectedFreelancer(val)
+        if (val === 'new') {
+            setFreelancerInfo({ name: '', email: '', phone: '' })
+        } else {
+            const found = freelancers.find(f => (f.email || f.phone) === val)
+            if (found) {
+                setFreelancerInfo({
+                    name: found.name || '',
+                    email: found.email || '',
+                    phone: found.phone || '',
+                })
+            }
+        }
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!title.trim()) { toast.error('Vui lòng nhập tiêu đề hợp đồng'); return }
@@ -117,6 +142,9 @@ export default function NewCtvContractClient() {
                     product_name_in_contract: productName.trim() || undefined,
                     freelancer_metadata: {
                         project_name: title.trim(),
+                        name: freelancerInfo.name.trim() || undefined,
+                        email: freelancerInfo.email.trim() || undefined,
+                        phone: freelancerInfo.phone.trim() || undefined,
                     },
                     milestones: milestones
                         .map(m => ({ ...m, amount: Number(m.amount) }))
@@ -152,6 +180,68 @@ export default function NewCtvContractClient() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Main */}
                 <div className="lg:col-span-2 space-y-4">
+                    {/* Freelancer Info */}
+                    <Card>
+                        <CardHeader className="pb-3">
+                            <div className="flex items-center gap-2">
+                                <User className="h-4 w-4 text-primary" />
+                                <CardTitle className="text-base">Chọn Cộng tác viên</CardTitle>
+                            </div>
+                            <CardDescription>Chọn từ danh sách đã có hoặc nhập mới</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="space-y-1.5">
+                                <Label>Danh sách CTV đã từng hợp tác</Label>
+                                <Select value={selectedFreelancer} onValueChange={handleFreelancerSelect}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Chọn cộng tác viên..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="new">-- Cộng tác viên mới --</SelectItem>
+                                        {freelancers.map((f, i) => (
+                                            <SelectItem key={i} value={f.email || f.phone}>
+                                                {f.name} ({f.email || f.phone})
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <Separator />
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-1.5">
+                                    <Label htmlFor="f_name">Họ tên CTV</Label>
+                                    <Input
+                                        id="f_name"
+                                        value={freelancerInfo.name}
+                                        onChange={e => setFreelancerInfo(prev => ({ ...prev, name: e.target.value }))}
+                                        placeholder="Nhập họ tên (không bắt buộc)"
+                                    />
+                                </div>
+                                <div className="space-y-1.5">
+                                    <Label htmlFor="f_phone">Số điện thoại</Label>
+                                    <Input
+                                        id="f_phone"
+                                        value={freelancerInfo.phone}
+                                        onChange={e => setFreelancerInfo(prev => ({ ...prev, phone: e.target.value }))}
+                                        placeholder="Nhập số điện thoại"
+                                    />
+                                </div>
+                                <div className="space-y-1.5 md:col-span-2">
+                                    <Label htmlFor="f_email">Email</Label>
+                                    <Input
+                                        id="f_email"
+                                        type="email"
+                                        value={freelancerInfo.email}
+                                        onChange={e => setFreelancerInfo(prev => ({ ...prev, email: e.target.value }))}
+                                        placeholder="Nhập email"
+                                    />
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
                     {/* Contract Info */}
                     <Card>
                         <CardHeader className="pb-3">

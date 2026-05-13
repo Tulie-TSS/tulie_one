@@ -753,3 +753,45 @@ export async function getAcceptanceReportsByProjectId(projectId: string) {
         return []
     }
 }
+
+export async function getUniqueFreelancers() {
+    try {
+        const supabase = await createClient()
+        const { data, error } = await supabase
+            .from('contracts')
+            .select('freelancer_metadata')
+            .eq('category', 'freelancer')
+            .not('freelancer_metadata', 'is', null)
+            .order('created_at', { ascending: false })
+
+        if (error) {
+            console.error('Error fetching freelancers:', error)
+            return []
+        }
+
+        const freelancersMap = new Map()
+        data?.forEach(item => {
+            const meta = item.freelancer_metadata as any
+            if (!meta) return
+
+            // Key by email or phone
+            const key = meta.email || meta.phone
+            if (key && !freelancersMap.has(key)) {
+                freelancersMap.set(key, {
+                    name: meta.name || '',
+                    email: meta.email || '',
+                    phone: meta.phone || '',
+                    cccd: meta.cccd || '',
+                    bank_name: meta.bank_name || '',
+                    bank_account: meta.bank_account || '',
+                    address: meta.address || '',
+                })
+            }
+        })
+
+        return Array.from(freelancersMap.values())
+    } catch (err) {
+        console.error('Fatal error in getUniqueFreelancers:', err)
+        return []
+    }
+}
