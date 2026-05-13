@@ -154,11 +154,3 @@ export default async function CtvContractsPage() {
         </div>
     )
 }
-                            )
-                        })}
-                    </TableBody>
-                </Table>
-            </CardContent>
-        </Card>
-    )
-}
