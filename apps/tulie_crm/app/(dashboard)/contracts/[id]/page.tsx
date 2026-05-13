@@ -46,13 +46,16 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 export default async function ContractDetailPage({ params, searchParams }: any) {
     const { id } = await params
     const resolvedSearchParams = await searchParams
-    const fromParam = resolvedSearchParams?.from
-    const backHref = fromParam && typeof fromParam === 'string' && fromParam.startsWith('/') ? fromParam : '/contracts'
     const contract = await getContractById(id)
-
     if (!contract) {
         notFound()
     }
+
+    const fromParam = resolvedSearchParams?.from
+    const isFreelancerContract = contract.category === 'freelancer'
+    const backHref = fromParam && typeof fromParam === 'string' && fromParam.startsWith('/') 
+        ? fromParam 
+        : (isFreelancerContract ? '/contracts/ctv' : '/contracts')
 
     // In a real app, paid_amount would be calculated from related invoices
     const paidAmount = contract.milestones
@@ -63,7 +66,6 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
 
     // Get portal URL via contract's public_token
     const portalUrl: string | null = contract.public_token ? `/portal/${contract.public_token}` : null
-    const isFreelancerContract = contract.category === 'freelancer'
 
     if (isFreelancerContract) {
         return <CtvContractDetail contract={contract} backHref={backHref} progress={progress} paidAmount={paidAmount} />
