@@ -17,18 +17,18 @@ import { CustomerStatus, QuotationStatus, ContractStatus, InvoiceStatus, DealSta
 //   cancelled = inactive, churned (line-through)
 // ═══════════════════════════════════════════════════════════════
 
-// — Reusable color tokens —
+// — Reusable color tokens (Neutral Greyscale) —
 const C = {
-    ghost:     'bg-muted text-muted-foreground border border-border dark:bg-zinc-800 dark:text-muted-foreground dark:border-zinc-700',
-    outline:   'bg-white text-muted-foreground border border-border dark:bg-zinc-900 dark:text-zinc-300 dark:border-zinc-700',
-    blue:      'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
-    sky:       'bg-sky-50 text-sky-700 border border-sky-200 dark:bg-sky-950 dark:text-sky-300 dark:border-sky-800',
-    emerald:   'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
-    amber:     'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800',
-    danger:    'bg-rose-50 text-rose-700 border border-rose-200 dark:bg-rose-950 dark:text-rose-300 dark:border-rose-800',
-    violet:    'bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-950 dark:text-violet-300 dark:border-violet-800',
-    orange:    'bg-orange-50 text-orange-700 border border-orange-200 dark:bg-orange-950 dark:text-orange-300 dark:border-orange-800',
-    cancelled: 'bg-muted text-muted-foreground border border-border line-through dark:bg-zinc-800 dark:text-muted-foreground dark:border-zinc-700',
+    ghost:     'bg-zinc-100 text-zinc-600 border border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700',
+    outline:   'bg-transparent text-zinc-600 border border-zinc-200 dark:text-zinc-400 dark:border-zinc-800',
+    blue:      'bg-zinc-900 text-zinc-50 border border-zinc-900 dark:bg-zinc-50 dark:text-zinc-900 dark:border-zinc-50', 
+    sky:       'bg-zinc-200 text-zinc-800 border border-zinc-300 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-700',
+    emerald:   'bg-zinc-900 text-zinc-50 border border-zinc-900 dark:bg-zinc-50 dark:text-zinc-900 dark:border-zinc-50', 
+    amber:     'bg-zinc-100 text-zinc-900 border border-zinc-300 dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-600',
+    danger:    'bg-zinc-950 text-white border border-zinc-950 dark:bg-zinc-50 dark:text-zinc-950 dark:border-zinc-50', 
+    violet:    'bg-zinc-900 text-zinc-50 border border-zinc-900 dark:bg-zinc-50 dark:text-zinc-900 dark:border-zinc-50',
+    orange:    'bg-zinc-100 text-zinc-800 border border-zinc-300',
+    cancelled: 'bg-zinc-50 text-zinc-400 border border-zinc-100 line-through dark:bg-zinc-900 dark:text-zinc-600 dark:border-zinc-800',
 } as const
 
 // Customer Status

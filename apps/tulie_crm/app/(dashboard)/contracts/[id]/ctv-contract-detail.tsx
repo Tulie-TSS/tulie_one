@@ -172,7 +172,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                         <div className="space-y-4">
                             <div className="flex items-center justify-between">
                                 <h4 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                                    <CreditCard className="w-4 h-4 text-emerald-500" />
+                                    <CreditCard className="w-4 h-4 text-muted-foreground" />
                                     Các đợt thanh toán ({contract.milestones?.filter((m: any) => (m.type === 'payment' || !m.type) && m.amount > 0).length || 0})
                                 </h4>
                             </div>
@@ -200,7 +200,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                                                                 {milestone.name || milestone.label}
                                                             </span>
                                                             {milestone.status === 'completed' && (
-                                                                <CheckCircle className="h-3.5 w-3.5 text-primary" />
+                                                                <CheckCircle className="h-3.5 w-3.5 text-foreground" />
                                                             )}
                                                         </div>
                                                         {milestone.due_date && (
@@ -214,7 +214,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                                                 <TableCell className="text-right font-medium text-sm tabular-nums">
                                                     {formatCurrency(milestone.amount)}
                                                 </TableCell>
-                                                <TableCell className="text-right font-medium text-sm text-green-600 tabular-nums">
+                                                <TableCell className="text-right font-medium text-sm text-foreground tabular-nums">
                                                     {formatCurrency(milestone.amount * 0.9)}
                                                 </TableCell>
                                                 <TableCell className="text-center">
@@ -244,7 +244,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
                                     <h4 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                                        <CheckCircle className="w-4 h-4 text-blue-500" />
+                                        <CheckCircle className="w-4 h-4 text-muted-foreground" />
                                         Tiến độ công việc ({contract.milestones?.filter((m: any) => m.type === 'work' || m.type === 'delivery' || m.amount === 0).length || 0})
                                     </h4>
                                 </div>

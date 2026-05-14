@@ -141,7 +141,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                             <div className="space-y-2.5 text-sm">
                                 <div className="flex justify-between items-start gap-4 border-b pb-2.5">
                                     <span className="text-muted-foreground shrink-0 mt-0.5">Công ty</span>
-                                    <Link href={`/customers/${contract.customer?.id}`} className="font-medium text-primary hover:underline text-right leading-tight break-words max-w-[200px]">
+                                    <Link href={`/customers/${contract.customer?.id}`} className="font-medium text-foreground hover:underline text-right leading-tight break-words max-w-[200px]">
                                         {contract.customer?.company_name}
                                     </Link>
                                 </div>
@@ -188,7 +188,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                 {contract.quotation && (
                                     <div className="flex justify-between items-start gap-4 border-b pb-2.5">
                                         <span className="text-muted-foreground shrink-0 mt-0.5">Báo giá gốc</span>
-                                        <Link href={`/quotations/${contract.quotation.id}`} className="font-medium text-primary hover:underline text-right break-words max-w-[150px]">
+                                        <Link href={`/quotations/${contract.quotation.id}`} className="font-medium text-foreground hover:underline text-right break-words max-w-[150px]">
                                             {contract.quotation.quotation_number}
                                         </Link>
                                     </div>
@@ -233,7 +233,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
                                     <h4 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                                        <Receipt className="w-4 h-4 text-primary" />
+                                        <Receipt className="w-4 h-4 text-muted-foreground" />
                                         Các đợt thanh toán ({contract.milestones?.filter((m: any) => (m.type === 'payment' || !m.type) && m.amount > 0).length || 0})
                                     </h4>
                                 </div>
@@ -260,7 +260,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                                                     {milestone.name}
                                                                 </span>
                                                                 {milestone.status === 'completed' && (
-                                                                    <CheckCircle className="h-3.5 w-3.5 text-primary" />
+                                                                    <CheckCircle className="h-3.5 w-3.5 text-foreground" />
                                                                 )}
                                                             </div>
                                                             <span className="text-xs text-muted-foreground flex items-center gap-1.5">
@@ -303,7 +303,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
                                         <h4 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                                            <CheckCircle className="w-4 h-4 text-blue-500" />
+                                            <CheckCircle className="w-4 h-4 text-muted-foreground" />
                                             Đầu việc & Bàn giao ({contract.milestones?.filter((m: any) => m.type === 'work' || m.type === 'delivery' || m.amount === 0).length || 0})
                                         </h4>
                                     </div>
@@ -329,7 +329,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                                                     {milestone.name}
                                                                 </span>
                                                                 {milestone.type === 'delivery' && (
-                                                                    <span className="text-[10px] uppercase tracking-wider font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded w-fit">Bàn giao</span>
+                                                                    <span className="text-[10px] uppercase tracking-wider font-bold text-foreground bg-muted px-1.5 py-0.5 rounded w-fit">Bàn giao</span>
                                                                 )}
                                                             </div>
                                                         </TableCell>
@@ -337,7 +337,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                                             <div className="text-xs space-y-1">
                                                                 <div className="text-muted-foreground italic">Dự kiến: {formatDate(milestone.due_date)}</div>
                                                                 {milestone.completed_at && (
-                                                                    <div className="text-primary font-medium flex items-center gap-1">
+                                                                    <div className="text-foreground font-medium flex items-center gap-1">
                                                                         Thực tế: {formatDate(milestone.completed_at)}
                                                                     </div>
                                                                 )}
