@@ -249,3 +249,19 @@ export const RETAIL_PAYMENT_STATUS_COLORS: Record<string, string> = {
     partial: C.amber,
     paid: C.emerald,
 }
+// Milestone Status
+export const MILESTONE_STATUS_LABELS: Record<string, string> = {
+    pending: 'Chờ xử lý',
+    in_progress: 'Đang thực hiện',
+    completed: 'Hoàn thành',
+    overdue: 'Quá hạn',
+    cancelled: 'Đã hủy',
+}
+
+export const MILESTONE_STATUS_COLORS: Record<string, string> = {
+    pending: C.ghost,
+    in_progress: C.blue,
+    completed: C.emerald,
+    overdue: C.danger,
+    cancelled: C.cancelled,
+}

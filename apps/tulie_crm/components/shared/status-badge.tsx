@@ -13,9 +13,10 @@ import {
     TICKET_PRIORITY_LABELS,
     RETAIL_ORDER_STATUS_LABELS,
     RETAIL_PAYMENT_STATUS_LABELS,
+    MILESTONE_STATUS_LABELS,
 } from '@/lib/constants/status'
 
-type EntityType = 'customer' | 'quotation' | 'contract' | 'invoice' | 'deal' | 'project' | 'product' | 'brand' | 'ticket' | 'ticket_priority' | 'retail_order' | 'retail_payment' | 'none'
+type EntityType = 'customer' | 'quotation' | 'contract' | 'invoice' | 'deal' | 'project' | 'product' | 'brand' | 'ticket' | 'ticket_priority' | 'retail_order' | 'retail_payment' | 'milestone' | 'none'
 
 interface StatusBadgeProps {
     status: string
@@ -38,6 +39,7 @@ const LABEL_MAPPINGS: Record<Exclude<EntityType, 'none'>, any> = {
     ticket_priority: TICKET_PRIORITY_LABELS,
     retail_order: RETAIL_ORDER_STATUS_LABELS,
     retail_payment: RETAIL_PAYMENT_STATUS_LABELS,
+    milestone: MILESTONE_STATUS_LABELS,
 }
 
 /**
