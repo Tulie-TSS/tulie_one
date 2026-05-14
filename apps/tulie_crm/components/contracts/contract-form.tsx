@@ -33,7 +33,7 @@ import {
     PopoverTrigger,
 } from '@repo/ui'
 import { formatCurrency } from '@/lib/utils/format'
-import { ArrowLeft, CalendarIcon, Save, Plus, Trash2, Percent } from 'lucide-react'
+import { ArrowLeft, CalendarIcon, Save, Plus, Trash2, Percent, ClipboardList, CreditCard } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
@@ -158,10 +158,17 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
         })) || []
     )
 
-    const addMilestone = () => {
+    const addPaymentMilestone = () => {
         setMilestones([
             ...milestones,
             { id: `temp-${Date.now()}`, name: '', amount: 0, percentage: 0, amount_mode: 'fixed', due_date: undefined, status: 'pending', completed_at: undefined, delay_reason: '', type: 'payment' },
+        ])
+    }
+
+    const addWorkMilestone = () => {
+        setMilestones([
+            ...milestones,
+            { id: `temp-${Date.now()}-w`, name: '', amount: 0, percentage: 0, amount_mode: 'fixed', due_date: undefined, status: 'pending', completed_at: undefined, delay_reason: '', type: 'work' },
         ])
     }
 
@@ -633,45 +640,43 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                         </Card>
                     )}
 
-                    {/* Milestones */}
+                    {/* Payment Milestones */}
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
-                                <CardTitle>Milestone thanh toán</CardTitle>
-                                <CardDescription>Phân chia các đợt thanh toán</CardDescription>
+                                <CardTitle className="flex items-center gap-2">
+                                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-emerald-100 text-emerald-700">
+                                        <CreditCard className="h-4 w-4" />
+                                    </span>
+                                    Mốc thanh toán
+                                </CardTitle>
+                                <CardDescription>Phân chia các đợt thanh toán theo hợp đồng</CardDescription>
                             </div>
-                            <Button type="button" size="sm" onClick={addMilestone}>
+                            <Button type="button" size="sm" variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50" onClick={addPaymentMilestone}>
                                 <Plus className="h-4 w-4" />
-                                Thêm
+                                Thêm đợt
                             </Button>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            {milestones.map((milestone, index) => {
+                            {milestones.filter(m => m.type === 'payment').length === 0 && (
+                                <div className="text-center py-6 text-muted-foreground border-2 border-dashed rounded-lg text-sm">
+                                    Chưa có mốc thanh toán nào. Bấm &quot;Thêm đợt&quot; để bắt đầu.
+                                </div>
+                            )}
+                            {milestones.filter(m => m.type === 'payment').map((milestone, index) => {
                                 const isMilestoneDone = milestone.status === 'completed'
                                 const isMilestoneLocked = isMilestoneDone && !isAdmin
                                 return (
-                                <div key={milestone.id} className={`p-4 border rounded-lg space-y-3 ${isMilestoneDone ? 'bg-muted/30' : ''}`}>
+                                <div key={milestone.id} className={`p-4 border rounded-lg space-y-3 ${isMilestoneDone ? 'bg-emerald-50/50 border-emerald-200' : 'border-slate-200'}`}>
                                     <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-4">
-                                            <span className="font-medium">Đợt {index + 1}</span>
+                                        <div className="flex items-center gap-3">
+                                            <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">{index + 1}</span>
+                                            <span className="font-semibold text-sm">Đợt thanh toán {index + 1}</span>
                                             {isMilestoneLocked && (
-                                                <span className="text-xs px-2 py-0.5 rounded bg-secondary text-secondary-foreground font-medium">
-                                                    ✓ Đã ghi nhận
+                                                <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">
+                                                    ✓ Đã thanh toán
                                                 </span>
                                             )}
-                                            <Select
-                                                value={milestone.type}
-                                                onValueChange={(v) => updateMilestone(milestone.id, 'type', v)}
-                                                disabled={isMilestoneLocked}
-                                            >
-                                                <SelectTrigger className="h-8 w-32 bg-muted/50">
-                                                    <SelectValue />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="work">Đầu việc</SelectItem>
-                                                    <SelectItem value="payment">Thanh toán</SelectItem>
-                                                </SelectContent>
-                                            </Select>
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <Select
@@ -683,7 +688,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="pending">Chờ</SelectItem>
-                                                    <SelectItem value="completed">Đã xong</SelectItem>
+                                                    <SelectItem value="completed">Đã TT</SelectItem>
                                                     <SelectItem value="overdue">Trễ</SelectItem>
                                                 </SelectContent>
                                             </Select>
@@ -693,7 +698,6 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                                 variant="ghost"
                                                 size="icon"
                                                 onClick={() => removeMilestone(milestone.id)}
-                                                disabled={milestones.length === 1}
                                             >
                                                 <Trash2 className="h-4 w-4 text-muted-foreground" />
                                             </Button>
@@ -705,6 +709,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                         <Input
                                             value={milestone.name}
                                             onChange={(e) => updateMilestone(milestone.id, 'name', e.target.value)}
+                                            placeholder="VD: Thanh toán đợt 1 - Ký hợp đồng"
                                             disabled={isMilestoneLocked}
                                         />
                                     </div>
@@ -810,15 +815,147 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                 )
                             })}
 
-                            <div className="p-4 bg-muted rounded-lg">
-                                <div className="flex justify-between font-medium">
-                                    <span>Tổng milestone</span>
-                                    <span>{formatCurrency(milestones.reduce((sum, m) => sum + m.amount, 0))}</span>
+                            {milestones.filter(m => m.type === 'payment').length > 0 && (
+                            <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-100">
+                                <div className="flex justify-between font-semibold text-emerald-900">
+                                    <span>Tổng thanh toán</span>
+                                    <span>{formatCurrency(milestones.filter(m => m.type === 'payment').reduce((sum, m) => sum + m.amount, 0))}</span>
                                 </div>
-                                <p className="text-sm text-muted-foreground mt-1">
+                                <p className="text-sm text-emerald-700 mt-1">
                                     Giá trị hợp đồng: {formatCurrency(totalValue)}
                                 </p>
                             </div>
+                            )}
+                        </CardContent>
+                    </Card>
+
+                    {/* Work/Delivery Milestones */}
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between">
+                            <div>
+                                <CardTitle className="flex items-center gap-2">
+                                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-blue-100 text-blue-700">
+                                        <ClipboardList className="h-4 w-4" />
+                                    </span>
+                                    Đầu việc & Bàn giao
+                                </CardTitle>
+                                <CardDescription>Các mốc công việc cần hoàn thành trong hợp đồng</CardDescription>
+                            </div>
+                            <Button type="button" size="sm" variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50" onClick={addWorkMilestone}>
+                                <Plus className="h-4 w-4" />
+                                Thêm đầu việc
+                            </Button>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            {milestones.filter(m => m.type === 'work' || m.type === 'delivery').length === 0 && (
+                                <div className="text-center py-6 text-muted-foreground border-2 border-dashed rounded-lg text-sm">
+                                    Chưa có đầu việc nào. Bấm &quot;Thêm đầu việc&quot; để bắt đầu.
+                                </div>
+                            )}
+                            {milestones.filter(m => m.type === 'work' || m.type === 'delivery').map((milestone, index) => {
+                                const isMilestoneDone = milestone.status === 'completed'
+                                const isMilestoneLocked = isMilestoneDone && !isAdmin
+                                return (
+                                <div key={milestone.id} className={`p-4 border rounded-lg space-y-3 ${isMilestoneDone ? 'bg-blue-50/50 border-blue-200' : 'border-slate-200'}`}>
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">{index + 1}</span>
+                                            <span className="font-semibold text-sm">Đầu việc {index + 1}</span>
+                                            {isMilestoneLocked && (
+                                                <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium">
+                                                    ✓ Hoàn thành
+                                                </span>
+                                            )}
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <Select
+                                                value={milestone.type}
+                                                onValueChange={(v) => updateMilestone(milestone.id, 'type', v)}
+                                                disabled={isMilestoneLocked}
+                                            >
+                                                <SelectTrigger className="h-8 w-28 text-xs">
+                                                    <SelectValue />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="work">Công việc</SelectItem>
+                                                    <SelectItem value="delivery">Bàn giao</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            <Select
+                                                value={milestone.status}
+                                                onValueChange={(v) => updateMilestone(milestone.id, 'status', v)}
+                                            >
+                                                <SelectTrigger className="h-8 w-28">
+                                                    <SelectValue />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="pending">Chờ</SelectItem>
+                                                    <SelectItem value="completed">Đã xong</SelectItem>
+                                                    <SelectItem value="overdue">Trễ</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            {!isMilestoneLocked && (
+                                            <Button
+                                                type="button"
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={() => removeMilestone(milestone.id)}
+                                            >
+                                                <Trash2 className="h-4 w-4 text-muted-foreground" />
+                                            </Button>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Mô tả công việc</Label>
+                                        <Input
+                                            value={milestone.name}
+                                            onChange={(e) => updateMilestone(milestone.id, 'name', e.target.value)}
+                                            placeholder="VD: Thiết kế giao diện, Triển khai hệ thống..."
+                                            disabled={isMilestoneLocked}
+                                        />
+                                    </div>
+                                    <div className="grid gap-4 sm:grid-cols-2">
+                                        <div className="space-y-2">
+                                            <Label>Hạn hoàn thành (Dự kiến)</Label>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <Button variant="outline" className="w-full justify-start text-left font-normal" disabled={isMilestoneLocked}>
+                                                        <CalendarIcon className="h-4 w-4" />
+                                                        {milestone.due_date ? format(milestone.due_date, 'dd/MM/yyyy') : 'Chọn'}
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-auto p-0">
+                                                    <Calendar
+                                                        mode="single"
+                                                        selected={milestone.due_date}
+                                                        onSelect={(date) => updateMilestone(milestone.id, 'due_date', date)}
+                                                    />
+                                                </PopoverContent>
+                                            </Popover>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Ngày hoàn thành thực tế</Label>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <Button variant="outline" className="w-full justify-start text-left font-normal border-dashed">
+                                                        <CalendarIcon className="h-4 w-4" />
+                                                        {milestone.completed_at ? format(milestone.completed_at, 'dd/MM/yyyy') : 'Chưa hoàn thành'}
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-auto p-0">
+                                                    <Calendar
+                                                        mode="single"
+                                                        selected={milestone.completed_at}
+                                                        onSelect={(date) => updateMilestone(milestone.id, 'completed_at', date)}
+                                                    />
+                                                </PopoverContent>
+                                            </Popover>
+                                        </div>
+                                    </div>
+                                </div>
+                                )
+                            })}
                         </CardContent>
                     </Card>
                 </div>

@@ -29,7 +29,7 @@ import {
     PopoverTrigger,
 } from '@repo/ui'
 import { formatCurrency } from '@/lib/utils/format'
-import { ArrowLeft, CalendarIcon, Save, Plus, Trash2, FileSignature, Percent } from 'lucide-react'
+import { ArrowLeft, CalendarIcon, Save, Plus, Trash2, FileSignature, Percent, CreditCard } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
@@ -440,16 +440,21 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                             </Card>
                         )}
 
-                    {/* Milestones */}
+                    {/* Payment Milestones */}
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
-                                <CardTitle>Milestone thanh toán</CardTitle>
-                                <CardDescription>Phân chia các đợt thanh toán</CardDescription>
+                                <CardTitle className="flex items-center gap-2">
+                                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-emerald-100 text-emerald-700">
+                                        <CreditCard className="h-4 w-4" />
+                                    </span>
+                                    Mốc thanh toán
+                                </CardTitle>
+                                <CardDescription>Phân chia các đợt thanh toán theo hợp đồng</CardDescription>
                             </div>
-                            <Button type="button" size="sm" onClick={addMilestone}>
+                            <Button type="button" size="sm" variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50" onClick={addMilestone}>
                                 <Plus className="h-4 w-4" />
-                                Thêm
+                                Thêm đợt
                             </Button>
                         </CardHeader>
                         <CardContent className="space-y-4">
@@ -539,13 +544,13 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                 </div>
                             ))}
 
-                            <div className="p-4 bg-muted rounded-lg">
-                                <div className="flex justify-between font-medium">
-                                    <span>Tổng milestone</span>
+                            <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-100">
+                                <div className="flex justify-between font-semibold text-emerald-900">
+                                    <span>Tổng thanh toán</span>
                                     <span>{formatCurrency(milestones.reduce((sum, m) => sum + m.amount, 0))}</span>
                                 </div>
                                 {totalValue > 0 && (
-                                    <p className="text-sm text-muted-foreground mt-1">
+                                    <p className="text-sm text-emerald-700 mt-1">
                                         Giá trị hợp đồng: {formatCurrency(totalValue)}
                                     </p>
                                 )}
