@@ -166,70 +166,134 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                     
                     <Separator />
 
-                    <div className="space-y-4">
-                        <h4 className="text-sm font-medium text-foreground">Các đợt thanh toán ({contract.milestones?.length || 0})</h4>
-                        <div className="rounded-md border overflow-hidden">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow className="bg-muted/50">
-                                        <TableHead className="w-[60px] text-center">TT</TableHead>
-                                        <TableHead>Giai đoạn</TableHead>
-                                        <TableHead className="text-right">Số tiền</TableHead>
-                                        <TableHead className="text-right">Thực nhận (Sau thuế)</TableHead>
-                                        <TableHead className="w-[140px] text-center">Thao tác</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {contract.milestones?.map((milestone: any, index: number) => (
-                                        <TableRow key={milestone.id}>
-                                            <TableCell className="text-center">
-                                                {milestone.status === 'completed' ? (
-                                                    <CheckCircle className="h-4 w-4 mx-auto text-primary" />
-                                                ) : milestone.status === 'overdue' ? (
-                                                    <AlertTriangle className="h-4 w-4 mx-auto text-destructive" />
-                                                ) : (
-                                                    <span className="text-xs text-muted-foreground font-medium">{index + 1}</span>
-                                                )}
-                                            </TableCell>
-                                            <TableCell>
-                                                <div className="flex flex-col gap-1">
-                                                    <span className="font-medium text-sm text-foreground">
-                                                        {milestone.name || milestone.label}
-                                                    </span>
-                                                    {milestone.due_date && (
-                                                        <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                                            <Calendar className="h-3 w-3" />
-                                                            Hạn: {formatDate(milestone.due_date)}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            </TableCell>
-                                            <TableCell className="text-right font-medium text-sm">
-                                                {formatCurrency(milestone.amount)}
-                                            </TableCell>
-                                            <TableCell className="text-right font-medium text-sm text-green-600">
-                                                {formatCurrency(milestone.amount * 0.9)}
-                                            </TableCell>
-                                            <TableCell className="text-center">
-                                                <MilestoneConfirmButton 
-                                                    milestoneId={milestone.id}
-                                                    milestoneName={milestone.name || milestone.label}
-                                                    amount={milestone.amount}
-                                                    status={milestone.status}
-                                                />
-                                            </TableCell>
+                    {/* Milestones - Separated into Payment and Work */}
+                    <div className="space-y-8 pt-2">
+                        {/* Payment Milestones */}
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                                <h4 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                                    <CreditCard className="w-4 h-4 text-emerald-500" />
+                                    Các đợt thanh toán ({contract.milestones?.filter((m: any) => (m.type === 'payment' || !m.type) && m.amount > 0).length || 0})
+                                </h4>
+                            </div>
+                            <div className="rounded-md border overflow-hidden">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow className="bg-muted/50">
+                                            <TableHead className="w-[60px] text-center">TT</TableHead>
+                                            <TableHead>Giai đoạn</TableHead>
+                                            <TableHead className="text-right">Số tiền</TableHead>
+                                            <TableHead className="text-right">Thực nhận (Sau thuế)</TableHead>
+                                            <TableHead className="w-[140px] text-center">Thao tác</TableHead>
                                         </TableRow>
-                                    ))}
-                                    {(!contract.milestones || contract.milestones.length === 0) && (
-                                        <TableRow>
-                                            <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
-                                                Chưa có đợt thanh toán nào
-                                            </TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {contract.milestones?.filter((m: any) => (m.type === 'payment' || !m.type) && m.amount > 0).map((milestone: any, index: number) => (
+                                            <TableRow key={milestone.id}>
+                                                <TableCell className="text-center font-medium text-xs text-muted-foreground">
+                                                    {index + 1}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <div className="flex flex-col gap-1">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="font-medium text-sm text-foreground">
+                                                                {milestone.name || milestone.label}
+                                                            </span>
+                                                            {milestone.status === 'completed' && (
+                                                                <CheckCircle className="h-3.5 w-3.5 text-primary" />
+                                                            )}
+                                                        </div>
+                                                        {milestone.due_date && (
+                                                            <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                                                <Calendar className="h-3 w-3" />
+                                                                Hạn: {formatDate(milestone.due_date)}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell className="text-right font-medium text-sm tabular-nums">
+                                                    {formatCurrency(milestone.amount)}
+                                                </TableCell>
+                                                <TableCell className="text-right font-medium text-sm text-green-600 tabular-nums">
+                                                    {formatCurrency(milestone.amount * 0.9)}
+                                                </TableCell>
+                                                <TableCell className="text-center">
+                                                    <MilestoneConfirmButton 
+                                                        milestoneId={milestone.id}
+                                                        milestoneName={milestone.name || milestone.label}
+                                                        amount={milestone.amount}
+                                                        status={milestone.status}
+                                                    />
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                        {(!contract.milestones || contract.milestones.filter((m: any) => (m.type === 'payment' || !m.type) && m.amount > 0).length === 0) && (
+                                            <TableRow>
+                                                <TableCell colSpan={5} className="text-center text-muted-foreground py-8 text-sm">
+                                                    Chưa có đợt thanh toán nào
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </div>
                         </div>
+
+                        {/* Work Milestones */}
+                        {contract.milestones?.some((m: any) => m.type === 'work' || m.type === 'delivery' || m.amount === 0) && (
+                            <div className="space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <h4 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                                        <CheckCircle className="w-4 h-4 text-blue-500" />
+                                        Tiến độ công việc ({contract.milestones?.filter((m: any) => m.type === 'work' || m.type === 'delivery' || m.amount === 0).length || 0})
+                                    </h4>
+                                </div>
+                                <div className="rounded-md border overflow-hidden">
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow className="bg-muted/50">
+                                                <TableHead className="w-[60px] text-center">STT</TableHead>
+                                                <TableHead>Nội dung công việc</TableHead>
+                                                <TableHead className="w-[180px]">Hạn hoàn thành</TableHead>
+                                                <TableHead className="w-[120px] text-center">Trạng thái</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {contract.milestones?.filter((m: any) => m.type === 'work' || m.type === 'delivery' || m.amount === 0).map((milestone: any, index: number) => (
+                                                <TableRow key={milestone.id}>
+                                                    <TableCell className="text-center font-medium text-xs text-muted-foreground">
+                                                        {index + 1}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <div className="flex flex-col gap-1">
+                                                            <span className="font-medium text-sm text-foreground">
+                                                                {milestone.name || milestone.label}
+                                                            </span>
+                                                            {milestone.type === 'delivery' && (
+                                                                <span className="text-[10px] uppercase tracking-wider font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded w-fit">Bàn giao</span>
+                                                            )}
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <div className="text-xs space-y-1">
+                                                            <div className="text-muted-foreground italic">Dự kiến: {formatDate(milestone.due_date)}</div>
+                                                            {milestone.completed_at && (
+                                                                <div className="text-primary font-medium flex items-center gap-1">
+                                                                    Thực tế: {formatDate(milestone.completed_at)}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell className="text-center">
+                                                        <StatusBadge status={milestone.status} entityType="milestone" />
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </CardContent>
             </Card>

@@ -358,7 +358,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
 
                             <Card className="bg-white border shadow-sm">
                                 <CardHeader className="py-4 bg-muted/20 border-b flex flex-row items-center justify-between">
-                                    <CardTitle className="text-base font-semibold">Giai đoạn & Thanh toán</CardTitle>
+                                    <CardTitle className="text-base font-semibold">Lịch trình thanh toán</CardTitle>
                                 </CardHeader>
                                 <CardContent className="p-0">
                                     <Table>
@@ -366,12 +366,12 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                             <TableRow>
                                                 <TableHead className="w-[80px] text-center">TT</TableHead>
                                                 <TableHead>Nội dung thanh toán</TableHead>
-                                                <TableHead>Hạn</TableHead>
+                                                <TableHead>Hạn thanh toán</TableHead>
                                                 <TableHead className="text-right">Số tiền</TableHead>
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
-                                            {timeline.filter((t: any) => t.type === 'payment' || (t.type === 'milestone' && t.amount)).map((m: any, i: number) => (
+                                            {timeline.filter((t: any) => t.type === 'payment' || (t.type === 'milestone' && t.amount > 0)).map((m: any, i: number) => (
                                                 <TableRow key={i}>
                                                     <TableCell className="text-center">
                                                         {m.status === 'completed' ? (
@@ -382,14 +382,18 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                                             <span className="text-xs font-medium text-muted-foreground">{i + 1}</span>
                                                         )}
                                                     </TableCell>
-                                                    <TableCell className="font-medium text-foreground">{m.title}</TableCell>
-                                                    <TableCell className="text-muted-foreground tabular-nums">{formatDate(m.date)}</TableCell>
-                                                    <TableCell className="text-right font-bold tabular-nums">
+                                                    <TableCell className="font-medium text-foreground">
+                                                        {m.title || m.name || m.label}
+                                                    </TableCell>
+                                                    <TableCell className="text-muted-foreground tabular-nums">
+                                                        {m.date ? formatDate(m.date) : (m.due_date ? formatDate(m.due_date) : '---')}
+                                                    </TableCell>
+                                                    <TableCell className="text-right font-bold tabular-nums text-foreground">
                                                         {m.amount ? formatCurrency(m.amount) : '---'}
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
-                                            {timeline.filter((t: any) => t.type === 'payment' || (t.type === 'milestone' && t.amount)).length === 0 && (
+                                            {timeline.filter((t: any) => t.type === 'payment' || (t.type === 'milestone' && t.amount > 0)).length === 0 && (
                                                 <TableRow>
                                                     <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">Không có dữ liệu thanh toán.</TableCell>
                                                 </TableRow>

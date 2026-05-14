@@ -932,116 +932,120 @@ export async function generateDocumentBundle(contractId: string) {
     // 3. Determine which doc types this contract needs
     const docTypes = getDocTypesForContract(contract.type || 'contract', contract.category)
 
-    // 4. Find templates
+    // 4. Find templates and generate documents in parallel
     const templates = await getDocumentTemplates()
-    const docs: any[] = []
+    const generationPromises: Promise<any>[] = []
 
     for (const docType of docTypes) {
         const template = templates.find(t => t.type === docType)
-        if (!template) continue
+        if (!template) {
+            console.warn(`No template found for doc type: ${docType}`)
+            continue
+        }
 
         if (docType === 'payment_request') {
-            // One ĐNTT per milestone that has a payment amount
-            // Any milestone with amount > 0 gets a payment request (regardless of type field)
-            const paymentMilestones = (contract.milestones || []).filter((m: any) => 
-                m.amount > 0
-            )
+            const paymentMilestones = (contract.milestones || []).filter((m: any) => m.amount > 0)
             
             if (paymentMilestones.length === 0) {
-                // No milestones → generate single generic ĐNTT
+                generationPromises.push((async () => {
+                    try {
+                        const result = await generateDocument(template.id, contract.customer_id, contractId)
+                        return {
+                            contract_id: contractId,
+                            type: docType,
+                            milestone_id: null,
+                            doc_number: result.variables?.payment_number || '',
+                            content: result.content,
+                            status: 'draft'
+                        }
+                    } catch (e) {
+                        console.error(`Error generating generic ${docType}:`, e)
+                        return null
+                    }
+                })())
+            } else {
+                const totalAmount = contract.total_amount || 0
+                paymentMilestones.forEach((milestone: any, i: number) => {
+                    generationPromises.push((async () => {
+                        try {
+                            const pct = totalAmount > 0 ? Math.round((milestone.amount / totalAmount) * 100) : 0
+                            const mName = milestone.name || `Đợt ${i + 1}`
+                            const mNameLower = mName.toLowerCase()
+                            const isDeposit = mNameLower.includes('cọc') || mNameLower.includes('đặt cọc') || mNameLower.includes('tạm ứng')
+                            
+                            let milestoneReason = ''
+                            if (isDeposit) {
+                                milestoneReason = `Theo điều khoản thanh toán tại Điều 2 của Hợp đồng, Bên sử dụng dịch vụ thanh toán đặt cọc cho Bên cung cấp dịch vụ để triển khai dự án.`
+                            } else {
+                                const deliveryDate = milestone.due_date 
+                                    ? parseLocalDateString(milestone.due_date).toLocaleDateString('vi-VN') 
+                                    : ''
+                                milestoneReason = deliveryDate
+                                    ? `Căn cứ Biên bản bàn giao và nghiệm thu ngày ${deliveryDate}, hai bên xác nhận Bên cung cấp dịch vụ đã hoàn thành đầy đủ phạm vi công việc quy định tại Hợp đồng.`
+                                    : `Căn cứ Biên bản bàn giao và nghiệm thu, hai bên xác nhận Bên cung cấp dịch vụ đã hoàn thành đầy đủ phạm vi công việc quy định tại Hợp đồng.`
+                            }
+
+                            const milestoneVars: Record<string, string> = {
+                                payment_amount: new Intl.NumberFormat('vi-VN').format(milestone.amount) + ' VND',
+                                payment_percentage: `${pct}%`,
+                                amount_in_words: readNumberToWords(milestone.amount),
+                                milestone_name: mName,
+                                milestone_reason: milestoneReason,
+                                milestone_due_date: milestone.due_date 
+                                    ? parseLocalDateString(milestone.due_date).toLocaleDateString('vi-VN')
+                                    : '',
+                            }
+
+                            const result = await generateDocument(template.id, contract.customer_id, contractId, milestoneVars)
+                            const docNum = result.variables?.payment_number 
+                                ? `${result.variables.payment_number}-${i + 1}` 
+                                : ''
+                            
+                            return {
+                                contract_id: contractId,
+                                type: docType,
+                                milestone_id: milestone.id,
+                                doc_number: docNum,
+                                content: result.content,
+                                status: 'draft'
+                            }
+                        } catch (e) {
+                            console.error(`Error generating ĐNTT for milestone ${milestone.id}:`, e)
+                            return null
+                        }
+                    })())
+                })
+            }
+        } else {
+            generationPromises.push((async () => {
                 try {
                     const result = await generateDocument(template.id, contract.customer_id, contractId)
-                    docs.push({
+                    const docNum = (docType === 'contract' || docType === 'freelance_contract') ? result.variables?.contract_number
+                        : docType === 'order' ? result.variables?.contract_number
+                        : result.variables?.report_number || ''
+                    
+                    return {
                         contract_id: contractId,
                         type: docType,
                         milestone_id: null,
-                        doc_number: result.variables?.payment_number || '',
+                        doc_number: docNum,
                         content: result.content,
                         status: 'draft'
-                    })
+                    }
                 } catch (e) {
                     console.error(`Error generating ${docType}:`, e)
+                    return null
                 }
-            } else {
-                const totalAmount = contract.total_amount || 0
-
-                for (let i = 0; i < paymentMilestones.length; i++) {
-                    const milestone = paymentMilestones[i]
-                    const pct = totalAmount > 0 ? Math.round((milestone.amount / totalAmount) * 100) : 0
-                    
-                    // Override payment-specific variables for this milestone
-                    const mName = milestone.name || `Đợt ${i + 1}`
-                    const mNameLower = mName.toLowerCase()
-                    const isDeposit = mNameLower.includes('cọc') || mNameLower.includes('đặt cọc') || mNameLower.includes('tạm ứng')
-                    
-                    let milestoneReason: string
-                    if (isDeposit) {
-                        milestoneReason = `Theo điều khoản thanh toán tại Điều 2 của Hợp đồng, Bên sử dụng dịch vụ thanh toán đặt cọc cho Bên cung cấp dịch vụ để triển khai dự án.`
-                    } else {
-                        const deliveryDate = milestone.due_date 
-                            ? parseLocalDateString(milestone.due_date).toLocaleDateString('vi-VN') 
-                            : ''
-                        milestoneReason = deliveryDate
-                            ? `Căn cứ Biên bản bàn giao và nghiệm thu ngày ${deliveryDate}, hai bên xác nhận Bên cung cấp dịch vụ đã hoàn thành đầy đủ phạm vi công việc quy định tại Hợp đồng.`
-                            : `Căn cứ Biên bản bàn giao và nghiệm thu, hai bên xác nhận Bên cung cấp dịch vụ đã hoàn thành đầy đủ phạm vi công việc quy định tại Hợp đồng.`
-                    }
-
-                    const milestoneVars: Record<string, string> = {
-                        payment_amount: new Intl.NumberFormat('vi-VN').format(milestone.amount) + ' VND',
-                        payment_percentage: `${pct}%`,
-                        amount_in_words: readNumberToWords(milestone.amount),
-                        milestone_name: mName,
-                        milestone_reason: milestoneReason,
-                        milestone_due_date: milestone.due_date 
-                            ? parseLocalDateString(milestone.due_date).toLocaleDateString('vi-VN')
-                            : '',
-                    }
-
-                    try {
-                        const result = await generateDocument(template.id, contract.customer_id, contractId, milestoneVars)
-                        // Append milestone index to doc number
-                        const docNum = result.variables?.payment_number 
-                            ? `${result.variables.payment_number}-${i + 1}` 
-                            : ''
-                        
-                        docs.push({
-                            contract_id: contractId,
-                            type: docType,
-                            milestone_id: milestone.id,
-                            doc_number: docNum,
-                            content: result.content,
-                            status: 'draft'
-                        })
-                    } catch (e) {
-                        console.error(`Error generating ĐNTT for milestone ${milestone.id}:`, e)
-                    }
-                }
-            }
-        } else {
-            // Single document (HĐ, ĐĐH, BBGN)
-            try {
-                const result = await generateDocument(template.id, contract.customer_id, contractId)
-                const docNum = (docType === 'contract' || docType === 'freelance_contract') ? result.variables?.contract_number
-                    : docType === 'order' ? result.variables?.contract_number
-                    : result.variables?.report_number || ''
-                
-                docs.push({
-                    contract_id: contractId,
-                    type: docType,
-                    milestone_id: null,
-                    doc_number: docNum,
-                    content: result.content,
-                    status: 'draft'
-                })
-            } catch (e) {
-                console.error(`Error generating ${docType}:`, e)
-            }
+            })())
         }
     }
 
-    // 5. Reconcile existing vs target documents
+    const docs = (await Promise.all(generationPromises)).filter(d => d !== null)
+
+
     if (docs.length > 0) {
         const targetKeys = new Set<string>()
+        const upsertPromises: Promise<any>[] = []
 
         for (const doc of docs) {
             const key = `${doc.type}:${doc.milestone_id || 'null'}`
@@ -1050,34 +1054,37 @@ export async function generateDocumentBundle(contractId: string) {
             const existing = existingMap.get(key)
             
             if (existing) {
-                // Document exists. If it is a draft, update its content so we don't break UI references.
                 if (existing.status === 'draft') {
-                    await supabase
-                        .from('contract_documents')
-                        .update({
-                            content: doc.content,
-                            doc_number: doc.doc_number
-                        })
-                        .eq('id', existing.id)
-                }
-                // If it is signed/accepted, we do NOT regenerate or update the content to preserve state.
-            } else {
-                // Document doesn't exist, insert it
-                const { error: insertErr } = await supabase
-                    .from('contract_documents')
-                    .insert(doc)
-
-                if (insertErr) {
-                    console.error(`Error inserting ${doc.type}:`, insertErr.message)
-                    // If FK error on milestone_id, retry without it
-                    if (insertErr.code === '23503' && doc.milestone_id) {
-                        await supabase
+                    upsertPromises.push(
+                        supabase
                             .from('contract_documents')
-                            .insert({ ...doc, milestone_id: null })
-                    }
+                            .update({
+                                content: doc.content,
+                                doc_number: doc.doc_number
+                            })
+                            .eq('id', existing.id)
+                    )
                 }
+            } else {
+                upsertPromises.push((async () => {
+                    const { error: insertErr } = await supabase
+                        .from('contract_documents')
+                        .insert(doc)
+
+                    if (insertErr) {
+                        console.error(`Error inserting ${doc.type}:`, insertErr.message)
+                        if (insertErr.code === '23503' && doc.milestone_id) {
+                            await supabase
+                                .from('contract_documents')
+                                .insert({ ...doc, milestone_id: null })
+                        }
+                    }
+                })())
             }
         }
+        
+        await Promise.all(upsertPromises)
+
 
         // 6. Cleanup obsolete draft documents 
         // Example: The user removed a payment milestone, so its corresponding ĐNTT draft should be removed.
