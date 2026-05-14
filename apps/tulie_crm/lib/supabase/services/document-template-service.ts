@@ -1055,15 +1055,15 @@ export async function generateDocumentBundle(contractId: string) {
             
             if (existing) {
                 if (existing.status === 'draft') {
-                    upsertPromises.push(
-                        supabase
+                    upsertPromises.push((async () => {
+                        await supabase
                             .from('contract_documents')
                             .update({
                                 content: doc.content,
                                 doc_number: doc.doc_number
                             })
                             .eq('id', existing.id)
-                    )
+                    })())
                 }
             } else {
                 upsertPromises.push((async () => {
