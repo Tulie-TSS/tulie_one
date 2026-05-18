@@ -38,11 +38,25 @@ export async function requireAuth(): Promise<AuthResult | NextResponse> {
 
         // Fetch role, team, and department from users table using Admin client to bypass RLS limits
         const adminSupabase = createAdminClient()
-        const { data: profile } = await adminSupabase
+        let profile: any = null
+
+        const { data: primaryProfile, error: primaryErr } = await adminSupabase
             .from('users')
             .select('role, team_id, department')
             .eq('id', user.id)
             .single()
+
+        if (primaryErr && (primaryErr.code === '42703' || primaryErr.message?.includes('team_id'))) {
+            // team_id column doesn't exist, fallback to querying just role and department
+            const { data: fallbackProfile } = await adminSupabase
+                .from('users')
+                .select('role, department')
+                .eq('id', user.id)
+                .single()
+            profile = fallbackProfile
+        } else if (primaryProfile) {
+            profile = primaryProfile
+        }
 
         const rawRole = (profile?.role as UserRole) ?? 'intern'
         const effectiveRole = getEffectiveRole(rawRole)
