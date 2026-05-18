@@ -37,7 +37,7 @@ export async function POST(
 ) {
     let contractId = ''
     try {
-        const authResult = await requirePermission('contracts', 'edit')
+        const authResult = await requirePermission('contracts', 'view')
         if (isAuthError(authResult)) return authResult
 
         const resolvedParams = await params
