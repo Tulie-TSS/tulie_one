@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
-import { requireAuth, requirePermission, isAuthError } from '@/lib/security/auth-guard'
-import { hasPermission } from '@/lib/security/permissions'
+import { requirePermission, isAuthError } from '@/lib/security/auth-guard'
 import { getContractDocuments, generateDocumentBundle } from '@/lib/supabase/services/document-template-service'
 import { createAdminClient } from '@/lib/supabase/admin'
 
@@ -38,28 +37,8 @@ export async function POST(
 ) {
     let contractId = ''
     try {
-        const auth = await requireAuth()
-        if (isAuthError(auth)) {
-            return NextResponse.json({
-                error: 'Unauthorized',
-                debug: 'requireAuth returned error response'
-            }, { status: 401 })
-        }
-
-        const user = auth.user
-        const hasPerm = hasPermission(user.role, 'contracts', 'view')
-        if (!hasPerm) {
-            return NextResponse.json({
-                error: `Forbidden: you don't have view permission on contracts`,
-                debug: {
-                    userId: user.id,
-                    userEmail: user.email,
-                    userRole: user.role,
-                    userTeam: user.team_id,
-                    userDept: user.department
-                }
-            }, { status: 403 })
-        }
+        const authResult = await requirePermission('contracts', 'view')
+        if (isAuthError(authResult)) return authResult
 
         const resolvedParams = await params
         contractId = resolvedParams.id
