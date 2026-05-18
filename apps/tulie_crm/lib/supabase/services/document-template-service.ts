@@ -282,18 +282,27 @@ export async function generateDocument(
     templateId: string,
     customerId: string,
     contractId?: string,
-    additionalVariables?: Record<string, string>
+    additionalVariables?: Record<string, string>,
+    prefetchedData?: {
+        template?: DocumentTemplate | null
+        customer?: any
+        contract?: any
+    }
 ) {
     try {
         const supabase = createAdminClient()
 
         // Get template
-        const template = await getTemplateById(templateId)
+        const template = prefetchedData?.template !== undefined 
+            ? prefetchedData.template 
+            : await getTemplateById(templateId)
         if (!template) throw new Error('Template not found')
 
         // Get customer data (if customerId exists)
-        let customer: any = null
-        if (customerId) {
+        let customer: any = prefetchedData?.customer !== undefined
+            ? prefetchedData.customer
+            : null
+        if (!customer && customerId) {
             const { data, error: custError } = await supabase
                 .from('customers')
                 .select('*')
@@ -306,8 +315,18 @@ export async function generateDocument(
         }
 
         // Get contract and its source quotation data
-        let contract = null
-        if (contractId) {
+        let contract = prefetchedData?.contract !== undefined
+            ? prefetchedData.contract
+            : null
+        
+        if (contract && !contract.items) {
+            contract = {
+                ...contract,
+                items: contract.quotation?.items || []
+            }
+        }
+
+        if (!contract && contractId) {
             const { data } = await supabase
                 .from('contracts')
                 .select('*, milestones:contract_milestones(*), quotation:quotations(*, items:quotation_items(*))')
@@ -911,6 +930,17 @@ export async function generateDocumentBundle(contractId: string) {
         return
     }
 
+    // Fetch customer once to optimize database query performance
+    let customer: any = null
+    if (contract.customer_id) {
+        const { data } = await supabase
+            .from('customers')
+            .select('*')
+            .eq('id', contract.customer_id)
+            .single()
+        customer = data
+    }
+
     // 2. Get all existing documents (both draft and signed) to reconcile
     const { data: existingDocs } = await supabase
         .from('contract_documents')
@@ -949,7 +979,13 @@ export async function generateDocumentBundle(contractId: string) {
             if (paymentMilestones.length === 0) {
                 generationPromises.push((async () => {
                     try {
-                        const result = await generateDocument(template.id, contract.customer_id, contractId)
+                        const result = await generateDocument(
+                            template.id, 
+                            contract.customer_id, 
+                            contractId,
+                            undefined,
+                            { template, customer, contract }
+                        )
                         return {
                             contract_id: contractId,
                             type: docType,
@@ -996,7 +1032,13 @@ export async function generateDocumentBundle(contractId: string) {
                                     : '',
                             }
 
-                            const result = await generateDocument(template.id, contract.customer_id, contractId, milestoneVars)
+                            const result = await generateDocument(
+                                template.id, 
+                                contract.customer_id, 
+                                contractId, 
+                                milestoneVars,
+                                { template, customer, contract }
+                            )
                             const docNum = result.variables?.payment_number 
                                 ? `${result.variables.payment_number}-${i + 1}` 
                                 : ''
@@ -1019,7 +1061,13 @@ export async function generateDocumentBundle(contractId: string) {
         } else {
             generationPromises.push((async () => {
                 try {
-                    const result = await generateDocument(template.id, contract.customer_id, contractId)
+                    const result = await generateDocument(
+                        template.id, 
+                        contract.customer_id, 
+                        contractId,
+                        undefined,
+                        { template, customer, contract }
+                    )
                     const docNum = (docType === 'contract' || docType === 'freelance_contract') ? result.variables?.contract_number
                         : docType === 'order' ? result.variables?.contract_number
                         : result.variables?.report_number || ''
