@@ -66,14 +66,14 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         {/* Doing Tasks */}
-        <Card className="lg:col-span-2 shadow-sm">
-          <CardHeader className="flex-row items-center justify-between">
-            <CardTitle className="text-base font-medium">{t('dashboard.doingTasks')}</CardTitle>
+        <Card className="lg:col-span-2 shadow-sm border-muted/60 bg-card/50 backdrop-blur-sm">
+          <CardHeader className="flex-row items-center justify-between border-b border-muted/40 pb-4">
+            <CardTitle className="text-base font-semibold">{t('dashboard.doingTasks')}</CardTitle>
             <CardAction>
               <Link href="/board" className="text-sm font-medium text-primary hover:underline">{t('dashboard.viewBoard')}</Link>
             </CardAction>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <div className="space-y-3">
               {tasksLoading ? (
                 <div className="space-y-2">
@@ -123,14 +123,14 @@ export default function DashboardPage() {
         <div className="space-y-6">
           {/* Cycle Progress */}
           {activeCycle && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm font-medium">{t('dashboard.cycleProgress')}</CardTitle>
+            <Card className="shadow-sm border-muted/60 bg-card/50 backdrop-blur-sm">
+              <CardHeader className="border-b border-muted/40 pb-4">
+                <CardTitle className="text-sm font-semibold">{t('dashboard.cycleProgress')}</CardTitle>
                 <CardAction>
                   <Link href={`/cycles/${activeCycle.id}`} className="text-xs text-primary hover:underline">{t('dashboard.details')}</Link>
                 </CardAction>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 pt-6">
                 {(activeCycle.goals || []).map((g, i) => (
                   <div key={i} className="space-y-1.5">
                     <div className="flex justify-between text-xs">
@@ -146,14 +146,14 @@ export default function DashboardPage() {
 
           {/* Projects */}
           {projects.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm font-medium">{t('dashboard.projects')}</CardTitle>
+            <Card className="shadow-sm border-muted/60 bg-card/50 backdrop-blur-sm">
+              <CardHeader className="border-b border-muted/40 pb-4">
+                <CardTitle className="text-sm font-semibold">{t('dashboard.projects')}</CardTitle>
                 <CardAction>
                   <Link href="/projects" className="text-xs text-primary hover:underline">{t('dashboard.allProjects')}</Link>
                 </CardAction>
               </CardHeader>
-              <CardContent className="space-y-2">
+              <CardContent className="space-y-2 pt-6">
                 {projects.slice(0, 5).map(p => (
                   <Link key={p.id} href={`/projects/${p.id}`} className="block group">
                     <div className="flex items-center justify-between p-2 rounded-md hover:bg-muted transition-colors">

@@ -35,11 +35,13 @@ export async function POST(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
+    let contractId = ''
     try {
         const authResult = await requirePermission('contracts', 'edit')
         if (isAuthError(authResult)) return authResult
 
-        const { id: contractId } = await params
+        const resolvedParams = await params
+        contractId = resolvedParams.id
         const body = await request.json().catch(() => ({}))
 
         // If include_proposal_appendix is specified, update contract before regenerating
@@ -58,6 +60,18 @@ export async function POST(
         return NextResponse.json({ documents, regenerated: true })
     } catch (error: any) {
         console.error('Error regenerating contract documents:', error)
+        try {
+            const fs = require('fs')
+            const path = require('path')
+            const logPath = path.join(process.cwd(), 'error.log')
+            fs.appendFileSync(
+                logPath,
+                `[${new Date().toISOString()}] API POST /api/contracts/${contractId}/documents Error:\n${error?.stack || error}\n\n`
+            )
+        } catch (logErr) {
+            console.error('Failed to write log file:', logErr)
+        }
         return NextResponse.json({ error: 'Failed to regenerate documents' }, { status: 500 })
     }
 }
+

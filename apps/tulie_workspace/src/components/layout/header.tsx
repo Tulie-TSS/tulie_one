@@ -1,19 +1,21 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { useLocaleStore } from '@/lib/stores/locale-store'
-import { MOCK_NOTIFICATIONS, getMockCurrentUser } from '@/lib/mock/data'
+import { MOCK_NOTIFICATIONS } from '@/lib/mock/data'
 import {
     SidebarTrigger,
     Button,
-    Badge,
     Popover,
     PopoverContent,
     PopoverTrigger,
     Separator,
 } from '@repo/ui'
 import { Bell, Search } from 'lucide-react'
+
+import { DynamicBreadcrumbs } from './breadcrumbs'
+import { UserNav } from './user-nav'
 
 function timeAgo(dateStr: string, t: (key: string) => string): string {
     const now = new Date()
@@ -31,7 +33,6 @@ function timeAgo(dateStr: string, t: (key: string) => string): string {
 
 export function Header() {
     const { t } = useLocaleStore()
-    const user = getMockCurrentUser()
     const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS)
     const [open, setOpen] = useState(false)
 
@@ -46,34 +47,29 @@ export function Header() {
     }
 
     return (
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
+        <header className="flex h-16 md:h-12 shrink-0 items-center gap-2 px-4 sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4 hidden md:block" />
+            
+            <div className="flex-1 flex items-center min-w-0">
+                <DynamicBreadcrumbs />
+            </div>
 
-            {/* Search bar */}
-            <Button variant="outline" asChild className="hidden md:inline-flex items-center gap-2 flex-1 max-w-md justify-start ml-4 text-muted-foreground font-normal">
-                <Link href="/search">
-                    <Search className="size-4" />
-                    <span className="text-sm">{t('search.headerPlaceholder')}</span>
-                </Link>
-            </Button>
+            <div className="flex items-center justify-end gap-2 md:gap-4 ml-auto">
+                {/* Search bar */}
+                <Button variant="ghost" size="icon" asChild className="text-muted-foreground hidden sm:inline-flex">
+                    <Link href="/search">
+                        <Search className="size-4" />
+                    </Link>
+                </Button>
 
-            {/* Mobile Search Icon */}
-            <Button variant="ghost" size="icon" asChild className="md:hidden ml-1">
-                <Link href="/search">
-                    <Search className="size-5" />
-                </Link>
-            </Button>
-
-            <div className="flex flex-1 items-center justify-end gap-2 md:gap-4 ml-auto">
                 {/* Notification Bell */}
                 <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
                         <Button variant="ghost" size="icon" className="relative" aria-label="Notifications">
-                            <Bell className="size-5" />
+                            <Bell className="size-4" />
                             {unreadCount > 0 && (
-                                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-[10px] font-medium">
-                                    {unreadCount}
-                                </span>
+                                <span className="absolute top-1 right-1 flex h-2 w-2 items-center justify-center rounded-full bg-destructive" />
                             )}
                         </Button>
                     </PopoverTrigger>
@@ -109,9 +105,6 @@ export function Header() {
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2 mb-0.5">
                                                 <span className="font-medium text-sm truncate">{n.title}</span>
-                                                {!n.is_read && (
-                                                    <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary" />
-                                                )}
                                             </div>
                                             {n.content && (
                                                 <p className="text-xs text-muted-foreground truncate m-0">{n.content}</p>
@@ -125,9 +118,8 @@ export function Header() {
                     </PopoverContent>
                 </Popover>
 
-                <Badge variant="secondary" className="hidden sm:inline-flex text-[10px] md:text-xs font-semibold">
-                    WIP: 1/2
-                </Badge>
+                <Separator orientation="vertical" className="h-4 hidden sm:block" />
+                <UserNav />
             </div>
         </header>
     )

@@ -8,10 +8,15 @@ export const metadata: Metadata = {
 }
 
 import { Sonner, ConfirmProvider } from '@repo/ui'
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="vi" suppressHydrationWarning>
+        <html lang="vi" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
             <head>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

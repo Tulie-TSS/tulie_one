@@ -462,7 +462,10 @@ export async function updateQuotation(id: string, quotation: Partial<Quotation>,
 
         // Sync changes to any linked contract and regenerate its documents
         try {
-            const { data: linkedContracts } = await supabase
+            const { createAdminClient } = await import('../admin')
+            const adminSupabase = createAdminClient()
+
+            const { data: linkedContracts } = await adminSupabase
                 .from('contracts')
                 .select('id')
                 .eq('quotation_id', id)
@@ -473,7 +476,7 @@ export async function updateQuotation(id: string, quotation: Partial<Quotation>,
                 for (const contract of linkedContracts) {
                     let customerSnapshot = null
                     if (quoteDataToUpdate.customer_id) {
-                        const { data: custData } = await supabase
+                        const { data: custData } = await adminSupabase
                             .from('customers')
                             .select('company_name, tax_code, email, phone, address, invoice_address, representative, position')
                             .eq('id', quoteDataToUpdate.customer_id)
@@ -502,7 +505,7 @@ export async function updateQuotation(id: string, quotation: Partial<Quotation>,
                     )
 
                     if (Object.keys(cleanContractUpdate).length > 0) {
-                        await supabase
+                        await adminSupabase
                             .from('contracts')
                             .update(cleanContractUpdate)
                             .eq('id', contract.id)
@@ -512,8 +515,19 @@ export async function updateQuotation(id: string, quotation: Partial<Quotation>,
                     await generateDocumentBundle(contract.id)
                 }
             }
-        } catch (syncErr) {
+        } catch (syncErr: any) {
             console.error('Error syncing changes to linked contract:', syncErr)
+            try {
+                const fs = require('fs')
+                const path = require('path')
+                const logPath = path.join(process.cwd(), 'error.log')
+                fs.appendFileSync(
+                    logPath,
+                    `[${new Date().toISOString()}] updateQuotation contract sync error (id=${id}):\n${syncErr?.stack || syncErr}\n\n`
+                )
+            } catch (logErr) {
+                console.error('Failed to write log file:', logErr)
+            }
         }
 
         return true
