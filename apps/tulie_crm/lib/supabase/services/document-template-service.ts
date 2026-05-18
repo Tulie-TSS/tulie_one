@@ -479,7 +479,10 @@ export async function generateDocument(
 
             // Determine VAT status and Product Name early for use in items table and declaration
             const proposalContent = (contract?.quotation?.proposal_content as Record<string, string>) || {}
-            const vatStatus = contract?.vat_exempt_status || contract?.quotation?.vat_exempt_status || proposalContent.vat_exempt_status || '0_percent'
+            const isExempt = contract?.vat_exempt_status === 'exempt' || 
+                             contract?.quotation?.vat_exempt_status === 'exempt' || 
+                             proposalContent.vat_exempt_status === 'exempt'
+            const vatStatus = isExempt ? 'exempt' : '0_percent'
             const productName = contract?.product_name_in_contract?.trim() || contract?.quotation?.product_name_in_contract?.trim() || proposalContent.product_name_in_contract?.trim() || ''
 
             // Build items table from quotation items
@@ -580,31 +583,38 @@ export async function generateDocument(
                 }
 
                 // Calculate VAT breakdown HTML rows
-                const vatGroupsMap: Record<number, number> = {}
-                items.forEach((item: any) => {
-                    const qty = item.quantity || 1
-                    const unitPrice = item.unit_price || 0
-                    const itemGross = qty * unitPrice
-                    const discountPct = item.discount || 0
-                    const discountAmount = Math.round(itemGross * discountPct / 100)
-                    const afterDiscount = itemGross - discountAmount
-                    const itemVatRate = item.vat_percent 
-                        ? item.vat_percent 
-                        : (contract.quotation?.vat_percent || 0)
-                    const itemVat = Math.round(afterDiscount * itemVatRate / 100)
-                    
-                    if (itemVat > 0 || itemVatRate === 0) {
-                        vatGroupsMap[itemVatRate] = (vatGroupsMap[itemVatRate] || 0) + itemVat
-                    }
-                })
-
                 let vatBreakdownHtml = ''
-                Object.entries(vatGroupsMap).sort((a, b) => Number(a[0]) - Number(b[0])).forEach(([rate, amt]) => {
-                    vatBreakdownHtml += `<tr style="background:#f5f5f5;">
-                        <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Tổng thuế suất GTGT (VAT) ${rate}%:</strong></td>
-                        <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(amt as number)}</td>
+                if (vatStatus === 'exempt') {
+                    vatBreakdownHtml = `<tr style="background:#f5f5f5;">
+                        <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Thuế suất GTGT (VAT):</strong></td>
+                        <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">Không chịu thuế</td>
                     </tr>`
-                })
+                } else {
+                    const vatGroupsMap: Record<number, number> = {}
+                    items.forEach((item: any) => {
+                        const qty = item.quantity || 1
+                        const unitPrice = item.unit_price || 0
+                        const itemGross = qty * unitPrice
+                        const discountPct = item.discount || 0
+                        const discountAmount = Math.round(itemGross * discountPct / 100)
+                        const afterDiscount = itemGross - discountAmount
+                        const itemVatRate = item.vat_percent 
+                            ? item.vat_percent 
+                            : (contract.quotation?.vat_percent || 0)
+                        const itemVat = Math.round(afterDiscount * itemVatRate / 100)
+                        
+                        if (itemVat > 0 || itemVatRate === 0) {
+                            vatGroupsMap[itemVatRate] = (vatGroupsMap[itemVatRate] || 0) + itemVat
+                        }
+                    })
+
+                    Object.entries(vatGroupsMap).sort((a, b) => Number(a[0]) - Number(b[0])).forEach(([rate, amt]) => {
+                        vatBreakdownHtml += `<tr style="background:#f5f5f5;">
+                            <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Tổng thuế suất GTGT (VAT) ${rate}%:</strong></td>
+                            <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(amt as number)}</td>
+                        </tr>`
+                    })
+                }
                 variables.vat_breakdown_html = vatBreakdownHtml
 
                 variables.contract_items_table = itemsRowsHtml
@@ -772,7 +782,10 @@ export async function generateDocument(
         }
         // Generate product_service_declaration (always use local const for safety)
         const proposalContentOuter = (contract?.quotation?.proposal_content as Record<string, string>) || {}
-        const vatStatusOuter = contract?.vat_exempt_status || contract?.quotation?.vat_exempt_status || proposalContentOuter.vat_exempt_status || '0_percent'
+        const isExemptOuter = contract?.vat_exempt_status === 'exempt' || 
+                              contract?.quotation?.vat_exempt_status === 'exempt' || 
+                              proposalContentOuter.vat_exempt_status === 'exempt'
+        const vatStatusOuter = isExemptOuter ? 'exempt' : '0_percent'
         const productNameOuter = contract?.product_name_in_contract?.trim() || contract?.quotation?.product_name_in_contract?.trim() || proposalContentOuter.product_name_in_contract?.trim() || ''
         let productServiceDeclaration = ''
 
