@@ -592,6 +592,11 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
             }).catch(() => {})
         }
 
+        // 8. Auto-generate document bundle (fire-and-forget)
+        generateDocumentBundle(contract.id).catch(err => {
+            console.error('Error auto-generating document bundle in convertQuotationToOrder:', err)
+        })
+
         return { success: true, id: contract.id }
     } catch (err: any) {
         console.error('Conversion error:', err)

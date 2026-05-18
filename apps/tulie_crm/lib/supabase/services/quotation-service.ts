@@ -460,6 +460,62 @@ export async function updateQuotation(id: string, quotation: Partial<Quotation>,
             quoteDataToUpdate.brand
         )
 
+        // Sync changes to any linked contract and regenerate its documents
+        try {
+            const { data: linkedContracts } = await supabase
+                .from('contracts')
+                .select('id')
+                .eq('quotation_id', id)
+
+            if (linkedContracts && linkedContracts.length > 0) {
+                const { generateDocumentBundle } = await import('./document-template-service')
+                
+                for (const contract of linkedContracts) {
+                    let customerSnapshot = null
+                    if (quoteDataToUpdate.customer_id) {
+                        const { data: custData } = await supabase
+                            .from('customers')
+                            .select('company_name, tax_code, email, phone, address, invoice_address, representative, position')
+                            .eq('id', quoteDataToUpdate.customer_id)
+                            .single()
+                        if (custData) {
+                            customerSnapshot = custData
+                        }
+                    }
+
+                    const contractUpdate: Record<string, any> = {
+                        total_amount: quoteDataToUpdate.total_amount || undefined,
+                        title: quoteDataToUpdate.title || undefined,
+                        terms: quoteDataToUpdate.terms || undefined,
+                        vat_exempt_status: quoteDataToUpdate.vat_exempt_status || undefined,
+                        product_name_in_contract: quoteDataToUpdate.product_name_in_contract || undefined,
+                        updated_at: new Date().toISOString()
+                    }
+                    
+                    if (customerSnapshot) {
+                        contractUpdate.customer_snapshot = customerSnapshot
+                        contractUpdate.customer_id = quoteDataToUpdate.customer_id
+                    }
+
+                    const cleanContractUpdate = Object.fromEntries(
+                        Object.entries(contractUpdate).filter(([_, v]) => v !== undefined)
+                    )
+
+                    if (Object.keys(cleanContractUpdate).length > 0) {
+                        await supabase
+                            .from('contracts')
+                            .update(cleanContractUpdate)
+                            .eq('id', contract.id)
+                    }
+
+                    // Regenerate documents for this contract
+                    await generateDocumentBundle(contract.id)
+                }
+            }
+        } catch (syncErr) {
+            console.error('Error syncing changes to linked contract:', syncErr)
+        }
+
         return true
     } catch (err: any) {
         console.error('Fatal error in updateQuotation:', err)
