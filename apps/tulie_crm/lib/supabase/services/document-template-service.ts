@@ -18,6 +18,7 @@ import { orderTemplate } from './order-template'
 import { deliveryMinutesTemplate } from './delivery-minutes-template'
 import { quotationTemplate } from './quotation-template'
 import { freelanceTemplate } from './freelance-template'
+import { freelanceDeliveryTemplate } from './freelance-delivery-template'
 
 /**
  * Standard templates with common variables for HTML fallback and variable definition
@@ -785,7 +786,7 @@ export async function generateDocument(
         const isExemptOuter = contract?.vat_exempt_status === 'exempt' || 
                               contract?.quotation?.vat_exempt_status === 'exempt' || 
                               proposalContentOuter.vat_exempt_status === 'exempt'
-        const vatStatusOuter = isExemptOuter ? 'exempt' : '0_percent'
+        const vatStatusOuter = isFreelance ? '' : (isExemptOuter ? 'exempt' : '0_percent')
         const productNameOuter = contract?.product_name_in_contract?.trim() || contract?.quotation?.product_name_in_contract?.trim() || proposalContentOuter.product_name_in_contract?.trim() || ''
         let productServiceDeclaration = ''
 
@@ -875,7 +876,12 @@ export async function generateDocument(
             variables.proposal_appendix_html = ''
         }
 
-        const filledContent = await fillTemplate(template.content, variables)
+        let templateContent = template.content
+        if (isFreelance && template.type === 'delivery_minutes') {
+            templateContent = freelanceDeliveryTemplate
+        }
+
+        const filledContent = await fillTemplate(templateContent, variables)
 
         return {
             content: filledContent,
