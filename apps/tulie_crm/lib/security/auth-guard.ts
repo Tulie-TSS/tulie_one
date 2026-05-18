@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { UserRole } from '@/types'
 import {
     Resource,
@@ -35,8 +36,9 @@ export async function requireAuth(): Promise<AuthResult | NextResponse> {
             )
         }
 
-        // Fetch role, team, and department from users table
-        const { data: profile } = await supabase
+        // Fetch role, team, and department from users table using Admin client to bypass RLS limits
+        const adminSupabase = createAdminClient()
+        const { data: profile } = await adminSupabase
             .from('users')
             .select('role, team_id, department')
             .eq('id', user.id)
@@ -53,10 +55,10 @@ export async function requireAuth(): Promise<AuthResult | NextResponse> {
             department: profile?.department ?? undefined,
         }
 
-        // Pre-fetch team member IDs for management roles
+        // Pre-fetch team member IDs for management roles using Admin client to bypass RLS
         let teamMemberIds: string[] = []
         if (isManagement(effectiveRole) && userCtx.team_id) {
-            teamMemberIds = await getTeamMemberIds(supabase, userCtx.id, userCtx.team_id)
+            teamMemberIds = await getTeamMemberIds(adminSupabase, userCtx.id, userCtx.team_id)
         }
 
         return { user: userCtx, supabase, teamMemberIds }
