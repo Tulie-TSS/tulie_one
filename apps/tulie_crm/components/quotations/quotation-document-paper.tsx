@@ -141,7 +141,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                         <React.Fragment key={sectionName || sIdx}>
                             {sectionName && (
                                 <tr className="bg-muted">
-                                    <td colSpan={11} className="border border-black py-1.5 px-3 uppercase text-[10px]">
+                                    <td colSpan={11} className="border border-black py-1.5 px-3 font-bold text-[10px]">
                                         {sectionName}
                                     </td>
                                 </tr>
@@ -160,7 +160,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                                 <tr key={item.id} className="font-medium">
                                     <td className="border border-black py-2 px-1 text-center align-top text-[10px] whitespace-nowrap">{sectionName ? `${sIdx + 1}.${iIdx + 1}` : iIdx + 1}</td>
                                     <td className="border border-black py-2 px-3 align-top">
-                                        <p className="font-bold mb-1 uppercase">{item.name || item.product_name}</p>
+                                        <p className="font-bold mb-1">{item.name || item.product_name}</p>
                                         {(item.description) && <p className="text-[10px] text-muted-foreground whitespace-pre-line leading-relaxed mt-1 pt-1 border-t border-dashed border-border">{item.description}</p>}
                                     </td>
                                     <td className="border border-black py-2 px-1 text-center align-top whitespace-nowrap">{item.unit || 'Bộ'}</td>
