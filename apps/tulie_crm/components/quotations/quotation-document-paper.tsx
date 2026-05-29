@@ -196,24 +196,18 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                         return (
                             <>
                                 <tr>
-                                    <td colSpan={8} className="border border-black py-2 px-3 text-right text-[10px]">Tạm tính / Subtotal:</td>
-                                    <td className="border border-black py-2 px-1"></td>
-                                    <td className="border border-black py-2 px-1"></td>
+                                    <td colSpan={10} className="border border-black py-2 px-3 text-right text-[10px]">Tạm tính / Subtotal:</td>
                                     <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] whitespace-nowrap">{formatCurrency(grossTotal).replace('₫', '')}</td>
                                 </tr>
                                 {totalDiscountAmt > 0 && (
                                     <tr>
-                                        <td colSpan={8} className="border border-black py-2 px-3 text-right text-[10px] text-muted-foreground">Tổng chiết khấu / Total Discount:</td>
-                                        <td className="border border-black py-2 px-1"></td>
-                                        <td className="border border-black py-2 px-1"></td>
+                                        <td colSpan={10} className="border border-black py-2 px-3 text-right text-[10px] text-muted-foreground">Tổng chiết khấu / Total Discount:</td>
                                         <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] text-muted-foreground whitespace-nowrap">-{formatCurrency(totalDiscountAmt).replace('₫', '')}</td>
                                     </tr>
                                 )}
                                 {totalDiscountAmt > 0 && (
                                     <tr>
-                                        <td colSpan={8} className="border border-black py-2 px-3 text-right text-[10px]">Cộng tiền hàng / Net Amount:</td>
-                                        <td className="border border-black py-2 px-1"></td>
-                                        <td className="border border-black py-2 px-1"></td>
+                                        <td colSpan={10} className="border border-black py-2 px-3 text-right text-[10px]">Cộng tiền hàng / Net Amount:</td>
                                         <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] whitespace-nowrap">{formatCurrency(subtotalAfterDiscount).replace('₫', '')}</td>
                                     </tr>
                                 )}
@@ -234,11 +228,9 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
 
                                     return sortedRates.map(rate => (
                                         <tr key={rate}>
-                                            <td colSpan={8} className="border border-black py-2 px-3 text-right font-medium text-[10px]">
+                                            <td colSpan={10} className="border border-black py-2 px-3 text-right font-medium text-[10px]">
                                                 Tổng thuế suất GTGT (VAT) {rate}%:
                                             </td>
-                                            <td className="border border-black py-2 px-1"></td>
-                                            <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] whitespace-nowrap"></td>
                                             <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] whitespace-nowrap">
                                                 {formatCurrency(vatGroups[rate]).replace('₫', '')}
                                             </td>
@@ -246,8 +238,8 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                                     ));
                                 })()}
                                 <tr className="bg-muted">
-                                    <td colSpan={9} className="border border-black py-3 px-3 text-right uppercase text-[11px] font-bold">Tổng cộng thanh toán / Grand Total:</td>
-                                    <td colSpan={2} className="border border-black py-3 px-1 text-right text-[13px] tabular-nums whitespace-nowrap font-bold">{formatCurrency(quotation.total_amount || grandTotal).replace('₫', '')} VND</td>
+                                    <td colSpan={10} className="border border-black py-3 px-3 text-right uppercase text-[11px] font-bold">Tổng cộng thanh toán / Grand Total:</td>
+                                    <td colSpan={1} className="border border-black py-3 px-1 text-right text-[13px] tabular-nums whitespace-nowrap font-bold">{formatCurrency(quotation.total_amount || grandTotal).replace('₫', '')} VND</td>
                                 </tr>
                                 <tr>
                                     <td colSpan={11} className="border border-black py-3 px-3 text-[11px] font-medium">
