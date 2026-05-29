@@ -2,10 +2,10 @@
 
 import { useState, useTransition } from 'react'
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
-import { ArrowUp, ArrowDown, ArrowUpDown, Calendar, SortAsc } from 'lucide-react'
+import { ArrowUp, ArrowDown, ArrowUpDown, Calendar, SortAsc, Plus, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { formatCurrency } from '@/lib/utils/format'
-import { reorderPortalItems } from '@/lib/supabase/services/quote-portal-service'
+import { reorderPortalItems, addQuotationToPortal, removeQuotationFromPortal } from '@/lib/supabase/services/quote-portal-service'
 import { PortalItemActions } from './item-actions'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
@@ -31,13 +31,50 @@ interface PortalItem {
 export function PortalItemsList({
     portalId,
     initialItems,
+    availableQuotations = [],
 }: {
     portalId: string
     initialItems: PortalItem[]
+    availableQuotations?: any[]
 }) {
     const [items, setItems] = useState<PortalItem[]>(initialItems)
     const [isPending, startTransition] = useTransition()
     const router = useRouter()
+
+    const [showAdd, setShowAdd] = useState(false)
+    const [selectedQuoteId, setSelectedQuoteId] = useState('')
+    
+    const unaddedQuotations = availableQuotations.filter(
+        q => !items.find(item => item.quotation_id === q.id)
+    )
+
+    const handleAdd = () => {
+        if (!selectedQuoteId) return
+        startTransition(async () => {
+            const res = await addQuotationToPortal(portalId, selectedQuoteId)
+            if (res.success) {
+                toast.success('Đã thêm báo giá')
+                setShowAdd(false)
+                setSelectedQuoteId('')
+                router.refresh()
+            } else {
+                toast.error(res.error || 'Lỗi khi thêm báo giá')
+            }
+        })
+    }
+
+    const handleRemove = (quotationId: string) => {
+        if (!confirm('Bạn có chắc chắn muốn bỏ báo giá này khỏi portal?')) return
+        startTransition(async () => {
+            const res = await removeQuotationFromPortal(portalId, quotationId)
+            if (res.success) {
+                toast.success('Đã xóa báo giá khỏi portal')
+                router.refresh()
+            } else {
+                toast.error(res.error || 'Lỗi khi xóa báo giá')
+            }
+        })
+    }
 
     const persistOrder = async (newItems: PortalItem[]) => {
         const orderedIds = newItems.map(i => i.quotation_id)
@@ -92,6 +129,16 @@ export function PortalItemsList({
                     <Button
                         variant="ghost"
                         size="sm"
+                        onClick={() => setShowAdd(!showAdd)}
+                        disabled={isPending}
+                        className="text-xs h-7 px-2.5 gap-1.5 text-muted-foreground hover:text-foreground"
+                    >
+                        <Plus className="w-3.5 h-3.5" />
+                        Thêm báo giá
+                    </Button>
+                    <Button
+                        variant="ghost"
+                        size="sm"
                         onClick={handleAutoSort}
                         disabled={isPending}
                         className="text-xs h-7 px-2.5 gap-1.5 text-muted-foreground hover:text-foreground"
@@ -101,6 +148,32 @@ export function PortalItemsList({
                     </Button>
                 </div>
             </div>
+
+            {showAdd && (
+                <div className="px-4 py-3 border-b border-border bg-slate-50 flex items-center gap-2">
+                    <select 
+                        className="flex-1 text-sm rounded-md border border-input bg-background px-3 py-1.5 shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        value={selectedQuoteId}
+                        onChange={(e) => setSelectedQuoteId(e.target.value)}
+                        disabled={isPending}
+                    >
+                        <option value="">-- Chọn báo giá để thêm --</option>
+                        {unaddedQuotations.map(q => (
+                            <option key={q.id} value={q.id}>
+                                #{q.quotation_number} — {q.title} ({formatCurrency(q.total_amount)})
+                            </option>
+                        ))}
+                    </select>
+                    <Button 
+                        size="sm" 
+                        onClick={handleAdd} 
+                        disabled={!selectedQuoteId || isPending}
+                        className="h-8"
+                    >
+                        Thêm
+                    </Button>
+                </div>
+            )}
 
             {/* Items list */}
             <div className="divide-y divide-border">
@@ -161,13 +234,23 @@ export function PortalItemsList({
                         </div>
 
                         {/* Actions */}
-                        <div className="shrink-0">
+                        <div className="shrink-0 flex items-center gap-1">
                             <PortalItemActions
                                 portalId={portalId}
                                 quotationId={item.quotation_id}
                                 isDefault={item.is_default || false}
                                 isRecommended={item.is_recommended || false}
                             />
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                                onClick={() => handleRemove(item.quotation_id)}
+                                disabled={isPending}
+                                title="Bỏ khỏi portal"
+                            >
+                                <Trash2 className="h-4 w-4" />
+                            </Button>
                         </div>
                     </div>
                 ))}

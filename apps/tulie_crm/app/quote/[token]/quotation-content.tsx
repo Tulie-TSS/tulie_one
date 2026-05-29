@@ -279,7 +279,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                         <Lightbulb className="h-3.5 w-3.5 text-amber-500" />
                                         {activeOptions.length} {sectionLabel}
                                     </div>
-                                    <CardTitle className="text-xl font-bold tracking-tight text-slate-900 leading-none">
+                                    <CardTitle className="text-xl font-bold text-slate-900 leading-none">
                                         {isPortalMode ? portalTitle : 'Lựa chọn phương án'}
                                     </CardTitle>
                                     <CardDescription className="text-[13.5px] leading-relaxed text-slate-500">
@@ -465,7 +465,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                         {/* Attachments inside Sidebar */}
                         {attachments.length > 0 && (
                             <Card className="border-slate-200 shadow-sm">
-                                <CardHeader className="px-5 py-4 pb-2 border-b border-transparent">
+                                <CardHeader className="px-5 py-4 pb-0 border-b border-transparent">
                                     <div className="flex items-center gap-2">
                                         <FileText className="h-4 w-4 text-slate-500" />
                                         <CardTitle className="text-sm font-semibold text-slate-900 leading-none">
@@ -476,7 +476,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                         Links demo, proposal & tài liệu liên quan
                                     </CardDescription>
                                 </CardHeader>
-                                <CardContent className="px-5 pb-5 pt-3">
+                                <CardContent className="px-5 pb-5 pt-2">
                                     <div className="flex flex-col gap-2">
                                         {attachments.map((item: any) => (
                                             <a 

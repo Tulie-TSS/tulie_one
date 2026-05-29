@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { getQuotePortalById } from '@/lib/supabase/services/quote-portal-service'
+import { getQuotations } from '@/lib/supabase/services/quotation-service'
 import { notFound } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from '@repo/ui'
 import { ExternalLink, Link2, ArrowLeft } from 'lucide-react'
@@ -20,6 +21,9 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
     if (!portal) {
         notFound()
     }
+
+    // Lấy tất cả báo giá của khách hàng này để có thể chọn thêm vào portal
+    const availableQuotations = await getQuotations(portal.customer_id || undefined)
 
     const publicUrl = `/quote/${portal.public_token}`
 
@@ -66,6 +70,7 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
                         <PortalItemsList
                             portalId={portal.id}
                             initialItems={portal.items || []}
+                            availableQuotations={availableQuotations}
                         />
                     </CardContent>
                 </Card>

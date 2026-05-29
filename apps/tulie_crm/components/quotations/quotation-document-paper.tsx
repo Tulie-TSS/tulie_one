@@ -310,12 +310,12 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
             {/* Banking Info Section */}
             <div className="mb-12 p-5 border border-black bg-muted grayscale">
                 <h4 className="text-[13px] uppercase underline mb-4">Thông tin chuyển khoản (Payment Information):</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[12px] ml-4 font-medium">
-                    <div className="space-y-2">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-6 text-[12px] ml-4 font-medium">
+                    <div className="space-y-2 md:col-span-3">
                         <p><span className="font-bold">Chủ tài khoản:</span> <span className="uppercase">{quotation.bank_account_name || brandConfig?.bank_account_name || 'CÔNG TY TNHH TULIE'}</span></p>
                         <p><span className="font-bold">Số tài khoản:</span> <span className="text-[14px]">{quotation.bank_account_no || brandConfig?.bank_account_no || '0110163102'}</span></p>
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2 md:col-span-2">
                         <p><span className="font-bold">Ngân hàng:</span> {quotation.bank_name || brandConfig?.bank_name || 'MB BANK'}</p>
                         <p><span className="font-bold">Chi nhánh:</span> {quotation.bank_branch || brandConfig?.bank_branch || 'SỞ GIAO DỊCH'}</p>
                     </div>
