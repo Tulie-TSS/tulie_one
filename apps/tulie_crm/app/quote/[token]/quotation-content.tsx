@@ -55,6 +55,9 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
         name: '',
         email: '',
         phone: '',
+        position: ''
+    })
+
     const isPortalMode = !!(initialQuotation as any)._isPortalMode
     const rawPortalTitle = (initialQuotation as any)._portalTitle || ''
     const portalTitle = rawPortalTitle || 'Danh sách Báo giá'
