@@ -6,6 +6,7 @@ import { Star, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { toggleDefault, toggleRecommended } from '@/lib/supabase/services/quote-portal-service'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
 
 export function PortalItemActions({ 
     portalId, 
@@ -18,6 +19,7 @@ export function PortalItemActions({
     isDefault: boolean,
     isRecommended: boolean
 }) {
+    const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
     const [localRecommended, setLocalRecommended] = useState(isRecommended)
     const [localDefault, setLocalDefault] = useState(isDefault)
@@ -31,6 +33,7 @@ export function PortalItemActions({
             const res = await toggleDefault(portalId, quotationId)
             if (res.success) {
                 toast.success('Đã đặt làm báo giá mặc định')
+                router.refresh()
             } else {
                 setLocalDefault(previous) // Rollback
                 toast.error(res.error || 'Có lỗi xảy ra')

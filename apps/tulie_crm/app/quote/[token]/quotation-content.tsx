@@ -55,11 +55,14 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
         name: '',
         email: '',
         phone: '',
-        position: ''
-    })
-
     const isPortalMode = !!(initialQuotation as any)._isPortalMode
-    const portalTitle = (initialQuotation as any)._portalTitle || 'Danh sách Báo giá'
+    const rawPortalTitle = (initialQuotation as any)._portalTitle || ''
+    const portalTitle = rawPortalTitle || 'Danh sách Báo giá'
+    
+    // Auto-detect item label based on portal title
+    const isVariantMode = isPortalMode && portalTitle.toLowerCase().includes('phương án')
+    const itemLabel = (isPortalMode && !isVariantMode) ? 'Báo giá' : 'Phương án'
+    const sectionLabel = (isPortalMode && !isVariantMode) ? 'Hạng mục Báo giá' : 'Đề xuất Giải pháp'
 
     // Sibling-related helpers - Filter by visibility (is_recommended)
     const allSiblings = (initialQuotation as any).siblings || []
@@ -271,13 +274,13 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                 <CardHeader className="px-5 py-4 pb-0 space-y-2">
                                     <div className="flex items-center gap-1.5 w-fit rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
                                         <Lightbulb className="h-3.5 w-3.5 text-amber-500" />
-                                        {activeOptions.length} {isPortalMode ? 'Hạng mục Báo giá' : 'Đề xuất Giải pháp'}
+                                        {activeOptions.length} {sectionLabel}
                                     </div>
                                     <CardTitle className="text-xl font-bold tracking-tight text-slate-900 leading-none">
                                         {isPortalMode ? portalTitle : 'Lựa chọn phương án'}
                                     </CardTitle>
                                     <CardDescription className="text-[13.5px] leading-relaxed text-slate-500">
-                                        {isPortalMode 
+                                        {isPortalMode && !isVariantMode
                                             ? `Tổng hợp ${activeOptions.length} hạng mục báo giá thuộc dự án này.` 
                                             : `Dựa trên yêu cầu của bạn, chúng tôi đề xuất ${activeOptions.length} phương án tối ưu. Vui lòng bấm chọn để xem báo giá chi tiết.`}
                                     </CardDescription>
@@ -323,7 +326,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                             >
                                                 <div className="flex items-center justify-between mb-2">
                                                     <Badge variant={isActive ? "default" : "outline"} className={cn("text-[11px] font-medium border", !isActive && "text-slate-600 bg-white")}>
-                                                        {isPortalMode ? `Báo giá ${idx + 1}` : `Phương án ${idx + 1}`}
+                                                        {itemLabel} {idx + 1}
                                                     </Badge>
                                                     
                                                     {isActive && (
