@@ -35,7 +35,9 @@ async function resolveQuotationData(token: string) {
             ...mainQuotation,
             customer: portal.customer,
             siblings,
-            attachments: portal.attachments || []
+            attachments: portal.attachments || [],
+            _isPortalMode: true,
+            _portalTitle: portal.title
         }
     } else {
         return await getQuotationByToken(token)

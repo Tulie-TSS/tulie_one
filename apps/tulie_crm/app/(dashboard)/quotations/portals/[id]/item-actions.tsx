@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import { Button } from '@repo/ui'
-import { Star } from 'lucide-react'
+import { Star, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { toggleDefault, toggleRecommended } from '@/lib/supabase/services/quote-portal-service'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
+import { cn } from '@/lib/utils'
 
 export function PortalItemActions({ 
     portalId, 
@@ -19,20 +19,24 @@ export function PortalItemActions({
     isRecommended: boolean
 }) {
     const [isLoading, setIsLoading] = useState(false)
-    const router = useRouter()
+    const [localRecommended, setLocalRecommended] = useState(isRecommended)
+    const [localDefault, setLocalDefault] = useState(isDefault)
 
     const handleSetDefault = async () => {
-        if (isDefault) return 
+        if (localDefault) return 
+        const previous = localDefault
+        setLocalDefault(true) // Optimistic update
         setIsLoading(true)
         try {
             const res = await toggleDefault(portalId, quotationId)
             if (res.success) {
                 toast.success('Đã đặt làm báo giá mặc định')
-                router.refresh()
             } else {
+                setLocalDefault(previous) // Rollback
                 toast.error(res.error || 'Có lỗi xảy ra')
             }
         } catch (err) {
+            setLocalDefault(previous) // Rollback
             toast.error('Lỗi khi thiết lập')
         } finally {
             setIsLoading(false)
@@ -40,16 +44,20 @@ export function PortalItemActions({
     }
 
     const handleToggleVisibility = async () => {
+        const newValue = !localRecommended
+        const previous = localRecommended
+        setLocalRecommended(newValue) // Optimistic update
         setIsLoading(true)
         try {
-            const res = await toggleRecommended(portalId, quotationId, !isRecommended)
+            const res = await toggleRecommended(portalId, quotationId, newValue)
             if (res.success) {
-                toast.success(isRecommended ? 'Đã ẩn khỏi portal' : 'Đã hiển thị trên portal')
-                router.refresh()
+                toast.success(newValue ? 'Đã hiển thị trên portal' : 'Đã ẩn khỏi portal')
             } else {
+                setLocalRecommended(previous) // Rollback
                 toast.error(res.error || 'Có lỗi xảy ra')
             }
         } catch (err) {
+            setLocalRecommended(previous) // Rollback
             toast.error('Lỗi khi thiết lập')
         } finally {
             setIsLoading(false)
@@ -57,28 +65,48 @@ export function PortalItemActions({
     }
 
     return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
             <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={handleToggleVisibility}
                 disabled={isLoading}
-                className={`text-xs px-2 ${isRecommended ? 'text-emerald-600' : 'text-slate-400'}`}
+                className={cn(
+                    "text-xs h-8 px-2.5 gap-1.5 rounded-md transition-all font-medium",
+                    localRecommended 
+                        ? "text-foreground bg-primary/5 hover:bg-primary/10 border border-border" 
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                )}
                 title="Ẩn/Hiện báo giá này trên Public Portal"
             >
-                {isRecommended ? 'Đang Hiển Thị' : 'Đang Ẩn'}
+                {isLoading ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : localRecommended ? (
+                    <Eye className="w-3.5 h-3.5" />
+                ) : (
+                    <EyeOff className="w-3.5 h-3.5" />
+                )}
+                {localRecommended ? 'Đang Hiển Thị' : 'Đang Ẩn'}
             </Button>
 
             <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={handleSetDefault}
-                disabled={isLoading || isDefault}
-                className={`text-xs px-2 ${isDefault ? 'text-amber-500 opacity-100' : 'text-slate-400 hover:text-amber-500'}`}
+                disabled={isLoading || localDefault}
+                className={cn(
+                    "text-xs h-8 px-2.5 gap-1.5 rounded-md transition-all font-medium",
+                    localDefault
+                        ? "text-foreground bg-primary/5 border border-border cursor-default"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                )}
                 title="Mở mặc định khi khách hàng truy cập Portal"
             >
-                <Star className={`w-4 h-4 mr-1.5 ${isDefault ? 'fill-current' : ''}`} />
-                {isDefault ? 'Mặc Định' : 'Đặt Mặc Định'}
+                <Star className={cn(
+                    "w-3.5 h-3.5 transition-all",
+                    localDefault ? 'fill-foreground text-foreground' : ''
+                )} />
+                {localDefault ? 'Mặc Định' : 'Đặt Mặc Định'}
             </Button>
         </div>
     )

@@ -48,7 +48,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                 {/* Company Contact Info */}
                 <div>
                     <h3 className="text-[13px] uppercase mb-1">
-                        {brandConfig?.brand_name?.toUpperCase() || "CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE"}
+                        {(brandConfig?.company_name || brandConfig?.brand_name || "Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie").toUpperCase()}
                     </h3>
                     <div className="text-[11px] space-y-0.5 font-normal">
                         <p><span className="font-semibold">Địa chỉ:</span> {brandConfig?.address || "Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Q. Hà Đông, Hà Nội"}</p>

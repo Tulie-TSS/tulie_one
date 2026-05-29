@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { PortalAttachments } from './portal-attachments'
 import { PortalTitleEditor } from './portal-title-editor'
 import { PortalItemsList } from './portal-items-list'
+import { PortalViewAnalytics } from './portal-view-analytics'
 
 export const metadata: Metadata = {
     title: 'Chi tiết Portal | Tulie CRM',
@@ -85,6 +86,8 @@ export default async function PortalDetailPage({ params }: { params: Promise<{ i
                             </div>
                         </CardContent>
                     </Card>
+
+                    <PortalViewAnalytics portalToken={portal.public_token} />
 
                     <PortalAttachments
                         portalId={portal.id}
