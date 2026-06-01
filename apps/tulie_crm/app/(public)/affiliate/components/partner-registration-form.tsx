@@ -321,9 +321,9 @@ export function PartnerRegistrationForm() {
                                         <SelectValue placeholder="Chọn vai trò" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="lead_only">Chỉ giới thiệu khách (Hoa hồng 10%) - Không cần tư vấn</SelectItem>
-                                        <SelectItem value="consult_close">Tư vấn & chốt hợp đồng (Hoa hồng 15%) - Role tiêu chuẩn</SelectItem>
-                                        <SelectItem value="full_close">Tự chốt (Hoa hồng 20%) - Dành cho chuyên gia</SelectItem>
+                                        <SelectItem value="lead_only">Chỉ giới thiệu khách (Hoa hồng 5%) - Không cần tư vấn</SelectItem>
+                                        <SelectItem value="consult_close">Tư vấn & chốt hợp đồng (Hoa hồng 10%) - Role tiêu chuẩn</SelectItem>
+                                        <SelectItem value="full_close">Tự chốt (Hoa hồng 15%) - Dành cho chuyên gia</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>

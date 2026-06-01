@@ -9,7 +9,7 @@ import {
     Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from '@repo/ui'
 import { Calculator, ArrowRight, CheckCircle2, TrendingUp, Gift, Trophy, Phone, Mail, MessageCircle, Globe, Layers, Rocket, Building2, DollarSign, Headset } from 'lucide-react'
-import { formatCurrency } from '@/lib/utils/format'
+// Local deterministic formatCurrency is used instead
 import { cn } from '@/lib/utils'
 import { PartnerRegistrationForm } from './components/partner-registration-form'
 
@@ -109,10 +109,16 @@ const COMMISSION_EXAMPLES = [
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 
-function formatInput(val: string) {
-    const num = val.replace(/\D/g, '')
-    if (!num) return ''
-    return parseInt(num).toLocaleString('vi-VN')
+function formatAmount(val: number): string {
+    if (!val) return ''
+    return val.toLocaleString('en-US')
+}
+
+function formatCurrency(amount: number | null | undefined): string {
+    const value = (amount === null || amount === undefined || isNaN(amount)) ? 0 : amount;
+    const formatted = Math.round(value).toLocaleString('en-US');
+    const dotFormatted = formatted.replace(/,/g, '.');
+    return `${dotFormatted} ₫`;
 }
 
 // ── Page Component ──────────────────────────────────────────────────────────
@@ -121,7 +127,31 @@ export default function AffiliateCalculatorPage() {
     const [amountStr, setAmountStr] = useState('100,000,000')
     const [role, setRole] = useState('full_close')
 
-    const amount = parseInt(amountStr.replace(/\D/g, '')) || 0
+    const amount = useMemo(() => {
+        const raw = amountStr.replace(/\D/g, '')
+        return raw ? parseInt(raw, 10) : 0
+    }, [amountStr])
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const inputEl = e.target
+        const selectionStart = inputEl.selectionStart
+        const originalLength = inputEl.value.length
+
+        const raw = inputEl.value.replace(/\D/g, '')
+        const numValue = raw ? parseInt(raw, 10) : 0
+
+        // Format with commas for display
+        const formatted = raw ? numValue.toLocaleString('en-US') : ''
+        setAmountStr(formatted)
+
+        // Restore cursor position to avoid jumping
+        setTimeout(() => {
+            const newLength = formatted.length
+            const newPosition = (selectionStart ?? 0) + (newLength - originalLength)
+            inputEl.setSelectionRange(newPosition, newPosition)
+        }, 0)
+    }
+
     const selectedRole = ROLES.find(r => r.value === role) ?? ROLES[0]
     const baseRate = selectedRole.rate
 
@@ -186,7 +216,7 @@ export default function AffiliateCalculatorPage() {
                                         <Input
                                             id="budget"
                                             value={amountStr}
-                                            onChange={(e) => setAmountStr(formatInput(e.target.value))}
+                                            onChange={handleInputChange}
                                             className="text-lg font-semibold tabular-nums pr-12"
                                             placeholder="VD: 50,000,000"
                                         />
@@ -202,7 +232,7 @@ export default function AffiliateCalculatorPage() {
                                                 key={r.value}
                                                 htmlFor={r.value}
                                                 className={cn(
-                                                    "flex items-center gap-3 rounded-md border p-4 cursor-pointer transition-colors",
+                                                    "flex items-center gap-3 rounded-md border p-4 cursor-pointer transition-colors select-none",
                                                     role === r.value ? "border-primary bg-primary/5" : "hover:bg-muted/50"
                                                 )}
                                             >
