@@ -16,16 +16,16 @@ import { PartnerRegistrationForm } from './components/partner-registration-form'
 // ── Data Constants ──────────────────────────────────────────────────────────
 
 const ROLES = [
-    { value: 'lead_only', label: 'Giới thiệu khách hàng', rate: 7, desc: 'Cung cấp thông tin khách hàng tiềm năng, Công ty chịu trách nhiệm tư vấn và chốt hợp đồng.' },
-    { value: 'consult_close', label: 'Tư vấn & phối hợp', rate: 15, desc: 'Tham gia tư vấn khách hàng và phối hợp cùng đội ngũ Công ty để hoàn tất hợp đồng.' },
-    { value: 'full_close', label: 'Tự chốt hợp đồng', rate: 20, desc: 'Chủ động toàn bộ quy trình tư vấn và đàm phán cho đến khi ký kết hợp đồng.' },
+    { value: 'lead_only', label: 'Giới thiệu khách hàng', rate: 5, desc: 'Cung cấp thông tin khách hàng tiềm năng, Công ty chịu trách nhiệm tư vấn và chốt hợp đồng.' },
+    { value: 'consult_close', label: 'Tư vấn & phối hợp', rate: 10, desc: 'Tham gia tư vấn khách hàng và phối hợp cùng đội ngũ Công ty để hoàn tất hợp đồng.' },
+    { value: 'full_close', label: 'Tự chốt hợp đồng', rate: 15, desc: 'Chủ động toàn bộ quy trình tư vấn và đàm phán cho đến khi ký kết hợp đồng.' },
 ] as const
 
 const BONUS_TIERS = [
     { min: 0, max: 50_000_000, label: '< 50 triệu', bonusPct: 0 },
-    { min: 50_000_000, max: 100_000_000, label: '50 – 100 triệu', bonusPct: 3 },
-    { min: 100_000_000, max: 200_000_000, label: '100 – 200 triệu', bonusPct: 5 },
-    { min: 200_000_000, max: Infinity, label: '> 200 triệu', bonusPct: 8 },
+    { min: 50_000_000, max: 100_000_000, label: '50 – 100 triệu', bonusPct: 2 },
+    { min: 100_000_000, max: 200_000_000, label: '100 – 200 triệu', bonusPct: 3 },
+    { min: 200_000_000, max: Infinity, label: '> 200 triệu', bonusPct: 5 },
 ] as const
 
 const CASH_MILESTONES = [
@@ -99,12 +99,12 @@ const PRODUCTS = [
     },
 ]
 
-// Max earnings: 20% base + tier bonus + cumulative cash milestones
+// Max earnings: 15% base + tier bonus + cumulative cash milestones
 const COMMISSION_EXAMPLES = [
-    { deal: 10_000_000, earning: 10_000_000 * 0.20 },
-    { deal: 20_000_000, earning: 20_000_000 * 0.20 },
-    { deal: 50_000_000, earning: 50_000_000 * (0.20 + 0.03) + 3_000_000 },
-    { deal: 100_000_000, earning: 100_000_000 * (0.20 + 0.05) + 3_000_000 + 5_000_000 },
+    { deal: 10_000_000, earning: 10_000_000 * 0.15 },
+    { deal: 20_000_000, earning: 20_000_000 * 0.15 },
+    { deal: 50_000_000, earning: 50_000_000 * (0.15 + 0.02) + 3_000_000 },
+    { deal: 100_000_000, earning: 100_000_000 * (0.15 + 0.03) + 3_000_000 + 5_000_000 },
 ]
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
@@ -279,7 +279,7 @@ export default function AffiliateCalculatorPage() {
                                     <DollarSign className="w-5 h-5 text-primary" />
                                     Bạn sẽ kiếm được bao nhiêu?
                                 </CardTitle>
-                                <CardDescription>Thu nhập tối đa với vai trò Tự chốt hợp đồng (20%), đã bao gồm thưởng theo mức doanh số và thưởng tiền mặt.</CardDescription>
+                                <CardDescription>Thu nhập tối đa với vai trò Tự chốt hợp đồng (15%), đã bao gồm thưởng theo mức doanh số và thưởng tiền mặt.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Table>
@@ -601,7 +601,7 @@ export default function AffiliateCalculatorPage() {
 
                 {/* ── Policy Footer ──────────────────────────────────── */}
                 <div className="text-center text-xs text-muted-foreground space-y-1 pt-4">
-                    <p>Chính sách hoa hồng áp dụng từ ngày 01/03/2026 cho đến khi có thông báo thay đổi chính thức từ Công ty.</p>
+                    <p>Chính sách hoa hồng áp dụng từ ngày 01/06/2026 cho đến khi có thông báo thay đổi chính thức từ Công ty.</p>
                     <p>Hotline: 098 898 4554 · Email: lienhe@tulie.vn</p>
                 </div>
 
