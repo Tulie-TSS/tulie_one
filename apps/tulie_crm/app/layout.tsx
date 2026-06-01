@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getBrandConfig } from "@/lib/supabase/services/settings-service";
 import "./globals.css";
+import { headers } from "next/headers";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -26,11 +27,13 @@ export async function generateMetadata(): Promise<Metadata> {
 import { Toaster } from 'sonner'
 import { ConfirmProvider } from '@repo/ui'
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nonce = (await headers()).get('x-nonce') || undefined;
+
   return (
     <html lang="vi" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
@@ -39,6 +42,7 @@ export default function RootLayout({
           defaultTheme="light"
           enableSystem
           disableTransitionOnChange
+          nonce={nonce}
         >
           <ConfirmProvider>
             {children}

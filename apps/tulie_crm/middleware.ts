@@ -121,16 +121,16 @@ export async function middleware(request: NextRequest) {
 
     // Generate nonce for CSP
     const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
+    const csp = generateCspHeaders(nonce)
 
-    // Pass nonce to server components via request header
-    const requestHeaders = new Headers(request.headers)
-    requestHeaders.set('x-nonce', nonce)
+    // Pass nonce and CSP to server components/renderer via request headers directly
+    request.headers.set('x-nonce', nonce)
+    request.headers.set('Content-Security-Policy', csp)
 
     // Get session response (Supabase auth)
     const response = await updateSession(request)
 
-    // Set CSP header with nonce on the response
-    const csp = generateCspHeaders(nonce)
+    // Set CSP header with nonce on the response for the browser
     response.headers.set('Content-Security-Policy', csp)
 
     // Also set nonce in response header for downstream use
