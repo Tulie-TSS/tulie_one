@@ -520,6 +520,10 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                         -webkit-print-color-adjust: exact !important;
                         print-color-adjust: exact !important;
                         color-adjust: exact !important;
+                        font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, "MS Gothic", sans-serif !important;
+                    }
+                    [style*="font-family"] {
+                        font-family: 'DFVN Neue Kaine', var(--font-sans), sans-serif !important;
                     }
                     body { background: #e5e7eb; }
                     .quotation-paper { box-shadow: none !important; margin: 0 !important; }
@@ -1109,11 +1113,16 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                         margin: 5mm;
                     }
                     
-                    /* Force color printing */
+                    /* Force color printing and system font fallback for CJK/Japanese characters */
                     *, *::before, *::after {
                         -webkit-print-color-adjust: exact !important;
                         print-color-adjust: exact !important;
                         color-adjust: exact !important;
+                        font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, "MS Gothic", sans-serif !important;
+                    }
+                    
+                    [style*="font-family"] {
+                        font-family: 'DFVN Neue Kaine', var(--font-sans), sans-serif !important;
                     }
                     
                     html, body {

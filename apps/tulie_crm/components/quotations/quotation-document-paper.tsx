@@ -37,6 +37,9 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                 .quotation-paper-basic { width: 100% !important; max-width: none !important; padding: 0 !important; box-shadow: none !important; }
                 .quotation-paper-basic table { font-size: 8pt !important; }
                 .quotation-paper-basic th, .quotation-paper-basic td { padding: 3px 2px !important; }
+                .quotation-paper-basic, .quotation-paper-basic * {
+                    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, "MS Gothic", sans-serif !important;
+                }
             }
         `}} />
         <div className="bg-white p-[2cm] min-h-[297mm] text-black font-sans leading-normal print:p-0 quotation-paper-basic">

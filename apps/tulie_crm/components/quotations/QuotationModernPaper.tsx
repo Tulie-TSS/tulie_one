@@ -437,6 +437,10 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                     * {
                         -webkit-print-color-adjust: exact !important;
                         print-color-adjust: exact !important;
+                        font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, "MS Gothic", sans-serif !important;
+                    }
+                    [style*="font-family"] {
+                        font-family: 'DFVN Neue Kaine', var(--font-sans), sans-serif !important;
                     }
                 }
             ` }} />

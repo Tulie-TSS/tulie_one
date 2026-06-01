@@ -645,7 +645,6 @@ export default function QuotationDetailPage() {
                     </div>
                 )}
             </div>
-
             {/* Print specific container - ensures multi-page support */}
             <div className="hidden print:block !m-0 !p-0">
                 <style dangerouslySetInnerHTML={{
@@ -662,6 +661,13 @@ export default function QuotationDetailPage() {
                                 width: 100% !important;
                                 -webkit-print-color-adjust: exact !important;
                                 print-color-adjust: exact !important;
+                            }
+                            /* Force system fonts that support CJK/Japanese characters during print */
+                            *, *::before, *::after {
+                                font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, "MS Gothic", sans-serif !important;
+                            }
+                            [style*="font-family"] {
+                                font-family: 'DFVN Neue Kaine', var(--font-sans), sans-serif !important;
                             }
                             /* Force visibility of print container and fix parent clipping */
                             body > div, main, .print-container { 
