@@ -452,6 +452,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
             is_primary: isPrimary,
             quotation_number: quotationNumber,
             vat_percent: vatPercent,
+            vat_exempt_status: vatExemptStatus,
             validity_days: validityDays,
             bank_name: bankName,
             bank_account_no: bankAccountNo,
@@ -465,6 +466,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 unit: item.unit || '',
                 unit_price: item.unit_price || 0,
                 discount: item.discount || 0,
+                vat_percent: item.vat_percent !== undefined ? item.vat_percent : vatPercent,
                 sort_order: idx,
                 is_optional: item.is_optional || false,
                 alternative_group: item.alternative_group || ''
@@ -519,6 +521,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
             if (data.quotation_number) { setQuotationNumber(data.quotation_number); count++ }
             if (data.type) { setType(data.type); count++ }
             if (data.vat_percent !== undefined) { setVatPercent(data.vat_percent); count++ }
+            if (data.vat_exempt_status) { setVatExemptStatus(data.vat_exempt_status); count++ }
             if (data.validity_days) { setValidityDays(data.validity_days); count++ }
             if (data.terms && typeof data.terms === 'string') { setTerms(data.terms); count++ }
             if (data.notes && typeof data.notes === 'string') { setNotes(data.notes); count++ }
@@ -543,7 +546,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                         unit: item.unit || matchedProduct?.unit || 'cái',
                         unit_price: Number(item.unit_price) || matchedProduct?.price || 0,
                         discount: Number(item.discount) || 0,
-                        total_price: 0,
+                        vat_percent: item.vat_percent !== undefined ? Number(item.vat_percent) : (data.vat_percent !== undefined ? Number(data.vat_percent) : vatPercent),
                         sort_order: Number(item.sort_order) || idx,
                         is_optional: item.is_optional || false,
                         alternative_group: item.alternative_group || ''

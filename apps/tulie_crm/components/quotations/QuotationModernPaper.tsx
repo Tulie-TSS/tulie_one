@@ -228,17 +228,17 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                         <table className="w-full text-left border-collapse text-[11px]">
                             <thead>
                                 <tr className="text-white" style={{ background: "url(\"data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='rgba(255,255,255,0.12)'/%3E%3C/svg%3E\"), linear-gradient(to right, #09090b, #171717, #262626)", WebkitPrintColorAdjust: 'exact' }}>
-                                    <th className="py-3 px-2 w-6 text-center text-[9px] rounded-tl-lg">#</th>
-                                    <th className="py-3 px-3 w-auto">Hạng mục & Mô tả <br /><span className="text-[8px] font-normal opacity-60">Items</span></th>
-                                    <th className="py-3 px-1 text-center w-10">ĐVT <br /><span className="text-[8px] font-normal opacity-60">Unit</span></th>
-                                    <th className="py-3 px-1 text-center w-10">SL <br /><span className="text-[8px] font-normal opacity-60">Qty</span></th>
-                                    <th className="py-3 px-2 text-right w-16">Đơn giá <br /><span className="text-[8px] font-normal opacity-60">Price</span></th>
-                                    <th className="py-3 px-1 text-center w-10 text-[9px]">CK(%)<br /><span className="text-[8px] font-normal opacity-60">Disc</span></th>
-                                    <th className="py-3 px-2 text-right w-16">Giảm giá <br /><span className="text-[8px] font-normal opacity-60">Discount</span></th>
-                                    <th className="py-3 px-2 text-right w-20">Thành tiền <br /><span className="text-[8px] font-normal opacity-60">Amount</span></th>
-                                    <th className="py-3 px-1 text-center w-10 text-[9px]">VAT<br /><span className="text-[8px] font-normal opacity-60">(%)</span></th>
-                                    <th className="py-3 px-2 text-right w-16">Tiền VAT <br /><span className="text-[8px] font-normal opacity-60">VAT Amt</span></th>
-                                    <th className="py-3 px-3 text-right w-20 rounded-tr-lg">Tổng cộng <br /><span className="text-[8px] font-normal opacity-60">Total</span></th>
+                                    <th className="py-3 px-2 w-6 text-center text-[9px] rounded-tl-lg whitespace-nowrap">#</th>
+                                    <th className="py-3 px-3 w-auto" style={{ width: '100%' }}>Hạng mục & Mô tả <br /><span className="text-[8px] font-normal opacity-60">Items</span></th>
+                                    <th className="py-3 px-1 text-center w-10 whitespace-nowrap">ĐVT <br /><span className="text-[8px] font-normal opacity-60">Unit</span></th>
+                                    <th className="py-3 px-1 text-center w-10 whitespace-nowrap">SL <br /><span className="text-[8px] font-normal opacity-60">Qty</span></th>
+                                    <th className="py-3 px-2 text-right w-16 whitespace-nowrap">Đơn giá <br /><span className="text-[8px] font-normal opacity-60">Price</span></th>
+                                    <th className="py-3 px-1 text-center w-10 text-[9px] whitespace-nowrap">CK(%)<br /><span className="text-[8px] font-normal opacity-60">Disc</span></th>
+                                    <th className="py-3 px-2 text-right w-16 whitespace-nowrap">Giảm giá <br /><span className="text-[8px] font-normal opacity-60">Discount</span></th>
+                                    <th className="py-3 px-2 text-right w-20 whitespace-nowrap">Thành tiền <br /><span className="text-[8px] font-normal opacity-60">Amount</span></th>
+                                    <th className="py-3 px-1 text-center w-10 text-[9px] whitespace-nowrap">VAT<br /><span className="text-[8px] font-normal opacity-60">(%)</span></th>
+                                    <th className="py-3 px-2 text-right w-16 whitespace-nowrap">Tiền VAT <br /><span className="text-[8px] font-normal opacity-60">VAT Amt</span></th>
+                                    <th className="py-3 px-3 text-right w-20 rounded-tr-lg whitespace-nowrap">Tổng cộng <br /><span className="text-[8px] font-normal opacity-60">Total</span></th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
@@ -270,7 +270,7 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
 
                                             return (
                                                 <tr key={iIdx} className="hover:bg-muted/50">
-                                                    <td colSpan={1} className="w-6 shrink-0 text-center py-3 text-muted-foreground text-[9px]">
+                                                    <td colSpan={1} className="w-6 shrink-0 text-center py-3 text-muted-foreground text-[9px] whitespace-nowrap">
                                                         {sectionName ? `${sIdx + 1}.${iIdx + 1}` : iIdx + 1}
                                                     </td>
                                                     <td className="px-3 align-top py-3">
@@ -281,15 +281,15 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
                                                             )}
                                                         </div>
                                                     </td>
-                                                    <td className="px-1 text-center text-muted-foreground align-top py-3 text-[10px]">{item.unit || 'Bộ'}</td>
-                                                    <td className="px-1 text-center text-zinc-800 align-top py-3 text-[10px]">{qty}</td>
-                                                    <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums">{formatCurrency(unitPrice).replace('₫', '')}</td>
-                                                    <td className="px-1 text-center text-muted-foreground align-top py-3 text-[10px]">{discountPct > 0 ? `${discountPct}%` : '-'}</td>
-                                                    <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums">{discountAmt > 0 ? formatCurrency(discountAmt).replace('₫', '') : '-'}</td>
-                                                    <td className="px-2 text-right text-zinc-800 align-top py-3 text-[10px] tabular-nums">{formatCurrency(afterDiscount).replace('₫', '')}</td>
-                                                    <td className="px-1 text-center text-muted-foreground align-top py-3 text-[10px]">{vatRate > 0 ? `${vatRate}%` : (quotation.vat_exempt_status === 'exempt' ? 'KCT' : '0%')}</td>
-                                                    <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums">{vatAmt > 0 ? formatCurrency(vatAmt).replace('₫', '') : '0'}</td>
-                                                    <td className="px-3 text-right text-foreground align-top py-3 text-[11px] tabular-nums">{formatCurrency(afterVat).replace('₫', '')}</td>
+                                                    <td className="px-1 text-center text-muted-foreground align-top py-3 text-[10px] whitespace-nowrap">{item.unit || 'Bộ'}</td>
+                                                    <td className="px-1 text-center text-zinc-800 align-top py-3 text-[10px] whitespace-nowrap">{qty}</td>
+                                                    <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums whitespace-nowrap">{formatCurrency(unitPrice).replace('₫', '')}</td>
+                                                    <td className="px-1 text-center text-muted-foreground align-top py-3 text-[10px] whitespace-nowrap">{discountPct > 0 ? `${discountPct}%` : '-'}</td>
+                                                    <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums whitespace-nowrap">{discountAmt > 0 ? formatCurrency(discountAmt).replace('₫', '') : '-'}</td>
+                                                    <td className="px-2 text-right text-zinc-800 align-top py-3 text-[10px] tabular-nums whitespace-nowrap">{formatCurrency(afterDiscount).replace('₫', '')}</td>
+                                                    <td className="px-1 text-center text-muted-foreground align-top py-3 text-[10px] whitespace-nowrap">{vatRate > 0 ? `${vatRate}%` : (quotation.vat_exempt_status === 'exempt' ? 'KCT' : '0%')}</td>
+                                                    <td className="px-2 text-right text-muted-foreground align-top py-3 text-[10px] tabular-nums whitespace-nowrap">{vatAmt > 0 ? formatCurrency(vatAmt).replace('₫', '') : '0'}</td>
+                                                    <td className="px-3 text-right text-foreground align-top py-3 text-[11px] tabular-nums whitespace-nowrap">{formatCurrency(afterVat).replace('₫', '')}</td>
                                                 </tr>
                                             );
                                         })}

@@ -212,6 +212,8 @@ html {
     print-color-adjust: exact !important;
     color-adjust: exact !important;
     font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, "MS Gothic", sans-serif !important;
+    outline: none !important;
+    outline-color: transparent !important;
   }
 
   [style*="font-family"], [style*="fontFamily"] {

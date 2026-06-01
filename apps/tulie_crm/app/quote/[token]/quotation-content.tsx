@@ -510,7 +510,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
             )}
 
             {/* Main Content Area */}
-            <div className="flex-1 min-w-0 bg-slate-50 relative pb-32 xl:pb-0 h-auto xl:h-screen xl:overflow-y-auto w-full">
+            <div className="flex-1 min-w-0 bg-slate-50 relative pb-32 xl:pb-28 h-auto xl:h-screen xl:overflow-y-auto w-full">
             
             {/* Global print style enforcement */}
             <style dangerouslySetInnerHTML={{
@@ -739,35 +739,35 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                 <table className="w-full text-left border-collapse text-[11px] min-w-[900px]">
                                     <thead>
                                         <tr className="text-white shadow-sm table-header-gradient" style={{ background: "url(\"data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='rgba(255,255,255,0.12)'/%3E%3C/svg%3E\"), linear-gradient(to right, #09090b, #171717, #404040)", WebkitPrintColorAdjust: 'exact' }}>
-                                            <th className="py-2.5 px-1 font-semibold w-10 text-center normal-case print:hidden">Chọn</th>
-                                            <th className="py-2.5 px-1 font-semibold w-10 text-center normal-case">#</th>
-                                            <th className="py-2.5 px-3 font-semibold normal-case">
+                                            <th className="py-2.5 px-1 font-semibold w-10 text-center normal-case print:hidden whitespace-nowrap">Chọn</th>
+                                            <th className="py-2.5 px-1 font-semibold w-10 text-center normal-case whitespace-nowrap">#</th>
+                                            <th className="py-2.5 px-3 font-semibold normal-case" style={{ width: '100%' }}>
                                                 Hạng mục & Mô tả chi tiết <br />
                                                 <span className="text-[0.8em] font-normal opacity-60 italic normal-case">/ Items & Description</span>
                                             </th>
-                                            <th className="py-2.5 px-3 font-semibold text-center w-20 normal-case">
+                                            <th className="py-2.5 px-3 font-semibold text-center w-20 normal-case whitespace-nowrap">
                                                 ĐVT <br />
                                                 <span className="text-[0.8em] font-normal opacity-60 italic normal-case">/ Unit</span>
                                             </th>
-                                            <th className="py-2.5 px-3 font-semibold text-center w-20 normal-case">
+                                            <th className="py-2.5 px-3 font-semibold text-center w-20 normal-case whitespace-nowrap">
                                                 SL <br />
                                                 <span className="text-[0.8em] font-normal opacity-60 italic normal-case">/ Qty</span>
                                             </th>
-                                            <th className="py-2.5 px-3 font-semibold text-right w-24 normal-case">
+                                            <th className="py-2.5 px-3 font-semibold text-right w-24 normal-case whitespace-nowrap">
                                                 Đơn giá <br />
                                                 <span className="text-[0.8em] font-normal opacity-60 italic normal-case">/ Unit Price</span>
                                             </th>
-                                            {hasDiscount && <th className="py-2.5 px-2 font-semibold text-center w-14 normal-case text-[10px]">CK(%)<br /><span className="text-[0.8em] font-normal opacity-60 italic">/ Disc.</span></th>}
-                                            {hasDiscount && <th className="py-2.5 px-2 font-semibold text-right w-24 normal-case text-[10px]">Giảm giá<br /><span className="text-[0.8em] font-normal opacity-60 italic">/ Discount</span></th>}
-                                            <th className="py-2.5 px-3 font-semibold text-right w-28 normal-case">
+                                            {hasDiscount && <th className="py-2.5 px-2 font-semibold text-center w-14 normal-case text-[10px] whitespace-nowrap">CK(%)<br /><span className="text-[0.8em] font-normal opacity-60 italic">/ Disc.</span></th>}
+                                            {hasDiscount && <th className="py-2.5 px-2 font-semibold text-right w-24 normal-case text-[10px] whitespace-nowrap">Giảm giá<br /><span className="text-[0.8em] font-normal opacity-60 italic">/ Discount</span></th>}
+                                            <th className="py-2.5 px-3 font-semibold text-right w-28 normal-case whitespace-nowrap">
                                                 Thành tiền <br />
                                                 <span className="text-[0.8em] font-normal opacity-60 italic normal-case">/ Amount</span>
                                             </th>
-                                            <th className="py-2.5 px-2 font-semibold text-center w-16 normal-case text-[10px]">
+                                            <th className="py-2.5 px-2 font-semibold text-center w-16 normal-case text-[10px] whitespace-nowrap">
                                                 Thuế VAT<br />
                                                 <span className="text-[0.8em] font-normal opacity-60 italic">/ Tax</span>
                                             </th>
-                                            <th className="py-2.5 px-3 font-semibold text-right w-28 normal-case">
+                                            <th className="py-2.5 px-3 font-semibold text-right w-28 normal-case whitespace-nowrap">
                                                 Thành tiền<br />
                                                 <span className="text-[0.8em] font-normal opacity-60 italic normal-case">/ Total</span>
                                             </th>
@@ -779,7 +779,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                 {sectionName && (
                                                     <tr className="bg-slate-100 border-b border-slate-200">
                                                         <td className="print:hidden w-10"></td>
-                                                        <td className="w-10 py-2.5">
+                                                        <td className="w-10 py-2.5 whitespace-nowrap">
                                                             <div className="w-6 h-6 rounded-md bg-slate-900 text-white text-[11px] font-semibold flex items-center justify-center mx-auto"
                                                                 style={{ WebkitPrintColorAdjust: 'exact' }}>
                                                                 {sectionIndex + 1}
@@ -806,7 +806,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                             !isSelected && "bg-slate-50 opacity-40 grayscale-[0.5] print:hidden",
                                                             isSelected && "hover:bg-slate-50/50"
                                                         )}>
-                                                            <td className="w-10 text-center py-2 align-top print:hidden">
+                                                            <td className="w-10 text-center py-2 align-top print:hidden whitespace-nowrap">
                                                                 <div className="flex items-center justify-center">
                                                                     <Checkbox
                                                                         checked={isSelected}
@@ -815,7 +815,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                                     />
                                                                 </div>
                                                             </td>
-                                                            <td className="w-10 text-center py-2 align-top">
+                                                            <td className="w-10 text-center py-2 align-top whitespace-nowrap">
                                                                 <span className="text-xs font-medium text-slate-400 tabular-nums leading-tight">{sectionName ? `${sectionIndex + 1}.${displayNumber ?? (index + 1)}` : displayNumber ?? (index + 1)}</span>
                                                             </td>
                                                             <td className="px-3 align-top py-2">
@@ -843,24 +843,24 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                                     )}
                                                                 </div>
                                                             </td>
-                                                            <td className="px-3 text-center text-slate-600 align-top py-2">{item.unit}</td>
-                                                            <td className="px-3 text-center text-slate-600 align-top py-2">{item.quantity}</td>
-                                                            <td className="px-3 text-right text-slate-600 align-top py-2">{formatCurrency(item.unit_price)}</td>
+                                                            <td className="px-3 text-center text-slate-600 align-top py-2 whitespace-nowrap">{item.unit}</td>
+                                                            <td className="px-3 text-center text-slate-600 align-top py-2 whitespace-nowrap">{item.quantity}</td>
+                                                            <td className="px-3 text-right text-slate-600 align-top py-2 whitespace-nowrap">{formatCurrency(item.unit_price)}</td>
                                                             {hasDiscount && (
-                                                                <td className="px-2 text-center text-slate-500 align-top py-2 text-[10px]">{item.discount || 0}%</td>
+                                                                <td className="px-2 text-center text-slate-500 align-top py-2 text-[10px] whitespace-nowrap">{item.discount || 0}%</td>
                                                             )}
                                                             {hasDiscount && (
-                                                                <td className="px-2 text-right text-slate-500 align-top py-2 text-[10px]">
+                                                                <td className="px-2 text-right text-slate-500 align-top py-2 text-[10px] whitespace-nowrap">
                                                                     {formatCurrency((item.quantity * item.unit_price * (item.discount || 0)) / 100)}
                                                                 </td>
                                                             )}
-                                                            <td className="px-3 text-right font-medium text-slate-700 align-top py-2">
+                                                            <td className="px-3 text-right font-medium text-slate-700 align-top py-2 whitespace-nowrap">
                                                                 {formatCurrency(item.quantity * item.unit_price * (1 - (item.discount || 0) / 100))}
                                                             </td>
-                                                            <td className="px-2 text-center text-slate-500 align-top py-2 text-[10px]">
+                                                            <td className="px-2 text-center text-slate-500 align-top py-2 text-[10px] whitespace-nowrap">
                                                                 {currentQuotation.vat_exempt_status === 'exempt' ? 'KCT' : `${item.vat_percent || 0}%`}
                                                             </td>
-                                                            <td className="px-3 text-right font-bold text-slate-900 align-top py-2">
+                                                            <td className="px-3 text-right font-bold text-slate-900 align-top py-2 whitespace-nowrap">
                                                                 {formatCurrency((item.total_price || (item.quantity * item.unit_price * (1 - (item.discount || 0) / 100))) * (1 + (item.vat_percent || 0) / 100))}
                                                             </td>
                                                         </tr>
