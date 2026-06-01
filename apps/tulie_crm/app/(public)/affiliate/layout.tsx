@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
     title: 'Chương trình Đối tác Kinh doanh | Tulie Agency',
     description: 'Trở thành Đối tác kinh doanh dịch vụ thiết kế Website & Landing Page — hoa hồng lên đến 28%, thưởng tiền mặt cộng dồn đến 48 triệu. Không cần vốn, không giới hạn thu nhập.',
