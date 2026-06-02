@@ -564,7 +564,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
             {/* A4 Container */}
             {viewMode === 'basic' ? (
                 <div className="quotation-paper quotation-paper--basic mx-auto bg-white shadow-lg rounded-xl border border-slate-200/60 relative w-full max-w-5xl overflow-x-auto">
-                    <QuotationDocumentPaper quotation={currentQuotation} brandConfig={brandConfig} />
+                    <QuotationDocumentPaper quotation={currentQuotation} brandConfig={brandConfig} selectedItemIds={selectedItemIds} />
                 </div>
             ) : (
             <div

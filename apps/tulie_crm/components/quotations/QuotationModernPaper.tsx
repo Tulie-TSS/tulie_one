@@ -8,16 +8,20 @@ import { cn } from '@/lib/utils'
 interface QuotationModernPaperProps {
     quotation: any
     brandConfig?: any
+    selectedItemIds?: string[]
 }
 
 /**
  * Premium Modern Quotation Paper (Magazine Layout)
  * Matches the LiveView (Portal) style 1:1.
  */
-export function QuotationModernPaper({ quotation, brandConfig }: QuotationModernPaperProps) {
+export function QuotationModernPaper({ quotation, brandConfig, selectedItemIds }: QuotationModernPaperProps) {
     if (!quotation) return null
 
-    const items = quotation.items || []
+    const rawItems = quotation.items || []
+    const items = selectedItemIds 
+        ? rawItems.filter((item: any) => selectedItemIds.includes(item.id))
+        : rawItems;
     const hasDiscount = items.some((item: any) => item.discount > 0)
 
     // Helper: Group items by section_name
@@ -51,8 +55,18 @@ export function QuotationModernPaper({ quotation, brandConfig }: QuotationModern
     const subtotalRaw = items.reduce((sum: number, item: any) => sum + (item.quantity * item.unit_price), 0)
     const subtotalNet = items.reduce((sum: number, item: any) => sum + (item.total_price || (item.quantity * item.unit_price * (1 - (item.discount || 0) / 100))), 0)
     const totalDiscount = subtotalRaw - subtotalNet
-    const vatAmount = quotation.vat_amount || 0
-    const finalAmount = quotation.total_amount || (subtotalNet + vatAmount)
+    
+    const calculatedVatAmt = items.reduce((sum: number, item: any) => {
+        const qty = item.quantity || 1;
+        const price = item.unit_price || 0;
+        const disc = item.discount || 0;
+        const rate = item.vat_percent !== undefined ? item.vat_percent : (quotation.vat_percent || 0);
+        const net = (qty * price) * (1 - disc / 100);
+        return sum + net * (rate / 100);
+    }, 0);
+    
+    const vatAmount = selectedItemIds ? calculatedVatAmt : (quotation.vat_amount || calculatedVatAmt);
+    const finalAmount = selectedItemIds ? (subtotalNet + vatAmount) : (quotation.total_amount || (subtotalNet + vatAmount));
 
     // Proposal content
     const pc = quotation.proposal_content || {}

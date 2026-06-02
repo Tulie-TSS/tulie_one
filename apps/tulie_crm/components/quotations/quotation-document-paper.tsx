@@ -5,10 +5,14 @@ import { cn } from '@/lib/utils';
 interface QuotationDocumentPaperProps {
     quotation: any;
     brandConfig?: any;
+    selectedItemIds?: string[];
 }
 
-export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocumentPaperProps) {
-    const items = quotation.items || [];
+export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds }: QuotationDocumentPaperProps) {
+    const rawItems = quotation.items || [];
+    const items = selectedItemIds 
+        ? rawItems.filter((item: any) => selectedItemIds.includes(item.id))
+        : rawItems;
 
     // Group items by section
     const sections: Record<string, any[]> = items.reduce((acc: any, item: any) => {
@@ -196,6 +200,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                             return sum + net * ((item.vat_percent || quotation.vat_percent || 0) / 100);
                         }, 0);
                         const grandTotal = subtotalAfterDiscount + totalVatAmt;
+                        const displayTotal = selectedItemIds ? grandTotal : (quotation.total_amount || grandTotal);
                         return (
                             <>
                                 <tr>
@@ -242,12 +247,12 @@ export function QuotationDocumentPaper({ quotation, brandConfig }: QuotationDocu
                                 })()}
                                 <tr className="bg-muted">
                                     <td colSpan={10} className="border border-black py-3 px-3 text-right uppercase text-[11px] font-bold">Tổng cộng thanh toán / Grand Total:</td>
-                                    <td colSpan={1} className="border border-black py-3 px-1 text-right text-[13px] tabular-nums whitespace-nowrap font-bold">{formatCurrency(quotation.total_amount || grandTotal).replace('₫', '')} VND</td>
+                                    <td colSpan={1} className="border border-black py-3 px-1 text-right text-[13px] tabular-nums whitespace-nowrap font-bold">{formatCurrency(displayTotal).replace('₫', '')} VND</td>
                                 </tr>
                                 <tr>
                                     <td colSpan={11} className="border border-black py-3 px-3 text-[11px] font-medium">
                                         <span className="font-bold underline uppercase mr-1">Bằng chữ:</span> 
-                                        <span className="first-letter:uppercase">{readNumberToWords(quotation.total_amount || grandTotal)} đồng./.</span>
+                                        <span className="first-letter:uppercase">{readNumberToWords(displayTotal)} đồng./.</span>
                                     </td>
                                 </tr>
                             </>
