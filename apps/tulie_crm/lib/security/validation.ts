@@ -136,6 +136,12 @@ export const shippingInfoSchema = z.object({
     }),
 })
 
+/** POST /api/studio/upload-photos */
+export const uploadPhotosSchema = z.object({
+    token: z.string().min(1, 'Token is required'),
+    photo_urls: z.array(z.string().url('Invalid URL')),
+})
+
 /** POST /api/contracts/[id]/generate-document */
 export const generateDocumentSchema = z.object({
     type: z.enum(['contract', 'order', 'payment_request', 'delivery_minutes', 'acceptance_report']),

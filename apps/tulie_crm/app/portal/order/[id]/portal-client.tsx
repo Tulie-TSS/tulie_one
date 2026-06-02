@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { Badge } from '@repo/ui'
 import { Button } from '@repo/ui'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
-import { Download, CheckCircle2, Sparkles, ExternalLink, Copy, Check, Package, CalendarDays, User, CreditCard, QrCode, ShieldCheck, MessageCircle, Truck, Clock, RefreshCw, MapPin, Save, FileText, Smartphone } from 'lucide-react'
+import { Download, CheckCircle2, Sparkles, ExternalLink, Copy, Check, Package, CalendarDays, User, CreditCard, QrCode, ShieldCheck, MessageCircle, Truck, Clock, RefreshCw, MapPin, Save, FileText, Smartphone, Camera, ImagePlus, X } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import { cn } from '@/lib/utils'
 import { Input } from '@repo/ui'
@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { generatePaymentContent } from '@/lib/utils/payment-utils'
 import { buildVietQrUrl, buildVietQrDeeplink } from '@/lib/utils/vietqr'
 import { toast } from 'sonner'
+import { createClient } from '@/lib/supabase/client'
 
 const STATUS_CONFIG: Record<string, { label: string; bg: string; text: string; dot: string; border: string }> = {
     'draft': { label: 'Đơn nháp', bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-300', border: 'border-border' },
@@ -390,6 +391,189 @@ function ShippingInfoForm({ order, token }: { order: any; token: string }) {
     )
 }
 
+function OrderPhotosForm({ order, token }: { order: any; token: string }) {
+    const initialPhotos = order.metadata?.photo_urls || []
+    const [photos, setPhotos] = useState<string[]>(initialPhotos)
+    const [isUploading, setIsUploading] = useState(false)
+    const fileInputRef = useRef<HTMLInputElement>(null)
+
+    const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files
+        if (!files || files.length === 0) return
+
+        setIsUploading(true)
+        const supabase = createClient()
+        const newUrls: string[] = []
+
+        try {
+            for (const file of Array.from(files)) {
+                if (file.size > 10 * 1024 * 1024) {
+                    toast.error(`${file.name} quá lớn (tối đa 10MB)`)
+                    continue
+                }
+                const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+                const timestamp = Date.now()
+                const randomId = Math.random().toString(36).substring(2, 8)
+                const filePath = `orders/${timestamp}_${randomId}.${ext}`
+
+                const { error } = await supabase.storage.from('id-photos').upload(filePath, file)
+                if (error) {
+                    toast.error(`Lỗi upload ${file.name}: ${error.message}`)
+                    continue
+                }
+                const { data: urlData } = supabase.storage.from('id-photos').getPublicUrl(filePath)
+                newUrls.push(urlData.publicUrl)
+            }
+
+            if (newUrls.length > 0) {
+                const updatedPhotos = [...photos, ...newUrls]
+                
+                // Call API to update database
+                const res = await fetch('/api/studio/upload-photos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token, photo_urls: updatedPhotos })
+                })
+                
+                if (res.ok) {
+                    setPhotos(updatedPhotos)
+                    toast.success(`Đã tải lên thành công ${newUrls.length} ảnh`)
+                } else {
+                    const data = await res.json()
+                    toast.error(data.error || 'Không thể lưu danh sách ảnh')
+                }
+            }
+        } catch (err) {
+            console.error(err)
+            toast.error('Có lỗi xảy ra khi upload ảnh')
+        } finally {
+            setIsUploading(false)
+            if (fileInputRef.current) fileInputRef.current.value = ''
+        }
+    }
+
+    const handleDelete = async (urlToDelete: string) => {
+        const updatedPhotos = photos.filter(url => url !== urlToDelete)
+        
+        try {
+            const res = await fetch('/api/studio/upload-photos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token, photo_urls: updatedPhotos })
+            })
+            
+            if (res.ok) {
+                setPhotos(updatedPhotos)
+                toast.success('Đã xoá ảnh thành công')
+                
+                // Try to delete from Supabase storage
+                const match = urlToDelete.match(/id-photos\/(.+)$/)
+                if (match) {
+                    const storagePath = match[1]
+                    const supabase = createClient()
+                    await supabase.storage.from('id-photos').remove([storagePath])
+                }
+            } else {
+                const data = await res.json()
+                toast.error(data.error || 'Không thể cập nhật danh sách ảnh')
+            }
+        } catch (err) {
+            console.error(err)
+            toast.error('Có lỗi xảy ra khi xoá ảnh')
+        }
+    }
+
+    const canUpload = order.order_status !== 'completed' && order.order_status !== 'cancelled'
+
+    return (
+        <div className="bg-white rounded-md border border-border shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <div className="p-5 border-b border-border flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-md bg-muted border border-border flex items-center justify-center">
+                        <Camera className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <div>
+                        <h3 className="text-sm font-semibold text-foreground">Ảnh gốc đã gửi</h3>
+                        <p className="text-[11px] font-medium text-muted-foreground">
+                            {photos.length > 0 ? `Đã gửi ${photos.length} ảnh` : 'Chưa tải lên ảnh nào'}
+                        </p>
+                    </div>
+                </div>
+                {canUpload && (
+                    <span className="text-[10px] bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full font-semibold">
+                        Có thể chỉnh sửa/thêm ảnh
+                    </span>
+                )}
+            </div>
+
+            <div className="p-5 space-y-4">
+                {/* Photo grid */}
+                {photos.length > 0 ? (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                        {photos.map((url, idx) => (
+                            <div key={url} className="relative group rounded-lg overflow-hidden border border-border bg-muted aspect-square">
+                                <img src={url} alt={`Ảnh ${idx + 1}`} className="w-full h-full object-cover" />
+                                {canUpload && (
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDelete(url)}
+                                        className="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/60 text-white flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
+                                    >
+                                        <X className="size-3.5" />
+                                    </button>
+                                )}
+                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/50 to-transparent px-1.5 py-1">
+                                    <p className="text-[9px] text-white font-medium">Ảnh {idx + 1}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-4 border border-dashed border-border rounded-lg bg-muted/30">
+                        <p className="text-xs text-muted-foreground">Không có ảnh nào</p>
+                    </div>
+                )}
+
+                {/* Upload Button */}
+                {canUpload && (
+                    <div>
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+                            multiple
+                            className="hidden"
+                            onChange={handleUpload}
+                            disabled={isUploading}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={isUploading}
+                            className={cn(
+                                "w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg border-2 border-dashed transition-all text-xs font-semibold",
+                                isUploading
+                                    ? "border-input bg-muted cursor-wait text-muted-foreground"
+                                    : "border-border hover:border-zinc-400 hover:bg-muted/50 text-zinc-700 active:bg-muted"
+                            )}
+                        >
+                            {isUploading ? (
+                                <LoadingSpinner size="sm" />
+                            ) : (
+                                <ImagePlus className="size-4 text-muted-foreground" />
+                            )}
+                            {isUploading ? 'Đang tải ảnh lên...' : 'Chụp ảnh hoặc upload thêm ảnh mới'}
+                        </button>
+                        <p className="text-[10px] text-muted-foreground text-center mt-2">
+                            Mẹo: Nếu chụp ảnh bị sai quy chuẩn (sai hướng dẫn, nền mờ, thiếu sáng...), bạn hãy chụp lại và tải lên ảnh mới tại đây để shop chỉnh sửa lại cho đẹp nhé!
+                        </p>
+                    </div>
+                )}
+            </div>
+        </div>
+    )
+}
+
 export default function RetailOrderPortalContent({ order, brandConfig, token, bankInfo: propBankInfo }: { order: any, brandConfig: any, token: string, bankInfo?: any }) {
     const bankInfo = propBankInfo || order.metadata?.bank_info || {
         bank_name: brandConfig?.studio_bank_name || brandConfig?.bank_name || 'VietinBank',
@@ -640,6 +824,11 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                                     </div>
                                 </div>
                             </div>
+                        )}
+
+                        {/* Photo Upload Form */}
+                        {(order.brand === 'studio' || order.metadata?.form_type === 'id_photo' || order.metadata?.photo_urls) && (
+                            <OrderPhotosForm order={order} token={token} />
                         )}
 
                         {/* Shipping Info Form */}
