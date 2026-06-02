@@ -14,6 +14,7 @@ import { generatePaymentContent } from '@/lib/utils/payment-utils'
 import { buildVietQrUrl, buildVietQrDeeplink } from '@/lib/utils/vietqr'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
 
 const STATUS_CONFIG: Record<string, { label: string; bg: string; text: string; dot: string; border: string }> = {
     'draft': { label: 'Đơn nháp', bg: 'bg-muted', text: 'text-muted-foreground', dot: 'bg-zinc-300', border: 'border-border' },
@@ -392,10 +393,16 @@ function ShippingInfoForm({ order, token }: { order: any; token: string }) {
 }
 
 function OrderPhotosForm({ order, token }: { order: any; token: string }) {
+    const router = useRouter()
     const initialPhotos = order.metadata?.photo_urls || []
     const [photos, setPhotos] = useState<string[]>(initialPhotos)
     const [isUploading, setIsUploading] = useState(false)
     const fileInputRef = useRef<HTMLInputElement>(null)
+
+    // Keep state in sync with updated props from server
+    useEffect(() => {
+        setPhotos(order.metadata?.photo_urls || [])
+    }, [order.metadata?.photo_urls])
 
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files
@@ -438,6 +445,7 @@ function OrderPhotosForm({ order, token }: { order: any; token: string }) {
                 if (res.ok) {
                     setPhotos(updatedPhotos)
                     toast.success(`Đã tải lên thành công ${newUrls.length} ảnh`)
+                    router.refresh()
                 } else {
                     const data = await res.json()
                     toast.error(data.error || 'Không thể lưu danh sách ảnh')
@@ -465,6 +473,7 @@ function OrderPhotosForm({ order, token }: { order: any; token: string }) {
             if (res.ok) {
                 setPhotos(updatedPhotos)
                 toast.success('Đã xoá ảnh thành công')
+                router.refresh()
                 
                 // Try to delete from Supabase storage
                 const match = urlToDelete.match(/id-photos\/(.+)$/)
