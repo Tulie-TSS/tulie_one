@@ -37,19 +37,28 @@ export function DynamicBreadcrumbs() {
                     // Skip 'dashboard' if it's the first segment as we already added it
                     if (segment === 'dashboard' && index === 0) return null
 
+                    // Convert kebab-case (e.g. command-center) to camelCase (e.g. commandCenter)
+                    const camelCased = segment.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
+                    const translationKey = `nav.${camelCased}`
+                    const translation = t(translationKey)
+                    
+                    // If translation is not found, display a capitalized formatted segment
+                    const displayText = translation !== translationKey
+                        ? translation
+                        : segment.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+
                     return (
                         <React.Fragment key={href}>
                             <BreadcrumbSeparator className="hidden md:block" />
                             <BreadcrumbItem>
                                 {isLast ? (
-                                    <BreadcrumbPage className="capitalize">
-                                        {/* Try to translate or just capitalize */}
-                                        {t(`nav.${segment}` as any) || segment.charAt(0).toUpperCase() + segment.slice(1)}
+                                    <BreadcrumbPage>
+                                        {displayText}
                                     </BreadcrumbPage>
                                 ) : (
                                     <BreadcrumbLink asChild className="hidden md:block">
-                                        <Link href={href} className="capitalize">
-                                            {t(`nav.${segment}` as any) || segment.charAt(0).toUpperCase() + segment.slice(1)}
+                                        <Link href={href}>
+                                            {displayText}
                                         </Link>
                                     </BreadcrumbLink>
                                 )}

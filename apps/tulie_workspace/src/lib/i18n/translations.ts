@@ -35,6 +35,7 @@ export const translations = {
   "nav.habits": { vi: "Thói quen", en: "Habits" },
   "nav.learning": { vi: "Học tập (FPT)", en: "Learning (FPT)" },
   "nav.kpi": { vi: "KPI Tulie", en: "KPI Tulie" },
+  "nav.lifeRoles": { vi: "Lĩnh vực / Mảng", en: "Life Roles" },
 
   // ============================================
   // Trạng thái Task / Task Statuses
