@@ -37,15 +37,29 @@ export function DynamicBreadcrumbs() {
                     // Skip 'dashboard' if it's the first segment as we already added it
                     if (segment === 'dashboard' && index === 0) return null
 
-                    // Convert kebab-case (e.g. command-center) to camelCase (e.g. commandCenter)
-                    const camelCased = segment.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
-                    const translationKey = `nav.${camelCased}`
-                    const translation = t(translationKey)
+                    // Detect if the segment is a UUID
+                    const isUuid = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(segment);
                     
-                    // If translation is not found, display a capitalized formatted segment
-                    const displayText = translation !== translationKey
-                        ? translation
-                        : segment.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+                    let displayText = '';
+                    if (isUuid) {
+                        const parentSegment = index > 0 ? segments[index - 1] : '';
+                        const detailTranslationKey = `nav.details.${parentSegment}`;
+                        const translation = t(detailTranslationKey);
+                        
+                        displayText = translation !== detailTranslationKey
+                            ? translation
+                            : t('nav.details.default');
+                    } else {
+                        // Convert kebab-case (e.g. command-center) to camelCase (e.g. commandCenter)
+                        const camelCased = segment.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+                        const translationKey = `nav.${camelCased}`;
+                        const translation = t(translationKey);
+                        
+                        // If translation is not found, display a capitalized formatted segment
+                        displayText = translation !== translationKey
+                            ? translation
+                            : segment.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                    }
 
                     return (
                         <React.Fragment key={href}>
