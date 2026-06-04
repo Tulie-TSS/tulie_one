@@ -3,10 +3,11 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useLifeRoles } from '@/hooks/useLifeRoles'
+import { useLocaleStore } from '@/lib/stores/locale-store'
 import { RoleIcon } from '@/components/command-center/role-icon'
 import {
     PageHeader, Card, CardContent, CardHeader, CardTitle, Button, Label, Input,
-    Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, toast
+    Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, toast, Badge
 } from '@repo/ui'
 import { Plus, Edit2, Trash2, ArrowLeft, Loader2, Check } from 'lucide-react'
 
@@ -41,6 +42,7 @@ const ICON_PRESETS = [
 
 export default function LifeRolesSettingsPage() {
     const { roles, loading, addRole, updateRole, deleteRole } = useLifeRoles()
+    const { t } = useLocaleStore()
     const [actionLoading, setActionLoading] = useState(false)
     
     // Modal state
@@ -128,25 +130,19 @@ export default function LifeRolesSettingsPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-                <Link href="/settings" className="hover:text-foreground transition-colors flex items-center gap-1">
-                    <ArrowLeft className="size-3" />
-                    Cài đặt
-                </Link>
-                <span>/</span>
-                <span className="text-foreground font-medium">Lĩnh vực / Mảng</span>
-            </div>
+            <Link href="/settings" className="inline-flex items-center gap-1 no-underline mb-4 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                {t('settings.backToSettings')}
+            </Link>
 
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <PageHeader 
-                    title="Quản lý Lĩnh vực / Mảng (Life Roles)" 
-                    description="Quản lý các mảng cuộc sống và mảng công việc của bạn (FPT, Tulie, Cá nhân, NEU...) để phân chia thời gian và liên kết công việc." 
-                />
+            <PageHeader 
+                title="Quản lý Lĩnh vực / Mảng (Life Roles)" 
+                description="Quản lý các mảng cuộc sống và mảng công việc của bạn (FPT, Tulie, Cá nhân, NEU...) để phân chia thời gian và liên kết công việc." 
+            >
                 <Button onClick={handleOpenCreate} size="sm" className="shrink-0 cursor-pointer">
                     <Plus className="mr-2 size-4" />
                     Thêm lĩnh vực mới
                 </Button>
-            </div>
+            </PageHeader>
 
             {loading ? (
                 <div className="flex h-[30vh] items-center justify-center">
@@ -160,12 +156,11 @@ export default function LifeRolesSettingsPage() {
                     </CardContent>
                 </Card>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {roles.map(role => (
-                        <Card key={role.id} className="relative overflow-hidden hover:shadow-md transition-shadow">
-                            <div className="absolute top-0 left-0 w-1.5 h-full" style={{ backgroundColor: role.color }} />
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pl-6">
-                                <div className="flex items-center gap-2.5">
+                        <Card key={role.id} className="hover:border-primary/50 transition-colors">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                                <div className="flex items-center gap-3">
                                     <div 
                                         className="flex items-center justify-center size-9 rounded-lg" 
                                         style={{ backgroundColor: `${role.color}15`, color: role.color }}
@@ -173,11 +168,11 @@ export default function LifeRolesSettingsPage() {
                                         <RoleIcon name={role.icon} className="size-4.5" />
                                     </div>
                                     <div>
-                                        <CardTitle className="text-base font-bold">{role.display_name}</CardTitle>
-                                        <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">{role.role}</span>
+                                        <CardTitle className="text-base font-semibold tracking-tight">{role.display_name}</CardTitle>
+                                        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mt-0.5">{role.role}</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-1.5">
+                                <div className="flex items-center gap-1">
                                     <Button 
                                         variant="ghost" 
                                         size="icon" 
@@ -196,20 +191,20 @@ export default function LifeRolesSettingsPage() {
                                     </Button>
                                 </div>
                             </CardHeader>
-                            <CardContent className="pt-2 pl-6 space-y-2.5">
+                            <CardContent className="space-y-3 pt-0">
                                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                                     <span>Thời gian phân bổ hàng ngày:</span>
-                                    <span className="font-semibold text-foreground">{role.daily_time_budget_minutes} phút</span>
+                                    <span className="font-medium text-foreground">{role.daily_time_budget_minutes} phút</span>
                                 </div>
                                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                                     <span>Thứ tự ưu tiên:</span>
-                                    <span className="font-semibold text-foreground">{role.priority_order}</span>
+                                    <span className="font-medium text-foreground">{role.priority_order}</span>
                                 </div>
                                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                                     <span>Trạng thái:</span>
-                                    <span className={`font-semibold px-2 py-0.5 rounded text-[10px] ${role.is_active ? 'bg-emerald-500/10 text-emerald-500' : 'bg-muted text-muted-foreground'}`}>
+                                    <Badge variant={role.is_active ? 'default' : 'secondary'} className="h-5 px-1.5 text-[10px] font-medium">
                                         {role.is_active ? 'Đang hoạt động' : 'Tắt'}
-                                    </span>
+                                    </Badge>
                                 </div>
                             </CardContent>
                         </Card>
