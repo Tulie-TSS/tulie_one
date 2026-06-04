@@ -114,19 +114,24 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
             const uniqueDbDocs = Array.from(uniqueDocsMap.values())
 
             // Build from DB documents
-            const paymentDocs = uniqueDbDocs.filter(d => d.type === 'payment_request')
+            const paymentMilestones = (contract.milestones || []).filter((m: any) => m.amount > 0)
             return uniqueDbDocs.map((doc, idx) => {
                 const meta = DOC_META[doc.type] || DOC_META.contract
-                const paymentIdx = doc.type === 'payment_request' 
-                    ? paymentDocs.indexOf(doc) + 1 
-                    : 0
                 const milestone = contract.milestones?.find(m => m.id === doc.milestone_id)
+                const mIdx = milestone ? paymentMilestones.findIndex(m => m.id === milestone.id) : -1
+                const paymentIdx = mIdx !== -1 ? mIdx + 1 : 0
+                
+                const match = (doc.doc_number || '').match(/[-_]v(\d+)$/i)
+                const versionSuffix = match ? ` (v${match[1]})` : ''
+                
+                const baseLabel = doc.type === 'payment_request' && paymentIdx > 0
+                    ? `ĐNTT ${paymentIdx}: ${milestone?.name || `Đợt ${paymentIdx}`}`
+                    : meta.label
+
                 return {
                     key: doc.id,
                     type: doc.type,
-                    label: doc.type === 'payment_request' && paymentDocs.length > 1
-                        ? `ĐNTT ${paymentIdx}: ${milestone?.name || `Đợt ${paymentIdx}`}`
-                        : meta.label,
+                    label: `${baseLabel}${versionSuffix}`,
                     description: doc.doc_number || meta.description,
                     icon: meta.icon,
                     fromDb: true,

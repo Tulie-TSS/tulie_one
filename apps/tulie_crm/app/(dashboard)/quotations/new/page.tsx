@@ -15,7 +15,7 @@ export default async function NewQuotationPage({
 }) {
     const { customer: customerId } = await searchParams
     const [customers, products, units, projects, brandConfig] = await Promise.all([
-        getCustomers(),
+        getCustomers('business'),
         getProducts(),
         getProductUnits(),
         getProjects(),

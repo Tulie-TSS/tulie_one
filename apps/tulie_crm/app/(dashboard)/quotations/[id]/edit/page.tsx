@@ -23,7 +23,7 @@ export default async function EditQuotationPage({ params }: EditQuotationPagePro
     try {
         const [quotation, customers, products, units, projects] = await Promise.all([
             getQuotationById(id),
-            getCustomers(),
+            getCustomers('business'),
             getProducts(),
             getProductUnits(),
             getProjects()

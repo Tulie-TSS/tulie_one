@@ -26,11 +26,13 @@ import { Separator } from '@repo/ui'
 import { ArrowLeft, Save } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { createCustomer } from '@/lib/supabase/services/customer-service'
+import { toast } from 'sonner'
 
 const customerSchema = z.object({
-    company_name: z.string().min(2, 'Tên công ty phải có ít nhất 2 ký tự'),
+    company_name: z.string().min(2, 'Họ tên khách hàng phải có ít nhất 2 ký tự'),
     tax_code: z.string().optional(),
     email: z.string().email('Email không hợp lệ').optional().or(z.literal('')),
     phone: z.string().optional(),
@@ -46,10 +48,7 @@ const customerSchema = z.object({
 
 type CustomerFormData = z.infer<typeof customerSchema>
 
-import { createCustomer } from '@/lib/supabase/services/customer-service'
-import { toast } from 'sonner'
-
-export default function NewCustomerPage() {
+export default function NewStudioCustomerPage() {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
 
@@ -62,7 +61,7 @@ export default function NewCustomerPage() {
         resolver: zodResolver(customerSchema),
         defaultValues: {
             status: 'lead',
-            customer_type: 'business',
+            customer_type: 'individual',
         },
     })
 
@@ -79,7 +78,7 @@ export default function NewCustomerPage() {
                 return
             }
 
-            // Clean up data: convert empty strings to undefined for optional fields
+            // Clean up data
             const cleanedData = {
                 ...data,
                 customer_type: data.customer_type,
@@ -101,34 +100,33 @@ export default function NewCustomerPage() {
             })
 
             if (result) {
-                toast.success('Thêm khách hàng thành công')
+                toast.success('Thêm khách hàng Studio thành công')
                 setIsLoading(false)
-                router.push('/customers')
+                router.push('/studio/customers')
                 router.refresh()
             } else {
                 throw new Error('Không nhận được phản hồi từ hệ thống')
             }
         } catch (error: any) {
-            console.error('Failed to create customer:', error)
+            console.error('Failed to create studio customer:', error)
             toast.error(error.message || 'Có lỗi xảy ra khi thêm khách hàng')
             setIsLoading(false)
         }
     }
-
 
     return (
         <div className="space-y-6">
             {/* Header */}
             <div className="flex items-center gap-4">
                 <Button variant="ghost" size="icon" asChild className="rounded-full hover:bg-muted/80">
-                    <Link href="/customers">
+                    <Link href="/studio/customers">
                         <ArrowLeft className="h-5 w-5" />
                     </Link>
                 </Button>
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight">Thêm khách hàng doanh nghiệp</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight">Thêm khách hàng Studio mới</h1>
                     <p className="text-muted-foreground">
-                        Nhập thông tin doanh nghiệp / tổ chức đối tác mới
+                        Nhập thông tin khách hàng cá nhân cho khối Studio
                     </p>
                 </div>
             </div>
@@ -140,17 +138,17 @@ export default function NewCustomerPage() {
                         <CardHeader>
                             <CardTitle>Thông tin cơ bản</CardTitle>
                             <CardDescription>
-                                Thông tin chính của doanh nghiệp
+                                Thông tin chính của khách hàng cá nhân
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="company_name">
-                                    Tên khách hàng / Công ty <span className="text-destructive">*</span>
+                                    Họ tên khách hàng <span className="text-destructive">*</span>
                                 </Label>
                                 <Input
                                     id="company_name"
-                                    placeholder="Nguyễn Văn A / Công ty TNHH ABC"
+                                    placeholder="VD: Nguyễn Văn A"
                                     {...register('company_name')}
                                 />
                                 {errors.company_name && (
@@ -164,7 +162,7 @@ export default function NewCustomerPage() {
                                 <Label htmlFor="tax_code">Mã số thuế / CCCD</Label>
                                 <Input
                                     id="tax_code"
-                                    placeholder="0123456789"
+                                    placeholder="VD: 0123456789"
                                     {...register('tax_code')}
                                 />
                             </div>
@@ -175,7 +173,7 @@ export default function NewCustomerPage() {
                                     <Input
                                         id="email"
                                         type="email"
-                                        placeholder="contact@company.com"
+                                        placeholder="email@domain.com"
                                         {...register('email')}
                                     />
                                     {errors.email && (
@@ -188,7 +186,7 @@ export default function NewCustomerPage() {
                                     <Label htmlFor="phone">Số điện thoại</Label>
                                     <Input
                                         id="phone"
-                                        placeholder="0901234567"
+                                        placeholder="VD: 0901234567"
                                         {...register('phone')}
                                     />
                                 </div>
@@ -198,7 +196,7 @@ export default function NewCustomerPage() {
                                 <Label htmlFor="website">Website / Portfolio</Label>
                                 <Input
                                     id="website"
-                                    placeholder="https://company.com"
+                                    placeholder="https://..."
                                     {...register('website')}
                                 />
                                 {errors.website && (
@@ -231,12 +229,12 @@ export default function NewCustomerPage() {
                         </CardContent>
                     </Card>
 
-                    {/* Address & Invoice */}
+                    {/* Address & Notes */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Địa chỉ & Thông tin xuất hóa đơn</CardTitle>
+                            <CardTitle>Địa chỉ & Ghi chú</CardTitle>
                             <CardDescription>
-                                Thông tin địa chỉ và xuất hóa đơn VAT
+                                Địa chỉ liên hệ và ghi chú thông tin
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
@@ -255,55 +253,18 @@ export default function NewCustomerPage() {
                                 </Label>
                                 <Textarea
                                     id="invoice_address"
-                                    placeholder="Để trống nếu giống địa chỉ công ty"
+                                    placeholder="Địa chỉ xuất hóa đơn đỏ (nếu có)"
                                     {...register('invoice_address')}
                                 />
                             </div>
 
                             <Separator />
 
-                            <div className="grid gap-4 sm:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label htmlFor="industry">Ngành nghề</Label>
-                                    <Select onValueChange={(value) => setValue('industry', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Chọn ngành nghề" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="technology">Công nghệ</SelectItem>
-                                            <SelectItem value="retail">Bán lẻ</SelectItem>
-                                            <SelectItem value="manufacturing">Sản xuất</SelectItem>
-                                            <SelectItem value="services">Dịch vụ</SelectItem>
-                                            <SelectItem value="education">Giáo dục</SelectItem>
-                                            <SelectItem value="healthcare">Y tế</SelectItem>
-                                            <SelectItem value="other">Khác</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="company_size">Quy mô</Label>
-                                    <Select
-                                        onValueChange={(value) => setValue('company_size', value)}
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Chọn quy mô" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="1-10">1-10 nhân viên</SelectItem>
-                                            <SelectItem value="11-50">11-50 nhân viên</SelectItem>
-                                            <SelectItem value="51-200">51-200 nhân viên</SelectItem>
-                                            <SelectItem value="201-500">201-500 nhân viên</SelectItem>
-                                            <SelectItem value="500+">500+ nhân viên</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
-
                             <div className="space-y-2">
                                 <Label htmlFor="notes">Ghi chú</Label>
                                 <Textarea
                                     id="notes"
-                                    placeholder="Ghi chú về khách hàng..."
+                                    placeholder="Thông tin thêm về khách hàng..."
                                     {...register('notes')}
                                     rows={4}
                                 />
@@ -315,7 +276,7 @@ export default function NewCustomerPage() {
                 {/* Actions */}
                 <div className="flex items-center justify-end gap-4">
                     <Button type="button" variant="outline" asChild>
-                        <Link href="/customers">Hủy</Link>
+                        <Link href="/studio/customers">Hủy</Link>
                     </Button>
                     <Button type="submit" disabled={isLoading}>
                         {isLoading && <LoadingSpinner size="sm" className="mr-2" />}

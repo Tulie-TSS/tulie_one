@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function NewInvoicePage() {
     const [customers, contracts, quotations, projects, brandConfig] = await Promise.all([
-        getCustomers(),
+        getCustomers('business'),
         getContracts(),
         getQuotations(),
         getProjects(),

@@ -38,6 +38,14 @@ export function DealForm({ customers = [], users = [] }: DealFormProps) {
         brand: 'agency',
     })
 
+    const filteredCustomers = customers.filter((c: any) => {
+        if (formData.brand === 'studio') {
+            return c.customer_type === 'individual'
+        } else {
+            return c.customer_type === 'business'
+        }
+    })
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         const missing: string[] = []
@@ -95,7 +103,7 @@ export function DealForm({ customers = [], users = [] }: DealFormProps) {
                                     <SelectValue placeholder="Chọn khách hàng..." />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {customers.map((c: any) => (
+                                    {filteredCustomers.map((c: any) => (
                                         <SelectItem key={c.id} value={c.id}>
                                             {c.company_name}
                                         </SelectItem>
@@ -137,7 +145,7 @@ export function DealForm({ customers = [], users = [] }: DealFormProps) {
                             <Label htmlFor="brand">Thương hiệu (Brand)</Label>
                             <Select
                                 value={formData.brand}
-                                onValueChange={(val) => setFormData({ ...formData, brand: val })}
+                                onValueChange={(val) => setFormData({ ...formData, brand: val, customer_id: '' })}
                             >
                                 <SelectTrigger>
                                     <SelectValue />

@@ -9,7 +9,7 @@ export default async function HelpdeskPage() {
     const [tickets, users, customers] = await Promise.all([
         getTickets(),
         getUsers(),
-        getCustomers()
+        getCustomers('business')
     ])
 
     return (

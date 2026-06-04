@@ -37,7 +37,7 @@ export default function NewPortalPage() {
         const fetchData = async () => {
             try {
                 const [customerData, quotationData] = await Promise.all([
-                    getCustomers(),
+                    getCustomers('business'),
                     getQuotations(),
                 ])
                 setCustomers(customerData || [])

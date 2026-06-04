@@ -4,7 +4,7 @@ import NewContractClient from './new-contract-client'
 
 export default async function NewContractPage() {
     const [customers, quotations] = await Promise.all([
-        getCustomers(),
+        getCustomers('business'),
         getQuotations()
     ])
 

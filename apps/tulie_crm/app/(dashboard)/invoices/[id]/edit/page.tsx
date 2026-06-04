@@ -14,7 +14,7 @@ export default async function EditInvoicePage({ params }: any) {
     const { id } = await params
     const [invoice, customers, vendors, contracts, projects] = await Promise.all([
         getInvoiceById(id),
-        getCustomers(),
+        getCustomers('business'),
         getVendors(),
         getContracts(),
         getProjects()

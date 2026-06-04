@@ -17,7 +17,7 @@ export default async function EditContractPage({ params }: any) {
     // Fetch critical data first
     const [contract, customers, quotations, projects] = await Promise.all([
         getContractById(id),
-        getCustomers(),
+        getCustomers('business'),
         getQuotations(),
         getProjects()
     ])

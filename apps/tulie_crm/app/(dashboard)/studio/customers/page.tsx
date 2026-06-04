@@ -35,7 +35,7 @@ export default async function StudioCustomersPage() {
                         Xuất file
                     </Button>
                     <Button asChild className="px-6 h-10">
-                        <Link href="/studio/new?step=customer">
+                        <Link href="/studio/customers/new">
                             <Plus className="h-4 w-4" />
                             Thêm khách hàng
                         </Link>

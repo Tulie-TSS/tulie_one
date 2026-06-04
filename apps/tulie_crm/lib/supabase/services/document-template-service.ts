@@ -925,6 +925,41 @@ export async function getContractDocuments(contractId: string) {
     return data || []
 }
 
+function getNextVersionDocNumber(
+    baseDocNum: string,
+    existingDocs: { doc_number: string | null; status: string }[]
+): { nextDocNum: string; isNewVersion: boolean } {
+    if (existingDocs.length === 0) {
+        return { nextDocNum: baseDocNum, isNewVersion: false }
+    }
+
+    // Check if there is already an existing draft document
+    const draftDoc = existingDocs.find(d => d.status === 'draft')
+    if (draftDoc) {
+        // If a draft exists, keep its existing doc_number
+        return { nextDocNum: draftDoc.doc_number || baseDocNum, isNewVersion: false }
+    }
+
+    // No draft exists, but there are signed documents. We must create a new draft version.
+    let maxVersion = 1
+    // Remove any existing -vN suffix from the baseDocNum just in case
+    const cleanBase = baseDocNum.replace(/[-_]v\d+$/i, '')
+
+    for (const d of existingDocs) {
+        const num = d.doc_number || ''
+        const match = num.match(/[-_]v(\d+)$/i)
+        if (match) {
+            const ver = parseInt(match[1], 10)
+            if (ver > maxVersion) {
+                maxVersion = ver
+            }
+        }
+    }
+
+    const nextVer = maxVersion + 1
+    return { nextDocNum: `${cleanBase}-v${nextVer}`, isNewVersion: true }
+}
+
 /**
  * Auto-generate all documents for a contract.
  * Bundle composition depends on contract type:
@@ -963,18 +998,18 @@ export async function generateDocumentBundle(contractId: string) {
     // 2. Get all existing documents (both draft and signed) to reconcile
     const { data: existingDocs } = await supabase
         .from('contract_documents')
-        .select('id, type, milestone_id, is_visible_on_portal, status')
+        .select('id, type, milestone_id, is_visible_on_portal, status, doc_number')
         .eq('contract_id', contractId)
     
-    // Build a map: "type:milestone_id" -> existing doc info
-    const existingMap = new Map<string, any>()
+    // Group existing docs by "type:milestone_id"
+    const existingGrouped = new Map<string, any[]>()
     if (existingDocs) {
         for (const d of existingDocs) {
             const key = `${d.type}:${d.milestone_id || 'null'}`
-            // Prioritize keeping 'signed' docs if there are duplicates for some reason
-            if (!existingMap.has(key) || d.status === 'signed') {
-                existingMap.set(key, d)
+            if (!existingGrouped.has(key)) {
+                existingGrouped.set(key, [])
             }
+            existingGrouped.get(key)!.push(d)
         }
     }
 
@@ -1118,20 +1153,25 @@ export async function generateDocumentBundle(contractId: string) {
             const key = `${doc.type}:${doc.milestone_id || 'null'}`
             targetKeys.add(key)
             
-            const existing = existingMap.get(key)
+            const group = existingGrouped.get(key) || []
+            const draftDoc = group.find((d: any) => d.status === 'draft')
             
-            if (existing) {
-                if (existing.status === 'draft') {
-                    upsertPromises.push((async () => {
-                        await supabase
-                            .from('contract_documents')
-                            .update({
-                                content: doc.content,
-                                doc_number: doc.doc_number
-                            })
-                            .eq('id', existing.id)
-                    })())
-                }
+            const { nextDocNum } = getNextVersionDocNumber(doc.doc_number, group)
+            doc.doc_number = nextDocNum
+            
+            if (draftDoc) {
+                upsertPromises.push((async () => {
+                    const { error: updateErr } = await supabase
+                        .from('contract_documents')
+                        .update({
+                            content: doc.content,
+                            doc_number: doc.doc_number
+                        })
+                        .eq('id', draftDoc.id)
+                    if (updateErr) {
+                        console.error(`Error updating draft ${doc.type}:`, updateErr.message)
+                    }
+                })())
             } else {
                 upsertPromises.push((async () => {
                     const { error: insertErr } = await supabase
