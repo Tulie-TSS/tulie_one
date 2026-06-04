@@ -12,6 +12,16 @@ import { Contract } from '@/types'
 import { Alert, AlertDescription } from '@repo/ui'
 import { Switch } from '@repo/ui'
 import { toast } from 'sonner'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@repo/ui'
 
 
 interface ContractDocumentsProps {
@@ -23,10 +33,13 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
     const [showForm, setShowForm] = useState(false)
     const [dbDocs, setDbDocs] = useState<any[]>([])
     const [regenerating, setRegenerating] = useState(false)
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false)
     const [includeProposal, setIncludeProposal] = useState<boolean>(
         (contract as any).include_proposal_appendix !== false
     )
     const isProposalQuotation = (contract as any).quotation?.type === 'proposal'
+
+    const hasSignedDocs = dbDocs.some(d => d.status === 'signed')
 
     const loadDocs = useCallback(() => {
         fetch(`/api/contracts/${contract.id}/documents`)
@@ -59,6 +72,14 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
             toast.error('Không thể tạo lại giấy tờ')
         } finally {
             setRegenerating(false)
+        }
+    }
+
+    const onRegenerateClick = () => {
+        if (hasSignedDocs) {
+            setShowConfirmDialog(true)
+        } else {
+            handleRegenerate()
         }
     }
 
@@ -360,7 +381,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                         variant="ghost"
                         size="sm"
                         className="h-8 text-xs gap-1 shrink-0"
-                        onClick={handleRegenerate}
+                        onClick={onRegenerateClick}
                         disabled={regenerating}
                     >
                         <RefreshCw className={`h-3 w-3 ${regenerating ? 'animate-spin' : ''}`} />
@@ -651,6 +672,26 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                     </div>
                 )}
             </CardContent>
+
+            <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Xác nhận tạo bộ giấy tờ mới</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Hợp đồng này đã có các giấy tờ đã ký (trạng thái "Xong"). Nếu tạo lại, hệ thống sẽ bảo lưu các bản đã ký và sinh một bản nháp mới (v2, v3...) để bạn chỉnh sửa hoặc gửi lại. Bạn có chắc chắn muốn tiếp tục?
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Hủy</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => {
+                            setShowConfirmDialog(false)
+                            handleRegenerate()
+                        }}>
+                            Đồng ý tạo bản mới
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </Card>
     )
 }
