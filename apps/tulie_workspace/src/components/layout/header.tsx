@@ -47,6 +47,7 @@ export function Header() {
                 .from('notifications')
                 .select('*')
                 .eq('user_id', user.id)
+                .or('source.neq.crm,source.is.null')
                 .order('created_at', { ascending: false })
                 .limit(20)
 
