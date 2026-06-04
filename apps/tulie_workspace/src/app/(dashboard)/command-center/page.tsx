@@ -89,8 +89,13 @@ export default function CommandCenterPage() {
     initializeRoles()
   }, [initializeRoles])
 
-  // Get current time context
-  const now = new Date()
+  // Live clock — updates every 30 seconds so active block moves in real-time
+  const [now, setNow] = useState(() => new Date())
+  useEffect(() => {
+    const tick = () => setNow(new Date())
+    const id = setInterval(tick, 30_000)
+    return () => clearInterval(id)
+  }, [])
   const hour = now.getHours()
   const minute = now.getMinutes()
   const greeting = hour < 12 ? 'Chào buổi sáng' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối'
