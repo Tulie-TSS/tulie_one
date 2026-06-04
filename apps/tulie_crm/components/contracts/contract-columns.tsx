@@ -92,10 +92,10 @@ export const contractColumns: ColumnDef<Contract>[] = [
             const customer = row.original.customer
             if (!customer) return <span className="text-muted-foreground">-</span>
             return (
-                <div className="max-w-[200px] xl:max-w-[300px]">
+                <div className="min-w-[150px] max-w-[400px]">
                     <Link
                         href={`/customers/${customer.id}`}
-                        className="hover:underline line-clamp-2 whitespace-normal leading-snug"
+                        className="text-sm font-medium text-foreground hover:underline whitespace-normal break-words leading-snug block"
                     >
                         {customer.company_name}
                     </Link>

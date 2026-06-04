@@ -19,14 +19,14 @@ export const projectColumns: ColumnDef<Project>[] = [
         cell: ({ row }) => {
             const project = row.original
             return (
-                <div className="flex flex-col">
+                <div className="flex flex-col min-w-[150px] max-w-[400px]">
                     <Link
                         href={`/projects/${project.id}`}
                         className="font-medium hover:underline text-primary"
                     >
                         {project.title}
                     </Link>
-                    <span className="text-xs text-muted-foreground truncate max-w-[200px]">
+                    <span className="text-xs text-muted-foreground whitespace-normal break-words mt-0.5 block">
                         {project.customer?.company_name}
                     </span>
                 </div>
