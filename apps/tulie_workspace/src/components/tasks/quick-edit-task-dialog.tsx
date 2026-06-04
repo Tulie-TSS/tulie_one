@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useLifeRoles } from '@/hooks/useLifeRoles'
+import { RoleIcon } from '@/components/command-center/role-icon'
 import { 
     Dialog, 
     DialogContent, 
@@ -26,11 +28,13 @@ interface TaskData {
     title: string
     status: string
     project_id: string | null
+    life_role_id?: string | null
 }
 
 interface ProjectOption {
     id: string
     name: string
+    life_role_id?: string | null
 }
 
 interface QuickEditTaskDialogProps {
@@ -43,19 +47,33 @@ interface QuickEditTaskDialogProps {
 
 export function QuickEditTaskDialog({ task, projects, open, onOpenChange, onSuccess }: QuickEditTaskDialogProps) {
     const [loading, setLoading] = useState(false)
+    const { roles: lifeRoles } = useLifeRoles()
+
     const [formData, setFormData] = useState({
         title: task.title,
         status: task.status,
-        project_id: task.project_id || 'none'
+        project_id: task.project_id || 'none',
+        life_role_id: task.life_role_id || 'none'
     })
 
     useEffect(() => {
         setFormData({
             title: task.title,
             status: task.status,
-            project_id: task.project_id || 'none'
+            project_id: task.project_id || 'none',
+            life_role_id: task.life_role_id || 'none'
         })
     }, [task])
+
+    // Sync project selection with its associated life role
+    useEffect(() => {
+        if (formData.project_id && formData.project_id !== 'none') {
+            const selectedProj = projects.find(p => p.id === formData.project_id)
+            if (selectedProj?.life_role_id) {
+                setFormData(prev => ({ ...prev, life_role_id: selectedProj.life_role_id || '' }))
+            }
+        }
+    }, [formData.project_id, projects])
 
     const handleSave = async () => {
         if (!formData.title.trim()) {
@@ -72,6 +90,7 @@ export function QuickEditTaskDialog({ task, projects, open, onOpenChange, onSucc
                     title: formData.title,
                     status: formData.status,
                     project_id: formData.project_id === 'none' ? null : formData.project_id,
+                    life_role_id: formData.life_role_id === 'none' || !formData.life_role_id ? null : formData.life_role_id,
                     updated_at: new Date().toISOString()
                 })
                 .eq('id', task.id)
@@ -87,6 +106,8 @@ export function QuickEditTaskDialog({ task, projects, open, onOpenChange, onSucc
             setLoading(false)
         }
     }
+
+    const isRoleSelectorDisabled = formData.project_id !== 'none'
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -124,6 +145,35 @@ export function QuickEditTaskDialog({ task, projects, open, onOpenChange, onSucc
                                 ))}
                             </SelectContent>
                         </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="task-role">Lĩnh vực / Mảng</Label>
+                        <Select 
+                            value={formData.life_role_id} 
+                            onValueChange={(val) => setFormData({ ...formData, life_role_id: val })}
+                            disabled={isRoleSelectorDisabled}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Chọn lĩnh vực" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="none">Không có lĩnh vực</SelectItem>
+                                {lifeRoles.map(role => (
+                                    <SelectItem key={role.id} value={role.id}>
+                                        <div className="flex items-center gap-2">
+                                            <RoleIcon name={role.icon} className="size-3.5" />
+                                            <span>{role.display_name}</span>
+                                        </div>
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        {isRoleSelectorDisabled && (
+                            <p className="text-[10px] text-muted-foreground mt-1">
+                                Được liên kết tự động theo dự án đã chọn
+                            </p>
+                        )}
                     </div>
 
                     <div className="space-y-2">

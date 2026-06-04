@@ -37,6 +37,7 @@ import { EditProjectDialog } from '@/components/projects/edit-project-dialog'
 import { QuickEditTaskDialog } from '@/components/tasks/quick-edit-task-dialog'
 import { useProjects } from '@/hooks/useProjects'
 import { useLifeRoles } from '@/hooks/useLifeRoles'
+import { RoleIcon } from '@/components/command-center/role-icon'
 
 export default function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params)
@@ -235,7 +236,8 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
                                                     backgroundColor: `${roles.find(r => r.id === project.life_role_id)?.color}15`,
                                                     color: roles.find(r => r.id === project.life_role_id)?.color
                                                 }}>
-                                                    {roles.find(r => r.id === project.life_role_id)?.icon} {roles.find(r => r.id === project.life_role_id)?.display_name}
+                                                    <RoleIcon name={roles.find(r => r.id === project.life_role_id)?.icon || ''} className="size-3" />
+                                                    <span>{roles.find(r => r.id === project.life_role_id)?.display_name}</span>
                                                 </span>
                                             ) : 'Có vai trò'
                                         ) : (

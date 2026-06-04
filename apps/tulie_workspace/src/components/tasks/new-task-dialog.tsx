@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { useLocaleStore } from '@/lib/stores/locale-store'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { useProjects } from '@/hooks/useProjects'
+import { useLifeRoles } from '@/hooks/useLifeRoles'
+import { RoleIcon } from '@/components/command-center/role-icon'
 import { 
     Dialog,
     DialogContent,
@@ -23,7 +25,7 @@ import {
     SelectValue,
     toast,
 } from '@repo/ui'
-import { Loader2, Send, Calendar as CalendarIcon } from 'lucide-react'
+import { Loader2, Send } from 'lucide-react'
 import { createClient } from '@/lib/supabase'
 
 interface NewTaskDialogProps {
@@ -37,6 +39,7 @@ export function NewTaskDialog({ open, onOpenChange, onSuccess }: NewTaskDialogPr
     const { t } = useLocaleStore()
     const { user } = useCurrentUser()
     const { projects, loading: projectsLoading } = useProjects()
+    const { roles: lifeRoles, loading: rolesLoading } = useLifeRoles()
     
     const [loading, setLoading] = useState(false)
     const [users, setUsers] = useState<{ id: string; full_name: string }[]>([])
@@ -46,7 +49,8 @@ export function NewTaskDialog({ open, onOpenChange, onSuccess }: NewTaskDialogPr
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        project_id: '',
+        project_id: 'none',
+        life_role_id: '',
         assigned_to: '',
         eisenhower_quadrant: 'Q2',
         estimated_effort_hours: '2',
@@ -69,13 +73,23 @@ export function NewTaskDialog({ open, onOpenChange, onSuccess }: NewTaskDialogPr
     }, [open])
 
     useEffect(() => {
-        if (!projectsLoading && projects.length > 0 && !formData.project_id) {
-            setFormData(prev => ({ ...prev, project_id: projects[0].id }))
-        }
         if (user && !formData.assigned_to) {
             setFormData(prev => ({ ...prev, assigned_to: user.id }))
         }
-    }, [projects, projectsLoading, user, open])
+        if (lifeRoles.length > 0 && !formData.life_role_id) {
+            setFormData(prev => ({ ...prev, life_role_id: lifeRoles[0].id }))
+        }
+    }, [lifeRoles, user, open])
+
+    // Sync project selection with its associated life role
+    useEffect(() => {
+        if (formData.project_id && formData.project_id !== 'none') {
+            const selectedProj = projects.find(p => p.id === formData.project_id)
+            if (selectedProj?.life_role_id) {
+                setFormData(prev => ({ ...prev, life_role_id: selectedProj.life_role_id || '' }))
+            }
+        }
+    }, [formData.project_id, projects])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -87,6 +101,8 @@ export function NewTaskDialog({ open, onOpenChange, onSuccess }: NewTaskDialogPr
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...formData,
+                    project_id: formData.project_id === 'none' ? null : formData.project_id,
+                    life_role_id: formData.life_role_id === 'none' || !formData.life_role_id ? null : formData.life_role_id,
                     estimated_effort_hours: parseFloat(formData.estimated_effort_hours),
                     priority: 0,
                     status: 'intake',
@@ -104,7 +120,8 @@ export function NewTaskDialog({ open, onOpenChange, onSuccess }: NewTaskDialogPr
             setFormData({
                 title: '',
                 description: '',
-                project_id: projects[0]?.id || '',
+                project_id: 'none',
+                life_role_id: lifeRoles[0]?.id || '',
                 assigned_to: user?.id || '',
                 eisenhower_quadrant: 'Q2',
                 estimated_effort_hours: '2',
@@ -118,6 +135,8 @@ export function NewTaskDialog({ open, onOpenChange, onSuccess }: NewTaskDialogPr
             setLoading(false)
         }
     }
+
+    const isRoleSelectorDisabled = formData.project_id !== 'none' && formData.project_id !== ''
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -167,6 +186,7 @@ export function NewTaskDialog({ open, onOpenChange, onSuccess }: NewTaskDialogPr
                                     <SelectValue placeholder="Chọn dự án" />
                                 </SelectTrigger>
                                 <SelectContent>
+                                    <SelectItem value="none">Không thuộc dự án nào</SelectItem>
                                     {projects.map(p => (
                                         <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
                                     ))}
@@ -174,6 +194,37 @@ export function NewTaskDialog({ open, onOpenChange, onSuccess }: NewTaskDialogPr
                             </Select>
                         </div>
 
+                        {/* Life Role / Area */}
+                        <div className="space-y-2">
+                            <Label>Lĩnh vực / Mảng</Label>
+                            <Select 
+                                value={formData.life_role_id} 
+                                onValueChange={v => setFormData(prev => ({ ...prev, life_role_id: v }))}
+                                disabled={isRoleSelectorDisabled}
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Chọn lĩnh vực" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {lifeRoles.map(role => (
+                                        <SelectItem key={role.id} value={role.id}>
+                                            <div className="flex items-center gap-2">
+                                                <RoleIcon name={role.icon} className="size-3.5" />
+                                                <span>{role.display_name}</span>
+                                            </div>
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                            {isRoleSelectorDisabled && (
+                                <p className="text-[10px] text-muted-foreground mt-1">
+                                    Được liên kết tự động theo dự án đã chọn
+                                </p>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
                         {/* Assignee */}
                         <div className="space-y-2">
                             <Label>Người thực hiện</Label>
@@ -191,9 +242,7 @@ export function NewTaskDialog({ open, onOpenChange, onSuccess }: NewTaskDialogPr
                                 </SelectContent>
                             </Select>
                         </div>
-                    </div>
 
-                    <div className="grid grid-cols-2 gap-4">
                         {/* Eisenhower */}
                         <div className="space-y-2">
                             <Label>Phân loại</Label>
@@ -212,7 +261,9 @@ export function NewTaskDialog({ open, onOpenChange, onSuccess }: NewTaskDialogPr
                                 </SelectContent>
                             </Select>
                         </div>
+                    </div>
 
+                    <div className="grid grid-cols-2 gap-4">
                         {/* Effort */}
                         <div className="space-y-2">
                             <Label htmlFor="effort">Ước tính (h)</Label>
@@ -225,17 +276,17 @@ export function NewTaskDialog({ open, onOpenChange, onSuccess }: NewTaskDialogPr
                                 onChange={e => setFormData(prev => ({ ...prev, estimated_effort_hours: e.target.value }))}
                             />
                         </div>
-                    </div>
 
-                    {/* Deadline */}
-                    <div className="space-y-2">
-                        <Label htmlFor="deadline">Hạn chót</Label>
-                        <Input 
-                            id="deadline"
-                            type="date"
-                            value={formData.requested_deadline}
-                            onChange={e => setFormData(prev => ({ ...prev, requested_deadline: e.target.value }))}
-                        />
+                        {/* Deadline */}
+                        <div className="space-y-2">
+                            <Label htmlFor="deadline">Hạn chót</Label>
+                            <Input 
+                                id="deadline"
+                                type="date"
+                                value={formData.requested_deadline}
+                                onChange={e => setFormData(prev => ({ ...prev, requested_deadline: e.target.value }))}
+                            />
+                        </div>
                     </div>
 
                     <DialogFooter className="pt-4">

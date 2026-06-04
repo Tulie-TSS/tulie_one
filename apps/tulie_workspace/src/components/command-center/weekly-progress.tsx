@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { BarChart3 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { LifeRole, LifeRoleType } from '@/types/command-center.types'
+import { RoleIcon } from '@/components/command-center/role-icon'
 
 interface WeeklyProgressProps {
   tasksByRole: Record<string, { total: number; completed: number }>
@@ -55,8 +56,8 @@ export function WeeklyProgress({ tasksByRole, roles }: WeeklyProgressProps) {
             return (
               <div key={role.id} className="space-y-1">
                 <div className="flex justify-between text-xs">
-                  <span className="flex items-center gap-1">
-                    <span>{role.icon}</span>
+                  <span className="flex items-center gap-1.5">
+                    <RoleIcon name={role.icon} className="size-3 text-muted-foreground" />
                     <span className="text-muted-foreground">{role.display_name}</span>
                   </span>
                   <span className="font-medium">{data.completed}/{data.total}</span>

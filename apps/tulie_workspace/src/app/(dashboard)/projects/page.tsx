@@ -7,6 +7,7 @@ import { useCycles } from '@/hooks/useCycles'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { useLocaleStore } from '@/lib/stores/locale-store'
 import { useLifeRoles } from '@/hooks/useLifeRoles'
+import { RoleIcon } from '@/components/command-center/role-icon'
 import { PageHeader, Card, CardContent, CardHeader, CardTitle, Button, Badge, Progress } from '@repo/ui'
 import { Loader2, Plus, FolderKanban } from 'lucide-react'
 
@@ -113,11 +114,12 @@ export default function ProjectsPage() {
                         <span />
                       )}
                       {p.life_role_id && roles.find(r => r.id === p.life_role_id) && (
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium" style={{
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium animate-fade-in" style={{
                             backgroundColor: `${roles.find(r => r.id === p.life_role_id)?.color}15`,
                             color: roles.find(r => r.id === p.life_role_id)?.color
                         }}>
-                          {roles.find(r => r.id === p.life_role_id)?.icon} {roles.find(r => r.id === p.life_role_id)?.display_name}
+                          <RoleIcon name={roles.find(r => r.id === p.life_role_id)?.icon || ''} className="size-3" />
+                          <span>{roles.find(r => r.id === p.life_role_id)?.display_name}</span>
                         </span>
                       )}
                     </div>

@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import type { TaskRow } from '@/hooks/useTasks'
 import type { LifeRole } from '@/types/command-center.types'
 import { useLifeRoleStore } from '@/lib/stores/life-role-store'
+import { RoleIcon } from '@/components/command-center/role-icon'
 
 interface TaskStreamProps {
   tasks: TaskRow[]
@@ -133,10 +134,11 @@ export function TaskStream({ tasks, roles, onComplete, loading }: TaskStreamProp
                     <div className="flex items-center gap-1.5 mt-0.5">
                       {role && (
                         <span
-                          className="text-[10px] font-medium px-1.5 py-0 rounded"
+                          className="text-[10px] font-medium px-1.5 py-0.5 rounded flex items-center gap-1 w-fit"
                           style={{ backgroundColor: role.color + '15', color: role.color }}
                         >
-                          {role.icon} {role.display_name}
+                          <RoleIcon name={role.icon} className="size-3" />
+                          <span>{role.display_name}</span>
                         </span>
                       )}
                       {overdue && !isDone && (

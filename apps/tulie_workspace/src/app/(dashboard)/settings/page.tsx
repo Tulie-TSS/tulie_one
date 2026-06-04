@@ -7,7 +7,7 @@ import {
     PageHeader, Card, CardContent, CardHeader, CardTitle, Button, Label,
     Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@repo/ui'
-import { Settings, Users, Shield } from 'lucide-react'
+import { Settings, Users, Shield, LayoutGrid } from 'lucide-react'
 
 export default function SettingsPage() {
     const { t, locale, setLocale } = useLocaleStore()
@@ -16,6 +16,7 @@ export default function SettingsPage() {
         { href: '/settings', label: t('settings.general'), desc: t('settings.generalDesc'), icon: Settings, active: true },
         { href: '/settings/team', label: t('settings.team'), desc: t('settings.teamDesc'), icon: Users },
         { href: '/settings/wip', label: t('settings.wip'), desc: t('settings.wipDesc'), icon: Shield },
+        { href: '/settings/life-roles', label: 'Lĩnh vực / Mảng', desc: 'Quản lý các mảng cuộc sống, công việc, mục tiêu (FPT, Tulie, Cá nhân...)', icon: LayoutGrid },
     ]
 
     return (

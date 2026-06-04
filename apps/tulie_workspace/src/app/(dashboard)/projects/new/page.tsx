@@ -27,6 +27,7 @@ import {
 import { Loader2, ArrowLeft, Save } from 'lucide-react'
 import { createClient } from '@/lib/supabase'
 import { useLifeRoles } from '@/hooks/useLifeRoles'
+import { RoleIcon } from '@/components/command-center/role-icon'
 
 export default function NewProjectPage() {
     const router = useRouter()
@@ -202,7 +203,10 @@ export default function NewProjectPage() {
                                         <SelectItem value="none">Không có (Chung)</SelectItem>
                                         {roles.map(r => (
                                             <SelectItem key={r.id} value={r.id}>
-                                                {r.icon} {r.display_name}
+                                                <div className="flex items-center gap-2">
+                                                    <RoleIcon name={r.icon} className="size-3.5" />
+                                                    <span>{r.display_name}</span>
+                                                </div>
                                             </SelectItem>
                                         ))}
                                     </SelectContent>

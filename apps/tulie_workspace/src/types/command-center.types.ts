@@ -3,7 +3,7 @@
 // ============================================
 
 // Enums
-export type LifeRoleType = 'fpt_is' | 'tulie' | 'personal'
+export type LifeRoleType = string
 export type EnergyLevel = 'high' | 'medium' | 'low' | 'exhausted'
 export type TimeBlockType = 'deep_work' | 'meeting' | 'admin' | 'learning' | 'exercise' | 'family' | 'rest'
 export type FptCategory = 'nghi_dinh' | 'nghi_quyet' | 'san_pham' | 'quy_trinh' | 'skill'

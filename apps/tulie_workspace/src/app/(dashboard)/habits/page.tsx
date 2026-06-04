@@ -4,8 +4,9 @@ import React, { useState } from 'react'
 import { useHabits } from '@/hooks/useHabits'
 import { useLifeRoles } from '@/hooks/useLifeRoles'
 import { PageHeader, Card, CardContent, CardHeader, CardTitle, Badge } from '@repo/ui'
-import { Plus, Flame, CheckCircle2, Circle, Trash2, X } from 'lucide-react'
+import { Plus, Flame, CheckCircle2, Circle, Trash2, X, Target } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { RoleIcon } from '@/components/command-center/role-icon'
 
 export default function HabitsPage() {
   const { habits, loading, toggleHabit, createHabit, deleteHabit } = useHabits()
@@ -23,10 +24,11 @@ export default function HabitsPage() {
       icon: newIcon,
       life_role_id: newRoleId || undefined,
       frequency: newFrequency,
-    } as any)
+    })
     setNewName('')
     setNewIcon('📌')
     setNewRoleId('')
+    setNewFrequency('daily')
     setShowCreate(false)
   }
 
@@ -38,7 +40,7 @@ export default function HabitsPage() {
     { role: null, label: 'Chung', habits: habits.filter(h => !h.life_role_id) },
     ...roles.map(r => ({
       role: r,
-      label: `${r.icon} ${r.display_name}`,
+      label: r.display_name,
       habits: habits.filter(h => h.life_role_id === r.id),
     })),
   ].filter(g => g.habits.length > 0)
@@ -46,13 +48,18 @@ export default function HabitsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <PageHeader
-          title="🎯 Habit Tracker"
-          description={`${completedToday}/${totalActive} hoàn thành hôm nay`}
-        />
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-primary/10 rounded-xl text-primary">
+            <Target className="size-5" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold tracking-tight text-foreground">Habit Tracker</h1>
+            <p className="text-xs text-muted-foreground mt-0.5">{completedToday}/{totalActive} hoàn thành hôm nay</p>
+          </div>
+        </div>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer"
         >
           <Plus className="size-4" />
           Thêm habit
@@ -91,7 +98,7 @@ export default function HabitsPage() {
               >
                 <option value="">Vai trò (tuỳ chọn)</option>
                 {roles.map(r => (
-                  <option key={r.id} value={r.id}>{r.icon} {r.display_name}</option>
+                  <option key={r.id} value={r.id}>{r.display_name}</option>
                 ))}
               </select>
               <select
@@ -107,14 +114,14 @@ export default function HabitsPage() {
               <div className="flex-1" />
               <button
                 onClick={() => setShowCreate(false)}
-                className="h-8 px-3 text-xs rounded-md text-muted-foreground hover:bg-muted transition-colors"
+                className="h-8 px-3 text-xs rounded-md text-muted-foreground hover:bg-muted transition-colors cursor-pointer"
               >
                 Hủy
               </button>
               <button
                 onClick={handleCreate}
                 disabled={!newName.trim()}
-                className="h-8 px-3 text-xs font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors"
+                className="h-8 px-3 text-xs font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors cursor-pointer"
               >
                 Tạo
               </button>
@@ -133,7 +140,11 @@ export default function HabitsPage() {
       ) : habits.length === 0 ? (
         <Card className="py-12">
           <CardContent className="text-center space-y-3">
-            <p className="text-4xl">🎯</p>
+            <div className="flex justify-center">
+              <div className="p-3 bg-muted rounded-full">
+                <Target className="size-8 text-muted-foreground" />
+              </div>
+            </div>
             <p className="text-sm text-muted-foreground">Chưa có habit nào. Hãy tạo habit đầu tiên!</p>
             <div className="text-xs text-muted-foreground space-y-1">
               <p>Gợi ý:</p>
@@ -146,8 +157,15 @@ export default function HabitsPage() {
         <div className="space-y-5">
           {groupedHabits.map((group, gi) => (
             <div key={gi}>
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                {group.label}
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                {group.role ? (
+                  <>
+                    <RoleIcon name={group.role.icon} className="size-3.5" />
+                    <span>{group.role.display_name}</span>
+                  </>
+                ) : (
+                  <span>{group.label}</span>
+                )}
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {group.habits.map((habit) => {
@@ -195,7 +213,7 @@ export default function HabitsPage() {
                         {/* Delete */}
                         <button
                           onClick={(e) => { e.stopPropagation(); deleteHabit(habit.id) }}
-                          className="opacity-0 group-hover:opacity-100 text-muted-foreground/40 hover:text-red-500 transition-all"
+                          className="opacity-0 group-hover:opacity-100 text-muted-foreground/40 hover:text-red-500 transition-all cursor-pointer"
                           title="Xóa habit"
                         >
                           <Trash2 className="size-4" />

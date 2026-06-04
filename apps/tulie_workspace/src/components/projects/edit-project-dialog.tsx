@@ -22,6 +22,7 @@ import {
 import { Loader2, Save } from 'lucide-react'
 import { useCycles } from '@/hooks/useCycles'
 import { useLifeRoles } from '@/hooks/useLifeRoles'
+import { RoleIcon } from '@/components/command-center/role-icon'
 
 interface ProjectData {
     id: string
@@ -171,7 +172,12 @@ export function EditProjectDialog({ project, open, onOpenChange, onSuccess }: Ed
                             <SelectContent>
                                 <SelectItem value="none">Không có (Chung)</SelectItem>
                                 {roles.map(r => (
-                                    <SelectItem key={r.id} value={r.id}>{r.icon} {r.display_name}</SelectItem>
+                                    <SelectItem key={r.id} value={r.id}>
+                                        <div className="flex items-center gap-2">
+                                            <RoleIcon name={r.icon} className="size-3.5" />
+                                            <span>{r.display_name}</span>
+                                        </div>
+                                    </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
