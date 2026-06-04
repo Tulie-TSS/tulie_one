@@ -1,17 +1,27 @@
 'use client'
 
 import Link from 'next/link'
-import { MOCK_TASKS } from '@/lib/mock/data'
+import { useTasks } from '@/hooks/useTasks'
 import { useFocusStore } from '@/lib/stores/focus-store'
 import { useLocaleStore } from '@/lib/stores/locale-store'
 import { PageHeader, Card, CardContent, CardHeader, CardTitle, Button, EmptyState } from '@repo/ui'
-import { Target, Pause, Play, CheckCircle, X } from 'lucide-react'
+import { Target, Pause, Play, CheckCircle, Loader2 } from 'lucide-react'
 
 export default function FocusPage() {
+    const { tasks, loading, updateTaskStatus } = useTasks()
     const { isActive, taskId, startFocus, stopFocus, isPaused, togglePause } = useFocusStore()
     const { t } = useLocaleStore()
-    const doingTasks = MOCK_TASKS.filter(task => task.status === 'doing')
-    const activeTask = MOCK_TASKS.find(task => task.id === taskId)
+
+    const doingTasks = tasks.filter(task => task.status === 'doing')
+    const activeTask = tasks.find(task => task.id === taskId)
+
+    if (loading) {
+        return (
+            <div className="flex h-[60vh] items-center justify-center">
+                <Loader2 className="size-8 animate-spin text-muted-foreground" />
+            </div>
+        )
+    }
 
     if (isActive && activeTask) {
         return (
@@ -22,19 +32,26 @@ export default function FocusPage() {
                     </div>
                     <h2 className="text-xl font-semibold text-foreground mb-2">{activeTask.title}</h2>
                     <p className="text-sm text-muted-foreground mb-8">
-                        {activeTask.description}
+                        {activeTask.description || 'Không có mô tả cho công việc này.'}
                     </p>
                     <div className="flex items-center justify-center gap-3">
-                        <Button variant={isPaused ? 'default' : 'outline'} size="lg" onClick={togglePause}>
+                        <Button variant={isPaused ? 'default' : 'outline'} size="lg" onClick={togglePause} className="cursor-pointer">
                             {isPaused ? <Play className="size-4 mr-2" /> : <Pause className="size-4 mr-2" />}
                             {isPaused ? t('focus.resume') : t('focus.pause')}
                         </Button>
-                        <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
+                        <Button 
+                            size="lg" 
+                            className="bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
+                            onClick={async () => {
+                                await updateTaskStatus(activeTask.id, 'done')
+                                stopFocus()
+                            }}
+                        >
                             <CheckCircle className="size-4 mr-2" />
                             {t('focus.complete')}
                         </Button>
                     </div>
-                    <Button variant="ghost" className="mt-6 text-muted-foreground" onClick={stopFocus}>
+                    <Button variant="ghost" className="mt-6 text-muted-foreground cursor-pointer" onClick={stopFocus}>
                         {t('focus.exit')}
                     </Button>
                 </div>
@@ -65,7 +82,7 @@ export default function FocusPage() {
                             </CardHeader>
                             <CardContent>
                                 {task.description && <p className="text-sm text-muted-foreground mb-4">{task.description}</p>}
-                                <Button onClick={() => startFocus(task.id)}>
+                                <Button onClick={() => startFocus(task.id)} className="cursor-pointer">
                                     <Target className="size-4 mr-2" />
                                     {t('focus.start')}
                                 </Button>

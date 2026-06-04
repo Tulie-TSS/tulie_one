@@ -8,14 +8,45 @@ import { useTasks } from '@/hooks/useTasks'
 import { useDailyPlan } from '@/hooks/useDailyPlan'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { useHabits } from '@/hooks/useHabits'
-import { PageHeader } from '@repo/ui'
-import { CheckCircle2, Circle, Flame } from 'lucide-react'
+import { 
+  CheckCircle2, 
+  Circle, 
+  Flame, 
+  Sun, 
+  Briefcase, 
+  Utensils, 
+  Home, 
+  Rocket, 
+  BookOpen, 
+  Moon,
+  Calendar,
+  Target,
+  Clock,
+  Sparkles,
+  ClipboardList,
+  Building2,
+  Heart,
+  Dumbbell
+} from 'lucide-react'
 
 import { RoleSwitcher } from '@/components/command-center/role-switcher'
 import { TodaysPulse } from '@/components/command-center/todays-pulse'
 import { TaskStream } from '@/components/command-center/task-stream'
 import { SmartAlerts, generateAlerts } from '@/components/command-center/smart-alerts'
 import { WeeklyProgress } from '@/components/command-center/weekly-progress'
+
+function getHabitIcon(habitIcon: string) {
+  const cn = "size-4 text-primary shrink-0"
+  switch (habitIcon) {
+    case '🇬🇧': return <BookOpen className={cn} />
+    case '🏋️': return <Dumbbell className={cn} />
+    case '👶': return <Heart className={cn} />
+    case '😴': return <Moon className={cn} />
+    case '📝': return <ClipboardList className={cn} />
+    case '🏢': return <Building2 className={cn} />
+    default: return <Sparkles className={cn} />
+  }
+}
 
 export default function CommandCenterPage() {
   const { t } = useLocaleStore()
@@ -35,7 +66,6 @@ export default function CommandCenterPage() {
   const now = new Date()
   const hour = now.getHours()
   const greeting = hour < 12 ? 'Chào buổi sáng' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối'
-  const greetingEmoji = hour < 12 ? '🌅' : hour < 18 ? '🌞' : '🌙'
 
   // Current time block context
   const timeContext = hour >= 8 && hour < 12 ? 'FPT IS — Deep Work' :
@@ -104,18 +134,23 @@ export default function CommandCenterPage() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {/* Header with greeting */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold text-foreground">
-            {greetingEmoji} {greeting}, {user?.full_name?.split(' ').pop() || 'bạn'}!
-          </h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            {now.toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
-            {' · '}
-            <span className="font-medium">{timeContext}</span>
-          </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-primary/10 rounded-xl text-primary">
+            {hour < 12 ? <Sun className="size-5" /> : hour < 18 ? <Sun className="size-5" /> : <Moon className="size-5" />}
+          </div>
+          <div>
+            <h1 className="text-xl font-bold tracking-tight text-foreground">
+              {greeting}, {user?.full_name?.split(' ').pop() || 'bạn'}!
+            </h1>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {now.toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+              {' · '}
+              <span className="font-semibold text-foreground/80">{timeContext}</span>
+            </p>
+          </div>
         </div>
         <RoleSwitcher />
       </div>
@@ -124,9 +159,9 @@ export default function CommandCenterPage() {
       {alerts.length > 0 && <SmartAlerts alerts={alerts} />}
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column - Pulse + Weekly */}
-        <div className="lg:col-span-3 space-y-5">
+        <div className="lg:col-span-3 space-y-6">
           <TodaysPulse tasksDone={doneTasks.length} tasksTotal={todayTasks.length} />
           <WeeklyProgress tasksByRole={weeklyTasksByRole} roles={roles} />
         </div>
@@ -142,58 +177,62 @@ export default function CommandCenterPage() {
         </div>
 
         {/* Right Column - Schedule & Habits */}
-        <div className="lg:col-span-3 space-y-5">
+        <div className="lg:col-span-3 space-y-6">
           {/* Time Block Schedule */}
-          <div className="rounded-xl border border-muted/60 bg-card/50 backdrop-blur-sm p-4 space-y-3">
-            <h3 className="text-sm font-semibold flex items-center gap-2">
-              ⏰ Lịch hôm nay
+          <div className="rounded-xl border border-muted bg-card/60 backdrop-blur-sm p-4 space-y-4">
+            <h3 className="text-sm font-bold flex items-center gap-2 text-foreground">
+              <Clock className="size-4 text-primary" />
+              Lịch hôm nay
             </h3>
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {[
-                { time: '06:30', label: 'Thức dậy / Morning routine', icon: '🌅', active: hour >= 6 && hour < 8 },
-                { time: '08:30', label: 'FPT IS — Bắt đầu làm việc', icon: '🏢', active: hour >= 8 && hour < 12 },
-                { time: '12:00', label: 'Nghỉ trưa', icon: '🍜', active: hour >= 12 && hour < 13 },
-                { time: '13:00', label: 'FPT IS — Buổi chiều', icon: '🏢', active: hour >= 13 && hour < 17 },
-                { time: '17:30', label: 'Nghỉ / Gia đình', icon: '🏠', active: hour >= 17 && hour < 18 },
-                { time: '18:00', label: 'Tulie Business', icon: '🚀', active: hour >= 18 && hour < 21 },
-                { time: '21:00', label: 'Cá nhân / Thư giãn', icon: '📚', active: hour >= 21 && hour < 22 },
-                { time: '22:00', label: 'Đi ngủ', icon: '😴', active: hour >= 22 },
+                { time: '06:30', label: 'Thức dậy / Morning routine', icon: <Sun className="size-3.5" />, active: hour >= 6 && hour < 8 },
+                { time: '08:30', label: 'FPT IS — Bắt đầu làm việc', icon: <Briefcase className="size-3.5" />, active: hour >= 8 && hour < 12 },
+                { time: '12:00', label: 'Nghỉ trưa', icon: <Utensils className="size-3.5" />, active: hour >= 12 && hour < 13 },
+                { time: '13:00', label: 'FPT IS — Buổi chiều', icon: <Briefcase className="size-3.5" />, active: hour >= 13 && hour < 17 },
+                { time: '17:30', label: 'Nghỉ / Gia đình', icon: <Home className="size-3.5" />, active: hour >= 17 && hour < 18 },
+                { time: '18:00', label: 'Tulie Business', icon: <Rocket className="size-3.5" />, active: hour >= 18 && hour < 21 },
+                { time: '21:00', label: 'Cá nhân / Thư giãn', icon: <BookOpen className="size-3.5" />, active: hour >= 21 && hour < 22 },
+                { time: '22:00', label: 'Đi ngủ', icon: <Moon className="size-3.5" />, active: hour >= 22 },
               ].map((block, i) => (
                 <div
                   key={i}
-                  className={`flex items-center gap-2 px-2 py-1.5 rounded-md text-xs transition-colors ${
+                  className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs transition-all duration-200 ${
                     block.active
-                      ? 'bg-primary/10 text-primary font-medium'
-                      : 'text-muted-foreground'
+                      ? 'bg-primary/10 text-primary font-semibold shadow-sm'
+                      : 'text-muted-foreground hover:bg-muted/30'
                   }`}
                 >
-                  <span className="w-10 font-mono text-[11px]">{block.time}</span>
-                  <span>{block.icon}</span>
-                  <span className="flex-1">{block.label}</span>
-                  {block.active && <span className="size-2 rounded-full bg-primary animate-pulse" />}
+                  <span className="w-10 font-mono text-[11px] font-medium opacity-80">{block.time}</span>
+                  <div className={block.active ? 'text-primary' : 'text-muted-foreground/60'}>
+                    {block.icon}
+                  </div>
+                  <span className="flex-1 truncate">{block.label}</span>
+                  {block.active && <span className="size-1.5 rounded-full bg-primary animate-ping" />}
                 </div>
               ))}
             </div>
           </div>
 
           {/* Habit Quick View */}
-          <div className="rounded-xl border border-muted/60 bg-card/50 backdrop-blur-sm p-4 space-y-3">
+          <div className="rounded-xl border border-muted bg-card/60 backdrop-blur-sm p-4 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold flex items-center gap-2">
-                🎯 Habits hôm nay
+              <h3 className="text-sm font-bold flex items-center gap-2 text-foreground">
+                <Target className="size-4 text-primary" />
+                Thói quen hôm nay
               </h3>
-              <a href="/habits" className="text-[11px] text-primary hover:underline">Tất cả →</a>
+              <a href="/habits" className="text-[11px] font-medium text-primary hover:underline">Tất cả</a>
             </div>
 
             {habitsLoading ? (
               <div className="space-y-2 py-2">
                 {[1, 2].map(i => (
-                  <div key={i} className="h-8 rounded bg-muted/50 animate-pulse" />
+                  <div key={i} className="h-8 rounded-lg bg-muted/50 animate-pulse" />
                 ))}
               </div>
             ) : habits.length === 0 ? (
               <p className="text-xs text-muted-foreground text-center py-4">
-                Chưa có habits nào. <a href="/habits" className="text-primary underline">Tạo ngay →</a>
+                Chưa có thói quen nào. <a href="/habits" className="text-primary underline">Tạo ngay</a>
               </p>
             ) : (
               <div className="space-y-2">
@@ -210,22 +249,24 @@ export default function CommandCenterPage() {
                       <div
                         key={habit.id}
                         onClick={() => toggleHabit(habit.id)}
-                        className={`flex items-center gap-2 p-2 rounded-lg border text-xs cursor-pointer transition-all duration-200 ${
+                        className={`flex items-center gap-3 p-2.5 rounded-lg border text-xs cursor-pointer transition-all duration-200 ${
                           isCompleted
                             ? 'bg-emerald-500/5 border-emerald-500/20 text-muted-foreground'
-                            : 'bg-background/40 hover:bg-muted/40 border-muted/60 text-foreground'
+                            : 'bg-background/40 hover:bg-muted/40 border-muted text-foreground hover:border-muted-foreground/30'
                         }`}
                       >
                         <div className={isCompleted ? 'text-emerald-500' : 'text-muted-foreground/40'}>
                           {isCompleted ? <CheckCircle2 className="size-4" /> : <Circle className="size-4" />}
                         </div>
-                        <span className="text-base leading-none shrink-0">{habit.icon}</span>
+                        <div className="shrink-0">
+                          {getHabitIcon(habit.icon)}
+                        </div>
                         <span className={`flex-1 truncate ${isCompleted ? 'line-through opacity-60' : ''}`}>
                           {habit.name}
                         </span>
                         {habit.streak_current > 0 && (
-                          <span className="flex items-center gap-0.5 text-[10px] font-medium text-amber-500 shrink-0">
-                            <Flame className="size-3" />
+                          <span className="flex items-center gap-0.5 text-[10px] font-bold text-amber-500 shrink-0">
+                            <Flame className="size-3.5 fill-amber-500/10" />
                             {habit.streak_current}
                           </span>
                         )}
