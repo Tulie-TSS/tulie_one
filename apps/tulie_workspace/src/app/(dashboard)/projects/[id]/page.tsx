@@ -14,7 +14,9 @@ import {
     Button, 
     Badge, 
     Progress,
-    Separator
+    Separator,
+    Avatar,
+    AvatarFallback
 } from '@repo/ui'
 import { 
     Loader2, 
@@ -34,12 +36,14 @@ import { useNewTaskStore } from '@/lib/stores/use-new-task-store'
 import { EditProjectDialog } from '@/components/projects/edit-project-dialog'
 import { QuickEditTaskDialog } from '@/components/tasks/quick-edit-task-dialog'
 import { useProjects } from '@/hooks/useProjects'
+import { useLifeRoles } from '@/hooks/useLifeRoles'
 
 export default function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params)
     const router = useRouter()
     const { t } = useLocaleStore()
     const { project, tasks, loading, error, refetch } = useProject(id)
+    const { roles } = useLifeRoles()
     const [members, setMembers] = React.useState<any[]>([])
     const { projects } = useProjects()
     const openNewTask = useNewTaskStore(state => state.openWithDefaults)
@@ -215,6 +219,29 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
                                     ) : (
                                         <span className="text-muted-foreground italic">Không có</span>
                                     )}
+                                </div>
+
+                                <Separator />
+
+                                <div className="flex items-center justify-between text-sm">
+                                    <div className="flex items-center gap-2 text-muted-foreground">
+                                        <Briefcase className="size-4" />
+                                        <span>Vai trò cuộc sống</span>
+                                    </div>
+                                    <span className="font-medium">
+                                        {project.life_role_id ? (
+                                            roles.find(r => r.id === project.life_role_id) ? (
+                                                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium" style={{
+                                                    backgroundColor: `${roles.find(r => r.id === project.life_role_id)?.color}15`,
+                                                    color: roles.find(r => r.id === project.life_role_id)?.color
+                                                }}>
+                                                    {roles.find(r => r.id === project.life_role_id)?.icon} {roles.find(r => r.id === project.life_role_id)?.display_name}
+                                                </span>
+                                            ) : 'Có vai trò'
+                                        ) : (
+                                            <span className="text-muted-foreground italic">Không có (Chung)</span>
+                                        )}
+                                    </span>
                                 </div>
                             </div>
                         </CardContent>

@@ -6,6 +6,7 @@ import { useProjects } from '@/hooks/useProjects'
 import { useCycles } from '@/hooks/useCycles'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { useLocaleStore } from '@/lib/stores/locale-store'
+import { useLifeRoles } from '@/hooks/useLifeRoles'
 import { PageHeader, Card, CardContent, CardHeader, CardTitle, Button, Badge, Progress } from '@repo/ui'
 import { Loader2, Plus, FolderKanban } from 'lucide-react'
 
@@ -14,6 +15,7 @@ export default function ProjectsPage() {
   const { canManage } = useCurrentUser()
   const { activeCycle } = useCycles()
   const { projects, loading } = useProjects(activeCycle?.id)
+  const { roles } = useLifeRoles()
 
   const priorityVariant = (priority: string) => {
     switch (priority) {
@@ -104,11 +106,21 @@ export default function ProjectsPage() {
                         className={`h-1.5 ${pct >= 80 ? '[&>div]:bg-primary' : pct >= 40 ? '[&>div]:bg-foreground/40' : ''}`}
                       />
                     </div>
-                    {p.owner && (
-                      <p className="mt-3 text-xs text-muted-foreground">
-                        PM: <span className="text-foreground font-medium">{p.owner.full_name}</span>
-                      </p>
-                    )}
+                    <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground border-t pt-3">
+                      {p.owner ? (
+                        <span>PM: <span className="text-foreground font-medium">{p.owner.full_name}</span></span>
+                      ) : (
+                        <span />
+                      )}
+                      {p.life_role_id && roles.find(r => r.id === p.life_role_id) && (
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium" style={{
+                            backgroundColor: `${roles.find(r => r.id === p.life_role_id)?.color}15`,
+                            color: roles.find(r => r.id === p.life_role_id)?.color
+                        }}>
+                          {roles.find(r => r.id === p.life_role_id)?.icon} {roles.find(r => r.id === p.life_role_id)?.display_name}
+                        </span>
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
               </Link>
