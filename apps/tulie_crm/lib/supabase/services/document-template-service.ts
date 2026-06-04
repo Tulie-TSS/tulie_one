@@ -935,9 +935,14 @@ function getNextVersionDocNumber(
 
     // Check if there is already an existing draft document
     const draftDoc = existingDocs.find(d => d.status === 'draft')
+    const signedDocs = existingDocs.filter(d => d.status === 'signed')
     if (draftDoc) {
-        // If a draft exists, keep its existing doc_number
-        return { nextDocNum: draftDoc.doc_number || baseDocNum, isNewVersion: false }
+        // Check if the draft's doc_number conflicts with any signed document in the group
+        const hasConflict = signedDocs.some(sd => sd.doc_number && sd.doc_number === draftDoc.doc_number)
+        if (!hasConflict) {
+            // If no conflict, keep its existing doc_number
+            return { nextDocNum: draftDoc.doc_number || baseDocNum, isNewVersion: false }
+        }
     }
 
     // No draft exists, but there are signed documents. We must create a new draft version.

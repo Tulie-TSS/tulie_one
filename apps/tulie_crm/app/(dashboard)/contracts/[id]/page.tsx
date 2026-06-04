@@ -51,6 +51,22 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
         notFound()
     }
 
+    // Auto-heal / promote contract status if it is currently draft/sent/viewed but has a signed date or completed milestone
+    const isDraftState = ['draft', 'sent', 'viewed'].includes(contract.status)
+    const hasCompletedMilestone = contract.milestones?.some((m: any) => m.status === 'completed')
+    if (isDraftState && (contract.signed_date || hasCompletedMilestone)) {
+        try {
+            const supabase = await createClient()
+            await supabase
+                .from('contracts')
+                .update({ status: 'active' })
+                .eq('id', id)
+            contract.status = 'active'
+        } catch (err) {
+            console.error('Failed to auto-promote contract status on page load:', err)
+        }
+    }
+
     const fromParam = resolvedSearchParams?.from
     const isFreelancerContract = contract.category === 'freelancer'
     const backHref = fromParam && typeof fromParam === 'string' && fromParam.startsWith('/') 
