@@ -16,7 +16,8 @@ import {
     SelectTrigger,
     SelectValue,
     toast,
-    Textarea
+    Textarea,
+    Separator
 } from '@repo/ui'
 import { Loader2, Plus, Trash2, Target } from 'lucide-react'
 import { createClient } from '@/lib/supabase'
