@@ -124,7 +124,7 @@ export function QuotationModernPaper({ quotation, brandConfig, selectedItemIds }
 
                             <div className="flex items-start gap-2 text-[13px] text-slate-700 leading-snug">
                                 <MapPin className="h-3 w-3 mt-1 shrink-0" />
-                                <span>{brandConfig?.address || "Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Thành phố Hà Nội"}</span>
+                                <span>{brandConfig?.address || "Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Thành phố Hà Nội, Việt Nam"}</span>
                             </div>
 
                             <div className="flex items-center gap-2 text-[13px] text-slate-700">

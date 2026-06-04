@@ -42,7 +42,7 @@ export const quotationTemplate = `
         <h3 style="font-size: 11pt; font-weight: 800; text-transform: uppercase; border-left: 4px solid #000; padding-left: 10px; margin-bottom: 15px;">Bên nhận đặt hàng (Provider): TULIE AGENCY</h3>
         <table style="width: 100%; border-collapse: collapse; font-size: 10pt; margin-left: 14px;">
             <tr><td style="width: 25%; padding: 4px 0;">Người đại diện:</td><td style="width: 45%; padding: 4px 0;"><strong>Ông Nguyễn Thanh Tùng</strong></td><td style="width: 10%; padding: 4px 0;">Chức vụ:</td><td style="padding: 4px 0;">Giám đốc</td></tr>
-            <tr><td style="padding: 4px 0;">Địa chỉ:</td><td colspan="3" style="padding: 4px 0;">Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Q. Hà Đông, TP. Hà Nội</td></tr>
+            <tr><td style="padding: 4px 0;">Địa chỉ:</td><td colspan="3" style="padding: 4px 0;">Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Thành phố Hà Nội, Việt Nam</td></tr>
             <tr><td style="padding: 4px 0;">MST:</td><td colspan="3" style="padding: 4px 0;">0110163102</td></tr>
         </table>
     </div>
@@ -81,7 +81,7 @@ export const quotationTemplate = `
     <h3 style="font-size: 11pt; font-weight: 800; text-transform: uppercase; margin-top: 30px; margin-bottom: 15px;">Điều 2: Giá trị hợp đồng và thanh toán</h3>
     <div style="font-size: 10pt; border: 1px solid #000; padding: 20px; background-color: #fafafa;">
         <p style="margin: 0 0 10px 0;">2.1. Tổng giá trị: <strong>{{total_amount_number}} VND</strong></p>
-        <p style="margin: 0 0 15px 0;">(Bằng chữ: <em>{{amount_in_words}} đồng.</em>)</p>
+        <p style="margin: 0 0 15px 0;">(Bằng chữ: <em>{{amount_in_words}}</em>)</p>
         <p style="margin: 0;">2.2. Phương thức thanh toán: Chuyển khoản qua ngân hàng:</p>
         <div style="margin-top: 10px; padding-left: 15px; border-left: 2px solid #ddd;">
             <p style="margin: 5px 0;">- Chủ tài khoản: <strong>CÔNG TY TNHH TULIE</strong></p>

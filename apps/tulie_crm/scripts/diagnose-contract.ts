@@ -162,7 +162,7 @@ async function diagnose() {
             customer_bank_account: '',
             customer_bank_name: '',
             provider_company: 'CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE',
-            provider_address: 'Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Hà Nội',
+            provider_address: 'Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Thành phố Hà Nội, Việt Nam',
             provider_tax_code: '0110163102',
             provider_representative: '',
             provider_position: '',

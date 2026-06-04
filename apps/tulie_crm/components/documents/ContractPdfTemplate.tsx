@@ -92,7 +92,7 @@ const ContractPdfTemplate: React.FC<ContractPdfTemplateProps> = ({ data }) => {
                     </View>
                     <View style={styles.partyInfo}>
                         <Text style={styles.partyLabel}>Địa chỉ:</Text>
-                        <Text style={styles.partyValue}>Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Q. Hà Đông, Hà Nội</Text>
+                        <Text style={styles.partyValue}>Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Thành phố Hà Nội, Việt Nam</Text>
                     </View>
                     <View style={styles.partyInfo}>
                         <Text style={styles.partyLabel}>Mã số thuế:</Text>

@@ -53,12 +53,12 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
                 <img src={brandConfig?.logo_url || "/file/tulie-agency-logo.png"} alt="Tulie" className="h-14 w-auto object-contain grayscale" />
 
                 {/* Company Contact Info */}
-                <div>
+                 <div>
                     <h3 className="text-[13px] uppercase mb-1">
                         {(brandConfig?.company_name || "Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie").toUpperCase()}
                     </h3>
                     <div className="text-[11px] space-y-0.5 font-normal">
-                        <p><span className="font-semibold">Địa chỉ:</span> {brandConfig?.address || "Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Q. Hà Đông, Hà Nội"}</p>
+                        <p><span className="font-semibold">Địa chỉ:</span> {brandConfig?.address || "Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Thành phố Hà Nội, Việt Nam"}</p>
                         <p><span className="font-semibold">MST:</span> {brandConfig?.tax_code || "0110163102"}</p>
                         <p><span className="font-semibold">Hotline:</span> {brandConfig?.phone || "098.898.4554"} - <span className="font-semibold">Email:</span> {brandConfig?.email || "hi@tulie.vn"}</p>
                         <p><span className="font-semibold">Website:</span> {brandConfig?.website || "tulie.vn"}</p>
@@ -252,7 +252,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
                                 <tr>
                                     <td colSpan={11} className="border border-black py-3 px-3 text-[11px] font-medium">
                                         <span className="font-bold underline uppercase mr-1">Bằng chữ:</span> 
-                                        <span className="first-letter:uppercase">{readNumberToWords(displayTotal)} đồng./.</span>
+                                        <span className="first-letter:uppercase">{readNumberToWords(displayTotal)}</span>
                                     </td>
                                 </tr>
                             </>

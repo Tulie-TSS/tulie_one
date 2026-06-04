@@ -69,7 +69,7 @@ export const LATEX_CONTRACT_TEMPLATE = `
 \\textbf{Bên cung cấp dịch vụ (Bên B): CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE} \\\\
 \\begin{tabular}{@{}L{0.25\\textwidth} L{0.45\\textwidth} L{0.1\\textwidth} L{0.2\\textwidth}@{}}
     Người đại diện: & \\textbf{Ông Nguyễn Thanh Tùng} & Chức vụ: & Giám đốc \\\\
-    Địa chỉ: & \\multicolumn{3}{L{0.75\\textwidth}}{Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Quận Hà Đông, TP. Hà Nội} \\\\
+    Địa chỉ: & \\multicolumn{3}{L{0.75\\textwidth}}{Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Thành phố Hà Nội, Việt Nam} \\\\
     Mã số thuế: & \\multicolumn{3}{l}{0110163102} \\\\
     Số tài khoản: & 86683979 & Tại: & Techcombank
 \\end{tabular}
@@ -140,7 +140,7 @@ export const LATEX_PURCHASE_ORDER_TEMPLATE = `
 \\textbf{Bên nhận đặt hàng (Bên B): CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE} \\\\
 \\begin{tabular}{@{}L{0.25\\textwidth} L{0.45\\textwidth} L{0.1\\textwidth} L{0.2\\textwidth}@{}}
     Người đại diện: & \\textbf{Ông Nguyễn Thanh Tùng} & Chức vụ: & Giám đốc \\\\
-    Địa chỉ: & \\multicolumn{3}{L{0.75\\textwidth}}{Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Quận Hà Đông, TP. Hà Nội} \\\\
+    Địa chỉ: & \\multicolumn{3}{L{0.75\\textwidth}}{Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Thành phố Hà Nội, Việt Nam} \\\\
     Mã số thuế: & \\multicolumn{3}{l}{0110163102}
 \\end{tabular}
 

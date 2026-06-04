@@ -69,7 +69,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                     <div className="space-y-2 text-[11px] text-foreground font-medium">
                         <div className="flex items-start gap-3">
                             <MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0 text-slate-400" />
-                            <span>Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, TP. Hà Nội, Việt Nam</span>
+                            <span>Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Thành phố Hà Nội, Việt Nam</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <Phone className="h-3.5 w-3.5 shrink-0 text-slate-400" />
@@ -294,7 +294,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                         Bằng chữ / Amount in words
                     </p>
                     <p className="text-[11px] text-zinc-800 font-semibold leading-relaxed first-letter:uppercase">
-                        {readNumberToWords(finalAmount)} đồng./.
+                        {readNumberToWords(finalAmount)}
                     </p>
                 </div>
 
