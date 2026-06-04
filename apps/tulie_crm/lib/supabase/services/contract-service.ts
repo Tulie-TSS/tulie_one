@@ -192,9 +192,21 @@ export async function updateContract(id: string, contract: Partial<Contract>, mi
         // Get current contract for status change detection
         const { data: currentContract } = await supabase
             .from('contracts')
-            .select('status, created_by, contract_number, title')
+            .select('status, created_by, contract_number, title, signed_date')
             .eq('id', id)
             .single()
+
+        // Auto-promote contract status to 'active' if there is any completed milestone
+        const hasCompletedMilestone = milestones?.some(m => m.status === 'completed')
+        if (hasCompletedMilestone) {
+            const targetStatus = cleanContract.status || currentContract?.status
+            if (targetStatus === 'draft' || targetStatus === 'sent' || targetStatus === 'viewed') {
+                cleanContract.status = 'active'
+            }
+            if (!cleanContract.signed_date && !currentContract?.signed_date) {
+                cleanContract.signed_date = new Date().toISOString().split('T')[0]
+            }
+        }
 
         // 1. Update contract
         const { error: contractError } = await supabase
@@ -649,6 +661,29 @@ export async function confirmMilestonePayment(
 
         if (updateMsError) {
             return { success: false, error: updateMsError.message }
+        }
+
+        // Auto-transition contract status to 'active' when a milestone is paid/completed
+        const { data: currentContract } = await supabase
+            .from('contracts')
+            .select('status, signed_date')
+            .eq('id', contract.id)
+            .single()
+
+        if (currentContract) {
+            const updates: any = {}
+            if (['draft', 'sent', 'viewed'].includes(currentContract.status)) {
+                updates.status = 'active'
+            }
+            if (!currentContract.signed_date) {
+                updates.signed_date = new Date(paymentDate).toISOString().split('T')[0]
+            }
+            if (Object.keys(updates).length > 0) {
+                await supabase
+                    .from('contracts')
+                    .update(updates)
+                    .eq('id', contract.id)
+            }
         }
 
         // 3. Auto-create output invoice

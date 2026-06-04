@@ -14,10 +14,10 @@ export async function POST(
         const { createAdminClient } = await import('@/lib/supabase/admin')
         const supabase = createAdminClient()
 
-        // Get current status
+        // Get current status and type
         const { data: doc, error: fetchErr } = await supabase
             .from('contract_documents')
-            .select('status')
+            .select('status, type')
             .eq('id', docId)
             .eq('contract_id', id)
             .single()
@@ -36,6 +36,31 @@ export async function POST(
 
         if (error) {
             return NextResponse.json({ error: error.message }, { status: 500 })
+        }
+
+        // Auto-transition contract status to 'active' when core document is marked as signed
+        if (newStatus === 'signed' && ['contract', 'freelance_contract', 'order'].includes(doc.type)) {
+            const { data: currentContract } = await supabase
+                .from('contracts')
+                .select('status, signed_date')
+                .eq('id', id)
+                .single()
+
+            if (currentContract) {
+                const updates: any = {}
+                if (['draft', 'sent', 'viewed'].includes(currentContract.status)) {
+                    updates.status = 'active'
+                }
+                if (!currentContract.signed_date) {
+                    updates.signed_date = new Date().toISOString().split('T')[0]
+                }
+                if (Object.keys(updates).length > 0) {
+                    await supabase
+                        .from('contracts')
+                        .update(updates)
+                        .eq('id', id)
+                }
+            }
         }
 
         return NextResponse.json({ success: true, status: newStatus })
