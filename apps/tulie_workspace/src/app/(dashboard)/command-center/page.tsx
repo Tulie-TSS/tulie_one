@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState, useCallback } from 'react'
 import { useLocaleStore } from '@/lib/stores/locale-store'
 import { useLifeRoleStore } from '@/lib/stores/life-role-store'
 import { useLifeRoles } from '@/hooks/useLifeRoles'
@@ -26,7 +26,12 @@ import {
   ClipboardList,
   Building2,
   Heart,
-  Dumbbell
+  Dumbbell,
+  Edit2,
+  Loader2,
+  Coffee,
+  Users,
+  Settings
 } from 'lucide-react'
 
 import { RoleSwitcher } from '@/components/command-center/role-switcher'
@@ -34,6 +39,10 @@ import { TodaysPulse } from '@/components/command-center/todays-pulse'
 import { TaskStream } from '@/components/command-center/task-stream'
 import { SmartAlerts, generateAlerts } from '@/components/command-center/smart-alerts'
 import { WeeklyProgress } from '@/components/command-center/weekly-progress'
+import { Button } from '@repo/ui'
+import { useTimeBlocks } from '@/hooks/useTimeBlocks'
+import { EditScheduleDialog } from '@/components/command-center/edit-schedule-dialog'
+import { RoleIcon } from '@/components/command-center/role-icon'
 
 function getHabitIcon(habitIcon: string) {
   const cn = "size-4 text-primary shrink-0"
@@ -48,6 +57,22 @@ function getHabitIcon(habitIcon: string) {
   }
 }
 
+function getBlockIcon(type: string, role?: any) {
+  if (role && role.icon) {
+    return <RoleIcon name={role.icon} className="size-3.5" />
+  }
+  switch (type) {
+    case 'deep_work': return <Briefcase className="size-3.5" />
+    case 'meeting': return <Users className="size-3.5" />
+    case 'admin': return <Settings className="size-3.5" />
+    case 'learning': return <BookOpen className="size-3.5" />
+    case 'exercise': return <Dumbbell className="size-3.5" />
+    case 'family': return <Home className="size-3.5" />
+    case 'rest': return <Coffee className="size-3.5" />
+    default: return <Clock className="size-3.5" />
+  }
+}
+
 export default function CommandCenterPage() {
   const { t } = useLocaleStore()
   const { activeRole } = useLifeRoleStore()
@@ -56,6 +81,8 @@ export default function CommandCenterPage() {
   const { plan } = useDailyPlan()
   const { user } = useCurrentUser()
   const { habits, loading: habitsLoading, toggleHabit } = useHabits()
+  const { timeBlocks, loading: blocksLoading, saveTimeBlocks } = useTimeBlocks()
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false)
 
   // Initialize life roles on first visit
   useEffect(() => {
@@ -65,13 +92,29 @@ export default function CommandCenterPage() {
   // Get current time context
   const now = new Date()
   const hour = now.getHours()
+  const minute = now.getMinutes()
   const greeting = hour < 12 ? 'Chào buổi sáng' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối'
 
-  // Current time block context
-  const timeContext = hour >= 8 && hour < 12 ? 'FPT IS — Deep Work' :
-                      hour >= 13 && hour < 17 ? 'FPT IS — Working' :
-                      hour >= 18 && hour < 21 ? 'Tulie Business' :
-                      hour >= 21 ? 'Personal / Rest' : 'Morning Routine'
+  // Check if current time is within a block (handling overnight blocks)
+  const isBlockActive = useCallback((startTime: string, endTime: string) => {
+    const [sH, sM] = startTime.split(':').map(Number)
+    const [eH, eM] = endTime.split(':').map(Number)
+    const currentVal = hour * 60 + minute
+    const startVal = sH * 60 + sM
+    const endVal = eH * 60 + eM
+
+    if (endVal < startVal) {
+      // Overnight block (e.g. 22:00 to 06:30)
+      return currentVal >= startVal || currentVal < endVal
+    }
+    return currentVal >= startVal && currentVal < endVal
+  }, [hour, minute])
+
+  const activeBlock = useMemo(() => {
+    return timeBlocks.find(b => isBlockActive(b.start_time, b.end_time))
+  }, [timeBlocks, isBlockActive])
+
+  const timeContext = activeBlock ? activeBlock.title : 'Morning Routine'
 
   // Filter today's tasks (due today or doing/ready)
   const todayTasks = useMemo(() => {
@@ -180,38 +223,56 @@ export default function CommandCenterPage() {
         <div className="lg:col-span-3 space-y-6">
           {/* Time Block Schedule */}
           <div className="rounded-xl border border-muted bg-card/60 backdrop-blur-sm p-4 space-y-4">
-            <h3 className="text-sm font-bold flex items-center gap-2 text-foreground">
-              <Clock className="size-4 text-primary" />
-              Lịch hôm nay
-            </h3>
-            <div className="space-y-1.5">
-              {[
-                { time: '06:30', label: 'Thức dậy / Morning routine', icon: <Sun className="size-3.5" />, active: hour >= 6 && hour < 8 },
-                { time: '08:30', label: 'FPT IS — Bắt đầu làm việc', icon: <Briefcase className="size-3.5" />, active: hour >= 8 && hour < 12 },
-                { time: '12:00', label: 'Nghỉ trưa', icon: <Utensils className="size-3.5" />, active: hour >= 12 && hour < 13 },
-                { time: '13:00', label: 'FPT IS — Buổi chiều', icon: <Briefcase className="size-3.5" />, active: hour >= 13 && hour < 17 },
-                { time: '17:30', label: 'Nghỉ / Gia đình', icon: <Home className="size-3.5" />, active: hour >= 17 && hour < 18 },
-                { time: '18:00', label: 'Tulie Business', icon: <Rocket className="size-3.5" />, active: hour >= 18 && hour < 21 },
-                { time: '21:00', label: 'Cá nhân / Thư giãn', icon: <BookOpen className="size-3.5" />, active: hour >= 21 && hour < 22 },
-                { time: '22:00', label: 'Đi ngủ', icon: <Moon className="size-3.5" />, active: hour >= 22 },
-              ].map((block, i) => (
-                <div
-                  key={i}
-                  className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs transition-all duration-200 ${
-                    block.active
-                      ? 'bg-primary/10 text-primary font-semibold shadow-sm'
-                      : 'text-muted-foreground hover:bg-muted/30'
-                  }`}
-                >
-                  <span className="w-10 font-mono text-[11px] font-medium opacity-80">{block.time}</span>
-                  <div className={block.active ? 'text-primary' : 'text-muted-foreground/60'}>
-                    {block.icon}
-                  </div>
-                  <span className="flex-1 truncate">{block.label}</span>
-                  {block.active && <span className="size-1.5 rounded-full bg-primary animate-ping" />}
-                </div>
-              ))}
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-bold flex items-center gap-2 text-foreground">
+                <Clock className="size-4 text-primary" />
+                Lịch hôm nay
+              </h3>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 text-muted-foreground hover:text-foreground cursor-pointer"
+                onClick={() => setScheduleDialogOpen(true)}
+              >
+                <Edit2 className="size-3.5" />
+              </Button>
             </div>
+            
+            {blocksLoading ? (
+              <div className="flex justify-center py-6">
+                <Loader2 className="size-5 animate-spin text-muted-foreground" />
+              </div>
+            ) : timeBlocks.length === 0 ? (
+              <p className="text-xs text-muted-foreground text-center py-4">Chưa có lịch trình cho hôm nay</p>
+            ) : (
+              <div className="space-y-1.5">
+                {timeBlocks.map((block) => {
+                  const isActive = isBlockActive(block.start_time, block.end_time)
+                  const role = roles.find(r => r.id === block.life_role_id)
+                  
+                  return (
+                    <div
+                      key={block.id}
+                      className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs transition-all duration-200 ${
+                        isActive
+                          ? 'bg-primary/10 text-primary font-semibold shadow-sm'
+                          : 'text-muted-foreground hover:bg-muted/30'
+                      }`}
+                    >
+                      <span className="w-10 font-mono text-[11px] font-medium opacity-80">{block.start_time}</span>
+                      <div 
+                        className={isActive ? 'text-primary' : 'text-muted-foreground/60'}
+                        style={role?.color && !isActive ? { color: role.color } : undefined}
+                      >
+                        {getBlockIcon(block.block_type, role)}
+                      </div>
+                      <span className="flex-1 truncate">{block.title}</span>
+                      {isActive && <span className="size-1.5 rounded-full bg-primary animate-ping" />}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </div>
 
           {/* Habit Quick View */}
@@ -291,6 +352,13 @@ export default function CommandCenterPage() {
           </div>
         </div>
       </div>
+
+      <EditScheduleDialog
+        open={scheduleDialogOpen}
+        onOpenChange={setScheduleDialogOpen}
+        initialBlocks={timeBlocks}
+        onSave={saveTimeBlocks}
+      />
     </div>
   )
 }
