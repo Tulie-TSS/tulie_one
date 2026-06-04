@@ -26,12 +26,14 @@ import {
 } from '@repo/ui'
 import { Loader2, ArrowLeft, Save } from 'lucide-react'
 import { createClient } from '@/lib/supabase'
+import { useLifeRoles } from '@/hooks/useLifeRoles'
 
 export default function NewProjectPage() {
     const router = useRouter()
     const { t } = useLocaleStore()
     const { user, loading: userLoading } = useCurrentUser()
     const { activeCycle } = useCycles()
+    const { roles, loading: rolesLoading } = useLifeRoles()
     
     const [loading, setLoading] = useState(false)
     const [users, setUsers] = useState<{ id: string; full_name: string }[]>([])
@@ -45,6 +47,7 @@ export default function NewProjectPage() {
         status: 'planning',
         owner_id: '',
         member_ids: [] as string[],
+        life_role_id: 'none',
     })
 
     useEffect(() => {
@@ -71,7 +74,7 @@ export default function NewProjectPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!activeCycle) {
-            setError('Không có chu kỳ (Cycle) hoạt động. Vui lòng tạo chu kỳ trước.')
+            toast.error('Không có chu kỳ (Cycle) hoạt động. Vui lòng tạo chu kỳ trước.')
             return
         }
 
@@ -89,6 +92,7 @@ export default function NewProjectPage() {
                     owner_id: formData.owner_id,
                     cycle_id: activeCycle.id,
                     organization_id: user.organization_id,
+                    life_role_id: formData.life_role_id === 'none' ? null : formData.life_role_id,
                 })
                 .select()
                 .single()
@@ -182,10 +186,30 @@ export default function NewProjectPage() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label>Chu kỳ áp dụng</Label>
-                                <div className="h-10 px-3 flex items-center rounded-md border border-input bg-muted/50 text-sm">
-                                    {activeCycle?.name || 'Phase 1: Bootstrap'}
-                                </div>
+                                <Label>Vai trò cuộc sống (Life Role)</Label>
+                                <Select 
+                                    value={formData.life_role_id} 
+                                    onValueChange={v => setFormData(prev => ({ ...prev, life_role_id: v }))}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Chọn vai trò" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">Không có (Chung)</SelectItem>
+                                        {roles.map(r => (
+                                            <SelectItem key={r.id} value={r.id}>
+                                                {r.icon} {r.display_name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label>Chu kỳ áp dụng</Label>
+                            <div className="h-10 px-3 flex items-center rounded-md border border-input bg-muted/50 text-sm">
+                                {activeCycle?.name || 'Phase 1: Bootstrap'}
                             </div>
                         </div>
 

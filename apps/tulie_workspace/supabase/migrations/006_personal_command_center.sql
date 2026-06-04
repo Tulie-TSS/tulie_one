@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS time_blocks (
   start_time TIME NOT NULL,
   end_time TIME NOT NULL,
   title TEXT,
-  task_id UUID REFERENCES tasks(id) ON DELETE SET NULL,
+  task_id TEXT REFERENCES tasks(id) ON DELETE SET NULL,
   is_completed BOOLEAN DEFAULT false,
   actual_start TIMESTAMPTZ,
   actual_end TIMESTAMPTZ,

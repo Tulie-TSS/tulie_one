@@ -21,6 +21,7 @@ import {
 } from '@repo/ui'
 import { Loader2, Save } from 'lucide-react'
 import { useCycles } from '@/hooks/useCycles'
+import { useLifeRoles } from '@/hooks/useLifeRoles'
 
 interface ProjectData {
     id: string
@@ -28,6 +29,7 @@ interface ProjectData {
     description: string | null
     status: string
     cycle_id: string | null
+    life_role_id?: string | null
 }
 
 interface EditProjectDialogProps {
@@ -40,11 +42,13 @@ interface EditProjectDialogProps {
 export function EditProjectDialog({ project, open, onOpenChange, onSuccess }: EditProjectDialogProps) {
     const [loading, setLoading] = useState(false)
     const { cycles } = useCycles()
+    const { roles } = useLifeRoles()
     const [formData, setFormData] = useState({
         name: project.name,
         description: project.description || '',
         status: project.status,
-        cycle_id: project.cycle_id || 'none'
+        cycle_id: project.cycle_id || 'none',
+        life_role_id: project.life_role_id || 'none'
     })
 
     useEffect(() => {
@@ -52,7 +56,8 @@ export function EditProjectDialog({ project, open, onOpenChange, onSuccess }: Ed
             name: project.name,
             description: project.description || '',
             status: project.status,
-            cycle_id: project.cycle_id || 'none'
+            cycle_id: project.cycle_id || 'none',
+            life_role_id: project.life_role_id || 'none'
         })
     }, [project])
 
@@ -72,6 +77,7 @@ export function EditProjectDialog({ project, open, onOpenChange, onSuccess }: Ed
                     description: formData.description,
                     status: formData.status,
                     cycle_id: formData.cycle_id === 'none' ? null : formData.cycle_id,
+                    life_role_id: formData.life_role_id === 'none' ? null : formData.life_role_id,
                     updated_at: new Date().toISOString()
                 })
                 .eq('id', project.id)
@@ -151,6 +157,24 @@ export function EditProjectDialog({ project, open, onOpenChange, onSuccess }: Ed
                                 </SelectContent>
                             </Select>
                         </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="life_role">Vai trò cuộc sống (Life Role)</Label>
+                        <Select 
+                            value={formData.life_role_id} 
+                            onValueChange={(val) => setFormData({ ...formData, life_role_id: val })}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Chọn vai trò cuộc sống" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="none">Không có (Chung)</SelectItem>
+                                {roles.map(r => (
+                                    <SelectItem key={r.id} value={r.id}>{r.icon} {r.display_name}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
                 </div>
 

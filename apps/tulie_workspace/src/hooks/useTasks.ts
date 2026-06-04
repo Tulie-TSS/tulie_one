@@ -34,7 +34,7 @@ export interface TaskRow {
   last_completed_date?: string | null
   // joined
   assignee?: { id: string; full_name: string; email: string } | null
-  project?: { id: string; name: string } | null
+  project?: { id: string; name: string; life_role_id?: string | null } | null
   tags?: { id: string; name: string; color: string }[]
 }
 
@@ -78,7 +78,7 @@ export function useTasks(filters?: { status?: TaskStatus; assignedTo?: string })
         .select(`
           *,
           assignee:user_profiles!tasks_assigned_to_fkey(id, full_name, email),
-          project:projects(id, name),
+          project:projects(id, name, life_role_id),
           tags:task_tags(tag:tags(id, name, color))
         `)
         .order('priority', { ascending: false })

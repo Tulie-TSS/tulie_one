@@ -72,7 +72,7 @@ export default function CommandCenterPage() {
     startOfWeek.setHours(0, 0, 0, 0)
 
     tasks.forEach(t => {
-      const roleId = t.life_role_id
+      const roleId = t.life_role_id || t.project?.life_role_id
       if (!roleId || !result[roleId]) return
 
       // Check if task is relevant this week

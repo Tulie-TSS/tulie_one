@@ -21,9 +21,6 @@ import {
   TrendingUp,
   Network,
   Compass,
-  Sparkles,
-  GraduationCap,
-  LineChart,
 } from "lucide-react";
 
 import {
@@ -59,10 +56,6 @@ const NAV_ITEMS = [
   { href: "/tasks", labelKey: "nav.tasks", icon: CheckSquare, allowedRoles: ['admin', 'manager', 'maker', 'observer'] },
   { href: "/projects", labelKey: "nav.projects", icon: FolderKanban, allowedRoles: ['admin', 'manager', 'maker', 'observer'] },
   { href: "/cycles", labelKey: "nav.cycles", icon: RefreshCw, allowedRoles: ['admin', 'manager', 'maker', 'observer'] },
-  { type: "divider" },
-  { href: "/habits", labelKey: "nav.habits", icon: Sparkles, allowedRoles: ['admin', 'manager', 'maker', 'observer'] },
-  { href: "/learning", labelKey: "nav.learning", icon: GraduationCap, allowedRoles: ['admin', 'manager', 'maker', 'observer'] },
-  { href: "/kpi", labelKey: "nav.kpi", icon: LineChart, allowedRoles: ['admin', 'manager'] },
   { type: "divider" },
   { href: "/analytics", labelKey: "nav.analytics", icon: BarChart3, allowedRoles: ['admin', 'manager'] },
   { href: "/templates", labelKey: "nav.templates", icon: LayoutTemplate, allowedRoles: ['admin', 'manager'] },

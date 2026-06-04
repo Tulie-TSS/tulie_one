@@ -12,6 +12,7 @@ export interface ProjectRow {
   cycle_id: string | null
   owner_id: string
   created_at: string
+  life_role_id?: string | null
 }
 
 export interface TaskRow {

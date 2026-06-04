@@ -13,6 +13,7 @@ export interface ProjectRow {
   priority: string
   created_at: string
   updated_at: string
+  life_role_id?: string | null
   // computed
   task_count?: number
   done_count?: number

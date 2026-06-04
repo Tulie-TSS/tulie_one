@@ -76,12 +76,16 @@ export async function POST(req: NextRequest) {
           break
         }
 
-        // Get today's tasks
+        // Get today's tasks with inherited project life role
         const { data: tasks } = await supabase
           .from('tasks')
           .select(`
             id, title, status, priority, life_role_id,
-            life_role:life_roles(display_name, icon)
+            life_role:life_roles(display_name, icon),
+            project:projects(
+              id, name, life_role_id,
+              life_role:life_roles(display_name, icon)
+            )
           `)
           .eq('assigned_to', config.user_id)
           .in('status', ['doing', 'ready', 'in_review'])
@@ -95,8 +99,9 @@ export async function POST(req: NextRequest) {
         let msg = `📋 <b>Tasks hôm nay (${tasks.length}):</b>\n\n`
         tasks.forEach((t: any, i: number) => {
           const status = t.status === 'doing' ? '🔵' : t.status === 'ready' ? '⚪' : '🟡'
-          const role = t.life_role ? `[${t.life_role.icon}${t.life_role.display_name}]` : ''
-          msg += `${status} ${i + 1}. ${role} ${t.title}\n`
+          const role = t.life_role || t.project?.life_role
+          const roleText = role ? `[${role.icon}${role.display_name}] ` : ''
+          msg += `${status} ${i + 1}. ${roleText}${t.title}\n`
         })
         msg += `\n💡 Gõ <code>/done [số]</code> để hoàn thành (VD: /done 1)\nHoặc <code>/done [tên task]</code>`
 
@@ -168,11 +173,11 @@ export async function POST(req: NextRequest) {
 
         const spaceIndex = args.indexOf(' ')
         if (spaceIndex === -1) {
-          await tg.sendMessage(chatId, '❌ Cú pháp đúng: <code>/add [fpt|tulie|personal] [tên công việc]</code>\nVí dụ: <code>/add fpt Đọc tài liệu quy trình</code>')
+          await tg.sendMessage(chatId, '❌ Cú pháp đúng: <code>/add [dự án / vai trò] [tên công việc]</code>\nVí dụ:\n• <code>/add fpt Đọc tài liệu quy trình</code>\n• <code>/add website Thiết kế giao diện mới</code>')
           break
         }
 
-        const roleTag = args.substring(0, spaceIndex).toLowerCase()
+        const queryTag = args.substring(0, spaceIndex).toLowerCase()
         const taskTitle = args.substring(spaceIndex + 1).trim()
 
         if (!taskTitle) {
@@ -180,39 +185,112 @@ export async function POST(req: NextRequest) {
           break
         }
 
-        // Map tag to role enum
-        let roleEnum: 'fpt_is' | 'tulie' | 'personal' = 'personal'
-        if (roleTag === 'fpt' || roleTag === 'fpt_is') roleEnum = 'fpt_is'
-        else if (roleTag === 'tulie') roleEnum = 'tulie'
+        let projectId: string | null = null
+        let lifeRoleId: string | null = null
+        let roleDisplayName = ''
+        let roleIcon = '📋'
 
-        // Get user's life role
-        const { data: role } = await supabase
-          .from('life_roles')
-          .select('id, display_name, icon')
-          .eq('user_id', config.user_id)
-          .eq('role', roleEnum)
-          .single()
+        // 1. Check if queryTag matches any Project name
+        const { data: matchingProjects } = await supabase
+          .from('projects')
+          .select('id, name, life_role_id')
+          .ilike('name', `%${queryTag}%`)
 
-        if (!role) {
-          await tg.sendMessage(chatId, '❌ Không tìm thấy vai trò phù hợp trong cơ sở dữ liệu.')
-          break
+        if (matchingProjects && matchingProjects.length > 0) {
+          const project = matchingProjects[0]
+          projectId = project.id
+          lifeRoleId = project.life_role_id
+          roleDisplayName = `Dự án: ${project.name}`
+          roleIcon = '📁'
+
+          // Get role icon if project is linked to a role
+          if (lifeRoleId) {
+            const { data: role } = await supabase
+              .from('life_roles')
+              .select('display_name, icon')
+              .eq('id', lifeRoleId)
+              .single()
+            if (role) {
+              roleIcon = role.icon
+              roleDisplayName = `${role.icon} ${project.name}`
+            }
+          }
+        } else {
+          // 2. Fallback: Check if it's a life role tag
+          let roleEnum: 'fpt_is' | 'tulie' | 'personal' = 'personal'
+          if (queryTag === 'fpt' || queryTag === 'fpt_is') roleEnum = 'fpt_is'
+          else if (queryTag === 'tulie') roleEnum = 'tulie'
+
+          const { data: role } = await supabase
+            .from('life_roles')
+            .select('id, display_name, icon')
+            .eq('user_id', config.user_id)
+            .eq('role', roleEnum)
+            .single()
+
+          if (role) {
+            lifeRoleId = role.id
+            roleDisplayName = role.display_name
+            roleIcon = role.icon
+
+            // Find a project belonging to this role
+            const { data: roleProjects } = await supabase
+              .from('projects')
+              .select('id')
+              .eq('life_role_id', lifeRoleId)
+              .limit(1)
+
+            if (roleProjects && roleProjects.length > 0) {
+              projectId = roleProjects[0]!.id
+            }
+          }
         }
 
+        // If we still don't have a projectId, we can't insert due to NOT NULL constraint
+        if (!projectId) {
+          // Find any project in the database
+          const { data: anyProjects } = await supabase
+            .from('projects')
+            .select('id, name')
+            .limit(1)
+
+          if (anyProjects && anyProjects.length > 0) {
+            projectId = anyProjects[0]!.id
+            if (!roleDisplayName) {
+              roleDisplayName = `Dự án: ${anyProjects[0]!.name}`
+            }
+          } else {
+            await tg.sendMessage(chatId, '❌ Hệ thống chưa có Dự án (Project) nào. Hãy tạo dự án trên Web App trước khi thêm việc.')
+            break
+          }
+        }
+
+        const taskId = `tk_${Date.now()}`
         const now = new Date().toISOString()
-        await supabase
+        
+        const { error: insertErr } = await supabase
           .from('tasks')
           .insert({
+            id: taskId,
             title: taskTitle,
+            project_id: projectId,
             assigned_to: config.user_id,
             created_by: config.user_id,
             status: 'ready',
             priority: 5,
-            life_role_id: role.id,
+            life_role_id: lifeRoleId,
+            estimated_effort_hours: 1.0, // Default required effort
             created_at: now,
             updated_at: now
           })
 
-        await tg.sendMessage(chatId, `➕ Đã thêm [${role.icon} ${role.display_name}]: <b>${taskTitle}</b> vào danh sách chờ xử lý!`)
+        if (insertErr) {
+          console.error('Task insert error:', insertErr)
+          await tg.sendMessage(chatId, '❌ Lỗi khi thêm công việc vào cơ sở dữ liệu.')
+          break
+        }
+
+        await tg.sendMessage(chatId, `➕ Đã thêm [${roleIcon} ${roleDisplayName}]: <b>${taskTitle}</b> vào danh sách chờ xử lý!`)
         break
       }
 

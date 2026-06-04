@@ -74,7 +74,11 @@ export async function GET(req: NextRequest) {
           .from('tasks')
           .select(`
             title, status, priority, life_role_id, requested_deadline,
-            life_role:life_roles(display_name, icon, role)
+            life_role:life_roles(display_name, icon, role),
+            project:projects(
+              id, name, life_role_id,
+              life_role:life_roles(display_name, icon, role)
+            )
           `)
           .eq('assigned_to', userId)
           .in('status', ['doing', 'ready', 'in_review'])
@@ -85,6 +89,12 @@ export async function GET(req: NextRequest) {
           if (!t.requested_deadline) return false
           return new Date(t.requested_deadline) < now && t.status !== 'done'
         })
+
+        const getRoleForTask = (t: any) => {
+          if (t.life_role) return t.life_role
+          if (t.project?.life_role) return t.project.life_role
+          return null
+        }
 
         // Get habits
         const { data: habits } = await supabase
@@ -100,12 +110,15 @@ export async function GET(req: NextRequest) {
             message = tg.buildMorningBriefing({
               userName: profile?.full_name || 'bạn',
               sleepHours: plan?.sleep_hours || null,
-              todayTasks: taskList.map((t: any) => ({
-                title: t.title,
-                role: t.life_role?.display_name || '',
-                roleIcon: t.life_role?.icon || '',
-                priority: t.priority,
-              })),
+              todayTasks: taskList.map((t: any) => {
+                const r = getRoleForTask(t)
+                return {
+                  title: t.title,
+                  role: r?.display_name || '',
+                  roleIcon: r?.icon || '',
+                  priority: t.priority,
+                }
+              }),
               overdueTasks: overdueTasks.length,
               habits: (habits || []).map(h => ({
                 name: h.name,
@@ -128,11 +141,14 @@ export async function GET(req: NextRequest) {
             message = tg.buildAfternoonUpdate({
               morningCompleted: morningDone || 0,
               morningTotal: Math.ceil(taskList.length / 2),
-              afternoonTasks: taskList.slice(0, 5).map((t: any) => ({
-                title: t.title,
-                role: t.life_role?.display_name || '',
-                roleIcon: t.life_role?.icon || '',
-              })),
+              afternoonTasks: taskList.slice(0, 5).map((t: any) => {
+                const r = getRoleForTask(t)
+                return {
+                  title: t.title,
+                  role: r?.display_name || '',
+                  roleIcon: r?.icon || '',
+                }
+              }),
               overdueTasks: overdueTasks.length,
             })
             break
@@ -152,10 +168,13 @@ export async function GET(req: NextRequest) {
               sleepHours: plan?.sleep_hours || null,
               exerciseDone: plan?.exercise_done || false,
               topAchievement: null,
-              tomorrowTop3: taskList.slice(0, 3).map((t: any) => ({
-                title: t.title,
-                role: t.life_role?.display_name || '',
-              })),
+              tomorrowTop3: taskList.slice(0, 3).map((t: any) => {
+                const r = getRoleForTask(t)
+                return {
+                  title: t.title,
+                  role: r?.display_name || '',
+                }
+              }),
             })
             break
         }

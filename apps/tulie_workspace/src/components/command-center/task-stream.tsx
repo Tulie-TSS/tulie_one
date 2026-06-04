@@ -17,8 +17,9 @@ interface TaskStreamProps {
 }
 
 function getRoleForTask(task: TaskRow, roles: LifeRole[]) {
-  if (!task.life_role_id) return null
-  return roles.find(r => r.id === task.life_role_id) || null
+  const roleId = task.life_role_id || task.project?.life_role_id
+  if (!roleId) return null
+  return roles.find(r => r.id === roleId) || null
 }
 
 function PriorityDot({ priority }: { priority: number }) {
