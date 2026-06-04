@@ -31,6 +31,10 @@ export const translations = {
   "nav.settings": { vi: "Cài đặt", en: "Settings" },
   "nav.search": { vi: "Tìm kiếm", en: "Search" },
   "nav.resources": { vi: "Tài liệu & Nhúng", en: "Resources & Embeds" },
+  "nav.commandCenter": { vi: "Command Center", en: "Command Center" },
+  "nav.habits": { vi: "Thói quen", en: "Habits" },
+  "nav.learning": { vi: "Học tập (FPT)", en: "Learning (FPT)" },
+  "nav.kpi": { vi: "KPI Tulie", en: "KPI Tulie" },
 
   // ============================================
   // Trạng thái Task / Task Statuses

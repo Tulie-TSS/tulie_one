@@ -1,13 +1,16 @@
 {
-  "functions": {
-    "app/**/*.ts": {
-      "memory": 1024,
-      "maxDuration": 30
+  "crons": [
+    {
+      "path": "/api/telegram/notify?schedule=morning",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/telegram/notify?schedule=afternoon",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/telegram/notify?schedule=evening",
+      "schedule": "30 14 * * *"
     }
-  },
-  "images": {
-    "sizes": [256, 384, 512, 640],
-    "minimumCacheTTL": 60,
-    "formats": ["image/avif", "image/webp"]
-  }
+  ]
 }

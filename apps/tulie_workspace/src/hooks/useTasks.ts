@@ -26,6 +26,12 @@ export interface TaskRow {
   carried_over_count: number
   created_at: string
   updated_at: string
+  // personal command center columns
+  life_role_id?: string | null
+  energy_required?: 'high' | 'medium' | 'low' | 'exhausted'
+  due_time?: string | null
+  streak_count?: number
+  last_completed_date?: string | null
   // joined
   assignee?: { id: string; full_name: string; email: string } | null
   project?: { id: string; name: string } | null
