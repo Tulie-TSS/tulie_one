@@ -73,10 +73,10 @@ export default function CyclesPage() {
                     <div className="flex items-center gap-4 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <Calendar className="size-3" />
-                        {new Date(cycle.start_date).toLocaleDateString('vi-VN')}
+                        {cycle.start_date ? new Date(cycle.start_date).toLocaleDateString('vi-VN') : '—'}
                       </span>
                       <span>→</span>
-                      <span>{new Date(cycle.end_date).toLocaleDateString('vi-VN')}</span>
+                      <span>{cycle.end_date ? new Date(cycle.end_date).toLocaleDateString('vi-VN') : '—'}</span>
                     </div>
 
                     {/* Goals */}
@@ -96,7 +96,7 @@ export default function CyclesPage() {
                             }
                             <span className="text-xs text-muted-foreground flex-1 truncate">{g.title}</span>
                             <Progress
-                              value={g.progress}
+                              value={Number(g.progress) || 0}
                               className={`w-24 h-1.5 ${g.progress >= 80 ? '[&>div]:bg-primary' : ''}`}
                             />
                             <span className="text-xs text-muted-foreground w-8 text-right">{g.progress}%</span>
@@ -108,13 +108,16 @@ export default function CyclesPage() {
                     {/* Milestones */}
                     {cycle.milestones && cycle.milestones.length > 0 && (
                       <div className="flex items-center gap-2 flex-wrap">
-                        {cycle.milestones.map(ms => (
-                          <div key={ms.id} className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <span className={`w-1.5 h-1.5 rounded-full ${ms.completion_rate >= 100 ? 'bg-primary' : ms.completion_rate > 0 ? 'bg-foreground/50' : 'bg-border'}`} />
-                            <span>{ms.name}</span>
-                            <span className="text-foreground font-medium">{ms.completion_rate}%</span>
-                          </div>
-                        ))}
+                        {cycle.milestones.map(ms => {
+                          const rate = Number(ms.completion_rate) || 0;
+                          return (
+                            <div key={ms.id} className="flex items-center gap-1 text-xs text-muted-foreground">
+                              <span className={`w-1.5 h-1.5 rounded-full ${rate >= 100 ? 'bg-primary' : rate > 0 ? 'bg-foreground/50' : 'bg-border'}`} />
+                              <span>{ms.name}</span>
+                              <span className="text-foreground font-medium">{rate}%</span>
+                            </div>
+                          );
+                        })}
                       </div>
                     )}
                   </CardContent>

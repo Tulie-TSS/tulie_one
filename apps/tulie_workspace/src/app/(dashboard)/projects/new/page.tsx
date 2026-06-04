@@ -77,6 +77,10 @@ export default function NewProjectPage() {
             toast.error('Không có chu kỳ (Cycle) hoạt động. Vui lòng tạo chu kỳ trước.')
             return
         }
+        if (!user) {
+            toast.error('Chưa đăng nhập.')
+            return
+        }
 
         setLoading(true)
 

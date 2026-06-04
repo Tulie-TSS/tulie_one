@@ -88,7 +88,7 @@ export default function CycleDetailPage({ params }: { params: Promise<{ id: stri
 
             <PageHeader 
                 title={cycle.name} 
-                description={`${new Date(cycle.start_date).toLocaleDateString('vi-VN')} — ${new Date(cycle.end_date).toLocaleDateString('vi-VN')}`}
+                description={`${cycle.start_date ? new Date(cycle.start_date).toLocaleDateString('vi-VN') : '—'} — ${cycle.end_date ? new Date(cycle.end_date).toLocaleDateString('vi-VN') : '—'}`}
             >
                 <div className="flex items-center gap-2">
                     <Button variant="outline" size="sm" onClick={() => setEditOpen(true)}>
@@ -117,15 +117,18 @@ export default function CycleDetailPage({ params }: { params: Promise<{ id: stri
                             {goals.length === 0 ? (
                                 <p className="text-sm text-muted-foreground italic py-4">Chưa có mục tiêu chiến lược nào được thiết lập.</p>
                             ) : (
-                                goals.map((g, i) => (
-                                    <div key={i} className="space-y-2">
-                                        <div className="flex justify-between text-sm">
-                                            <span className="font-medium">{g.title}</span>
-                                            <span className="text-muted-foreground font-semibold">{g.progress}%</span>
+                                goals.map((g, i) => {
+                                    const progressVal = Number(g.progress) || 0;
+                                    return (
+                                        <div key={i} className="space-y-2">
+                                            <div className="flex justify-between text-sm">
+                                                <span className="font-medium">{g.title}</span>
+                                                <span className="text-muted-foreground font-semibold">{progressVal}%</span>
+                                            </div>
+                                            <Progress value={progressVal} className="h-2" />
                                         </div>
-                                        <Progress value={g.progress} className="h-2" />
-                                    </div>
-                                ))
+                                    );
+                                })
                             )}
                         </CardContent>
                     </Card>
@@ -249,19 +252,22 @@ export default function CycleDetailPage({ params }: { params: Promise<{ id: stri
                             {cycle.milestones?.length === 0 ? (
                                 <p className="text-xs text-muted-foreground italic">Chưa thiết lập cột mốc.</p>
                             ) : (
-                                cycle.milestones?.map(ms => (
-                                    <div key={ms.id} className="space-y-1">
-                                        <div className="flex items-center justify-between text-xs">
-                                            <span className="font-medium line-clamp-1">{ms.name}</span>
-                                            <span className="text-muted-foreground">{ms.completion_rate}%</span>
+                                cycle.milestones?.map(ms => {
+                                    const rate = Number(ms.completion_rate) || 0;
+                                    return (
+                                        <div key={ms.id} className="space-y-1">
+                                            <div className="flex items-center justify-between text-xs">
+                                                <span className="font-medium line-clamp-1">{ms.name}</span>
+                                                <span className="text-muted-foreground">{rate}%</span>
+                                            </div>
+                                            <Progress value={rate} className="h-1" />
+                                            <div className="text-[10px] text-muted-foreground flex items-center gap-1">
+                                                <Calendar className="size-2.5" />
+                                                {ms.target_date ? new Date(ms.target_date).toLocaleDateString('vi-VN') : '—'}
+                                            </div>
                                         </div>
-                                        <Progress value={ms.completion_rate} className="h-1" />
-                                        <div className="text-[10px] text-muted-foreground flex items-center gap-1">
-                                            <Calendar className="size-2.5" />
-                                            {new Date(ms.target_date).toLocaleDateString('vi-VN')}
-                                        </div>
-                                    </div>
-                                ))
+                                    );
+                                })
                             )}
                         </CardContent>
                     </Card>

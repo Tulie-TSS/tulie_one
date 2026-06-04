@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-export function CommentForm({ taskId }: { taskId: string }) {
+export function CommentForm({ taskId, onCommentAdded }: { taskId: string; onCommentAdded?: () => void }) {
     const [content, setContent] = useState('')
     const [loading, setLoading] = useState(false)
     const router = useRouter()
@@ -23,6 +23,9 @@ export function CommentForm({ taskId }: { taskId: string }) {
             if (res.ok) {
                 setContent('')
                 router.refresh() // Refresh the server component to load new comments
+                if (onCommentAdded) {
+                    onCommentAdded()
+                }
             }
         } finally {
             setLoading(false)

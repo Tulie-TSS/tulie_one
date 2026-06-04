@@ -106,7 +106,7 @@ export default function ResourcesPage() {
         if (data) {
             setResources([...resources, data])
             setIsAdding(false)
-            setNewResource({ name: '', url: '', type: 'other', is_embedded: true })
+            setNewResource({ name: '', url: '', type: 'other', is_embedded: true, security_level: 'internal', tags: [] })
             setSelectedResource(data)
             toast.success('Đã thêm tài liệu mới')
         } else if (error) {
@@ -115,7 +115,7 @@ export default function ResourcesPage() {
     }
 
     const handleDelete = async (id: string) => {
-        const isConfirmed = await confirm({
+        const isConfirmed = await confirm.confirm({
             title: 'Xóa tài liệu',
             description: 'Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác.',
             variant: 'destructive'

@@ -45,9 +45,9 @@ export function EditCycleDialog({ cycle, open, onOpenChange, onSuccess }: EditCy
         setFormData({
             name: cycle.name,
             status: cycle.status,
-            start_date: cycle.start_date.split('T')[0],
-            end_date: cycle.end_date.split('T')[0],
-            buffer_week_start: cycle.buffer_week_start.split('T')[0],
+            start_date: cycle.start_date ? cycle.start_date.split('T')[0] : '',
+            end_date: cycle.end_date ? cycle.end_date.split('T')[0] : '',
+            buffer_week_start: cycle.buffer_week_start ? cycle.buffer_week_start.split('T')[0] : '',
             goals: Array.isArray(cycle.goals) ? [...cycle.goals] : []
         })
     }, [cycle, open])
@@ -186,7 +186,7 @@ export function EditCycleDialog({ cycle, open, onOpenChange, onSuccess }: EditCy
                                     <div className="flex-1 space-y-3">
                                         <Input 
                                             placeholder="Tên mục tiêu..." 
-                                            value={g.title}
+                                            value={g.title || ''}
                                             onChange={e => handleUpdateGoal(i, 'title', e.target.value)}
                                             className="h-8 text-sm"
                                         />
@@ -195,13 +195,13 @@ export function EditCycleDialog({ cycle, open, onOpenChange, onSuccess }: EditCy
                                                 type="number" 
                                                 min="0" 
                                                 max="100" 
-                                                value={g.progress}
+                                                value={g.progress || 0}
                                                 onChange={e => handleUpdateGoal(i, 'progress', parseInt(e.target.value) || 0)}
                                                 className="h-8 w-20 text-sm"
                                             />
                                             <span className="text-xs text-muted-foreground">% hoàn thành</span>
                                             <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
-                                                <div className="h-full bg-primary" style={{ width: `${g.progress}%` }} />
+                                                <div className="h-full bg-primary" style={{ width: `${g.progress || 0}%` }} />
                                             </div>
                                         </div>
                                     </div>
