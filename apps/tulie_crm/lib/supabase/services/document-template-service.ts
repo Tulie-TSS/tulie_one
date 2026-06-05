@@ -802,6 +802,54 @@ export async function generateDocument(
         }
         variables.product_service_declaration = productServiceDeclaration
 
+        // ===== WARRANTY CLAUSE =====
+        // Renders Điều 9 in the contract template only when warranty_months is set
+        const warrantyMonths = (contract as any)?.warranty_months
+        if (warrantyMonths && warrantyMonths > 0) {
+            // Determine warranty start date: use end_date of contract (delivery date)
+            const deliveryMilestone = contract.milestones?.find((m: any) => m.type === 'delivery')
+            const warrantyStartDateRaw = deliveryMilestone?.due_date || contract.end_date
+            const warrantyStartDate = warrantyStartDateRaw 
+                ? parseLocalDateString(warrantyStartDateRaw).toLocaleDateString('vi-VN')
+                : '(ngày ký biên bản nghiệm thu và bàn giao website)'
+
+            // Calculate warranty end date
+            let warrantyEndDateStr = ''
+            if (warrantyStartDateRaw) {
+                const startD = parseLocalDateString(warrantyStartDateRaw)
+                const endD = new Date(startD)
+                endD.setMonth(endD.getMonth() + warrantyMonths)
+                // Subtract one day to get "hết ngày"
+                endD.setDate(endD.getDate() - 1)
+                warrantyEndDateStr = endD.toLocaleDateString('vi-VN')
+            }
+
+            const warrantyEndDateNote = warrantyEndDateStr
+                ? ` (Dự kiến mốc thời gian bảo hành áp dụng từ ngày ${warrantyStartDate} đến hết ngày ${warrantyEndDateStr}).`
+                : ''
+
+            variables.warranty_clause_html = `
+  <!-- ========== ĐIỀU 9 ========== -->
+  <table style="width:100%; border-collapse:collapse; margin: 14px 0 6px 0;">
+    <tr>
+      <td style="width:30px; font-weight:bold; vertical-align:top;">9</td>
+      <td style="font-weight:bold; vertical-align:top;">Điều 9: Bảo hành và Hỗ trợ kỹ thuật</td>
+    </tr>
+  </table>
+  <table style="width:100%; border-collapse:collapse;">
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">9.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B cam kết bảo hành kỹ thuật cho website trong thời gian <strong>${warrantyMonths} (${warrantyMonths === 6 ? 'sáu' : warrantyMonths === 12 ? 'mười hai' : warrantyMonths === 24 ? 'hai mươi tư' : warrantyMonths}) tháng</strong> kể từ ngày hai bên ký kết Biên bản Nghiệm thu và Bàn giao website.${warrantyEndDateNote}</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">9.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Trong thời gian bảo hành, Bên B có trách nhiệm sửa chữa miễn phí các lỗi kỹ thuật phát sinh từ quá trình xây dựng và lập trình website do Bên B thực hiện, bao gồm: lỗi hiển thị, lỗi chức năng, lỗi bảo mật cơ bản và các sự cố kỹ thuật khác thuộc phạm vi công việc quy định tại hợp đồng này.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">9.3.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Phạm vi bảo hành không bao gồm: các thay đổi nội dung do Bên A tự chỉnh sửa gây lỗi; các yêu cầu thay đổi, bổ sung tính năng mới ngoài phạm vi ban đầu; lỗi phát sinh từ môi trường hosting, tên miền hoặc các dịch vụ bên thứ ba do Bên A tự quản lý.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">9.4.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên A thông báo sự cố qua email hoặc các kênh liên lạc được thống nhất. Bên B cam kết phản hồi và xử lý trong vòng 03 (ba) ngày làm việc kể từ khi nhận được thông báo hợp lệ.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">9.5.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Sau thời gian bảo hành, nếu Bên A có nhu cầu tiếp tục hỗ trợ kỹ thuật, hai bên sẽ thỏa thuận và ký kết hợp đồng bảo trì riêng theo thỏa thuận phát sinh.</td></tr>
+  </table>`
+
+            variables.contract_clause_count = 'chín (09) điều'
+        } else {
+            variables.warranty_clause_html = ''
+            variables.contract_clause_count = 'tám (08) điều'
+        }
+
         // Determine whether to include proposal appendix
         const includeProposalAppendix = contract?.include_proposal_appendix !== false
 

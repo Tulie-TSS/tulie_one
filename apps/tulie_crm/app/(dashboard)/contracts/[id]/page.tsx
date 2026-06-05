@@ -187,10 +187,29 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                     <span className="text-muted-foreground">Bắt đầu</span>
                                     <span className="font-medium">{formatDate(contract.start_date)}</span>
                                 </div>
-                                <div className="flex items-center justify-between gap-4">
+                                <div className={`flex items-center justify-between gap-4 ${(contract as any).warranty_months ? 'border-b pb-2.5' : ''}`}>
                                     <span className="text-muted-foreground">Kết thúc</span>
                                     <span className="font-medium">{contract.end_date ? formatDate(contract.end_date) : 'Không xác định'}</span>
                                 </div>
+                                {(contract as any).warranty_months && (
+                                    <div className="flex items-center justify-between gap-4 pt-0.5">
+                                        <span className="text-blue-600 font-medium flex items-center gap-1.5 shrink-0">
+                                            🛡️ Bảo hành
+                                        </span>
+                                        <span className="font-medium text-blue-700 text-right">
+                                            {(contract as any).warranty_months} tháng
+                                            {(() => {
+                                                const startRaw = contract.end_date
+                                                if (!startRaw) return ''
+                                                const startD = new Date(startRaw.substring(0, 10))
+                                                const endD = new Date(startD)
+                                                endD.setMonth(endD.getMonth() + (contract as any).warranty_months)
+                                                endD.setDate(endD.getDate() - 1)
+                                                return ` (đến ${endD.toLocaleDateString('vi-VN')})`
+                                            })()}
+                                        </span>
+                                    </div>
+                                )}
                             </div>
                         </div>
 

@@ -33,7 +33,7 @@ import {
     PopoverTrigger,
 } from '@repo/ui'
 import { formatCurrency } from '@/lib/utils/format'
-import { ArrowLeft, CalendarIcon, Save, Plus, Trash2, Percent, ClipboardList, CreditCard } from 'lucide-react'
+import { ArrowLeft, CalendarIcon, Save, Plus, Trash2, Percent, ClipboardList, CreditCard, ShieldCheck } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
@@ -104,6 +104,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
     const [contractType, setContractType] = useState(contract.type || 'contract')
     const [category, setCategory] = useState<'customer' | 'freelancer'>(contract.category || 'customer')
     const [fMeta, setFMeta] = useState(contract.freelancer_metadata || {})
+    const [warrantyMonths, setWarrantyMonths] = useState<number | null>((contract as any).warranty_months ?? null)
 
     const isAdmin = userRole === 'admin' || userRole === 'ceo'
     // Lock entirely when completed/cancelled (unless admin)
@@ -246,6 +247,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                 order_number: orderNumber || null,
                 project_id: projectId || null,
                 contract_number: contractNumber || null,
+                warranty_months: warrantyMonths,
             }
             // Add quotation_id only if set
             if (quotationId) updateData.quotation_id = quotationId
@@ -528,6 +530,33 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                         }
                                     </p>
                                 </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label className="flex items-center gap-2">
+                                    <ShieldCheck className="h-4 w-4 text-blue-500" />
+                                    Bảo hành kỹ thuật
+                                </Label>
+                                <Select
+                                    value={warrantyMonths === null ? 'none' : warrantyMonths.toString()}
+                                    onValueChange={(v) => setWarrantyMonths(v === 'none' ? null : parseInt(v))}
+                                    disabled={isCoreLocked}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Chọn thời gian bảo hành" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">Không có bảo hành</SelectItem>
+                                        <SelectItem value="6">6 tháng</SelectItem>
+                                        <SelectItem value="12">12 tháng (Khuyến nghị)</SelectItem>
+                                        <SelectItem value="24">24 tháng</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                {warrantyMonths && (
+                                    <p className="text-xs text-blue-600">
+                                        Điều khoản bảo hành {warrantyMonths} tháng sẽ tự động được thêm vào hợp đồng in.
+                                    </p>
+                                )}
                             </div>
 
                             <div className="space-y-2">

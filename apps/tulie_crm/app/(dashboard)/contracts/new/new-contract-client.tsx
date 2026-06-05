@@ -29,7 +29,7 @@ import {
     PopoverTrigger,
 } from '@repo/ui'
 import { formatCurrency } from '@/lib/utils/format'
-import { ArrowLeft, CalendarIcon, Save, Plus, Trash2, FileSignature, Percent, CreditCard } from 'lucide-react'
+import { ArrowLeft, CalendarIcon, Save, Plus, Trash2, FileSignature, Percent, CreditCard, ShieldCheck } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
@@ -69,6 +69,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
     const [vatExemptStatus, setVatExemptStatus] = useState<'0_percent' | 'exempt'>('0_percent')
     const [vatPercent, setVatPercent] = useState<number>(10)
     const [category, setCategory] = useState<'customer' | 'freelancer'>('customer')
+    const [warrantyMonths, setWarrantyMonths] = useState<number | null>(null)
     const [fMeta, setFMeta] = useState<any>({
         termination_penalty_percent: 50,
         notice_days: 15
@@ -165,6 +166,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                 product_name_in_contract: productNameInContract,
                 vat_exempt_status: vatPercent === 0 ? vatExemptStatus : null,
                 category: category,
+                warranty_months: warrantyMonths,
                 freelancer_metadata: category === 'freelancer' ? fMeta : null,
                 brand: selectedQuote?.brand || 'TMM'
             }
@@ -346,6 +348,32 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                         </PopoverContent>
                                     </Popover>
                                 </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label className="flex items-center gap-2">
+                                    <ShieldCheck className="h-4 w-4 text-blue-500" />
+                                    Bảo hành kỹ thuật
+                                </Label>
+                                <Select
+                                    value={warrantyMonths === null ? 'none' : warrantyMonths.toString()}
+                                    onValueChange={(v) => setWarrantyMonths(v === 'none' ? null : parseInt(v))}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Chọn thời gian bảo hành" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">Không có bảo hành</SelectItem>
+                                        <SelectItem value="6">6 tháng</SelectItem>
+                                        <SelectItem value="12">12 tháng (Khuyến nghị)</SelectItem>
+                                        <SelectItem value="24">24 tháng</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                {warrantyMonths && (
+                                    <p className="text-xs text-blue-600">
+                                        Điều khoản bảo hành {warrantyMonths} tháng sẽ tự động được thêm vào hợp đồng in.
+                                    </p>
+                                )}
                             </div>
 
                             <div className="space-y-2">
