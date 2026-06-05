@@ -374,65 +374,20 @@ export async function generateDocument(
 
         // Check if contract/document is digital/website/design
         const isDigital = (() => {
-            // Check manual override first
             const deliveryMethod = custData?.delivery_method
             if (deliveryMethod === 'digital') return true
             if (deliveryMethod === 'physical') return false
 
-            // Smart Auto-detection
+            // Default fallback for older contracts with no snapshot
             const productName = (contract?.product_name_in_contract || contract?.quotation?.product_name_in_contract || additionalVariables?.product_name_in_contract || '').toLowerCase()
             const title = (contract?.title || '').toLowerCase()
             const description = (contract?.description || '').toLowerCase()
             const qTitle = (contract?.quotation?.title || '').toLowerCase()
             
-            const digitalKeywords = [
-                'website', 'web', 'phần mềm', 'phan mem', 'app', 'giao diện', 'giao dien', 
-                'logo', 'nhận diện thương hiệu', 'nhan dien thuong hieu', 'branding', 
-                'thiết kế', 'thiet ke', 'quản trị', 'quan tri', 'hosting', 'vps', 'domain'
-            ]
-
-            const physicalKeywords = [
-                'in ấn', 'gia công', 'sản xuất', 'phần cứng', 'thiết bị', 
-                'vận chuyển', 'giao nhận', 'bàn giao vật lý', 'ấn phẩm', 'sách', 'vở', 
-                'kệ', 'hộp', 'túi', 'bao bì'
-            ]
+            const digitalKeywords = ['website', 'web', 'phần mềm', 'phan mem', 'app', 'giao diện', 'giao dien', 'logo', 'thiết kế', 'thiet ke', 'branding']
+            const hasKeyword = (text: string) => digitalKeywords.some(kw => text.includes(kw))
             
-            const hasKeyword = (text: string, keywords: string[]) => keywords.some(kw => text.includes(kw))
-            const hasPhysicalKeyword = (text: string) => {
-                if (hasKeyword(text, physicalKeywords)) return true
-                const words = text.split(/[\s,.\-\/()]+/)
-                return words.includes('in')
-            }
-            
-            let hasDigital = hasKeyword(productName, digitalKeywords) || 
-                             hasKeyword(title, digitalKeywords) || 
-                             hasKeyword(description, digitalKeywords) || 
-                             hasKeyword(qTitle, digitalKeywords)
-
-            let hasPhysical = hasPhysicalKeyword(productName) || 
-                              hasPhysicalKeyword(title) || 
-                              hasPhysicalKeyword(description) || 
-                              hasPhysicalKeyword(qTitle)
-            
-            const items = contract?.items || contract?.quotation?.items || []
-            for (const item of items) {
-                const itemName = (item.product_name || item.name || '').toLowerCase()
-                const itemDesc = (item.description || '').toLowerCase()
-                if (hasKeyword(itemName, digitalKeywords) || hasKeyword(itemDesc, digitalKeywords)) {
-                    hasDigital = true
-                }
-                if (hasPhysicalKeyword(itemName) || hasPhysicalKeyword(itemDesc)) {
-                    hasPhysical = true
-                }
-            }
-
-            // If it has physical components (even if mixed with design/digital), it requires physical delivery
-            if (hasPhysical) return false
-            
-            // Pure digital
-            if (hasDigital) return true
-            
-            return false
+            return hasKeyword(productName) || hasKeyword(title) || hasKeyword(description) || hasKeyword(qTitle)
         })()
 
         // Extract freelancer initials if it's a freelance contract
@@ -538,12 +493,11 @@ export async function generateDocument(
                 variables.delivery_time = parseLocalDateString(contract.end_date).toLocaleDateString('vi-VN')
             }
 
-            // Auto-fill delivery_address from customer address, or digital delivery text
-            if (isDigital) {
-                variables.delivery_address = 'Bản mềm qua Internet (Email/Cloud/Drive)'
-            } else {
-                variables.delivery_address = custData?.address || customer?.address || ''
-            }
+            // Use delivery_address from snapshot if available, otherwise fallback to default based on type
+            variables.delivery_address = custData?.delivery_address || 
+                (isDigital 
+                    ? 'Bản mềm qua Internet (Email/Cloud/Drive)' 
+                    : (custData?.address || customer?.address || ''))
 
             // Determine VAT status and Product Name early for use in items table and declaration
             const proposalContent = (contract?.quotation?.proposal_content as Record<string, string>) || {}

@@ -329,6 +329,25 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
     // Editable customer info — pre-filled from snapshot or customer
     const snapshot = contract.customer_snapshot
     const cust = contract.customer
+
+    const isDigitalByDefault = (() => {
+        const title = (contract.title || '').toLowerCase()
+        const desc = (contract.description || '').toLowerCase()
+        const qTitle = ((contract as any).quotation?.title || '').toLowerCase()
+        const prodName = (contract.product_name_in_contract || (contract as any).quotation?.product_name_in_contract || '').toLowerCase()
+        
+        const digitalKeywords = ['website', 'web', 'phần mềm', 'phan mem', 'app', 'giao diện', 'giao dien', 'logo', 'thiết kế', 'thiet ke', 'branding']
+        const hasKeyword = (t: string) => digitalKeywords.some(kw => t.includes(kw))
+        
+        return hasKeyword(title) || hasKeyword(desc) || hasKeyword(qTitle) || hasKeyword(prodName)
+    })()
+
+    const initialDeliveryMethod = (snapshot as any)?.delivery_method === 'physical' ? 'physical' : ((snapshot as any)?.delivery_method === 'digital' ? 'digital' : (isDigitalByDefault ? 'digital' : 'physical'))
+    const initialDeliveryAddress = (snapshot as any)?.delivery_address || 
+        (initialDeliveryMethod === 'digital' 
+            ? 'Bản mềm qua Internet (Email/Cloud/Drive)' 
+            : (snapshot?.address || cust?.address || ''))
+
     const [customerInfo, setCustomerInfo] = useState({
         customer_company: snapshot?.company_name || cust?.company_name || '',
         customer_representative_title: snapshot?.representative_title || cust?.representative_title || '',
@@ -339,7 +358,8 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
         customer_tax_code: snapshot?.tax_code || cust?.tax_code || '',
         customer_address: snapshot?.address || cust?.address || '',
         customer_invoice_address: snapshot?.invoice_address || cust?.invoice_address || '',
-        delivery_method: (snapshot as any)?.delivery_method || 'auto',
+        delivery_method: initialDeliveryMethod,
+        delivery_address: initialDeliveryAddress,
     })
     const [infoChanged, setInfoChanged] = useState(false)
     const [savingInfo, setSavingInfo] = useState(false)
@@ -368,6 +388,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                     address: customerInfo.customer_address,
                     invoice_address: customerInfo.customer_invoice_address,
                     delivery_method: customerInfo.delivery_method,
+                    delivery_address: customerInfo.delivery_address,
                 })
             })
             if (!res.ok) throw new Error('Lỗi lưu thông tin')
@@ -549,15 +570,37 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                                         name="delivery_method"
                                         value={customerInfo.delivery_method}
                                         onChange={(e) => {
-                                            setCustomerInfo(prev => ({ ...prev, delivery_method: e.target.value }))
+                                            const val = e.target.value
+                                            setCustomerInfo(prev => {
+                                                const updated = { ...prev, delivery_method: val }
+                                                if (val === 'digital' && (prev.delivery_address === '' || prev.delivery_address === (snapshot?.address || cust?.address || ''))) {
+                                                    updated.delivery_address = 'Bản mềm qua Internet (Email/Cloud/Drive)'
+                                                } else if (val === 'physical' && (prev.delivery_address === '' || prev.delivery_address === 'Bản mềm qua Internet (Email/Cloud/Drive)')) {
+                                                    updated.delivery_address = snapshot?.address || cust?.address || ''
+                                                }
+                                                return updated
+                                            })
                                             setInfoChanged(true)
                                         }}
                                         className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                                     >
-                                        <option value="auto">Tự động nhận diện</option>
-                                        <option value="digital">Bản mềm qua Internet (Email/Cloud)</option>
-                                        <option value="physical">Giao hàng vật lý (Tới địa chỉ công ty)</option>
+                                        <option value="digital">Sản phẩm kỹ thuật số (Bản mềm)</option>
+                                        <option value="physical">Sản phẩm vật lý (Giao hàng tận nơi)</option>
                                     </select>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <Label className="text-[10px] text-muted-foreground">Địa chỉ / Phương thức bàn giao</Label>
+                                    <Input
+                                        name="delivery_address"
+                                        value={customerInfo.delivery_address}
+                                        onChange={(e) => {
+                                            setCustomerInfo(prev => ({ ...prev, delivery_address: e.target.value }))
+                                            setInfoChanged(true)
+                                        }}
+                                        className="h-8 text-xs"
+                                        placeholder="Địa chỉ giao hàng hoặc phương thức bàn giao"
+                                    />
                                 </div>
 
                                 <div className="space-y-1">
