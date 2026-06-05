@@ -193,10 +193,8 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                 </div>
                                 {(contract as any).warranty_months && (
                                     <div className="flex items-center justify-between gap-4 pt-0.5">
-                                        <span className="text-blue-600 font-medium flex items-center gap-1.5 shrink-0">
-                                            🛡️ Bảo hành
-                                        </span>
-                                        <span className="font-medium text-blue-700 text-right">
+                                        <span className="text-muted-foreground">Bảo hành</span>
+                                        <span className="font-medium">
                                             {(contract as any).warranty_months} tháng
                                             {(() => {
                                                 const startRaw = contract.end_date
@@ -205,7 +203,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                                 const endD = new Date(startD)
                                                 endD.setMonth(endD.getMonth() + (contract as any).warranty_months)
                                                 endD.setDate(endD.getDate() - 1)
-                                                return ` (đến ${endD.toLocaleDateString('vi-VN')})`
+                                                return ` (đến ${formatDate(endD)})`
                                             })()}
                                         </span>
                                     </div>
