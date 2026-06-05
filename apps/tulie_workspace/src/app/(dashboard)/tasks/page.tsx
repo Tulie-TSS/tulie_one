@@ -10,8 +10,9 @@ import type { TaskStatus } from '@/types/database.types'
 import { PageHeader, Card, CardContent, Button, Badge } from '@repo/ui'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { Avatar, AvatarFallback } from '@repo/ui'
-import { Loader2, Plus, Search } from 'lucide-react'
+import { Loader2, Plus, Search, RefreshCw } from 'lucide-react'
 import { useNewTaskStore } from '@/lib/stores/use-new-task-store'
+import { CrmSyncDialog } from '@/components/tasks/crm-sync-dialog'
 
 const FILTER_STATUSES: (TaskStatus | 'all')[] = [
   'all', 'backlog', 'ready', 'doing', 'in_review', 'done', 'quarantine', 'on_hold'
@@ -22,7 +23,8 @@ export default function TasksPage() {
   const [search, setSearch] = useState('')
   const { t } = useLocaleStore()
   const { canManage, isAdmin, isManager, isMaker } = useCurrentUser()
-  const { tasks, loading } = useTasks()
+  const [openCrmSync, setOpenCrmSync] = useState(false)
+  const { tasks, loading, refetch } = useTasks()
   const { setOpen: setOpenTaskSheet } = useNewTaskStore()
 
   const filteredTasks = useMemo(() => {
@@ -42,10 +44,16 @@ export default function TasksPage() {
     <div className="space-y-6">
       <PageHeader title={t('tasks.title')} description={t('tasks.subtitle')}>
         {(isAdmin || isManager || isMaker) && (
-          <Button onClick={() => setOpenTaskSheet(true)}>
-            <Plus className="size-4" />
-            {t('tasks.createTask')}
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setOpenCrmSync(true)}>
+              <RefreshCw className="size-4 mr-2" />
+              Nhập từ CRM
+            </Button>
+            <Button onClick={() => setOpenTaskSheet(true)}>
+              <Plus className="size-4 mr-2" />
+              {t('tasks.createTask')}
+            </Button>
+          </div>
         )}
       </PageHeader>
 
@@ -63,10 +71,16 @@ export default function TasksPage() {
             />
           </div>
           {(isAdmin || isManager || isMaker) && (
-            <Button onClick={() => setOpenTaskSheet(true)} className="sm:hidden w-full">
-              <Plus className="size-4" />
-              {t('tasks.createTask')}
-            </Button>
+            <div className="sm:hidden flex gap-2 w-full">
+              <Button variant="outline" onClick={() => setOpenCrmSync(true)} className="flex-1">
+                <RefreshCw className="size-4 mr-2" />
+                Nhập từ CRM
+              </Button>
+              <Button onClick={() => setOpenTaskSheet(true)} className="flex-1">
+                <Plus className="size-4 mr-2" />
+                {t('tasks.createTask')}
+              </Button>
+            </div>
           )}
         </div>
         <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
@@ -164,6 +178,12 @@ export default function TasksPage() {
           Hiển thị {filteredTasks.length} / {tasks.length} công việc
         </p>
       )}
+
+      <CrmSyncDialog
+        open={openCrmSync}
+        onOpenChange={setOpenCrmSync}
+        onSuccess={refetch}
+      />
     </div>
   )
 }

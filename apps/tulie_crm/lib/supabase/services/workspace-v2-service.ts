@@ -614,6 +614,11 @@ export async function migrateOldWorkspaceTasks() {
             metadata: t.metadata || {},
         }))
 
+        const { data, error: insertErr } = await ws
+            .from('tasks')
+            .insert(newTasks)
+            .select('id')
+
         if (insertErr) throw insertErr
         return { migrated: data?.length || 0 }
     } catch (err) {
