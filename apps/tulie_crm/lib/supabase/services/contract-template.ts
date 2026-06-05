@@ -193,6 +193,8 @@ export const contractTemplate = `
     <tr><td style="width:50px; vertical-align:top; padding:2px 0;">3.5.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Trong trường hợp bất khả kháng như thiên tai, lũ lụt, hỏa hoạn..., Bên B được phép chuyển giao sản phẩm trễ hơn lịch trình.</td></tr>
   </table>
 
+  {{warranty_clause_html}}
+
   <!-- ========== ĐIỀU 4 ========== -->
   <table style="width:100%; border-collapse:collapse; margin: 14px 0 6px 0;">
     <tr>
@@ -274,7 +276,7 @@ export const contractTemplate = `
     <tr><td style="width:50px; vertical-align:top; padding:2px 0;">8.6.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng này có hiệu lực kể từ ngày đại diện hợp pháp của hai bên ký và đóng dấu. Khi hai Bên đã thực hiện đầy đủ quyền và nghĩa vụ ghi trong hợp đồng này và không có khiếu nại gì thì coi như hợp đồng đã được thanh lý.</td></tr>
   </table>
 
-  {{warranty_clause_html}}
+
 
   <p style="margin:12px 0; text-align:justify;">Hai bên đã đọc kỹ tất cả các điều khoản của hợp đồng, hiểu rõ quyền lợi và trách nhiệm pháp lý của việc giao kết Hợp đồng này. Tại thời điểm ký kết, đại diện hai bên đều có năng lực pháp luật và năng lực hành vi dân sự đầy đủ.</p>
 
