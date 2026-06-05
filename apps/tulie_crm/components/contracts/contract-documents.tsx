@@ -6,7 +6,7 @@ import { Button } from '@repo/ui'
 import { Badge } from '@repo/ui'
 import { Input } from '@repo/ui'
 import { Label } from '@repo/ui'
-import { FileText, Download, Printer, Check, ChevronRight, ChevronDown, Building2, User, Mail, Phone, MapPin, ClipboardList, CreditCard, Package, AlertTriangle, Save, RefreshCw, Eye, EyeOff, CircleCheck, Circle, FileCheck, ExternalLink } from 'lucide-react'
+import { FileText, Download, Printer, Check, ChevronRight, ChevronDown, Building2, User, Mail, Phone, MapPin, ClipboardList, CreditCard, Package, AlertTriangle, Save, RefreshCw, Eye, EyeOff, CircleCheck, Circle, FileCheck, ExternalLink, Trash2 } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import { Contract } from '@/types'
 import { Alert, AlertDescription } from '@repo/ui'
@@ -34,6 +34,9 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
     const [dbDocs, setDbDocs] = useState<any[]>([])
     const [regenerating, setRegenerating] = useState(false)
     const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+    const [deleteTargetItem, setDeleteTargetItem] = useState<DocItem | null>(null)
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+    const [deleting, setDeleting] = useState(false)
     const [includeProposal, setIncludeProposal] = useState<boolean>(
         (contract as any).include_proposal_appendix !== false
     )
@@ -269,6 +272,26 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
             win.close()
         } finally {
             setLoading(null)
+        }
+    }
+
+    // Delete document
+    const handleDeleteDoc = async () => {
+        if (!deleteTargetItem?.dbDocId) return
+        setDeleting(true)
+        try {
+            const res = await fetch(`/api/contracts/${contract.id}/documents/${deleteTargetItem.dbDocId}`, {
+                method: 'DELETE'
+            })
+            if (!res.ok) throw new Error('Xóa thất bại')
+            setDbDocs(prev => prev.filter(d => d.id !== deleteTargetItem.dbDocId))
+            toast.success(`Đã xóa "${deleteTargetItem.label}"`)
+            setShowDeleteDialog(false)
+            setDeleteTargetItem(null)
+        } catch (err: any) {
+            toast.error(err.message || 'Không thể xóa giấy tờ')
+        } finally {
+            setDeleting(false)
         }
     }
 
@@ -651,6 +674,18 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                                 >
                                     <Download className="h-4 w-4" />
                                 </Button>
+                                {isGenerated && !isSigned && (
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
+                                        onClick={() => { setDeleteTargetItem(item); setShowDeleteDialog(true) }}
+                                        disabled={isActive}
+                                        title="Xóa giấy tờ này"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                )}
                             </div>
                         </div>
                     )
@@ -678,7 +713,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                     <AlertDialogHeader>
                         <AlertDialogTitle>Xác nhận tạo bộ giấy tờ mới</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Hợp đồng này đã có các giấy tờ đã ký (trạng thái "Xong"). Nếu tạo lại, hệ thống sẽ bảo lưu các bản đã ký và sinh một bản nháp mới (v2, v3...) để bạn chỉnh sửa hoặc gửi lại. Bạn có chắc chắn muốn tiếp tục?
+                            Hợp đồng này đã có các giấy tờ đã ký (trạng thái “Xong”). Nếu tạo lại, hệ thống sẽ bảo lưu các bản đã ký và sinh một bản nháp mới (v2, v3...) để bạn chỉnh sửa hoặc gửi lại. Bạn có chắc chắn muốn tiếp tục?
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
@@ -688,6 +723,28 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                             handleRegenerate()
                         }}>
                             Đồng ý tạo bản mới
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+            <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Xóa giấy tờ?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Bạn sắp xóa <strong>“{deleteTargetItem?.label}”</strong>.
+                            Thao tác này không thể hoàn tác. Nếu cần, bạn có thể tạo lại bất kỳ lúc nào bằng nút “Tạo lại”.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel disabled={deleting}>Hủy</AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={handleDeleteDoc}
+                            disabled={deleting}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        >
+                            {deleting ? 'Đang xóa...' : 'Xóa'}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
