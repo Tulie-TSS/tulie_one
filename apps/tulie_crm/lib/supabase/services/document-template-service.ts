@@ -303,6 +303,9 @@ export async function generateDocument(
 ) {
     try {
         const supabase = createAdminClient()
+        let hasDiscount = true
+        let hasVat = true
+        let totalColumns = 11
 
         // Get template
         const template = prefetchedData?.template !== undefined 
@@ -547,6 +550,19 @@ export async function generateDocument(
                     }
                 }
 
+                // Check dynamically which columns to display
+                hasDiscount = items.some((item: any) => (item.discount || 0) > 0)
+                hasVat = vatStatus !== 'exempt' && items.some((item: any) => {
+                    const itemVatRate = item.vat_percent !== undefined && item.vat_percent !== null 
+                        ? item.vat_percent 
+                        : (contract.quotation?.vat_percent || 0)
+                    return itemVatRate > 0
+                })
+
+                totalColumns = 11
+                if (!hasDiscount) totalColumns -= 2
+                if (!hasVat) totalColumns -= 2
+
                 let grossTotal = 0
                 let totalDiscountAmt = 0
                 let totalVat = 0
@@ -572,7 +588,7 @@ export async function generateDocument(
                     // Section header row
                     if (sectionName) {
                         itemsRowsHtml += `<tr style="background:#f0f0f0;">
-                            <td style="border:1px solid #000; padding:4px;" colspan="11"><strong>${sectionName}</strong></td>
+                            <td style="border:1px solid #000; padding:4px;" colspan="${totalColumns}"><strong>${sectionName}</strong></td>
                         </tr>`
                         itemsRowsNoVatHtml += `<tr style="background:#f0f0f0;">
                             <td style="border:1px solid #000; padding:6px 4px;" colspan="6"><strong>${sectionName}</strong></td>
@@ -609,19 +625,33 @@ export async function generateDocument(
 
                         const itemNum = sectionName ? `${sIdx + 1}.${iIdx + 1}` : `${iIdx + 1}`
 
-                        itemsRowsHtml += `<tr>
+                        let rowHtml = `<tr>
                             <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${itemNum}</td>
                             <td style="border:1px solid #000; padding:4px; vertical-align:top;"><strong>${item.product_name}</strong>${descHtml}</td>
                             <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${item.unit || 'Gói'}</td>
                             <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${qty}</td>
-                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(unitPrice)}</td>
+                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(unitPrice)}</td>`
+
+                        if (hasDiscount) {
+                            rowHtml += `
                             <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${discountPct > 0 ? discountPct + '%' : '-'}</td>
-                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${discountAmount > 0 ? new Intl.NumberFormat('vi-VN').format(discountAmount) : '-'}</td>
-                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(afterDiscount)}</td>
-                             <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${vatStatus === 'exempt' ? 'KCT' : (itemVatRate > 0 ? itemVatRate + '%' : '0%')}</td>
-                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${itemVat > 0 ? new Intl.NumberFormat('vi-VN').format(itemVat) : '0'}</td>
+                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${discountAmount > 0 ? new Intl.NumberFormat('vi-VN').format(discountAmount) : '-'}</td>`
+                        }
+
+                        rowHtml += `
+                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(afterDiscount)}</td>`
+
+                        if (hasVat) {
+                            rowHtml += `
+                            <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${vatStatus === 'exempt' ? 'KCT' : (itemVatRate > 0 ? itemVatRate + '%' : '0%')}</td>
+                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${itemVat > 0 ? new Intl.NumberFormat('vi-VN').format(itemVat) : '0'}</td>`
+                        }
+
+                        rowHtml += `
                             <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(afterVat)}</td>
                         </tr>`
+
+                        itemsRowsHtml += rowHtml
                         
                         itemsRowsNoVatHtml += `<tr>
                             <td style="border:1px solid #000; padding:6px 4px; text-align:center; vertical-align:top; white-space:nowrap;">${itemNum}</td>
@@ -637,7 +667,7 @@ export async function generateDocument(
                 // Add legend for KCT if exempt
                 if (vatStatus === 'exempt') {
                     itemsRowsHtml += `<tr>
-                        <td style="border:1px solid #000; padding:4px; font-size:7.5pt; font-style:italic;" colspan="11">* Ghi chú: KCT = Không chịu thuế giá trị gia tăng theo quy định của pháp luật.</td>
+                        <td style="border:1px solid #000; padding:4px; font-size:7.5pt; font-style:italic;" colspan="${totalColumns}">* Ghi chú: KCT = Không chịu thuế giá trị gia tăng theo quy định của pháp luật.</td>
                     </tr>`
                 }
 
@@ -645,7 +675,7 @@ export async function generateDocument(
                 let vatBreakdownHtml = ''
                 if (vatStatus === 'exempt') {
                     vatBreakdownHtml = `<tr style="background:#f5f5f5;">
-                        <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Thuế suất GTGT (VAT):</strong></td>
+                        <td style="border:1px solid #000; padding:4px;" colspan="${totalColumns - 1}"><strong>Thuế suất GTGT (VAT):</strong></td>
                         <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">Không chịu thuế</td>
                     </tr>`
                 } else {
@@ -669,7 +699,7 @@ export async function generateDocument(
 
                     Object.entries(vatGroupsMap).sort((a, b) => Number(a[0]) - Number(b[0])).forEach(([rate, amt]) => {
                         vatBreakdownHtml += `<tr style="background:#f5f5f5;">
-                            <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Tổng thuế suất GTGT (VAT) ${rate}%:</strong></td>
+                            <td style="border:1px solid #000; padding:4px;" colspan="${totalColumns - 1}"><strong>Tổng thuế suất GTGT (VAT) ${rate}%:</strong></td>
                             <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(amt as number)}</td>
                         </tr>`
                     })
@@ -721,7 +751,7 @@ export async function generateDocument(
                     const pctString = overallDiscountPercent > 0 ? ` (${overallDiscountPercent}%)` : ''
                     variables.discount_row_html = `
                     <tr>
-                      <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Chiết khấu tổng${pctString}</strong></td>
+                      <td style="border:1px solid #000; padding:4px;" colspan="${totalColumns - 1}"><strong>Chiết khấu tổng${pctString}</strong></td>
                       <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold;">-${new Intl.NumberFormat('vi-VN').format(overallDiscountAmount)}</td>
                     </tr>`
                 } else {
@@ -986,6 +1016,24 @@ export async function generateDocument(
         let templateContent = template.content
         if (isFreelance && template.type === 'delivery_minutes') {
             templateContent = freelanceDeliveryTemplate
+        }
+
+        if (!hasDiscount) {
+            templateContent = templateContent
+                .replace(/<th[^>]*>[\s\S]*?CK\(%\)[\s\S]*?<\/th>/gi, '')
+                .replace(/<th[^>]*>[\s\S]*?(Giảm giá|Discount)[\s\S]*?<\/th>/gi, '')
+        }
+        if (!hasVat) {
+            templateContent = templateContent
+                .replace(/<th[^>]*>[\s\S]*?VAT\(%\)[\s\S]*?<\/th>/gi, '')
+                .replace(/<th[^>]*>[\s\S]*?(Tiền VAT|Tax)[\s\S]*?<\/th>/gi, '')
+        }
+
+        if (totalColumns !== 11) {
+            templateContent = templateContent
+                .replace(/colspan="10"/g, `colspan="${totalColumns - 1}"`)
+                .replace(/colspan="11"/g, `colspan="${totalColumns}"`)
+                .replace(/colspan="8"/g, `colspan="${totalColumns - 3}"`)
         }
 
         // Dynamically upgrade old templates that don't have {{warranty_clause_html}}
