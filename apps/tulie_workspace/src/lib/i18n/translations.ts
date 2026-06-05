@@ -40,6 +40,8 @@ export const translations = {
   "nav.details.projects": { vi: "Chi tiết dự án", en: "Project Details" },
   "nav.details.tasks": { vi: "Chi tiết công việc", en: "Task Details" },
   "nav.details.default": { vi: "Chi tiết", en: "Details" },
+  "nav.profile": { vi: "Hồ sơ cá nhân", en: "Profile" },
+  "nav.logout": { vi: "Đăng xuất", en: "Sign out" },
 
   // ============================================
   // Trạng thái Task / Task Statuses

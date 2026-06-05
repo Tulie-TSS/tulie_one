@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { SidebarProvider, SidebarInset, QuickStrikeBar } from '@repo/ui'
 import { AppSidebar } from '@/components/layout/sidebar'
 import { Header } from '@/components/layout/header'
@@ -9,9 +10,14 @@ import { NewTaskDialog } from '@/components/tasks/new-task-dialog'
 import { useNewTaskStore } from '@/lib/stores/use-new-task-store'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-    const { addStrike } = useQuickStrikeStore()
+    const { addStrike, fetchStrikes } = useQuickStrikeStore()
     const { t } = useLocaleStore()
     const { isOpen, setOpen } = useNewTaskStore()
+
+    // Fetch recent quick strikes on mount
+    useEffect(() => {
+        fetchStrikes()
+    }, [fetchStrikes])
 
     return (
         <SidebarProvider>
@@ -22,7 +28,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     {children}
                 </main>
                 <QuickStrikeBar
-                    onSubmit={(text) => addStrike({ id: Date.now().toString(), description: text, completed_at: new Date().toISOString() })}
+                    onSubmit={(text) => addStrike(text)}
                     placeholder={t('quickStrike.placeholder')}
                     position="bottom"
                 />

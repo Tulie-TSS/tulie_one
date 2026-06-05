@@ -18,10 +18,16 @@ function todayStr() {
   return new Date().toISOString().split('T')[0]
 }
 
-export function useDailyPlan(): UseDailyPlanResult {
+/**
+ * Fetches (or creates) the daily plan for a given date.
+ * @param dateStr - ISO date string YYYY-MM-DD. Defaults to today.
+ */
+export function useDailyPlan(dateStr?: string): UseDailyPlanResult {
   const [plan, setPlan] = useState<DailyPlan | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  const targetDate = dateStr ?? todayStr()
 
   const fetchOrCreate = useCallback(async () => {
     setLoading(true)
@@ -31,21 +37,19 @@ export function useDailyPlan(): UseDailyPlanResult {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { setPlan(null); return }
 
-      const today = todayStr()
-
-      // Try to get today's plan
+      // Try to get the plan for the target date
       let { data, error: err } = await supabase
         .from('daily_plans')
         .select('*')
         .eq('user_id', user.id)
-        .eq('plan_date', today)
+        .eq('plan_date', targetDate)
         .single()
 
       if (err && err.code === 'PGRST116') {
-        // No plan for today → create one
+        // No plan for this date → create one
         const { data: newPlan, error: insertErr } = await supabase
           .from('daily_plans')
-          .insert({ user_id: user.id, plan_date: today })
+          .insert({ user_id: user.id, plan_date: targetDate })
           .select()
           .single()
 
@@ -61,7 +65,7 @@ export function useDailyPlan(): UseDailyPlanResult {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [targetDate])
 
   useEffect(() => { fetchOrCreate() }, [fetchOrCreate])
 

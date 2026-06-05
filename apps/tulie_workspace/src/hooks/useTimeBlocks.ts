@@ -28,8 +28,12 @@ const DEFAULT_BLOCKS = [
     { start_time: '22:00', end_time: '06:30', block_type: 'rest', title: 'Đi ngủ', roleKey: null }
 ] as const
 
-export function useTimeBlocks() {
-    const { plan, loading: planLoading } = useDailyPlan()
+/**
+ * Fetches/seeds time blocks for a given date's daily plan.
+ * @param dateStr - ISO date string YYYY-MM-DD. Defaults to today.
+ */
+export function useTimeBlocks(dateStr?: string) {
+    const { plan, loading: planLoading } = useDailyPlan(dateStr)
     const [timeBlocks, setTimeBlocks] = useState<TimeBlock[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
@@ -45,7 +49,7 @@ export function useTimeBlocks() {
             const { data: { user } } = await supabase.auth.getUser()
             if (!user) throw new Error('User not authenticated')
 
-            // Fetch time blocks for today's plan
+            // Fetch time blocks for this plan
             const { data, error: fetchErr } = await supabase
                 .from('time_blocks')
                 .select('*')
@@ -64,7 +68,6 @@ export function useTimeBlocks() {
                 setTimeBlocks(formatted)
             } else {
                 // No time blocks → Seed defaults
-                // 1. Fetch user's life roles to link them properly
                 const { data: roles } = await supabase
                     .from('life_roles')
                     .select('*')
@@ -81,7 +84,6 @@ export function useTimeBlocks() {
                     personal: personalRole?.id || null,
                 }
 
-                // 2. Map default blocks with actual database role IDs
                 const seedData = DEFAULT_BLOCKS.map(b => ({
                     user_id: user.id,
                     daily_plan_id: plan.id,
@@ -131,7 +133,6 @@ export function useTimeBlocks() {
             const { data: { user } } = await supabase.auth.getUser()
             if (!user) throw new Error('User not authenticated')
 
-            // Start a deletion + insertion block
             const { error: deleteErr } = await supabase
                 .from('time_blocks')
                 .delete()

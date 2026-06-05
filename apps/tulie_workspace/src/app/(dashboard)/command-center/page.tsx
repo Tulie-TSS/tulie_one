@@ -31,7 +31,9 @@ import {
   Loader2,
   Coffee,
   Users,
-  Settings
+  Settings,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react'
 
 import { RoleSwitcher } from '@/components/command-center/role-switcher'
@@ -39,10 +41,18 @@ import { TodaysPulse } from '@/components/command-center/todays-pulse'
 import { TaskStream } from '@/components/command-center/task-stream'
 import { SmartAlerts, generateAlerts } from '@/components/command-center/smart-alerts'
 import { WeeklyProgress } from '@/components/command-center/weekly-progress'
-import { Button } from '@repo/ui'
+import { Button, Popover, PopoverContent, PopoverTrigger, Calendar as CalendarPicker } from '@repo/ui'
 import { useTimeBlocks } from '@/hooks/useTimeBlocks'
 import { EditScheduleDialog } from '@/components/command-center/edit-schedule-dialog'
 import { RoleIcon } from '@/components/command-center/role-icon'
+
+/** Convert a Date to a local YYYY-MM-DD string (no UTC shift) */
+function toLocalDateStr(d: Date): string {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
 
 function getHabitIcon(habitIcon: string) {
   const cn = "size-4 text-primary shrink-0"
@@ -78,10 +88,31 @@ export default function CommandCenterPage() {
   const { activeRole } = useLifeRoleStore()
   const { roles, initializeRoles } = useLifeRoles()
   const { tasks, loading: tasksLoading, updateTaskStatus } = useTasks()
-  const { plan } = useDailyPlan()
   const { user } = useCurrentUser()
   const { habits, loading: habitsLoading, toggleHabit } = useHabits()
-  const { timeBlocks, loading: blocksLoading, saveTimeBlocks } = useTimeBlocks()
+
+  // ──────────────────────────────────────────────
+  // Selected date (for schedule navigation)
+  // ──────────────────────────────────────────────
+  const [selectedDate, setSelectedDate] = useState<Date>(() => new Date())
+  const todayDate = new Date()
+  const todayStr = toLocalDateStr(todayDate)
+  const selectedDateStr = toLocalDateStr(selectedDate)
+  const isToday = selectedDateStr === todayStr
+
+  const shiftDay = (delta: number) => {
+    setSelectedDate(prev => {
+      const d = new Date(prev)
+      d.setDate(d.getDate() + delta)
+      return d
+    })
+  }
+
+  // ──────────────────────────────────────────────
+  // Data hooks wired to selectedDate
+  // ──────────────────────────────────────────────
+  const { plan } = useDailyPlan(selectedDateStr)
+  const { timeBlocks, loading: blocksLoading, saveTimeBlocks } = useTimeBlocks(selectedDateStr)
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false)
 
   // Initialize life roles on first visit
@@ -89,7 +120,9 @@ export default function CommandCenterPage() {
     initializeRoles()
   }, [initializeRoles])
 
-  // Live clock — updates every 30 seconds so active block moves in real-time
+  // ──────────────────────────────────────────────
+  // Live clock — updates every 30 seconds
+  // ──────────────────────────────────────────────
   const [now, setNow] = useState(() => new Date())
   useEffect(() => {
     const tick = () => setNow(new Date())
@@ -100,8 +133,9 @@ export default function CommandCenterPage() {
   const minute = now.getMinutes()
   const greeting = hour < 12 ? 'Chào buổi sáng' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối'
 
-  // Check if current time is within a block (handling overnight blocks)
+  // Active block is only relevant when viewing today
   const isBlockActive = useCallback((startTime: string, endTime: string) => {
+    if (!isToday) return false
     const [sH, sM] = startTime.split(':').map(Number)
     const [eH, eM] = endTime.split(':').map(Number)
     const currentVal = hour * 60 + minute
@@ -109,11 +143,10 @@ export default function CommandCenterPage() {
     const endVal = eH * 60 + eM
 
     if (endVal < startVal) {
-      // Overnight block (e.g. 22:00 to 06:30)
       return currentVal >= startVal || currentVal < endVal
     }
     return currentVal >= startVal && currentVal < endVal
-  }, [hour, minute])
+  }, [hour, minute, isToday])
 
   const activeBlock = useMemo(() => {
     return timeBlocks.find(b => isBlockActive(b.start_time, b.end_time))
@@ -123,17 +156,13 @@ export default function CommandCenterPage() {
 
   // Filter today's tasks (due today or doing/ready)
   const todayTasks = useMemo(() => {
-    const todayStr = new Date().toISOString().split('T')[0]
     return tasks.filter(t => {
-      // Tasks that are currently doing or ready
       if (t.status === 'doing' || t.status === 'ready') return true
-      // Tasks due today
       if (t.requested_deadline && t.requested_deadline.split('T')[0] === todayStr) return true
-      // Tasks completed today
       if (t.status === 'done' && t.actual_end && t.actual_end.split('T')[0] === todayStr) return true
       return false
     })
-  }, [tasks])
+  }, [tasks, todayStr])
 
   const doneTasks = todayTasks.filter(t => t.status === 'done')
 
@@ -142,18 +171,16 @@ export default function CommandCenterPage() {
     const result: Record<string, { total: number; completed: number }> = {}
     roles.forEach(r => { result[r.id] = { total: 0, completed: 0 } })
 
-    // Get start of week (Monday)
-    const now = new Date()
-    const dayOfWeek = now.getDay()
-    const startOfWeek = new Date(now)
-    startOfWeek.setDate(now.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1))
+    const nowD = new Date()
+    const dayOfWeek = nowD.getDay()
+    const startOfWeek = new Date(nowD)
+    startOfWeek.setDate(nowD.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1))
     startOfWeek.setHours(0, 0, 0, 0)
 
     tasks.forEach(t => {
       const roleId = t.life_role_id || t.project?.life_role_id
       if (!roleId || !result[roleId]) return
 
-      // Check if task is relevant this week
       const created = new Date(t.created_at)
       const deadline = t.requested_deadline ? new Date(t.requested_deadline) : null
 
@@ -174,12 +201,16 @@ export default function CommandCenterPage() {
     if (!task) return
 
     if (task.status === 'done') {
-      // Undo - move back to doing
       await updateTaskStatus(taskId, 'doing')
     } else {
       await updateTaskStatus(taskId, 'done')
     }
   }
+
+  // Human-readable label for the selected date
+  const scheduleDateLabel = isToday
+    ? 'Hôm nay'
+    : selectedDate.toLocaleDateString('vi-VN', { weekday: 'short', day: 'numeric', month: 'numeric' })
 
   return (
     <div className="space-y-6">
@@ -187,11 +218,11 @@ export default function CommandCenterPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-primary/10 rounded-xl text-primary">
-            {hour < 12 ? <Sun className="size-5" /> : hour < 18 ? <Sun className="size-5" /> : <Moon className="size-5" />}
+            {hour < 18 ? <Sun className="size-5" /> : <Moon className="size-5" />}
           </div>
           <div>
             <h1 className="text-xl font-bold tracking-tight text-foreground">
-              {greeting}, {user?.full_name?.split(' ').pop() || 'bạn'}!
+              {greeting}, {user?.full_name?.split(' ')[0] || 'bạn'}!
             </h1>
             <p className="text-xs text-muted-foreground mt-0.5">
               {now.toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
@@ -227,11 +258,12 @@ export default function CommandCenterPage() {
         {/* Right Column - Schedule & Habits */}
         <div className="lg:col-span-3 space-y-6">
           {/* Time Block Schedule */}
-          <div className="rounded-xl border border-muted bg-card/60 backdrop-blur-sm p-4 space-y-4">
+          <div className="rounded-xl border border-muted bg-card/60 backdrop-blur-sm p-4 space-y-3">
+            {/* Schedule Header */}
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-bold flex items-center gap-2 text-foreground">
                 <Clock className="size-4 text-primary" />
-                Lịch hôm nay
+                Lịch trình
               </h3>
               <Button
                 variant="ghost"
@@ -242,13 +274,61 @@ export default function CommandCenterPage() {
                 <Edit2 className="size-3.5" />
               </Button>
             </div>
-            
+
+            {/* Date Navigation */}
+            <div className="flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 text-muted-foreground hover:text-foreground cursor-pointer shrink-0"
+                onClick={() => shiftDay(-1)}
+              >
+                <ChevronLeft className="size-3.5" />
+              </Button>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="flex-1 text-center text-xs font-semibold text-foreground hover:text-primary transition-colors cursor-pointer px-1 py-0.5 rounded hover:bg-muted/50">
+                    {scheduleDateLabel}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="center" side="bottom">
+                  <CalendarPicker
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={(d) => d && setSelectedDate(d)}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 text-muted-foreground hover:text-foreground cursor-pointer shrink-0"
+                onClick={() => shiftDay(1)}
+              >
+                <ChevronRight className="size-3.5" />
+              </Button>
+            </div>
+
+            {/* Jump to today */}
+            {!isToday && (
+              <button
+                onClick={() => setSelectedDate(new Date())}
+                className="w-full text-[10px] text-primary hover:underline text-center cursor-pointer"
+              >
+                ← Quay lại hôm nay
+              </button>
+            )}
+
+            {/* Blocks list */}
             {blocksLoading ? (
               <div className="flex justify-center py-6">
                 <Loader2 className="size-5 animate-spin text-muted-foreground" />
               </div>
             ) : timeBlocks.length === 0 ? (
-              <p className="text-xs text-muted-foreground text-center py-4">Chưa có lịch trình cho hôm nay</p>
+              <p className="text-xs text-muted-foreground text-center py-4">Chưa có lịch trình</p>
             ) : (
               <div className="space-y-1.5">
                 {timeBlocks.map((block) => {
@@ -308,7 +388,7 @@ export default function CommandCenterPage() {
                     const activeRoleObj = roles.find(r => r.role === activeRole)
                     return h.life_role_id === activeRoleObj?.id
                   })
-                  .slice(0, 5) // Show top 5
+                  .slice(0, 5)
                   .map(habit => {
                     const isCompleted = habit.today_log?.completed
                     return (
