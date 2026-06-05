@@ -533,33 +533,6 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="flex items-center gap-2">
-                                    <ShieldCheck className="h-4 w-4 text-blue-500" />
-                                    Bảo hành kỹ thuật
-                                </Label>
-                                <Select
-                                    value={warrantyMonths === null ? 'none' : warrantyMonths.toString()}
-                                    onValueChange={(v) => setWarrantyMonths(v === 'none' ? null : parseInt(v))}
-                                    disabled={isCoreLocked}
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Chọn thời gian bảo hành" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="none">Không có bảo hành</SelectItem>
-                                        <SelectItem value="6">6 tháng</SelectItem>
-                                        <SelectItem value="12">12 tháng (Khuyến nghị)</SelectItem>
-                                        <SelectItem value="24">24 tháng</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                {warrantyMonths && (
-                                    <p className="text-xs text-blue-600">
-                                        Điều khoản bảo hành {warrantyMonths} tháng sẽ tự động được thêm vào hợp đồng in.
-                                    </p>
-                                )}
-                            </div>
-
-                            <div className="space-y-2">
                                 <Label>Điều khoản</Label>
                                 <Textarea
                                     value={terms}
@@ -586,6 +559,33 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                 </Alert>
                             )}
                             </fieldset>
+
+                            <div className="space-y-2">
+                                <Label className="flex items-center gap-2">
+                                    <ShieldCheck className="h-4 w-4 text-blue-500" />
+                                    Bảo hành kỹ thuật
+                                </Label>
+                                <Select
+                                    value={warrantyMonths === null ? 'none' : warrantyMonths.toString()}
+                                    onValueChange={(v) => setWarrantyMonths(v === 'none' ? null : parseInt(v))}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Chọn thời gian bảo hành" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">Không có bảo hành</SelectItem>
+                                        <SelectItem value="6">6 tháng</SelectItem>
+                                        <SelectItem value="12">12 tháng (Khuyến nghị)</SelectItem>
+                                        <SelectItem value="24">24 tháng</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                {warrantyMonths && (
+                                    <p className="text-xs text-blue-600">
+                                        Điều khoản bảo hành {warrantyMonths} tháng sẽ tự động được thêm vào hợp đồng in.
+                                    </p>
+                                )}
+                            </div>
+
                         </CardContent>
                     </Card>
 
