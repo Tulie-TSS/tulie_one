@@ -1020,13 +1020,13 @@ export async function generateDocument(
 
         if (!hasDiscount) {
             templateContent = templateContent
-                .replace(/<th[^>]*>[\s\S]*?CK\(%\)[\s\S]*?<\/th>/gi, '')
-                .replace(/<th[^>]*>[\s\S]*?(Giảm giá|Discount)[\s\S]*?<\/th>/gi, '')
+                .replace(/<th[^>]*>(?:(?!<th|<\/th>)[\s\S])*?CK\(%\)[\s\S]*?<\/th>/gi, '')
+                .replace(/<th[^>]*>(?:(?!<th|<\/th>)[\s\S])*?(Giảm giá|Discount)[\s\S]*?<\/th>/gi, '')
         }
         if (!hasVat) {
             templateContent = templateContent
-                .replace(/<th[^>]*>[\s\S]*?VAT\(%\)[\s\S]*?<\/th>/gi, '')
-                .replace(/<th[^>]*>[\s\S]*?(Tiền VAT|Tax)[\s\S]*?<\/th>/gi, '')
+                .replace(/<th[^>]*>(?:(?!<th|<\/th>)[\s\S])*?VAT\(%\)[\s\S]*?<\/th>/gi, '')
+                .replace(/<th[^>]*>(?:(?!<th|<\/th>)[\s\S])*?(Tiền VAT|Tax)[\s\S]*?<\/th>/gi, '')
         }
 
         if (totalColumns !== 11) {
