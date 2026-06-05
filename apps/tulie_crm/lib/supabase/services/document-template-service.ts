@@ -12,6 +12,17 @@ function parseLocalDateString(dateStr: string): Date {
     return new Date(y, m - 1, d)
 }
 
+// Format local Date as dd/MM/yyyy to ensure leading zeros for days/months under 10
+function formatLocalDate(date: Date | null | undefined): string {
+    if (!date) return ''
+    return date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
+}
+
+function formatLocalDateString(dateStr: string | null | undefined): string {
+    if (!dateStr) return ''
+    return formatLocalDate(parseLocalDateString(dateStr))
+}
+
 import { contractTemplate } from './contract-template'
 import { paymentTemplate } from './payment-template'
 import { orderTemplate } from './order-template'
@@ -445,11 +456,11 @@ export async function generateDocument(
             day: docDate.getDate().toString().padStart(2, '0'),
             month: (docDate.getMonth() + 1).toString().padStart(2, '0'),
             year: docDate.getFullYear().toString(),
-            contract_date: signedDate ? signedDate.toLocaleDateString('vi-VN') : '',
+            contract_date: signedDate ? formatLocalDate(signedDate) : '',
             date_day: docDate.getDate().toString().padStart(2, '0'),
             date_month: (docDate.getMonth() + 1).toString().padStart(2, '0'),
             date_year: docDate.getFullYear().toString(),
-            quotation_date: new Date().toLocaleDateString('vi-VN'),
+            quotation_date: formatLocalDate(new Date()),
             location: 'Hà Nội',
 
             // Document numbers — using new format
@@ -485,12 +496,12 @@ export async function generateDocument(
         if (contract) {
             variables.total_amount_number = new Intl.NumberFormat('vi-VN').format(contract.total_amount || 0)
             if (!variables.amount_in_words) variables.amount_in_words = readNumberToWords(contract.total_amount || 0)
-            variables.start_date = contract.start_date ? parseLocalDateString(contract.start_date).toLocaleDateString('vi-VN') : ''
+            variables.start_date = contract.start_date ? formatLocalDateString(contract.start_date) : ''
             variables.service_description = contract.description || contract.quotation?.title || contract.title || ''
 
             // Auto-fill delivery_time = contract end date
             if (contract.end_date) {
-                variables.delivery_time = parseLocalDateString(contract.end_date).toLocaleDateString('vi-VN')
+                variables.delivery_time = formatLocalDateString(contract.end_date)
             }
 
             // Use delivery_address from snapshot if available, otherwise fallback to default based on type
@@ -704,7 +715,7 @@ export async function generateDocument(
                     const totalAmount = contract.total_amount || 0
                     const paymentTermsHtml = paymentMilestones.map((m: any, idx: number) => {
                         const percentage = totalAmount > 0 ? Math.round((m.amount / totalAmount) * 100) : 0
-                        const dueStr = m.due_date ? `(Hạn: ${parseLocalDateString(m.due_date).toLocaleDateString('vi-VN')})` : ''
+                        const dueStr = m.due_date ? `(Hạn: ${formatLocalDateString(m.due_date)})` : ''
                         return `- Đợt ${idx + 1}: ${percentage}% giá trị Hợp đồng = ${new Intl.NumberFormat('vi-VN').format(m.amount)} VND — ${m.name} ${dueStr}`
                     }).join('<br/>')
                     
@@ -742,7 +753,7 @@ export async function generateDocument(
                                 milestoneReason = `Theo điều khoản thanh toán tại Điều 2 của Hợp đồng, Bên sử dụng dịch vụ thanh toán đặt cọc cho Bên cung cấp dịch vụ để triển khai dự án.`
                             } else {
                                 const deliveryDate = pendingMilestone.due_date 
-                                    ? parseLocalDateString(pendingMilestone.due_date).toLocaleDateString('vi-VN') 
+                                    ? formatLocalDateString(pendingMilestone.due_date) 
                                     : ''
                                 milestoneReason = deliveryDate
                                     ? `Căn cứ Biên bản bàn giao và nghiệm thu ngày ${deliveryDate}, hai bên xác nhận Bên cung cấp dịch vụ đã hoàn thành đầy đủ phạm vi công việc quy định tại Hợp đồng.`
@@ -752,7 +763,7 @@ export async function generateDocument(
                             if (!variables.milestone_name) variables.milestone_name = mName
                             if (!variables.milestone_reason) variables.milestone_reason = milestoneReason
                             if (!variables.milestone_due_date && pendingMilestone.due_date) {
-                                variables.milestone_due_date = parseLocalDateString(pendingMilestone.due_date).toLocaleDateString('vi-VN')
+                                variables.milestone_due_date = formatLocalDateString(pendingMilestone.due_date)
                             }
                         }
                     }
@@ -832,7 +843,7 @@ export async function generateDocument(
             const deliveryMilestone = contract.milestones?.find((m: any) => m.type === 'delivery')
             const warrantyStartDateRaw = deliveryMilestone?.due_date || contract.end_date
             const warrantyStartDate = warrantyStartDateRaw 
-                ? parseLocalDateString(warrantyStartDateRaw).toLocaleDateString('vi-VN')
+                ? formatLocalDateString(warrantyStartDateRaw)
                 : '(ngày ký biên bản nghiệm thu và bàn giao website)'
 
             // Calculate warranty end date
@@ -843,7 +854,7 @@ export async function generateDocument(
                 endD.setMonth(endD.getMonth() + warrantyMonths)
                 // Subtract one day to get "hết ngày"
                 endD.setDate(endD.getDate() - 1)
-                warrantyEndDateStr = endD.toLocaleDateString('vi-VN')
+                warrantyEndDateStr = formatLocalDate(endD)
             }
 
             const warrantyMonthsText = warrantyMonths === 6 ? 'sáu' : warrantyMonths === 12 ? 'mười hai' : warrantyMonths === 24 ? 'hai mươi tư' : warrantyMonths
@@ -1184,7 +1195,7 @@ export async function generateDocumentBundle(contractId: string) {
                                 milestoneReason = `Theo điều khoản thanh toán tại Điều 2 của Hợp đồng, Bên sử dụng dịch vụ thanh toán đặt cọc cho Bên cung cấp dịch vụ để triển khai dự án.`
                             } else {
                                 const deliveryDate = milestone.due_date 
-                                    ? parseLocalDateString(milestone.due_date).toLocaleDateString('vi-VN') 
+                                    ? formatLocalDateString(milestone.due_date) 
                                     : ''
                                 milestoneReason = deliveryDate
                                     ? `Căn cứ Biên bản bàn giao và nghiệm thu ngày ${deliveryDate}, hai bên xác nhận Bên cung cấp dịch vụ đã hoàn thành đầy đủ phạm vi công việc quy định tại Hợp đồng.`
@@ -1384,9 +1395,9 @@ export async function getDocumentData(
         quotation_number: relationData?.quotation_number,
         total_amount: relationData?.total_amount || 0,
         amount_in_words: relationData?.total_amount ? readNumberToWords(relationData.total_amount) : '',
-        start_date: relationData?.start_date ? parseLocalDateString(relationData.start_date).toLocaleDateString('vi-VN') : '',
-        contract_date: relationData?.created_at ? parseLocalDateString(relationData.created_at).toLocaleDateString('vi-VN') : now.toLocaleDateString('vi-VN'),
-        valid_until: relationData?.valid_until ? parseLocalDateString(relationData.valid_until).toLocaleDateString('vi-VN') : '30 ngày kể từ ngày báo giá',
+        start_date: relationData?.start_date ? formatLocalDateString(relationData.start_date) : '',
+        contract_date: relationData?.created_at ? formatLocalDateString(relationData.created_at) : formatLocalDate(now),
+        valid_until: relationData?.valid_until ? formatLocalDateString(relationData.valid_until) : '30 ngày kể từ ngày báo giá',
         ...additionalMetadata
     }
 }

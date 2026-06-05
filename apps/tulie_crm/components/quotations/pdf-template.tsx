@@ -278,11 +278,11 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'flex-end', gap: 4 }}>
                                 <Text style={{ fontSize: 8, fontFamily: 'Roboto-Bold' }}>Ngày/ Date:</Text>
-                                <Text style={{ fontSize: 8 }}>{new Date(quotation.created_at || new Date()).toLocaleDateString('vi-VN')}</Text>
+                                <Text style={{ fontSize: 8 }}>{new Date(quotation.created_at || new Date()).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}</Text>
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'flex-end', gap: 4 }}>
                                 <Text style={{ fontSize: 8, fontFamily: 'Roboto-Bold' }}>Hiệu lực/ Valid:</Text>
-                                <Text style={{ fontSize: 8 }}>{quotation.valid_until ? new Date(quotation.valid_until).toLocaleDateString('vi-VN') : (quotation.valid_days || 30) + ' ngày'}</Text>
+                                <Text style={{ fontSize: 8 }}>{quotation.valid_until ? new Date(quotation.valid_until).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }) : (quotation.valid_days || 30) + ' ngày'}</Text>
                             </View>
                         </View>
                     </View>
