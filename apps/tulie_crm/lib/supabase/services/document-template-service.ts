@@ -519,8 +519,34 @@ export async function generateDocument(
             const productName = contract?.product_name_in_contract?.trim() || contract?.quotation?.product_name_in_contract?.trim() || proposalContent.product_name_in_contract?.trim() || ''
 
             // Build items table from quotation items
-            const items = contract.items || []
+            let items = contract.items || []
             if (items.length > 0) {
+                // If contract total_amount is less than the calculated gross/net sum of all items,
+                // it implies that optional items were not selected. In that case, we exclude them.
+                {
+                    const overallDiscountAmount = contract.quotation?.discount_amount ?? 0
+                    let calcTotalAfterVat = 0
+                    items.forEach((item: any) => {
+                        const qty = item.quantity || 1
+                        const unitPrice = item.unit_price || 0
+                        const itemGross = qty * unitPrice
+                        const discountPct = item.discount || 0
+                        const discountAmount = Math.round(itemGross * discountPct / 100)
+                        const afterDiscount = itemGross - discountAmount
+                        const itemVatRate = vatStatus === 'exempt' ? 0 : (item.vat_percent !== undefined && item.vat_percent !== null 
+                            ? item.vat_percent 
+                            : (contract.quotation?.vat_percent || 0))
+                        const itemVat = Math.round(afterDiscount * itemVatRate / 100)
+                        const afterVat = afterDiscount + itemVat
+                        calcTotalAfterVat += afterVat
+                    })
+                    const totalWithAllItems = calcTotalAfterVat - overallDiscountAmount
+
+                    if (contract.total_amount && contract.total_amount < totalWithAllItems - 100) {
+                        items = items.filter((item: any) => !item.is_optional)
+                    }
+                }
+
                 let grossTotal = 0
                 let totalDiscountAmt = 0
                 let totalVat = 0
@@ -1363,14 +1389,45 @@ export async function getDocumentData(
     let items: any[] = []
 
     if (relationId) {
-        if (type === 'contract' || type === 'delivery_minutes' || type === 'payment_request') {
+        if (type === 'contract' || type === 'order' || type === 'delivery_minutes' || type === 'payment_request') {
             const { data } = await supabase
                 .from('contracts')
                 .select('*, quotation:quotations(*, items:quotation_items(*))')
                 .eq('id', relationId)
                 .single()
             relationData = data
-            items = data?.quotation?.items || []
+            
+            let rawItems = data?.quotation?.items || []
+            if (rawItems.length > 0 && data) {
+                const proposalContent = (data?.quotation?.proposal_content as Record<string, string>) || {}
+                const isExempt = data?.vat_exempt_status === 'exempt' || 
+                                 data?.quotation?.vat_exempt_status === 'exempt' || 
+                                 proposalContent.vat_exempt_status === 'exempt'
+                const vatStatus = isExempt ? 'exempt' : '0_percent'
+                const overallDiscountAmount = data.quotation?.discount_amount ?? 0
+
+                let calcTotalAfterVat = 0
+                rawItems.forEach((item: any) => {
+                    const qty = item.quantity || 1
+                    const unitPrice = item.unit_price || 0
+                    const itemGross = qty * unitPrice
+                    const discountPct = item.discount || 0
+                    const discountAmount = Math.round(itemGross * discountPct / 100)
+                    const afterDiscount = itemGross - discountAmount
+                    const itemVatRate = vatStatus === 'exempt' ? 0 : (item.vat_percent !== undefined && item.vat_percent !== null 
+                        ? item.vat_percent 
+                        : (data.quotation?.vat_percent || 0))
+                    const itemVat = Math.round(afterDiscount * itemVatRate / 100)
+                    const afterVat = afterDiscount + itemVat
+                    calcTotalAfterVat += afterVat
+                })
+                const totalWithAllItems = calcTotalAfterVat - overallDiscountAmount
+
+                if (data.total_amount && data.total_amount < totalWithAllItems - 100) {
+                    rawItems = rawItems.filter((item: any) => !item.is_optional)
+                }
+            }
+            items = rawItems
         } else if (type === 'quotation') {
             const { data } = await supabase
                 .from('quotations')

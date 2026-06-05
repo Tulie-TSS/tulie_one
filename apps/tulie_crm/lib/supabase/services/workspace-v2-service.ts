@@ -614,11 +614,6 @@ export async function migrateOldWorkspaceTasks() {
             metadata: t.metadata || {},
         }))
 
-        const { data, error: insertErr } = await ws
-            .from('tasks')
-            .insert(newTasks)
-            .select('id')
-
         if (insertErr) throw insertErr
         return { migrated: data?.length || 0 }
     } catch (err) {
@@ -626,3 +621,284 @@ export async function migrateOldWorkspaceTasks() {
         throw err
     }
 }
+
+// ============================================
+// MANUAL SYNC: CRM Milestones & Retail Orders
+// ============================================
+
+export async function getMilestoneSyncStatus(milestoneId: string) {
+    try {
+        const ws = await createWorkspaceClient()
+        const { data, error } = await ws
+            .from('tasks')
+            .select('*')
+            .eq('metadata->>crm_milestone_id', milestoneId)
+            .maybeSingle()
+        if (error) throw error
+        return data as WsTask | null
+    } catch (err) {
+        console.error('Error in getMilestoneSyncStatus:', err)
+        return null
+    }
+}
+
+export async function syncMilestoneToWorkspace(milestoneId: string) {
+    try {
+        const crm = await createClient()
+        const ws = await createWorkspaceClient()
+
+        // 1. Get milestone details
+        const { data: milestone, error: msError } = await crm
+            .from('contract_milestones')
+            .select('*, contract:contracts(id, title, crm_project_id:project_id)')
+            .eq('id', milestoneId)
+            .single()
+
+        if (msError || !milestone) {
+            throw new Error('Không tìm thấy mốc trong CRM')
+        }
+
+        const projectId = milestone.project_id || (milestone.contract as any)?.crm_project_id
+
+        // 2. Find or create workspace project
+        let wsProjectId: string | null = null
+        if (projectId) {
+            const { data: wsProj } = await ws
+                .from('projects')
+                .select('id')
+                .eq('crm_project_id', projectId)
+                .maybeSingle()
+            if (wsProj) {
+                wsProjectId = wsProj.id
+            } else {
+                // Fetch CRM project to clone
+                const { data: crmProj } = await crm
+                    .from('projects')
+                    .select('title, description')
+                    .eq('id', projectId)
+                    .maybeSingle()
+                if (crmProj) {
+                    const newProj = await createWsProject({
+                        crm_project_id: projectId,
+                        name: crmProj.title,
+                        description: crmProj.description || undefined,
+                    })
+                    wsProjectId = newProj.id
+                }
+            }
+        }
+
+        // 3. Determine task details
+        let prefix = '📋 [Giai đoạn] '
+        if (milestone.type === 'payment') {
+            prefix = '💰 [Thanh toán] '
+        } else if (milestone.type === 'delivery') {
+            prefix = '📦 [Nghiệm thu / Bàn giao] '
+        }
+        const taskTitle = prefix + milestone.name
+
+        let taskStatus: WsTask['status'] = 'ready'
+        if (milestone.status === 'completed') {
+            taskStatus = 'done'
+        } else if (milestone.status === 'in_progress') {
+            taskStatus = 'doing'
+        }
+
+        // 4. Check if task already exists
+        const { data: existingTask } = await ws
+            .from('tasks')
+            .select('*')
+            .eq('metadata->>crm_milestone_id', milestoneId)
+            .maybeSingle()
+
+        if (existingTask) {
+            // Update
+            const updatedTask = await updateWsTask(existingTask.id, {
+                title: taskTitle,
+                description: milestone.description || existingTask.description,
+                due_date: milestone.due_date || existingTask.due_date,
+                status: milestone.status === 'completed' ? 'done' : existingTask.status,
+                completed_at: milestone.status === 'completed' ? (milestone.completed_at || new Date().toISOString()) : existingTask.completed_at,
+                project_id: wsProjectId || existingTask.project_id,
+                crm_project_id: projectId || existingTask.crm_project_id,
+            })
+            return { success: true, task: updatedTask, updated: true }
+        } else {
+            // Insert
+            const newTask = await createWsTask({
+                crm_project_id: projectId || undefined,
+                title: taskTitle,
+                description: milestone.description || undefined,
+                status: taskStatus,
+                priority: 'medium',
+                due_date: milestone.due_date || undefined,
+                project_id: wsProjectId || undefined,
+                category: 'follow_up',
+                metadata: { crm_milestone_id: milestoneId }
+            })
+            return { success: true, task: newTask, updated: false }
+        }
+    } catch (err: any) {
+        console.error('Error in syncMilestoneToWorkspace:', err)
+        throw err
+    }
+}
+
+export async function getRetailOrderSyncStatus(orderNumber: string) {
+    try {
+        const ws = await createWorkspaceClient()
+        const { data, error } = await ws
+            .from('tasks')
+            .select('*')
+            .eq('crm_order_code', orderNumber)
+        if (error) throw error
+        return (data || []) as WsTask[]
+    } catch (err) {
+        console.error('Error in getRetailOrderSyncStatus:', err)
+        return []
+    }
+}
+
+export async function syncRetailOrderToWorkspace(orderId: string) {
+    try {
+        const crm = await createClient()
+        const ws = await createWorkspaceClient()
+
+        // 1. Get retail order details
+        const { data: order, error: orderError } = await crm
+            .from('retail_orders')
+            .select('*')
+            .eq('id', orderId)
+            .single()
+
+        if (orderError || !order) {
+            throw new Error('Không tìm thấy đơn hàng lẻ trong CRM')
+        }
+
+        // 2. Check if tasks already exist
+        const { data: existingTasks } = await ws
+            .from('tasks')
+            .select('*')
+            .eq('crm_order_code', order.order_number)
+
+        const orderPrefix = order.customer_name + ' (' + order.order_number + ')'
+        const taskDescSuffix = '\n\nĐơn hàng: ' + order.order_number + '\nKhách hàng: ' + order.customer_name + '\nSố điện thoại: ' + (order.customer_phone || 'N/A') + '\nEmail: ' + (order.customer_email || 'N/A')
+
+        if (existingTasks && existingTasks.length > 0) {
+            // Update statuses of existing tasks if order status changed to completed or cancelled
+            if (order.order_status === 'completed' || order.order_status === 'cancelled') {
+                const targetStatus = order.order_status === 'completed' ? 'done' : 'cancelled'
+                for (const t of existingTasks) {
+                    if (t.status !== 'done' && t.status !== 'cancelled') {
+                        await updateWsTask(t.id, {
+                            status: targetStatus,
+                            completed_at: targetStatus === 'done' ? new Date().toISOString() : null
+                        })
+                    }
+                }
+            } else if (order.order_status === 'editing') {
+                // Complete shooting task and activate editing task
+                for (const t of existingTasks) {
+                    if (t.title.includes('Chụp ảnh') && t.status !== 'done') {
+                        await updateWsTask(t.id, { status: 'done', completed_at: new Date().toISOString() })
+                    }
+                    if (t.title.includes('Hậu kỳ') && t.status === 'backlog') {
+                        await updateWsTask(t.id, { status: 'ready' })
+                    }
+                }
+            }
+            return { success: true, count: existingTasks.length, updated: true }
+        }
+
+        // 3. Create new task list
+        const tasksToInsert: Partial<WsTask>[] = []
+        const { data: { user } } = await crm.auth.getUser()
+        const creatorId = user?.id || null
+
+        // Task 1: Shooting
+        tasksToInsert.push({
+            crm_order_code: order.order_number,
+            crm_customer_name: order.customer_name,
+            title: '📸 Chụp ảnh: ' + orderPrefix,
+            description: 'Tiến hành chụp hình cho khách hàng theo lịch hẹn.' + taskDescSuffix,
+            status: order.order_status === 'shooting' ? 'doing' : (order.order_status === 'editing' ? 'done' : 'ready'),
+            priority: 'medium',
+            due_date: order.order_date,
+            category: 'internal',
+            created_by: creatorId,
+            assigned_to: creatorId,
+            completed_at: order.order_status === 'editing' ? new Date().toISOString() : null
+        })
+
+        // Task 2: Editing
+        tasksToInsert.push({
+            crm_order_code: order.order_number,
+            crm_customer_name: order.customer_name,
+            title: '🎨 Hậu kỳ: ' + orderPrefix,
+            description: 'Lọc ảnh, chỉnh sửa màu sắc, làm mịn da theo yêu cầu.' + taskDescSuffix,
+            status: order.order_status === 'editing' ? 'ready' : 'backlog',
+            priority: 'medium',
+            due_date: new Date(new Date(order.order_date).getTime() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+            category: 'internal',
+            created_by: creatorId,
+            assigned_to: creatorId
+        })
+
+        // Physical vs Digital delivery
+        if (order.delivery_type === 'physical') {
+            // Task 3: In ảnh (Printing)
+            tasksToInsert.push({
+                crm_order_code: order.order_number,
+                crm_customer_name: order.customer_name,
+                title: '🖨️ In ảnh: ' + orderPrefix,
+                description: 'Gửi file đã retouch sang xưởng in ảnh gỗ/album/khung.' + taskDescSuffix,
+                status: 'backlog',
+                priority: 'medium',
+                due_date: new Date(new Date(order.order_date).getTime() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+                category: 'internal',
+                created_by: creatorId,
+                assigned_to: creatorId
+            })
+
+            // Task 4: Giao hàng (Shipping)
+            tasksToInsert.push({
+                crm_order_code: order.order_number,
+                crm_customer_name: order.customer_name,
+                title: '🚚 Giao hàng: ' + orderPrefix,
+                description: 'Đóng gói cẩn thận và liên hệ ship giao sản phẩm tận tay khách hàng.' + taskDescSuffix,
+                status: 'backlog',
+                priority: 'high',
+                due_date: new Date(new Date(order.order_date).getTime() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+                category: 'follow_up',
+                created_by: creatorId,
+                assigned_to: creatorId
+            })
+        } else {
+            // Task 3: Digital Delivery
+            tasksToInsert.push({
+                crm_order_code: order.order_number,
+                crm_customer_name: order.customer_name,
+                title: '✅ Bàn giao file: ' + orderPrefix,
+                description: 'Tải ảnh lên Drive/Dropbox, gửi link chất lượng cao cho khách.' + taskDescSuffix,
+                status: 'backlog',
+                priority: 'medium',
+                due_date: new Date(new Date(order.order_date).getTime() + 4 * 24 * 60 * 60 * 1000).toISOString(),
+                category: 'follow_up',
+                created_by: creatorId,
+                assigned_to: creatorId
+            })
+        }
+
+        const { data: inserted, error: insertErr } = await ws
+            .from('tasks')
+            .insert(tasksToInsert)
+            .select('id')
+
+        if (insertErr) throw insertErr
+        return { success: true, count: inserted?.length || 0, updated: false }
+    } catch (err: any) {
+        console.error('Error in syncRetailOrderToWorkspace:', err)
+        throw err
+    }
+}
+
