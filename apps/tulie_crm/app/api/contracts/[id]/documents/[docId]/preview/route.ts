@@ -46,6 +46,9 @@ export async function GET(
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        body, table, tr, td, th, div, p, span, ul, li {
+            font-family: Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Meiryo", "MS Gothic", sans-serif;
+        }
         @media print {
             @page {
                 size: A4;

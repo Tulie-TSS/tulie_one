@@ -1,5 +1,5 @@
 export const quotationTemplate = `
-<div style="font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif; font-size: 11pt; line-height: 1.6; color: #000; max-width: 800px; margin: 0 auto; padding: 20mm 15mm 20mm 25mm; text-align: justify;">
+<div style="font-family: 'Inter', 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', 'MS Gothic', -apple-system, sans-serif; font-size: 11pt; line-height: 1.6; color: #000; max-width: 800px; margin: 0 auto; padding: 20mm 15mm 20mm 25mm; text-align: justify;">
     
     <!-- HEADER -->
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
