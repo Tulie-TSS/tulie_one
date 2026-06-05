@@ -898,10 +898,10 @@ export async function generateDocument(
                 : ''
 
             variables.warranty_clause_html = `
-  <table style="width:100%; border-collapse:collapse; margin: 14px 0 6px 0;">
+  <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">3.6.</td>
-      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Bảo hành và Hỗ trợ kỹ thuật</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">3.6.</td>
+      <td style="vertical-align:top; padding:2px 0;">Bảo hành và Hỗ trợ kỹ thuật:</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
