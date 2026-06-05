@@ -372,6 +372,37 @@ export async function generateDocument(
         // Use snapshot from contract if available, otherwise live customer data
         const custData = contract?.customer_snapshot || customer || {}
 
+        // Check if contract/document is digital/website/design
+        const isDigital = (() => {
+            const productName = (contract?.product_name_in_contract || contract?.quotation?.product_name_in_contract || additionalVariables?.product_name_in_contract || '').toLowerCase()
+            const title = (contract?.title || '').toLowerCase()
+            const description = (contract?.description || '').toLowerCase()
+            const qTitle = (contract?.quotation?.title || '').toLowerCase()
+            
+            const digitalKeywords = [
+                'website', 'web', 'phần mềm', 'phan mem', 'app', 'giao diện', 'giao dien', 
+                'logo', 'nhận diện thương hiệu', 'nhan dien thuong hieu', 'branding', 
+                'thiết kế', 'thiet ke', 'quản trị', 'quan tri', 'hosting', 'vps', 'domain'
+            ]
+            
+            const hasKeyword = (text: string) => digitalKeywords.some(kw => text.includes(kw))
+            
+            if (hasKeyword(productName) || hasKeyword(title) || hasKeyword(description) || hasKeyword(qTitle)) {
+                return true
+            }
+            
+            const items = contract?.items || contract?.quotation?.items || []
+            for (const item of items) {
+                const itemName = (item.product_name || item.name || '').toLowerCase()
+                const itemDesc = (item.description || '').toLowerCase()
+                if (hasKeyword(itemName) || hasKeyword(itemDesc)) {
+                    return true
+                }
+            }
+            
+            return false
+        })()
+
         // Extract freelancer initials if it's a freelance contract
         const isFreelance = template.type === 'freelance_contract' || contract?.category === 'freelancer'
         let cleanInitials = ''
@@ -475,8 +506,12 @@ export async function generateDocument(
                 variables.delivery_time = parseLocalDateString(contract.end_date).toLocaleDateString('vi-VN')
             }
 
-            // Auto-fill delivery_address from customer address
-            variables.delivery_address = custData?.address || customer?.address || ''
+            // Auto-fill delivery_address from customer address, or digital delivery text
+            if (isDigital) {
+                variables.delivery_address = 'Bản mềm qua Internet (Email/Cloud/Drive)'
+            } else {
+                variables.delivery_address = custData?.address || customer?.address || ''
+            }
 
             // Determine VAT status and Product Name early for use in items table and declaration
             const proposalContent = (contract?.quotation?.proposal_content as Record<string, string>) || {}
@@ -928,6 +963,35 @@ export async function generateDocument(
         let templateContent = template.content
         if (isFreelance && template.type === 'delivery_minutes') {
             templateContent = freelanceDeliveryTemplate
+        }
+
+        // Dynamically upgrade old templates that don't have {{warranty_clause_html}}
+        if (template.type === 'contract' && !templateContent.includes('{{warranty_clause_html}}')) {
+            const marker = '<!-- ========== ĐIỀU 4 ========== -->'
+            if (templateContent.includes(marker)) {
+                templateContent = templateContent.replace(marker, `\n  {{warranty_clause_html}}\n\n  ${marker}`)
+            } else {
+                const altMarker = 'Điều 4:'
+                const idx = templateContent.indexOf(altMarker)
+                if (idx !== -1) {
+                    const tableStartIdx = templateContent.lastIndexOf('<table', idx)
+                    if (tableStartIdx !== -1) {
+                        templateContent = templateContent.slice(0, tableStartIdx) + `\n  {{warranty_clause_html}}\n\n  ` + templateContent.slice(tableStartIdx)
+                    }
+                }
+            }
+        }
+        
+        // Dynamically upgrade old templates that don't have {{contract_clause_count}}
+        if (template.type === 'contract' && templateContent.includes('tám (08) điều') && !templateContent.includes('{{contract_clause_count}}')) {
+            templateContent = templateContent.replace('tám (08) điều', '{{contract_clause_count}}')
+        }
+
+        // Handle digital delivery adjustments in template content
+        if (isDigital) {
+            templateContent = templateContent
+                .replace('Địa chỉ giao hàng:', 'Hình thức bàn giao:')
+                .replace('Địa điểm giao hàng:', 'Hình thức bàn giao:')
         }
 
         const filledContent = await fillTemplate(templateContent, variables)
