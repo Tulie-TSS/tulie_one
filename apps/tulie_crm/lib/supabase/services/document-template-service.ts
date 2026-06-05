@@ -1023,6 +1023,17 @@ export async function generateDocument(
                 .replace(/<th[^>]*>(?:(?!<th|<\/th>)[\s\S])*?CK\(%\)[\s\S]*?<\/th>/gi, '')
                 .replace(/<th[^>]*>(?:(?!<th|<\/th>)[\s\S])*?(Giảm giá|Discount)[\s\S]*?<\/th>/gi, '')
         }
+
+        const overallDiscountAmount = contract?.quotation?.discount_amount || 0
+        const hasAnyDiscount = contract
+            ? ((contract.items && contract.items.length > 0 && contract.items.some((item: any) => (item.discount || 0) > 0)) || overallDiscountAmount > 0)
+            : false
+
+        if (!hasAnyDiscount) {
+            templateContent = templateContent
+                .replace(/<tr[^>]*>\s*<td[^>]*>\s*<strong>Tạm tính<\/strong>[\s\S]*?<\/tr>/gi, '')
+                .replace(/<tr[^>]*>\s*<td[^>]*>\s*<strong>Tổng chiết khấu<\/strong>[\s\S]*?<\/tr>/gi, '')
+        }
         if (!hasVat) {
             templateContent = templateContent
                 .replace(/<th[^>]*>(?:(?!<th|<\/th>)[\s\S])*?VAT\(%\)[\s\S]*?<\/th>/gi, '')
