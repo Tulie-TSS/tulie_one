@@ -65,7 +65,7 @@ export const freelanceDeliveryTemplate = `
     
     <!-- BÊN GIAO (BÊN B) -->
     <tr style="border-bottom:1px solid #000;">
-      <td style="font-weight:bold; padding:4px 20px 4px 0; vertical-align:top; white-space:nowrap;">Bên giao bàn giao (Bên B)</td>
+      <td style="font-weight:bold; padding:4px 20px 4px 0; vertical-align:top; white-space:nowrap;">Bên bàn giao (Bên B)</td>
       <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top; text-transform:uppercase;">{{freelancer_name}}</td>
     </tr>
     <tr>

@@ -374,6 +374,12 @@ export async function generateDocument(
 
         // Check if contract/document is digital/website/design
         const isDigital = (() => {
+            // Check manual override first
+            const deliveryMethod = custData?.delivery_method
+            if (deliveryMethod === 'digital') return true
+            if (deliveryMethod === 'physical') return false
+
+            // Smart Auto-detection
             const productName = (contract?.product_name_in_contract || contract?.quotation?.product_name_in_contract || additionalVariables?.product_name_in_contract || '').toLowerCase()
             const title = (contract?.title || '').toLowerCase()
             const description = (contract?.description || '').toLowerCase()
@@ -384,21 +390,42 @@ export async function generateDocument(
                 'logo', 'nhận diện thương hiệu', 'nhan dien thuong hieu', 'branding', 
                 'thiết kế', 'thiet ke', 'quản trị', 'quan tri', 'hosting', 'vps', 'domain'
             ]
+
+            const physicalKeywords = [
+                'in ấn', 'in', 'gia công', 'sản xuất', 'phần cứng', 'thiết bị', 
+                'vận chuyển', 'giao nhận', 'bàn giao vật lý', 'ấn phẩm', 'sách', 'vở', 
+                'kệ', 'hộp', 'túi', 'bao bì'
+            ]
             
-            const hasKeyword = (text: string) => digitalKeywords.some(kw => text.includes(kw))
+            const hasKeyword = (text: string, keywords: string[]) => keywords.some(kw => text.includes(kw))
             
-            if (hasKeyword(productName) || hasKeyword(title) || hasKeyword(description) || hasKeyword(qTitle)) {
-                return true
-            }
+            let hasDigital = hasKeyword(productName, digitalKeywords) || 
+                             hasKeyword(title, digitalKeywords) || 
+                             hasKeyword(description, digitalKeywords) || 
+                             hasKeyword(qTitle, digitalKeywords)
+
+            let hasPhysical = hasKeyword(productName, physicalKeywords) || 
+                              hasKeyword(title, physicalKeywords) || 
+                              hasKeyword(description, physicalKeywords) || 
+                              hasKeyword(qTitle, physicalKeywords)
             
             const items = contract?.items || contract?.quotation?.items || []
             for (const item of items) {
                 const itemName = (item.product_name || item.name || '').toLowerCase()
                 const itemDesc = (item.description || '').toLowerCase()
-                if (hasKeyword(itemName) || hasKeyword(itemDesc)) {
-                    return true
+                if (hasKeyword(itemName, digitalKeywords) || hasKeyword(itemDesc, digitalKeywords)) {
+                    hasDigital = true
+                }
+                if (hasKeyword(itemName, physicalKeywords) || hasKeyword(itemDesc, physicalKeywords)) {
+                    hasPhysical = true
                 }
             }
+
+            // If it has physical components (even if mixed with design/digital), it requires physical delivery
+            if (hasPhysical) return false
+            
+            // Pure digital
+            if (hasDigital) return true
             
             return false
         })()
@@ -992,6 +1019,18 @@ export async function generateDocument(
             templateContent = templateContent
                 .replace('Địa chỉ giao hàng:', 'Hình thức bàn giao:')
                 .replace('Địa điểm giao hàng:', 'Hình thức bàn giao:')
+            
+            if (template.type === 'delivery_minutes') {
+                templateContent = templateContent
+                    .replace('BIÊN BẢN GIAO NHẬN SẢN PHẨM/DỊCH VỤ', 'BIÊN BẢN NGHIỆM THU VÀ BÀN GIAO SẢN PHẨM/DỊCH VỤ')
+                    .replace('BIÊN BẢN GIAO NHẬN', 'BIÊN BẢN NGHIỆM THU VÀ BÀN GIAO')
+                    .replace('Bên nhận hàng (Bên A)', 'Bên nhận bàn giao (Bên A)')
+                    .replace('Bên giao hàng (Bên B)', 'Bên bàn giao (Bên B)')
+                    .replace('Hai bên cùng thống nhất số lượng giao hàng như sau:', 'Hai bên cùng thống nhất nghiệm thu và bàn giao sản phẩm/dịch vụ như sau:')
+                    .replace('Bên A xác nhận Bên B đã giao cho Bên A đúng chủng loại và số lượng như trên.', 'Bên A xác nhận Bên B đã nghiệm thu và bàn giao sản phẩm/dịch vụ đầy đủ, đảm bảo yêu cầu chất lượng và đúng chủng loại như trên.')
+                    .replace('Biên bản Giao nhận được lập', 'Biên bản Nghiệm thu và Bàn giao được lập')
+                    .replace('Biên bản Giao nhận này', 'Biên bản Nghiệm thu và Bàn giao này')
+            }
         }
 
         const filledContent = await fillTemplate(templateContent, variables)

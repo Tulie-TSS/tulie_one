@@ -339,6 +339,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
         customer_tax_code: snapshot?.tax_code || cust?.tax_code || '',
         customer_address: snapshot?.address || cust?.address || '',
         customer_invoice_address: snapshot?.invoice_address || cust?.invoice_address || '',
+        delivery_method: (snapshot as any)?.delivery_method || 'auto',
     })
     const [infoChanged, setInfoChanged] = useState(false)
     const [savingInfo, setSavingInfo] = useState(false)
@@ -366,6 +367,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                     tax_code: customerInfo.customer_tax_code,
                     address: customerInfo.customer_address,
                     invoice_address: customerInfo.customer_invoice_address,
+                    delivery_method: customerInfo.delivery_method,
                 })
             })
             if (!res.ok) throw new Error('Lỗi lưu thông tin')
@@ -539,6 +541,23 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                                         className="h-8 text-xs"
                                         placeholder="Mã số thuế"
                                     />
+                                </div>
+
+                                <div className="space-y-1">
+                                    <Label className="text-[10px] text-muted-foreground">Hình thức bàn giao</Label>
+                                    <select
+                                        name="delivery_method"
+                                        value={customerInfo.delivery_method}
+                                        onChange={(e) => {
+                                            setCustomerInfo(prev => ({ ...prev, delivery_method: e.target.value }))
+                                            setInfoChanged(true)
+                                        }}
+                                        className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                    >
+                                        <option value="auto">Tự động nhận diện</option>
+                                        <option value="digital">Bản mềm qua Internet (Email/Cloud)</option>
+                                        <option value="physical">Giao hàng vật lý (Tới địa chỉ công ty)</option>
+                                    </select>
                                 </div>
 
                                 <div className="space-y-1">
