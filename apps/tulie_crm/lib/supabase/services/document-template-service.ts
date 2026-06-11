@@ -135,10 +135,12 @@ export async function getDefaultTemplates(): Promise<DocumentTemplate[]> {
 export async function getDocumentTemplates() {
     try {
         const supabase = createAdminClient()
-        // Try to order by is_default first; if column doesn't exist, fallback to created_at only
+        // Order by is_default ascending (so custom templates with false come first) and latest created first
         let query = supabase.from('document_templates').select('*')
         const { data, error } = await query
-            .order('created_at', { ascending: true })
+            .order('is_default', { ascending: true })
+            .order('created_at', { ascending: false })
+
 
         let resultTemplates = data ? (data as DocumentTemplate[]) : []
 
