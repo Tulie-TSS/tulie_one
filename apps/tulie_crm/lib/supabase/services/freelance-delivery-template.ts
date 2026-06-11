@@ -21,10 +21,11 @@ export const freelanceDeliveryTemplate = `
     </tr>
   </table>
 
-  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0;">BIÊN BẢN GIAO NHẬN SẢN PHẨM/DỊCH VỤ</p>
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0; text-transform: uppercase;">BIÊN BẢN NGHIỆM THU VÀ BÀN GIAO SẢN PHẨM/DỊCH VỤ</p>
+  <p style="text-align:center; font-size:11pt; margin: -15px 0 20px 0;">(KHOÁN VIỆC LẬP TRÌNH)</p>
 
   <!-- Căn cứ -->
-  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ vào Hợp đồng dịch vụ số {{contract_number}} ngày {{day}}/{{month}}/{{year}} được ký giữa Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie và Ông/Bà {{freelancer_name}};</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ vào Hợp đồng dịch vụ khoán việc số {{contract_number}} đã ký kết giữa Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie và Ông/Bà {{freelancer_name}};</p>
   <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào tiến độ thực hiện và kết quả công việc thực tế của Bên B.</p>
 
   <p style="margin:10px 0;">Hôm nay, ngày {{day}} tháng {{month}} năm {{year}}, tại văn phòng Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie, chúng tôi gồm có:</p>
@@ -52,7 +53,7 @@ export const freelanceDeliveryTemplate = `
       <td style="vertical-align:top;">Điện thoại:</td>
       <td style="vertical-align:top;"></td>
       <td style="vertical-align:top;">Di động:</td>
-      <td style="vertical-align:top;">0989.123.456</td>
+      <td style="vertical-align:top;">+84 98 898 4554</td>
     </tr>
     <tr>
       <td style="vertical-align:top;">Mã số thuế:</td>
@@ -92,11 +93,11 @@ export const freelanceDeliveryTemplate = `
     </tr>
   </table>
 
-  <p style="margin:10px 0; font-weight:bold;">Hai bên cùng thống nhất số lượng và nội dung bàn giao hạng mục công việc như sau:</p>
+  <p style="margin:10px 0; font-weight:bold;">1. Nội dung và hạng mục công việc bàn giao:</p>
 
   <!-- Bảng giao nhận -->
   <table style="width:100%; border-collapse:collapse; margin-bottom: 14px;">
-    <tr>
+    <tr style="background:#f5f5f5;">
       <th style="border:1px solid #000; padding:5px; text-align:center; font-weight:bold; width:40px;">STT</th>
       <th style="border:1px solid #000; padding:5px; text-align:left; font-weight:bold;" colspan="3">Hạng mục công việc / Sản phẩm bàn giao</th>
       <th style="border:1px solid #000; padding:5px; text-align:center; font-weight:bold; width:80px;">ĐVT</th>
@@ -106,17 +107,65 @@ export const freelanceDeliveryTemplate = `
     {{delivery_items_table}}
   </table>
 
-  <p style="margin:10px 0; text-align:justify;">Bên A xác nhận Bên B đã bàn giao đầy đủ sản phẩm, kết quả công việc đạt yêu cầu chất lượng của Bên A theo đúng thỏa thuận tại Hợp đồng.</p>
-  <p style="margin:10px 0; text-align:justify;">Biên bản Giao nhận này là căn cứ để hai bên thực hiện thủ tục nghiệm thu, thanh lý hợp đồng và thanh toán phí dịch vụ đợt tiếp theo.</p>
+  <p style="margin:10px 0; font-weight:bold;">2. Đánh giá kết quả công việc:</p>
+  <table style="width:100%; border-collapse:collapse; margin-bottom: 12px; font-size:9.5pt;">
+    <tr>
+      <td style="width:240px; padding:4px 0; font-weight:bold;">- Chất lượng mã nguồn (Source Code):</td>
+      <td style="padding:4px 0;">[  ] Đạt yêu cầu kỹ thuật, không chứa mã độc, có chú thích đầy đủ</td>
+    </tr>
+    <tr>
+      <td style="font-weight:bold; padding:4px 0;">- Chức năng hệ thống (Feature):</td>
+      <td style="padding:4px 0;">[  ] Đạt yêu cầu vận hành theo đặc tả dự án</td>
+    </tr>
+    <tr>
+      <td style="font-weight:bold; padding:4px 0;">- Tiến độ thực hiện:</td>
+      <td style="padding:4px 0;">[  ] Đạt yêu cầu bàn giao đúng thời hạn (deadline)</td>
+    </tr>
+  </table>
+
+  <p style="margin:10px 0; font-weight:bold;">3. Quyết toán tài chính và nghĩa vụ thanh toán:</p>
+  <table style="margin-left: 20px; margin-bottom:14px; border-collapse:collapse; font-size:10pt;">
+    <tr>
+      <td style="padding:3px 15px 3px 0; white-space:nowrap;">- Tổng chi phí khoán việc:</td>
+      <td style="font-weight:bold; padding:3px 0;">{{total_amount_number}} VND</td>
+    </tr>
+    <tr>
+      <td style="padding:3px 15px 3px 0; white-space:nowrap;">- Đã tạm ứng (Đợt 1):</td>
+      <td style="font-weight:bold; padding:3px 0;">{{deposit_amount}} VND</td>
+    </tr>
+    <tr>
+      <td style="padding:3px 15px 3px 0; white-space:nowrap;">- Khấu trừ thuế TNCN 10% tại nguồn:</td>
+      <td style="font-weight:bold; padding:3px 0; color: #b91c1c;">-{{tax_amount}} VND</td>
+    </tr>
+    <tr>
+      <td style="padding:3px 15px 3px 0; white-space:nowrap;">- Số tiền thực lĩnh đợt cuối (Đợt 2):</td>
+      <td style="font-weight:bold; padding:3px 0; color: #15803d; font-size: 11pt;">{{net_amount}} VND</td>
+    </tr>
+    <tr>
+      <td style="padding:3px 15px 3px 0; white-space:nowrap;">- Bằng chữ:</td>
+      <td style="font-style:italic; padding:3px 0;">{{net_amount_in_words}}</td>
+    </tr>
+  </table>
+
+  <p style="margin:10px 0; text-align:justify;">
+    Bên A xác nhận Bên B đã bàn giao đầy đủ sản phẩm, kết quả công việc đạt yêu cầu chất lượng của Bên A theo đúng thỏa thuận tại Hợp đồng. Bên A cam kết thanh toán số tiền thực lĩnh đợt cuối (Đợt 2) nêu trên cho Bên B trong vòng 07 ngày làm việc kể từ ngày ký Biên bản này.
+  </p>
+  <p style="margin:10px 0; text-align:justify;">Biên bản Nghiệm thu này là căn cứ để hai bên thực hiện thủ tục tất toán và thanh lý hợp đồng dịch vụ khoán việc.</p>
   <p style="margin:10px 0; text-align:justify;">Biên bản được lập thành hai (02) bản có giá trị pháp lý như nhau, mỗi Bên giữ một (01) bản.</p>
 
   <!-- Chữ ký -->
-  <table style="width:100%; margin-top: 30px;">
+  <table style="width:100%; margin-top: 35px;">
     <tr>
-      <td style="width:50%; text-align:center; font-weight:bold;">ĐẠI DIỆN BÊN A</td>
-      <td style="width:50%; text-align:center; font-weight:bold;">ĐẠI DIỆN BÊN B</td>
+      <td style="width:50%; text-align:center; font-weight:bold; vertical-align:top;">
+        ĐẠI DIỆN BÊN B<br>
+        <span style="font-weight:normal; font-style:italic; font-size:9pt;">(Ký, ghi rõ họ tên)</span>
+      </td>
+      <td style="width:50%; text-align:center; font-weight:bold; vertical-align:top;">
+        ĐẠI DIỆN BÊN A<br>
+        <span style="font-weight:normal; font-style:italic; font-size:9pt;">(Ký, đóng dấu, ghi rõ họ tên)</span>
+      </td>
     </tr>
-    <tr><td style="height:100px;"></td><td style="height:100px;"></td></tr>
+    <tr><td style="height:80px;"></td><td style="height:80px;"></td></tr>
   </table>
 </div>
 `;

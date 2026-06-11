@@ -31,10 +31,10 @@ export const contractTemplate = `
   <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0;">HỢP ĐỒNG KINH TẾ</p>
 
   <!-- Căn cứ pháp luật - IN NGHIÊNG -->
-  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Bộ luật Dân sự nước Cộng hòa Xã hội Chủ nghĩa Việt Nam số 91/2015/QH13 được Quốc hội thông qua ngày 24/11/2015 có hiệu lực thi hành từ ngày 01/01/2017;</p>
-  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Thương mại số 36/2005/QH11 của Quốc hội nước Cộng hòa Xã hội Chủ nghĩa Việt Nam thông qua ngày 14/6/2005 và các văn bản hướng dẫn thi hành từ ngày 01/01/2006;</p>
-  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ vào Luật doanh nghiệp số 68/2014/QH13 do quốc hội ban hành ngày 26/11/2014 có hiệu lực thi hành từ ngày 01/07/2015;</p>
-  <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào khả năng cung cầu của hai bên.</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Bộ luật Dân sự số 91/2015/QH13 có hiệu lực từ ngày 01/01/2017;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Thương mại số 36/2005/QH11 có hiệu lực từ ngày 01/01/2006 và các văn bản hướng dẫn thi hành;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Doanh nghiệp số 59/2020/QH14 có hiệu lực từ ngày 01/01/2021;</p>
+  <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào thỏa thuận và nhu cầu thực tế của các bên.</p>
 
   <p style="margin:10px 0;">Hôm nay, ngày {{day}} tháng {{month}} năm {{year}}, tại {{customer_company}}, chúng tôi gồm:</p>
 
@@ -240,40 +240,40 @@ export const contractTemplate = `
   <table style="width:100%; border-collapse:collapse; margin: 14px 0 6px 0;">
     <tr>
       <td style="width:30px; font-weight:bold; vertical-align:top;">6</td>
-      <td style="font-weight:bold; vertical-align:top;">Điều 6: Quy tắc làm việc chung</td>
+      <td style="font-weight:bold; vertical-align:top;">Điều 6: Sở hữu trí tuệ, Bảo mật thông tin và Bảo vệ dữ liệu cá nhân</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">6.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên A thông báo cho Bên B bằng văn bản khi muốn thay đổi bất kỳ điều khoản nào của bản hợp đồng này và phải được sự đồng ý của Bên B.</td></tr>
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">6.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B thông báo cho Bên A bằng văn bản khi muốn thay đổi bất kỳ điều khoản nào của bản hợp đồng này và phải được sự đồng ý của Bên A.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">6.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Quyền sở hữu trí tuệ:</strong> Bên A sở hữu toàn bộ thông tin, dữ liệu, logo, hình ảnh, tài liệu do Bên A cung cấp hoặc tự tạo ra trên website. Đối với mã nguồn và thiết kế do Bên B xây dựng, Bên A được cấp quyền sử dụng không độc quyền, không giới hạn thời gian cho mục đích vận hành kinh doanh của mình. Bên A không được bán lại, cấp phép lại mã nguồn này dưới dạng một sản phẩm phần mềm độc lập cho bên thứ ba khi chưa có sự đồng ý bằng văn bản của Bên B. Bên B giữ quyền sở hữu đối với các thư viện, framework, mã nguồn dùng chung, ý tưởng và giải pháp kỹ thuật cốt lõi và được quyền tái sử dụng cho các dự án khác.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">6.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật thông tin:</strong> Hai bên cam kết bảo mật mọi thông tin kỹ thuật, kinh doanh, tài chính nhận được từ bên kia trong suốt thời gian thực hiện hợp đồng và sau khi chấm dứt hợp đồng, trừ trường hợp thông tin đã công khai hoặc phải cung cấp theo yêu cầu của cơ quan nhà nước có thẩm quyền.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">6.3.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo vệ dữ liệu cá nhân (Nghị định 13/2023/NĐ-CP):</strong> Bên A là Bên kiểm soát dữ liệu cá nhân (Data Controller), có trách nhiệm xin sự đồng ý hợp lệ của người dùng và thiết lập các điều khoản, chính sách bảo mật thông tin trên website theo đúng quy định. Bên B là Bên xử lý dữ liệu cá nhân (Data Processor), cam kết xử lý dữ liệu người dùng của website theo đúng chỉ dẫn hợp pháp của Bên A và phạm vi kỹ thuật của Hợp đồng. Hai bên cam kết phối hợp khắc phục kịp thời nếu xảy ra sự cố an ninh thông tin.</td></tr>
   </table>
 
   <!-- ========== ĐIỀU 7 ========== -->
   <table style="width:100%; border-collapse:collapse; margin: 14px 0 6px 0;">
     <tr>
       <td style="width:30px; font-weight:bold; vertical-align:top;">7</td>
-      <td style="font-weight:bold; vertical-align:top;">Điều 7: Vi phạm và bồi thường</td>
+      <td style="font-weight:bold; vertical-align:top;">Điều 7: Giới hạn trách nhiệm, Phạt vi phạm và Giải quyết tranh chấp</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">7.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B phải chịu phạt 1% tổng giá trị hợp đồng cho mỗi một (01) ngày chậm giao sản phẩm theo tiến độ quy định tại điều 3 của hợp đồng này.</td></tr>
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">7.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Khi Bên A chậm thanh toán cho Bên B vì bất cứ lý do gì, thì Bên A phải chịu phạt cho Bên B số tiền tương ứng với 1% tổng giá trị hợp đồng cho mỗi một (01) ngày chậm thanh toán so với thời hạn thanh toán quy định tại điều 2 của hợp đồng này.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">7.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Giới hạn trách nhiệm:</strong> Tổng trách nhiệm bồi thường thiệt hại tối đa của Bên B phát sinh từ hoặc liên quan đến hợp đồng này, trong mọi trường hợp, sẽ không vượt quá tổng số tiền thực tế Bên A đã thanh toán cho Bên B theo hợp đồng này. Bên B không chịu trách nhiệm đối với các thiệt hại gián tiếp, cơ hội kinh doanh bị mất hoặc các lỗi do bên thứ ba (hosting, domain, nền tảng cloud) gây ra.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">7.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Phạt vi phạm tiến độ bàn giao (Lỗi Bên B):</strong> Nếu Bên B chậm bàn giao sản phẩm cuối cùng quá thời hạn đã thỏa thuận (trừ trường hợp bất khả kháng hoặc lỗi Bên A), Bên B chịu phạt 0.1% giá trị phần nghĩa vụ bị chậm cho mỗi ngày chậm bàn giao, nhưng tổng mức phạt không quá 8% giá trị phần nghĩa vụ bị vi phạm (theo Điều 301 Luật Thương mại 2005).</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">7.3.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Chậm thanh toán và Quyền tạm ngưng (Lỗi Bên A):</strong> Nếu Bên A chậm thanh toán bất kỳ đợt nào so với hạn định, Bên A phải chịu lãi chậm trả với mức 0.05%/ngày tính trên số tiền chậm trả và số ngày chậm trả, tổng lãi chậm trả và phạt vi phạm không quá 8% phần nghĩa vụ bị vi phạm. Nếu Bên A chậm thanh toán quá 15 ngày làm việc, Bên B có quyền tạm dừng thực hiện công việc, thời gian thực hiện hợp đồng sẽ tự động kéo dài tương ứng và Bên B không bị coi là chậm tiến độ.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">7.4.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Giải quyết tranh chấp:</strong> Mọi tranh chấp phát sinh sẽ được giải quyết trước tiên qua thương lượng, hòa giải. Trường hợp thương lượng thất bại trong vòng 30 ngày, tranh chấp sẽ được đưa ra giải quyết tại Tòa án nhân dân có thẩm quyền tại Thành phố Hà Nội. Án phí do bên thua chịu trách nhiệm thanh toán.</td></tr>
   </table>
 
   <!-- ========== ĐIỀU 8 ========== -->
   <table style="width:100%; border-collapse:collapse; margin: 14px 0 6px 0;">
     <tr>
       <td style="width:30px; font-weight:bold; vertical-align:top;">8</td>
-      <td style="font-weight:bold; vertical-align:top;">Điều 8: Hiệu lực và chấm dứt hợp đồng</td>
+      <td style="font-weight:bold; vertical-align:top;">Điều 8: Hiệu lực, Thay đổi phạm vi công việc và Chấm dứt hợp đồng</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">8.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Tất cả sửa đổi và bổ sung hợp đồng phải được thông báo bằng văn bản và có sự đồng ý của các bên.</td></tr>
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">8.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên không được đơn phương chấm dứt hợp đồng này. Nếu trường hợp Bên B đơn phương hủy hợp đồng, thì Bên A sẽ được nhận lại số tiền đã thanh toán cho Bên B theo điều 2 của hợp đồng và chịu phạt 8% giá trị hợp đồng. Nếu trường hợp Bên A đơn phương hủy hợp đồng, thì Bên B sẽ không phải hoàn trả số tiền Bên B đã thanh toán theo điều 2 của hợp đồng.</td></tr>
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">8.3.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Trong quá trình thực hiện hợp đồng, nếu phát sinh tranh chấp, hai bên thương lượng trên tinh thần hợp tác và tôn trọng lẫn nhau. Trường hợp các bên không tự giải quyết được thì tranh chấp sẽ được đưa ra tòa án có thẩm quyền theo luật định tại Thành phố Hà Nội để giải quyết. Quyết định của tòa án là quyết định cuối cùng các bên phải thi hành. Mọi án phí liên quan đến vụ kiện sẽ do bên thua chịu trách nhiệm thanh toán.</td></tr>
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">8.4.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Những vấn đề không qui định hoặc quy định không đầy đủ trong Hợp đồng này, hai Bên sẽ tuân thủ theo pháp luật hiện hành của nước Cộng Hòa Xã Hội Chủ Nghĩa Việt Nam.</td></tr>
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">8.5.</td><td style="vertical-align:top; padding:2px 0;">Hợp đồng này bằng tiếng Việt, có {{contract_clause_count}} và các phụ lục đính kèm, được lập thành hai (02) bản, có giá trị pháp lý như nhau, mỗi bên giữ một (01) bản.</td></tr>
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">8.6.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng này có hiệu lực kể từ ngày đại diện hợp pháp của hai bên ký và đóng dấu. Khi hai Bên đã thực hiện đầy đủ quyền và nghĩa vụ ghi trong hợp đồng này và không có khiếu nại gì thì coi như hợp đồng đã được thanh lý.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">8.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thay đổi phạm vi (Change Request):</strong> Mọi yêu cầu thay đổi giao diện, chức năng ngoài Phụ lục 01 và 02 phải được gửi bằng văn bản/email. Bên B sẽ đánh giá tác động kỹ thuật, chi phí phát sinh và tiến độ để gửi lại đề xuất. Bên B chỉ thực hiện phần phát sinh sau khi hai bên ký thỏa thuận bổ sung bằng văn bản/email.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">8.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Đơn phương chấm dứt hợp đồng:</strong> Một bên được quyền đơn phương chấm dứt hợp đồng nếu bên kia vi phạm nghiêm trọng nghĩa vụ và không khắc phục trong vòng 15 ngày làm việc kể từ ngày nhận thông báo bằng văn bản. Nếu Bên A đơn phương hủy hợp đồng không do lỗi Bên B: Bên B được giữ lại toàn bộ số tiền đã nhận và Bên A phải trả thêm phí cho phần việc đã làm. Nếu Bên B đơn phương chấm dứt không do lỗi Bên A: Bên B hoàn trả tiền tương ứng phần chưa làm và chịu phạt tối đa 8% giá trị phần nghĩa vụ bị vi phạm.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">8.3.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Những vấn đề không qui định trong Hợp đồng sẽ áp dụng theo pháp luật hiện hành của Việt Nam. Hợp đồng lập thành 02 bản tiếng Việt có giá trị pháp lý như nhau, mỗi bên giữ 01 bản. Hợp đồng có hiệu lực kể từ ngày ký đóng dấu và tự động thanh lý khi hai bên hoàn thành xong toàn bộ nghĩa vụ.</td></tr>
   </table>
 
 

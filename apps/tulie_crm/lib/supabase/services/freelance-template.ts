@@ -27,8 +27,10 @@ export const freelanceTemplate = `
   <p style="text-align:center; font-size:11pt; margin: 0 0 20px 0;">(KHOÁN VIỆC LẬP TRÌNH)</p>
 
   <!-- Căn cứ pháp luật - IN NGHIÊNG -->
-  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Bộ luật Dân sự nước Cộng hòa Xã hội Chủ nghĩa Việt Nam số 91/2015/QH13 được Quốc hội thông qua ngày 24/11/2015 có hiệu lực thi hành từ ngày 01/01/2017;</p>
-  <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ nhu cầu và thỏa thuận giữa hai bên.</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Bộ luật Dân sự số 91/2015/QH13 có hiệu lực từ ngày 01/01/2017;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Sở hữu trí tuệ số 50/2005/QH11 đã được sửa đổi, bổ sung bởi Luật số 36/2009/QH12, Luật số 42/2019/QH14 và Luật số 07/2022/QH15;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Công nghệ thông tin số 67/2006/QH11 và Luật An ninh mạng số 24/2018/QH14;</p>
+  <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào thỏa thuận tự nguyện và nhu cầu thực tế của các bên.</p>
 
   <p style="margin:10px 0;">Hôm nay, ngày {{day}} tháng {{month}} năm {{year}}, tại trụ sở Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie, chúng tôi gồm:</p>
 
@@ -177,24 +179,25 @@ export const freelanceTemplate = `
   <table style="width:100%; border-collapse:collapse; margin: 14px 0 6px 0;">
     <tr>
       <td style="width:30px; font-weight:bold; vertical-align:top;">4</td>
-      <td style="font-weight:bold; vertical-align:top;">Điều 4: Quyền sở hữu trí tuệ và bảo mật thông tin</td>
+      <td style="font-weight:bold; vertical-align:top;">Điều 4: Quyền sở hữu trí tuệ, Bảo mật thông tin và Chống lôi kéo</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">4.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Quyền sở hữu trí tuệ: Toàn bộ mã nguồn, tài liệu và sản phẩm công việc tạo ra trong khuôn khổ hợp đồng này thuộc quyền sở hữu duy nhất của Bên A. Bên B không được quyền sử dụng, sao chép hoặc chuyển giao cho bất kỳ bên thứ ba nào nếu không có sự đồng ý bằng văn bản của Bên A.</td></tr>
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">4.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật: Bên B cam kết bảo mật tuyệt đối các thông tin kinh doanh, kỹ thuật, dữ liệu khách hàng của Bên A. Trong trường hợp vi phạm bảo mật hoặc vi phạm quyền sở hữu trí tuệ, Bên B phải bồi thường thiệt hại tối thiểu là 100.000.000 VNĐ.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">4.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Quyền sở hữu trí tuệ:</strong> Bên B cam kết toàn bộ sản phẩm, mã nguồn (Source Code), tài liệu thiết kế do Bên B xây dựng trong khuôn khổ Hợp đồng này là nguyên bản và không vi phạm quyền sở hữu trí tuệ của bất kỳ bên thứ ba nào. Ngay sau khi Bên A thanh toán toàn bộ phí dịch vụ theo Điều 3, Bên A trở thành chủ sở hữu duy nhất đối với toàn bộ Quyền sở hữu trí tuệ của Sản phẩm. Bên B không được phép sao chép, tái sử dụng, bán hoặc chuyển giao mã nguồn này cho bất kỳ bên thứ ba nào khác.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">4.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật thông tin:</strong> Bên B cam kết giữ bí mật tuyệt đối các thông tin kinh doanh, kỹ thuật, mã nguồn, dữ liệu khách hàng của Bên A tiếp cận được trong quá trình làm việc. Nghĩa vụ bảo mật kéo dài vô thời hạn kể cả sau khi chấm dứt hợp đồng. Nếu vi phạm, Bên B chịu phạt 20% tổng giá trị hợp đồng và bồi thường toàn bộ thiệt hại thực tế phát sinh.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">4.3.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Chống lôi kéo (Non-solicitation):</strong> Bên B cam kết không trực tiếp liên hệ, tiếp cận khách hàng của Bên A để chào mời dịch vụ riêng, không lôi kéo nhân sự của Bên A. Nếu phát hiện vi phạm, Bên B chịu phạt 50.000.000 VNĐ cho mỗi lần vi phạm và Bên A có quyền đơn phương chấm dứt hợp đồng ngay lập tức.</td></tr>
   </table>
 
   <!-- ========== ĐIỀU 5 ========== -->
   <table style="width:100%; border-collapse:collapse; margin: 14px 0 6px 0;">
     <tr>
       <td style="width:30px; font-weight:bold; vertical-align:top;">5</td>
-      <td style="font-weight:bold; vertical-align:top;">Điều 5: Đơn phương chấm dứt hợp đồng</td>
+      <td style="font-weight:bold; vertical-align:top;">Điều 5: Phạt vi phạm, Bồi thường và Đơn phương chấm dứt hợp đồng</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">5.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Bất kỳ bên nào đơn phương chấm dứt hợp đồng không do lỗi của bên kia thì phải bồi thường một khoản bằng {{termination_penalty_percent}}% giá trị hợp đồng.</td></tr>
-    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">5.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Trong trường hợp muốn đơn phương chấm dứt, bên yêu cầu phải thông báo trước bằng văn bản (hoặc email) cho bên kia tối thiểu {{notice_days}} ngày.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">5.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Phạt chậm tiến độ (Lỗi Bên B):</strong> Nếu Bên B chậm hoàn thành công việc so với thời hạn thỏa thuận mà không do lỗi Bên A hoặc bất khả kháng, Bên B chịu phạt 1% giá trị phần việc bị chậm cho mỗi ngày chậm, tổng số tiền phạt chậm tiến độ tối đa không quá 8% tổng giá trị hợp đồng. Nếu chậm quá 15 ngày, Bên A có quyền đơn phương chấm dứt hợp đồng mà không cần thanh toán phần công việc bị chậm.</td></tr>
+    <tr><td style="width:50px; vertical-align:top; padding:2px 0;">5.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Đơn phương chấm dứt hợp đồng:</strong> Mỗi bên có quyền đơn phương chấm dứt hợp đồng bằng cách thông báo trước bằng văn bản/email tối thiểu {{notice_days}} ngày. Nếu Bên B đơn phương chấm dứt không do lỗi Bên A: Bên B chịu phạt {{termination_penalty_percent}}% giá trị hợp đồng và hoàn trả toàn bộ số tiền đã tạm ứng. Nếu Bên A đơn phương chấm dứt không do lỗi Bên B: Bên A thanh toán cho Bên B phần công việc đã hoàn thành và nghiệm thu thực tế.</td></tr>
   </table>
 
   <!-- ========== ĐIỀU 6 ========== -->

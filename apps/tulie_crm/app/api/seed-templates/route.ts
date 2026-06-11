@@ -6,6 +6,8 @@ import { paymentTemplate } from '@/lib/supabase/services/payment-template'
 import { orderTemplate } from '@/lib/supabase/services/order-template'
 import { deliveryMinutesTemplate } from '@/lib/supabase/services/delivery-minutes-template'
 import { quotationTemplate } from '@/lib/supabase/services/quotation-template'
+import { freelanceTemplate } from '@/lib/supabase/services/freelance-template'
+
 
 /**
  * POST /api/seed-templates — Admin-only
@@ -103,7 +105,23 @@ export async function POST(request: Request) {
                     'contract_number', 'order_number', 'order_date',
                     'delivery_items_table'
                 ],
+            },
+            {
+                name: 'Hợp đồng CTV (Mẫu chuẩn)',
+                type: 'freelance_contract',
+                content: freelanceTemplate,
+                variables: [
+                    'contract_number', 'day', 'month', 'year',
+                    'freelancer_name', 'freelancer_cccd', 'cccd_date', 'cccd_place', 'freelancer_dob',
+                    'freelancer_address', 'freelancer_contact_address', 'freelancer_phone', 'freelancer_email',
+                    'freelancer_bank_account', 'freelancer_bank_account_name', 'freelancer_bank_name',
+                    'project_name', 'start_date', 'end_date',
+                    'total_amount', 'deposit_amount', 'deposit_percent', 'remaining_amount',
+                    'termination_penalty_percent', 'notice_days',
+                    'amount_in_words', 'contract_items_table_no_vat', 'total_amount_number'
+                ],
             }
+
         ]
 
         if (overwrite) {

@@ -87,11 +87,15 @@ export const paymentTemplate = `
       <td style="padding:4px 12px 4px 0; white-space:nowrap;">- Số tiền:</td>
       <td style="font-weight:bold; padding:4px 0;">{{payment_amount}}</td>
     </tr>
+    <tr>
+      <td style="padding:4px 12px 4px 0; white-space:nowrap;">- Nội dung chuyển khoản (khuyến nghị):</td>
+      <td style="font-weight:bold; padding:4px 0; color: #1e3a8a;">THANH TOAN {{milestone_name}} HD {{contract_number}}</td>
+    </tr>
   </table>
 
   <!-- Kết thúc -->
-  <p style="margin:12px 0 4px 0; text-indent: 1.27cm;">
-    Kính mong Quý Công ty sắp xếp thanh toán đúng hạn theo hợp đồng đã ký.
+  <p style="margin:12px 0 4px 0; text-indent: 1.27cm; text-align: justify;">
+    Kính đề nghị Quý Công ty thu xếp thanh toán trong vòng 05 ngày làm việc kể từ ngày nhận được văn bản này, phù hợp với thời hạn thanh toán quy định tại Điều 2 Hợp đồng.
   </p>
   <p style="margin:4px 0 0 0; text-indent: 1.27cm;">Trân trọng cảm ơn./.</p>
 
