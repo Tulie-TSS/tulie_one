@@ -291,6 +291,40 @@ export async function fillTemplate(template: string, variables: Record<string, s
     return result
 }
 
+/**
+ * For freelancer contracts that don't have their own quotation/items,
+ * look up the B2B client contract on the same project and inherit its
+ * quotation and items so the items tables render correctly.
+ */
+async function inheritB2BItemsForFreelancer(supabase: any, contract: any): Promise<any> {
+    if (!contract?.project_id) return contract
+
+    try {
+        const { data: clientContracts } = await supabase
+            .from('contracts')
+            .select('*, quotation:quotations(*, items:quotation_items(*))')
+            .eq('project_id', contract.project_id)
+            .neq('category', 'freelancer')
+            .in('type', ['contract', 'order'])
+            .limit(1)
+
+        const clientContract = clientContracts?.[0]
+        if (!clientContract) return contract
+
+        // Inherit quotation and items from the client B2B contract
+        return {
+            ...contract,
+            quotation: contract.quotation || clientContract.quotation,
+            items: (clientContract.quotation?.items || []),
+            // Keep the freelancer's own total_amount if set; otherwise fall back to client's
+            total_amount: contract.total_amount || clientContract.total_amount,
+        }
+    } catch (err) {
+        console.error('inheritB2BItemsForFreelancer error:', err)
+        return contract
+    }
+}
+
 // Generate document from template and customer data (HTML version)
 export async function generateDocument(
     templateId: string,
@@ -375,6 +409,12 @@ export async function generateDocument(
                     contract.customer_snapshot = snapshot
                 }
             }
+        }
+
+        // For freelancer contracts: inherit quotation/items from the B2B client contract
+        // of the same project, so items tables render correctly.
+        if (contract?.category === 'freelancer' && contract?.project_id && (!contract.items || contract.items.length === 0)) {
+            contract = await inheritB2BItemsForFreelancer(supabase, contract)
         }
 
         // Use signed_date if available, otherwise fallback to now
@@ -1187,15 +1227,24 @@ export async function generateDocumentBundle(contractId: string) {
     const supabase = createAdminClient()
 
     // 1. Get contract with milestones and quotation items
-    const { data: contract, error: cErr } = await supabase
+    const { data: rawContract, error: cErr } = await supabase
         .from('contracts')
         .select('*, milestones:contract_milestones(*), quotation:quotations(*, items:quotation_items(*))')
         .eq('id', contractId)
         .single()
 
-    if (cErr || !contract) {
+    if (cErr || !rawContract) {
         console.error('generateDocumentBundle: contract not found', cErr)
         return
+    }
+
+    // For freelancer contracts: inherit quotation/items from B2B client contract of the same project
+    let contract: any = {
+        ...rawContract,
+        items: rawContract.quotation?.items || []
+    }
+    if (contract.category === 'freelancer' && contract.project_id && contract.items.length === 0) {
+        contract = await inheritB2BItemsForFreelancer(supabase, contract)
     }
 
     // Fetch customer once to optimize database query performance

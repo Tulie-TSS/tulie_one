@@ -408,16 +408,16 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                             </div>
                             )}
 
-                            {category !== 'freelancer' && (
+
                             <div className="space-y-2">
-                                <Label>Dự án (Portal Group)</Label>
+                                <Label>Dự án liên kết {category === 'freelancer' && <span className="text-xs text-zinc-500">(để kế thừa hạng mục từ HĐ khách hàng)</span>}</Label>
                                 <Select value={projectId || "none"} onValueChange={(v) => setProjectId(v === "none" ? "" : v)}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Chọn dự án..." />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="none">-- Không thuộc dự án --</SelectItem>
-                                        {projects.filter(p => !customerId || p.customer_id === customerId).map((p) => (
+                                        {projects.filter(p => category === 'freelancer' || !customerId || p.customer_id === customerId).map((p) => (
                                             <SelectItem key={p.id} value={p.id}>
                                                 {p.title}
                                             </SelectItem>
@@ -425,7 +425,8 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                     </SelectContent>
                                 </Select>
                             </div>
-                            )}
+
+
 
                             <div className="space-y-2">
                                 <Label>Tiêu đề hợp đồng <span className="text-destructive">*</span></Label>

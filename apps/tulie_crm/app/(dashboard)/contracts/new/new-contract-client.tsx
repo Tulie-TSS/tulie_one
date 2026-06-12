@@ -48,9 +48,10 @@ interface Milestone {
 interface NewContractClientProps {
     initialCustomers: any[]
     initialQuotations: any[]
+    initialProjects: any[]
 }
 
-function NewContractForm({ initialCustomers, initialQuotations }: NewContractClientProps) {
+function NewContractForm({ initialCustomers, initialQuotations, initialProjects }: NewContractClientProps) {
     const router = useRouter()
     const searchParams = useSearchParams()
     const fromQuoteId = searchParams.get('from_quote')
@@ -58,6 +59,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
     const [isLoading, setIsLoading] = useState(false)
     const [customerId, setCustomerId] = useState('')
     const [quotationId, setQuotationId] = useState(fromQuoteId || '')
+    const [projectId, setProjectId] = useState('')
     const [title, setTitle] = useState('')
     const [totalValue, setTotalValue] = useState(0)
     const [startDate, setStartDate] = useState<Date>()
@@ -156,7 +158,7 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                 // contract_number is auto-generated server-side (see contract-service.ts)
                 customer_id: customerId,
                 quotation_id: quotationId || undefined,
-                project_id: selectedQuote?.project_id || undefined,
+                project_id: projectId || selectedQuote?.project_id || undefined,
                 title,
                 total_amount: totalValue,
                 start_date: startDate?.toISOString(),
@@ -264,6 +266,25 @@ function NewContractForm({ initialCustomers, initialQuotations }: NewContractCli
                                 </Select>
                             </div>
                             )}
+
+                            <div className="space-y-2">
+                                <Label>Dự án liên kết {category === 'freelancer' && <span className="text-xs text-zinc-500">(để kế thừa hạng mục từ HĐ khách hàng)</span>}</Label>
+                                <Select value={projectId || 'none'} onValueChange={(v) => setProjectId(v === 'none' ? '' : v)}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Chọn dự án (tùy chọn)" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">-- Không thuộc dự án --</SelectItem>
+                                        {initialProjects
+                                            .filter(p => category === 'freelancer' || !customerId || p.customer_id === customerId)
+                                            .map((p) => (
+                                                <SelectItem key={p.id} value={p.id}>
+                                                    {p.title}
+                                                </SelectItem>
+                                            ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
 
                             <div className="space-y-2">
                                 <Label>Tiêu đề hợp đồng <span className="text-destructive">*</span></Label>
