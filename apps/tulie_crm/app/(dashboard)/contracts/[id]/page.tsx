@@ -393,32 +393,6 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                 {/* Document Templates */}
                 <ContractDocuments contract={contract} />
 
-                {/* Terms & Details */}
-                <Card>
-                    <CardHeader className="border-b bg-muted/20">
-                        <CardTitle className="text-base">Chi tiết & Điều khoản</CardTitle>
-                    </CardHeader>
-                    <CardContent className="grid gap-6 md:grid-cols-2 pt-6">
-                        {contract.description && (
-                            <div className="rounded-lg border bg-muted/30 p-4 space-y-2">
-                                <h4 className="font-semibold text-sm text-foreground">Mô tả dự án</h4>
-                                <p className="text-sm text-muted-foreground leading-relaxed">{contract.description}</p>
-                            </div>
-                        )}
-                        {contract.terms && (
-                            <div className="rounded-lg border bg-muted/30 p-4 space-y-2">
-                                <h4 className="font-semibold text-sm text-foreground">Điều khoản hợp đồng</h4>
-                                <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{contract.terms}</p>
-                            </div>
-                        )}
-                        {(contract as any).notes && (
-                            <div className="rounded-lg border bg-muted/30 p-4 space-y-2 md:col-span-2">
-                                <h4 className="font-semibold text-sm text-foreground">Ghi chú hợp đồng</h4>
-                                <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{(contract as any).notes}</p>
-                            </div>
-                        )}
-                    </CardContent>
-                </Card>
             </div>
         </div>
     )
