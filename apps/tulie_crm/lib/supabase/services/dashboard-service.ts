@@ -44,7 +44,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         const { count: pendingContractsCount } = await supabase
             .from('contracts')
             .select('*', { count: 'exact', head: true })
-            .eq('status', 'draft')
+            .in('status', ['draft', 'sent', 'viewed', 'signed'])
             .neq('category', 'freelancer')
 
         const { count: completedContractsCount } = await supabase
@@ -52,6 +52,14 @@ export async function getDashboardStats(): Promise<DashboardStats> {
             .select('*', { count: 'exact', head: true })
             .eq('status', 'completed')
             .neq('category', 'freelancer')
+
+        const todayStr = new Date().toISOString().split('T')[0]
+        const { count: overdueContractsCount } = await supabase
+            .from('contracts')
+            .select('*', { count: 'exact', head: true })
+            .eq('status', 'active')
+            .neq('category', 'freelancer')
+            .lt('end_date', todayStr)
 
         if (contError) console.error('Error fetching contract count:', contError)
 
@@ -143,6 +151,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
                 active: activeContractsCount || 0,
                 completed: completedContractsCount || 0,
                 pending: pendingContractsCount || 0,
+                overdue: overdueContractsCount || 0,
                 total_value: contractTotalValue,
                 change: 0
             },
@@ -161,7 +170,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
             revenue: { total: 0, change: 0, period: 'Tháng này' },
             customers: { total: 0, new: 0, change: 0 },
             leads: { total: 0, new: 0, contacted: 0, qualified: 0 },
-            contracts: { active: 0, completed: 0, pending: 0, total_value: 0, change: 0 },
+            contracts: { active: 0, completed: 0, pending: 0, overdue: 0, total_value: 0, change: 0 },
             invoices: { pending: 0, overdue: 0, total_outstanding: 0 },
             health_score: 0,
             conversion_rate: 0,

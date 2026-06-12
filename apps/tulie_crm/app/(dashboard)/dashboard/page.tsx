@@ -135,11 +135,20 @@ export default async function DashboardPage() {
                     />
                     
                     <StatsCard
-                        title="Hợp đồng đang thực hiện"
+                        title="HĐ đang thực hiện"
                         value={stats.contracts.active.toString()}
                     />
                     <StatsCard
-                        title="Hợp đồng hoàn thành"
+                        title="HĐ chờ ký/xác nhận"
+                        value={stats.contracts.pending.toString()}
+                    />
+                    <StatsCard
+                        title="HĐ quá hạn triển khai"
+                        value={stats.contracts.overdue.toString()}
+                        className="border-red-200/50 hover:border-red-300 dark:border-red-900/50 dark:hover:border-red-800 bg-red-50/5 text-red-600 dark:text-red-400"
+                    />
+                    <StatsCard
+                        title="HĐ đã hoàn thành"
                         value={stats.contracts.completed.toString()}
                     />
                     <StatsCard

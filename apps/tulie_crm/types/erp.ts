@@ -156,6 +156,7 @@ export interface DashboardStats {
     active: number
     completed: number
     pending: number
+    overdue: number
     total_value: number
     change: number
   }

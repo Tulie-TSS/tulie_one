@@ -116,6 +116,32 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
     const isOrder = contract.type === 'order'
     const isFreelancer = contract.category === 'freelancer'
 
+    const sortDocItems = (items: DocItem[]) => {
+        const getRank = (type: string) => {
+            if (type === 'contract' || type === 'freelance_contract' || type === 'order') return 1
+            if (type === 'payment_request') return 2
+            if (type === 'delivery_minutes') return 3
+            return 4
+        }
+        return [...items].sort((a, b) => {
+            const rankA = getRank(a.type)
+            const rankB = getRank(b.type)
+            if (rankA !== rankB) return rankA - rankB
+            if (a.type === 'payment_request' && b.type === 'payment_request') {
+                const matchA = a.label.match(/ĐNTT\s+(\d+)/i)
+                const matchB = b.label.match(/ĐNTT\s+(\d+)/i)
+                if (matchA && matchB) {
+                    return parseInt(matchA[1]) - parseInt(matchB[1])
+                }
+                const milestones = contract.milestones || []
+                const idxA = milestones.findIndex(m => m.id === a.milestoneId)
+                const idxB = milestones.findIndex(m => m.id === b.milestoneId)
+                if (idxA !== -1 && idxB !== -1) return idxA - idxB
+            }
+            return 0
+        })
+    }
+
     const docItems: DocItem[] = (() => {
         if (dbDocs.length > 0) {
             const uniqueDocsMap = new Map<string, any>()
@@ -137,9 +163,8 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
             }
             const uniqueDbDocs = Array.from(uniqueDocsMap.values())
 
-            // Build from DB documents
             const paymentMilestones = (contract.milestones || []).filter((m: any) => m.amount > 0)
-            return uniqueDbDocs.map((doc, idx) => {
+            const mapped = uniqueDbDocs.map((doc) => {
                 const meta = DOC_META[doc.type] || DOC_META.contract
                 const milestone = contract.milestones?.find(m => m.id === doc.milestone_id)
                 const mIdx = milestone ? paymentMilestones.findIndex(m => m.id === milestone.id) : -1
@@ -165,6 +190,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                     docStatus: doc.status || 'draft',
                 }
             })
+            return sortDocItems(mapped)
         }
 
         // Fallback: static doc types based on contract type
@@ -177,7 +203,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
             types = ['contract', 'payment_request', 'delivery_minutes']
         }
         
-        return types.map(type => {
+        return sortDocItems(types.map(type => {
             const meta = DOC_META[type]
             return {
                 key: type,
@@ -188,7 +214,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                 fromDb: false,
                 isVisible: false,
             }
-        })
+        }))
     })()
 
     // Preview: open stored doc directly or generate on-the-fly

@@ -64,7 +64,36 @@ export function ProjectDocumentationSet({ project, workItems }: ProjectDocumenta
                 })
             }
         })
-        return docs
+
+        const getRank = (d: any) => {
+            const type = d.type || (
+                d.title?.toLowerCase().includes('hợp đồng') || d.title?.toLowerCase().includes('đơn hàng')
+                    ? 'contract'
+                    : d.title?.toLowerCase().includes('thanh toán') || d.title?.toLowerCase().includes('đntt')
+                        ? 'payment_request'
+                        : d.title?.toLowerCase().includes('nghiệm thu') || d.title?.toLowerCase().includes('giao nhận') || d.title?.toLowerCase().includes('bàn giao')
+                            ? 'delivery_minutes'
+                            : 'other'
+            )
+            if (type === 'contract' || type === 'freelance_contract' || type === 'order') return 1
+            if (type === 'payment_request') return 2
+            if (type === 'delivery_minutes') return 3
+            return 4
+        }
+
+        return docs.sort((a, b) => {
+            const rankA = getRank(a)
+            const rankB = getRank(b)
+            if (rankA !== rankB) return rankA - rankB
+            if (rankA === 2) {
+                const matchA = a.title?.match(/(?:đntt|đề nghị thanh toán)\s*(\d+)/i)
+                const matchB = b.title?.match(/(?:đntt|đề nghị thanh toán)\s*(\d+)/i)
+                if (matchA && matchB) {
+                    return parseInt(matchA[1]) - parseInt(matchB[1])
+                }
+            }
+            return 0
+        })
     }, [workItems, realDocs])
 
     return (

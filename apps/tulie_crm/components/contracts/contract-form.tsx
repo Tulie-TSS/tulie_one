@@ -249,8 +249,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                 contract_number: contractNumber || null,
                 warranty_months: warrantyMonths,
             }
-            // Add quotation_id only if set
-            if (quotationId) updateData.quotation_id = quotationId
+            updateData.quotation_id = quotationId || null
 
             // Update customer abbreviation if changed
             if (customerAbbreviation && customerId) {
@@ -426,7 +425,22 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                 </Select>
                             </div>
 
-
+                            <div className="space-y-2">
+                                <Label>Báo giá liên quan</Label>
+                                <Select value={quotationId || "none"} onValueChange={(v) => setQuotationId(v === "none" ? "" : v)}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Chọn báo giá (tùy chọn)" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">-- Không liên kết báo giá --</SelectItem>
+                                        {quotations.map((q) => (
+                                            <SelectItem key={q.id} value={q.id}>
+                                                {q.quotation_number} - {formatCurrency(q.total_amount)}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
 
                             <div className="space-y-2">
                                 <Label>Tiêu đề hợp đồng <span className="text-destructive">*</span></Label>

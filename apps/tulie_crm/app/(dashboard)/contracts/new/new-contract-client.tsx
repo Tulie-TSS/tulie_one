@@ -146,8 +146,12 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!customerId || !title) {
-            toast.error('Vui lòng điền đầy đủ thông tin bắt buộc')
+        if (category !== 'freelancer' && !customerId) {
+            toast.error('Vui lòng chọn khách hàng')
+            return
+        }
+        if (!title) {
+            toast.error('Vui lòng nhập tiêu đề hợp đồng')
             return
         }
 

@@ -128,6 +128,13 @@ export async function createContract(contract: Partial<Contract>, milestones: Pa
         throw contractError
     }
 
+    // If status is active, ensure a project is created
+    if (contractData.status === 'active') {
+        await ensureProjectForContract(contractData.id, supabase).catch(err => {
+            console.error('Error auto-creating project in createContract:', err)
+        })
+    }
+
     // 2. Insert milestones
     if (milestones && milestones.length > 0) {
         const contractMilestones = milestones.map(m => ({
@@ -217,6 +224,14 @@ export async function updateContract(id: string, contract: Partial<Contract>, mi
         if (contractError) {
             console.error('Error updating contract:', contractError)
             return { success: false, error: contractError.message }
+        }
+
+        // If status is active, ensure a project is created
+        const finalStatus = cleanContract.status || currentContract?.status
+        if (finalStatus === 'active') {
+            await ensureProjectForContract(id, supabase).catch(err => {
+                console.error('Error auto-creating project in updateContract:', err)
+            })
         }
 
         // 2. Manage milestones
@@ -534,42 +549,13 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
             defaultMilestones.map(m => ({ ...m, contract_id: contract.id }))
         )
 
-        // 5. Create or Link Project
+        // 5. Link Project if quotation already has one
         if (quotation.project_id) {
-            // Project already exists, just make sure contract is linked (done above in insert)
-            // Optionally update project milestones or metadata if needed
-        } else {
-            // Create Project automatically
-            const { data: project, error: pError } = await supabase.from('projects').insert([{
-                contract_id: contract.id,
-                customer_id: quotation.customer_id,
-                title: `Dự án: ${contract.title}`,
-                description: `Dự án triển khai từ ${type === 'order' ? 'đơn hàng' : 'hợp đồng'} ${contract.contract_number}`,
-                status: 'todo',
-                start_date: contract.start_date,
-                assigned_to: contract.created_by,
-                brand: quotation.brand,
-                metadata: {
-                    quotation_number: quotation.quotation_number,
-                    source_link: '',
-                    hosting_info: '',
-                    domain_info: '',
-                    ai_folder_link: ''
-                }
-            }]).select().single()
-
-            if (!pError && project) {
-                // Link quotation and contract to the new project
-                await supabase.from('quotations').update({ project_id: project.id }).eq('id', quotation.id)
-                await supabase.from('contracts').update({ project_id: project.id }).eq('id', contract.id)
-
-                // Sync payment milestones to project for customer portal
-                await supabase
-                    .from('contract_milestones')
-                    .update({ project_id: project.id })
-                    .eq('contract_id', contract.id)
-                    .eq('type', 'payment')
-            }
+            await supabase.from('contracts').update({ project_id: quotation.project_id }).eq('id', contract.id)
+            await supabase
+                .from('contract_milestones')
+                .update({ project_id: quotation.project_id })
+                .eq('contract_id', contract.id)
         }
 
         // 6. Update quotation status
@@ -835,3 +821,113 @@ export async function getUniqueFreelancers() {
         return []
     }
 }
+
+/**
+ * Ensures a project exists for the given contract if it's active.
+ * Links the contract, quotation, and milestones to the project.
+ */
+export async function ensureProjectForContract(contractId: string, supabaseClient?: any) {
+    const supabase = supabaseClient || await createClient()
+
+    // 1. Fetch contract
+    const { data: contract, error: cErr } = await supabase
+        .from('contracts')
+        .select('id, title, contract_number, type, status, start_date, created_by, brand, customer_id, project_id, quotation_id')
+        .eq('id', contractId)
+        .single()
+
+    if (cErr || !contract) {
+        console.error('ensureProjectForContract: contract not found', cErr)
+        return null
+    }
+
+    if (contract.status !== 'active' && contract.status !== 'completed') {
+        return null
+    }
+
+    // 2. Check if project already exists
+    let projectId = contract.project_id
+    if (!projectId) {
+        const { data: existingProj } = await supabase
+            .from('projects')
+            .select('id')
+            .eq('contract_id', contract.id)
+            .limit(1)
+            .maybeSingle()
+        if (existingProj) {
+            projectId = existingProj.id
+            // Update contract to link it
+            await supabase.from('contracts').update({ project_id: projectId }).eq('id', contract.id)
+        }
+    }
+
+    if (projectId) {
+        return projectId
+    }
+
+    // 3. Create new project
+    // Fetch quotation if exists
+    let quotation: any = null
+    if (contract.quotation_id) {
+        const { data } = await supabase
+            .from('quotations')
+            .select('quotation_number, brand')
+            .eq('id', contract.quotation_id)
+            .maybeSingle()
+        quotation = data
+    }
+
+    const { data: project, error: pError } = await supabase
+        .from('projects')
+        .insert([{
+            contract_id: contract.id,
+            customer_id: contract.customer_id,
+            title: `Dự án: ${contract.title}`,
+            description: `Dự án triển khai từ ${contract.type === 'order' ? 'đơn hàng' : 'hợp đồng'} ${contract.contract_number}`,
+            status: 'in_progress',
+            start_date: contract.start_date || new Date().toISOString().split('T')[0],
+            assigned_to: contract.created_by,
+            brand: contract.brand || quotation?.brand || 'TMM',
+            metadata: {
+                quotation_number: quotation?.quotation_number || '',
+                source_link: '',
+                hosting_info: '',
+                domain_info: '',
+                ai_folder_link: ''
+            }
+        }])
+        .select()
+        .single()
+
+    if (pError) {
+        console.error('ensureProjectForContract: error creating project', pError)
+        return null
+    }
+
+    if (project) {
+        // Link contract and quotation to project
+        await supabase.from('contracts').update({ project_id: project.id }).eq('id', contract.id)
+        if (contract.quotation_id) {
+            await supabase.from('quotations').update({ project_id: project.id }).eq('id', contract.quotation_id)
+        }
+        
+        // Link milestones to project
+        await supabase
+            .from('contract_milestones')
+            .update({ project_id: project.id })
+            .eq('contract_id', contract.id)
+
+        // Log activity
+        await logActivity({
+            action: 'create',
+            entity_type: 'project',
+            entity_id: project.id,
+            description: `Tự động tạo dự án theo hợp đồng ${contract.contract_number}: ${project.title}`
+        }).catch(() => {})
+
+        return project.id
+    }
+
+    return null
+}
+

@@ -99,7 +99,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
     
     // Top Nav
     const navItems = [
-        { value: 'progress', label: 'Tiến độ dự án', icon: GanttChartSquare },
+        { value: 'progress', label: 'Thông tin chung', icon: FileText },
         { value: 'feedback', label: 'Nhật ký xử lý', icon: ClipboardCheck },
     ]
 
@@ -205,72 +205,6 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                         </CardContent>
                                     </Card>
                                 )}
-                                
-                                {/* Work Items / Tasks */}
-                                <Card className="bg-white border shadow-sm">
-                                    <CardHeader className="py-4 bg-muted/20 border-b flex flex-row items-center justify-between">
-                                        <CardTitle className="text-base font-semibold">Danh sách công việc</CardTitle>
-                                        <Badge variant="secondary" className="bg-white font-medium">
-                                            {completedTasks}/{totalTasks} Hoàn thành
-                                        </Badge>
-                                    </CardHeader>
-                                    <CardContent className="p-0">
-                                        {workItems && workItems.length > 0 ? (
-                                            <div className="divide-y divide-border">
-                                                {workItems.map((wi: any) => (
-                                                    <div key={wi.id} className="p-4 sm:p-5">
-                                                        <div className="flex justify-between items-start mb-3">
-                                                            <div>
-                                                                <h4 className="font-semibold text-foreground text-sm flex items-center gap-2">
-                                                                    {wi.title}
-                                                                    <StatusBadge status={wi.status} />
-                                                                </h4>
-                                                                {wi.description && <p className="text-muted-foreground text-xs mt-1 line-clamp-2">{wi.description}</p>}
-                                                            </div>
-                                                            {wi.delivery_links?.map((link: any, lIdx: number) => (
-                                                                <Button key={lIdx} variant="outline" size="sm" asChild className="h-7 text-xs">
-                                                                    <a href={link.url} target="_blank"><ExternalLink className="w-3 h-3 mr-1.5"/> {link.label || 'Link'}</a>
-                                                                </Button>
-                                                            ))}
-                                                        </div>
-                                                        <div className="space-y-1 mt-3 pl-1">
-                                                            {wi.tasks?.length > 0 ? (
-                                                                wi.tasks.map((t: any) => (
-                                                                    <div key={t.id} className="flex items-center gap-2.5 py-1.5 group">
-                                                                        {t.status === 'completed' ? <CheckCircle2 className="w-4 h-4 text-primary" /> : <Circle className="w-4 h-4 text-border group-hover:text-muted-foreground transition-colors" />}
-                                                                        <span className={cn("text-sm", t.status === 'completed' ? "text-muted-foreground line-through" : "text-foreground font-medium")}>
-                                                                            {t.title}
-                                                                        </span>
-                                                                    </div>
-                                                                ))
-                                                            ) : (
-                                                                <span className="text-xs text-muted-foreground italic">Chưa phân rã công việc chi tiết</span>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        ) : (
-                                            <div className="py-12 text-center flex flex-col items-center">
-                                                <ListTodo className="w-10 h-10 text-muted-foreground/30 mb-3" />
-                                                <p className="text-sm font-medium text-muted-foreground">Chưa có hạng mục công việc nào.</p>
-                                            </div>
-                                        )}
-                                    </CardContent>
-                                </Card>
-
-                                {/* Gantt Chart */}
-                                {tasks && tasks.length > 0 && (
-                                    <div className="space-y-4 pt-2">
-                                        <h2 className="text-lg font-bold flex items-center gap-2">
-                                            <GanttChartSquare className="w-5 h-5 text-muted-foreground" />
-                                            Lộ trình báo cáo
-                                        </h2>
-                                        <div className="rounded-xl overflow-hidden border bg-card shadow-sm">
-                                            <ProjectGanttChart tasks={tasks} />
-                                        </div>
-                                    </div>
-                                )}
                             </div>
 
                             {/* Sidebar Resources */}
@@ -338,12 +272,11 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                     {/* Tab 3: Finance (Protected) */}
                     {isFinancialAuthenticated && (
                         <TabsContent value="finance" className="mt-0 space-y-6 focus-visible:outline-none">
-                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 {[
                                     { label: isFreelance ? 'Tổng Thù Lao' : 'Tổng Đầu Tư', value: totalInvestment },
                                     { label: 'Đã Thanh Toán', value: totalPaid },
                                     { label: 'Còn Lại', value: balanceDue },
-                                    { label: 'Tiến Độ', value: `${taskProgress}%` },
                                 ].map((stat, i) => (
                                     <Card key={i} className="bg-white border shadow-sm">
                                         <CardHeader className="py-4">
