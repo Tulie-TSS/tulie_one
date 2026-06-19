@@ -975,10 +975,10 @@ export async function generateDocument(
     <tr><td style="width:50px; vertical-align:top; padding:2px 0;">3.6.5.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Sau thời gian bảo hành, nếu Bên A có nhu cầu tiếp tục hỗ trợ kỹ thuật, hai bên sẽ thỏa thuận và ký kết hợp đồng bảo trì riêng theo thỏa thuận phát sinh.</td></tr>
   </table>`
 
-            variables.contract_clause_count = 'tám (08) điều'
+            variables.contract_clause_count = 'mười bốn (14) điều'
         } else {
             variables.warranty_clause_html = ''
-            variables.contract_clause_count = 'tám (08) điều'
+            variables.contract_clause_count = 'mười bốn (14) điều'
         }
 
         // Determine whether to include proposal appendix
