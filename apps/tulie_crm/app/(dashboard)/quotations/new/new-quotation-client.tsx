@@ -79,6 +79,8 @@ export default function NewQuotationClient({ initialCustomers, initialProducts, 
                 created_by: user.id,
                 type: formData.type || 'standard',
                 proposal_content: formData.proposal_content || null,
+                vat_exempt_status: formData.vat_exempt_status || null,
+                product_name_in_contract: formData.product_name_in_contract || null,
                 project_id: formData.project_id || null
             }
 

@@ -523,6 +523,9 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
             customer_snapshot: customerSnapshot,
             vat_exempt_status: quotation.vat_exempt_status || quotation.proposal_content?.vat_exempt_status || null,
             product_name_in_contract: quotation.product_name_in_contract || quotation.proposal_content?.product_name_in_contract || null,
+            warranty_months: quotation.proposal_content?.warranty_months !== undefined && quotation.proposal_content?.warranty_months !== null
+                ? Number(quotation.proposal_content.warranty_months)
+                : null,
             public_token: 'ct_' + uuidv4().replace(/-/g, '')
         }
 
@@ -538,16 +541,35 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
 
         if (cError) throw cError
 
-        // 4. Create default milestones if it's an order
-        const defaultMilestones = [
-            { name: 'Khởi tạo & Xác nhận', description: 'Tiếp nhận đơn hàng và chuẩn bị triển khai', due_date: new Date().toISOString(), status: 'completed', type: 'work', amount: 0 },
-            { name: 'Triển khai thực tế', description: 'Quá trình thực hiện dịch vụ/sản phẩm', due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), status: 'pending', type: 'work', amount: 0 },
-            { name: 'Nghiệm thu & Bàn giao', description: 'Hoàn thiện và gửi kết quả cho khách hàng', due_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), status: 'pending', type: 'work', amount: 0 }
-        ]
+        // 4. Create milestones: check if quotation has payment milestones in proposal_content
+        const qMilestones = quotation.proposal_content?.payment_milestones
+        if (qMilestones && Array.isArray(qMilestones) && qMilestones.length > 0) {
+            const contractMilestones = qMilestones.map((m: any) => ({
+                name: m.name || 'Thanh toán',
+                description: m.description || '',
+                due_date: m.due_date ? new Date(m.due_date).toISOString() : null,
+                status: m.status || 'pending',
+                type: m.type || 'payment',
+                percentage: m.percentage || null,
+                amount: m.amount || 0,
+                contract_id: contract.id
+            }))
+            const { error: milestoneError } = await supabase.from('contract_milestones').insert(contractMilestones)
+            if (milestoneError) {
+                console.error('Error inserting quotation payment milestones:', milestoneError)
+            }
+        } else {
+            // Fallback to default milestones if none provided in quotation
+            const defaultMilestones = [
+                { name: 'Khởi tạo & Xác nhận', description: 'Tiếp nhận đơn hàng và chuẩn bị triển khai', due_date: new Date().toISOString(), status: 'completed', type: 'work', amount: 0 },
+                { name: 'Triển khai thực tế', description: 'Quá trình thực hiện dịch vụ/sản phẩm', due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), status: 'pending', type: 'work', amount: 0 },
+                { name: 'Nghiệm thu & Bàn giao', description: 'Hoàn thiện và gửi kết quả cho khách hàng', due_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), status: 'pending', type: 'work', amount: 0 }
+            ]
 
-        await supabase.from('contract_milestones').insert(
-            defaultMilestones.map(m => ({ ...m, contract_id: contract.id }))
-        )
+            await supabase.from('contract_milestones').insert(
+                defaultMilestones.map(m => ({ ...m, contract_id: contract.id }))
+            )
+        }
 
         // 5. Link Project if quotation already has one
         if (quotation.project_id) {

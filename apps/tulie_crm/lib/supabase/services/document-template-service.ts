@@ -544,8 +544,11 @@ export async function generateDocument(
             variables.start_date = contract.start_date ? formatLocalDateString(contract.start_date) : ''
             variables.service_description = contract.description || contract.quotation?.title || contract.title || ''
 
-            // Auto-fill delivery_time = contract end date
-            if (contract.end_date) {
+            // Auto-fill delivery_time from quotation proposal_content if available, else contract end date
+            const quoteProposal = (contract.quotation?.proposal_content as Record<string, any>) || {}
+            if (quoteProposal.delivery_time) {
+                variables.delivery_time = quoteProposal.delivery_time
+            } else if (contract.end_date) {
                 variables.delivery_time = formatLocalDateString(contract.end_date)
             }
 

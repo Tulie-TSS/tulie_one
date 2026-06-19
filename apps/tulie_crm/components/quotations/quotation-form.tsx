@@ -36,7 +36,7 @@ import {
 } from '@repo/ui'
 import { Separator } from '@repo/ui'
 import { formatCurrency, formatNumber } from '@/lib/utils/format'
-import { ArrowLeft, Save, Plus, Trash2, Send, ArrowUp, ArrowDown, X, FolderPlus, FileJson, Copy, Upload, Wallet, Check, AlertCircle, RotateCcw, ChevronDown } from 'lucide-react'
+import { ArrowLeft, Save, Plus, Trash2, Send, ArrowUp, ArrowDown, X, FolderPlus, FileJson, Copy, Upload, Wallet, Check, AlertCircle, RotateCcw, ChevronDown, CheckCircle2 } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import {
     DropdownMenu,
@@ -105,6 +105,25 @@ export function QuotationForm({ quotation, customers, products, units, projects,
     const [deletingSectionId, setDeletingSectionId] = useState<string | null>(null)
     const [deletingSectionName, setDeletingSectionName] = useState('')
     const [attachments, setAttachments] = useState<AttachmentItem[]>(quotation?.attachments || [])
+
+    // Optional contract fields
+    const [deliveryTime, setDeliveryTime] = useState<string>(quotation?.proposal_content?.delivery_time || '')
+    const [warrantyMonths, setWarrantyMonths] = useState<number | null>(
+        quotation?.proposal_content?.warranty_months !== undefined && quotation?.proposal_content?.warranty_months !== null
+            ? Number(quotation.proposal_content.warranty_months)
+            : null
+    )
+    const [paymentMilestones, setPaymentMilestones] = useState<any[]>(
+        (quotation?.proposal_content?.payment_milestones || []).map((m: any) => ({
+            id: m.id || `temp-${Math.random()}`,
+            name: m.name || '',
+            amount_mode: m.percentage ? 'percent' : 'fixed',
+            percentage: m.percentage,
+            amount: m.amount || 0,
+            due_date: m.due_date ? m.due_date.split('T')[0] : '',
+            description: m.description || ''
+        }))
+    )
 
     // Available resources for selection
     const [availableBanks, setAvailableBanks] = useState<any[]>([])
@@ -444,6 +463,90 @@ export function QuotationForm({ quotation, customers, products, units, projects,
     const vatAmount = Object.values(vatGroups).reduce((acc, val) => acc + val, 0)
     const totalAmount = subtotal + vatAmount
 
+    // Auto-recalculate milestone amounts when totalAmount changes
+    useEffect(() => {
+        setPaymentMilestones((prev) =>
+            prev.map((m) => {
+                if (m.amount_mode === 'percent') {
+                    const pct = m.percentage || 0
+                    return {
+                        ...m,
+                        amount: Math.round((pct / 100) * totalAmount)
+                    }
+                }
+                return m
+            })
+        )
+    }, [totalAmount])
+
+    const autoAllocate = (percentages: number[]) => {
+        const count = percentages.length
+        let remainingAmt = totalAmount
+        const newMilestones = percentages.map((pct, idx) => {
+            const isLast = idx === count - 1
+            const amt = isLast ? remainingAmt : Math.round((pct / 100) * totalAmount)
+            remainingAmt -= amt
+
+            let name = `Đợt ${idx + 1}: Tạm ứng (khi ký hợp đồng)`
+            if (idx === 1 && count === 2) name = 'Đợt 2: Nghiệm thu & Bàn giao'
+            else if (idx === 1 && count > 2) name = 'Đợt 2: Bàn giao sản phẩm/nghiệm thu kỹ thuật'
+            else if (idx === 2) name = 'Đợt 3: Hoàn tất nghiệm thu & Bàn giao'
+
+            return {
+                id: `temp-${Math.random()}`,
+                name,
+                amount_mode: 'percent' as const,
+                percentage: pct,
+                amount: amt,
+                due_date: '',
+                description: ''
+            }
+        })
+        setPaymentMilestones(newMilestones)
+        toast.success(`Đã tự động phân bổ thành ${count} đợt: ${percentages.join(' - ')}%`)
+    }
+
+    const addMilestone = () => {
+        const totalPct = paymentMilestones.reduce((sum, m) => sum + (m.percentage || 0), 0)
+        const nextPct = Math.max(0, 100 - totalPct)
+        const amt = Math.round((nextPct / 100) * totalAmount)
+        const newMilestone = {
+            id: `temp-${Math.random()}`,
+            name: `Đợt thanh toán ${paymentMilestones.length + 1}`,
+            amount_mode: 'percent' as const,
+            percentage: nextPct,
+            amount: amt,
+            due_date: '',
+            description: ''
+        }
+        setPaymentMilestones([...paymentMilestones, newMilestone])
+    }
+
+    const removeMilestone = (id: string) => {
+        setPaymentMilestones(paymentMilestones.filter(m => m.id !== id))
+    }
+
+    const updateMilestone = (id: string, field: string, value: any) => {
+        setPaymentMilestones(prev => prev.map(m => {
+            if (m.id === id) {
+                const updated = { ...m, [field]: value }
+                if (field === 'percentage' && m.amount_mode === 'percent') {
+                    updated.amount = Math.round((Number(value) / 100) * totalAmount)
+                } else if (field === 'amount' && m.amount_mode === 'fixed') {
+                    updated.percentage = totalAmount > 0 ? Math.round((Number(value) / totalAmount) * 100) : 0
+                } else if (field === 'amount_mode') {
+                    if (value === 'percent') {
+                        updated.percentage = totalAmount > 0 ? Math.round((m.amount / totalAmount) * 100) : 0
+                    } else {
+                        // fixed
+                    }
+                }
+                return updated
+            }
+            return m
+        }))
+    }
+
     // JSON Export: build quotation object (without proposal_content)
     const handleExportJson = () => {
         const exportData = {
@@ -682,14 +785,19 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 bank_account_name: bankAccountName,
                 bank_branch: bankBranch,
                 type,
-                proposal_content: proposalContent,
+                proposal_content: {
+                    ...proposalContent,
+                    delivery_time: deliveryTime,
+                    warranty_months: warrantyMonths,
+                    payment_milestones: paymentMilestones
+                },
                 vat_exempt_status: vatExemptStatus,
                 product_name_in_contract: productNameInContract,
                 project_id: projectId,
                 attachments
             })
         }
-    }, [quotationNumber, customerId, projectId, title, terms, notes, vatPercent, vatExemptStatus, productNameInContract, items, validityDays, subtotal, vatAmount, totalAmount, onChange, customers, bankName, bankAccountNo, bankAccountName, bankBranch, type, proposalContent, attachments])
+    }, [quotationNumber, customerId, projectId, title, terms, notes, vatPercent, vatExemptStatus, productNameInContract, items, validityDays, subtotal, vatAmount, totalAmount, onChange, customers, bankName, bankAccountNo, bankAccountName, bankBranch, type, proposalContent, attachments, deliveryTime, warrantyMonths, paymentMilestones])
 
     const handleSave = async (sendAfterSave = false) => {
         if (onSave) {
@@ -704,6 +812,13 @@ export function QuotationForm({ quotation, customers, products, units, projects,
             // Calculate new validUntil
             const validUntil = new Date()
             validUntil.setDate(validUntil.getDate() + validityDays)
+
+            const mergedProposalContent = {
+                ...proposalContent,
+                delivery_time: deliveryTime || null,
+                warranty_months: warrantyMonths || null,
+                payment_milestones: paymentMilestones || []
+            }
 
             const updateData: Record<string, any> = {
                 quotation_number: quotationNumber,
@@ -724,7 +839,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 bank_account_name: bankAccountName || null,
                 bank_branch: bankBranch || null,
                 type,
-                proposal_content: proposalContent || null,
+                proposal_content: mergedProposalContent,
                 vat_exempt_status: vatExemptStatus || null,
                 product_name_in_contract: productNameInContract || null,
                 project_id: projectId || null,
@@ -936,14 +1051,16 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                     const sections = getSections()
 
                                     const updateSections = (newSections: any[]) => {
-                                        const flat: any = { sections: newSections }
+                                        const flat: any = {
+                                            ...proposalContent,
+                                            sections: newSections
+                                        }
                                         newSections.forEach((s: any) => {
                                             const defaultDef = DEFAULT_SECTIONS.find(d => d.key === s.key)
                                             if (defaultDef && s.content) flat[s.key] = s.content
                                         })
                                         const customOnes = newSections.filter(s => !DEFAULT_SECTIONS.find(d => d.key === s.key))
                                         if (customOnes.length > 0) flat.custom_sections = customOnes.map(s => ({ title: s.label, content: s.content }))
-                                        if (proposalContent?.attachments) flat.attachments = proposalContent.attachments
                                         setProposalContent(flat)
                                     }
 
@@ -1586,6 +1703,262 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                         </CardContent>
                     </Card>
                 </div>
+
+                {/* Contract attachment settings (Optional) */}
+                <Card className="overflow-hidden mt-6">
+                    <CardHeader className="py-6 px-6">
+                        <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+                            <span>Thông tin đính kèm Hợp đồng (Tùy chọn)</span>
+                            <span className="text-xs font-normal text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-full border border-slate-200/50">Tùy chọn</span>
+                        </CardTitle>
+                        <CardDescription>
+                            Các thông tin dưới đây sẽ được sử dụng để tự động điền vào Hợp đồng in/mẫu giấy tờ và tự động thiết lập khi chuyển đổi báo giá thành Hợp đồng chính thức.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                        <div className="grid gap-6 md:grid-cols-2">
+                            {/* Delivery time */}
+                            <div className="space-y-2">
+                                <Label className="text-sm font-medium">Thời hạn bàn giao dự kiến</Label>
+                                <div className="flex gap-2">
+                                    <Input
+                                        value={deliveryTime}
+                                        onChange={(e) => setDeliveryTime(e.target.value)}
+                                        placeholder="VD: 30 ngày làm việc kể từ ngày ký hợp đồng và nhận tạm ứng"
+                                        className="flex-1"
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        onClick={() => setDeliveryTime('30 ngày làm việc kể từ ngày nhận tạm ứng')}
+                                        className="shrink-0 text-xs text-muted-foreground hover:text-foreground"
+                                        size="sm"
+                                    >
+                                        Mẫu 30 ngày
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        onClick={() => setDeliveryTime('45 ngày làm việc kể từ ngày nhận tạm ứng')}
+                                        className="shrink-0 text-xs text-muted-foreground hover:text-foreground"
+                                        size="sm"
+                                    >
+                                        Mẫu 45 ngày
+                                    </Button>
+                                </div>
+                            </div>
+
+                            {/* Warranty duration */}
+                            <div className="space-y-2">
+                                <Label className="text-sm font-medium">Thời hạn bảo hành</Label>
+                                <Select
+                                    value={warrantyMonths === null ? 'none' : warrantyMonths.toString()}
+                                    onValueChange={(val) => setWarrantyMonths(val === 'none' ? null : Number(val))}
+                                >
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Chọn thời hạn bảo hành" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">Không áp dụng bảo hành</SelectItem>
+                                        <SelectItem value="3">03 tháng bảo hành kỹ thuật</SelectItem>
+                                        <SelectItem value="6">06 tháng bảo hành kỹ thuật</SelectItem>
+                                        <SelectItem value="12">12 tháng bảo hành kỹ thuật (Khuyên dùng)</SelectItem>
+                                        <SelectItem value="24">24 tháng bảo hành kỹ thuật</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <Separator />
+
+                        {/* Payment Milestones */}
+                        <div className="space-y-4">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div className="space-y-1">
+                                    <h4 className="text-sm font-semibold text-foreground">Các đợt thanh toán (Mốc thanh toán)</h4>
+                                    <p className="text-xs text-muted-foreground">
+                                        Thiết lập các đợt thanh toán chi tiết dựa trên giá trị Báo giá.
+                                    </p>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => autoAllocate([50, 50])}
+                                        className="text-xs bg-emerald-50/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 hover:bg-emerald-50 dark:hover:bg-emerald-950/20"
+                                    >
+                                        Phân bổ 50% - 50%
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => autoAllocate([50, 40, 10])}
+                                        className="text-xs bg-blue-50/20 text-blue-700 dark:text-blue-400 border-blue-200 hover:bg-blue-50 dark:hover:bg-blue-950/20"
+                                    >
+                                        Phân bổ 50% - 40% - 10%
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => autoAllocate([30, 40, 30])}
+                                        className="text-xs bg-indigo-50/20 text-indigo-700 dark:text-indigo-400 border-indigo-200 hover:bg-indigo-50 dark:hover:bg-indigo-950/20"
+                                    >
+                                        Phân bổ 30% - 40% - 30%
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        onClick={addMilestone}
+                                        size="sm"
+                                        className="text-xs font-semibold"
+                                    >
+                                        <Plus className="h-3 w-3 mr-1" />
+                                        Thêm đợt
+                                    </Button>
+                                </div>
+                            </div>
+
+                            {paymentMilestones.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center p-8 border border-dashed rounded-lg bg-muted/20 text-center">
+                                    <p className="text-sm text-muted-foreground">Chưa có mốc thanh toán nào được tạo.</p>
+                                    <p className="text-xs text-muted-foreground mt-1">Sử dụng nút "Phân bổ nhanh" hoặc click "Thêm đợt" để thiết lập.</p>
+                                </div>
+                            ) : (
+                                <div className="border rounded-lg overflow-hidden bg-background">
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full text-sm border-collapse text-left">
+                                            <thead>
+                                                <tr className="bg-muted/40 border-b border-slate-200 text-xs font-semibold text-muted-foreground uppercase">
+                                                    <th className="p-3 w-[40px] text-center">#</th>
+                                                    <th className="p-3">Tên đợt thanh toán</th>
+                                                    <th className="p-3 w-[150px]">Loại tính</th>
+                                                    <th className="p-3 w-[120px]">Tỷ lệ (%)</th>
+                                                    <th className="p-3 w-[200px]">Số tiền (VND)</th>
+                                                    <th className="p-3 w-[170px]">Hạn thanh toán (Dự kiến)</th>
+                                                    <th className="p-3">Ghi chú</th>
+                                                    <th className="p-3 w-[50px] text-center"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-slate-200">
+                                                {paymentMilestones.map((milestone, index) => (
+                                                    <tr key={milestone.id} className="hover:bg-slate-50/50">
+                                                        <td className="p-3 text-center text-xs font-bold text-muted-foreground">
+                                                            {index + 1}
+                                                        </td>
+                                                        <td className="p-3">
+                                                            <Input
+                                                                value={milestone.name}
+                                                                onChange={(e) => updateMilestone(milestone.id, 'name', e.target.value)}
+                                                                className="h-9"
+                                                                placeholder="VD: Đợt 1: Tạm ứng"
+                                                            />
+                                                        </td>
+                                                        <td className="p-3">
+                                                            <Select
+                                                                value={milestone.amount_mode}
+                                                                onValueChange={(val) => updateMilestone(milestone.id, 'amount_mode', val)}
+                                                            >
+                                                                <SelectTrigger className="h-9">
+                                                                    <SelectValue />
+                                                                </SelectTrigger>
+                                                                <SelectContent>
+                                                                    <SelectItem value="percent">Phần trăm (%)</SelectItem>
+                                                                    <SelectItem value="fixed">Số tiền cố định</SelectItem>
+                                                                </SelectContent>
+                                                            </Select>
+                                                        </td>
+                                                        <td className="p-3">
+                                                            <Input
+                                                                type="number"
+                                                                value={milestone.percentage ?? ''}
+                                                                onChange={(e) => updateMilestone(milestone.id, 'percentage', parseFloat(e.target.value) || 0)}
+                                                                className="h-9"
+                                                                disabled={milestone.amount_mode === 'fixed'}
+                                                                min="0"
+                                                                max="100"
+                                                                placeholder="%"
+                                                            />
+                                                        </td>
+                                                        <td className="p-3">
+                                                            {milestone.amount_mode === 'percent' ? (
+                                                                <div className="h-9 flex items-center px-3 border rounded-md bg-muted/40 font-semibold text-muted-foreground text-right justify-end">
+                                                                    {new Intl.NumberFormat('vi-VN').format(milestone.amount)} đ
+                                                                </div>
+                                                            ) : (
+                                                                <Input
+                                                                    type="number"
+                                                                    value={milestone.amount || ''}
+                                                                    onChange={(e) => updateMilestone(milestone.id, 'amount', parseFloat(e.target.value) || 0)}
+                                                                    className="h-9 font-semibold text-right"
+                                                                    placeholder="VND"
+                                                                />
+                                                            )}
+                                                        </td>
+                                                        <td className="p-3">
+                                                            <Input
+                                                                type="date"
+                                                                value={milestone.due_date || ''}
+                                                                onChange={(e) => updateMilestone(milestone.id, 'due_date', e.target.value)}
+                                                                className="h-9"
+                                                            />
+                                                        </td>
+                                                        <td className="p-3">
+                                                            <Input
+                                                                value={milestone.description || ''}
+                                                                onChange={(e) => updateMilestone(milestone.id, 'description', e.target.value)}
+                                                                className="h-9"
+                                                                placeholder="Ghi chú đợt..."
+                                                            />
+                                                        </td>
+                                                        <td className="p-3 text-center">
+                                                            <Button
+                                                                type="button"
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                onClick={() => removeMilestone(milestone.id)}
+                                                                className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10 rounded-full"
+                                                            >
+                                                                <Trash2 className="h-4 w-4" />
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    {/* Warnings and Totals */}
+                                    <div className="bg-muted/30 p-4 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-3">
+                                        <div className="flex-1 w-full text-left">
+                                            {paymentMilestones.reduce((sum, m) => sum + (Number(m.percentage) || 0), 0) !== 100 ? (
+                                                <div className="flex items-center gap-2 text-xs text-amber-600 font-medium">
+                                                    <AlertCircle className="h-4 w-4 shrink-0" />
+                                                    <span>Tổng tỷ lệ hiện tại ({paymentMilestones.reduce((sum, m) => sum + (Number(m.percentage) || 0), 0)}%) chưa đạt 100%.</span>
+                                                </div>
+                                            ) : paymentMilestones.reduce((sum, m) => sum + (Number(m.amount) || 0), 0) !== totalAmount ? (
+                                                <div className="flex items-center gap-2 text-xs text-amber-600 font-medium">
+                                                    <AlertCircle className="h-4 w-4 shrink-0" />
+                                                    <span>Tổng số tiền các đợt ({new Intl.NumberFormat('vi-VN').format(paymentMilestones.reduce((sum, m) => sum + (Number(m.amount) || 0), 0))} đ) chưa khớp với tổng giá trị báo giá ({new Intl.NumberFormat('vi-VN').format(totalAmount)} đ).</span>
+                                                </div>
+                                            ) : (
+                                                <div className="flex items-center gap-2 text-xs text-emerald-600 font-medium">
+                                                    <CheckCircle2 className="h-4 w-4 shrink-0" />
+                                                    <span>Đã cân đối đầy đủ 100% giá trị báo giá.</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="flex gap-4 text-xs font-semibold text-muted-foreground shrink-0">
+                                            <div>Tổng tỷ lệ: <span className="text-foreground">{paymentMilestones.reduce((sum, m) => sum + (Number(m.percentage) || 0), 0)}%</span></div>
+                                            <div>Tổng tiền: <span className="text-foreground">{new Intl.NumberFormat('vi-VN').format(paymentMilestones.reduce((sum, m) => sum + (Number(m.amount) || 0), 0))} đ</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </CardContent>
+                </Card>
 
                 {/* Summary - Moved to bottom */}
                 <Card className="sticky bottom-4 z-10 mt-8 shadow-md bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 overflow-hidden">
