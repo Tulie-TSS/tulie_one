@@ -73,7 +73,7 @@ export default function QuotationDetailPage() {
     const [loading, setLoading] = useState(true)
     const [baseUrl, setBaseUrl] = useState('')
     const [layout, setLayout] = useState<'modern' | 'basic'>('modern')
-    const [activeTab, setActiveTab] = useState<'data' | 'preview'>('data')
+    const [isPreviewOpen, setIsPreviewOpen] = useState(false)
     const [isDownloading, setIsDownloading] = useState(false)
     const searchParams = useSearchParams()
     const fromParam = searchParams.get('from')
@@ -253,6 +253,57 @@ export default function QuotationDetailPage() {
                             </DropdownMenuContent>
                         </DropdownMenu>
 
+                        <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
+                            <DialogTrigger asChild>
+                                <Button variant="outline" size="default" className="gap-2 font-medium bg-zinc-50 dark:bg-zinc-900 border-border/80 text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800">
+                                    <Printer className="h-4 w-4 text-muted-foreground" />
+                                    In & Xem bản in
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto flex flex-col p-6">
+                                <DialogHeader className="pb-4 border-b">
+                                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                        <div className="space-y-1">
+                                            <DialogTitle className="text-lg font-semibold">Xem trước bản in Báo giá</DialogTitle>
+                                            <DialogDescription>Chọn kiểu thiết kế và thực hiện in ấn tài liệu</DialogDescription>
+                                        </div>
+                                        <div className="flex items-center gap-3 shrink-0">
+                                            <Tabs value={layout} onValueChange={(v) => setLayout(v as 'modern' | 'basic')} className="w-[280px]">
+                                                <TabsList className="grid w-full grid-cols-2">
+                                                    <TabsTrigger value="modern" className="gap-1.5 text-xs py-1.5">
+                                                        <Eye className="h-3.5 w-3.5" />
+                                                        Bản hiện đại
+                                                    </TabsTrigger>
+                                                    <TabsTrigger value="basic" className="gap-1.5 text-xs py-1.5">
+                                                        <Printer className="h-3.5 w-3.5" />
+                                                        Bản văn bản
+                                                    </TabsTrigger>
+                                                </TabsList>
+                                            </Tabs>
+                                            <Button
+                                                variant="default"
+                                                size="sm"
+                                                className="gap-1.5 text-xs font-semibold"
+                                                onClick={() => window.print()}
+                                            >
+                                                <Printer className="h-3.5 w-3.5" />
+                                                In báo giá
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </DialogHeader>
+                                <div className="flex justify-center bg-muted dark:bg-zinc-900 rounded-lg p-6 md:p-8 border border-border/40 mt-4 overflow-x-auto min-h-[600px] relative">
+                                    <div className="w-full max-w-[210mm] bg-white shadow-xl overflow-hidden rounded-sm border border-border">
+                                        {layout === 'modern' ? (
+                                            <QuotationModernPaper quotation={quotation} brandConfig={brandConfig} />
+                                        ) : (
+                                            <QuotationDocumentPaper quotation={quotation} brandConfig={brandConfig} />
+                                        )}
+                                    </div>
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+
                         <Button variant="outline" size="default" asChild className="font-medium">
                             <Link href={`/quotations/${quotation.id}/edit`} className="flex items-center gap-2">
                                 <Edit className="h-4 w-4 text-muted-foreground" />
@@ -268,22 +319,7 @@ export default function QuotationDetailPage() {
 
                 <EntityPipelineTracker entityType="quotation" entityId={id} />
 
-                <div className="pt-2">
-                    <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'data' | 'preview')} className="w-full">
-                        <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
-                            <TabsTrigger value="data" className="gap-2">
-                                <Info className="h-4 w-4" />
-                                Chi tiết dữ liệu
-                            </TabsTrigger>
-                            <TabsTrigger value="preview" className="gap-2">
-                                <Eye className="h-4 w-4" />
-                                Xem trước bản in
-                            </TabsTrigger>
-                        </TabsList>
-                    </Tabs>
-                </div>
-
-                {activeTab === 'data' && (
+                <div className="pt-2" />
                     <div className="grid gap-8 lg:grid-cols-3">
                         <div className="lg:col-span-2 space-y-6">
                             {/* Customer Info Card */}
@@ -598,52 +634,6 @@ export default function QuotationDetailPage() {
                             </Card>
                         </div>
                     </div>
-                )}
-
-                {activeTab === 'preview' && (
-                    <div className="space-y-8">
-                        <div className="flex flex-col xl:flex-row items-center justify-between gap-6">
-                            {/* Layout Toggle - Segmented Control */}
-                            <Tabs value={layout} onValueChange={(v) => setLayout(v as 'modern' | 'basic')} className="w-full max-w-[400px]">
-                                <TabsList className="grid w-full grid-cols-2">
-                                    <TabsTrigger value="modern" className="gap-2">
-                                        <Eye className="h-4 w-4" />
-                                        Chế độ xem
-                                    </TabsTrigger>
-                                    <TabsTrigger value="basic" className="gap-2">
-                                        <Printer className="h-4 w-4" />
-                                        Chế độ in
-                                    </TabsTrigger>
-                                </TabsList>
-                            </Tabs>
-
-                            <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto justify-end">
-                                <Button
-                                    variant="outline"
-                                    size="lg"
-                                    className="gap-2 font-medium"
-                                    onClick={() => window.print()}
-                                >
-                                    <Printer className="h-4 w-4" />
-                                    In báo giá
-                                </Button>
-                            </div>
-                        </div>
-
-                        <div className="flex justify-center bg-muted rounded-md p-8 md:p-12 border border-border/60 min-h-[900px] relative group">
-                            <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none"
-                                style={{ backgroundImage: "linear-gradient(#000 1.5px, transparent 1.5px), linear-gradient(90deg, #000 1.5px, transparent 1.5px)", backgroundSize: "40px 40px" }}>
-                            </div>
-                            <div className="w-full max-w-[210mm] bg-white [0_50px_120px_-20px_rgba(0,0,0,0.18)] overflow-hidden rounded-sm transition-transform ring-1 ring-zinc-300/40 relative z-10 border border-border" ref={printRef}>
-                                {layout === 'modern' ? (
-                                    <QuotationModernPaper quotation={quotation} brandConfig={brandConfig} />
-                                ) : (
-                                    <QuotationDocumentPaper quotation={quotation} brandConfig={brandConfig} />
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                )}
             </div>
             {/* Print specific container - ensures multi-page support */}
             <div className="hidden print:block !m-0 !p-0">

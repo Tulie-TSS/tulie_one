@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { getEntityLineage, EntityLineage } from '@/lib/supabase/services/lineage-service'
-import { ChevronRight, Loader2 } from 'lucide-react'
+import { ChevronRight, Loader2, Target, FileText, FileSignature, Briefcase } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import {
@@ -42,9 +42,9 @@ export function EntityPipelineTracker({ entityType, entityId }: Props) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center gap-2 py-2 px-1 print:hidden">
+      <div className="flex items-center gap-2 py-2.5 px-1 print:hidden">
         <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
-        <span className="text-xs text-muted-foreground">Đang tải...</span>
+        <span className="text-xs text-muted-foreground">Đang tải luồng tiến trình...</span>
       </div>
     )
   }
@@ -95,59 +95,111 @@ export function EntityPipelineTracker({ entityType, entityId }: Props) {
   if (linkedCount <= 1) return null
 
   return (
-    <nav aria-label="Luồng dự án" className="flex items-center gap-1 py-1.5 overflow-x-auto print:hidden">
-      {steps.map((step, index) => {
-        const isCurrent = step.type === entityType
-        const hasData = !!step.entity
+    <nav aria-label="Luồng tiến trình" className="w-full print:hidden">
+      <div className="flex flex-row flex-wrap md:flex-nowrap items-center justify-between gap-3 bg-zinc-50/50 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 rounded-xl p-3.5 shadow-sm">
+        {steps.map((step, index) => {
+          const isCurrent = step.type === entityType
+          const hasData = !!step.entity
 
-        return (
-          <React.Fragment key={step.type}>
-            {index > 0 && (
-              <ChevronRight className="h-3 w-3 text-muted-foreground/40 shrink-0 mx-0.5" />
-            )}
+          // Select icon for the step
+          const Icon = {
+            deal: Target,
+            quotation: FileText,
+            contract: FileSignature,
+            project: Briefcase,
+          }[step.type as 'deal' | 'quotation' | 'contract' | 'project'] || FileText
 
-            {hasData && step.url && !isCurrent ? (
-              <Link
-                href={step.url}
-                className={cn(
-                  'inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs transition-colors',
-                  'border border-transparent hover:border-border hover:bg-muted/50'
-                )}
-              >
-                <span className="text-muted-foreground">{step.label}:</span>
-                <span className="font-medium text-foreground truncate max-w-[160px]">{step.displayText}</span>
-                {step.statusLabel && (
-                  <span className={cn('inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium', step.statusColor)}>
-                    {step.statusLabel}
-                  </span>
-                )}
-              </Link>
-            ) : isCurrent ? (
-              <span
-                className={cn(
-                  'inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs',
-                  'bg-card border border-border shadow-sm'
-                )}
-              >
-                <span className="text-muted-foreground">{step.label}:</span>
-                <span className="font-semibold text-foreground truncate max-w-[160px]">
-                  {step.displayText || 'Đang xem'}
+          const stepContent = (
+            <div className={cn(
+              "flex items-center gap-3 py-1.5 px-2 rounded-lg transition-all",
+              hasData && !isCurrent && "hover:bg-zinc-100/80 dark:hover:bg-zinc-800/80"
+            )}>
+              {/* Icon Circle */}
+              <div className={cn(
+                "h-9 w-9 rounded-full flex items-center justify-center shrink-0 transition-all border",
+                isCurrent 
+                  ? "bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950 border-zinc-950 dark:border-zinc-100 shadow-sm ring-4 ring-zinc-950/10 dark:ring-zinc-100/10" 
+                  : hasData
+                    ? "bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-sm"
+                    : "bg-zinc-50/50 dark:bg-zinc-950/20 text-zinc-400 dark:text-zinc-655 border-dashed border-zinc-200 dark:border-zinc-800"
+              )}>
+                <Icon className={cn("h-4.5 w-4.5", !isCurrent && !hasData && "opacity-60")} />
+              </div>
+
+              {/* Text Info */}
+              <div className="flex flex-col min-w-0">
+                <span className={cn(
+                  "text-[10px] uppercase tracking-wider font-bold",
+                  isCurrent 
+                    ? "text-zinc-950 dark:text-zinc-100" 
+                    : hasData 
+                      ? "text-zinc-500 dark:text-zinc-450"
+                      : "text-zinc-400/80 dark:text-zinc-600/80"
+                )}>
+                  {step.label}
                 </span>
-                {step.statusLabel && (
-                  <span className={cn('inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium', step.statusColor)}>
-                    {step.statusLabel}
+                
+                {hasData ? (
+                  <div className="flex items-center gap-1.5 mt-0.5 min-w-0 flex-wrap sm:flex-nowrap">
+                    <span className={cn(
+                      "text-xs font-semibold truncate max-w-[120px] md:max-w-[150px]",
+                      isCurrent ? "text-zinc-950 dark:text-white" : "text-zinc-700 dark:text-zinc-300"
+                    )}>
+                      {step.displayText}
+                    </span>
+                    {step.statusLabel && (
+                      <span className={cn(
+                        "inline-flex items-center rounded px-1.5 py-0.5 text-[9px] font-bold tracking-tight border border-current/10 whitespace-nowrap",
+                        step.statusColor
+                      )}>
+                        {step.statusLabel}
+                      </span>
+                    )}
+                  </div>
+                ) : (
+                  <span className="text-xs text-zinc-455/60 dark:text-zinc-600/60 mt-0.5">
+                    Chưa tạo
                   </span>
                 )}
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-xs text-muted-foreground/50">
-                <span>{step.label}</span>
-                <span className="text-[10px]">—</span>
-              </span>
-            )}
-          </React.Fragment>
-        )
-      })}
+              </div>
+            </div>
+          )
+
+          return (
+            <React.Fragment key={step.type}>
+              {/* Connector line on desktop */}
+              {index > 0 && (
+                <div className="hidden md:block flex-1 h-[2px] mx-1 min-w-[20px] self-center">
+                  <div className={cn(
+                    "h-full w-full rounded-full transition-colors duration-300",
+                    steps[index - 1].entity && steps[index].entity
+                      ? "bg-zinc-800 dark:bg-zinc-200"
+                      : "bg-zinc-200 dark:bg-zinc-800 border-t border-dashed border-zinc-200/50 dark:border-zinc-800/50"
+                  )} />
+                </div>
+              )}
+
+              {/* Chevron on mobile (if wrapped) */}
+              {index > 0 && (
+                <ChevronRight className="md:hidden h-3.5 w-3.5 text-zinc-400 dark:text-zinc-600 shrink-0 mx-0.5" />
+              )}
+
+              {/* Step Block wrapper */}
+              <div className="flex-1 md:flex-none">
+                {hasData && step.url && !isCurrent ? (
+                  <Link href={step.url} className="block">
+                    {stepContent}
+                  </Link>
+                ) : (
+                  <div className="block">
+                    {stepContent}
+                  </div>
+                )}
+              </div>
+            </React.Fragment>
+          )
+        })}
+      </div>
     </nav>
   )
 }

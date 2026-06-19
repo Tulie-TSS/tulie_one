@@ -1725,14 +1725,13 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                         value={deliveryTime}
                                         onChange={(e) => setDeliveryTime(e.target.value)}
                                         placeholder="VD: 30 ngày làm việc kể từ ngày ký hợp đồng và nhận tạm ứng"
-                                        className="flex-1"
+                                        className="flex-1 h-9"
                                     />
                                     <Button
                                         type="button"
                                         variant="outline"
                                         onClick={() => setDeliveryTime('30 ngày làm việc kể từ ngày nhận tạm ứng')}
-                                        className="shrink-0 text-xs text-muted-foreground hover:text-foreground"
-                                        size="sm"
+                                        className="shrink-0 text-xs text-muted-foreground hover:text-foreground h-9"
                                     >
                                         Mẫu 30 ngày
                                     </Button>
@@ -1740,8 +1739,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                         type="button"
                                         variant="outline"
                                         onClick={() => setDeliveryTime('45 ngày làm việc kể từ ngày nhận tạm ứng')}
-                                        className="shrink-0 text-xs text-muted-foreground hover:text-foreground"
-                                        size="sm"
+                                        className="shrink-0 text-xs text-muted-foreground hover:text-foreground h-9"
                                     >
                                         Mẫu 45 ngày
                                     </Button>
@@ -1755,7 +1753,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                     value={warrantyMonths === null ? 'none' : warrantyMonths.toString()}
                                     onValueChange={(val) => setWarrantyMonths(val === 'none' ? null : Number(val))}
                                 >
-                                    <SelectTrigger className="w-full">
+                                    <SelectTrigger className="w-full h-9">
                                         <SelectValue placeholder="Chọn thời hạn bảo hành" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -1988,7 +1986,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                                 }
                                             }}
                                         >
-                                            <SelectTrigger className="w-32 h-9 text-xs border-border">
+                                            <SelectTrigger className="w-[150px] h-9 text-xs border-border">
                                                 <SelectValue />
                                             </SelectTrigger>
                                             <SelectContent>
