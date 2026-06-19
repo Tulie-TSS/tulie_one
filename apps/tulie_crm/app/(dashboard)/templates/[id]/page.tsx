@@ -60,11 +60,13 @@ interface QuotationDetail {
     id: string
     quotation_number: string
     title: string
+    type?: string
     total_amount: number
     subtotal?: number
     vat_percent?: number
     vat_amount?: number
     discount_amount?: number
+    discount_percent?: number
     terms?: string
     notes?: string
     status: string
@@ -72,7 +74,7 @@ interface QuotationDetail {
     vat_exempt_status?: string
     customer?: Customer
     items?: QuotationItem[]
-    proposal_content?: any
+    proposal_content?: Record<string, string>
 }
 
 // ─── Vietnamese number to words ────────────────────────────────────────────────
@@ -116,13 +118,19 @@ function readNumberToWords(num: number): string {
 }
 
 // ─── Build contract_items_table HTML from quotation items ───────────────────
-function buildItemsTableHtml(items: QuotationItem[], vatExempt: boolean, quoteVatPercent: number = 0): {
+function buildItemsTableHtml(items: QuotationItem[], vatExempt: boolean, quoteVatPercent: number = 0, overallDiscountAmount: number = 0, overallDiscountPercent: number = 0): {
     contractItemsTable: string
+    grossTotal: string
+    totalDiscount: string
     subtotal: string
     vatAmount: string
     totalAmount: string
+    totalAmountRaw: number
     hasVat: boolean
     hasDiscount: boolean
+    discountRowHtml: string
+    vatBreakdownHtml: string
+    totalColumns: number
 } {
     const validItems = items.filter(i => !i.is_optional)
 
@@ -137,6 +145,7 @@ function buildItemsTableHtml(items: QuotationItem[], vatExempt: boolean, quoteVa
     if (!hasVat) totalColumns -= 2
 
     let grossTotal = 0
+    let totalDiscountAmt = 0
     let totalVat = 0
     let totalAfterVat = 0
     let rowsHtml = ''
@@ -153,6 +162,9 @@ function buildItemsTableHtml(items: QuotationItem[], vatExempt: boolean, quoteVa
         if (b[0] === '') return -1
         return (a[1][0]?.sort_order || 0) - (b[1][0]?.sort_order || 0)
     })
+
+    // For VAT breakdown
+    const vatGroupsMap: Record<number, number> = {}
 
     sectionEntries.forEach(([sectionName, sectionItems], sIdx) => {
         if (sectionName) {
@@ -173,8 +185,13 @@ function buildItemsTableHtml(items: QuotationItem[], vatExempt: boolean, quoteVa
             const afterVat = afterDiscount + itemVat
 
             grossTotal += itemGross
+            totalDiscountAmt += discountAmount
             totalVat += itemVat
             totalAfterVat += afterVat
+
+            // Accumulate VAT by rate
+            if (!vatGroupsMap[itemVatRate]) vatGroupsMap[itemVatRate] = 0
+            vatGroupsMap[itemVatRate] += itemVat
 
             const rawDesc = item.description || ''
             let descHtml = ''
@@ -216,13 +233,48 @@ function buildItemsTableHtml(items: QuotationItem[], vatExempt: boolean, quoteVa
         })
     })
 
+    // Build discount_row_html (overall quotation discount, not per-item)
+    let discountRowHtml = ''
+    if (overallDiscountAmount > 0) {
+        const pctStr = overallDiscountPercent > 0 ? ` (${overallDiscountPercent}%)` : ''
+        discountRowHtml = `<tr>
+            <td style="border:1px solid #000; padding:4px;" colspan="${totalColumns - 1}"><strong>Chiết khấu tổng${pctStr}</strong></td>
+            <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold;">-${new Intl.NumberFormat('vi-VN').format(overallDiscountAmount)}</td>
+        </tr>`
+    }
+
+    // Build vat_breakdown_html
+    let vatBreakdownHtml = ''
+    if (vatExempt) {
+        vatBreakdownHtml = `<tr style="background:#f5f5f5;">
+            <td style="border:1px solid #000; padding:4px;" colspan="${totalColumns - 1}"><strong>Thuế suất GTGT (VAT):</strong></td>
+            <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">Không chịu thuế</td>
+        </tr>`
+    } else if (hasVat) {
+        Object.entries(vatGroupsMap).sort((a, b) => Number(a[0]) - Number(b[0])).forEach(([rate, amt]) => {
+            vatBreakdownHtml += `<tr style="background:#f5f5f5;">
+                <td style="border:1px solid #000; padding:4px;" colspan="${totalColumns - 1}"><strong>Tổng thuế suất GTGT (VAT) ${rate}%:</strong></td>
+                <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(amt as number)}</td>
+            </tr>`
+        })
+    }
+
+    const subtotalAfterItemDiscount = grossTotal - totalDiscountAmt
+    const finalTotal = totalAfterVat - overallDiscountAmount
+
     return {
         contractItemsTable: rowsHtml,
-        subtotal: new Intl.NumberFormat('vi-VN').format(grossTotal),
+        grossTotal: new Intl.NumberFormat('vi-VN').format(grossTotal),
+        totalDiscount: new Intl.NumberFormat('vi-VN').format(totalDiscountAmt + overallDiscountAmount),
+        subtotal: new Intl.NumberFormat('vi-VN').format(subtotalAfterItemDiscount),
         vatAmount: new Intl.NumberFormat('vi-VN').format(totalVat),
-        totalAmount: new Intl.NumberFormat('vi-VN').format(totalAfterVat),
+        totalAmount: new Intl.NumberFormat('vi-VN').format(finalTotal),
+        totalAmountRaw: finalTotal,
         hasVat,
         hasDiscount,
+        discountRowHtml,
+        vatBreakdownHtml,
+        totalColumns,
     }
 }
 
@@ -352,12 +404,16 @@ export default function TemplateDetailPage() {
 
             const isExempt = q.vat_exempt_status === 'exempt'
             const quoteVatPercent = q.vat_percent || 0
+            const overallDiscountAmount = q.discount_amount || 0
+            const overallDiscountPercent = 0 // not stored per-quotation in this context
             const items = q.items || []
 
-            const { contractItemsTable, subtotal, vatAmount, totalAmount } =
-                buildItemsTableHtml(items, isExempt, quoteVatPercent)
+            const {
+                contractItemsTable, grossTotal, totalDiscount, subtotal, vatAmount,
+                totalAmount, totalAmountRaw, discountRowHtml, vatBreakdownHtml,
+            } = buildItemsTableHtml(items, isExempt, quoteVatPercent, overallDiscountAmount, overallDiscountPercent)
 
-            const totalNum = q.total_amount || 0
+            const totalNum = q.total_amount || totalAmountRaw || 0
             const vatRate = isExempt ? 'Không chịu thuế' : (quoteVatPercent > 0 ? `${quoteVatPercent}%` : '0%')
 
             // Auto-fill customer info if not already selected
@@ -375,19 +431,59 @@ export default function TemplateDetailPage() {
                 customerUpdates.customer_mobile = cust.phone || ''
             }
 
+            // Build proposal_appendix_html from quotation.proposal_content (if type=proposal)
+            let proposalAppendixHtml = ''
+            if ((q as any).type === 'proposal' && q.proposal_content) {
+                const pc = q.proposal_content as Record<string, string>
+                const sections: { label: string; content: string }[] = []
+                if (pc.introduction) sections.push({ label: 'Mục tiêu & Giới thiệu', content: pc.introduction })
+                if (pc.scope_of_work) sections.push({ label: 'Phạm vi công việc (Scope of Work)', content: pc.scope_of_work })
+                if (pc.methodology) sections.push({ label: 'Phương pháp & Cách tiếp cận', content: pc.methodology })
+                if (pc.deliverables) sections.push({ label: 'Sản phẩm bàn giao (Deliverables)', content: pc.deliverables })
+                if (pc.team) sections.push({ label: 'Đội ngũ chuyên trách', content: pc.team })
+                if (pc.timeline) sections.push({ label: 'Lộ trình triển khai (Timeline)', content: pc.timeline })
+                if (pc.warranty) sections.push({ label: 'Bảo hành & Hỗ trợ', content: pc.warranty })
+                if (pc.why_us) sections.push({ label: 'Vì sao chọn chúng tôi?', content: pc.why_us })
+                if (pc.case_studies) sections.push({ label: 'Case Studies & Portfolio', content: pc.case_studies })
+                if (pc.custom_sections) {
+                    try {
+                        const custom = typeof pc.custom_sections === 'string' ? JSON.parse(pc.custom_sections) : pc.custom_sections
+                        if (Array.isArray(custom)) custom.forEach((s: any) => { if (s.title && s.content) sections.push({ label: s.title, content: s.content }) })
+                    } catch { /* ignore */ }
+                }
+                if (sections.length > 0) {
+                    proposalAppendixHtml = `<div style="page-break-before: always;"></div><p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC 02 — ĐỀ XUẤT GIẢI PHÁP</p><p style="text-align:center; font-style:italic; margin-bottom:20px; font-size:9pt;">(Đính kèm Hợp đồng dịch vụ số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>`
+                    sections.forEach((sec, idx) => {
+                        const content = sec.content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        proposalAppendixHtml += `<div style="margin-bottom:16px;"><p style="font-weight:bold; font-size:10pt; margin: 0 0 6px 0; border-bottom:1px solid #ddd; padding-bottom:4px;">${idx + 1}. ${sec.label}</p><div style="font-size:9.5pt; text-align:justify; line-height:1.6; padding-left:4px;">${content}</div></div>`
+                    })
+                }
+            }
+
             setVariables(prev => ({
                 ...prev,
                 ...customerUpdates,
                 contract_items_table: contractItemsTable,
                 quotation_items_table: contractItemsTable,
+                gross_total: grossTotal,
+                total_discount: totalDiscount,
                 subtotal,
                 vat_rate: vatRate,
                 vat_amount: vatAmount,
-                total_amount_number: totalAmount || new Intl.NumberFormat('vi-VN').format(totalNum),
+                vat_total: vatAmount,
+                total_after_vat: totalAmount,
+                total_amount_number: new Intl.NumberFormat('vi-VN').format(totalNum),
                 amount_in_words: readNumberToWords(totalNum),
                 payment_terms: q.terms || prev.payment_terms || '',
                 service_description: q.title || prev.service_description || '',
                 order_number: q.quotation_number || '',
+                discount_row_html: discountRowHtml,
+                vat_breakdown_html: vatBreakdownHtml,
+                proposal_appendix_html: proposalAppendixHtml,
+                // Clause numbering for contract templates
+                clause_1_2_html: (q as any).type === 'proposal' ? `<tr><td style="width:50px; vertical-align:top; padding:2px 0;">1.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Phạm vi công việc được quy định chi tiết tại <strong>Phụ lục 02</strong> (Đề xuất giải pháp) đính kèm hợp đồng này.</td></tr>` : '',
+                clause_total_value_number: (q as any).type === 'proposal' ? '1.3.' : '1.2.',
+                clause_appendix_number: (q as any).type === 'proposal' ? '1.4.' : '1.3.',
             }))
         } catch (err) {
             console.error('Error fetching quotation detail:', err)
