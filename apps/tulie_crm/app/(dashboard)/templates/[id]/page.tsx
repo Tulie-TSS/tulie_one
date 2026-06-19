@@ -9,7 +9,7 @@ import { Label } from '@repo/ui'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui'
 import { Badge } from '@repo/ui'
 import { Separator } from '@repo/ui'
-import { ArrowLeft, FileText, Download, FilePlus2, Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
+import { ArrowLeft, FileText, Download, FilePlus2, Loader2, CheckCircle2, AlertCircle, Eye, EyeOff, Send } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import Link from 'next/link'
 
@@ -324,6 +324,9 @@ export default function TemplateDetailPage() {
     const [isCreatingContract, setIsCreatingContract] = useState(false)
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
 
+    // ── Clean mode: biến chưa điền sẽ để trống (cho xuất PDF gửi khách) ────
+    const [cleanMode, setCleanMode] = useState(false)
+
     // ── Load template + customers + all quotations ──────────────────────────
     useEffect(() => {
         const loadData = async () => {
@@ -497,24 +500,56 @@ export default function TemplateDetailPage() {
     }
 
     // ── Preview ─────────────────────────────────────────────────────────────
+    // cleanMode = true  → biến chưa điền hiển thị trống (dành cho gửi khách)
+    // cleanMode = false → biến chưa điền hiển thị [tên biến] màu xám (dành cho soạn thảo)
     const previewHtml = useMemo(() => {
         if (!template) return ''
         let html = template.content
         for (const [key, value] of Object.entries(variables)) {
             const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g')
-            html = html.replace(regex, value || `<span style="color:#ccc;font-style:italic;">[${key.replace(/_/g, ' ')}]</span>`)
+            html = html.replace(regex, value || (cleanMode ? '' : `<span style="color:#ccc;font-style:italic;">[${key.replace(/_/g, ' ')}]</span>`))
         }
+        // In clean mode, also strip any remaining {{...}} placeholders not in variables map
+        if (cleanMode) {
+            html = html.replace(/\{\{[^}]+\}\}/g, '')
+        }
+        return html
+    }, [template, variables, cleanMode])
+
+    // Clean HTML for download (always strips all placeholders, no inline spans)
+    const cleanHtmlForExport = useMemo(() => {
+        if (!template) return ''
+        let html = template.content
+        for (const [key, value] of Object.entries(variables)) {
+            const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g')
+            html = html.replace(regex, value || '')
+        }
+        html = html.replace(/\{\{[^}]+\}\}/g, '')
         return html
     }, [template, variables])
 
-    // ── Download ────────────────────────────────────────────────────────────
+    // ── Download ─────────────────────────────────────────────────────────────
+    // Normal download: dùng previewHtml (cleanMode hoặc có placeholder)
     const handleDownload = () => {
-        const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${template?.name}</title><style>@media print { @page { size: A4; margin: 20mm 15mm 20mm 25mm; } body { margin: 0; } }</style></head><body>${previewHtml}</body></html>`
+        const html = cleanMode ? cleanHtmlForExport : previewHtml
+        const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${template?.name}</title><style>@media print { @page { size: A4; margin: 20mm 15mm 20mm 25mm; } body { margin: 0; } }</style></head><body>${html}</body></html>`
         const blob = new Blob([fullHtml], { type: 'text/html' })
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
         a.download = `${template?.name || 'document'}.html`
+        a.click()
+        URL.revokeObjectURL(url)
+    }
+
+    // Export for client: always clean (no placeholders), ready for PDF conversion
+    const handleExportForClient = () => {
+        const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${template?.name}</title><style>@media print { @page { size: A4; margin: 20mm 15mm 20mm 25mm; } body { margin: 0; } } body { font-family: Arial, sans-serif; } </style></head><body>${cleanHtmlForExport}</body></html>`
+        const blob = new Blob([fullHtml], { type: 'text/html' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `${template?.name || 'document'} - Gửi khách.html`
         a.click()
         URL.revokeObjectURL(url)
     }
@@ -641,13 +676,35 @@ export default function TemplateDetailPage() {
                             Điền thông tin để tạo giấy tờ từ mẫu này
                         </p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex items-center gap-2 flex-wrap justify-end">
+                        {/* Clean mode toggle */}
+                        <button
+                            onClick={() => setCleanMode(v => !v)}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all ${
+                                cleanMode
+                                    ? 'border-blue-400 bg-blue-50 text-blue-700'
+                                    : 'border-dashed border-muted-foreground/40 text-muted-foreground hover:border-muted-foreground/70'
+                            }`}
+                            title={cleanMode ? 'Đang xem chế độ gửi khách — biến trống ẩn đi' : 'Bật chế độ gửi khách — biến trống sẽ hiển thị trống'}
+                        >
+                            {cleanMode ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                            {cleanMode ? 'Xem soạn thảo' : 'Chế độ gửi khách'}
+                        </button>
+
                         <Button variant="outline" onClick={handlePrint}>
                             In giấy tờ
                         </Button>
-                        <Button onClick={handleDownload}>
+                        <Button variant="outline" onClick={handleDownload}>
                             <Download className="h-4 w-4" />
                             Tải HTML
+                        </Button>
+                        <Button
+                            onClick={handleExportForClient}
+                            className="bg-blue-600 hover:bg-blue-700 text-white"
+                            title="Xuất file HTML sạch (không có placeholder), mở bằng Chrome → In → Lưu PDF để gửi khách"
+                        >
+                            <Send className="h-4 w-4" />
+                            Xuất PDF gửi khách
                         </Button>
                         {canCreateContract && (
                             <Button
@@ -816,10 +873,21 @@ export default function TemplateDetailPage() {
                     {/* Real-time Preview */}
                     <Card>
                         <CardHeader className="pb-3">
-                            <CardTitle className="text-base">Xem trước</CardTitle>
-                            <CardDescription>
-                                Nội dung giấy tờ sau khi điền biến
-                            </CardDescription>
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <CardTitle className="text-base">Xem trước</CardTitle>
+                                    <CardDescription>
+                                        {cleanMode
+                                            ? 'ⓘ Chế độ gửi khách — biến chưa điền đang ẩn'
+                                            : 'Nội dung giấy tờ sau khi điền biến'}
+                                    </CardDescription>
+                                </div>
+                                {cleanMode && (
+                                    <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full font-medium">
+                                        Chế độ gửi khách
+                                    </span>
+                                )}
+                            </div>
                         </CardHeader>
                         <CardContent>
                             <iframe
@@ -835,19 +903,28 @@ export default function TemplateDetailPage() {
                 {/* Actions footer */}
                 <Card>
                     <CardContent className="pt-6">
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between gap-4">
                             <p className="text-sm text-muted-foreground">
-                                {canCreateContract
-                                    ? 'Bạn có thể tải xuống, in hoặc nạp báo giá này vào hợp đồng chính thức'
-                                    : 'Sau khi hoàn tất, bạn có thể in trực tiếp hoặc tải xuống file HTML'}
+                                {cleanMode
+                                    ? 'ⓘ Chế độ gửi khách bật — các trường chưa điền đang ẩn. Nhấn “Xuất PDF gửi khách” để tải file sạch.'
+                                    : canCreateContract
+                                        ? 'Bạn có thể tải xuống, in hoặc nạp báo giá này vào hợp đồng chính thức'
+                                        : 'Sau khi hoàn tất, bạn có thể in trực tiếp hoặc tải xuống file HTML'}
                             </p>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 shrink-0">
                                 <Button variant="outline" onClick={handlePrint}>
                                     In giấy tờ
                                 </Button>
-                                <Button onClick={handleDownload}>
+                                <Button variant="outline" onClick={handleDownload}>
                                     <Download className="h-4 w-4" />
-                                    Tải xuống HTML
+                                    Tải HTML
+                                </Button>
+                                <Button
+                                    onClick={handleExportForClient}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                                >
+                                    <Send className="h-4 w-4" />
+                                    Xuất PDF gửi khách
                                 </Button>
                                 {canCreateContract && (
                                     <Button
