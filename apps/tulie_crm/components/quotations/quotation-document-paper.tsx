@@ -45,7 +45,7 @@ export function renderStructuredNotes(text: string) {
                     const title = colonIndex !== -1 ? trimmed.substring(0, colonIndex + 1) : trimmed;
                     const rest = colonIndex !== -1 ? trimmed.substring(colonIndex + 1) : '';
                     return (
-                        <div key={i} className="text-[11px] leading-relaxed text-slate-900 font-bold mt-2.5 border-b border-slate-100 pb-1">
+                        <div key={i} className="text-[11px] leading-relaxed text-slate-900 font-bold mt-3.5 mb-1">
                             <span>{title}</span>
                             <span className="font-normal text-slate-700">{rest}</span>
                         </div>

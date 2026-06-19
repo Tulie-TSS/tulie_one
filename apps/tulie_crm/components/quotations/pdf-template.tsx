@@ -251,7 +251,7 @@ export function renderPdfStructuredNotes(text: string) {
                     const title = colonIndex !== -1 ? trimmed.substring(0, colonIndex + 1) : trimmed;
                     const rest = colonIndex !== -1 ? trimmed.substring(colonIndex + 1) : '';
                     return (
-                        <View key={i} style={{ marginTop: 6, borderBottomWidth: 0.5, borderBottomColor: '#eee', paddingBottom: 2 }}>
+                        <View key={i} style={{ marginTop: 8, marginBottom: 2 }}>
                             <Text style={{ fontSize: 8.5, color: '#333', lineHeight: 1.35 }}>
                                 <Text style={{ fontFamily: 'Roboto-Bold', color: '#111' }}>{title}</Text>
                                 {rest}
