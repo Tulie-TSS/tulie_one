@@ -214,6 +214,75 @@ const styles = StyleSheet.create({
     }
 });
 
+export function renderPdfStructuredNotes(text: string) {
+    if (!text) return null;
+    const lines = text.split('\n').filter(l => l.trim() !== '');
+    
+    return (
+        <View style={{ gap: 4, marginTop: 4 }}>
+            {lines.map((line, i) => {
+                const trimmed = line.trim();
+                
+                // Numbered list item: e.g. "1. Phương thức thanh toán:"
+                const mainNumMatch = trimmed.match(/^(\d+)\.\s+(.*)$/);
+                if (mainNumMatch) {
+                    const [, num, content] = mainNumMatch;
+                    const colonIndex = content.indexOf(':');
+                    if (colonIndex !== -1) {
+                        const title = content.substring(0, colonIndex + 1);
+                        const rest = content.substring(colonIndex + 1);
+                        return (
+                            <Text key={i} style={{ fontSize: 8.5, color: '#333', lineHeight: 1.35 }}>
+                                <Text style={{ fontFamily: 'Roboto-Bold', color: '#111' }}>{num}. {title}</Text>
+                                {rest}
+                            </Text>
+                        );
+                    }
+                    return (
+                        <Text key={i} style={{ fontSize: 8.5, fontFamily: 'Roboto-Bold', color: '#111', lineHeight: 1.35 }}>
+                            {num}. {content}
+                        </Text>
+                    );
+                }
+                
+                // Section header: ends with ':' or contains 'Về ' and a colon
+                if (trimmed.endsWith(':') || (trimmed.startsWith('Về ') && trimmed.includes(':'))) {
+                    const colonIndex = trimmed.indexOf(':');
+                    const title = colonIndex !== -1 ? trimmed.substring(0, colonIndex + 1) : trimmed;
+                    const rest = colonIndex !== -1 ? trimmed.substring(colonIndex + 1) : '';
+                    return (
+                        <View key={i} style={{ marginTop: 6, borderBottomWidth: 0.5, borderBottomColor: '#eee', paddingBottom: 2 }}>
+                            <Text style={{ fontSize: 8.5, color: '#333', lineHeight: 1.35 }}>
+                                <Text style={{ fontFamily: 'Roboto-Bold', color: '#111' }}>{title}</Text>
+                                {rest}
+                            </Text>
+                        </View>
+                    );
+                }
+                
+                // Sub-bullet or list item: starts with "-", "•", "*"
+                const bulletMatch = trimmed.match(/^[-•\*]\s*(.*)$/);
+                if (bulletMatch) {
+                    const [, content] = bulletMatch;
+                    return (
+                        <View key={i} style={{ flexDirection: 'row', marginLeft: 12, alignItems: 'flex-start' }}>
+                            <Text style={{ fontSize: 8.5, color: '#666', marginRight: 4 }}>•</Text>
+                            <Text style={{ fontSize: 8.5, color: '#444', flex: 1, lineHeight: 1.35 }}>{content}</Text>
+                        </View>
+                    );
+                }
+                
+                // Otherwise normal paragraph
+                return (
+                    <Text key={i} style={{ fontSize: 8.5, color: '#444', marginLeft: 6, lineHeight: 1.35 }}>
+                        {trimmed}
+                    </Text>
+                );
+            })}
+        </View>
+    );
+}
+
 interface PdfTemplateProps {
     quotation: any; // Using any temporarily to be flexible with new types
 }
@@ -440,13 +509,9 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
                     {/* Notes & Terms */}
                     <View style={{ flex: 1 }}>
                         <Text style={{ fontSize: 9, fontFamily: 'Roboto-Bold', marginBottom: 8, textTransform: 'uppercase' }}>Ghi chú & Điều khoản / Terms:</Text>
-                        <View style={{ gap: 4 }}>
-                            {String(quotation.notes || quotation.brandConfig?.default_notes || '').split('\n').filter(Boolean).map((line, i) => (
-                                <Text key={`n-${i}`} style={{ fontSize: 8, color: '#666' }}>• {line.replace(/^[-•]\s*/, '')}</Text>
-                            ))}
-                            {String(quotation.terms || quotation.brandConfig?.default_payment_terms || '').split('\n').filter(Boolean).map((line, i) => (
-                                <Text key={`t-${i}`} style={{ fontSize: 8, color: '#666' }}>• {line.replace(/^[-•]\s*/, '')}</Text>
-                            ))}
+                        <View style={{ gap: 6 }}>
+                            {renderPdfStructuredNotes(quotation.terms || quotation.brandConfig?.default_payment_terms || '')}
+                            {renderPdfStructuredNotes(quotation.notes || quotation.brandConfig?.default_notes || '')}
                         </View>
                     </View>
 

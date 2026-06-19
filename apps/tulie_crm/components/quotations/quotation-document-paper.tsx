@@ -8,6 +8,73 @@ interface QuotationDocumentPaperProps {
     selectedItemIds?: string[];
 }
 
+export function renderStructuredNotes(text: string) {
+    if (!text) return null;
+    const lines = text.split('\n').filter(l => l.trim() !== '');
+    
+    return (
+        <div className="space-y-1 mt-1">
+            {lines.map((line, i) => {
+                const trimmed = line.trim();
+                
+                // Numbered list item: e.g. "1. Phương thức thanh toán:"
+                const mainNumMatch = trimmed.match(/^(\d+)\.\s+(.*)$/);
+                if (mainNumMatch) {
+                    const [, num, content] = mainNumMatch;
+                    const colonIndex = content.indexOf(':');
+                    if (colonIndex !== -1) {
+                        const title = content.substring(0, colonIndex + 1);
+                        const rest = content.substring(colonIndex + 1);
+                        return (
+                            <div key={i} className="text-[11px] leading-relaxed text-slate-800">
+                                <span className="font-bold">{num}. {title}</span>
+                                <span>{rest}</span>
+                            </div>
+                        );
+                    }
+                    return (
+                        <div key={i} className="text-[11px] leading-relaxed text-slate-800 font-bold">
+                            {num}. {content}
+                        </div>
+                    );
+                }
+                
+                // Section header: ends with ':' or contains 'Về ' and a colon
+                if (trimmed.endsWith(':') || (trimmed.startsWith('Về ') && trimmed.includes(':'))) {
+                    const colonIndex = trimmed.indexOf(':');
+                    const title = colonIndex !== -1 ? trimmed.substring(0, colonIndex + 1) : trimmed;
+                    const rest = colonIndex !== -1 ? trimmed.substring(colonIndex + 1) : '';
+                    return (
+                        <div key={i} className="text-[11px] leading-relaxed text-slate-900 font-bold mt-2.5 border-b border-slate-100 pb-1">
+                            <span>{title}</span>
+                            <span className="font-normal text-slate-700">{rest}</span>
+                        </div>
+                    );
+                }
+                
+                // Sub-bullet or list item: starts with "-", "•", "*"
+                const bulletMatch = trimmed.match(/^[-•\*]\s*(.*)$/);
+                if (bulletMatch) {
+                    const [, content] = bulletMatch;
+                    return (
+                        <div key={i} className="flex gap-2.5 items-start pl-4 text-[11px] leading-relaxed text-slate-700">
+                            <span className="shrink-0 text-slate-400 mt-1">•</span>
+                            <span>{content}</span>
+                        </div>
+                    );
+                }
+                
+                // Otherwise normal paragraph
+                return (
+                    <p key={i} className="text-[11px] leading-relaxed text-slate-700 pl-2">
+                        {trimmed}
+                    </p>
+                );
+            })}
+        </div>
+    );
+}
+
 export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds }: QuotationDocumentPaperProps) {
     const rawItems = quotation.items || [];
     const items = selectedItemIds 
@@ -27,6 +94,30 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
         if (b[0] === '') return -1;
         return (a[1][0]?.sort_order || 0) - (b[1][0]?.sort_order || 0);
     });
+
+    const pc = quotation.proposal_content || {};
+    const hasProposal = quotation.type === 'proposal' && pc;
+
+    const proposalSections: { label: string; content: string }[] = [];
+    if (hasProposal) {
+        if (pc.sections && Array.isArray(pc.sections)) {
+            pc.sections.forEach((s: any) => {
+                if (s.label && s.content && String(s.content).trim().length > 0) {
+                    proposalSections.push({ label: s.label, content: s.content });
+                }
+            });
+        } else {
+            if (pc.introduction) proposalSections.push({ label: 'Mục tiêu & Giới thiệu', content: pc.introduction });
+            if (pc.scope_of_work) proposalSections.push({ label: 'Phạm vi công việc (Scope of Work)', content: pc.scope_of_work });
+            if (pc.methodology) proposalSections.push({ label: 'Phương pháp & Cách tiếp cận', content: pc.methodology });
+            if (pc.deliverables) proposalSections.push({ label: 'Sản phẩm bàn giao (Deliverables)', content: pc.deliverables });
+            if (pc.team) proposalSections.push({ label: 'Đội ngũ chuyên trách', content: pc.team });
+            if (pc.timeline) proposalSections.push({ label: 'Lộ trình triển khai (Timeline)', content: pc.timeline });
+            if (pc.warranty) proposalSections.push({ label: 'Bảo hành & Hỗ trợ', content: pc.warranty });
+            if (pc.why_us) proposalSections.push({ label: 'Vì sao chọn chúng tôi?', content: pc.why_us });
+            if (pc.case_studies) proposalSections.push({ label: 'Case Studies & Portfolio', content: pc.case_studies });
+        }
+    }
 
     const day = new Date(quotation.created_at).getDate();
     const month = new Date(quotation.created_at).getMonth() + 1;
@@ -94,8 +185,35 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
             </div>
 
             <p className="text-[12px] mb-6 indent-8 font-medium">
-                Lời đầu tiên, <span className="font-bold">{brandConfig?.brand_name || "Công ty Công nghệ Tulie"}</span> xin gửi tới Quý đối tác lời chào trân trọng và lời chúc sức khỏe. Căn cứ vào nhu cầu của Quý khách, chúng tôi xin gửi tới Quý khách bảng báo giá chi tiết như sau:
+                Lời đầu tiên, <span className="font-bold">{brandConfig?.brand_name || "Công ty Công nghệ Tulie"}</span> xin gửi tới Quý đối tác lời chào trân trọng và lời chúc sức khỏe. Căn cứ vào nhu cầu của Quý khách, chúng tôi xin gửi tới Quý khách {hasProposal && proposalSections.length > 0 ? "đề xuất giải pháp và bảng báo giá chi tiết" : "bảng báo giá chi tiết"} như sau:
             </p>
+
+            {/* Proposal sections */}
+            {hasProposal && proposalSections.length > 0 && (
+                <div className="mb-8 space-y-4" style={{ pageBreakInside: 'avoid' }}>
+                    <h3 className="text-[14px] uppercase font-bold border-b-2 border-black pb-1.5 mb-3">
+                        I. Đề xuất giải pháp & Kế hoạch (Proposal)
+                    </h3>
+                    <div className="space-y-4 ml-4">
+                        {proposalSections.map((section, idx) => (
+                            <div key={idx} className="text-[11px] leading-relaxed" style={{ pageBreakInside: 'avoid' }}>
+                                <h4 className="font-bold text-[12px] text-slate-900 mb-1">
+                                    {idx + 1}. {section.label}
+                                </h4>
+                                <div className="pl-4 whitespace-pre-line text-slate-700">
+                                    {section.content}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {hasProposal && proposalSections.length > 0 && (
+                <h3 className="text-[14px] uppercase font-bold border-b-2 border-black pb-1.5 mb-4 mt-8" style={{ pageBreakInside: 'avoid' }}>
+                    II. Bảng báo giá chi tiết & Kế hoạch đầu tư (Pricing & Investment Plan)
+                </h3>
+            )}
 
             {/* Main Items Table — flexible widths, nowrap on numbers */}
             <table className="w-full border-collapse border border-black text-[11px] mb-8" style={{ tableLayout: 'auto' }}>
@@ -280,8 +398,8 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
                                     </>
                                 ) : (
                                     <>
-                                        <p>1. <span className="font-bold">Phương thức thanh toán:</span> Chuyển khoản hoặc Tiền mặt.</p>
-                                        <p>2. <span className="font-bold">Thời gian thực hiện:</span> Theo thỏa thuận chi tiết trong phụ lục hợp đồng.</p>
+                                        {renderStructuredNotes(quotation.terms || brandConfig?.default_payment_terms || `1. Phương thức thanh toán: Chuyển khoản hoặc Tiền mặt.
+2. Thời gian thực hiện: Theo thỏa thuận chi tiết trong phụ lục hợp đồng.`)}
                                     </>
                                 )}
                                 
@@ -296,17 +414,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
                                     </>
                                 ) : (
                                     <>
-                                        <p>3. <span className="font-bold">Hiệu lực báo giá:</span> Trong vòng 30 ngày kể từ ngày ban hành văn bản này.</p>
-                                        {quotation.notes && (
-                                            <div className="mt-2 text-zinc-700 whitespace-pre-line">
-                                                {quotation.notes}
-                                            </div>
-                                        )}
-                                        {brandConfig?.default_payment_terms && (
-                                            <div className="mt-2 text-zinc-700 whitespace-pre-line">
-                                                {brandConfig.default_payment_terms}
-                                            </div>
-                                        )}
+                                        {renderStructuredNotes(quotation.notes || brandConfig?.default_notes || `3. Hiệu lực báo giá: Trong vòng 30 ngày kể từ ngày ban hành văn bản này.`)}
                                     </>
                                 )}
                             </>
