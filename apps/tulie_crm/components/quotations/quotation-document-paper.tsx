@@ -128,7 +128,15 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
         {/* Print style: force A4 landscape so 10 columns fit */}
         <style dangerouslySetInnerHTML={{ __html: `
             @media print {
-                @page { size: A4 landscape; margin: 10mm; }
+                @page {
+                    size: A4;
+                    margin: 20mm 15mm 20mm 25mm;
+                    @bottom-right {
+                        content: "Trang " counter(page) " / " counter(pages);
+                        font-family: Arial, sans-serif;
+                        font-size: 10pt;
+                    }
+                }
                 .quotation-paper-basic { width: 100% !important; max-width: none !important; padding: 0 !important; box-shadow: none !important; }
                 .quotation-paper-basic table { font-size: 8pt !important; }
                 .quotation-paper-basic th, .quotation-paper-basic td { padding: 3px 2px !important; }
@@ -294,8 +302,8 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
                                     <td className="border border-black py-2 px-1 text-center align-top text-[10px] whitespace-nowrap">{discountPct > 0 ? `${discountPct}%` : '-'}</td>
                                     <td className="border border-black py-2 px-1 text-right align-top tabular-nums text-[10px] whitespace-nowrap">{discountAmt > 0 ? formatCurrency(discountAmt).replace('₫', '') : '-'}</td>
                                     <td className="border border-black py-2 px-1 text-right align-top tabular-nums text-[10px] whitespace-nowrap">{formatCurrency(afterDiscount).replace('₫', '')}</td>
-                                    <td className="border border-black py-2 px-1 text-center align-top text-[10px] whitespace-nowrap">{vatRate > 0 ? `${vatRate}%` : '0%'}</td>
-                                    <td className="border border-black py-2 px-1 text-right align-top tabular-nums text-[10px] whitespace-nowrap">{vatAmt > 0 ? formatCurrency(vatAmt).replace('₫', '') : '0'}</td>
+                                    <td className="border border-black py-2 px-1 text-center align-top text-[10px] whitespace-nowrap">{vatRate > 0 ? `${vatRate}%` : (quotation.vat_exempt_status === 'exempt' ? 'KCT' : '0%')}</td>
+                                    <td className="border border-black py-2 px-1 text-right align-top tabular-nums text-[10px] whitespace-nowrap">{vatAmt > 0 ? formatCurrency(vatAmt).replace('₫', '') : (quotation.vat_exempt_status === 'exempt' ? 'KCT' : '0')}</td>
                                     <td className="border border-black py-2 px-1 text-right align-top tabular-nums text-[10px] whitespace-nowrap">{formatCurrency(afterVat).replace('₫', '')}</td>
                                 </tr>
                                 );
@@ -355,10 +363,10 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
                                     return sortedRates.map(rate => (
                                         <tr key={rate}>
                                             <td colSpan={10} className="border border-black py-2 px-3 text-right font-medium text-[10px]">
-                                                Tổng thuế suất GTGT (VAT) {rate}%:
+                                                {rate === 0 && quotation.vat_exempt_status === 'exempt' ? 'Không chịu thuế GTGT:' : `Tổng thuế suất GTGT (VAT) ${rate}%:`}
                                             </td>
-                                            <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] whitespace-nowrap">
-                                                {formatCurrency(vatGroups[rate]).replace('₫', '')}
+                                            <td className="border border-black py-2 px-1 text-right tabular-nums text-[10px] whitespace-nowrap font-bold">
+                                                {rate === 0 && quotation.vat_exempt_status === 'exempt' ? 'KCT' : formatCurrency(vatGroups[rate]).replace('₫', '')}
                                             </td>
                                         </tr>
                                     ));
