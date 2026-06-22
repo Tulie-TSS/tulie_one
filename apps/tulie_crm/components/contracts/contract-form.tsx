@@ -314,25 +314,25 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
             </div>
 
             {isCoreLocked && (
-                <Alert className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-800">
-                    <AlertTriangle className="h-4 w-4 text-blue-600" />
-                    <AlertDescription className="text-blue-800 dark:text-blue-300 font-medium">
+                <Alert className="border-zinc-200 bg-zinc-50 dark:bg-zinc-950/30 dark:border-zinc-800">
+                    <AlertTriangle className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+                    <AlertDescription className="text-zinc-800 dark:text-zinc-300 font-medium">
                         Hợp đồng đang thực hiện — chỉ cho phép cập nhật trạng thái và tiến độ công việc/thanh toán.
                     </AlertDescription>
                 </Alert>
             )}
             {['completed', 'cancelled'].includes(contract.status) && !isAdmin && (
-                <Alert className="border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-800">
-                    <AlertTriangle className="h-4 w-4 text-amber-600" />
-                    <AlertDescription className="text-amber-800 dark:text-amber-300 font-medium">
+                <Alert className="border-zinc-200 bg-zinc-50 dark:bg-zinc-950/30 dark:border-zinc-800">
+                    <AlertTriangle className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+                    <AlertDescription className="text-zinc-800 dark:text-zinc-300 font-medium">
                         Hợp đồng đã đóng — không thể chỉnh sửa thông tin. Liên hệ admin nếu cần thay đổi.
                     </AlertDescription>
                 </Alert>
             )}
             {isAdmin && ['active', 'completed', 'cancelled'].includes(contract.status) && (
-                <Alert className="border-green-200 bg-green-50 dark:bg-green-950/30 dark:border-green-800">
-                    <AlertTriangle className="h-4 w-4 text-green-600" />
-                    <AlertDescription className="text-green-800 dark:text-green-300 font-medium">
+                <Alert className="border-zinc-200 bg-zinc-50 dark:bg-zinc-950/30 dark:border-zinc-800">
+                    <AlertTriangle className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+                    <AlertDescription className="text-zinc-800 dark:text-zinc-300 font-medium">
                         Quyền Admin: Bạn có thể chỉnh sửa thông tin ngay cả khi hợp đồng đã triển khai hoặc đã đóng.
                     </AlertDescription>
                 </Alert>
@@ -601,8 +601,8 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                             </div>
 
                             {missingFields.length > 0 && (
-                                <Alert variant="destructive" className="bg-amber-50 border-amber-200 text-amber-800">
-                                    <AlertTriangle className="h-4 w-4" />
+                                <Alert variant="destructive" className="bg-red-50 border-red-200 text-red-800 dark:bg-red-950/20 dark:border-red-900 dark:text-red-400">
+                                    <AlertTriangle className="h-4 w-4 text-red-600" />
                                     <AlertDescription className="text-xs">
                                         <strong>Thông tin cần bổ sung:</strong> {missingFields.join(' • ')}
                                     </AlertDescription>
@@ -612,7 +612,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
 
                             <div className="space-y-2">
                                 <Label className="flex items-center gap-2">
-                                    <ShieldCheck className="h-4 w-4 text-blue-500" />
+                                    <ShieldCheck className="h-4 w-4 text-zinc-500" />
                                     Bảo hành kỹ thuật
                                 </Label>
                                 <Select
@@ -630,7 +630,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                     </SelectContent>
                                 </Select>
                                 {warrantyMonths && (
-                                    <p className="text-xs text-blue-600">
+                                    <p className="text-xs text-zinc-500">
                                         Điều khoản bảo hành {warrantyMonths} tháng sẽ tự động được thêm vào hợp đồng in.
                                     </p>
                                 )}
@@ -913,14 +913,14 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
                                 <CardTitle className="flex items-center gap-2">
-                                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-blue-100 text-blue-700">
+                                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                                         <ClipboardList className="h-4 w-4" />
                                     </span>
                                     Đầu việc & Bàn giao
                                 </CardTitle>
                                 <CardDescription>Các mốc công việc cần hoàn thành trong hợp đồng</CardDescription>
                             </div>
-                            <Button type="button" size="sm" variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50" onClick={addWorkMilestone}>
+                            <Button type="button" size="sm" variant="outline" className="border-zinc-200 text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-900" onClick={addWorkMilestone}>
                                 <Plus className="h-4 w-4" />
                                 Thêm đầu việc
                             </Button>
@@ -935,13 +935,13 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                 const isMilestoneDone = milestone.status === 'completed'
                                 const isMilestoneLocked = isMilestoneDone && !isAdmin
                                 return (
-                                <div key={milestone.id} className={`p-4 border rounded-lg space-y-3 ${isMilestoneDone ? 'bg-blue-50/50 border-blue-200' : 'border-slate-200'}`}>
+                                <div key={milestone.id} className={`p-4 border rounded-lg space-y-3 ${isMilestoneDone ? 'bg-zinc-50/50 border-zinc-200 dark:bg-zinc-900/10 dark:border-zinc-800' : 'border-slate-200'}`}>
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
-                                            <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">{index + 1}</span>
+                                            <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-zinc-100 text-zinc-700 text-xs font-bold dark:bg-zinc-800 dark:text-zinc-300">{index + 1}</span>
                                             <span className="font-semibold text-sm">Đầu việc {index + 1}</span>
                                             {isMilestoneLocked && (
-                                                <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium">
+                                                <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-700 font-medium dark:bg-zinc-800 dark:text-zinc-300">
                                                     ✓ Hoàn thành
                                                 </span>
                                             )}

@@ -39,7 +39,7 @@ export function CtvLinkButton({ publicToken }: CtvLinkButtonProps) {
         >
             <UserRound className="h-4 w-4" />
             {copied ? (
-                <><Check className="h-3.5 w-3.5 text-green-600" /> Đã copy</>
+                <><Check className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" /> Đã copy</>
             ) : (
                 <>Copy Link CTV</>
             )}

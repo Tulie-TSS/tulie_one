@@ -141,7 +141,7 @@ export function CtvCollaborationCard({ group }: { group: CtvGroup }) {
                                                     <span className="text-xs text-muted-foreground">- {formatCurrency(tax)}</span>
                                                 </TableCell>
                                                 <TableCell className="py-3">
-                                                    <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">{formatCurrency(net)}</span>
+                                                    <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{formatCurrency(net)}</span>
                                                 </TableCell>
                                                 <TableCell className="py-3">
                                                     <div className="text-xs text-muted-foreground leading-tight">

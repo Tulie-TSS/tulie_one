@@ -909,7 +909,7 @@ export async function ensureProjectForContract(contractId: string, supabaseClien
             status: 'in_progress',
             start_date: contract.start_date || new Date().toISOString().split('T')[0],
             assigned_to: contract.created_by,
-            brand: contract.brand || quotation?.brand || 'TMM',
+            brand: contract.brand || quotation?.brand || 'agency',
             metadata: {
                 quotation_number: quotation?.quotation_number || '',
                 source_link: '',

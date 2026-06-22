@@ -174,7 +174,7 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                 category: category,
                 warranty_months: warrantyMonths,
                 freelancer_metadata: category === 'freelancer' ? fMeta : null,
-                brand: selectedQuote?.brand || 'TMM'
+                brand: selectedQuote?.brand || 'agency'
             }
 
             const milestoneData = milestones.map(m => ({
@@ -377,7 +377,7 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
 
                             <div className="space-y-2">
                                 <Label className="flex items-center gap-2">
-                                    <ShieldCheck className="h-4 w-4 text-blue-500" />
+                                    <ShieldCheck className="h-4 w-4 text-zinc-500" />
                                     Bảo hành kỹ thuật
                                 </Label>
                                 <Select
@@ -395,7 +395,7 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                                     </SelectContent>
                                 </Select>
                                 {warrantyMonths && (
-                                    <p className="text-xs text-blue-600">
+                                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
                                         Điều khoản bảo hành {warrantyMonths} tháng sẽ tự động được thêm vào hợp đồng in.
                                     </p>
                                 )}
@@ -498,14 +498,14 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
                                 <CardTitle className="flex items-center gap-2">
-                                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-emerald-100 text-emerald-700">
+                                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                                         <CreditCard className="h-4 w-4" />
                                     </span>
                                     Mốc thanh toán
                                 </CardTitle>
                                 <CardDescription>Phân chia các đợt thanh toán theo hợp đồng</CardDescription>
                             </div>
-                            <Button type="button" size="sm" variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50" onClick={addMilestone}>
+                            <Button type="button" size="sm" variant="outline" className="border-zinc-200 text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-900" onClick={addMilestone}>
                                 <Plus className="h-4 w-4" />
                                 Thêm đợt
                             </Button>
@@ -597,13 +597,13 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                                 </div>
                             ))}
 
-                            <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-100">
-                                <div className="flex justify-between font-semibold text-emerald-900">
+                            <div className="p-4 bg-zinc-50 rounded-lg border border-zinc-200 dark:bg-zinc-900/10 dark:border-zinc-800">
+                                <div className="flex justify-between font-semibold text-zinc-900 dark:text-zinc-100">
                                     <span>Tổng thanh toán</span>
                                     <span>{formatCurrency(milestones.reduce((sum, m) => sum + m.amount, 0))}</span>
                                 </div>
                                 {totalValue > 0 && (
-                                    <p className="text-sm text-emerald-700 mt-1">
+                                    <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
                                         Giá trị hợp đồng: {formatCurrency(totalValue)}
                                     </p>
                                 )}

@@ -270,7 +270,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                                                                 {milestone.name || milestone.label}
                                                             </span>
                                                             {milestone.type === 'delivery' && (
-                                                                <span className="text-[10px] uppercase tracking-wider font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded w-fit">Bàn giao</span>
+                                                                <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-600 bg-zinc-100 px-1.5 py-0.5 rounded w-fit dark:bg-zinc-800 dark:text-zinc-300">Bàn giao</span>
                                                             )}
                                                         </div>
                                                     </TableCell>
