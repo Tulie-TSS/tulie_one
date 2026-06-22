@@ -150,10 +150,7 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
             toast.error('Vui lòng chọn khách hàng')
             return
         }
-        if (!title) {
-            toast.error('Vui lòng nhập tiêu đề hợp đồng')
-            return
-        }
+        // title is now optional, defaults to economic contract in document generation
 
         setIsLoading(true)
         try {
@@ -163,7 +160,7 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                 customer_id: customerId,
                 quotation_id: quotationId || undefined,
                 project_id: projectId || selectedQuote?.project_id || undefined,
-                title,
+                title: title.trim() || (category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế'),
                 total_amount: totalValue,
                 start_date: startDate?.toISOString(),
                 end_date: endDate?.toISOString(),
@@ -291,11 +288,11 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                             </div>
 
                             <div className="space-y-2">
-                                <Label>Tiêu đề hợp đồng <span className="text-destructive">*</span></Label>
+                                <Label>Tiêu đề hợp đồng</Label>
                                 <Input
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    placeholder="VD: Hợp đồng phát triển website"
+                                    placeholder={category === 'freelancer' ? "Mặc định: Hợp đồng cộng tác viên" : "Mặc định: Hợp đồng kinh tế"}
                                 />
                             </div>
 

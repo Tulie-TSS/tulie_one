@@ -62,7 +62,8 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
             'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
             'total_amount_number', 'amount_in_words',
             'payment_terms', 'delivery_time', 'delivery_address',
-            'service_description', 'product_service_declaration'
+            'service_description', 'product_service_declaration',
+            'contract_title_upper', 'contract_title_body'
         ]
     },
     {
@@ -527,6 +528,8 @@ export async function generateDocument(
             service_description: '',
             payment_percentage: '',
             payment_amount: '',
+            contract_title_upper: 'HỢP ĐỒNG KINH TẾ',
+            contract_title_body: 'hợp đồng kinh tế',
 
             ...additionalVariables
         }
@@ -543,6 +546,12 @@ export async function generateDocument(
             if (!variables.amount_in_words) variables.amount_in_words = readNumberToWords(contract.total_amount || 0)
             variables.start_date = contract.start_date ? formatLocalDateString(contract.start_date) : ''
             variables.service_description = contract.description || contract.quotation?.title || contract.title || ''
+            
+            const rawTitle = (contract.title || '').trim()
+            if (rawTitle) {
+                variables.contract_title_body = rawTitle
+                variables.contract_title_upper = rawTitle.toUpperCase()
+            }
 
             // Auto-fill delivery_time from quotation proposal_content if available, else contract end date
             const quoteProposal = (contract.quotation?.proposal_content as Record<string, any>) || {}
@@ -1090,6 +1099,16 @@ export async function generateDocument(
                 .replace(/colspan="10"/g, `colspan="${totalColumns - 1}"`)
                 .replace(/colspan="11"/g, `colspan="${totalColumns}"`)
                 .replace(/colspan="8"/g, `colspan="${totalColumns - 3}"`)
+        }
+
+        // Dynamically upgrade old templates that don't have {{contract_title_upper}} and {{contract_title_body}}
+        if (template.type === 'contract') {
+            if (templateContent.includes('HỢP ĐỒNG DỊCH VỤ THIẾT KẾ VÀ PHÁT TRIỂN WEBSITE')) {
+                templateContent = templateContent.replace('HỢP ĐỒNG DỊCH VỤ THIẾT KẾ VÀ PHÁT TRIỂN WEBSITE', '{{contract_title_upper}}')
+            }
+            if (templateContent.includes('Hợp đồng dịch vụ thiết kế và phát triển website')) {
+                templateContent = templateContent.replace('Hợp đồng dịch vụ thiết kế và phát triển website', '{{contract_title_body}}')
+            }
         }
 
         // Dynamically upgrade old templates that don't have {{warranty_clause_html}}

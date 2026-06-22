@@ -28,7 +28,7 @@ export const contractTemplate = `
   </table>
 
   <!-- Tiêu đề -->
-  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0;">HỢP ĐỒNG DỊCH VỤ THIẾT KẾ VÀ PHÁT TRIỂN WEBSITE</p>
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0;">{{contract_title_upper}}</p>
 
   <!-- Căn cứ pháp luật - IN NGHIÊNG -->
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Bộ luật Dân sự số 91/2015/QH13 có hiệu lực từ ngày 01/01/2017;</p>
@@ -120,7 +120,7 @@ export const contractTemplate = `
     </tr>
   </table>
 
-  <p style="margin:15px 0;">Hai bên thống nhất ký kết Hợp đồng dịch vụ thiết kế và phát triển website với các điều khoản sau:</p>
+  <p style="margin:15px 0;">Hai bên thống nhất ký kết {{contract_title_body}} với các điều khoản sau:</p>
 
   <!-- ========== ĐIỀU 1 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">

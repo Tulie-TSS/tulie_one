@@ -220,7 +220,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         const requiresCustomer = category !== 'freelancer'
-        if ((requiresCustomer && !customerId) || !title) {
+        if (requiresCustomer && !customerId) {
             toast.error('Vui lòng điền đầy đủ thông tin bắt buộc')
             return
         }
@@ -234,7 +234,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
         try {
             const updateData: Record<string, any> = {
                 customer_id: customerId,
-                title,
+                title: title.trim() || (category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế'),
                 total_amount: totalValue,
                 start_date: startDate ? format(startDate, 'yyyy-MM-dd') : null,
                 end_date: endDate ? format(endDate, 'yyyy-MM-dd') : null,
@@ -478,10 +478,11 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                             </div>
 
                             <div className="space-y-2">
-                                <Label>Tiêu đề hợp đồng <span className="text-destructive">*</span></Label>
+                                <Label>Tiêu đề hợp đồng</Label>
                                 <Input
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
+                                    placeholder={category === 'freelancer' ? "Mặc định: Hợp đồng cộng tác viên" : "Mặc định: Hợp đồng kinh tế"}
                                 />
                             </div>
 

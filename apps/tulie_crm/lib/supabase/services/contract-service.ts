@@ -93,6 +93,10 @@ export async function createContract(contract: Partial<Contract>, milestones: Pa
         contract.type = 'contract'
     }
 
+    if (!contract.title || contract.title.trim() === '') {
+        contract.title = contract.category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế'
+    }
+
     // Try to get brand if missing
     if (!contract.brand && contract.customer_id) {
         const { data: custData } = await supabase.from('customers').select('brand').eq('id', contract.customer_id).single()
@@ -199,9 +203,17 @@ export async function updateContract(id: string, contract: Partial<Contract>, mi
         // Get current contract for status change detection
         const { data: currentContract } = await supabase
             .from('contracts')
-            .select('status, created_by, contract_number, title, signed_date')
+            .select('status, created_by, contract_number, title, signed_date, category')
             .eq('id', id)
             .single()
+
+        const category = cleanContract.category || currentContract?.category || 'customer'
+        if (cleanContract.title !== undefined) {
+            const titleVal = cleanContract.title
+            if (titleVal === null || (typeof titleVal === 'string' && titleVal.trim() === '')) {
+                cleanContract.title = category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế'
+            }
+        }
 
         // Auto-promote contract status to 'active' if there is any completed milestone
         const hasCompletedMilestone = milestones?.some(m => m.status === 'completed')
@@ -511,7 +523,7 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
             contract_number: formattedNum,
             customer_id: quotation.customer_id,
             quotation_id: quotation.id,
-            title: quotation.title || `Đơn hàng từ ${quotation.quotation_number}`,
+            title: quotation.title || (type === 'order' ? `Đơn hàng từ ${quotation.quotation_number}` : 'Hợp đồng kinh tế'),
             total_amount: quotation.total_amount,
             status: 'draft',
             type: type,
