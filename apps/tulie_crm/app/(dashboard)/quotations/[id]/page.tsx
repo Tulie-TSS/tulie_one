@@ -260,7 +260,7 @@ export default function QuotationDetailPage() {
                                     In & Xem bản in
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="max-w-5xl sm:max-w-5xl max-h-[95vh] overflow-y-auto flex flex-col p-6">
+                            <DialogContent className="max-w-5xl sm:max-w-5xl h-[90vh] flex flex-col p-6 overflow-hidden">
                                 <DialogHeader className="pb-4 border-b">
                                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                         <div className="space-y-1">
@@ -292,8 +292,8 @@ export default function QuotationDetailPage() {
                                         </div>
                                     </div>
                                 </DialogHeader>
-                                <div className="flex justify-center bg-muted dark:bg-zinc-900 rounded-lg p-6 md:p-8 border border-border/40 mt-4 overflow-x-auto min-h-[600px] relative">
-                                    <div className="w-full max-w-[210mm] bg-white shadow-xl overflow-hidden rounded-sm border border-border">
+                                <div className="flex-1 overflow-y-auto overflow-x-auto flex justify-center bg-muted dark:bg-zinc-900 rounded-lg p-6 md:p-8 border border-border/40 mt-4 relative">
+                                    <div className="w-full max-w-[210mm] bg-white shadow-xl overflow-hidden rounded-sm border border-border shrink-0">
                                         {layout === 'modern' ? (
                                             <QuotationModernPaper quotation={quotation} brandConfig={brandConfig} />
                                         ) : (
