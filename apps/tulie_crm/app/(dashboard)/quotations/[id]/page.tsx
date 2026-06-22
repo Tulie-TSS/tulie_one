@@ -292,7 +292,7 @@ export default function QuotationDetailPage() {
                                         </div>
                                     </div>
                                 </DialogHeader>
-                                <div className="flex-1 overflow-y-auto overflow-x-auto flex justify-center bg-muted dark:bg-zinc-900 rounded-lg p-6 md:p-8 border border-border/40 mt-4 relative">
+                                <div className="flex-1 overflow-y-auto overflow-x-auto flex items-start justify-center bg-muted dark:bg-zinc-900 rounded-lg p-6 md:p-8 border border-border/40 mt-4 relative">
                                     <div className="w-full max-w-[210mm] bg-white shadow-xl overflow-hidden rounded-sm border border-border shrink-0">
                                         {layout === 'modern' ? (
                                             <QuotationModernPaper quotation={quotation} brandConfig={brandConfig} />
