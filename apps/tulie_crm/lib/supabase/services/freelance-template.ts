@@ -23,8 +23,7 @@ export const freelanceTemplate = `
   </table>
 
   <!-- Tiêu đề -->
-  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 5px 0;">HỢP ĐỒNG DỊCH VỤ</p>
-  <p style="text-align:center; font-size:11pt; margin: 0 0 20px 0;">(KHOÁN VIỆC LẬP TRÌNH)</p>
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0;">{{contract_title_upper}}</p>
 
   <!-- Căn cứ pháp luật - IN NGHIÊNG -->
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Bộ luật Dân sự số 91/2015/QH13 có hiệu lực từ ngày 01/01/2017;</p>
@@ -121,7 +120,7 @@ export const freelanceTemplate = `
     </tr>
   </table>
 
-  <p style="margin:10px 0;">Sau khi bàn bạc, thảo luận, hai bên thống nhất ký kết Hợp đồng dịch vụ lập trình website (“Hợp đồng”) với các điều khoản và điều kiện như sau:</p>
+  <p style="margin:10px 0;">Sau khi bàn bạc, thảo luận, hai bên thống nhất ký kết {{contract_title_body}} (“Hợp đồng”) với các điều khoản và điều kiện như sau:</p>
 
   <!-- ========== ĐIỀU 1 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-bottom:6px;">

@@ -119,7 +119,8 @@ export async function POST(request: Request) {
                     'project_name', 'start_date', 'end_date',
                     'total_amount', 'deposit_amount', 'deposit_percent', 'remaining_amount',
                     'termination_penalty_percent', 'notice_days',
-                    'amount_in_words', 'contract_items_table_no_vat', 'total_amount_number'
+                    'amount_in_words', 'contract_items_table_no_vat', 'total_amount_number',
+                    'contract_title_upper', 'contract_title_body'
                 ],
             }
 

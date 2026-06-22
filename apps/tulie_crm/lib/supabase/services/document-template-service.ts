@@ -116,7 +116,8 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
             'project_name', 'start_date', 'end_date',
             'total_amount', 'deposit_amount', 'deposit_percent', 'remaining_amount',
             'termination_penalty_percent', 'notice_days',
-            'amount_in_words', 'contract_items_table_no_vat', 'total_amount_number'
+            'amount_in_words', 'contract_items_table_no_vat', 'total_amount_number',
+            'contract_title_upper', 'contract_title_body'
         ]
     }
 ]
@@ -1108,6 +1109,17 @@ export async function generateDocument(
             }
             if (templateContent.includes('Hợp đồng dịch vụ thiết kế và phát triển website')) {
                 templateContent = templateContent.replace('Hợp đồng dịch vụ thiết kế và phát triển website', '{{contract_title_body}}')
+            }
+        }
+        if (template.type === 'freelance_contract') {
+            if (templateContent.includes('HỢP ĐỒNG DỊCH VỤ') && templateContent.includes('(KHOÁN VIỆC LẬP TRÌNH)')) {
+                templateContent = templateContent
+                    .replace('HỢP ĐỒNG DỊCH VỤ', '{{contract_title_upper}}')
+                    .replace(/\(KHOÁN VIỆC LẬP TRÌNH\)/g, '')
+                    .replace(/<p style="text-align:center; font-size:11pt; margin: 0 0 20px 0;">\s*<\/p>/g, '')
+            }
+            if (templateContent.includes('Hợp đồng dịch vụ lập trình website')) {
+                templateContent = templateContent.replace('Hợp đồng dịch vụ lập trình website', '{{contract_title_body}}')
             }
         }
 
