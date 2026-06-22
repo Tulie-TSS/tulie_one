@@ -66,7 +66,7 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
                         )}
                     </div>
                     {displayTitle && (
-                        <p className="text-xs text-muted-foreground truncate max-w-[220px] mt-0.5">
+                        <p className="text-xs text-muted-foreground whitespace-normal break-words leading-snug mt-0.5 max-w-[300px]">
                             {displayTitle}
                         </p>
                     )}

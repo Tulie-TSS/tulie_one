@@ -511,6 +511,30 @@ export async function updateQuotation(id: string, quotation: Partial<Quotation>,
                             .eq('id', contract.id)
                     }
 
+                    // Sync payment milestones if quotation has payment milestones in proposal_content
+                    const qMilestones = quoteDataToUpdate.proposal_content?.payment_milestones
+                    if (qMilestones && Array.isArray(qMilestones) && qMilestones.length > 0) {
+                        // Delete old payment milestones for this contract
+                        await adminSupabase
+                            .from('contract_milestones')
+                            .delete()
+                            .eq('contract_id', contract.id)
+                            .eq('type', 'payment')
+                        
+                        // Insert new payment milestones
+                        const contractMilestones = qMilestones.map((m: any) => ({
+                            name: m.name || 'Thanh toán',
+                            description: m.description || '',
+                            due_date: m.due_date ? new Date(m.due_date).toISOString() : null,
+                            status: m.status || 'pending',
+                            type: m.type || 'payment',
+                            percentage: m.percentage || null,
+                            amount: m.amount || 0,
+                            contract_id: contract.id
+                        }))
+                        await adminSupabase.from('contract_milestones').insert(contractMilestones)
+                    }
+
                     // Regenerate documents for this contract
                     await generateDocumentBundle(contract.id)
                 }

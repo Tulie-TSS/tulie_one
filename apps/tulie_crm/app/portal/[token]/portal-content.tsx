@@ -143,7 +143,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                     )}
                     {isFinancialAuthenticated && hasFinancialPassword && (
                         <Badge variant="outline" className="h-8 gap-1.5 px-2.5 shadow-sm bg-muted/30">
-                            <Lock className="w-3 h-3 text-emerald-500" />
+                            <Lock className="w-3 h-3 text-foreground" />
                             <span className="font-medium">Tài chính</span>
                         </Badge>
                     )}
@@ -308,7 +308,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                                 <TableRow key={i}>
                                                     <TableCell className="text-center">
                                                         {m.status === 'completed' ? (
-                                                            <CheckCircle2 className="w-5 h-5 mx-auto text-emerald-500" />
+                                                            <CheckCircle2 className="w-5 h-5 mx-auto text-zinc-900 dark:text-zinc-100" />
                                                         ) : m.status === 'overdue' ? (
                                                             <AlertTriangle className="w-5 h-5 mx-auto text-destructive" />
                                                         ) : (
@@ -368,7 +368,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
 
                 {/* Document Viewer Dialog */}
                 <Dialog open={isViewingDoc} onOpenChange={setIsViewingDoc}>
-                    <DialogContent className="max-w-5xl h-[90vh] p-0 flex flex-col overflow-hidden bg-muted/30" showCloseButton={true}>
+                    <DialogContent className="max-w-5xl sm:max-w-5xl h-[90vh] p-0 flex flex-col overflow-hidden bg-muted/30" showCloseButton={true}>
                         <div className="flex-1 overflow-auto p-4 md:p-8 flex items-start justify-center">
                             <style>{`
                                 .portal-doc-viewer > div { padding: 10mm 15mm !important; }

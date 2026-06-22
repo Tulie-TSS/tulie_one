@@ -427,7 +427,42 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
 
                             <div className="space-y-2">
                                 <Label>Báo giá liên quan</Label>
-                                <Select value={quotationId || "none"} onValueChange={(v) => setQuotationId(v === "none" ? "" : v)}>
+                                <Select value={quotationId || "none"} onValueChange={(v) => {
+                                    const selectedId = v === "none" ? "" : v
+                                    setQuotationId(selectedId)
+                                    if (selectedId) {
+                                        const q = quotations.find(item => item.id === selectedId)
+                                        if (q) {
+                                            handleTotalValueChange(q.total_amount || 0)
+                                            if (q.title) setTitle(q.title)
+                                            if (q.terms) setTerms(q.terms)
+                                            
+                                            const qMilestones = q.proposal_content?.payment_milestones
+                                            if (qMilestones && Array.isArray(qMilestones) && qMilestones.length > 0) {
+                                                const newMilestones = qMilestones.map((m: any, idx: number) => ({
+                                                    id: `temp-${Date.now()}-${idx}`,
+                                                    name: m.name || `Đợt thanh toán ${idx + 1}`,
+                                                    amount: m.amount || 0,
+                                                    percentage: m.percentage || 0,
+                                                    amount_mode: (m.percentage && m.percentage > 0) ? 'percent' as const : 'fixed' as const,
+                                                    due_date: m.due_date ? new Date(m.due_date) : undefined,
+                                                    status: m.status || 'pending',
+                                                    completed_at: m.completed_at ? new Date(m.completed_at) : undefined,
+                                                    delay_reason: m.delay_reason || '',
+                                                    type: m.type || 'payment'
+                                                }))
+                                                const nonPaymentMilestones = milestones.filter(ms => ms.type !== 'payment')
+                                                setMilestones([...newMilestones, ...nonPaymentMilestones])
+                                            } else {
+                                                setMilestones(prev => prev.map(ms =>
+                                                    ms.amount_mode === 'percent' && ms.percentage > 0
+                                                        ? { ...ms, amount: Math.round((q.total_amount || 0) * (ms.percentage / 100)) }
+                                                        : ms
+                                                ))
+                                            }
+                                        }
+                                    }
+                                }}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Chọn báo giá (tùy chọn)" />
                                     </SelectTrigger>
@@ -689,14 +724,14 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
                                 <CardTitle className="flex items-center gap-2">
-                                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-emerald-100 text-emerald-700">
+                                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                                         <CreditCard className="h-4 w-4" />
                                     </span>
                                     Mốc thanh toán
                                 </CardTitle>
                                 <CardDescription>Phân chia các đợt thanh toán theo hợp đồng</CardDescription>
                             </div>
-                            <Button type="button" size="sm" variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50" onClick={addPaymentMilestone}>
+                            <Button type="button" size="sm" variant="outline" className="border-zinc-200 text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-900" onClick={addPaymentMilestone}>
                                 <Plus className="h-4 w-4" />
                                 Thêm đợt
                             </Button>
@@ -711,13 +746,13 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                 const isMilestoneDone = milestone.status === 'completed'
                                 const isMilestoneLocked = isMilestoneDone && !isAdmin
                                 return (
-                                <div key={milestone.id} className={`p-4 border rounded-lg space-y-3 ${isMilestoneDone ? 'bg-emerald-50/50 border-emerald-200' : 'border-slate-200'}`}>
+                                <div key={milestone.id} className={`p-4 border rounded-lg space-y-3 ${isMilestoneDone ? 'bg-zinc-50/50 border-zinc-200 dark:bg-zinc-900/10 dark:border-zinc-800' : 'border-slate-200'}`}>
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
-                                            <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">{index + 1}</span>
+                                            <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-zinc-100 text-zinc-700 text-xs font-bold dark:bg-zinc-800 dark:text-zinc-300">{index + 1}</span>
                                             <span className="font-semibold text-sm">Đợt thanh toán {index + 1}</span>
                                             {isMilestoneLocked && (
-                                                <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">
+                                                <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-700 font-medium dark:bg-zinc-800 dark:text-zinc-300">
                                                     ✓ Đã thanh toán
                                                 </span>
                                             )}
@@ -860,12 +895,12 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                             })}
 
                             {milestones.filter(m => m.type === 'payment').length > 0 && (
-                            <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-100">
-                                <div className="flex justify-between font-semibold text-emerald-900">
+                            <div className="p-4 bg-zinc-50 rounded-lg border border-zinc-100 dark:bg-zinc-900/20 dark:border-zinc-800">
+                                <div className="flex justify-between font-semibold text-zinc-900 dark:text-zinc-100">
                                     <span>Tổng thanh toán</span>
                                     <span>{formatCurrency(milestones.filter(m => m.type === 'payment').reduce((sum, m) => sum + m.amount, 0))}</span>
                                 </div>
-                                <p className="text-sm text-emerald-700 mt-1">
+                                <p className="text-sm text-zinc-700 dark:text-zinc-300 mt-1">
                                     Giá trị hợp đồng: {formatCurrency(totalValue)}
                                 </p>
                             </div>

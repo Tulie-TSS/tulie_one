@@ -72,20 +72,6 @@ export const contractColumns: ColumnDef<Contract>[] = [
         },
     },
     {
-        accessorKey: 'category',
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Loại" />
-        ),
-        cell: ({ row }) => {
-            const category = row.original.category || 'customer'
-            return (
-                <Badge variant={category === 'freelancer' ? 'outline' : 'secondary'} className="capitalize">
-                    {category === 'freelancer' ? 'CTV' : 'K.Hàng'}
-                </Badge>
-            )
-        },
-    },
-    {
         accessorKey: 'customer',
         header: 'Khách hàng',
         cell: ({ row }) => {
@@ -106,7 +92,38 @@ export const contractColumns: ColumnDef<Contract>[] = [
     {
         accessorKey: 'title',
         header: 'Tiêu đề',
-        cell: ({ row }) => <span className="max-w-[200px] truncate block">{row.getValue('title')}</span>
+        cell: ({ row }) => {
+            return (
+                <div className="min-w-[150px] max-w-[400px]">
+                    <span className="text-sm font-medium text-foreground whitespace-normal break-words leading-snug block">
+                        {row.getValue('title')}
+                    </span>
+                </div>
+            )
+        }
+    },
+    {
+        accessorKey: 'quotation',
+        header: 'Báo giá',
+        cell: ({ row }) => {
+            const quotation = row.original.quotation
+            if (!quotation) return <span className="text-muted-foreground">-</span>
+            return (
+                <div className="min-w-[120px] max-w-[300px]">
+                    <Link
+                        href={`/quotations/${quotation.id}`}
+                        className="text-sm font-medium text-foreground hover:underline whitespace-normal break-words leading-snug block"
+                    >
+                        {quotation.quotation_number}
+                        {quotation.version_name && (
+                            <span className="text-muted-foreground font-normal text-xs block mt-0.5">
+                                {quotation.version_name}
+                            </span>
+                        )}
+                    </Link>
+                </div>
+            )
+        }
     },
     {
         accessorKey: 'total_amount',

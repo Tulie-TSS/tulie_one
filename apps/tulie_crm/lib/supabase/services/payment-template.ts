@@ -89,7 +89,7 @@ export const paymentTemplate = `
     </tr>
     <tr>
       <td style="padding:4px 12px 4px 0; white-space:nowrap;">- Nội dung chuyển khoản (khuyến nghị):</td>
-      <td style="font-weight:bold; padding:4px 0; color: #1e3a8a;">THANH TOAN {{milestone_name}} HD {{contract_number}}</td>
+      <td style="font-weight:bold; padding:4px 0; color: #000;">THANH TOAN {{milestone_name}} HD {{contract_number}}</td>
     </tr>
   </table>
 

@@ -112,7 +112,7 @@ export function PartnersClient({ initialData }: { initialData: PartnerRegistrati
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
                                             <DropdownMenuItem onClick={() => handleUpdateStatus(reg.id, 'approved')} disabled={reg.status === 'approved' || isProcessing}>
-                                                <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-500" /> Phê duyệt
+                                                <CheckCircle2 className="w-4 h-4 mr-2" /> Phê duyệt
                                             </DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => handleUpdateStatus(reg.id, 'rejected')} disabled={reg.status === 'rejected' || isProcessing}>
                                                 <XCircle className="w-4 h-4 mr-2 text-destructive" /> Từ chối
@@ -132,7 +132,7 @@ export function PartnersClient({ initialData }: { initialData: PartnerRegistrati
             </CardContent>
 
             <Dialog open={!!selectedPartner} onOpenChange={(open) => !open && setSelectedPartner(null)}>
-                <DialogContent className="max-w-2xl bg-white" aria-describedby="partner-dialog-description">
+                <DialogContent className="max-w-2xl sm:max-w-2xl bg-white" aria-describedby="partner-dialog-description">
                     <DialogHeader>
                         <DialogTitle>Hồ sơ xét duyệt Đối tác</DialogTitle>
                     </DialogHeader>
@@ -152,7 +152,7 @@ export function PartnersClient({ initialData }: { initialData: PartnerRegistrati
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <p className="text-sm font-medium text-muted-foreground">Vai trò đăng ký</p>
-                                    <p className="font-medium text-blue-600">{ROLE_LABELS[selectedPartner.preferred_role as keyof typeof ROLE_LABELS]}</p>
+                                    <p className="font-medium text-foreground">{ROLE_LABELS[selectedPartner.preferred_role as keyof typeof ROLE_LABELS]}</p>
                                 </div>
                                 <div>
                                     <p className="text-sm font-medium text-muted-foreground">TK Ngân hàng</p>
@@ -210,7 +210,7 @@ export function PartnersClient({ initialData }: { initialData: PartnerRegistrati
                             {selectedPartner.status === 'pending' && (
                                 <div className="flex items-center justify-end gap-3 pt-4 border-t mt-6">
                                     <Button variant="outline" onClick={() => handleUpdateStatus(selectedPartner.id, 'rejected')} disabled={isProcessing} className="text-destructive hover:text-destructive hover:bg-destructive/10">Từ chối</Button>
-                                    <Button onClick={() => handleUpdateStatus(selectedPartner.id, 'approved')} disabled={isProcessing} className="bg-emerald-500 hover:bg-emerald-600">Phê duyệt Đối tác</Button>
+                                    <Button onClick={() => handleUpdateStatus(selectedPartner.id, 'approved')} disabled={isProcessing}>Phê duyệt Đối tác</Button>
                                 </div>
                             )}
                         </div>

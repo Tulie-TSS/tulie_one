@@ -139,7 +139,7 @@ export const freelanceDeliveryTemplate = `
     </tr>
     <tr>
       <td style="padding:3px 15px 3px 0; white-space:nowrap;">- Số tiền thực lĩnh đợt cuối (Đợt 2):</td>
-      <td style="font-weight:bold; padding:3px 0; color: #15803d; font-size: 11pt;">{{net_amount}} VND</td>
+      <td style="font-weight:bold; padding:3px 0; color: #000; font-size: 11pt;">{{net_amount}} VND</td>
     </tr>
     <tr>
       <td style="padding:3px 15px 3px 0; white-space:nowrap;">- Bằng chữ:</td>

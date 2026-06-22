@@ -10,7 +10,7 @@ import { FileText, Download, Printer, Check, ChevronRight, ChevronDown, Building
 import { LoadingSpinner } from '@repo/ui'
 import { Contract } from '@/types'
 import { Alert, AlertDescription } from '@repo/ui'
-import { Switch } from '@repo/ui'
+import { Switch, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui'
 import { toast } from 'sonner'
 import {
     AlertDialog,
@@ -592,11 +592,9 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
 
                                 <div className="space-y-1">
                                     <Label className="text-[10px] text-muted-foreground">Hình thức bàn giao</Label>
-                                    <select
-                                        name="delivery_method"
+                                    <Select
                                         value={customerInfo.delivery_method}
-                                        onChange={(e) => {
-                                            const val = e.target.value
+                                        onValueChange={(val) => {
                                             setCustomerInfo(prev => {
                                                 const updated = { ...prev, delivery_method: val }
                                                 if (val === 'digital' && (prev.delivery_address === '' || prev.delivery_address === (snapshot?.address || cust?.address || ''))) {
@@ -608,11 +606,15 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                                             })
                                             setInfoChanged(true)
                                         }}
-                                        className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                                     >
-                                        <option value="digital">Sản phẩm kỹ thuật số (Bản mềm)</option>
-                                        <option value="physical">Sản phẩm vật lý (Giao hàng tận nơi)</option>
-                                    </select>
+                                        <SelectTrigger className="w-full h-8 text-xs font-medium">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="digital" className="text-xs">Sản phẩm kỹ thuật số (Bản mềm)</SelectItem>
+                                            <SelectItem value="physical" className="text-xs">Sản phẩm vật lý (Giao hàng tận nơi)</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                 </div>
 
                                 <div className="space-y-1">
@@ -692,7 +694,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                     return (
                         <div
                             key={item.key}
-                            className={`group flex items-center gap-2 rounded-lg border px-3 py-2 transition-colors hover:bg-muted/50 ${isSigned ? 'bg-green-50/50 border-green-200' : ''}`}
+                            className={`group flex items-center gap-2 rounded-lg border px-3 py-2 transition-colors hover:bg-muted/50 ${isSigned ? 'bg-zinc-50 border-zinc-200 dark:bg-zinc-900/10 dark:border-zinc-800' : ''}`}
                         >
                             {isGenerated ? (
                                 <button
@@ -701,7 +703,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                                     title={isSigned ? 'Đã hoàn thành — bấm để chuyển về nháp' : 'Bấm để đánh dấu hoàn thành'}
                                 >
                                     {isSigned
-                                        ? <CircleCheck className="h-5 w-5 text-green-600" />
+                                        ? <CircleCheck className="h-5 w-5 text-zinc-900 dark:text-zinc-100" />
                                         : <Circle className="h-5 w-5 text-zinc-300 hover:text-muted-foreground transition-colors" />
                                     }
                                 </button>
@@ -710,9 +712,9 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                             )}
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-1.5">
-                                    <p className={`text-sm font-medium truncate ${isSigned ? 'text-green-800' : ''}`}>{item.label}</p>
+                                    <p className={`text-sm font-medium truncate ${isSigned ? 'text-zinc-900 dark:text-zinc-100' : ''}`}>{item.label}</p>
                                     {isSigned && (
-                                        <Badge variant="outline" className="text-[10px] leading-none px-1.5 py-0.5 text-green-600 border-green-200 bg-green-50 shrink-0">
+                                        <Badge variant="outline" className="text-[10px] leading-none px-1.5 py-0.5 text-zinc-800 border-zinc-200 bg-zinc-50 dark:text-zinc-200 dark:border-zinc-800 dark:bg-zinc-800 shrink-0">
                                             Xong
                                         </Badge>
                                     )}
@@ -739,7 +741,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                                         disabled={isActive}
                                         title={item.isVisible ? "Đang hiện trên Portal — bấm để ẩn" : "Đang ẩn — bấm để hiện trên Portal"}
                                     >
-                                        {item.isVisible ? <Eye className="h-4 w-4 text-emerald-600" /> : <EyeOff className="h-4 w-4 text-muted-foreground" />}
+                                        {item.isVisible ? <Eye className="h-4 w-4 text-zinc-600 dark:text-zinc-400" /> : <EyeOff className="h-4 w-4 text-muted-foreground" />}
                                     </Button>
                                 )}
                                 <Button

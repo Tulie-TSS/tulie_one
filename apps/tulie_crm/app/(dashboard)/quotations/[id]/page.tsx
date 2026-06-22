@@ -260,7 +260,7 @@ export default function QuotationDetailPage() {
                                     In & Xem bản in
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto flex flex-col p-6">
+                            <DialogContent className="max-w-5xl sm:max-w-5xl max-h-[95vh] overflow-y-auto flex flex-col p-6">
                                 <DialogHeader className="pb-4 border-b">
                                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                         <div className="space-y-1">
@@ -370,7 +370,7 @@ export default function QuotationDetailPage() {
                                                         <span className="hidden sm:inline">Phóng to</span>
                                                     </Button>
                                                 </DialogTrigger>
-                                                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                                                <DialogContent className="max-w-4xl sm:max-w-4xl max-h-[90vh] overflow-y-auto">
                                                     <DialogHeader className="pb-4 border-b">
                                                         <DialogTitle className="text-xl">Đề xuất giải pháp (Proposal)</DialogTitle>
                                                         <DialogDescription>Chi tiết {proposalSections.length} giai đoạn triển khai</DialogDescription>
