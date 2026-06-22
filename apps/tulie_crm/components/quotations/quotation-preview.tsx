@@ -46,8 +46,8 @@ export default function QuotationPreview({ data, open, onOpenChange }: Quotation
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-4xl sm:max-w-4xl h-[90vh] flex flex-col p-0">
-                <div className="flex items-center justify-between p-4 border-b">
+            <DialogContent className="max-w-4xl sm:max-w-4xl h-[90vh] !flex !flex-col !gap-0 p-0">
+                <div className="flex items-center justify-between p-4 pr-12 border-b">
                     <h2 className="font-semibold text-lg">Xem trước báo giá</h2>
                     <div className="flex gap-2">
                         <PDFDownloadLink

@@ -368,7 +368,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
 
                 {/* Document Viewer Dialog */}
                 <Dialog open={isViewingDoc} onOpenChange={setIsViewingDoc}>
-                    <DialogContent className="max-w-5xl sm:max-w-5xl h-[90vh] p-0 flex flex-col overflow-hidden bg-muted/30" showCloseButton={true}>
+                    <DialogContent className="max-w-5xl sm:max-w-5xl h-[90vh] p-0 !flex !flex-col !gap-0 overflow-hidden bg-muted/30" showCloseButton={true}>
                         <div className="flex-1 overflow-auto p-4 md:p-8 flex items-start justify-center">
                             <style>{`
                                 .portal-doc-viewer > div { padding: 10mm 15mm !important; }

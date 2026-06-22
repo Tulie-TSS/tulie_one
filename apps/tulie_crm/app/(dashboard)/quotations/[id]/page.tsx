@@ -260,8 +260,8 @@ export default function QuotationDetailPage() {
                                     In & Xem bản in
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="max-w-5xl sm:max-w-5xl h-[90vh] flex flex-col p-6 overflow-hidden">
-                                <DialogHeader className="pb-4 border-b">
+                            <DialogContent className="max-w-5xl sm:max-w-5xl h-[90vh] !flex !flex-col !gap-0 p-6 overflow-hidden">
+                                <DialogHeader className="pb-4 border-b pr-10">
                                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                         <div className="space-y-1">
                                             <DialogTitle className="text-lg font-semibold">Xem trước bản in Báo giá</DialogTitle>
