@@ -362,7 +362,12 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
 
                             <div className="space-y-2">
                                 <Label>Đối tượng hợp đồng</Label>
-                                <Select value={category} onValueChange={(v: any) => setCategory(v)}>
+                                 <Select value={category} onValueChange={(v: any) => {
+                                     setCategory(v)
+                                     if (!title || title === 'Hợp đồng kinh tế' || title === 'Hợp đồng cộng tác viên') {
+                                         setTitle(v === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế')
+                                     }
+                                 }}>
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
@@ -434,7 +439,13 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                         const q = quotations.find(item => item.id === selectedId)
                                         if (q) {
                                             handleTotalValueChange(q.total_amount || 0)
-                                            if (q.title) setTitle(q.title)
+                                            if (contractType === 'order') {
+                                                if (q.title) setTitle(q.title)
+                                            } else {
+                                                if (!title || title === 'Hợp đồng kinh tế' || title === 'Hợp đồng cộng tác viên') {
+                                                    setTitle(category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế')
+                                                }
+                                            }
                                             if (q.terms) setTerms(q.terms)
                                             
                                             const qMilestones = q.proposal_content?.payment_milestones

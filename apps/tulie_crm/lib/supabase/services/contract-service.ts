@@ -523,7 +523,7 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
             contract_number: formattedNum,
             customer_id: quotation.customer_id,
             quotation_id: quotation.id,
-            title: quotation.title || (type === 'order' ? `Đơn hàng từ ${quotation.quotation_number}` : 'Hợp đồng kinh tế'),
+            title: type === 'order' ? (quotation.title || `Đơn hàng từ ${quotation.quotation_number}`) : 'Hợp đồng kinh tế',
             total_amount: quotation.total_amount,
             status: 'draft',
             type: type,

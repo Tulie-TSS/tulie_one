@@ -60,7 +60,7 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
     const [customerId, setCustomerId] = useState('')
     const [quotationId, setQuotationId] = useState(fromQuoteId || '')
     const [projectId, setProjectId] = useState('')
-    const [title, setTitle] = useState('')
+    const [title, setTitle] = useState('Hợp đồng kinh tế')
     const [totalValue, setTotalValue] = useState(0)
     const [startDate, setStartDate] = useState<Date>()
     const [endDate, setEndDate] = useState<Date>()
@@ -128,7 +128,9 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
             setCustomerId(quote.customer_id)
             const newTotal = quote.total_amount
             setTotalValue(newTotal)
-            setTitle(`Hợp đồng triển khai - ${quote.quotation_number}`)
+            if (!title || title === 'Hợp đồng kinh tế' || title === 'Hợp đồng cộng tác viên') {
+                setTitle(category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế')
+            }
             setProductNameInContract(quote.product_name_in_contract || quote.proposal_content?.product_name_in_contract || '')
             setVatExemptStatus(quote.vat_exempt_status || quote.proposal_content?.vat_exempt_status || '0_percent')
             setVatPercent(quote.vat_percent || 10)
@@ -239,7 +241,12 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
 
                             <div className="space-y-2">
                                 <Label>Đối tượng hợp đồng</Label>
-                                <Select value={category} onValueChange={(v: any) => setCategory(v)}>
+                                <Select value={category} onValueChange={(v: any) => {
+                                    setCategory(v)
+                                    if (!title || title === 'Hợp đồng kinh tế' || title === 'Hợp đồng cộng tác viên') {
+                                        setTitle(v === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế')
+                                    }
+                                }}>
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
