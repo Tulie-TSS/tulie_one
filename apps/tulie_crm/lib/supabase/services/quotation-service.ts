@@ -491,8 +491,7 @@ export async function updateQuotation(id: string, quotation: Partial<Quotation>,
                         title: quoteDataToUpdate.title || undefined,
                         terms: quoteDataToUpdate.terms || undefined,
                         vat_exempt_status: quoteDataToUpdate.vat_exempt_status || undefined,
-                        product_name_in_contract: quoteDataToUpdate.product_name_in_contract || undefined,
-                        updated_at: new Date().toISOString()
+                        product_name_in_contract: quoteDataToUpdate.product_name_in_contract || undefined
                     }
                     
                     if (customerSnapshot) {
