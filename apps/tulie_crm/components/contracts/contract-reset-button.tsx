@@ -39,7 +39,7 @@ export function ContractResetButton({ contractId }: { contractId: string }) {
     return (
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
             <AlertDialogTrigger asChild>
-                <Button variant="outline" size="sm" className="text-amber-600 hover:text-amber-700 hover:bg-amber-50 dark:hover:bg-amber-950/30 border-amber-200">
+                <Button variant="outline" size="sm">
                     <RotateCcw className="h-4 w-4 mr-2" />
                     Làm lại (Reset)
                 </Button>
@@ -60,7 +60,7 @@ export function ContractResetButton({ contractId }: { contractId: string }) {
                             handleReset()
                         }}
                         disabled={isPending}
-                        className="bg-amber-600 hover:bg-amber-700 text-white"
+                        className="bg-zinc-900 hover:bg-zinc-800 text-zinc-50 dark:bg-zinc-50 dark:hover:bg-zinc-200 dark:text-zinc-950"
                     >
                         {isPending ? 'Đang xử lý...' : 'Xác nhận Reset'}
                     </AlertDialogAction>
