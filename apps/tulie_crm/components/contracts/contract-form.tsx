@@ -106,6 +106,22 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
     const [fMeta, setFMeta] = useState(contract.freelancer_metadata || {})
     const [warrantyMonths, setWarrantyMonths] = useState<number | null>((contract as any).warranty_months ?? null)
 
+    // Contract template and VAT overrides
+    const [contractTemplate, setContractTemplate] = useState<'software' | 'design'>(
+        contract.contract_template || 'software'
+    )
+    const [productNameInContract, setProductNameInContract] = useState(
+        contract.product_name_in_contract || ''
+    )
+    const [vatExemptStatus, setVatExemptStatus] = useState<'0_percent' | 'exempt'>(
+        (contract.vat_exempt_status as '0_percent' | 'exempt') || '0_percent'
+    )
+    const [vatPercent, setVatPercent] = useState<number>(
+        contract.vat_exempt_status === 'exempt' || contract.vat_exempt_status === '0_percent'
+            ? 0
+            : (contract.quotation?.vat_percent ?? (contract.contract_template === 'design' ? 8 : 0))
+    )
+
     const isAdmin = userRole === 'admin' || userRole === 'ceo'
     // Lock entirely when completed/cancelled (unless admin)
     const isFullyLocked = ['completed', 'cancelled'].includes(contract.status) && !isAdmin
@@ -248,6 +264,9 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                 project_id: projectId || null,
                 contract_number: contractNumber || null,
                 warranty_months: warrantyMonths,
+                contract_template: category === 'freelancer' ? null : contractTemplate,
+                product_name_in_contract: category === 'freelancer' ? null : productNameInContract,
+                vat_exempt_status: category === 'freelancer' ? null : (vatPercent === 0 ? vatExemptStatus : null),
             }
             updateData.quotation_id = quotationId || null
 
@@ -378,6 +397,33 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                 </Select>
                             </div>
 
+                            {category === 'customer' && (
+                                <div className="space-y-2">
+                                    <Label>Mẫu hợp đồng</Label>
+                                    <Select 
+                                        value={contractTemplate} 
+                                        onValueChange={(v: 'software' | 'design') => {
+                                            setContractTemplate(v)
+                                            if (v === 'software') {
+                                                setVatPercent(0)
+                                                setVatExemptStatus('exempt')
+                                            } else {
+                                                setVatPercent(8)
+                                                setVatExemptStatus('0_percent')
+                                            }
+                                        }}
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Chọn mẫu hợp đồng..." />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="software">Mẫu 1: Phát triển phần mềm/website (Không chịu thuế)</SelectItem>
+                                            <SelectItem value="design">Mẫu 2: Thiết kế, quay chụp, in ấn (VAT 8%)</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            )}
+
                             <div className="space-y-2">
                                 <Label>Trạng thái</Label>
                                 <Select value={status} onValueChange={(v: any) => setStatus(v)}>
@@ -439,6 +485,9 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                         const q = quotations.find(item => item.id === selectedId)
                                         if (q) {
                                             handleTotalValueChange(q.total_amount || 0)
+                                            setProductNameInContract(q.product_name_in_contract || q.proposal_content?.product_name_in_contract || '')
+                                            setVatExemptStatus(q.vat_exempt_status || q.proposal_content?.vat_exempt_status || '0_percent')
+                                            setVatPercent(q.vat_percent || 8)
                                             if (contractType === 'order') {
                                                 if (q.title) setTitle(q.title)
                                             } else {
@@ -497,16 +546,54 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                 />
                             </div>
 
-                            <div className="space-y-2">
-                                <Label>Giá trị hợp đồng <span className="text-destructive">*</span></Label>
-                                <Input
-                                    type="text"
-                                    inputMode="numeric"
-                                    value={formatNumber(totalValue)}
-                                    onChange={(e) => handleTotalValueChange(parseFormattedNumber(e.target.value))}
-                                    placeholder="0"
-                                />
-                            </div>
+                             <div className="space-y-2">
+                                 <Label>Giá trị hợp đồng <span className="text-destructive">*</span></Label>
+                                 <Input
+                                     type="text"
+                                     inputMode="numeric"
+                                     value={formatNumber(totalValue)}
+                                     onChange={(e) => handleTotalValueChange(parseFormattedNumber(e.target.value))}
+                                     placeholder="0"
+                                 />
+                             </div>
+
+                             {category === 'customer' && (
+                                 <div className="grid gap-4 sm:grid-cols-2">
+                                     <div className="space-y-2">
+                                         <Label>Tên SP/Dịch vụ hiển thị hợp đồng</Label>
+                                         <Input
+                                             placeholder="Ví dụ: Thiết kế website"
+                                             value={productNameInContract}
+                                             onChange={(e) => setProductNameInContract(e.target.value)}
+                                         />
+                                     </div>
+                                     <div className="space-y-2">
+                                         <Label>Phân loại VAT</Label>
+                                         <Select 
+                                             value={vatPercent === 0 ? (vatExemptStatus === 'exempt' ? 'exempt' : '0') : vatPercent.toString()} 
+                                             onValueChange={(v) => {
+                                                 if (v === 'exempt') {
+                                                     setVatPercent(0)
+                                                     setVatExemptStatus('exempt')
+                                                 } else {
+                                                     setVatPercent(parseInt(v))
+                                                     setVatExemptStatus('0_percent')
+                                                 }
+                                             }}
+                                         >
+                                             <SelectTrigger>
+                                                 <SelectValue />
+                                             </SelectTrigger>
+                                             <SelectContent>
+                                                 <SelectItem value="exempt">Không chịu thuế</SelectItem>
+                                                 <SelectItem value="0">Thuế 0%</SelectItem>
+                                                 <SelectItem value="8">Thuế 8%</SelectItem>
+                                                 <SelectItem value="10">Thuế 10%</SelectItem>
+                                             </SelectContent>
+                                         </Select>
+                                     </div>
+                                 </div>
+                             )}
 
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <div className="space-y-2">

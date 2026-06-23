@@ -67,9 +67,10 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
     const [terms, setTerms] = useState('')
     
     // New fields
+    const [contractTemplate, setContractTemplate] = useState<'software' | 'design'>('software')
     const [productNameInContract, setProductNameInContract] = useState('')
     const [vatExemptStatus, setVatExemptStatus] = useState<'0_percent' | 'exempt'>('0_percent')
-    const [vatPercent, setVatPercent] = useState<number>(10)
+    const [vatPercent, setVatPercent] = useState<number>(8)
     const [category, setCategory] = useState<'customer' | 'freelancer'>('customer')
     const [warrantyMonths, setWarrantyMonths] = useState<number | null>(null)
     const [fMeta, setFMeta] = useState<any>({
@@ -133,7 +134,14 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
             }
             setProductNameInContract(quote.product_name_in_contract || quote.proposal_content?.product_name_in_contract || '')
             setVatExemptStatus(quote.vat_exempt_status || quote.proposal_content?.vat_exempt_status || '0_percent')
-            setVatPercent(quote.vat_percent || 10)
+            setVatPercent(quote.vat_percent || 8)
+
+            // Auto-select template based on VAT exempt status/percent of the quotation
+            if (quote.vat_exempt_status === 'exempt') {
+                setContractTemplate('software')
+            } else if (quote.vat_percent === 10 || quote.vat_percent === 8) {
+                setContractTemplate('design')
+            }
             
             // Recalculate percent-mode milestones
             if (newTotal > 0) {
@@ -173,6 +181,7 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                 category: category,
                 warranty_months: warrantyMonths,
                 freelancer_metadata: category === 'freelancer' ? fMeta : null,
+                contract_template: category === 'freelancer' ? null : contractTemplate,
                 brand: selectedQuote?.brand || 'agency'
             }
 
@@ -256,6 +265,33 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                                     </SelectContent>
                                 </Select>
                             </div>
+
+                            {category === 'customer' && (
+                                <div className="space-y-2">
+                                    <Label>Mẫu hợp đồng</Label>
+                                    <Select 
+                                        value={contractTemplate} 
+                                        onValueChange={(v: 'software' | 'design') => {
+                                            setContractTemplate(v)
+                                            if (v === 'software') {
+                                                setVatPercent(0)
+                                                setVatExemptStatus('exempt')
+                                            } else {
+                                                setVatPercent(8)
+                                                setVatExemptStatus('0_percent')
+                                            }
+                                        }}
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Chọn mẫu hợp đồng..." />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="software">Mẫu 1: Phát triển phần mềm/website (Không chịu thuế)</SelectItem>
+                                            <SelectItem value="design">Mẫu 2: Thiết kế, quay chụp, in ấn (VAT 8%)</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            )}
 
                             {category !== 'freelancer' && (
                             <div className="space-y-2">

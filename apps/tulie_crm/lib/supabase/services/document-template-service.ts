@@ -23,7 +23,7 @@ function formatLocalDateString(dateStr: string | null | undefined): string {
     return formatLocalDate(parseLocalDateString(dateStr))
 }
 
-import { contractTemplate } from './contract-template'
+import { contractSoftwareTemplate, contractDesignTemplate } from './contract-template'
 import { paymentTemplate } from './payment-template'
 import { orderTemplate } from './order-template'
 import { deliveryMinutesTemplate } from './delivery-minutes-template'
@@ -53,7 +53,7 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
     {
         name: 'Hợp đồng kinh tế (Mẫu chuẩn)',
         type: 'contract',
-        content: contractTemplate,
+        content: contractSoftwareTemplate,
         variables: [
             'contract_number', 'day', 'month', 'year',
             'customer_company', 'customer_representative', 'customer_position',
@@ -64,6 +64,25 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
             'payment_terms', 'delivery_time', 'delivery_address',
             'service_description', 'product_service_declaration',
             'contract_title_upper', 'contract_title_body'
+        ]
+    },
+    {
+        name: 'Hợp đồng thiết kế & in ấn (Mẫu chuẩn)',
+        type: 'contract',
+        content: contractDesignTemplate,
+        variables: [
+            'contract_number', 'day', 'month', 'year',
+            'customer_company', 'customer_representative', 'customer_position',
+            'customer_address', 'customer_phone', 'customer_mobile',
+            'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
+            'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
+            'total_amount_number', 'amount_in_words',
+            'payment_terms', 'delivery_time', 'delivery_address',
+            'service_description', 'product_service_declaration',
+            'contract_title_upper', 'contract_title_body',
+            'design_review_days', 'design_review_rounds',
+            'video_review_days', 'video_review_rounds',
+            'print_review_days'
         ]
     },
     {
@@ -124,9 +143,9 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
 
 // Export built-in default templates (always available, no DB needed)
 export async function getDefaultTemplates(): Promise<DocumentTemplate[]> {
-    return defaultTemplates.map((t) => ({
+    return defaultTemplates.map((t, i) => ({
         ...t,
-        id: `default-${t.type}`,
+        id: `default-${t.type}-${i}`,
         is_default: true,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
@@ -150,13 +169,13 @@ export async function getDocumentTemplates() {
             console.warn('No templates in DB, using built-in defaults.')
         }
 
-        // Merge missing templates from defaultTemplates
-        const existingTypes = new Set(resultTemplates.map(t => t.type))
+        // Merge missing templates from defaultTemplates by checking template name
+        const existingNames = new Set(resultTemplates.map(t => t.name))
         defaultTemplates.forEach((def, i) => {
-            if (!existingTypes.has(def.type)) {
+            if (!existingNames.has(def.name)) {
                 resultTemplates.push({
                     ...def,
-                    id: `default-${def.type}`,
+                    id: `default-${def.type}-${i}`,
                     is_default: true,
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
@@ -168,7 +187,7 @@ export async function getDocumentTemplates() {
     } catch {
         return defaultTemplates.map((t, i) => ({
             ...t,
-            id: `default-${t.type}`,
+            id: `default-${t.type}-${i}`,
             is_default: true,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
@@ -183,10 +202,14 @@ export async function getTemplateById(id: string): Promise<DocumentTemplate | nu
         // Legacy built-in ID fallback (pre-DB migration) and new type-based IDs
         if (id.startsWith('default-')) {
             const idVal = id.replace('default-', '')
-            const index = parseInt(idVal)
-            let template = isNaN(index) 
-                ? defaultTemplates.find(t => t.type === idVal)
-                : defaultTemplates[index]
+            // Check if it has an index suffix (e.g. default-contract-1 or default-1)
+            const parts = idVal.split('-')
+            const lastPart = parts[parts.length - 1]
+            const index = parseInt(lastPart, 10)
+            
+            let template = !isNaN(index) && index >= 0 && index < defaultTemplates.length
+                ? defaultTemplates[index]
+                : defaultTemplates.find(t => t.type === idVal)
                 
             if (template) {
                 return {
@@ -531,6 +554,11 @@ export async function generateDocument(
             payment_amount: '',
             contract_title_upper: 'HỢP ĐỒNG KINH TẾ',
             contract_title_body: 'hợp đồng kinh tế',
+            design_review_days: '03',
+            design_review_rounds: '03',
+            video_review_days: '03',
+            video_review_rounds: '03',
+            print_review_days: '03',
 
             ...additionalVariables
         }
@@ -1318,7 +1346,16 @@ export async function generateDocumentBundle(contractId: string) {
     const generationPromises: Promise<any>[] = []
 
     for (const docType of docTypes) {
-        const template = templates.find(t => t.type === docType)
+        let template = templates.find(t => t.type === docType)
+        if (docType === 'contract') {
+            const targetName = contract.contract_template === 'design'
+                ? 'Hợp đồng thiết kế & in ấn (Mẫu chuẩn)'
+                : 'Hợp đồng kinh tế (Mẫu chuẩn)'
+            const specificTemplate = templates.find(t => t.name === targetName)
+            if (specificTemplate) {
+                template = specificTemplate
+            }
+        }
         if (!template) {
             console.warn(`No template found for doc type: ${docType}`)
             continue

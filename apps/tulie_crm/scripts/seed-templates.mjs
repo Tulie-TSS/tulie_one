@@ -15,15 +15,19 @@ const supabase = createClient(
 )
 
 // Read template content from TS files
-function extractTemplate(filename) {
+function extractTemplate(filename, exportName = null) {
     const content = readFileSync(`lib/supabase/services/${filename}`, 'utf8')
-    const match = content.match(/export const \w+Template = `([\s\S]*?)`/)
+    const regex = exportName 
+        ? new RegExp(`export const ${exportName} = \`([\\s\\S]*?)\``)
+        : /export const \w+Template = `([\s\S]*?)`/
+    const match = content.match(regex)
     return match ? match[1] : ''
 }
 
 const templates = [
     { name: 'Báo giá (Mẫu chuẩn)', type: 'quotation', content: extractTemplate('quotation-template.ts'), variables: ['quotation_number','day','month','year','customer_company','customer_representative','customer_position','customer_address','customer_phone','customer_mobile','customer_tax_code','customer_email','quotation_items_table','subtotal','vat_rate','vat_amount','total_amount_number','amount_in_words','payment_terms','delivery_time','delivery_address'], is_default: true },
-    { name: 'Hợp đồng kinh tế (Mẫu chuẩn)', type: 'contract', content: extractTemplate('contract-template.ts'), variables: ['contract_number','day','month','year','customer_company','customer_representative','customer_position','customer_address','customer_phone','customer_mobile','customer_tax_code','customer_email','contract_items_table','subtotal','vat_rate','vat_amount','total_amount_number','amount_in_words','payment_terms','delivery_time','delivery_address','service_description','warranty_clause_html','contract_clause_count','contract_title_upper','contract_title_body'], is_default: true },
+    { name: 'Hợp đồng kinh tế (Mẫu chuẩn)', type: 'contract', content: extractTemplate('contract-template.ts', 'contractSoftwareTemplate'), variables: ['contract_number','day','month','year','customer_company','customer_representative','customer_position','customer_address','customer_phone','customer_mobile','customer_tax_code','customer_email','contract_items_table','subtotal','vat_rate','vat_amount','total_amount_number','amount_in_words','payment_terms','delivery_time','delivery_address','service_description','warranty_clause_html','contract_clause_count','contract_title_upper','contract_title_body'], is_default: true },
+    { name: 'Hợp đồng thiết kế & in ấn (Mẫu chuẩn)', type: 'contract', content: extractTemplate('contract-template.ts', 'contractDesignTemplate'), variables: ['contract_number','day','month','year','customer_company','customer_representative','customer_position','customer_address','customer_phone','customer_mobile','customer_tax_code','customer_email','contract_items_table','subtotal','vat_rate','vat_amount','total_amount_number','amount_in_words','payment_terms','delivery_time','delivery_address','service_description','warranty_clause_html','contract_clause_count','contract_title_upper','contract_title_body','design_review_days','design_review_rounds','video_review_days','video_review_rounds','print_review_days'], is_default: true },
     { name: 'Đơn đặt hàng (Mẫu chuẩn)', type: 'order', content: extractTemplate('order-template.ts'), variables: ['order_number','day','month','year','customer_company','customer_representative','customer_position','customer_address','customer_phone','customer_mobile','customer_tax_code','customer_email','contract_items_table','subtotal','vat_rate','vat_amount','total_amount_number','amount_in_words','payment_terms','delivery_time','delivery_address'], is_default: true },
     { name: 'Đề nghị thanh toán (Mẫu chuẩn)', type: 'payment_request', content: extractTemplate('payment-template.ts'), variables: ['payment_number','day','month','year','customer_company','contract_number','contract_date','service_description','delivery_date','payment_percentage','payment_amount','amount_in_words'], is_default: true },
     { name: 'Biên bản giao nhận (Mẫu chuẩn)', type: 'delivery_minutes', content: extractTemplate('delivery-minutes-template.ts'), variables: ['report_number','day','month','year','customer_company','customer_representative','customer_position','customer_address','customer_phone','customer_mobile','customer_tax_code','customer_email','contract_number','order_number','order_date','delivery_items_table'], is_default: true },
