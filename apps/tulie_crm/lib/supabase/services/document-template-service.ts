@@ -1026,23 +1026,37 @@ export async function generateDocument(
         const includeProposalAppendix = contract?.include_proposal_appendix !== false
 
         // Set clause numbering based on whether proposal appendix is included
-        // When included: 1.1, 1.2 (proposal ref), 1.3 (total value), 1.4 (appendix note)
-        // When not included: 1.1, 1.2 (total value), 1.3 (appendix note)
-        if (includeProposalAppendix && contract?.quotation?.type === 'proposal') {
+        // When included: 1.1, 1.2 (proposal ref), 1.3 (scope ref), 1.4 (SW law clause), 1.5 (appendix note)
+        // When not included: 1.1, 1.2 (scope ref), 1.3 (SW law clause), 1.4 (appendix note)
+        const hasProposalAppendix = includeProposalAppendix && contract?.quotation?.type === 'proposal'
+
+        if (hasProposalAppendix) {
             variables.clause_1_2_html = `<tr>
               <td style="width:50px; vertical-align:top; padding:2px 0;">1.2.</td>
               <td style="vertical-align:top; padding:2px 0; text-align:justify;">Phạm vi công việc, phương pháp triển khai, sản phẩm bàn giao và lộ trình thực hiện được quy định chi tiết tại <strong>Phụ lục 02</strong> (Đề xuất giải pháp) đính kèm hợp đồng này.</td>
             </tr>`
             variables.clause_total_value_number = '1.3.'
             variables.clause_appendix_number = '1.4.'
+            variables.clause_appendix_number_plus1 = '1.5.'
+            // Scope reference mentions both PL01 and PL02
+            variables.scope_appendix_ref = 'Phạm vi công việc, yêu cầu kỹ thuật, chức năng chi tiết, tiêu chí nghiệm thu và lộ trình thực hiện được quy định tại <strong>Phụ lục 01</strong> – Bảng báo giá chi tiết và <strong>Phụ lục 02</strong> – Đề xuất giải pháp &amp; Phạm vi công việc, là bộ phận không tách rời của Hợp đồng này.'
+            variables.timeline_appendix_ref = ' Lộ trình chi tiết theo Phụ lục 02.'
+            variables.change_scope_ref = 'Phụ lục 02'
+            variables.appendix_list_text = 'Phụ lục 01 và Phụ lục 02'
         } else {
             variables.clause_1_2_html = ''
             variables.clause_total_value_number = '1.2.'
             variables.clause_appendix_number = '1.3.'
+            variables.clause_appendix_number_plus1 = '1.4.'
+            // Scope reference mentions only PL01
+            variables.scope_appendix_ref = 'Phạm vi công việc, yêu cầu kỹ thuật, chức năng chi tiết, tiêu chí nghiệm thu và lộ trình thực hiện được quy định tại <strong>Phụ lục 01</strong> – Bảng báo giá chi tiết, là bộ phận không tách rời của Hợp đồng này.'
+            variables.timeline_appendix_ref = ''
+            variables.change_scope_ref = 'Phụ lục 01'
+            variables.appendix_list_text = 'Phụ lục 01'
         }
 
         // Build proposal appendix HTML from quotation.proposal_content
-        if (includeProposalAppendix && contract?.quotation?.type === 'proposal') {
+        if (hasProposalAppendix) {
             const proposalSections: { label: string; content: string }[] = []
             const proposalContent = (contract?.quotation?.proposal_content as Record<string, string>) || {}
             if (proposalContent.introduction) proposalSections.push({ label: 'Mục tiêu & Giới thiệu', content: proposalContent.introduction })
