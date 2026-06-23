@@ -54,16 +54,16 @@ export default async function RootLayout({
             toastOptions={{
               unstyled: false,
               classNames: {
-                toast: 'group font-sans rounded-md shadow-lg border backdrop-blur-sm !bg-background !text-foreground',
-                title: 'text-sm font-semibold',
-                description: 'text-xs text-muted-foreground',
+                toast: 'group font-sans !rounded-lg !shadow-xl !border !border-zinc-200 dark:!border-zinc-700 !bg-white dark:!bg-zinc-900 !text-zinc-900 dark:!text-zinc-100',
+                title: '!text-sm !font-semibold',
+                description: '!text-xs !opacity-80',
                 actionButton: 'bg-primary text-primary-foreground text-xs font-medium rounded-lg px-3 py-1.5',
                 cancelButton: 'bg-muted text-muted-foreground text-xs font-medium rounded-lg px-3 py-1.5',
-                closeButton: 'bg-background border-border hover:bg-muted',
-                success: '!bg-emerald-600 !border-emerald-700 !text-white dark:!bg-emerald-700 dark:!border-emerald-800',
-                error: '!bg-red-600 !border-red-700 !text-white dark:!bg-red-700 dark:!border-red-800',
-                warning: '!bg-amber-600 !border-amber-700 !text-white dark:!bg-amber-700 dark:!border-amber-800',
-                info: '!bg-blue-600 !border-blue-700 !text-white dark:!bg-blue-700 dark:!border-blue-800',
+                closeButton: '!bg-transparent !border-zinc-200 dark:!border-zinc-700 hover:!bg-zinc-100 dark:hover:!bg-zinc-800',
+                success: '!border-l-4 !border-l-emerald-500 !border-zinc-200 dark:!border-zinc-700 dark:!border-l-emerald-500 [&>[data-icon]]:!text-emerald-500',
+                error: '!border-l-4 !border-l-red-500 !border-zinc-200 dark:!border-zinc-700 dark:!border-l-red-500 [&>[data-icon]]:!text-red-500',
+                warning: '!border-l-4 !border-l-amber-500 !border-zinc-200 dark:!border-zinc-700 dark:!border-l-amber-500 [&>[data-icon]]:!text-amber-500',
+                info: '!border-l-4 !border-l-blue-500 !border-zinc-200 dark:!border-zinc-700 dark:!border-l-blue-500 [&>[data-icon]]:!text-blue-500',
               },
             }}
           />
