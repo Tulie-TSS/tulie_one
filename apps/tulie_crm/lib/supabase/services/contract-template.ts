@@ -143,7 +143,7 @@ export const contractSoftwareTemplate = `
           a) Khảo sát, phân tích yêu cầu nghiệp vụ, yêu cầu chức năng của Bên A;<br>
           b) Thiết kế kiến trúc hệ thống, cơ sở dữ liệu, luồng xử lý;<br>
           c) Phát triển, lập trình các mô-đun giao diện người dùng, mô-đun xử lý nghiệp vụ, hệ thống quản trị nội dung (CMS) và các chức năng kèm theo;<br>
-          d) Tích hợp các chức năng, mô-đun theo yêu cầu chi tiết tại Phụ lục 01;<br>
+          d) Tích hợp các chức năng, mô-đun theo yêu cầu chi tiết tại Phụ lục 02;<br>
           đ) Kiểm thử, hiệu chỉnh, tối ưu hiệu năng Phần mềm;<br>
           e) Triển khai Phần mềm lên môi trường vận hành (production) theo cấu hình hai bên thống nhất;<br>
           g) Bàn giao mã nguồn (source code), tài liệu kỹ thuật và tài liệu hướng dẫn sử dụng cho Bên A.
@@ -152,7 +152,7 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">1.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Phạm vi công việc, yêu cầu kỹ thuật, chức năng chi tiết, tiêu chí nghiệm thu và lộ trình thực hiện được quy định tại <strong>Phụ lục 01</strong> – Đề xuất giải pháp & Phạm vi công việc và <strong>Phụ lục 02</strong> – Bảng giá chi tiết, là bộ phận không tách rời của Hợp đồng này.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Phạm vi công việc, yêu cầu kỹ thuật, chức năng chi tiết, tiêu chí nghiệm thu và lộ trình thực hiện được quy định tại <strong>Phụ lục 01</strong> – Bảng báo giá chi tiết và <strong>Phụ lục 02</strong> – Đề xuất giải pháp & Phạm vi công việc, là bộ phận không tách rời của Hợp đồng này.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">1.3.</td>
@@ -178,7 +178,7 @@ export const contractSoftwareTemplate = `
         <strong>Giá trị hợp đồng:</strong><br>
         Tổng giá trị Hợp đồng: <strong>{{total_amount_number}} VNĐ</strong><br>
         (Bằng chữ: <em>{{amount_in_words}}</em>).<br>
-        Cơ cấu giá chi tiết theo Phụ lục 02.
+        Cơ cấu giá chi tiết theo Phụ lục 01.
       </td>
     </tr>
     <tr>
@@ -235,11 +235,11 @@ export const contractSoftwareTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thời gian thực hiện:</strong> Thời gian thực hiện dự kiến: {{delivery_time}} ngày làm việc kể từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. Lộ trình chi tiết theo Phụ lục 01.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thời gian thực hiện:</strong> Thời gian thực hiện dự kiến: {{delivery_time}} ngày làm việc kể từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. Lộ trình chi tiết theo Phụ lục 02.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bản dùng thử:</strong> Sau khi hoàn thành bản dùng thử Phần mềm trên môi trường kiểm thử (staging), Bên B thông báo cho Bên A bằng email/văn bản. Bên A có 05 ngày làm việc để kiểm tra và gửi góp ý chỉnh sửa (không quá 03 vòng chỉnh sửa theo Phụ lục 01). Nếu quá thời hạn trên Bên A không có ý kiến bằng văn bản/email, bản dùng thử được coi là đã được chấp thuận, là căn cứ để Bên A thanh toán đợt tương ứng.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bản dùng thử:</strong> Sau khi hoàn thành bản dùng thử Phần mềm trên môi trường kiểm thử (staging), Bên B thông báo cho Bên A bằng email/văn bản. Bên A có 05 ngày làm việc để kiểm tra và gửi góp ý chỉnh sửa (không quá 03 vòng chỉnh sửa theo Phụ lục 02). Nếu quá thời hạn trên Bên A không có ý kiến bằng văn bản/email, bản dùng thử được coi là đã được chấp thuận, là căn cứ để Bên A thanh toán đợt tương ứng.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.3.</td>
@@ -327,7 +327,7 @@ export const contractSoftwareTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">6.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mọi yêu cầu thay đổi, bổ sung phạm vi công việc, tính năng, giao diện, nội dung ngoài những gì đã mô tả trong Phụ lục 01 phải được Bên A gửi cho Bên B bằng văn bản/email.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mọi yêu cầu thay đổi, bổ sung phạm vi công việc, tính năng, giao diện, nội dung ngoài những gì đã mô tả trong Phụ lục 02 phải được Bên A gửi cho Bên B bằng văn bản/email.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">6.2.</td>
@@ -515,7 +515,7 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">14.4.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng gồm {{contract_clause_count}}, kèm theo các Phụ lục, được lập thành 02 (hai) bản gốc bằng tiếng Việt, mỗi bên giữ 01 (một) bản, có giá trị pháp lý như nhau.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng gồm {{contract_clause_count}}, kèm theo Phụ lục 01 và Phụ lục 02, được lập thành 02 (hai) bản gốc bằng tiếng Việt, mỗi bên giữ 01 (một) bản, có giá trị pháp lý như nhau.</td>
     </tr>
   </table>
 
@@ -537,15 +537,11 @@ export const contractSoftwareTemplate = `
     </tr>
   </table>
 
-  <!-- ========== PHỤ LỤC 01: PHẠM VI CÔNG VIỆC VÀ BẢNG GIÁ CHI TIẾT ========== -->
+  <!-- ========== PHỤ LỤC 01: BẢNG BÁO GIÁ CHI TIẾT ========== -->
   <div style="page-break-before: always;"></div>
   <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC SỐ 01</p>
-  <p style="text-align:center; font-weight:bold; font-size:11pt; margin: 0 0 10px 0;">VỀ PHẠM VI CÔNG VIỆC VÀ BẢNG GIÁ CHI TIẾT</p>
+  <p style="text-align:center; font-weight:bold; font-size:11pt; margin: 0 0 10px 0;">BẢNG BÁO GIÁ CHI TIẾT</p>
   <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Đính kèm Hợp đồng dịch vụ số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
-
-  <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">I. PHẠM VI CÔNG VIỆC (TÓM TẮT)</p>
-  <p style="margin: 0 0 5px 0;">- Tên phần mềm/website: {{product_name_in_contract}}</p>
-  <p style="margin: 0 0 10px 0;">- Chi tiết chức năng, mô-đun và yêu cầu kỹ thuật cụ thể của hệ thống được quy định chi tiết tại Phụ lục 02 (nếu có) hoặc mô tả dưới đây:</p>
 
   <table style="width:100%; border-collapse:collapse; margin-bottom:12px; font-size:8pt; table-layout:auto;">
     <tr style="background:#f5f5f5;">
@@ -736,15 +732,15 @@ export const contractDesignTemplate = `
       <td style="width:50px; vertical-align:top; padding:2px 0;">1.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B cung cấp cho Bên A các dịch vụ sau đây (tùy từng hợp đồng cụ thể, hai bên lựa chọn và ghi rõ trong Phụ lục đính kèm):
         <div style="margin-left: 10px; margin-top: 4px; line-height: 1.6;">
-          a) <strong>Dịch vụ thiết kế đồ họa</strong>: Thiết kế tờ rơi, brochure, catalogue, poster, banner, standee, backdrop, POSM, key visual, ấn phẩm truyền thông khác; Số lượng hạng mục, kích thước, định dạng file, số vòng chỉnh sửa được quy định tại Phụ lục 01.<br>
-          b) <strong>Dịch vụ quay phim, chụp ảnh, dựng video</strong>: Quay phim, chụp ảnh sản phẩm, doanh nghiệp, sự kiện; Dựng, hậu kỳ, chỉnh màu, lồng tiếng, chèn phụ đề, xuất file theo định dạng yêu cầu; Nội dung kịch bản, thời lượng, số vòng chỉnh sửa được quy định tại Phụ lục 01.<br>
+          a) <strong>Dịch vụ thiết kế đồ họa</strong>: Thiết kế tờ rơi, brochure, catalogue, poster, banner, standee, backdrop, POSM, key visual, ấn phẩm truyền thông khác; Số lượng hạng mục, kích thước, định dạng file, số vòng chỉnh sửa được quy định tại Phụ lục 01 và Phụ lục 02.<br>
+          b) <strong>Dịch vụ quay phim, chụp ảnh, dựng video</strong>: Quay phim, chụp ảnh sản phẩm, doanh nghiệp, sự kiện; Dựng, hậu kỳ, chỉnh màu, lồng tiếng, chèn phụ đề, xuất file theo định dạng yêu cầu; Nội dung kịch bản, thời lượng, số vòng chỉnh sửa được quy định tại Phụ lục 01 và Phụ lục 02.<br>
           c) <strong>Dịch vụ in ấn ấn phẩm</strong>: In tờ rơi, brochure, catalogue, standee, backdrop, poster, ấn phẩm khác; Thông số kỹ thuật (kích thước, loại giấy, định lượng, số màu, số mặt, kỹ thuật in, số lượng) được quy định tại Phụ lục 01.
         </div>
       </td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">1.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Các Phụ lục đính kèm Hợp đồng này là bộ phận không tách rời của Hợp đồng này.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Quy cách sản phẩm, đơn giá chi tiết và phạm vi dịch vụ được quy định chi tiết tại <strong>Phụ lục 01</strong> – Chi tiết sản phẩm, số lượng, đơn giá và thuế GTGT và <strong>Phụ lục 02</strong> – Đề xuất giải pháp & Phạm vi công việc, là bộ phận không tách rời của Hợp đồng này.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">1.3.</td>
@@ -820,11 +816,11 @@ export const contractDesignTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu thiết kế đồ họa:</strong> Bên B gửi bản thiết kế bản mềm (file JPG/PDF hoặc định dạng tương đương) cho Bên A qua email hoặc phương thức điện tử khác; Bên A có 03 ngày làm việc để góp ý/chỉnh sửa (tối đa 03 vòng chỉnh sửa theo Phụ lục 01); Khi Bên A xác nhận &ldquo;đồng ý duyệt thiết kế&rdquo; bằng email/văn bản, hoặc sử dụng thiết kế cho mục đích truyền thông, thiết kế được coi là đã nghiệm thu.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu thiết kế đồ họa:</strong> Bên B gửi bản thiết kế bản mềm (file JPG/PDF hoặc định dạng tương đương) cho Bên A qua email hoặc phương thức điện tử khác; Bên A có 03 ngày làm việc để góp ý/chỉnh sửa (tối đa 03 vòng chỉnh sửa theo Phụ lục 02); Khi Bên A xác nhận &ldquo;đồng ý duyệt thiết kế&rdquo; bằng email/văn bản, hoặc sử dụng thiết kế cho mục đích truyền thông, thiết kế được coi là đã nghiệm thu.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu quay phim, chụp ảnh, dựng video:</strong> Bên B gửi bản xem thử (preview) cho Bên A; Bên A có 03 ngày làm việc để góp ý/chỉnh sửa (tối đa 03 vòng chỉnh sửa theo Phụ lục 01); Khi Bên A xác nhận bản cuối cùng bằng email/văn bản, hoặc sử dụng video/hình ảnh vào mục đích truyền thông, sản phẩm được coi là đã nghiệm thu.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu quay phim, chụp ảnh, dựng video:</strong> Bên B gửi bản xem thử (preview) cho Bên A; Bên A có 03 ngày làm việc để góp ý/chỉnh sửa (tối đa 03 vòng chỉnh sửa theo Phụ lục 02); Khi Bên A xác nhận bản cuối cùng bằng email/văn bản, hoặc sử dụng video/hình ảnh vào mục đích truyền thông, sản phẩm được coi là đã nghiệm thu.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.3.</td>
@@ -839,7 +835,7 @@ export const contractDesignTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.5.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thời gian thực hiện:</strong> Tổng thời gian thực hiện dự kiến: {{delivery_time}} ngày làm việc kể từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. Lộ trình chi tiết theo Phụ lục 01.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thời gian thực hiện:</strong> Tổng thời gian thực hiện dự kiến: {{delivery_time}} ngày làm việc kể từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. Lộ trình chi tiết theo Phụ lục 02.</td>
     </tr>
   </table>
 
@@ -1110,7 +1106,7 @@ export const contractDesignTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">14.4.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng gồm {{contract_clause_count}}, kèm theo Phụ lục 01, được lập thành 02 (hai) bản gốc bằng tiếng Việt, mỗi bên giữ 01 (một) bản, có giá trị pháp lý như nhau.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng gồm {{contract_clause_count}}, kèm theo Phụ lục 01 và Phụ lục 02, được lập thành 02 (hai) bản gốc bằng tiếng Việt, mỗi bên giữ 01 (một) bản, có giá trị pháp lý như nhau.</td>
     </tr>
   </table>
 
