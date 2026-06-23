@@ -61,7 +61,7 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td>
-      <td style="font-weight:bold; vertical-align:top; white-space:nowrap;">{{customer_representative}}</td>
+      <td style="font-weight:bold; vertical-align:top; white-space:nowrap;">{{customer_representative_title}} {{customer_representative}}</td>
       <td style="vertical-align:top; white-space:nowrap;">Chức vụ:</td>
       <td style="vertical-align:top; white-space:nowrap;">{{customer_position}}</td>
     </tr>
@@ -654,7 +654,7 @@ export const contractDesignTemplate = `
     </tr>
     <tr>
       <td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td>
-      <td style="font-weight:bold; vertical-align:top; white-space:nowrap;">{{customer_representative}}</td>
+      <td style="font-weight:bold; vertical-align:top; white-space:nowrap;">{{customer_representative_title}} {{customer_representative}}</td>
       <td style="vertical-align:top; white-space:nowrap;">Chức vụ:</td>
       <td style="vertical-align:top; white-space:nowrap;">{{customer_position}}</td>
     </tr>

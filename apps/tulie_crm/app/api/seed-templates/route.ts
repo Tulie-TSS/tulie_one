@@ -45,7 +45,7 @@ export async function POST(request: Request) {
                 content: quotationTemplate,
                 variables: [
                     'quotation_number', 'quotation_date', 'day', 'month', 'year',
-                    'customer_company', 'customer_representative', 'customer_position',
+                    'customer_company', 'customer_representative_title', 'customer_representative', 'customer_position',
                     'customer_address', 'customer_phone', 'customer_mobile',
                     'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
                     'quotation_items_table', 'subtotal', 'vat_rate', 'vat_amount',
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
                 content: contractSoftwareTemplate,
                 variables: [
                     'contract_number', 'day', 'month', 'year',
-                    'customer_company', 'customer_representative', 'customer_position',
+                    'customer_company', 'customer_representative_title', 'customer_representative', 'customer_position',
                     'customer_address', 'customer_phone', 'customer_mobile',
                     'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
                     'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
                 content: contractDesignTemplate,
                 variables: [
                     'contract_number', 'day', 'month', 'year',
-                    'customer_company', 'customer_representative', 'customer_position',
+                    'customer_company', 'customer_representative_title', 'customer_representative', 'customer_position',
                     'customer_address', 'customer_phone', 'customer_mobile',
                     'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
                     'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
@@ -94,7 +94,7 @@ export async function POST(request: Request) {
                 content: orderTemplate,
                 variables: [
                     'order_number', 'day', 'month', 'year',
-                    'customer_company', 'customer_representative', 'customer_position',
+                    'customer_company', 'customer_representative_title', 'customer_representative', 'customer_position',
                     'customer_address', 'customer_phone', 'customer_mobile',
                     'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
                     'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
@@ -119,7 +119,7 @@ export async function POST(request: Request) {
                 content: deliveryMinutesTemplate,
                 variables: [
                     'report_number', 'day', 'month', 'year',
-                    'customer_company', 'customer_representative', 'customer_position',
+                    'customer_company', 'customer_representative_title', 'customer_representative', 'customer_position',
                     'customer_address', 'customer_phone', 'customer_mobile',
                     'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
                     'contract_number', 'order_number', 'order_date',

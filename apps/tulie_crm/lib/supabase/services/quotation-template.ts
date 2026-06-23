@@ -31,7 +31,7 @@ export const quotationTemplate = `
     <div style="margin-bottom: 25px;">
         <h3 style="font-size: 11pt; font-weight: 800; text-transform: uppercase; border-left: 4px solid #000; padding-left: 10px; margin-bottom: 15px;">Bên đặt hàng (Client): {{customer_company}}</h3>
         <table style="width: 100%; border-collapse: collapse; font-size: 10pt; margin-left: 14px;">
-            <tr><td style="width: 25%; padding: 4px 0;">Người đại diện:</td><td style="width: 45%; padding: 4px 0;"><strong>{{customer_representative}}</strong></td><td style="width: 10%; padding: 4px 0;">Chức vụ:</td><td style="padding: 4px 0;">{{customer_position}}</td></tr>
+            <tr><td style="width: 25%; padding: 4px 0;">Người đại diện:</td><td style="width: 45%; padding: 4px 0;"><strong>{{customer_representative_title}} {{customer_representative}}</strong></td><td style="width: 10%; padding: 4px 0;">Chức vụ:</td><td style="padding: 4px 0;">{{customer_position}}</td></tr>
             <tr><td style="padding: 4px 0;">Địa chỉ:</td><td colspan="3" style="padding: 4px 0;">{{customer_address}}</td></tr>
             <tr><td style="padding: 4px 0;">Điện thoại:</td><td style="padding: 4px 0;">{{customer_phone}}</td><td style="padding: 4px 0;">Email:</td><td style="padding: 4px 0;">{{customer_email}}</td></tr>
             <tr><td style="padding: 4px 0;">Mã số thuế:</td><td colspan="3" style="padding: 4px 0;">{{customer_tax_code}}</td></tr>
