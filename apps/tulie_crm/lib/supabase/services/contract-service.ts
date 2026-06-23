@@ -13,7 +13,7 @@ export async function getContracts(customerId?: string, type?: string, brand?: s
         const supabase = await createClient()
         let query = supabase
             .from('contracts')
-            .select('*, customer:customers(id, company_name)')
+            .select('*, customer:customers(id, company_name), quotation:quotations(id, quotation_number, version_name)')
             .order('created_at', { ascending: false })
 
         if (customerId) {
