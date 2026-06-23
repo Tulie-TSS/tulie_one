@@ -60,10 +60,10 @@ export default async function RootLayout({
                 actionButton: 'bg-primary text-primary-foreground text-xs font-medium rounded-lg px-3 py-1.5',
                 cancelButton: 'bg-muted text-muted-foreground text-xs font-medium rounded-lg px-3 py-1.5',
                 closeButton: 'bg-background border-border hover:bg-muted',
-                success: '!border-emerald-200 !bg-emerald-50 !text-emerald-900 dark:!bg-emerald-950/80 dark:!border-emerald-800 dark:!text-emerald-100',
-                error: '!border-red-200 !bg-red-50 !text-red-900 dark:!bg-red-950/80 dark:!border-red-800 dark:!text-red-100',
-                warning: '!border-amber-200 !bg-amber-50 !text-amber-900 dark:!bg-amber-950/80 dark:!border-amber-800 dark:!text-amber-100',
-                info: '!border-blue-200 !bg-blue-50 !text-blue-900 dark:!bg-blue-950/80 dark:!border-blue-800 dark:!text-blue-100',
+                success: '!bg-emerald-600 !border-emerald-700 !text-white dark:!bg-emerald-700 dark:!border-emerald-800',
+                error: '!bg-red-600 !border-red-700 !text-white dark:!bg-red-700 dark:!border-red-800',
+                warning: '!bg-amber-600 !border-amber-700 !text-white dark:!bg-amber-700 dark:!border-amber-800',
+                info: '!bg-blue-600 !border-blue-700 !text-white dark:!bg-blue-700 dark:!border-blue-800',
               },
             }}
           />
