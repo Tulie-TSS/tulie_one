@@ -543,6 +543,7 @@ export const contractSoftwareTemplate = `
   <p style="text-align:center; font-weight:bold; font-size:11pt; margin: 0 0 10px 0;">BẢNG BÁO GIÁ CHI TIẾT</p>
   <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Đính kèm Hợp đồng dịch vụ số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
 
+  <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">I. DANH MỤC SẢN PHẨM, DỊCH VỤ VÀ BÁO GIÁ CHI TIẾT</p>
   <table style="width:100%; border-collapse:collapse; margin-bottom:12px; font-size:8pt; table-layout:auto;">
     <tr style="background:#f5f5f5;">
       <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; white-space:nowrap;">STT</th>
