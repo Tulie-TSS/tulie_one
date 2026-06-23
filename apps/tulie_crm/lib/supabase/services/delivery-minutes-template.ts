@@ -29,7 +29,7 @@ export const deliveryMinutesTemplate = `
 
   <!-- Căn cứ -->
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Hợp đồng kinh tế số {{contract_number}} đã ký kết giữa Bên A và Bên B;</p>
-  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Phụ lục 01 (Bảng báo giá chi tiết) và Phụ lục 02 (Đề xuất giải pháp và phạm vi công việc) đính kèm Hợp đồng;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ {{appendix_list_text}} đính kèm Hợp đồng;</p>
   <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào kết quả triển khai thực tế và sự đồng ý nghiệm thu của hai bên.</p>
 
   <p style="margin:10px 0;">Hôm nay, ngày {{day}} tháng {{month}} năm {{year}}, tại văn phòng khách hàng, chúng tôi gồm:</p>

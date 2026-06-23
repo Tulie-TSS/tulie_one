@@ -34,6 +34,7 @@ import { EntityPipelineTracker } from '@/components/shared/entity-pipeline-track
 import { MilestoneConfirmButton } from '@/components/contracts/milestone-confirm-button'
 
 import { CtvContractDetail } from './ctv-contract-detail'
+import { ContractResetButton } from '@/components/contracts/contract-reset-button'
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
     const { id } = await params
@@ -122,6 +123,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                     {isFreelancerContract && contract.public_token && (
                         <CtvLinkButton publicToken={contract.public_token} />
                     )}
+                    <ContractResetButton contractId={contract.id} />
                     <Button variant="outline" size="sm" asChild>
                         <Link href={`/contracts/${contract.id}/edit`}>
                             <Edit className="h-4 w-4 mr-2" />

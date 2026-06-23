@@ -342,7 +342,10 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
             const url = URL.createObjectURL(blob)
             const a = document.createElement('a')
             a.href = url
-            a.download = `${item.label} - ${contract.contract_number}.html`
+            const fileDocNum = item.description && item.description !== (DOC_META[item.type]?.description || '') 
+                ? item.description 
+                : contract.contract_number
+            a.download = `${item.label} - ${fileDocNum}.html`
             a.click()
             URL.revokeObjectURL(url)
         } catch {

@@ -965,3 +965,57 @@ export async function ensureProjectForContract(contractId: string, supabaseClien
     return null
 }
 
+export async function resetContract(id: string) {
+    try {
+        const supabase = await createClient()
+
+        // 1. Reset milestones status to pending and clear completed_at
+        const { error: msError } = await supabase
+            .from('contract_milestones')
+            .update({
+                status: 'pending',
+                completed_at: null
+            })
+            .eq('contract_id', id)
+
+        if (msError) throw msError
+
+        // 2. Reset contract status to draft and clear signed_date
+        const { error: cError } = await supabase
+            .from('contracts')
+            .update({
+                status: 'draft',
+                signed_date: null
+            })
+            .eq('id', id)
+
+        if (cError) throw cError
+
+        // 3. Delete related drafted contract_documents so they will be regenerated
+        await supabase
+            .from('contract_documents')
+            .delete()
+            .eq('contract_id', id)
+            .eq('status', 'draft')
+
+        // 4. Auto-regenerate document bundle so new draft docs are generated
+        generateDocumentBundle(id).catch(err => {
+            console.error('Error regenerating document bundle during reset:', err)
+        })
+
+        revalidatePath('/contracts')
+        revalidatePath(`/contracts/${id}`)
+        
+        await logActivity({
+            action: 'update',
+            entity_type: 'contract',
+            entity_id: id,
+            description: `Reset trạng thái và các mốc hợp đồng về dự thảo`
+        })
+
+        return { success: true }
+    } catch (err: any) {
+        console.error('Fatal error in resetContract:', err)
+        return { success: false, error: err.message || 'Lỗi hệ thống khi reset hợp đồng' }
+    }
+}

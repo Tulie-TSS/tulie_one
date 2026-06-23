@@ -559,6 +559,8 @@ export async function generateDocument(
             video_review_days: '03',
             video_review_rounds: '03',
             print_review_days: '03',
+            // Default appendix text — overridden below based on hasProposalAppendix
+            appendix_list_text: 'Phụ lục 01',
 
             ...additionalVariables
         }

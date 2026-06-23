@@ -8,7 +8,7 @@ import { StatusBadge } from '@/components/shared/status-badge'
 import { CtvLinkButton } from '@/components/contracts/ctv-link-button'
 import { MilestoneConfirmButton } from '@/components/contracts/milestone-confirm-button'
 import { ContractDocuments } from '@/components/contracts/contract-documents'
-
+import { ContractResetButton } from '@/components/contracts/contract-reset-button'
 export function CtvContractDetail({ contract, backHref, progress, paidAmount }: any) {
     const fMeta = contract.freelancer_metadata || {}
     // For CTV, we might not use portalUrl as public_token points to /ctv/[token] instead of /portal/[token]
@@ -49,6 +49,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                     {contract.public_token && (
                         <CtvLinkButton publicToken={contract.public_token} />
                     )}
+                    <ContractResetButton contractId={contract.id} />
                     <Button variant="outline" size="sm" asChild>
                         <Link href={`/contracts/${contract.id}/edit?from=/contracts/ctv`}>
                             <Edit className="h-4 w-4 mr-2" />

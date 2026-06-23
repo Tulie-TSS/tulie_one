@@ -143,7 +143,7 @@ export const contractSoftwareTemplate = `
           a) Khảo sát, phân tích yêu cầu nghiệp vụ, yêu cầu chức năng của Bên A;<br>
           b) Thiết kế kiến trúc hệ thống, cơ sở dữ liệu, luồng xử lý;<br>
           c) Phát triển, lập trình các mô-đun giao diện người dùng, mô-đun xử lý nghiệp vụ, hệ thống quản trị nội dung (CMS) và các chức năng kèm theo;<br>
-          d) Tích hợp các chức năng, mô-đun theo yêu cầu chi tiết tại Phụ lục 01 (và Phụ lục 02 nếu có);<br>
+          d) Tích hợp các chức năng, mô-đun theo yêu cầu chi tiết tại {{appendix_list_text}};<br>
           đ) Kiểm thử, hiệu chỉnh, tối ưu hiệu năng Phần mềm;<br>
           e) Triển khai Phần mềm lên môi trường vận hành (production) theo cấu hình hai bên thống nhất;<br>
           g) Bàn giao mã nguồn (source code), tài liệu kỹ thuật và tài liệu hướng dẫn sử dụng cho Bên A.
