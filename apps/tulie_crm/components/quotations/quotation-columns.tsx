@@ -78,16 +78,6 @@ export const quotationColumns: ColumnDef<Quotation>[] = [
         },
     },
     {
-        accessorKey: 'brand',
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Brand" />
-        ),
-        cell: ({ row }) => {
-            const brand = row.original.brand || 'agency'
-            return <StatusBadge entityType="brand" status={brand} />
-        },
-    },
-    {
         accessorKey: 'customer',
         header: 'Khách hàng',
         cell: ({ row }) => {
