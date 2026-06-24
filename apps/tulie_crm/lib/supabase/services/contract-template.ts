@@ -546,11 +546,10 @@ export const contractSoftwareTemplate = `
     </tr>
   </table>
 
-  <!-- ========== PHỤ LỤC 01: BẢNG BÁO GIÁ CHI TIẾT ========== -->
+  <!-- ========== PHỤ LỤC 01: PHẠM VI CÔNG VIỆC, BẢNG GIÁ & LỘ TRÌNH ========== -->
   <div style="page-break-before: always;"></div>
-  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC SỐ 01</p>
-  <p style="text-align:center; font-weight:bold; font-size:11pt; margin: 0 0 10px 0;">VỀ PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, BẢNG GIÁ VÀ LỘ TRÌNH TRIỂN KHAI</p>
-  <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Đính kèm Hợp đồng dịch vụ số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai</p>
+  <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Đính kèm {{contract_type}} số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
 
   <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">I. DANH MỤC SẢN PHẨM, DỊCH VỤ VÀ BÁO GIÁ CHI TIẾT</p>
   <table style="width:100%; border-collapse:collapse; margin-bottom:12px; font-size:8pt; table-layout:auto;">
