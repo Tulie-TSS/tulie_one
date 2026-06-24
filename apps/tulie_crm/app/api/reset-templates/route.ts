@@ -14,7 +14,7 @@ export async function POST() {
 
         const { supabase } = authResult
 
-        const { error } = await supabase.from('document_templates').delete().neq('id', 'default-0')
+        const { error } = await supabase.from('document_templates').delete().not('id', 'like', 'default-%')
         if (error) {
             return NextResponse.json({ error: error.message }, { status: 500 })
         }

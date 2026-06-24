@@ -149,21 +149,51 @@ export async function POST(request: Request) {
             await supabase.from('document_templates').delete().neq('id', '00000000-0000-0000-0000-000000000000') // Delete all
         }
 
-        const { data, error } = await supabase
-            .from('document_templates')
-            .insert(defaultTemplates)
-            .select('id, name, type')
+        const seeded: any[] = []
+        for (const template of defaultTemplates) {
+            const { data: existingTemplate, error: lookupError } = await supabase
+                .from('document_templates')
+                .select('id')
+                .eq('type', template.type)
+                .eq('name', template.name)
+                .maybeSingle()
 
-        if (error) {
-            console.error('Error seeding templates:', error)
-            return NextResponse.json({ error: error.message }, { status: 500 })
+            if (lookupError) {
+                console.error('Error looking up template:', lookupError)
+                return NextResponse.json({ error: lookupError.message }, { status: 500 })
+            }
+
+            if (existingTemplate?.id) {
+                const { data: updated, error: updateError } = await supabase
+                    .from('document_templates')
+                    .update(template)
+                    .eq('id', existingTemplate.id)
+                    .select('id, name, type')
+                    .single()
+                if (updateError) {
+                    console.error('Error updating template:', updateError)
+                    return NextResponse.json({ error: updateError.message }, { status: 500 })
+                }
+                seeded.push(updated)
+            } else {
+                const { data: inserted, error: insertError } = await supabase
+                    .from('document_templates')
+                    .insert(template)
+                    .select('id, name, type')
+                    .single()
+                if (insertError) {
+                    console.error('Error inserting template:', insertError)
+                    return NextResponse.json({ error: insertError.message }, { status: 500 })
+                }
+                seeded.push(inserted)
+            }
         }
 
         return NextResponse.json({
             success: true,
-            message: `Seeded ${data.length} default templates`,
-            count: data.length,
-            templates: data
+            message: `Seeded ${seeded.length} default templates`,
+            count: seeded.length,
+            templates: seeded
         })
     } catch (error: any) {
         console.error('Seed templates error:', error)
