@@ -732,13 +732,7 @@ export const contractDesignTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">1.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B cung cấp cho Bên A các dịch vụ sau đây (tùy từng hợp đồng cụ thể, hai bên lựa chọn và ghi rõ trong Phụ lục đính kèm):
-        <div style="margin-left: 10px; margin-top: 4px; line-height: 1.6;">
-          a) <strong>Dịch vụ thiết kế đồ họa</strong>: Thiết kế tờ rơi, brochure, catalogue, poster, banner, standee, backdrop, POSM, key visual, ấn phẩm truyền thông khác; Số lượng hạng mục, kích thước, định dạng file, số vòng chỉnh sửa được quy định tại Phụ lục 01 (đính kèm).<br>
-          b) <strong>Dịch vụ quay phim, chụp ảnh, dựng video</strong>: Quay phim, chụp ảnh sản phẩm, doanh nghiệp, sự kiện; Dựng, hậu kỳ, chỉnh màu, lồng tiếng, chèn phụ đề, xuất file theo định dạng yêu cầu; Nội dung kịch bản, thời lượng, số vòng chỉnh sửa được quy định tại Phụ lục 01 (đính kèm).<br>
-          c) <strong>Dịch vụ in ấn ấn phẩm</strong>: In tờ rơi, brochure, catalogue, standee, backdrop, poster, ấn phẩm khác; Thông số kỹ thuật (kích thước, loại giấy, định lượng, số màu, số mặt, kỹ thuật in, số lượng) được quy định tại Phụ lục 01.
-        </div>
-      </td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B cung cấp cho Bên A các sản phẩm, dịch vụ theo thỏa thuận của hai bên. Danh mục hạng mục, yêu cầu kỹ thuật, số lượng, tiêu chuẩn chất lượng, tiến độ thực hiện và sản phẩm bàn giao được quy định chi tiết tại <strong>Phụ lục 01</strong> đính kèm Hợp đồng này.</td>
     </tr>
     {{clause_1_2_html}}
     <tr>

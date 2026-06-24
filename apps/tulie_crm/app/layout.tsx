@@ -26,6 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 import { Toaster } from 'sonner'
 import { ConfirmProvider } from '@repo/ui'
+import { CircleAlert, CircleCheck, CircleX, Info, LoaderCircle, X } from 'lucide-react'
 
 export default async function RootLayout({
   children,
@@ -51,19 +52,27 @@ export default async function RootLayout({
             position="top-right"
             closeButton
             duration={4000}
+            gap={18}
+            icons={{
+              success: <CircleCheck className="size-5" strokeWidth={3} />,
+              error: <CircleX className="size-5" strokeWidth={3} />,
+              warning: <CircleAlert className="size-5" strokeWidth={3} />,
+              info: <Info className="size-5" strokeWidth={3} />,
+              loading: <LoaderCircle className="size-5 animate-spin" strokeWidth={2.5} />,
+              close: <X className="size-5" strokeWidth={2.5} />,
+            }}
             toastOptions={{
-              unstyled: false,
+              unstyled: true,
               classNames: {
-                toast: 'group font-sans !rounded-lg !shadow-xl !border !border-zinc-200 dark:!border-zinc-700 !bg-white dark:!bg-zinc-900 !text-zinc-900 dark:!text-zinc-100',
-                title: '!text-sm !font-semibold',
-                description: '!text-xs !opacity-80',
-                actionButton: 'bg-primary text-primary-foreground text-xs font-medium rounded-lg px-3 py-1.5',
-                cancelButton: 'bg-muted text-muted-foreground text-xs font-medium rounded-lg px-3 py-1.5',
-                closeButton: '!bg-transparent !border-zinc-200 dark:!border-zinc-700 hover:!bg-zinc-100 dark:hover:!bg-zinc-800',
-                success: '!border-l-4 !border-l-emerald-500 !border-zinc-200 dark:!border-zinc-700 dark:!border-l-emerald-500 [&>[data-icon]]:!text-emerald-500',
-                error: '!border-l-4 !border-l-red-500 !border-zinc-200 dark:!border-zinc-700 dark:!border-l-red-500 [&>[data-icon]]:!text-red-500',
-                warning: '!border-l-4 !border-l-amber-500 !border-zinc-200 dark:!border-zinc-700 dark:!border-l-amber-500 [&>[data-icon]]:!text-amber-500',
-                info: '!border-l-4 !border-l-blue-500 !border-zinc-200 dark:!border-zinc-700 dark:!border-l-blue-500 [&>[data-icon]]:!text-blue-500',
+                toast: 'flex w-[390px] max-w-[calc(100vw-32px)] items-center gap-3 border-0 rounded-[2px] px-4 py-3 font-sans text-white shadow-lg',
+                title: 'text-sm font-medium leading-5',
+                description: 'mt-0.5 text-xs leading-4 text-white/85',
+                icon: 'shrink-0 text-white',
+                closeButton: 'ml-auto shrink-0 border-0 bg-transparent p-0 text-white/70 transition-colors hover:bg-transparent hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white',
+                success: '!bg-[#4CAF50]',
+                error: '!bg-[#EF1C25]',
+                warning: '!bg-[#FF9800]',
+                info: '!bg-[#9C27B0]',
               },
             }}
           />

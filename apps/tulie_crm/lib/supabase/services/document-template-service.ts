@@ -756,7 +756,9 @@ export async function generateDocument(
                     </tr>`
                 }
 
-                // Calculate VAT breakdown HTML rows
+                // Calculate VAT breakdown rows using the same dynamic column count
+                // as the item rows. This prevents summary rows from shifting when
+                // discount columns are hidden but VAT columns remain visible.
                 let vatBreakdownHtml = ''
                 if (vatStatus === 'exempt') {
                     vatBreakdownHtml = `<tr style="background:#f5f5f5;">
@@ -1140,10 +1142,27 @@ export async function generateDocument(
         }
 
         if (totalColumns !== 11) {
-            templateContent = templateContent
-                .replace(/colspan="10"/g, `colspan="${totalColumns - 1}"`)
-                .replace(/colspan="11"/g, `colspan="${totalColumns}"`)
-                .replace(/colspan="8"/g, `colspan="${totalColumns - 3}"`)
+            // Do this in one pass. Chaining replacements is unsafe: for example,
+            // the expected 10 → 8 conversion was subsequently matched again by
+            // the 8 → 6 conversion, shifting the total/VAT values one column left.
+            templateContent = templateContent.replace(/colspan="(10|11|8)"/g, (_match, colspan: string) => {
+                const replacements: Record<string, number> = {
+                    '10': totalColumns - 1,
+                    '11': totalColumns,
+                    '8': totalColumns - 3,
+                }
+                return `colspan="${replacements[colspan]}"`
+            })
+        }
+
+        // Upgrade the former design/printing template stored in the database.
+        // Its fixed list of service types made contracts mention work that was not
+        // actually purchased. The agreed scope belongs in Appendix 01 instead.
+        if (template.type === 'contract' && templateContent.includes('Dịch vụ quay phim, chụp ảnh, dựng video')) {
+            templateContent = templateContent.replace(
+                /Bên B cung cấp cho Bên A các dịch vụ sau đây \(tùy từng hợp đồng cụ thể, hai bên lựa chọn và ghi rõ trong Phụ lục đính kèm\):[\s\S]*?<\/td>\s*<\/tr>/,
+                'Bên B cung cấp cho Bên A các sản phẩm, dịch vụ theo thỏa thuận của hai bên. Danh mục hạng mục, yêu cầu kỹ thuật, số lượng, tiêu chuẩn chất lượng, tiến độ thực hiện và sản phẩm bàn giao được quy định chi tiết tại <strong>Phụ lục 01</strong> đính kèm Hợp đồng này.</td>\n    </tr>'
+            )
         }
 
         // Dynamically upgrade old templates that don't have {{contract_title_upper}} and {{contract_title_body}}

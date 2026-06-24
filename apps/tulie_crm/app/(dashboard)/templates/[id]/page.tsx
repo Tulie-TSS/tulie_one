@@ -9,9 +9,10 @@ import { Label } from '@repo/ui'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui'
 import { Badge } from '@repo/ui'
 import { Separator } from '@repo/ui'
-import { ArrowLeft, FileText, Download, FilePlus2, Loader2, CheckCircle2, AlertCircle, Eye, EyeOff, Send } from 'lucide-react'
+import { ArrowLeft, FileText, Download, FilePlus2, Loader2, Eye, EyeOff, Send } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import Link from 'next/link'
+import { toast } from 'sonner'
 
 interface Template {
     id: string
@@ -278,20 +279,6 @@ function buildItemsTableHtml(items: QuotationItem[], vatExempt: boolean, quoteVa
     }
 }
 
-// ─── Toast component ────────────────────────────────────────────────────────
-function Toast({ message, type, onClose }: { message: string; type: 'success' | 'error'; onClose: () => void }) {
-    useEffect(() => {
-        const t = setTimeout(onClose, 4000)
-        return () => clearTimeout(t)
-    }, [onClose])
-    return (
-        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-2xl text-white text-sm font-medium transition-all ${type === 'success' ? 'bg-emerald-600' : 'bg-red-600'}`}>
-            {type === 'success' ? <CheckCircle2 className="h-4 w-4 shrink-0" /> : <AlertCircle className="h-4 w-4 shrink-0" />}
-            {message}
-        </div>
-    )
-}
-
 // ─── Status badge colors ─────────────────────────────────────────────────────
 const quotationStatusLabel: Record<string, { label: string; color: string }> = {
     draft: { label: 'Nháp', color: 'bg-slate-100 text-slate-700' },
@@ -322,7 +309,6 @@ export default function TemplateDetailPage() {
 
     // Contract creation state
     const [isCreatingContract, setIsCreatingContract] = useState(false)
-    const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
 
     // ── Clean mode: biến chưa điền sẽ để trống (cho xuất PDF gửi khách) ────
     const [cleanMode, setCleanMode] = useState(false)
@@ -615,13 +601,13 @@ export default function TemplateDetailPage() {
             })
             const data = await res.json()
             if (res.ok && data.success) {
-                setToast({ message: 'Hợp đồng đã được tạo thành công!', type: 'success' })
+                toast.success('Hợp đồng đã được tạo thành công!')
                 setTimeout(() => router.push(`/contracts/${data.id}`), 1200)
             } else {
-                setToast({ message: data.error || 'Không thể tạo hợp đồng', type: 'error' })
+                toast.error(data.error || 'Không thể tạo hợp đồng')
             }
         } catch (err) {
-            setToast({ message: 'Lỗi kết nối, vui lòng thử lại', type: 'error' })
+            toast.error('Lỗi kết nối, vui lòng thử lại')
         } finally {
             setIsCreatingContract(false)
         }
@@ -698,8 +684,6 @@ export default function TemplateDetailPage() {
 
     return (
         <>
-            {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
-
             <div className="space-y-6">
                 {/* Header */}
                 <div className="flex items-center gap-4">
