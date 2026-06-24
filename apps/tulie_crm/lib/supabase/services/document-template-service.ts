@@ -1096,11 +1096,6 @@ export async function generateDocument(
 
             {
                 let proposalHtml = `
-                    <div style="page-break-before: always;"></div>
-                    <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC 01 — PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, BẢNG GIÁ &amp; LỘ TRÌNH TRIỂN KHAI</p>
-                    <p style="text-align:center; font-style:italic; margin-bottom:20px; font-size:9pt;">(Đính kèm Hợp đồng kinh tế số ${variables.contract_number || ''} ngày ${variables.day || ''}/${variables.month || ''}/${variables.year || ''})</p>
-                    <p style="font-weight:bold; font-size:10pt; margin: 0 0 6px 0;">I. BẢNG GIÁ VÀ GIÁ TRỊ HỢP ĐỒNG</p>
-                    ${variables.appendix_price_table || ''}
                     <p style="font-weight:bold; font-size:10pt; margin: 18px 0 6px 0;">II. PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, TIÊU CHÍ NGHIỆM THU VÀ LỘ TRÌNH</p>
                 `
 
@@ -1116,13 +1111,25 @@ export async function generateDocument(
                     `
                 })
 
-                variables.proposal_appendix_html = proposalHtml
+                variables.proposal_appendix_content_html = proposalHtml
+                variables.proposal_appendix_html = ''
             }
         } else {
+            variables.proposal_appendix_content_html = ''
             variables.proposal_appendix_html = ''
         }
 
         let templateContent = template.content
+        // Upgrade legacy database templates: merge proposal content into the existing
+        // Appendix 01 instead of rendering another Appendix 01 after it.
+        if (template.type === 'contract') {
+            templateContent = templateContent
+                .replace('{{proposal_appendix_html}}', '')
+                .replace(
+                    /<p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">II\. CAM KẾT<\/p>/,
+                    '{{proposal_appendix_content_html}}<p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">III. CAM KẾT</p>'
+                )
+        }
         if (isFreelance && template.type === 'delivery_minutes') {
             templateContent = freelanceDeliveryTemplate
         }

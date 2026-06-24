@@ -586,7 +586,8 @@ export const contractSoftwareTemplate = `
     </tr>
   </table>
 
-  <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">II. CAM KẾT</p>
+  {{proposal_appendix_content_html}}
+  <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">III. CAM KẾT</p>
   <p style="margin: 0 0 15px 0;">Phụ lục này là một phần không tách rời của Hợp đồng số {{contract_number}}. Các điều khoản khác của Hợp đồng không được sửa đổi trong Phụ lục này vẫn giữ nguyên hiệu lực.</p>
 
   <!-- Signatures -->
@@ -596,9 +597,6 @@ export const contractSoftwareTemplate = `
       <td style="width:50%; text-align:center; font-weight:bold; vertical-align:top; font-size:9pt;">ĐẠI DIỆN BÊN B</td>
     </tr>
   </table>
-
-  <!-- ========== PHỤ LỤC 02: ĐỀ XUẤT GIẢI PHÁP ========== -->
-  {{proposal_appendix_html}}
 
 </div>
 `;
@@ -1173,7 +1171,8 @@ export const contractDesignTemplate = `
     </tr>
   </table>
 
-  <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">II. CAM KẾT</p>
+  {{proposal_appendix_content_html}}
+  <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">III. CAM KẾT</p>
   <p style="margin: 0 0 15px 0;">Phụ lục này là một phần không tách rời của Hợp đồng số {{contract_number}}. Các điều khoản về chất lượng, nghiệm thu, thanh toán, phạt vi phạm, bảo mật, sở hữu trí tuệ, giải quyết tranh chấp... được áp dụng theo Hợp đồng chính.</p>
 
   <!-- Signatures -->
@@ -1183,9 +1182,6 @@ export const contractDesignTemplate = `
       <td style="width:50%; text-align:center; font-weight:bold; vertical-align:top; font-size:9pt;">ĐẠI DIỆN BÊN B</td>
     </tr>
   </table>
-
-  <!-- ========== PHỤ LỤC 02: ĐỀ XUẤT GIẢI PHÁP ========== -->
-  {{proposal_appendix_html}}
 
 </div>
 `;
