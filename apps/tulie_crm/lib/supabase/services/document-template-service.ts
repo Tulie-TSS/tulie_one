@@ -194,7 +194,7 @@ export async function getDocumentTemplates() {
             }
         })
 
-        return resultTemplates
+        return resultTemplates.map(normalizeDocumentTemplate)
     } catch {
         return defaultTemplates.map((t, i) => ({
             ...t,
@@ -203,6 +203,25 @@ export async function getDocumentTemplates() {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
         })) as DocumentTemplate[]
+    }
+}
+
+function normalizeDocumentTemplate(template: DocumentTemplate): DocumentTemplate {
+    if (template.type !== 'contract') return template
+
+    const hasLegacyName = /hợp đồng kinh tế/i.test(template.name || '')
+    const hasLegacyBody = /HỢP ĐỒNG KINH TẾ|Hợp đồng kinh tế/i.test(template.content || '')
+
+    if (!hasLegacyName && !hasLegacyBody) return template
+
+    const normalized = defaultTemplates.find(t => t.type === 'contract' && t.name === 'Hợp đồng dịch vụ (Mẫu chuẩn)')
+    if (!normalized) return template
+
+    return {
+        ...template,
+        name: hasLegacyName ? normalized.name : template.name,
+        content: normalized.content,
+        variables: normalized.variables,
     }
 }
 
