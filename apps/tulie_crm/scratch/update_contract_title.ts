@@ -29,8 +29,8 @@ const contractTemplate = `
     </tr>
   </table>
 
-  <!-- Tiêu đề -->
-  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0;">HỢP ĐỒNG KINH TẾ</p>
+  <!-- Tiêu đề (dynamic) -->
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0;">{{contract_type}}</p>
 
   <!-- Căn cứ pháp luật - IN NGHIÊNG -->
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Bộ luật Dân sự nước Cộng hòa Xã hội Chủ nghĩa Việt Nam số 91/2015/QH13 được Quốc hội thông qua ngày 24/11/2015 có hiệu lực thi hành từ ngày 01/01/2017;</p>
@@ -286,11 +286,15 @@ const contractTemplate = `
       <td style="height:100px;"></td>
       <td style="height:100px;"></td>
     </tr>
+    <tr>
+      <td style="text-align:center;">(Ký, ghi rõ họ tên, đóng dấu)</td>
+      <td style="text-align:center;">(Ký, ghi rõ họ tên, đóng dấu)</td>
+    </tr>
   </table>
 
   <!-- ========== PHỤ LỤC 01: BẢNG BÁO GIÁ CHI TIẾT ========== -->
   <div style="page-break-before: always;"></div>
-  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC 01 — BẢNG BÁO GIÁ CHI TIẾT</p>
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai</p>
   <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Đính kèm Hợp đồng kinh tế số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
 
   <table style="width:100%; border-collapse:collapse; margin-bottom:12px; font-size:8pt; table-layout:auto;">
