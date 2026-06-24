@@ -179,7 +179,10 @@ export const contractSoftwareTemplate = `
         <strong>Giá trị hợp đồng:</strong><br>
         Tổng giá trị Hợp đồng: <strong>{{total_amount_number}} VNĐ</strong><br>
         (Bằng chữ: <em>{{amount_in_words}}</em>).<br>
-        Cơ cấu giá chi tiết theo Phụ lục 01.
+        Cơ cấu giá chi tiết theo Phụ lục 01.<br><br>
+        <strong>Tổng giá trị thanh toán:</strong><br>
+        Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>{{total_amount_number}} VNĐ</strong><br>
+        (Bằng chữ: <em>{{amount_in_words}}</em>). Giá trị này chưa bao gồm thuế GTGT nếu pháp luật hoặc cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng phải chịu thuế GTGT; phần thuế phát sinh được xử lý theo Khoản 2.2 dưới đây.
       </td>
     </tr>
     <tr>
