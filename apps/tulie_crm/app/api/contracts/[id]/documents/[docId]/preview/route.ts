@@ -1,5 +1,6 @@
 import { requirePermission, isAuthError } from '@/lib/security/auth-guard'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { readNumberToWords } from '@/lib/utils/format'
 
 /**
  * GET /api/contracts/[id]/documents/[docId]/preview
@@ -26,6 +27,35 @@ export async function GET(
 
         if (error || !doc) {
             return new Response('Document not found', { status: 404 })
+        }
+
+        let documentContent = doc.content || ''
+        if (doc.type === 'contract') {
+            const { data: contract } = await supabase
+                .from('contracts')
+                .select('total_amount')
+                .eq('id', contractId)
+                .single()
+            const totalAmount = contract?.total_amount || 0
+            const formattedAmount = new Intl.NumberFormat('vi-VN').format(totalAmount)
+
+            // Render legacy stored documents with the current unified appendix title.
+            documentContent = documentContent.replace(
+                'BẢNG BÁO GIÁ CHI TIẾT',
+                'VỀ PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, BẢNG GIÁ VÀ LỘ TRÌNH TRIỂN KHAI'
+            )
+
+            // Signed/draft documents generated before this clause are still printable
+            // with the final payment obligation, without silently mutating the record.
+            if (!documentContent.includes('Tổng giá trị thanh toán Bên A phải thanh toán')) {
+                documentContent = documentContent.replace(
+                    /Cơ cấu giá chi tiết theo Phụ lục\s*0?1\s*\.?/i,
+                    `Cơ cấu giá chi tiết theo Phụ lục 01.<br><br>
+        <strong>Tổng giá trị thanh toán:</strong><br>
+        Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>${formattedAmount} VNĐ</strong><br>
+        (Bằng chữ: <em>${readNumberToWords(totalAmount)}</em>). Giá trị này chưa bao gồm thuế GTGT nếu pháp luật hoặc cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng phải chịu thuế GTGT; phần thuế phát sinh được xử lý theo Khoản 2.2 dưới đây.`
+                )
+            }
         }
 
         const DOC_LABELS: Record<string, string> = {
@@ -65,7 +95,7 @@ export async function GET(
     </style>
 </head>
 <body>
-    ${doc.content}
+    ${documentContent}
 </body>
 </html>`
 

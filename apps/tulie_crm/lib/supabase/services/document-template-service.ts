@@ -1134,7 +1134,7 @@ export async function generateDocument(
             // Insert it at generation time so they remain legally complete without a manual reseed.
             if (!templateContent.includes('Tổng giá trị thanh toán Bên A phải thanh toán')) {
                 templateContent = templateContent.replace(
-                    'Cơ cấu giá chi tiết theo Phụ lục 01.',
+                    /Cơ cấu giá chi tiết theo Phụ lục\s*0?1\s*\.?/i,
                     `Cơ cấu giá chi tiết theo Phụ lục 01.<br><br>
         <strong>Tổng giá trị thanh toán:</strong><br>
         Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>{{total_amount_number}} VNĐ</strong><br>
