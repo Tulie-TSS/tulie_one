@@ -420,7 +420,7 @@ export default function TemplateDetailPage() {
                 customerUpdates.customer_mobile = cust.phone || ''
             }
 
-            // Build proposal_appendix_html from quotation.proposal_content (if type=proposal)
+            // Proposal content is merged into the single contractual Appendix 01.
             let proposalAppendixHtml = ''
             if ((q as any).type === 'proposal' && q.proposal_content) {
                 const pc = q.proposal_content as Record<string, string>
@@ -441,7 +441,7 @@ export default function TemplateDetailPage() {
                     } catch { /* ignore */ }
                 }
                 if (sections.length > 0) {
-                    proposalAppendixHtml = `<div style="page-break-before: always;"></div><p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC 02 — ĐỀ XUẤT GIẢI PHÁP</p><p style="text-align:center; font-style:italic; margin-bottom:20px; font-size:9pt;">(Đính kèm Hợp đồng dịch vụ số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>`
+                    proposalAppendixHtml = `<div style="page-break-before: always;"></div><p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC 01 — PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, BẢNG GIÁ &amp; LỘ TRÌNH TRIỂN KHAI</p><p style="text-align:center; font-style:italic; margin-bottom:20px; font-size:9pt;">(Đính kèm Hợp đồng dịch vụ số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>`
                     sections.forEach((sec, idx) => {
                         const content = sec.content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                         proposalAppendixHtml += `<div style="margin-bottom:16px;"><p style="font-weight:bold; font-size:10pt; margin: 0 0 6px 0; border-bottom:1px solid #ddd; padding-bottom:4px;">${idx + 1}. ${sec.label}</p><div style="font-size:9.5pt; text-align:justify; line-height:1.6; padding-left:4px;">${content}</div></div>`
@@ -502,18 +502,14 @@ export default function TemplateDetailPage() {
                 discount_row_html: discountRowHtml,
                 vat_breakdown_html: vatBreakdownHtml,
                 proposal_appendix_html: proposalAppendixHtml,
-                // Clause numbering for contract templates
-                clause_1_2_html: (q as any).type === 'proposal' ? `<tr><td style="width:50px; vertical-align:top; padding:2px 0;">1.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Phạm vi công việc, phương pháp triển khai, sản phẩm bàn giao và lộ trình thực hiện được quy định chi tiết tại <strong>Phụ lục 02</strong> (Đề xuất giải pháp) đính kèm hợp đồng này.</td></tr>` : '',
-                clause_total_value_number: (q as any).type === 'proposal' ? '1.3.' : '1.2.',
-                clause_appendix_number: (q as any).type === 'proposal' ? '1.4.' : '1.3.',
-                clause_appendix_number_plus1: (q as any).type === 'proposal' ? '1.5.' : '1.4.',
-                // Content references – shown/hidden based on proposal type
-                scope_appendix_ref: (q as any).type === 'proposal'
-                    ? 'Phạm vi công việc, yêu cầu kỹ thuật, chức năng chi tiết, tiêu chí nghiệm thu và lộ trình thực hiện được quy định tại <strong>Phụ lục 01</strong> – Bảng báo giá chi tiết và <strong>Phụ lục 02</strong> – Đề xuất giải pháp &amp; Phạm vi công việc, là bộ phận không tách rời của Hợp đồng này.'
-                    : 'Phạm vi công việc, yêu cầu kỹ thuật, chức năng chi tiết, tiêu chí nghiệm thu và lộ trình thực hiện được quy định tại <strong>Phụ lục 01</strong> – Bảng báo giá chi tiết, là bộ phận không tách rời của Hợp đồng này.',
-                timeline_appendix_ref: (q as any).type === 'proposal' ? ' Lộ trình chi tiết theo Phụ lục 02.' : '',
-                change_scope_ref: (q as any).type === 'proposal' ? 'Phụ lục 02' : 'Phụ lục 01',
-                appendix_list_text: (q as any).type === 'proposal' ? 'Phụ lục 01 và Phụ lục 02' : 'Phụ lục 01',
+                clause_1_2_html: '',
+                clause_total_value_number: '1.2.',
+                clause_appendix_number: '1.3.',
+                clause_appendix_number_plus1: '1.4.',
+                scope_appendix_ref: 'Phạm vi công việc, yêu cầu kỹ thuật, chức năng chi tiết, sản phẩm bàn giao, tiêu chí nghiệm thu, bảng giá và lộ trình thực hiện được quy định tại <strong>Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá &amp; Lộ trình triển khai</strong>, là bộ phận không tách rời của Hợp đồng này.',
+                timeline_appendix_ref: ' Lộ trình chi tiết được quy định tại Phụ lục 01.',
+                change_scope_ref: 'Phụ lục 01',
+                appendix_list_text: 'Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai',
             }))
         } catch (err) {
             console.error('Error fetching quotation detail:', err)
@@ -559,7 +555,7 @@ export default function TemplateDetailPage() {
     // Normal download: dùng previewHtml (cleanMode hoặc có placeholder)
     const handleDownload = () => {
         const html = cleanMode ? cleanHtmlForExport : previewHtml
-        const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${template?.name}</title><style>@media print { @page { size: A4; margin: 20mm 15mm 20mm 25mm; } body { margin: 0; } }</style></head><body>${html}</body></html>`
+        const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${template?.name}</title><style>@media print { @page { size: A4; margin: 15.24mm 15.24mm 16.256mm; } body { margin: 0; } }</style></head><body>${html}</body></html>`
         const blob = new Blob([fullHtml], { type: 'text/html' })
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
@@ -571,7 +567,7 @@ export default function TemplateDetailPage() {
 
     // Export for client: always clean (no placeholders), ready for PDF conversion
     const handleExportForClient = () => {
-        const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${template?.name}</title><style>@media print { @page { size: A4; margin: 20mm 15mm 20mm 25mm; } body { margin: 0; } } body { font-family: Arial, sans-serif; } </style></head><body>${cleanHtmlForExport}</body></html>`
+        const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${template?.name}</title><style>@media print { @page { size: A4; margin: 15.24mm 15.24mm 16.256mm; } body { margin: 0; } } body { font-family: Arial, sans-serif; } </style></head><body>${cleanHtmlForExport}</body></html>`
         const blob = new Blob([fullHtml], { type: 'text/html' })
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
@@ -584,7 +580,7 @@ export default function TemplateDetailPage() {
     const handlePrint = () => {
         const printWindow = window.open('', '_blank')
         if (printWindow) {
-            printWindow.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${template?.name}</title><style>@media print { @page { size: A4; margin: 20mm 15mm 20mm 25mm; } body { margin: 0; } }</style></head><body>${previewHtml}</body></html>`)
+            printWindow.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${template?.name}</title><style>@media print { @page { size: A4; margin: 15.24mm 15.24mm 16.256mm; } body { margin: 0; } }</style></head><body>${previewHtml}</body></html>`)
             printWindow.document.close()
             printWindow.focus()
             setTimeout(() => printWindow.print(), 300)
@@ -641,6 +637,7 @@ export default function TemplateDetailPage() {
         amount_in_words: 'Số tiền bằng chữ',
         payment_terms: 'Điều khoản thanh toán',
         delivery_time: 'Thời gian giao hàng',
+        end_date: 'Ngày kết thúc dự kiến',
         delivery_address: 'Địa điểm giao hàng',
         delivery_date: 'Ngày giao hàng',
         service_description: 'Mô tả dịch vụ',

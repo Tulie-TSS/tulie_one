@@ -61,7 +61,7 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
             'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
             'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
             'total_amount_number', 'amount_in_words',
-            'payment_terms', 'delivery_time', 'delivery_address',
+            'payment_terms', 'delivery_time', 'end_date', 'delivery_address',
             'service_description', 'product_service_declaration',
             'contract_title_upper', 'contract_title_body'
         ]
@@ -77,7 +77,7 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
             'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
             'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
             'total_amount_number', 'amount_in_words',
-            'payment_terms', 'delivery_time', 'delivery_address',
+            'payment_terms', 'delivery_time', 'end_date', 'delivery_address',
             'service_description', 'product_service_declaration',
             'contract_title_upper', 'contract_title_body',
             'design_review_days', 'design_review_rounds',
@@ -547,6 +547,7 @@ export async function generateDocument(
             amount_in_words: '',
             payment_terms: '',
             delivery_time: '',
+            end_date: '',
             delivery_address: '',
             delivery_date: '',
             service_description: '',
@@ -588,9 +589,8 @@ export async function generateDocument(
             const quoteProposal = (contract.quotation?.proposal_content as Record<string, any>) || {}
             if (quoteProposal.delivery_time) {
                 variables.delivery_time = quoteProposal.delivery_time
-            } else if (contract.end_date) {
-                variables.delivery_time = formatLocalDateString(contract.end_date)
             }
+            variables.end_date = contract.end_date ? formatLocalDateString(contract.end_date) : 'sẽ được các bên xác nhận tại Phụ lục 01'
 
             // Use delivery_address from snapshot if available, otherwise fallback to default based on type
             variables.delivery_address = custData?.delivery_address || 
@@ -1026,38 +1026,16 @@ export async function generateDocument(
             variables.contract_clause_count = 'mười bốn (14) điều'
         }
 
-        // Determine whether to include proposal appendix
-        const includeProposalAppendix = contract?.include_proposal_appendix !== false
-
-        // Set clause numbering based on whether proposal appendix is included
-        // When included: 1.1, 1.2 (proposal ref), 1.3 (scope ref), 1.4 (SW law clause), 1.5 (appendix note)
-        // When not included: 1.1, 1.2 (scope ref), 1.3 (SW law clause), 1.4 (appendix note)
-        const hasProposalAppendix = includeProposalAppendix && contract?.quotation?.type === 'proposal'
-
-        if (hasProposalAppendix) {
-            variables.clause_1_2_html = `<tr>
-              <td style="width:50px; vertical-align:top; padding:2px 0;">1.2.</td>
-              <td style="vertical-align:top; padding:2px 0; text-align:justify;">Phạm vi công việc, phương pháp triển khai, sản phẩm bàn giao và lộ trình thực hiện được quy định chi tiết tại <strong>Phụ lục 02</strong> (Đề xuất giải pháp) đính kèm hợp đồng này.</td>
-            </tr>`
-            variables.clause_total_value_number = '1.3.'
-            variables.clause_appendix_number = '1.4.'
-            variables.clause_appendix_number_plus1 = '1.5.'
-            // Scope reference mentions both PL01 and PL02
-            variables.scope_appendix_ref = 'Phạm vi công việc, yêu cầu kỹ thuật, chức năng chi tiết, tiêu chí nghiệm thu và lộ trình thực hiện được quy định tại <strong>Phụ lục 01</strong> – Bảng báo giá chi tiết và <strong>Phụ lục 02</strong> – Đề xuất giải pháp &amp; Phạm vi công việc, là bộ phận không tách rời của Hợp đồng này.'
-            variables.timeline_appendix_ref = ' Lộ trình chi tiết theo Phụ lục 02.'
-            variables.change_scope_ref = 'Phụ lục 02'
-            variables.appendix_list_text = 'Phụ lục 01 và Phụ lục 02'
-        } else {
-            variables.clause_1_2_html = ''
-            variables.clause_total_value_number = '1.2.'
-            variables.clause_appendix_number = '1.3.'
-            variables.clause_appendix_number_plus1 = '1.4.'
-            // Scope reference mentions only PL01
-            variables.scope_appendix_ref = 'Phạm vi công việc, yêu cầu kỹ thuật, chức năng chi tiết, tiêu chí nghiệm thu và lộ trình thực hiện được quy định tại <strong>Phụ lục 01</strong> – Bảng báo giá chi tiết, là bộ phận không tách rời của Hợp đồng này.'
-            variables.timeline_appendix_ref = ''
-            variables.change_scope_ref = 'Phụ lục 01'
-            variables.appendix_list_text = 'Phụ lục 01'
-        }
+        // One unified appendix is the single source of truth for price, scope and delivery.
+        const hasProposalAppendix = Boolean(contract)
+        variables.clause_1_2_html = ''
+        variables.clause_total_value_number = '1.2.'
+        variables.clause_appendix_number = '1.3.'
+        variables.clause_appendix_number_plus1 = '1.4.'
+        variables.scope_appendix_ref = 'Phạm vi công việc, yêu cầu kỹ thuật, chức năng chi tiết, sản phẩm bàn giao, tiêu chí nghiệm thu, bảng giá và lộ trình thực hiện được quy định tại <strong>Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá &amp; Lộ trình triển khai</strong>, là bộ phận không tách rời của Hợp đồng này.'
+        variables.timeline_appendix_ref = ' Lộ trình chi tiết được quy định tại Phụ lục 01.'
+        variables.change_scope_ref = 'Phụ lục 01'
+        variables.appendix_list_text = 'Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai'
 
         // Build proposal appendix HTML from quotation.proposal_content
         if (hasProposalAppendix) {
@@ -1087,11 +1065,14 @@ export async function generateDocument(
                 } catch { /* skip */ }
             }
 
-            if (proposalSections.length > 0) {
+            {
                 let proposalHtml = `
                     <div style="page-break-before: always;"></div>
-                    <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC 02 — ĐỀ XUẤT GIẢI PHÁP</p>
+                    <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC 01 — PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, BẢNG GIÁ &amp; LỘ TRÌNH TRIỂN KHAI</p>
                     <p style="text-align:center; font-style:italic; margin-bottom:20px; font-size:9pt;">(Đính kèm Hợp đồng kinh tế số ${variables.contract_number || ''} ngày ${variables.day || ''}/${variables.month || ''}/${variables.year || ''})</p>
+                    <p style="font-weight:bold; font-size:10pt; margin: 0 0 6px 0;">I. BẢNG GIÁ VÀ GIÁ TRỊ HỢP ĐỒNG</p>
+                    ${variables.contract_items_table || ''}
+                    <p style="font-weight:bold; font-size:10pt; margin: 18px 0 6px 0;">II. PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, TIÊU CHÍ NGHIỆM THU VÀ LỘ TRÌNH</p>
                 `
 
                 proposalSections.forEach((section, idx) => {
@@ -1107,8 +1088,6 @@ export async function generateDocument(
                 })
 
                 variables.proposal_appendix_html = proposalHtml
-            } else {
-                variables.proposal_appendix_html = ''
             }
         } else {
             variables.proposal_appendix_html = ''

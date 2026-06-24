@@ -8,7 +8,7 @@
 // 1. SOFTWARE & WEBSITE DEVELOPMENT TEMPLATE (HĐ 1 - VAT EXEMPT)
 // ==========================================
 export const contractSoftwareTemplate = `
-<div style="font-family: Arial, 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', 'MS Gothic', sans-serif; font-size: 10pt; color: #000; max-width: 210mm; margin: 0 auto; padding: 20mm 15mm 20mm 25mm; line-height: 1.5; text-align: justify;">
+<div style="font-family: Arial, 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', 'MS Gothic', sans-serif; font-size: 10pt; color: #000; max-width: 210mm; margin: 0 auto; padding: 0; line-height: 1.5; text-align: justify;">
   <!-- Header: 2 columns -->
   <table style="width:100%; border-collapse:collapse; margin-bottom: 0;">
     <tr>
@@ -236,7 +236,7 @@ export const contractSoftwareTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thời gian thực hiện:</strong> Thời gian thực hiện dự kiến: {{delivery_time}} ngày làm việc kể từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1.{{timeline_appendix_ref}}</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Tổng thời gian thực hiện dự kiến:</strong> {{delivery_time}} ngày làm việc, được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày kết thúc dự kiến:</strong> {{end_date}}. Ngày kết thúc dự kiến được điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán.{{timeline_appendix_ref}}</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td>
@@ -604,7 +604,7 @@ export const contractSoftwareTemplate = `
 // 2. DESIGN, MEDIA PRODUCTION & PRINTING TEMPLATE (HĐ 2 - WITH VAT)
 // ==========================================
 export const contractDesignTemplate = `
-<div style="font-family: Arial, 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', 'MS Gothic', sans-serif; font-size: 10pt; color: #000; max-width: 210mm; margin: 0 auto; padding: 20mm 15mm 20mm 25mm; line-height: 1.5; text-align: justify;">
+<div style="font-family: Arial, 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', 'MS Gothic', sans-serif; font-size: 10pt; color: #000; max-width: 210mm; margin: 0 auto; padding: 0; line-height: 1.5; text-align: justify;">
   <!-- Header: 2 columns -->
   <table style="width:100%; border-collapse:collapse; margin-bottom: 0;">
     <tr>
@@ -832,7 +832,7 @@ export const contractDesignTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.5.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thời gian thực hiện:</strong> Tổng thời gian thực hiện dự kiến: {{delivery_time}} ngày làm việc kể từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1.{{timeline_appendix_ref}}</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Tổng thời gian thực hiện dự kiến:</strong> {{delivery_time}} ngày làm việc, được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày kết thúc dự kiến:</strong> {{end_date}}. Ngày kết thúc dự kiến được điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán.{{timeline_appendix_ref}}</td>
     </tr>
   </table>
 

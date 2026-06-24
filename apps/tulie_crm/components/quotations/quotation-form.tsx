@@ -1719,18 +1719,18 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                         <div className="grid gap-6 md:grid-cols-2">
                             {/* Delivery time */}
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium">Thời hạn bàn giao dự kiến</Label>
+                                <Label className="text-sm font-medium">Tổng thời gian thực hiện dự kiến (ngày làm việc)</Label>
                                 <div className="flex gap-2">
                                     <Input
                                         value={deliveryTime}
                                         onChange={(e) => setDeliveryTime(e.target.value)}
-                                        placeholder="VD: 30 ngày làm việc kể từ ngày ký hợp đồng và nhận tạm ứng"
+                                        placeholder="VD: 30"
                                         className="flex-1 h-9"
                                     />
                                     <Button
                                         type="button"
                                         variant="outline"
-                                        onClick={() => setDeliveryTime('30 ngày làm việc kể từ ngày nhận tạm ứng')}
+                                        onClick={() => setDeliveryTime('30')}
                                         className="shrink-0 text-xs text-muted-foreground hover:text-foreground h-9"
                                     >
                                         Mẫu 30 ngày
@@ -1738,7 +1738,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                     <Button
                                         type="button"
                                         variant="outline"
-                                        onClick={() => setDeliveryTime('45 ngày làm việc kể từ ngày nhận tạm ứng')}
+                                        onClick={() => setDeliveryTime('45')}
                                         className="shrink-0 text-xs text-muted-foreground hover:text-foreground h-9"
                                     >
                                         Mẫu 45 ngày

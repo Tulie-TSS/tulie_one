@@ -76,7 +76,7 @@ export async function GET(
     <title>${title} - ${result.variables?.contract_number || contractId}</title>
     <style>
         @media print {
-            @page { size: A4; margin: 20mm 15mm 20mm 25mm; }
+            @page { size: A4; margin: 15.24mm 15.24mm 16.256mm; }
             body { margin: 0; background: none; }
             body > div { padding: 0 !important; margin: 0 !important; max-width: none !important; box-shadow: none !important; border: none !important; }
         }

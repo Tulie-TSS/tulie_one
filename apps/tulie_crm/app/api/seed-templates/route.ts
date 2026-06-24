@@ -64,7 +64,7 @@ export async function POST(request: Request) {
                     'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
                     'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
                     'total_amount_number', 'amount_in_words',
-                    'payment_terms', 'delivery_time', 'delivery_address',
+                    'payment_terms', 'delivery_time', 'end_date', 'delivery_address',
                     'service_description', 'warranty_clause_html', 'contract_clause_count',
                     'contract_title_upper', 'contract_title_body'
                 ],
@@ -80,7 +80,7 @@ export async function POST(request: Request) {
                     'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
                     'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
                     'total_amount_number', 'amount_in_words',
-                    'payment_terms', 'delivery_time', 'delivery_address',
+                    'payment_terms', 'delivery_time', 'end_date', 'delivery_address',
                     'service_description', 'warranty_clause_html', 'contract_clause_count',
                     'contract_title_upper', 'contract_title_body',
                     'design_review_days', 'design_review_rounds',

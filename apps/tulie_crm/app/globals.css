@@ -204,7 +204,8 @@ html {
 @media print {
   @page {
     size: A4;
-    margin: 15mm;
+    /* 0.6in top/left/right, 0.64in bottom — shared default for Print and Save as PDF. */
+    margin: 15.24mm 15.24mm 16.256mm;
   }
 
   *, *::before, *::after {

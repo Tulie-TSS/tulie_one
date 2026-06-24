@@ -231,6 +231,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
     if (!signedDate) missingFields.push('Ngày ký hợp đồng')
     if (!customerAbbreviation && category !== 'freelancer') missingFields.push('Tên viết tắt khách hàng')
     if (!totalValue) missingFields.push('Giá trị hợp đồng')
+    if (category === 'customer' && !endDate) missingFields.push('Ngày kết thúc dự kiến')
     if (milestones.filter(m => m.type === 'payment').length === 0) missingFields.push('Mốc thanh toán (ít nhất 1 đợt)')
 
     const handleSubmit = async (e: React.FormEvent) => {

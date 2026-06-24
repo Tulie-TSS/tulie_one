@@ -52,7 +52,7 @@ export async function GET(
         @media print {
             @page {
                 size: A4;
-                margin: 20mm 15mm 20mm 25mm;
+                margin: 15.24mm 15.24mm 16.256mm;
                 @bottom-right {
                     content: "Trang " counter(page) " / " counter(pages);
                     font-family: Arial, sans-serif;
