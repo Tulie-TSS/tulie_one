@@ -25,7 +25,7 @@ export const freelanceDeliveryTemplate = `
   <p style="text-align:center; font-size:11pt; margin: -15px 0 20px 0;">(KHOÁN VIỆC LẬP TRÌNH)</p>
 
   <!-- Căn cứ -->
-  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ vào Hợp đồng dịch vụ khoán việc số {{contract_number}} đã ký kết giữa Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie và Ông/Bà {{freelancer_name}};</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ vào {{contract_type}} khoán việc số {{contract_number}} đã ký kết giữa Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie và Ông/Bà {{freelancer_name}};</p>
   <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào tiến độ thực hiện và kết quả công việc thực tế của Bên B.</p>
 
   <p style="margin:10px 0;">Hôm nay, ngày {{day}} tháng {{month}} năm {{year}}, tại văn phòng Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie, chúng tôi gồm có:</p>
@@ -150,7 +150,7 @@ export const freelanceDeliveryTemplate = `
   <p style="margin:10px 0; text-align:justify;">
     Bên A xác nhận Bên B đã bàn giao đầy đủ sản phẩm, kết quả công việc đạt yêu cầu chất lượng của Bên A theo đúng thỏa thuận tại Hợp đồng. Bên A cam kết thanh toán số tiền thực lĩnh đợt cuối (Đợt 2) nêu trên cho Bên B trong vòng 07 ngày làm việc kể từ ngày ký Biên bản này.
   </p>
-  <p style="margin:10px 0; text-align:justify;">Biên bản Nghiệm thu này là căn cứ để hai bên thực hiện thủ tục tất toán và thanh lý hợp đồng dịch vụ khoán việc.</p>
+  <p style="margin:10px 0; text-align:justify;">Biên bản Nghiệm thu này là căn cứ để hai bên thực hiện thủ tục tất toán và thanh lý {{contract_type}} khoán việc.</p>
   <p style="margin:10px 0; text-align:justify;">Biên bản được lập thành hai (02) bản có giá trị pháp lý như nhau, mỗi Bên giữ một (01) bản.</p>
 
   <!-- Chữ ký -->

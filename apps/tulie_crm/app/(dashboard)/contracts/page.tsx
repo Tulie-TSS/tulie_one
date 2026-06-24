@@ -34,7 +34,7 @@ export default async function ContractsPage() {
                     <div>
                         <h1 className="text-2xl font-semibold tracking-tight">Hợp đồng</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
-                            Quản lý và theo dõi các hợp đồng dịch vụ
+                            Quản lý và theo dõi các hợp đồng
                         </p>
                     </div>
                 </div>

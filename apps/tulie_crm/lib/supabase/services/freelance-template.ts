@@ -488,7 +488,7 @@ export const freelanceTemplate = `
   <!-- ========== PHỤ LỤC 01: BẢNG HẠNG MỤC CHI TIẾT ========== -->
   <div style="page-break-before: always;"></div>
   <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC 01 — BẢNG HẠNG MỤC CÔNG VIỆC</p>
-  <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Đính kèm Hợp đồng dịch vụ lập trình số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
+  <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Đính kèm {{contract_type}} lập trình số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
 
   <p style="font-weight:bold; margin: 10px 0 5px 0;">1. Tên Sản Phẩm/Dự án: <span style="font-weight:normal;">{{project_name}}</span></p>
   <p style="font-weight:bold; margin: 10px 0 10px 0;">2. Chi tiết hạng mục và phí dịch vụ:</p>
