@@ -1,0 +1,23 @@
+Mẫu Phụ lục 01 được viết lại theo cấu trúc chuẩn, rõ ràng, bám sát nội dung đã gộp và có lợi cho phía Tulie. Bạn có thể điều chỉnh con số, mô tả chi tiết theo từng dự án, tôi sẽ chèn dấu "..." ở chỗ có thể tùy biến.
+PHỤ LỤC SỐ 01
+PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, BẢNG GIÁ & LỘ TRÌNH TRIỂN KHAI
+(Đính kèm Hợp đồng dịch vụ số …/HĐDV-TL-HAMEDCO ngày …/…/2026)
+1. THÔNG TIN CHUNG
+Bên A: CÔNG TY CỔ PHẦN TRANG THIẾT BỊ VÀ VẬT TƯ Y TẾ HÀ NỘI  
+Bên B: CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE  
+Tên dự án: Thiết kế và phát triển website HAMEDCO  
+Môi trường triển khai: Next.js + Payload CMS + … (nếu có thêm)
+2. BẢNG HẠNG MỤC CÔNG VIỆC VÀ ĐƠN GIÁ
+* Ghi chú:  
+Các hạng mục 6 và 7 hiện không tính phí riêng trong gói 14.000.000 VNĐ, nhưng nếu phạm vi thực tế vượt quá mức nêu trên (số lượng trang, số lượng dữ liệu, số vòng chỉnh sửa, thời lượng đào tạo, …), hai bên sẽ thỏa thuận chi phí bổ sung theo Điều 6 Hợp đồng.  
+KCT = Không chịu thuế GTGT theo quy định pháp luật tại thời điểm ký.
+3. TỔNG HỢP GIÁ TRỊ
+Tạm tính tiền dịch vụ: 14.000.000 VNĐ  
+Tổng chiết khấu: 0 VNĐ  
+Cộng tiền hàng: 14.000.000 VNĐ  
+Thuế suất GTGT (VAT): Không chịu thuế  
+Tổng cộng thanh toán: 14.000.000 VNĐ  
+Bằng chữ: Mười bốn triệu đồng chẵn.
+Phụ lục này là một phần không tách rời của Hợp đồng dịch vụ số …/HĐDV-TL-HAMEDCO.
+ĐẠI DIỆN BÊN A                    ĐẠI DIỆN BÊN B
+(Ký, ghi rõ họ tên, đóng dấu)      (Ký, ghi rõ họ tên, đóng dấu)
