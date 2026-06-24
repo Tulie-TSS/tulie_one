@@ -950,7 +950,17 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <Label>Loại báo giá</Label>
+                                <div className="flex flex-wrap items-center justify-between gap-3">
+                                    <Label>Loại báo giá</Label>
+                                    <Button type="button" variant="outline" size="sm" onClick={() => {
+                                        setType('proposal')
+                                        setProposalContent((current: any) => ({ ...current, sections: getDefaultWebsiteContractAppendix() }))
+                                        toast.success('Đã áp dụng mẫu Phụ lục 01 mặc định cho báo giá website')
+                                    }}>
+                                        <RotateCcw className="h-4 w-4" />
+                                        Khôi phục mẫu Phụ lục website
+                                    </Button>
+                                </div>
                                 <RadioGroup
                                     value={type}
                                     onValueChange={(val: any) => setType(val)}
@@ -1013,13 +1023,6 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                     <CardDescription className="mt-1">Nội dung chuẩn cho báo giá website; chỉnh sửa khi có yêu cầu riêng của khách hàng.</CardDescription>
                                 </div>
                                 <div className="flex gap-2">
-                                    <Button type="button" variant="outline" size="sm" onClick={() => {
-                                        setProposalContent((current: any) => ({ ...current, sections: getDefaultWebsiteContractAppendix() }))
-                                        toast.success('Đã khôi phục nội dung phụ lục mặc định')
-                                    }}>
-                                        <RotateCcw className="h-4 w-4" />
-                                        <span>Khôi phục mặc định</span>
-                                    </Button>
                                     <Button type="button" variant="outline" size="sm" onClick={handleExportProposalJson}>
                                         <FileJson className="h-4 w-4" />
                                         <span>Proposal JSON</span>
