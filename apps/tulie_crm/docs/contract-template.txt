@@ -31,9 +31,9 @@ Tài khoản số: 86683979 tại Ngân hàng TMCP Kỹ Thương Việt Nam (Tec
 Hai bên thống nhất ký kết Hợp đồng kinh tế thiết kế và phát triển website với các điều khoản sau:
 ĐIỀU 1. NỘI DUNG VÀ PHẠM VI DỊCH VỤ
 1.1. Bên B cung cấp cho Bên A dịch vụ thiết kế giao diện, lập trình Frontend, Backend, xây dựng hệ thống quản trị nội dung (CMS), tối ưu SEO, triển khai đa ngôn ngữ, chuyển dữ liệu và bàn giao website cho Bên A theo nội dung chi tiết tại:  
-PHỤ LỤC SỐ 01 – PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, BẢNG GIÁ & LỘ TRÌNH TRIỂN KHAI.
-1.2. Phạm vi công việc, sản phẩm bàn giao, bảng giá, lộ trình thực hiện và yêu cầu kỹ thuật được quy định cụ thể tại PHỤ LỤC SỐ 01, là bộ phận không tách rời của Hợp đồng này.
-1.3. Bên B có trách nhiệm thực hiện dịch vụ theo đúng phạm vi công việc đã thỏa thuận tại PHỤ LỤC SỐ 01. Mọi yêu cầu bổ sung, thay đổi ngoài phạm vi quy định sẽ được xem là phát sinh (Change Request) và được xử lý theo Điều 6 của Hợp đồng này.
+Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai.
+1.2. Phạm vi công việc, sản phẩm bàn giao, bảng giá, lộ trình thực hiện và yêu cầu kỹ thuật được quy định cụ thể tại Phụ lục 01, là bộ phận không tách rời của Hợp đồng này.
+1.3. Bên B có trách nhiệm thực hiện dịch vụ theo đúng phạm vi công việc đã thỏa thuận tại Phụ lục 01. Mọi yêu cầu bổ sung, thay đổi ngoài phạm vi quy định sẽ được xem là phát sinh (Change Request) và được xử lý theo Điều 6 của Hợp đồng này.
 ĐIỀU 2. GIÁ TRỊ HỢP ĐỒNG, TIẾN ĐỘ VÀ PHƯƠNG THỨC THANH TOÁN
 2.1. Giá trị hợp đồng
 Tổng giá trị Hợp đồng: 14.000.000 VNĐ
