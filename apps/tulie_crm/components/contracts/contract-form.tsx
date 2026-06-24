@@ -251,7 +251,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
         try {
             const updateData: Record<string, any> = {
                 customer_id: customerId,
-                title: title.trim() || (category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế'),
+                title: title.trim() || (category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng dịch vụ'),
                 total_amount: totalValue,
                 start_date: startDate ? format(startDate, 'yyyy-MM-dd') : null,
                 end_date: endDate ? format(endDate, 'yyyy-MM-dd') : null,
@@ -384,8 +384,8 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                 <Label>Đối tượng hợp đồng</Label>
                                  <Select value={category} onValueChange={(v: any) => {
                                      setCategory(v)
-                                     if (!title || title === 'Hợp đồng kinh tế' || title === 'Hợp đồng cộng tác viên') {
-                                         setTitle(v === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế')
+                                     if (!title || title === 'Hợp đồng dịch vụ' || title === 'Hợp đồng cộng tác viên') {
+                                         setTitle(v === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng dịch vụ')
                                      }
                                  }}>
                                     <SelectTrigger>
@@ -492,8 +492,8 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                             if (contractType === 'order') {
                                                 if (q.title) setTitle(q.title)
                                             } else {
-                                                if (!title || title === 'Hợp đồng kinh tế' || title === 'Hợp đồng cộng tác viên') {
-                                                    setTitle(category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế')
+                                                if (!title || title === 'Hợp đồng dịch vụ' || title === 'Hợp đồng cộng tác viên') {
+                                                    setTitle(category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng dịch vụ')
                                                 }
                                             }
                                             if (q.terms) setTerms(q.terms)
@@ -543,7 +543,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                 <Input
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    placeholder={category === 'freelancer' ? "Mặc định: Hợp đồng cộng tác viên" : "Mặc định: Hợp đồng kinh tế"}
+                                    placeholder={category === 'freelancer' ? "Mặc định: Hợp đồng cộng tác viên" : "Mặc định: Hợp đồng dịch vụ"}
                                 />
                             </div>
 

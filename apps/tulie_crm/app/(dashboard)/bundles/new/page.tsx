@@ -71,7 +71,7 @@ export default function NewBundlePage() {
                 { id: 'c2', contract_number: 'HD-2026-0002', customer_id: '2' }
             ])
             setTemplates([
-                { id: 'default-0', name: 'Hợp đồng kinh tế', type: 'contract' },
+                { id: 'default-0', name: 'Hợp đồng dịch vụ', type: 'contract' },
                 { id: 'default-1', name: 'Đề nghị thanh toán', type: 'payment_request' },
                 { id: 't3', name: 'Báo giá chi tiết', type: 'quotation' }
             ])

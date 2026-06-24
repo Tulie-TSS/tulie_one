@@ -62,7 +62,7 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
         ]
     },
     {
-        name: 'Hợp đồng kinh tế (Mẫu chuẩn)',
+        name: 'Hợp đồng dịch vụ (Mẫu chuẩn)',
         type: 'contract',
         content: contractSoftwareTemplate,
         variables: [
@@ -564,8 +564,8 @@ export async function generateDocument(
             service_description: '',
             payment_percentage: '',
             payment_amount: '',
-            contract_title_upper: 'HỢP ĐỒNG KINH TẾ',
-            contract_title_body: 'hợp đồng kinh tế',
+            contract_title_upper: 'HỢP ĐỒNG DỊCH VỤ',
+            contract_title_body: 'hợp đồng dịch vụ',
             design_review_days: '03',
             design_review_rounds: '03',
             video_review_days: '03',
@@ -1443,7 +1443,7 @@ export async function generateDocumentBundle(contractId: string) {
         if (docType === 'contract') {
             const targetName = contract.contract_template === 'design'
                 ? 'Hợp đồng thiết kế & in ấn (Mẫu chuẩn)'
-                : 'Hợp đồng kinh tế (Mẫu chuẩn)'
+                : 'Hợp đồng dịch vụ (Mẫu chuẩn)'
             const specificTemplate = templates.find(t => t.name === targetName)
             if (specificTemplate) {
                 template = specificTemplate

@@ -49,7 +49,7 @@ export const paymentTemplate = `
 
   <!-- Nội dung đề nghị -->
   <p style="margin:6px 0; text-indent: 1.27cm;">
-    Căn cứ Hợp đồng kinh tế số <b>{{contract_number}}</b> ký ngày <b>{{contract_date}}</b> giữa <b>{{customer_company}}</b> và <b>Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie</b> về việc <i>{{service_description}}</i>;
+    Căn cứ Hợp đồng dịch vụ số <b>{{contract_number}}</b> ký ngày <b>{{contract_date}}</b> giữa <b>{{customer_company}}</b> và <b>Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie</b> về việc <i>{{service_description}}</i>;
   </p>
 
   <p style="margin:6px 0; text-indent: 1.27cm;">

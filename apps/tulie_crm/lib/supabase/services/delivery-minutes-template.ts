@@ -28,7 +28,7 @@ export const deliveryMinutesTemplate = `
   <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0; text-transform: uppercase;">BIÊN BẢN NGHIỆM THU VÀ BÀN GIAO SẢN PHẨM/DỊCH VỤ</p>
 
   <!-- Căn cứ -->
-  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Hợp đồng kinh tế số {{contract_number}} đã ký kết giữa Bên A và Bên B;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Hợp đồng dịch vụ số {{contract_number}} đã ký kết giữa Bên A và Bên B;</p>
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ {{appendix_list_text}} đính kèm Hợp đồng;</p>
   <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào kết quả triển khai thực tế và sự đồng ý nghiệm thu của hai bên.</p>
 

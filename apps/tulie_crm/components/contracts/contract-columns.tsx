@@ -87,7 +87,7 @@ export const contractColumns: ColumnDef<Contract>[] = [
             return (
                 <div className="min-w-[150px] max-w-[400px]">
                     <span className="text-sm font-medium text-foreground whitespace-normal break-words leading-snug block">
-                        {row.getValue('title') || (contract.category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế')}
+                        {row.getValue('title') || (contract.category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng dịch vụ')}
                     </span>
                 </div>
             )

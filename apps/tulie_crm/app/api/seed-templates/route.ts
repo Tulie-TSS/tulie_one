@@ -54,7 +54,7 @@ export async function POST(request: Request) {
                 ],
             },
             {
-                name: 'Hợp đồng kinh tế (Mẫu chuẩn)',
+                name: 'Hợp đồng dịch vụ (Mẫu chuẩn)',
                 type: 'contract',
                 content: contractSoftwareTemplate,
                 variables: [

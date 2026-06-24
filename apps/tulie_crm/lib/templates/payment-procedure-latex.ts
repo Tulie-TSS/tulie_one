@@ -47,7 +47,7 @@ export const LATEX_CONTRACT_TEMPLATE = `
 
 \\vspace{20pt}
 \\begin{center}
-    {\\Large \\textbf{HỢP ĐỒNG KINH TẾ}}
+    {\\Large \\textbf{HỢP ĐỒNG DỊCH VỤ}}
 \\end{center}
 
 \\vspace{10pt}
@@ -191,7 +191,7 @@ export const LATEX_PAYMENT_REQUEST_TEMPLATE = `
 \\textbf{Kính gửi: {{customer_company}}}
 
 \\vspace{10pt}
-Thực hiện Hợp đồng kinh tế số \\textbf{ {{contract_number}} } ký ngày {{contract_date_day}}/{{contract_date_month}}/{{contract_date_year}} giữa {{customer_company}} và Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie về việc cung cấp hàng hóa/dịch vụ, chúng tôi đã hoàn thành việc bàn giao sản phẩm.
+Thực hiện Hợp đồng dịch vụ số \\textbf{ {{contract_number}} } ký ngày {{contract_date_day}}/{{contract_date_month}}/{{contract_date_year}} giữa {{customer_company}} và Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie về việc cung cấp hàng hóa/dịch vụ, chúng tôi đã hoàn thành việc bàn giao sản phẩm.
 
 Theo điều khoản thanh toán, chúng tôi kính đề nghị Quý khách hàng thanh toán số tiền:
 \\begin{center}

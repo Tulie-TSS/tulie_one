@@ -60,7 +60,7 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
     const [customerId, setCustomerId] = useState('')
     const [quotationId, setQuotationId] = useState(fromQuoteId || '')
     const [projectId, setProjectId] = useState('')
-    const [title, setTitle] = useState('Hợp đồng kinh tế')
+    const [title, setTitle] = useState('Hợp đồng dịch vụ')
     const [totalValue, setTotalValue] = useState(0)
     const [startDate, setStartDate] = useState<Date>()
     const [endDate, setEndDate] = useState<Date>()
@@ -129,8 +129,8 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
             setCustomerId(quote.customer_id)
             const newTotal = quote.total_amount
             setTotalValue(newTotal)
-            if (!title || title === 'Hợp đồng kinh tế' || title === 'Hợp đồng cộng tác viên') {
-                setTitle(category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế')
+            if (!title || title === 'Hợp đồng dịch vụ' || title === 'Hợp đồng cộng tác viên') {
+                setTitle(category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng dịch vụ')
             }
             setProductNameInContract(quote.product_name_in_contract || quote.proposal_content?.product_name_in_contract || '')
             setVatExemptStatus(quote.vat_exempt_status || quote.proposal_content?.vat_exempt_status || '0_percent')
@@ -170,7 +170,7 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                 customer_id: customerId,
                 quotation_id: quotationId || undefined,
                 project_id: projectId || selectedQuote?.project_id || undefined,
-                title: title.trim() || (category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế'),
+                title: title.trim() || (category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng dịch vụ'),
                 total_amount: totalValue,
                 start_date: startDate?.toISOString(),
                 end_date: endDate?.toISOString(),
@@ -252,8 +252,8 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                                 <Label>Đối tượng hợp đồng</Label>
                                 <Select value={category} onValueChange={(v: any) => {
                                     setCategory(v)
-                                    if (!title || title === 'Hợp đồng kinh tế' || title === 'Hợp đồng cộng tác viên') {
-                                        setTitle(v === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế')
+                                    if (!title || title === 'Hợp đồng dịch vụ' || title === 'Hợp đồng cộng tác viên') {
+                                        setTitle(v === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng dịch vụ')
                                     }
                                 }}>
                                     <SelectTrigger>
@@ -335,7 +335,7 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                                 <Input
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    placeholder={category === 'freelancer' ? "Mặc định: Hợp đồng cộng tác viên" : "Mặc định: Hợp đồng kinh tế"}
+                                    placeholder={category === 'freelancer' ? "Mặc định: Hợp đồng cộng tác viên" : "Mặc định: Hợp đồng dịch vụ"}
                                 />
                             </div>
 
