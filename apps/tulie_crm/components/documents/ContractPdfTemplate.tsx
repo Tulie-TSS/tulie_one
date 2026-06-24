@@ -47,7 +47,7 @@ const ContractPdfTemplate: React.FC<ContractPdfTemplateProps> = ({ data }) => {
                     <Text style={styles.docDate}>Hà Nội, ngày {day} tháng {month} năm {year}</Text>
                 </View>
 
-                <Text style={styles.title}>Hợp đồng kinh tế</Text>
+                <Text style={styles.title}>Hợp đồng dịch vụ</Text>
 
                 {/* Law Bases */}
                 <View style={styles.lawSection}>

@@ -185,7 +185,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                                             </div>
                                             <div className="text-center">
                                                 <p className="text-[10px] text-muted-foreground">Bước 2</p>
-                                                <h4 className="text-[12px] text-foreground uppercase">Hợp đồng kinh tế</h4>
+                                                <h4 className="text-[12px] text-foreground uppercase">Hợp đồng dịch vụ</h4>
                                             </div>
                                         </div>
                                         <div className="rounded-md border border-dashed border-slate-200 bg-slate-50/50 p-4 h-[100px] flex items-center justify-center text-center">

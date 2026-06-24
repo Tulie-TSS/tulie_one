@@ -39,7 +39,7 @@ export async function getContracts(customerId?: string, type?: string, brand?: s
             return []
         }
 
-        return data as Contract[]
+        return (data as Contract[]).map(normalizeContractTitle)
     } catch (err) {
         console.error('Fatal error in getContracts:', err)
         return []
@@ -60,11 +60,24 @@ export async function getContractById(id: string) {
             return null
         }
 
-        return data as Contract
+        return normalizeContractTitle(data as Contract)
     } catch (err) {
         console.error('Fatal error in getContractById:', err)
         return null
     }
+}
+
+function normalizeContractTitle(contract: Contract): Contract {
+    if (!contract) return contract
+    if (contract.category === 'freelancer') return contract
+    const title = (contract.title || '').trim()
+    if (!title || /hợp đồng kinh tế/i.test(title)) {
+        return {
+            ...contract,
+            title: 'Hợp đồng dịch vụ',
+        }
+    }
+    return contract
 }
 
 export async function createContract(contract: Partial<Contract>, milestones: Partial<ContractMilestone>[]) {
@@ -94,7 +107,7 @@ export async function createContract(contract: Partial<Contract>, milestones: Pa
     }
 
     if (!contract.title || contract.title.trim() === '') {
-        contract.title = contract.category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế'
+        contract.title = contract.category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng dịch vụ'
     }
 
     // Try to get brand if missing
@@ -277,7 +290,7 @@ export async function updateContract(id: string, contract: Partial<Contract>, mi
         if (cleanContract.title !== undefined) {
             const titleVal = cleanContract.title
             if (titleVal === null || (typeof titleVal === 'string' && titleVal.trim() === '')) {
-                cleanContract.title = category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng kinh tế'
+        cleanContract.title = category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng dịch vụ'
             }
         }
 
@@ -589,7 +602,7 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
             contract_number: formattedNum,
             customer_id: quotation.customer_id,
             quotation_id: quotation.id,
-            title: type === 'order' ? (quotation.title || `Đơn hàng từ ${quotation.quotation_number}`) : 'Hợp đồng kinh tế',
+            title: type === 'order' ? (quotation.title || `Đơn hàng từ ${quotation.quotation_number}`) : 'Hợp đồng dịch vụ',
             total_amount: quotation.total_amount,
             status: 'draft',
             type: type,

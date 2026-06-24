@@ -60,7 +60,7 @@ export async function GET(
 
         const html = result.content || ''
         const DOCUMENT_LABELS: Record<string, string> = {
-            contract: 'Hợp đồng kinh tế',
+            contract: 'Hợp đồng dịch vụ',
             freelance_contract: 'Hợp đồng Cộng tác viên',
             order: 'Đơn đặt hàng',
             payment_request: 'Đề nghị thanh toán',

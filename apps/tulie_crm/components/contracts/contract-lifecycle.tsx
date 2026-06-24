@@ -31,7 +31,7 @@ function getLifecycleSteps(contract: Contract, project?: Project | null): Lifecy
     const milestones = contract.milestones || []
 
     const isOrder = contract.type === 'order'
-    const docLabel = isOrder ? 'Đơn đặt hàng' : 'Hợp đồng kinh tế'
+    const docLabel = isOrder ? 'Đơn đặt hàng' : (contract.title || 'Hợp đồng dịch vụ')
     const docType = isOrder ? 'order' : 'contract'
 
     // Separate milestones
