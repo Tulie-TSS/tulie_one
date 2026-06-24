@@ -179,10 +179,7 @@ export const contractSoftwareTemplate = `
         <strong>Giá trị hợp đồng:</strong><br>
         Tổng giá trị Hợp đồng: <strong>{{total_amount_number}} VNĐ</strong><br>
         (Bằng chữ: <em>{{amount_in_words}}</em>).<br>
-        Cơ cấu giá chi tiết theo Phụ lục 01.<br><br>
-        <strong>Tổng giá trị thanh toán:</strong><br>
-        Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>{{total_amount_number}} VNĐ</strong><br>
-        (Bằng chữ: <em>{{amount_in_words}}</em>). Giá trị này chưa bao gồm thuế GTGT nếu pháp luật hoặc cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng phải chịu thuế GTGT; phần thuế phát sinh được xử lý theo Khoản 2.2 dưới đây.
+        Cơ cấu giá chi tiết theo Phụ lục 01.
       </td>
     </tr>
     <tr>
@@ -197,6 +194,14 @@ export const contractSoftwareTemplate = `
         a) Lập Phụ lục điều chỉnh giá trị thanh toán tương ứng với số thuế GTGT phát sinh theo quy định pháp luật;<br>
         b) Bên A có trách nhiệm thanh toán bổ sung phần thuế GTGT theo hóa đơn hợp lệ do Bên B xuất;<br>
         c) Việc điều chỉnh này không được coi là vi phạm Hợp đồng của Bên B.
+      </td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.2.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">
+        <strong>Tổng giá trị thanh toán:</strong><br>
+        Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>{{total_amount_number}} VNĐ</strong><br>
+        (Bằng chữ: <em>{{amount_in_words}}</em>). Giá trị này chưa bao gồm thuế GTGT nếu pháp luật hoặc cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng phải chịu thuế GTGT; phần thuế phát sinh được xử lý theo Khoản 2.2 nêu trên.
       </td>
     </tr>
     <tr>

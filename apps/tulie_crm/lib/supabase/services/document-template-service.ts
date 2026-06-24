@@ -1130,15 +1130,21 @@ export async function generateDocument(
                     '{{proposal_appendix_content_html}}<p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">III. CAM KẾT</p>'
                 )
 
-            // Existing database templates predate the explicit final-payment clause.
-            // Insert it at generation time so they remain legally complete without a manual reseed.
-            if (!templateContent.includes('Tổng giá trị thanh toán Bên A phải thanh toán')) {
+            // Keep legacy database templates aligned: put the final payment total
+            // after the VAT definition, not inside the contract-value paragraph.
+            templateContent = templateContent.replace(/<br><br>\s*<strong>Tổng giá trị thanh toán:<\/strong>[\s\S]*?Khoản 2\.2 dưới đây\./, '')
+            if (!templateContent.includes('>2.2.3.</td>')) {
                 templateContent = templateContent.replace(
-                    /Cơ cấu giá chi tiết theo Phụ lục\s*0?1\s*\.?/i,
-                    `Cơ cấu giá chi tiết theo Phụ lục 01.<br><br>
+                    /(<tr>\s*<td[^>]*>2\.3\.<\/td>)/,
+                    `<tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.2.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">
         <strong>Tổng giá trị thanh toán:</strong><br>
         Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>{{total_amount_number}} VNĐ</strong><br>
-        (Bằng chữ: <em>{{amount_in_words}}</em>). Giá trị này chưa bao gồm thuế GTGT nếu pháp luật hoặc cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng phải chịu thuế GTGT; phần thuế phát sinh được xử lý theo Khoản 2.2 dưới đây.`
+        (Bằng chữ: <em>{{amount_in_words}}</em>). Giá trị này chưa bao gồm thuế GTGT nếu pháp luật hoặc cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng phải chịu thuế GTGT; phần thuế phát sinh được xử lý theo Khoản 2.2 nêu trên.
+      </td>
+    </tr>
+    $1`
                 )
             }
         }

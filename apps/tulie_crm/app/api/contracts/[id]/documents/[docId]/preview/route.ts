@@ -45,15 +45,20 @@ export async function GET(
                 'VỀ PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, BẢNG GIÁ VÀ LỘ TRÌNH TRIỂN KHAI'
             )
 
-            // Signed/draft documents generated before this clause are still printable
-            // with the final payment obligation, without silently mutating the record.
-            if (!documentContent.includes('Tổng giá trị thanh toán Bên A phải thanh toán')) {
+            // Existing stored documents remain printable with the current placement.
+            documentContent = documentContent.replace(/<br><br>\s*<strong>Tổng giá trị thanh toán:<\/strong>[\s\S]*?Khoản 2\.2 dưới đây\./, '')
+            if (!documentContent.includes('>2.2.3.</td>')) {
                 documentContent = documentContent.replace(
-                    /Cơ cấu giá chi tiết theo Phụ lục\s*0?1\s*\.?/i,
-                    `Cơ cấu giá chi tiết theo Phụ lục 01.<br><br>
+                    /(<tr>\s*<td[^>]*>2\.3\.<\/td>)/,
+                    `<tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.2.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">
         <strong>Tổng giá trị thanh toán:</strong><br>
         Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>${formattedAmount} VNĐ</strong><br>
-        (Bằng chữ: <em>${readNumberToWords(totalAmount)}</em>). Giá trị này chưa bao gồm thuế GTGT nếu pháp luật hoặc cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng phải chịu thuế GTGT; phần thuế phát sinh được xử lý theo Khoản 2.2 dưới đây.`
+        (Bằng chữ: <em>${readNumberToWords(totalAmount)}</em>). Giá trị này chưa bao gồm thuế GTGT nếu pháp luật hoặc cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng phải chịu thuế GTGT; phần thuế phát sinh được xử lý theo Khoản 2.2 nêu trên.
+      </td>
+    </tr>
+    $1`
                 )
             }
         }
