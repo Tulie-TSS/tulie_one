@@ -105,7 +105,12 @@ export async function GET(
 </html>`
 
         return new Response(fullHtml, {
-            headers: { 'Content-Type': 'text/html; charset=utf-8' },
+            headers: {
+                'Content-Type': 'text/html; charset=utf-8',
+                'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0',
+            },
         })
     } catch (error: any) {
         console.error('Error previewing document:', error)

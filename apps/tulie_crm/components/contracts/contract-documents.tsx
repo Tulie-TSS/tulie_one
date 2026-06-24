@@ -41,7 +41,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
     const hasSignedDocs = dbDocs.some(d => d.status === 'signed')
 
     const loadDocs = useCallback(() => {
-        fetch(`/api/contracts/${contract.id}/documents`)
+        fetch(`/api/contracts/${contract.id}/documents`, { cache: 'no-store' })
             .then(r => r.ok ? r.json() : { documents: [] })
             .then(data => setDbDocs(data.documents || []))
             .catch(() => {})
@@ -58,12 +58,14 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
         try {
             const res = await fetch(`/api/contracts/${contract.id}/documents`, {
                 method: 'POST',
+                cache: 'no-store',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ regenerate: true })
             })
             if (!res.ok) throw new Error('Failed')
+            const data = await res.json()
+            setDbDocs(data.documents || [])
             toast.success('Đã tạo lại giấy tờ thành công')
-            loadDocs()
         } catch {
             toast.error('Không thể tạo lại giấy tờ')
         } finally {
@@ -214,9 +216,9 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
     const handlePreviewDoc = (item: DocItem) => {
         setLoading(item.key)
         if (item.dbDocId) {
-            window.open(`/api/contracts/${contract.id}/documents/${item.dbDocId}/preview`, '_blank')
+            window.open(`/api/contracts/${contract.id}/documents/${item.dbDocId}/preview?t=${Date.now()}`, '_blank')
         } else {
-            window.open(`/api/contracts/${contract.id}/preview?type=${item.type}`, '_blank')
+            window.open(`/api/contracts/${contract.id}/preview?type=${item.type}&t=${Date.now()}`, '_blank')
         }
         setLoading(null)
     }
@@ -271,11 +273,12 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
         try {
             let html: string
             if (item.dbDocId) {
-                const res = await fetch(`/api/contracts/${contract.id}/documents/${item.dbDocId}/preview`)
+                const res = await fetch(`/api/contracts/${contract.id}/documents/${item.dbDocId}/preview`, { cache: 'no-store' })
                 html = await res.text()
             } else {
                 const res = await fetch(`/api/contracts/${contract.id}/generate-document`, {
                     method: 'POST',
+                    cache: 'no-store',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ type: item.type, additionalVariables: customerInfo })
                 })
@@ -320,11 +323,12 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
         try {
             let html: string
             if (item.dbDocId) {
-                const res = await fetch(`/api/contracts/${contract.id}/documents/${item.dbDocId}/preview`)
+                const res = await fetch(`/api/contracts/${contract.id}/documents/${item.dbDocId}/preview`, { cache: 'no-store' })
                 html = await res.text()
             } else {
                 const res = await fetch(`/api/contracts/${contract.id}/generate-document`, {
                     method: 'POST',
+                    cache: 'no-store',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ type: item.type, additionalVariables: customerInfo })
                 })
