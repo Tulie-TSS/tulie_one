@@ -744,7 +744,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                         <Card className="border-zinc-200 bg-zinc-50/50 dark:bg-zinc-900/20 dark:border-zinc-800">
                             <CardHeader>
                                 <CardTitle className="text-zinc-800 dark:text-zinc-200">Thông tin Cộng tác viên</CardTitle>
-                                <CardDescription>Thông tin chi tiết để điền vào hợp đồng dịch vụ</CardDescription>
+                                <CardDescription>Thông tin chi tiết để điền vào hợp đồng</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <div className="grid gap-4 sm:grid-cols-2">

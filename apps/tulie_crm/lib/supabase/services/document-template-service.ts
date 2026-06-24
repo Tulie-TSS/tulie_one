@@ -1203,7 +1203,7 @@ export async function generateDocument(
         if (template.type === 'contract') {
             templateContent = templateContent.replace(
                 'Kèm theo Hợp đồng dịch vụ thiết kế, sản xuất nội dung và in ấn số',
-                'Kèm theo Hợp đồng kinh tế số'
+                'Kèm theo {{contract_title_body}} số'
             )
         }
 
