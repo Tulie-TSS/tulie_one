@@ -1165,6 +1165,15 @@ export async function generateDocument(
             )
         }
 
+        // Keep existing design/printing templates in sync with the contract name
+        // used in the document heading and avoid exposing the old fixed service name.
+        if (template.type === 'contract') {
+            templateContent = templateContent.replace(
+                'Kèm theo Hợp đồng dịch vụ thiết kế, sản xuất nội dung và in ấn số',
+                'Kèm theo Hợp đồng kinh tế số'
+            )
+        }
+
         // Dynamically upgrade old templates that don't have {{contract_title_upper}} and {{contract_title_body}}
         if (template.type === 'contract') {
             if (templateContent.includes('HỢP ĐỒNG DỊCH VỤ THIẾT KẾ VÀ PHÁT TRIỂN WEBSITE')) {

@@ -64,11 +64,11 @@ export default async function RootLayout({
             toastOptions={{
               unstyled: true,
               classNames: {
-                toast: 'flex w-[390px] max-w-[calc(100vw-32px)] items-center gap-3 border-0 rounded-[2px] px-4 py-3 font-sans text-white shadow-lg',
+                toast: 'relative flex w-[390px] max-w-[calc(100vw-32px)] items-center gap-3 border-0 rounded-[2px] px-4 py-3 pr-12 font-sans text-white shadow-lg',
                 title: 'text-sm font-medium leading-5',
                 description: 'mt-0.5 text-xs leading-4 text-white/85',
                 icon: 'shrink-0 text-white',
-                closeButton: 'ml-auto shrink-0 border-0 bg-transparent p-0 text-white/70 transition-colors hover:bg-transparent hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white',
+                closeButton: 'absolute right-4 top-1/2 shrink-0 -translate-y-1/2 border-0 bg-transparent p-0 text-white/70 transition-colors hover:bg-transparent hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white',
                 success: '!bg-[#4CAF50]',
                 error: '!bg-[#EF1C25]',
                 warning: '!bg-[#FF9800]',

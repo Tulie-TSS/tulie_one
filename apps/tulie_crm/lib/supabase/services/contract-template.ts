@@ -1129,7 +1129,7 @@ export const contractDesignTemplate = `
   <div style="page-break-before: always;"></div>
   <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC SỐ 01</p>
   <p style="text-align:center; font-weight:bold; font-size:11pt; margin: 0 0 10px 0;">VỀ CHI TIẾT SẢN PHẨM, SỐ LƯỢNG, ĐƠN GIÁ VÀ THUẾ GTGT</p>
-  <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Kèm theo Hợp đồng dịch vụ thiết kế, sản xuất nội dung và in ấn số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
+  <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Kèm theo Hợp đồng kinh tế số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
 
   <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">I. DANH MỤC SẢN PHẨM, DỊCH VỤ VÀ IN ẤN CHI TIẾT</p>
   <table style="width:100%; border-collapse:collapse; margin-bottom:12px; font-size:8pt; table-layout:auto;">
