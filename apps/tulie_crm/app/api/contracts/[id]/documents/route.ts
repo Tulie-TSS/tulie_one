@@ -18,7 +18,10 @@ export async function GET(
         const { id: contractId } = await params
         const documents = await getContractDocuments(contractId)
 
-        return NextResponse.json({ documents })
+        return NextResponse.json(
+            { documents },
+            { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' } }
+        )
     } catch (error: any) {
         console.error('Error fetching contract documents:', error)
         return NextResponse.json({ error: 'Failed to fetch documents' }, { status: 500 })
@@ -36,7 +39,7 @@ export async function POST(
 ) {
     let contractId = ''
     try {
-        const authResult = await requirePermission('contracts', 'view')
+        const authResult = await requirePermission('contracts', 'edit')
         if (isAuthError(authResult)) return authResult
 
         const resolvedParams = await params
@@ -45,7 +48,10 @@ export async function POST(
         
         // Return fresh docs from DB
         const documents = await getContractDocuments(contractId)
-        return NextResponse.json({ documents, regenerated: true })
+        return NextResponse.json(
+            { documents, regenerated: true },
+            { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' } }
+        )
     } catch (error: any) {
         console.error('Error regenerating contract documents:', error)
         try {

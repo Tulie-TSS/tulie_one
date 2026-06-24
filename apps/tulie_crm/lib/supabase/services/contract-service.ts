@@ -289,8 +289,11 @@ export async function updateContract(id: string, contract: Partial<Contract>, mi
         const category = cleanContract.category || currentContract?.category || 'customer'
         if (cleanContract.title !== undefined) {
             const titleVal = cleanContract.title
-            if (titleVal === null || (typeof titleVal === 'string' && titleVal.trim() === '')) {
-        cleanContract.title = category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng dịch vụ'
+            if (
+                titleVal === null ||
+                (typeof titleVal === 'string' && (titleVal.trim() === '' || /hợp đồng kinh tế/i.test(titleVal)))
+            ) {
+                cleanContract.title = category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng dịch vụ'
             }
         }
 

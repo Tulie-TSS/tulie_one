@@ -34,6 +34,17 @@ function addWorkingDays(startDate: Date, workingDays: number): Date {
     return result
 }
 
+// Old records may still carry the former title. Never let that legacy value
+// leak back into regenerated documents, even before a database migration runs.
+function getDocumentContractTitle(contract: any): string {
+    if (contract?.category === 'freelancer') {
+        return (contract.title || 'Hợp đồng cộng tác viên').trim()
+    }
+
+    const title = (contract?.title || '').trim()
+    return /hợp đồng kinh tế/i.test(title) || !title ? 'Hợp đồng dịch vụ' : title
+}
+
 import { contractSoftwareTemplate, contractDesignTemplate } from './contract-template'
 import { paymentTemplate } from './payment-template'
 import { orderTemplate } from './order-template'
@@ -209,12 +220,23 @@ export async function getDocumentTemplates() {
 function normalizeDocumentTemplate(template: DocumentTemplate): DocumentTemplate {
     if (template.type !== 'contract') return template
 
+    const standardTemplate = defaultTemplates.find(t => t.type === 'contract' && t.name === 'Hợp đồng dịch vụ (Mẫu chuẩn)')
+    // This named template is managed by the application. Always render its
+    // current source so an outdated DB copy cannot reintroduce old clauses.
+    if (template.name === 'Hợp đồng dịch vụ (Mẫu chuẩn)' && standardTemplate) {
+        return {
+            ...template,
+            content: standardTemplate.content,
+            variables: standardTemplate.variables,
+        }
+    }
+
     const hasLegacyName = /hợp đồng kinh tế/i.test(template.name || '')
     const hasLegacyBody = /HỢP ĐỒNG KINH TẾ|Hợp đồng kinh tế/i.test(template.content || '')
 
     if (!hasLegacyName && !hasLegacyBody) return template
 
-    const normalized = defaultTemplates.find(t => t.type === 'contract' && t.name === 'Hợp đồng dịch vụ (Mẫu chuẩn)')
+    const normalized = standardTemplate
     if (!normalized) return template
 
     return {
@@ -609,11 +631,10 @@ export async function generateDocument(
             variables.start_date = contract.start_date ? formatLocalDateString(contract.start_date) : ''
             variables.service_description = contract.description || contract.quotation?.title || contract.title || ''
             
-            const rawTitle = (contract.title || '').trim()
-            if (rawTitle) {
-                variables.contract_title_body = rawTitle
-                variables.contract_title_upper = rawTitle.toUpperCase()
-            }
+            const contractTitle = getDocumentContractTitle(contract)
+            variables.contract_title_body = contractTitle
+            variables.contract_title_upper = contractTitle.toUpperCase()
+            variables.contract_type = contractTitle.toLowerCase()
 
             // Auto-fill delivery_time from quotation proposal_content if available, else contract end date
             const quoteProposal = (contract.quotation?.proposal_content as Record<string, any>) || {}
@@ -622,6 +643,10 @@ export async function generateDocument(
             }
             const deliveryTimeDays = Number.parseInt(String(variables.delivery_time || '').replace(/[^\d]/g, ''), 10)
             if (contract.start_date && Number.isFinite(deliveryTimeDays) && deliveryTimeDays > 0) {
+                // Proposal text can be descriptive (for example "30 ngày làm
+                // việc kể từ ngày nhận tạm ứng"). The contract template owns
+                // the legal trigger, so render only the numeric duration here.
+                variables.delivery_time = String(deliveryTimeDays)
                 variables.end_date = formatLocalDate(addWorkingDays(parseLocalDateString(contract.start_date), deliveryTimeDays))
             } else {
                 variables.end_date = contract.end_date ? formatLocalDateString(contract.end_date) : 'sẽ được các bên xác nhận tại Phụ lục 01'
@@ -1091,7 +1116,7 @@ export async function generateDocument(
         variables.clause_appendix_number = '1.3.'
         variables.clause_appendix_number_plus1 = '1.4.'
         variables.scope_appendix_ref = 'Phạm vi công việc, yêu cầu kỹ thuật, chức năng chi tiết, sản phẩm bàn giao, tiêu chí nghiệm thu, bảng giá và lộ trình thực hiện được quy định tại <strong>Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá &amp; Lộ trình triển khai</strong>, là bộ phận không tách rời của Hợp đồng này.'
-        variables.timeline_appendix_ref = ' Lộ trình chi tiết được quy định tại Phụ lục 01, bao gồm ngày hoàn thành dự kiến, ngày nghiệm thu/bàn giao dự kiến và cơ chế gia hạn bằng văn bản.'
+        variables.timeline_appendix_ref = ' Lộ trình chi tiết được quy định tại Phụ lục 01, bao gồm ngày hoàn thành dự kiến và ngày nghiệm thu/bàn giao dự kiến. Tiến độ chỉ được gia hạn khi các bên xác nhận bằng văn bản hoặc email; thời gian gia hạn đó không được tính là chậm tiến độ của Bên B.'
         variables.change_scope_ref = 'Phụ lục 01'
         variables.appendix_list_text = 'Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai'
 
@@ -1155,9 +1180,20 @@ export async function generateDocument(
         }
 
         let templateContent = template.content
+        // Payment requests and delivery minutes can be backed by historical DB
+        // templates too. Make every document inherit the canonical contract
+        // title instead of retaining the former hard-coded wording.
+        if (contract?.category !== 'freelancer') {
+            templateContent = templateContent
+                .replace(/HỢP ĐỒNG KINH TẾ/g, '{{contract_title_upper}}')
+                .replace(/Hợp đồng kinh tế/g, '{{contract_title_body}}')
+        }
         // Upgrade legacy database templates: merge proposal content into the existing
         // Appendix 01 instead of rendering another Appendix 01 after it.
         if (template.type === 'contract') {
+            // Some historical DB templates hard-coded the former contract name
+            // instead of using variables. Normalize them at render time too.
+            templateContent = templateContent.replace(/Hợp đồng số/g, '{{contract_title_body}} số')
             templateContent = templateContent
                 .replace('{{proposal_appendix_html}}', '')
                 .replace(
@@ -1356,19 +1392,19 @@ function getNextVersionDocNumber(
         return { nextDocNum: baseDocNum, isNewVersion: false }
     }
 
-    // Check if there is already an existing draft document
-    const draftDoc = existingDocs.find(d => d.status === 'draft')
+    // Any document is replaceable until it has been signed. This ensures a
+    // previously sent document cannot mask the newest regenerated version.
+    const mutableDoc = existingDocs.find(d => d.status !== 'signed')
     const signedDocs = existingDocs.filter(d => d.status === 'signed')
-    if (draftDoc) {
-        // Check if the draft's doc_number conflicts with any signed document in the group
-        const hasConflict = signedDocs.some(sd => sd.doc_number && sd.doc_number === draftDoc.doc_number)
+    if (mutableDoc) {
+        // Check if the mutable document's number conflicts with a signed document in the group
+        const hasConflict = signedDocs.some(sd => sd.doc_number && sd.doc_number === mutableDoc.doc_number)
         if (!hasConflict) {
-            // If no conflict, keep its existing doc_number
-            return { nextDocNum: draftDoc.doc_number || baseDocNum, isNewVersion: false }
+            return { nextDocNum: mutableDoc.doc_number || baseDocNum, isNewVersion: false }
         }
     }
 
-    // No draft exists, but there are signed documents. We must create a new draft version.
+    // No mutable version exists, or its number is already signed: create a new version.
     let maxVersion = 1
     // Remove any existing -vN suffix from the baseDocNum just in case
     const cleanBase = baseDocNum.replace(/[-_]v\d+$/i, '')
@@ -1395,7 +1431,8 @@ function getNextVersionDocNumber(
  * - order → [ĐĐH, N×ĐNTT, BBGN]
  * 
  * Each payment milestone gets its own ĐNTT document.
- * Only regenerates draft documents (signed docs are preserved).
+ * Regenerates every document that is not signed. Signed documents are
+ * preserved as the legal snapshot.
  */
 export async function generateDocumentBundle(contractId: string) {
     const supabase = createAdminClient()
@@ -1600,22 +1637,23 @@ export async function generateDocumentBundle(contractId: string) {
             targetKeys.add(key)
             
             const group = existingGrouped.get(key) || []
-            const draftDoc = group.find((d: any) => d.status === 'draft')
+            const mutableDoc = group.find((d: any) => d.status !== 'signed')
             
             const { nextDocNum } = getNextVersionDocNumber(doc.doc_number, group)
             doc.doc_number = nextDocNum
             
-            if (draftDoc) {
+            if (mutableDoc) {
                 upsertPromises.push((async () => {
                     const { error: updateErr } = await supabase
                         .from('contract_documents')
                         .update({
                             content: doc.content,
-                            doc_number: doc.doc_number
+                            doc_number: doc.doc_number,
+                            updated_at: new Date().toISOString()
                         })
-                        .eq('id', draftDoc.id)
+                        .eq('id', mutableDoc.id)
                     if (updateErr) {
-                        console.error(`Error updating draft ${doc.type}:`, updateErr.message)
+                        console.error(`Error updating regenerated ${doc.type}:`, updateErr.message)
                     }
                 })())
             } else {
@@ -1639,11 +1677,11 @@ export async function generateDocumentBundle(contractId: string) {
         await Promise.all(upsertPromises)
 
 
-        // 6. Cleanup obsolete draft documents 
+        // 6. Cleanup obsolete documents that have not been signed.
         // Example: The user removed a payment milestone, so its corresponding ĐNTT draft should be removed.
         if (existingDocs) {
             for (const d of existingDocs) {
-                if (d.status === 'draft') {
+                if (d.status !== 'signed') {
                     const key = `${d.type}:${d.milestone_id || 'null'}`
                     if (!targetKeys.has(key)) {
                         await supabase
