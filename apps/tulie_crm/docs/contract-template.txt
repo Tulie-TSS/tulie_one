@@ -1,6 +1,6 @@
 Tôi sẽ soạn lại hợp đồng mẫu, giữ nguyên bản chất giao dịch nhưng chỉnh cho “chuẩn luật”, rõ ràng, có lợi hơn cho phía Tulie (Bên B).
 Bạn chỉ cần copy, chỉnh lại thông tin, và thay thế nội dung cũ. Tôi sẽ chèn dấu “...” ở những chỗ bạn có thể bổ sung/điều chỉnh thêm.
-HỢP ĐỒNG DỊCH VỤ THIẾT KẾ VÀ PHÁT TRIỂN WEBSITE
+HỢP ĐỒNG KINH TẾ THIẾT KẾ VÀ PHÁT TRIỂN WEBSITE
 (Sửa từ Hợp đồng kinh tế số 20260323/HDKT-TL-HAMEDCO)
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAMĐỘC LẬP – TỰ DO – HẠNH PHÚC  
 Số: …/HĐDV-TL-HAMEDCO
@@ -28,7 +28,7 @@ Mã số thuế: 0110163102
 Email: info@tulie.vn
 Tài khoản số: 86683979 tại Ngân hàng TMCP Kỹ Thương Việt Nam (Techcombank) – CN Hội sở 1
 Đại diện: Ông Nguyễn Thanh Tùng – Chức vụ: Giám đốc
-Hai bên thống nhất ký kết Hợp đồng dịch vụ thiết kế và phát triển website với các điều khoản sau:
+Hai bên thống nhất ký kết Hợp đồng kinh tế thiết kế và phát triển website với các điều khoản sau:
 ĐIỀU 1. NỘI DUNG VÀ PHẠM VI DỊCH VỤ
 1.1. Bên B cung cấp cho Bên A dịch vụ thiết kế giao diện, lập trình Frontend, Backend, xây dựng hệ thống quản trị nội dung (CMS), tối ưu SEO, triển khai đa ngôn ngữ, chuyển dữ liệu và bàn giao website cho Bên A theo nội dung chi tiết tại:  
 PHỤ LỤC SỐ 01 – PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, BẢNG GIÁ & LỘ TRÌNH TRIỂN KHAI.

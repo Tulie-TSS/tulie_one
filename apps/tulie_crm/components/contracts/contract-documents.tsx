@@ -785,20 +785,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                 })}
                 </div>
 
-                {/* Proposal appendix toggle - only show for proposal-type quotations */}
-                {isProposalQuotation && (
-                    <div className="flex items-center justify-between px-3 py-2 rounded-lg border bg-muted/30">
-                        <div className="flex items-center gap-2">
-                            <FileCheck className="h-3.5 w-3.5 text-muted-foreground" />
-                            <span className="text-xs font-medium">Kèm Phụ lục đề xuất giải pháp</span>
-                        </div>
-                        <Switch
-                            checked={includeProposal}
-                            onCheckedChange={setIncludeProposal}
-                            className="scale-75"
-                        />
-                    </div>
-                )}
+
             </CardContent>
 
             <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>

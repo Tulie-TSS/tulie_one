@@ -1,7 +1,6 @@
 Mẫu Phụ lục 01 được viết lại theo cấu trúc chuẩn, rõ ràng, bám sát nội dung đã gộp và có lợi cho phía Tulie. Bạn có thể điều chỉnh con số, mô tả chi tiết theo từng dự án, tôi sẽ chèn dấu "..." ở chỗ có thể tùy biến.
-PHỤ LỤC SỐ 01
-PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, BẢNG GIÁ & LỘ TRÌNH TRIỂN KHAI
-(Đính kèm Hợp đồng dịch vụ số …/HĐDV-TL-HAMEDCO ngày …/…/2026)
+Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai
+(Đính kèm Hợp đồng kinh tế số …/HĐKT-TL-HAMEDCO ngày …/…/2026)
 1. THÔNG TIN CHUNG
 Bên A: CÔNG TY CỔ PHẦN TRANG THIẾT BỊ VÀ VẬT TƯ Y TẾ HÀ NỘI  
 Bên B: CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE  
@@ -18,6 +17,6 @@ Cộng tiền hàng: 14.000.000 VNĐ
 Thuế suất GTGT (VAT): Không chịu thuế  
 Tổng cộng thanh toán: 14.000.000 VNĐ  
 Bằng chữ: Mười bốn triệu đồng chẵn.
-Phụ lục này là một phần không tách rời của Hợp đồng dịch vụ số …/HĐDV-TL-HAMEDCO.
+Phụ lục này là một phần không tách rời của Hợp đồng kinh tế số …/HĐKT-TL-HAMEDCO.
 ĐẠI DIỆN BÊN A                    ĐẠI DIỆN BÊN B
 (Ký, ghi rõ họ tên, đóng dấu)      (Ký, ghi rõ họ tên, đóng dấu)
