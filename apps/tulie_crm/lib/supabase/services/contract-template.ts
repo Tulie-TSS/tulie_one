@@ -244,7 +244,7 @@ export const contractSoftwareTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Tổng thời gian thực hiện dự kiến:</strong> {{delivery_time}} ngày làm việc, được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày hoàn thành dự kiến:</strong> {{end_date}}. Lộ trình chi tiết được quy định tại Phụ lục 01. Ngày hoàn thành dự kiến, ngày nghiệm thu/bàn giao dự kiến và các mốc liên quan được tự động điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán, hoặc khi phát sinh thay đổi phạm vi theo Điều 6. Thời gian gia hạn theo văn bản của hai bên không bị tính là chậm tiến độ của Bên B.{{timeline_appendix_ref}}</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Tổng thời gian thực hiện dự kiến:</strong> {{delivery_time}} ngày làm việc, được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày hoàn thành dự kiến:</strong> {{end_date}}. Lộ trình chi tiết được quy định tại Phụ lục 01. Ngày hoàn thành dự kiến, ngày nghiệm thu/bàn giao dự kiến và các mốc liên quan được tự động điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán, hoặc khi phát sinh thay đổi phạm vi theo Điều 6. Thời gian gia hạn theo văn bản của hai bên không bị tính là chậm tiến độ của Bên B.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td>
@@ -842,7 +842,7 @@ export const contractDesignTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.5.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Tổng thời gian thực hiện dự kiến:</strong> {{delivery_time}} ngày làm việc, được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày kết thúc dự kiến:</strong> {{end_date}}. Ngày kết thúc dự kiến được điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán.{{timeline_appendix_ref}}</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Tổng thời gian thực hiện dự kiến:</strong> {{delivery_time}} ngày làm việc, được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày hoàn thành dự kiến:</strong> {{end_date}}. Ngày hoàn thành dự kiến được điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán.{{timeline_appendix_ref}}</td>
     </tr>
   </table>
 

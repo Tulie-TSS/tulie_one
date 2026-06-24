@@ -23,6 +23,17 @@ function formatLocalDateString(dateStr: string | null | undefined): string {
     return formatLocalDate(parseLocalDateString(dateStr))
 }
 
+function addWorkingDays(startDate: Date, workingDays: number): Date {
+    const result = new Date(startDate.getTime())
+    let added = 0
+    while (added < workingDays) {
+        result.setDate(result.getDate() + 1)
+        const day = result.getDay()
+        if (day !== 0 && day !== 6) added++
+    }
+    return result
+}
+
 import { contractSoftwareTemplate, contractDesignTemplate } from './contract-template'
 import { paymentTemplate } from './payment-template'
 import { orderTemplate } from './order-template'
@@ -590,7 +601,12 @@ export async function generateDocument(
             if (quoteProposal.delivery_time) {
                 variables.delivery_time = quoteProposal.delivery_time
             }
-            variables.end_date = contract.end_date ? formatLocalDateString(contract.end_date) : 'sẽ được các bên xác nhận tại Phụ lục 01'
+            const deliveryTimeDays = Number.parseInt(String(variables.delivery_time || '').replace(/[^\d]/g, ''), 10)
+            if (contract.start_date && Number.isFinite(deliveryTimeDays) && deliveryTimeDays > 0) {
+                variables.end_date = formatLocalDate(addWorkingDays(parseLocalDateString(contract.start_date), deliveryTimeDays))
+            } else {
+                variables.end_date = contract.end_date ? formatLocalDateString(contract.end_date) : 'sẽ được các bên xác nhận tại Phụ lục 01'
+            }
 
             // Use delivery_address from snapshot if available, otherwise fallback to default based on type
             variables.delivery_address = custData?.delivery_address || 
