@@ -37,10 +37,6 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
     const [deleteTargetItem, setDeleteTargetItem] = useState<DocItem | null>(null)
     const [showDeleteDialog, setShowDeleteDialog] = useState(false)
     const [deleting, setDeleting] = useState(false)
-    const [includeProposal, setIncludeProposal] = useState<boolean>(
-        (contract as any).include_proposal_appendix !== false
-    )
-    const isProposalQuotation = (contract as any).quotation?.type === 'proposal'
 
     const hasSignedDocs = dbDocs.some(d => d.status === 'signed')
 
@@ -63,10 +59,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
             const res = await fetch(`/api/contracts/${contract.id}/documents`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    regenerate: true,
-                    ...(isProposalQuotation ? { include_proposal_appendix: includeProposal } : {})
-                })
+                body: JSON.stringify({ regenerate: true })
             })
             if (!res.ok) throw new Error('Failed')
             toast.success('Đã tạo lại giấy tờ thành công')
@@ -105,7 +98,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
 
 
     const DOC_META: Record<string, { label: string; description: string; icon: any }> = {
-        contract: { label: 'Hợp đồng kinh tế', description: 'Hợp đồng ký kết giữa 2 bên với đầy đủ điều khoản pháp lý', icon: FileText },
+        contract: { label: contract.title || 'Hợp đồng kinh tế', description: 'Hợp đồng ký kết giữa 2 bên với đầy đủ điều khoản pháp lý', icon: FileText },
         freelance_contract: { label: contract.title || 'Hợp đồng Cộng tác viên', description: 'Hợp đồng thỏa thuận cung cấp dịch vụ cá nhân', icon: FileText },
         order: { label: 'Đơn đặt hàng', description: 'Đơn đặt hàng chi tiết sản phẩm/dịch vụ', icon: ClipboardList },
         payment_request: { label: 'Đề nghị thanh toán', description: 'Đề nghị thanh toán theo hợp đồng kinh tế', icon: CreditCard },

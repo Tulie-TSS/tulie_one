@@ -126,7 +126,7 @@ export const contractSoftwareTemplate = `
     </tr>
   </table>
 
-  <p style="margin:15px 0;">Hai bên thống nhất ký kết {{contract_title_body}} với các điều khoản sau:</p>
+  <p style="margin:15px 0;">Hai bên cùng thống nhất ký kết Hợp đồng này (sau đây gọi tắt là “Hợp đồng này”) với các điều khoản sau:</p>
 
   <!-- ========== ĐIỀU 1 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
@@ -244,7 +244,7 @@ export const contractSoftwareTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Tổng thời gian thực hiện dự kiến:</strong> {{delivery_time}} ngày làm việc, được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày kết thúc dự kiến:</strong> {{end_date}}. Ngày kết thúc dự kiến được điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán.{{timeline_appendix_ref}}</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Tổng thời gian thực hiện dự kiến:</strong> {{delivery_time}} ngày làm việc, được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày hoàn thành dự kiến:</strong> {{end_date}}. Lộ trình chi tiết được quy định tại Phụ lục 01. Ngày hoàn thành dự kiến, ngày nghiệm thu/bàn giao dự kiến và các mốc liên quan được tự động điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán, hoặc khi phát sinh thay đổi phạm vi theo Điều 6. Thời gian gia hạn theo văn bản của hai bên không bị tính là chậm tiến độ của Bên B.{{timeline_appendix_ref}}</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td>
@@ -252,15 +252,15 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.3.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu và bàn giao Phần mềm:</strong> Sau khi hoàn thành toàn bộ Phần mềm theo Hợp đồng, Bên B thông báo bàn giao và cung cấp đường dẫn, tài khoản truy cập để Bên A kiểm tra. Bên A có 05 ngày làm việc để kiểm tra và ký Biên bản nghiệm thu nếu sản phẩm đạt yêu cầu hoặc gửi danh sách lỗi/bất cập bằng văn bản/email. Bên B có trách nhiệm sửa các lỗi kỹ thuật thuộc phạm vi công việc trong thời hạn hợp lý và thông báo lại cho Bên A nghiệm thu. Nếu quá thời hạn 05 ngày làm việc kể từ khi nhận thông báo bàn giao mà Bên A không phản hồi bằng văn bản/email, hoặc Bên A đã đưa Phần mềm vào sử dụng chính thức, thì được coi như Bên A đã nghiệm thu đầy đủ.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu và bàn giao Phần mềm:</strong> Sau khi hoàn thành toàn bộ Phần mềm theo Hợp đồng này, Bên B thông báo bàn giao và cung cấp đường dẫn, tài khoản truy cập để Bên A kiểm tra. Bên A có 05 ngày làm việc để kiểm tra và ký Biên bản nghiệm thu nếu sản phẩm đạt yêu cầu hoặc gửi danh sách lỗi/bất cập bằng văn bản/email. Lỗi kỹ thuật được hiểu là lỗi làm hệ thống không hoạt động hoặc hoạt động sai so với mô tả đã chốt; lỗi nghiêm trọng là lỗi làm gián đoạn chức năng chính, mất dữ liệu, rò rỉ dữ liệu hoặc không thể vận hành; lỗi không nghiêm trọng là lỗi hiển thị, căn chỉnh, tối ưu nhỏ, không ảnh hưởng chức năng chính. Bên B có trách nhiệm sửa các lỗi kỹ thuật thuộc phạm vi công việc trong thời hạn hợp lý và thông báo lại cho Bên A nghiệm thu. Nếu quá thời hạn 05 ngày làm việc kể từ khi nhận thông báo bàn giao mà Bên A không phản hồi bằng văn bản/email, hoặc Bên A đã đưa Phần mềm vào sử dụng chính thức, thì được coi như Bên A đã nghiệm thu đầy đủ. Bên B có quyền tạm hoãn bàn giao mã nguồn/tài khoản quản trị đầy đủ cho đến khi Bên A thanh toán đủ các khoản đến hạn.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.4.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Điều chỉnh tiến độ do lỗi của Bên A:</strong> Nếu Bên A chậm cung cấp thông tin, dữ liệu, phê duyệt, hoặc không phối hợp theo yêu cầu hợp lý của Bên B dẫn đến chậm tiến độ, thì thời hạn thực hiện sẽ được kéo dài tương ứng; Bên B không bị coi là chậm tiến độ và không phải chịu phạt; các chi phí phát sinh (nếu có) sẽ được hai bên thỏa thuận bổ sung bằng văn bản.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Điều chỉnh tiến độ do lỗi của Bên A:</strong> Nếu Bên A chậm cung cấp thông tin, dữ liệu, phê duyệt, tài khoản truy cập, quyền truy cập hạ tầng, hoặc không phối hợp theo yêu cầu hợp lý của Bên B dẫn đến chậm tiến độ, thì thời hạn thực hiện sẽ được kéo dài tương ứng; Bên B không bị coi là chậm tiến độ và không phải chịu phạt; các chi phí phát sinh (nếu có) sẽ được hai bên thỏa thuận bổ sung bằng văn bản. Thời gian gia hạn do phát sinh hoặc do Bên A chậm phối hợp không tính vào thời gian chậm tiến độ của Bên B.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.5.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Chậm tiến độ do lỗi của Bên B:</strong> Nếu Bên B chậm bàn giao Phần mềm so với tiến độ đã thống nhất (sau khi đã trừ đi thời gian chậm trễ do Bên A hoặc do bất khả kháng), Bên B phải chịu phạt chậm tiến độ với mức 0,1%/ngày trên giá trị phần nghĩa vụ bị chậm, nhưng tổng mức phạt không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm, theo Điều 301 Luật Thương mại 2005.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Chậm tiến độ do lỗi của Bên B:</strong> Nếu Bên B chậm bàn giao Phần mềm so với tiến độ đã thống nhất (sau khi đã trừ đi thời gian chậm trễ do Bên A, phát sinh được chấp thuận, hoặc do bất khả kháng), Bên B phải chịu phạt chậm tiến độ với mức 0,1%/ngày trên giá trị phần nghĩa vụ bị chậm, nhưng tổng mức phạt không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm, theo Điều 301 Luật Thương mại 2005.</td>
     </tr>
   </table>
 
@@ -281,7 +281,8 @@ export const contractSoftwareTemplate = `
         4.1.1. Nhận đầy đủ và đúng hạn các khoản thanh toán theo Điều 2.<br>
         4.1.2. Yêu cầu Bên A cung cấp kịp thời, đầy đủ thông tin, nội dung, tài liệu cần thiết để thực hiện hợp đồng.<br>
         4.1.3. Từ chối các yêu cầu thay đổi, bổ sung tính năng, nội dung, phạm vi công việc nằm ngoài Hợp đồng và Phụ lục, trừ khi hai bên có thỏa thuận phát sinh bằng văn bản.<br>
-        4.1.4. Tạm dừng thực hiện dịch vụ trong trường hợp Bên A chậm thanh toán, không phối hợp hoặc vi phạm nghĩa vụ theo Hợp đồng, sau khi đã thông báo bằng văn bản cho Bên A.
+        4.1.4. Tạm dừng thực hiện dịch vụ trong trường hợp Bên A chậm thanh toán, không phối hợp hoặc vi phạm nghĩa vụ theo Hợp đồng, sau khi đã thông báo bằng văn bản cho Bên A.<br>
+        4.1.5. Tạm hoãn bàn giao mã nguồn, tài khoản quản trị đầy đủ hoặc các quyền truy cập kỹ thuật khác nếu Bên A chưa thanh toán đủ các khoản đến hạn.
       </td>
     </tr>
     <tr>
@@ -344,11 +345,11 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">6.3.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B chỉ triển khai phần phát sinh sau khi hai bên thống nhất bằng văn bản/email về nội dung thay đổi, chi phí và thời gian thực hiện.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B chỉ triển khai phần phát sinh sau khi hai bên thống nhất bằng văn bản/email về nội dung thay đổi, chi phí và thời gian thực hiện. Bên A tạm ứng tối thiểu 50% giá trị phát sinh trước khi Bên B triển khai phần phát sinh, phần còn lại thanh toán khi nghiệm thu phần phát sinh hoặc gộp vào đợt thanh toán gần nhất.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">6.4.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">If hai bên không thống nhất được, Bên B có quyền từ chối thực hiện phần phát sinh đó mà không bị coi là vi phạm Hợp đồng.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu hai bên không thống nhất được, Bên B có quyền từ chối thực hiện phần phát sinh đó mà không bị coi là vi phạm Hợp đồng. Phần phát sinh, nếu được chấp thuận, sẽ tự động điều chỉnh tiến độ, ngày hoàn thành dự kiến, ngày nghiệm thu/bàn giao và các mốc liên quan tương ứng.</td>
     </tr>
   </table>
 
@@ -366,7 +367,7 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Đối với dữ liệu cá nhân của người dùng Phần mềm (khách hàng, đối tác của Bên A): Bên A là bên kiểm soát dữ liệu (data controller), chịu trách nhiệm xin sự đồng ý hợp lệ của chủ thể dữ liệu, ban hành và công bố Chính sách bảo mật, Điều khoản sử dụng phù hợp pháp luật (bao gồm Nghị định 13/2023/NĐ-CP và các quy định liên quan). Bên B là bên xử lý dữ liệu (data processor) trong phạm vi công việc, chỉ xử lý dữ liệu cá nhân theo chỉ dẫn hợp pháp của Bên A và theo Hợp đồng này.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Đối với dữ liệu cá nhân của người dùng Phần mềm (khách hàng, đối tác của Bên A): Bên A là bên kiểm soát dữ liệu (data controller), chịu trách nhiệm xin sự đồng ý hợp lệ của chủ thể dữ liệu, ban hành và công bố Chính sách bảo mật, Điều khoản sử dụng phù hợp pháp luật (bao gồm Nghị định 13/2023/NĐ-CP và các quy định liên quan). Bên B là bên xử lý dữ liệu (data processor) trong phạm vi công việc, chỉ xử lý dữ liệu cá nhân theo chỉ dẫn hợp pháp của Bên A và theo Hợp đồng này. Mọi chỉ dẫn xử lý dữ liệu cá nhân của Bên A phải được thể hiện bằng văn bản hoặc email; nếu chỉ dẫn có dấu hiệu trái pháp luật, Bên B có quyền từ chối thực hiện và yêu cầu Bên A tự chịu trách nhiệm đối với hậu quả phát sinh.</td>
     </tr>
   </table>
 
@@ -384,7 +385,7 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">8.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Đối với mã nguồn, thiết kế, cấu trúc hệ thống do Bên B phát triển trong phạm vi Hợp đồng: Bên A được cấp quyền sử dụng không độc quyền, không giới hạn thời gian đối với Phần mềm và mã nguồn cho mục đích vận hành, kinh doanh của mình; Bên A không được bán lại, cấp phép lại mã nguồn như một sản phẩm phần mềm độc lập cho bên thứ ba nếu không có thỏa thuận bằng văn bản của Bên B.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Đối với mã nguồn, thiết kế, cấu trúc hệ thống do Bên B phát triển trong phạm vi Hợp đồng: Bên A chỉ được cấp quyền sử dụng sau khi đã thanh toán đủ 100% giá trị Hợp đồng và các khoản phát sinh (nếu có). Trước thời điểm đó, Bên A chỉ có quyền sử dụng trên môi trường do Bên B triển khai, không được sao chép, sửa đổi, dịch ngược, tách rời, chuyển giao hoặc khai thác lại mã nguồn dưới bất kỳ hình thức nào. Bên A không được sử dụng mã nguồn để phát triển sản phẩm phần mềm cạnh tranh trực tiếp với sản phẩm/dịch vụ của Bên B nếu không có thỏa thuận bằng văn bản.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">8.3.</td>
@@ -599,6 +600,10 @@ export const contractSoftwareTemplate = `
     <tr>
       <td style="width:50%; text-align:center; font-weight:bold; vertical-align:top; font-size:9pt;">ĐẠI DIỆN BÊN A</td>
       <td style="width:50%; text-align:center; font-weight:bold; vertical-align:top; font-size:9pt;">ĐẠI DIỆN BÊN B</td>
+    </tr>
+    <tr>
+      <td style="text-align:center; font-style:italic; font-size:9pt; color:#666;">(Ký, ghi rõ họ tên, đóng dấu)</td>
+      <td style="text-align:center; font-style:italic; font-size:9pt; color:#666;">(Ký, ghi rõ họ tên, đóng dấu)</td>
     </tr>
   </table>
 

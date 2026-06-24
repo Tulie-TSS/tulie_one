@@ -1056,7 +1056,7 @@ export async function generateDocument(
         variables.clause_appendix_number = '1.3.'
         variables.clause_appendix_number_plus1 = '1.4.'
         variables.scope_appendix_ref = 'Phạm vi công việc, yêu cầu kỹ thuật, chức năng chi tiết, sản phẩm bàn giao, tiêu chí nghiệm thu, bảng giá và lộ trình thực hiện được quy định tại <strong>Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá &amp; Lộ trình triển khai</strong>, là bộ phận không tách rời của Hợp đồng này.'
-        variables.timeline_appendix_ref = ' Lộ trình chi tiết được quy định tại Phụ lục 01.'
+        variables.timeline_appendix_ref = ' Lộ trình chi tiết được quy định tại Phụ lục 01, bao gồm ngày hoàn thành dự kiến, ngày nghiệm thu/bàn giao dự kiến và cơ chế gia hạn bằng văn bản.'
         variables.change_scope_ref = 'Phụ lục 01'
         variables.appendix_list_text = 'Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai'
 

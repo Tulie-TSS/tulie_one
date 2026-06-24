@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requirePermission, isAuthError } from '@/lib/security/auth-guard'
 import { getContractDocuments, generateDocumentBundle } from '@/lib/supabase/services/document-template-service'
-import { createAdminClient } from '@/lib/supabase/admin'
 
 /**
  * GET /api/contracts/[id]/documents
@@ -42,17 +41,6 @@ export async function POST(
 
         const resolvedParams = await params
         contractId = resolvedParams.id
-        const body = await request.json().catch(() => ({}))
-
-        // If include_proposal_appendix is specified, update contract before regenerating
-        if (typeof body.include_proposal_appendix === 'boolean') {
-            const supabase = createAdminClient()
-            await supabase
-                .from('contracts')
-                .update({ include_proposal_appendix: body.include_proposal_appendix })
-                .eq('id', contractId)
-        }
-
         await generateDocumentBundle(contractId)
         
         // Return fresh docs from DB
@@ -74,4 +62,3 @@ export async function POST(
         return NextResponse.json({ error: 'Failed to regenerate documents' }, { status: 500 })
     }
 }
-
