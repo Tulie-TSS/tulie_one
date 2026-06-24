@@ -126,7 +126,7 @@ export const contractSoftwareTemplate = `
     </tr>
   </table>
 
-  <p style="margin:15px 0;">Hai bên thống nhất ký kết hợp đồng dịch vụ phát triển phần mềm ứng dụng dạng website với các điều khoản sau:</p>
+  <p style="margin:15px 0;">Hai bên thống nhất ký kết {{contract_title_body}} với các điều khoản sau:</p>
 
   <!-- ========== ĐIỀU 1 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
@@ -1130,11 +1130,10 @@ export const contractDesignTemplate = `
     </tr>
   </table>
 
-  <!-- ========== PHỤ LỤC 01: CHI TIẾT SẢN PHẨM, SỐ LƯỢNG, ĐƠN GIÁ VÀ VAT ========== -->
+  <!-- ========== PHỤ LỤC 01: PHẠM VI CÔNG VIỆC, BẢNG GIÁ & LỘ TRÌNH ========== -->
   <div style="page-break-before: always;"></div>
-  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC SỐ 01</p>
-  <p style="text-align:center; font-weight:bold; font-size:11pt; margin: 0 0 10px 0;">VỀ CHI TIẾT SẢN PHẨM, SỐ LƯỢNG, ĐƠN GIÁ VÀ THUẾ GTGT</p>
-  <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Kèm theo Hợp đồng kinh tế số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai</p>
+  <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Đính kèm {{contract_type}} số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
 
   <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">I. DANH MỤC SẢN PHẨM, DỊCH VỤ VÀ IN ẤN CHI TIẾT</p>
   <table style="width:100%; border-collapse:collapse; margin-bottom:12px; font-size:8pt; table-layout:auto;">
