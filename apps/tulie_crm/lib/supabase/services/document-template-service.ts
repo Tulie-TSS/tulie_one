@@ -1129,6 +1129,18 @@ export async function generateDocument(
                     /<p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">II\. CAM KẾT<\/p>/,
                     '{{proposal_appendix_content_html}}<p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">III. CAM KẾT</p>'
                 )
+
+            // Existing database templates predate the explicit final-payment clause.
+            // Insert it at generation time so they remain legally complete without a manual reseed.
+            if (!templateContent.includes('Tổng giá trị thanh toán Bên A phải thanh toán')) {
+                templateContent = templateContent.replace(
+                    'Cơ cấu giá chi tiết theo Phụ lục 01.',
+                    `Cơ cấu giá chi tiết theo Phụ lục 01.<br><br>
+        <strong>Tổng giá trị thanh toán:</strong><br>
+        Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>{{total_amount_number}} VNĐ</strong><br>
+        (Bằng chữ: <em>{{amount_in_words}}</em>). Giá trị này chưa bao gồm thuế GTGT nếu pháp luật hoặc cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng phải chịu thuế GTGT; phần thuế phát sinh được xử lý theo Khoản 2.2 dưới đây.`
+                )
+            }
         }
         if (isFreelance && template.type === 'delivery_minutes') {
             templateContent = freelanceDeliveryTemplate
