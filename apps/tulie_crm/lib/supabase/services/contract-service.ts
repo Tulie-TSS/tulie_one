@@ -191,6 +191,72 @@ export async function createContract(contract: Partial<Contract>, milestones: Pa
     return contractData
 }
 
+/**
+ * Create an editable draft from an existing contract.
+ * Commercial terms are retained, while legally unique/transactional state is reset.
+ */
+export async function duplicateContract(id: string): Promise<Contract> {
+    const supabase = await createClient()
+    const { data: source, error } = await supabase
+        .from('contracts')
+        .select('*, milestones:contract_milestones(*)')
+        .eq('id', id)
+        .single()
+
+    if (error || !source) {
+        throw new Error('Không tìm thấy hợp đồng cần nhân bản')
+    }
+
+    const { milestones = [], ...sourceContract } = source as Contract & { milestones?: ContractMilestone[] }
+    const duplicate: Partial<Contract> = {
+        customer_id: sourceContract.customer_id,
+        quotation_id: sourceContract.quotation_id,
+        title: sourceContract.title,
+        description: sourceContract.description,
+        vat_exempt_status: sourceContract.vat_exempt_status,
+        product_name_in_contract: sourceContract.product_name_in_contract,
+        total_amount: sourceContract.total_amount,
+        start_date: sourceContract.start_date,
+        end_date: sourceContract.end_date,
+        terms: sourceContract.terms,
+        items: sourceContract.items,
+        type: sourceContract.type,
+        project_id: sourceContract.project_id,
+        brand: sourceContract.brand,
+        category: sourceContract.category,
+        contract_template: sourceContract.contract_template,
+        freelancer_metadata: sourceContract.freelancer_metadata,
+        customer_snapshot: sourceContract.customer_snapshot,
+        status: 'draft',
+        signed_date: undefined,
+        contract_number: undefined,
+        order_number: undefined,
+        attachments: undefined,
+    }
+
+    const duplicateMilestones: Partial<ContractMilestone>[] = milestones.map((milestone: any) => ({
+        name: milestone.name,
+        description: milestone.description,
+        due_date: milestone.due_date,
+        percentage: milestone.percentage,
+        amount: milestone.amount,
+        type: milestone.type,
+        project_id: milestone.project_id,
+        status: 'pending',
+        completed_at: undefined,
+        delay_reason: '',
+    }))
+
+    const created = await createContract(duplicate, duplicateMilestones)
+    await logActivity({
+        action: 'create',
+        entity_type: created.type || 'contract',
+        entity_id: created.id,
+        description: `Nhân bản từ hợp đồng ${sourceContract.contract_number}`,
+    })
+    return created as Contract
+}
+
 export async function updateContract(id: string, contract: Partial<Contract>, milestones: Partial<ContractMilestone>[]): Promise<{ success: boolean; error?: string }> {
     try {
         const supabase = await createClient()

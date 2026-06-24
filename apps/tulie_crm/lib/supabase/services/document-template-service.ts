@@ -796,6 +796,28 @@ export async function generateDocument(
                 variables.contract_items_table = itemsRowsHtml
                 variables.contract_items_table_no_vat = itemsRowsNoVatHtml
                 variables.quotation_items_table = itemsRowsHtml
+                variables.appendix_price_table = `<table style="width:100%; border-collapse:collapse; margin:0 0 8px 0; font-size:9pt;">
+                    <thead>
+                        <tr style="background:#e8e8e8;">
+                            <th style="border:1px solid #000; padding:5px 3px; text-align:center; width:6%;">STT</th>
+                            <th style="border:1px solid #000; padding:5px 3px; text-align:center;">Hạng mục / Sản phẩm bàn giao</th>
+                            <th style="border:1px solid #000; padding:5px 3px; text-align:center; width:9%;">ĐVT</th>
+                            <th style="border:1px solid #000; padding:5px 3px; text-align:center; width:8%;">SL</th>
+                            <th style="border:1px solid #000; padding:5px 3px; text-align:center; width:16%;">Đơn giá (VNĐ)</th>
+                            <th style="border:1px solid #000; padding:5px 3px; text-align:center; width:18%;">Thành tiền (VNĐ)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${itemsRowsNoVatHtml}
+                        <tr style="background:#e8e8e8;">
+                            <td colspan="5" style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold;">TỔNG GIÁ TRỊ THANH TOÁN</td>
+                            <td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(contract.total_amount || totalAfterVat)} VNĐ</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="border:1px solid #000; padding:5px; font-style:italic;">Bằng chữ: ${readNumberToWords(contract.total_amount || totalAfterVat)}.</td>
+                        </tr>
+                    </tbody>
+                </table>`
 
                 // Build delivery items table (simplified: STT, Name, Unit, Qty, Notes)
                 let deliveryRowsHtml = ''
@@ -848,6 +870,7 @@ export async function generateDocument(
                 variables.contract_items_table = ''
                 variables.contract_items_table_no_vat = ''
                 variables.quotation_items_table = ''
+                variables.appendix_price_table = `<table style="width:100%; border-collapse:collapse; margin:0 0 8px 0; font-size:9pt;"><tr><td style="border:1px solid #000; padding:6px;">Chưa có hạng mục báo giá chi tiết.</td></tr><tr><td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold;">TỔNG GIÁ TRỊ THANH TOÁN: ${new Intl.NumberFormat('vi-VN').format(contract.total_amount || 0)} VNĐ</td></tr></table>`
                 variables.delivery_items_table = ''
             }
 
@@ -1041,15 +1064,21 @@ export async function generateDocument(
         if (hasProposalAppendix) {
             const proposalSections: { label: string; content: string }[] = []
             const proposalContent = (contract?.quotation?.proposal_content as Record<string, string>) || {}
-            if (proposalContent.introduction) proposalSections.push({ label: 'Mục tiêu & Giới thiệu', content: proposalContent.introduction })
-            if (proposalContent.scope_of_work) proposalSections.push({ label: 'Phạm vi công việc (Scope of Work)', content: proposalContent.scope_of_work })
-            if (proposalContent.methodology) proposalSections.push({ label: 'Phương pháp & Cách tiếp cận', content: proposalContent.methodology })
-            if (proposalContent.deliverables) proposalSections.push({ label: 'Sản phẩm bàn giao (Deliverables)', content: proposalContent.deliverables })
-            if (proposalContent.team) proposalSections.push({ label: 'Đội ngũ chuyên trách', content: proposalContent.team })
-            if (proposalContent.timeline) proposalSections.push({ label: 'Lộ trình triển khai (Timeline)', content: proposalContent.timeline })
-            if (proposalContent.warranty) proposalSections.push({ label: 'Bảo hành & Hỗ trợ', content: proposalContent.warranty })
-            if (proposalContent.why_us) proposalSections.push({ label: 'Vì sao chọn chúng tôi?', content: proposalContent.why_us })
-            if (proposalContent.case_studies) proposalSections.push({ label: 'Case Studies & Portfolio', content: proposalContent.case_studies })
+            if (Array.isArray((proposalContent as any).sections)) {
+                ;(proposalContent as any).sections.forEach((section: any) => {
+                    if (section?.label && section?.content) proposalSections.push({ label: section.label, content: section.content })
+                })
+            } else {
+                if (proposalContent.introduction) proposalSections.push({ label: 'Mục tiêu & Giới thiệu', content: proposalContent.introduction })
+                if (proposalContent.scope_of_work) proposalSections.push({ label: 'Phạm vi công việc (Scope of Work)', content: proposalContent.scope_of_work })
+                if (proposalContent.methodology) proposalSections.push({ label: 'Phương pháp & Cách tiếp cận', content: proposalContent.methodology })
+                if (proposalContent.deliverables) proposalSections.push({ label: 'Sản phẩm bàn giao (Deliverables)', content: proposalContent.deliverables })
+                if (proposalContent.team) proposalSections.push({ label: 'Đội ngũ chuyên trách', content: proposalContent.team })
+                if (proposalContent.timeline) proposalSections.push({ label: 'Lộ trình triển khai (Timeline)', content: proposalContent.timeline })
+                if (proposalContent.warranty) proposalSections.push({ label: 'Bảo hành & Hỗ trợ', content: proposalContent.warranty })
+                if (proposalContent.why_us) proposalSections.push({ label: 'Vì sao chọn chúng tôi?', content: proposalContent.why_us })
+                if (proposalContent.case_studies) proposalSections.push({ label: 'Case Studies & Portfolio', content: proposalContent.case_studies })
+            }
 
             // Custom sections
             if (proposalContent.custom_sections) {
@@ -1071,7 +1100,7 @@ export async function generateDocument(
                     <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">PHỤ LỤC 01 — PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, BẢNG GIÁ &amp; LỘ TRÌNH TRIỂN KHAI</p>
                     <p style="text-align:center; font-style:italic; margin-bottom:20px; font-size:9pt;">(Đính kèm Hợp đồng kinh tế số ${variables.contract_number || ''} ngày ${variables.day || ''}/${variables.month || ''}/${variables.year || ''})</p>
                     <p style="font-weight:bold; font-size:10pt; margin: 0 0 6px 0;">I. BẢNG GIÁ VÀ GIÁ TRỊ HỢP ĐỒNG</p>
-                    ${variables.contract_items_table || ''}
+                    ${variables.appendix_price_table || ''}
                     <p style="font-weight:bold; font-size:10pt; margin: 18px 0 6px 0;">II. PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, TIÊU CHÍ NGHIỆM THU VÀ LỘ TRÌNH</p>
                 `
 

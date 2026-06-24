@@ -18,11 +18,13 @@ import {
     Edit,
     Trash2,
     FileText,
-    Receipt
+    Receipt,
+    Copy,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Contract } from '@/types'
 import { deleteContract } from '@/lib/supabase/services/contract-service'
+import { duplicateContract } from '@/lib/supabase/services/contract-service'
 import {
     Dialog,
     DialogContent,
@@ -55,6 +57,20 @@ export function ContractCellAction({ data, from }: ContractCellActionProps) {
         } finally {
             setLoading(false)
             setOpen(false)
+        }
+    }
+
+    const onDuplicate = async () => {
+        try {
+            setLoading(true)
+            const duplicate = await duplicateContract(data.id)
+            toast.success('Đã tạo bản nháp nhân bản')
+            router.push(`/contracts/${duplicate.id}/edit`)
+            router.refresh()
+        } catch (error) {
+            toast.error(`Không thể nhân bản hợp đồng: ${(error as Error).message || 'Thử lại sau'}`)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -107,6 +123,10 @@ export function ContractCellAction({ data, from }: ContractCellActionProps) {
                             <Edit className="h-4 w-4" />
                             Chỉnh sửa
                         </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={onDuplicate} disabled={loading}>
+                        <Copy className="h-4 w-4" />
+                        Nhân bản hợp đồng
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>

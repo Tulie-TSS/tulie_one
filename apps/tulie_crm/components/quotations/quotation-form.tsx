@@ -61,6 +61,7 @@ import {
 } from "@repo/ui"
 import { ProductCombobox } from '@/components/quotations/product-combobox'
 import { DocumentAttachmentManager, AttachmentItem } from '@/components/quotations/document-attachment-manager'
+import { getDefaultWebsiteContractAppendix } from '@/lib/constants/website-contract-appendix'
 
 interface QuotationFormProps {
     quotation?: Quotation
@@ -92,8 +93,8 @@ export function QuotationForm({ quotation, customers, products, units, projects,
     const [terms, setTerms] = useState(quotation?.terms || '')
     const [notes, setNotes] = useState(quotation?.notes || '')
     const [vatPercent, setVatPercent] = useState(quotation?.vat_percent ?? 10)
-    const [type, setType] = useState<Quotation['type']>(quotation?.type || 'standard')
-    const [proposalContent, setProposalContent] = useState<any>(quotation?.proposal_content || {})
+    const [type, setType] = useState<Quotation['type']>(quotation?.type || 'proposal')
+    const [proposalContent, setProposalContent] = useState<any>(() => quotation?.proposal_content || { sections: getDefaultWebsiteContractAppendix() })
     const [vatExemptStatus, setVatExemptStatus] = useState<'0_percent' | 'exempt'>((quotation?.vat_exempt_status as any) || (quotation?.proposal_content?.vat_exempt_status) || '0_percent')
     const [productNameInContract, setProductNameInContract] = useState<string>(quotation?.product_name_in_contract || quotation?.proposal_content?.product_name_in_contract || '')
     const [isImportProposalOpen, setIsImportProposalOpen] = useState(false)
@@ -1008,13 +1009,22 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                         <Card>
                             <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-6 py-6">
                                 <div>
-                                    <CardTitle>Nội dung Proposal</CardTitle>
-                                    <CardDescription className="mt-1">Mô tả chi tiết giải pháp, phạm vi, đội ngũ cho khách hàng</CardDescription>
+                                    <CardTitle>Phụ lục 01 – Phạm vi công việc & Điều khoản</CardTitle>
+                                    <CardDescription className="mt-1">Nội dung chuẩn cho báo giá website; chỉnh sửa khi có yêu cầu riêng của khách hàng.</CardDescription>
                                 </div>
-                                <Button type="button" variant="outline" size="sm" onClick={handleExportProposalJson}>
-                                    <FileJson className="h-4 w-4" />
-                                    <span>Proposal JSON</span>
-                                </Button>
+                                <div className="flex gap-2">
+                                    <Button type="button" variant="outline" size="sm" onClick={() => {
+                                        setProposalContent((current: any) => ({ ...current, sections: getDefaultWebsiteContractAppendix() }))
+                                        toast.success('Đã khôi phục nội dung phụ lục mặc định')
+                                    }}>
+                                        <RotateCcw className="h-4 w-4" />
+                                        <span>Khôi phục mặc định</span>
+                                    </Button>
+                                    <Button type="button" variant="outline" size="sm" onClick={handleExportProposalJson}>
+                                        <FileJson className="h-4 w-4" />
+                                        <span>Proposal JSON</span>
+                                    </Button>
+                                </div>
                             </CardHeader>
                             <CardContent className="space-y-6">
                                 {/* Dynamic Proposal Sections */}

@@ -35,6 +35,7 @@ import { MilestoneConfirmButton } from '@/components/contracts/milestone-confirm
 
 import { CtvContractDetail } from './ctv-contract-detail'
 import { ContractResetButton } from '@/components/contracts/contract-reset-button'
+import { DuplicateContractButton } from '@/components/contracts/duplicate-contract-button'
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
     const { id } = await params
@@ -124,6 +125,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                         <CtvLinkButton publicToken={contract.public_token} />
                     )}
                     <ContractResetButton contractId={contract.id} />
+                    <DuplicateContractButton contractId={contract.id} />
                     <Button variant="outline" size="sm" asChild>
                         <Link href={`/contracts/${contract.id}/edit`}>
                             <Edit className="h-4 w-4 mr-2" />
