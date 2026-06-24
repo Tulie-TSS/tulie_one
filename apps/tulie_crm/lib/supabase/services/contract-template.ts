@@ -725,7 +725,7 @@ export const contractDesignTemplate = `
     </tr>
   </table>
 
-  <p style="margin:15px 0;">Hai bên thống nhất ký kết hợp đồng dịch vụ thiết kế, sản xuất nội dung và in ấn với các điều khoản sau:</p>
+  <p style="margin:15px 0;">Hai bên thống nhất ký kết {{contract_title_body}} với các điều khoản sau:</p>
 
   <!-- ========== ĐIỀU 1 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">

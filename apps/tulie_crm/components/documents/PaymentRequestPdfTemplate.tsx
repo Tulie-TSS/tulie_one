@@ -53,7 +53,7 @@ const PaymentRequestPdfTemplate: React.FC<PaymentRequestPdfTemplateProps> = ({ d
                 </View>
 
                 <Text style={[styles.text, { textIndent: 20 }]}>
-                    Thực hiện Hợp đồng dịch vụ số <Text style={styles.bold}>{contract_number}</Text> ký ngày {contract_date} giữa {customer.company_name || 'Quý công ty'} và Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie về việc cung cấp dịch vụ, chúng tôi đã hoàn thành đầy đủ các hạng mục công việc đã thỏa thuận.
+                    Thực hiện Hợp đồng số <Text style={styles.bold}>{contract_number}</Text> ký ngày {contract_date} giữa {customer.company_name || 'Quý công ty'} và Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie về việc cung cấp dịch vụ, chúng tôi đã hoàn thành đầy đủ các hạng mục công việc đã thỏa thuận.
                 </Text>
 
                 <Text style={[styles.text, { marginTop: 10 }]}>
@@ -83,7 +83,7 @@ const PaymentRequestPdfTemplate: React.FC<PaymentRequestPdfTemplateProps> = ({ d
                     <View style={styles.signatureBlock}>
                         <Text style={styles.bold}>Công ty TNHH Dịch vụ và Giải pháp</Text>
                         <Text style={styles.bold}>Công nghệ Tulie</Text>
-                        <Text>(Ký và đóng dấu)</Text>
+                        <Text>(Ký, ghi rõ họ tên, đóng dấu)</Text>
                         <View style={styles.signatureSpace} />
                         <Text style={styles.signatureName}>Ông Nguyễn Thanh Tùng</Text>
                     </View>
