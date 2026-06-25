@@ -107,28 +107,49 @@ export const getCustomerColumns = (isStudio = false): ColumnDef<Customer>[] => [
         },
     },
     {
-        accessorKey: 'assigned_user',
-        header: 'Phụ trách',
-        cell: ({ row }) => {
-            const user = row.original.assigned_user
-            if (!user) return <span className="text-xs text-muted-foreground">Chưa gán</span>
+        accessorKey: 'quotation_revenue',
+        header: ({ column }) => {
             return (
-                <div className="flex items-center gap-2">
-                    <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium border">
-                        {user.full_name.charAt(0)}
-                    </div>
-                    <span className="text-sm font-medium">{user.full_name}</span>
-                </div>
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    className="-ml-4 font-semibold"
+                >
+                    Doanh thu báo giá
+                    <ArrowUpDown className="ml-2 h-3 w-3" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => {
+            const val = row.original.quotation_revenue || 0
+            return (
+                <span className="text-xs font-mono font-medium text-zinc-600 dark:text-zinc-400">
+                    {val === 0 ? '0đ' : `${new Intl.NumberFormat('vi-VN').format(val)}đ`}
+                </span>
             )
         },
     },
     {
-        accessorKey: 'last_contact_at',
-        header: 'Liên hệ lần cuối',
+        accessorKey: 'actual_revenue',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    className="-ml-4 font-bold"
+                >
+                    Doanh thu thực tế
+                    <ArrowUpDown className="ml-2 h-3 w-3" />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
-            const date = row.getValue('last_contact_at') as string | undefined
-            if (!date) return <span className="text-muted-foreground">Chưa có</span>
-            return <span className="text-sm">{formatRelativeTime(date)}</span>
+            const val = row.original.actual_revenue || 0
+            return (
+                <span className="text-xs font-mono font-bold text-foreground">
+                    {val === 0 ? '0đ' : `${new Intl.NumberFormat('vi-VN').format(val)}đ`}
+                </span>
+            )
         },
     },
     {

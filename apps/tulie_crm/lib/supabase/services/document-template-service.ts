@@ -636,21 +636,19 @@ export async function generateDocument(
             variables.contract_title_upper = contractTitle.toUpperCase()
             variables.contract_type = contractTitle.toLowerCase()
 
-            // Auto-fill delivery_time from quotation proposal_content if available, else contract end date
-            const quoteProposal = (contract.quotation?.proposal_content as Record<string, any>) || {}
-            if (quoteProposal.delivery_time) {
-                variables.delivery_time = quoteProposal.delivery_time
+            // The binding term is the inclusive period between the contract's
+            // own start/signing date and end date. Quote delivery_time is only
+            // explanatory and must not alter a signed contract schedule.
+            const scheduleStart = contract.start_date || contract.signed_date
+            if (scheduleStart && contract.end_date) {
+                const start = parseLocalDateString(scheduleStart)
+                const end = parseLocalDateString(contract.end_date)
+                const calendarDays = Math.floor((end.getTime() - start.getTime()) / 86_400_000) + 1
+                variables.delivery_time = String(Math.max(calendarDays, 0))
             }
-            const deliveryTimeDays = Number.parseInt(String(variables.delivery_time || '').replace(/[^\d]/g, ''), 10)
-            if (contract.start_date && Number.isFinite(deliveryTimeDays) && deliveryTimeDays > 0) {
-                // Proposal text can be descriptive (for example "30 ngày làm
-                // việc kể từ ngày nhận tạm ứng"). The contract template owns
-                // the legal trigger, so render only the numeric duration here.
-                variables.delivery_time = String(deliveryTimeDays)
-                variables.end_date = formatLocalDate(addWorkingDays(parseLocalDateString(contract.start_date), deliveryTimeDays))
-            } else {
-                variables.end_date = contract.end_date ? formatLocalDateString(contract.end_date) : 'sẽ được các bên xác nhận tại Phụ lục 01'
-            }
+            variables.end_date = contract.end_date
+                ? formatLocalDateString(contract.end_date)
+                : 'sẽ được các bên xác nhận tại Phụ lục 01'
 
             // Use delivery_address from snapshot if available, otherwise fallback to default based on type
             variables.delivery_address = custData?.delivery_address || 
@@ -1155,29 +1153,36 @@ export async function generateDocument(
             }
 
             {
-                let proposalHtml = `
-                    <p style="font-weight:bold; font-size:10pt; margin: 18px 0 6px 0;">II. PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, TIÊU CHÍ NGHIỆM THU VÀ LỘ TRÌNH</p>
-                `
-
-                proposalSections.forEach((section, idx) => {
-                    const sectionContent = section.content
-                        .replace(/\n/g, '<br>')
-                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    proposalHtml += `
-                        <div style="margin-bottom:16px;">
-                            <p style="font-weight:bold; font-size:10pt; margin: 0 0 6px 0; border-bottom:1px solid #ddd; padding-bottom:4px;">${idx + 1}. ${section.label}</p>
-                            <div style="font-size:9.5pt; text-align:justify; line-height:1.6; padding-left:4px;">${sectionContent}</div>
-                        </div>
+                if (proposalSections.length > 0) {
+                    let proposalHtml = `
+                        <p style="font-weight:bold; font-size:10pt; margin: 18px 0 6px 0;">II. PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, TIÊU CHÍ NGHIỆM THU VÀ LỘ TRÌNH</p>
                     `
-                })
 
-                variables.proposal_appendix_content_html = proposalHtml
+                    proposalSections.forEach((section, idx) => {
+                        const sectionContent = section.content
+                            .replace(/\n/g, '<br>')
+                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        proposalHtml += `
+                            <div style="margin-bottom:16px;">
+                                <p style="font-weight:bold; font-size:10pt; margin: 0 0 6px 0; border-bottom:1px solid #ddd; padding-bottom:4px;">${idx + 1}. ${section.label}</p>
+                                <div style="font-size:9.5pt; text-align:justify; line-height:1.6; padding-left:4px;">${sectionContent}</div>
+                            </div>
+                        `
+                    })
+
+                    variables.proposal_appendix_content_html = proposalHtml
+                } else {
+                    // No proposal sections → don't inject empty "II. PHẠM VI..." header.
+                    // The CAM KẾT block will stay as "II." (not bumped to "III.") via the regex replacement below.
+                    variables.proposal_appendix_content_html = ''
+                }
                 variables.proposal_appendix_html = ''
             }
         } else {
             variables.proposal_appendix_content_html = ''
             variables.proposal_appendix_html = ''
         }
+
 
         let templateContent = template.content
         // Payment requests and delivery minutes can be backed by historical DB
@@ -1194,11 +1199,14 @@ export async function generateDocument(
             // Some historical DB templates hard-coded the former contract name
             // instead of using variables. Normalize them at render time too.
             templateContent = templateContent.replace(/Hợp đồng số/g, '{{contract_title_body}} số')
+            const hasPlaceholder = templateContent.includes('{{proposal_appendix_content_html}}')
             templateContent = templateContent
                 .replace('{{proposal_appendix_html}}', '')
                 .replace(
-                    /<p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">II\. CAM KẾT<\/p>/,
-                    '{{proposal_appendix_content_html}}<p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">III. CAM KẾT</p>'
+                    /(<p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">)(?:II|III)\. CAM KẾT(<\/p>)/,
+                    variables.proposal_appendix_content_html
+                        ? (hasPlaceholder ? `$1III. CAM KẾT$2` : `${variables.proposal_appendix_content_html}$1III. CAM KẾT$2`)
+                        : '$1II. CAM KẾT$2'
                 )
 
             // Keep legacy database templates aligned: put the final payment total

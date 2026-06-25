@@ -45,7 +45,7 @@ export default async function ProfilePage() {
             <div className="grid gap-6 md:grid-cols-[300px_1fr]">
                 {/* Profile Card */}
                 <Card className="rounded-md border-border overflow-hidden h-fit">
-                    <CardHeader className="text-center bg-muted/30 pb-8">
+                    <CardHeader className="text-center pb-8">
                         <div className="flex justify-center mb-4">
                             <div className="relative">
                                 <Avatar className="h-28 w-28 border-4 border-background ">
@@ -66,7 +66,7 @@ export default async function ProfilePage() {
 
                 {/* Details */}
                 <Card className="rounded-md border-border overflow-hidden">
-                    <CardHeader className="bg-muted/30 border-b border-border">
+                    <CardHeader className="border-b border-border">
                         <CardTitle className="text-lg text-foreground">Thông tin chi tiết</CardTitle>
                         <CardDescription className="font-medium">Cập nhật thông tin cá nhân của bạn</CardDescription>
                     </CardHeader>

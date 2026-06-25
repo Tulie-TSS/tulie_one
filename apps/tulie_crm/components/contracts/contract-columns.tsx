@@ -80,20 +80,6 @@ export const contractColumns: ColumnDef<Contract>[] = [
         },
     },
     {
-        accessorKey: 'title',
-        header: 'Tiêu đề',
-        cell: ({ row }) => {
-            const contract = row.original
-            return (
-                <div className="min-w-[150px] max-w-[400px]">
-                    <span className="text-sm font-medium text-foreground whitespace-normal break-words leading-snug block">
-                        {row.getValue('title') || (contract.category === 'freelancer' ? 'Hợp đồng cộng tác viên' : 'Hợp đồng dịch vụ')}
-                    </span>
-                </div>
-            )
-        }
-    },
-    {
         accessorKey: 'quotation',
         header: 'Báo giá',
         cell: ({ row }) => {

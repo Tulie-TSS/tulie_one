@@ -162,7 +162,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
             <div className="lg:col-span-2 space-y-6">
                 {/* Delivery Links Section */}
                 <Card className="rounded-md border-border overflow-hidden">
-                    <CardHeader className="bg-muted/50 border-b">
+                    <CardHeader className="border-b">
                         <div className="flex items-center justify-between">
                             <div className="space-y-1">
                                 <CardTitle className="text-base font-semibold flex items-center gap-2">
@@ -230,7 +230,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                 {/* Customer Photos & Original Link */}
                 {((order as any).metadata?.photo_urls?.length > 0 || (order as any).metadata?.original_link) && (
                     <Card className="rounded-md border-border overflow-hidden">
-                        <CardHeader className="bg-muted/50 border-b">
+                        <CardHeader className="border-b">
                             <div className="space-y-1">
                                 <CardTitle className="text-base font-semibold flex items-center gap-2">
                                     <ImageIcon className="h-4 w-4 text-primary" />
@@ -272,7 +272,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
                 {/* Product/Service List */}
                 <Card className="rounded-md border-border overflow-hidden">
-                    <CardHeader className="bg-muted/50 border-b">
+                    <CardHeader className="border-b">
                         <div className="space-y-1">
                             <CardTitle className="text-base font-semibold flex items-center gap-2">
                                 <FileText className="h-4 w-4 text-primary" />
@@ -321,7 +321,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                             </TableCell>
                                         </TableRow>
                                     )}
-                                    <TableRow className="bg-muted/30 border-t">
+                                    <TableRow className="border-t">
                                         <TableCell colSpan={4} className="text-right text-[11px] text-muted-foreground">Tổng cộng</TableCell>
                                         <TableCell className="text-right text-base tabular-nums">
                                             {formatCurrency(order.total_amount)}
@@ -336,7 +336,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                 {/* Info & Notes */}
                 <div className="grid md:grid-cols-2 gap-6">
                     <Card className="rounded-md border-border overflow-hidden">
-                        <CardHeader className="bg-muted/50 border-b">
+                        <CardHeader className="border-b">
                             <div className="space-y-1">
                                 <CardTitle className="text-base font-semibold flex items-center gap-2">
                                     <Phone className="h-4 w-4 text-primary" />
@@ -400,7 +400,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
                     {/* Shipping Info Card */}
                     <Card className="rounded-md border-border overflow-hidden">
-                        <CardHeader className="bg-muted/50 border-b">
+                        <CardHeader className="border-b">
                             <div className="flex items-center justify-between">
                                 <div className="space-y-1">
                                     <CardTitle className="text-base font-semibold flex items-center gap-2">
@@ -488,7 +488,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
             <div className="space-y-6">
                 {/* Payment Card */}
                 <Card className="rounded-md border-border overflow-hidden">
-                    <CardHeader className="bg-muted/50 border-b pb-3">
+                    <CardHeader className="border-b pb-3">
                         <Badge variant="outline" className="w-fit mb-2 text-[11px] uppercase tracking-widest px-3 py-1">
                             Thanh toán
                         </Badge>
@@ -674,7 +674,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                 {/* Record Payment Section (Manual) */}
                 {remainingAmount > 0 && (
                     <Card className="rounded-md border-border overflow-hidden">
-                        <CardHeader className="pb-3 bg-muted/30">
+                        <CardHeader className="pb-3">
                             <CardTitle className="text-sm font-semibold flex items-center gap-2">
                                 <History className="h-4 w-4 text-muted-foreground" />
                                 Thu tiền thực tế (Manual)

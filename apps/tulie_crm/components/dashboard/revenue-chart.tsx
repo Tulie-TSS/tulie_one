@@ -32,11 +32,11 @@ export function RevenueChart({ data }: RevenueChartProps) {
     const hasData = data && data.length > 0 && data.some(d => d.revenue > 0 || d.profit > 0)
 
     return (
-        <Card className="shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-base font-medium">Doanh thu & Lợi nhuận</CardTitle>
+        <Card glow="blue" className="shadow-[0_4px_24px_-8px_rgba(0,0,0,0.04)] border border-border/50 transition-all hover:shadow-[0_10px_24px_-8px_rgba(0,0,0,0.06)]">
+            <CardHeader className="flex flex-row items-center justify-between pb-1.5 pt-3 px-4">
+                <CardTitle className="text-sm font-semibold">Doanh thu & Lợi nhuận</CardTitle>
                 <Select value={period} onValueChange={setPeriod}>
-                    <SelectTrigger className="w-[130px] h-8 text-xs">
+                    <SelectTrigger className="w-[110px] h-7 text-xs">
                         <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -46,19 +46,19 @@ export function RevenueChart({ data }: RevenueChartProps) {
                     </SelectContent>
                 </Select>
             </CardHeader>
-            <CardContent className="pt-2">
+            <CardContent className="pt-1 px-4 pb-3">
                 {!hasData ? (
-                    <div className="h-[300px] flex items-center justify-center text-muted-foreground text-sm">
-                        <div className="text-center space-y-2">
-                            <p className="text-3xl">📊</p>
+                    <div className="h-[230px] flex items-center justify-center text-muted-foreground text-xs">
+                        <div className="text-center space-y-1.5">
+                            <p className="text-2xl">📊</p>
                             <p>Chưa có dữ liệu doanh thu</p>
-                            <p className="text-xs">Dữ liệu sẽ hiển thị khi có hóa đơn thanh toán</p>
+                            <p className="text-[11px]">Dữ liệu hiển thị khi có thanh toán</p>
                         </div>
                     </div>
                 ) : (
-                    <div className="h-[300px]">
+                    <div className="h-[230px]">
                         <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                            <AreaChart data={data} margin={{ top: 5, right: 5, left: -10, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
                                         <stop offset="5%" stopColor="#2563eb" stopOpacity={0.4} />
@@ -120,10 +120,10 @@ export function RevenueChart({ data }: RevenueChartProps) {
                                 <Legend
                                     verticalAlign="top"
                                     align="right"
-                                    height={36}
+                                    height={24}
                                     iconType="circle"
-                                    iconSize={8}
-                                    wrapperStyle={{ fontSize: 13, fontWeight: 500, color: 'var(--color-foreground)' }}
+                                    iconSize={6}
+                                    wrapperStyle={{ fontSize: 11, fontWeight: 500, color: 'var(--color-foreground)', marginTop: -10 }}
                                 />
                                 <Area
                                     type="monotone"

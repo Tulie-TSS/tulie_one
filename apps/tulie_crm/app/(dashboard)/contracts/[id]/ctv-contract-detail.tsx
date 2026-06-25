@@ -34,7 +34,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                         </div>
                         <p className="text-sm text-muted-foreground flex items-center gap-2">
                             <FileSignature className="h-4 w-4" />
-                            Chi tiết Hợp đồng Cộng tác viên
+                            Chi tiết Hợp đồng Cộng tác & Khoán việc
                         </p>
                     </div>
                 </div>
@@ -69,7 +69,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
 
             {/* Information Cards */}
             <Card>
-                <CardHeader className="border-b bg-muted/20 pb-4">
+                <CardHeader className="border-b pb-4">
                     <CardTitle className="text-base text-foreground">Thông tin CTV & Hợp đồng</CardTitle>
                 </CardHeader>
                 <CardContent className="grid gap-x-8 gap-y-6 md:grid-cols-2 lg:grid-cols-3 pt-6">
@@ -149,7 +149,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
 
             {/* Payment Progress & Milestones */}
             <Card>
-                <CardHeader className="border-b bg-muted/20">
+                <CardHeader className="border-b">
                     <CardTitle className="text-base">Thanh toán & Milestone</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-8 pt-6">
@@ -180,7 +180,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                             <div className="rounded-md border overflow-hidden">
                                 <Table>
                                     <TableHeader>
-                                        <TableRow className="bg-muted/50">
+                                        <TableRow>
                                             <TableHead className="w-[60px] text-center">TT</TableHead>
                                             <TableHead>Giai đoạn</TableHead>
                                             <TableHead className="text-right">Số tiền</TableHead>
@@ -252,7 +252,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                                 <div className="rounded-md border overflow-hidden">
                                     <Table>
                                         <TableHeader>
-                                            <TableRow className="bg-muted/50">
+                                            <TableRow>
                                                 <TableHead className="w-[60px] text-center">STT</TableHead>
                                                 <TableHead>Nội dung công việc</TableHead>
                                                 <TableHead className="w-[180px]">Hạn hoàn thành</TableHead>

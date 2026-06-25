@@ -221,14 +221,6 @@ export function TicketDetailClient({ ticket, users }: TicketDetailClientProps) {
                                     <span className="text-muted-foreground">Tạo lúc</span>
                                     <span className="font-medium">{format(new Date(ticket.created_at), 'dd/MM/yyyy HH:mm')}</span>
                                 </div>
-                                {ticket.project && (
-                                    <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Dự án</span>
-                                        <Link href={`/projects/${ticket.project_id}`} className="font-medium hover:underline truncate max-w-[150px]">
-                                            {(ticket.project as any)?.title}
-                                        </Link>
-                                    </div>
-                                )}
                             </div>
                         </CardContent>
                     </Card>

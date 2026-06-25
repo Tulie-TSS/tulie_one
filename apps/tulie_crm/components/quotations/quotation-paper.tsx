@@ -330,7 +330,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                         return sortedRates.map(rate => (
                             <div key={rate} className="flex justify-between items-center text-[11px] px-2">
                                 <span className="text-slate-500 uppercase">
-                                    {rate === 0 && quotation.vat_exempt_status === 'exempt' ? 'Không chịu thuế' : `VAT (${rate}%)`}
+                                    {rate === 0 && quotation.vat_exempt_status === 'exempt' ? 'Không chịu thuế GTGT (KCT)' : `VAT (${rate}%)`}
                                 </span>
                                 <span className="text-foreground">{formatCurrency(vatGroups[rate])}</span>
                             </div>

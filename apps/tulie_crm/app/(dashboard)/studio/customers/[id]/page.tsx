@@ -99,7 +99,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
             <div className="grid gap-6 lg:grid-cols-3 lg:items-stretch">
                 {/* Contact Info */}
                 <Card className="lg:col-span-2">
-                    <CardHeader className="h-14 flex flex-row items-center pb-3 border-b bg-muted/5 space-y-0">
+                    <CardHeader className="h-14 flex flex-row items-center pb-3 border-b space-y-0">
                         <CardTitle className="text-lg font-semibold flex items-center gap-2">
                             <Package className="h-5 w-5 text-muted-foreground" />
                             Thông tin cá nhân
@@ -184,7 +184,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
 
                 {/* Lifetime Value */}
                 <Card className="flex flex-col">
-                    <CardHeader className="h-14 flex flex-row items-center pb-3 border-b bg-muted/5 space-y-0">
+                    <CardHeader className="h-14 flex flex-row items-center pb-3 border-b space-y-0">
                         <CardTitle className="text-lg font-semibold text-foreground">Giá trị vòng đời (LTV)</CardTitle>
                     </CardHeader>
                     <CardContent className="flex flex-col items-center justify-center flex-1 py-8">
@@ -211,7 +211,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
 
             {/* Order History Table */}
             <Card>
-                <CardHeader className="h-14 flex flex-row items-center pb-3 border-b bg-muted/5 space-y-0">
+                <CardHeader className="h-14 flex flex-row items-center pb-3 border-b space-y-0">
                     <CardTitle className="text-lg font-semibold flex items-center gap-2">
                         <History className="h-5 w-5 text-muted-foreground" />
                         Lịch sử mua hàng

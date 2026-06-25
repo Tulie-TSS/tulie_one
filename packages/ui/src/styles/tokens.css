@@ -65,6 +65,12 @@
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
 
+  /* Glow colors for Stats Cards */
+  --color-glow-coral: var(--glow-coral);
+  --color-glow-emerald: var(--glow-emerald);
+  --color-glow-blue: var(--glow-blue);
+  --color-glow-violet: var(--glow-violet);
+
   /* Radius scale — shadcn v4 calc()-based */
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -92,76 +98,83 @@
 }
 
 /* ═══════════════════════════════════════════
-   LIGHT MODE — shadcn/ui v4 Pure Neutral
+   LIGHT MODE — Premium Peach/Coral
    ═══════════════════════════════════════════ */
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.75rem;
 
-  /* Core palette — Pure Neutral (chroma = 0) */
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  /* Core palette — Premium Peach/Coral (oklch-based) */
+  --background: oklch(0.985 0.008 55); /* Warm soft cream background */
+  --foreground: oklch(0.22 0.015 45);   /* Dark warm charcoal text */
 
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.65 0.18 45);       /* Warm coral/orange accent */
+  --primary-foreground: oklch(0.99 0.005 50);
 
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.96 0.012 55);    /* Soft warm light peach */
+  --secondary-foreground: oklch(0.3 0.02 50);
 
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted: oklch(0.96 0.012 55);
+  --muted-foreground: oklch(0.55 0.015 50);
 
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: oklch(0.955 0.018 55);
+  --accent-foreground: oklch(0.25 0.02 50);
 
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.97 0.01 17);
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(0.985 0 0);
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);                 /* Pure white card face */
+  --card-foreground: oklch(0.22 0.015 45);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.22 0.015 45);
 
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: oklch(0.94 0.018 55);       /* Very soft peach-border */
+  --input: oklch(0.94 0.018 55);
+  --ring: oklch(0.68 0.15 45);          /* Coral ring color */
 
   /* Surface & Code (shadcn v4) */
-  --surface: oklch(0.98 0 0);
+  --surface: oklch(0.975 0.01 55);
   --surface-foreground: var(--foreground);
   --code: var(--surface);
   --code-foreground: var(--surface-foreground);
-  --code-highlight: oklch(0.96 0 0);
-  --code-number: oklch(0.56 0 0);
-  --selection: oklch(0.145 0 0);
-  --selection-foreground: oklch(1 0 0);
+  --code-highlight: oklch(0.95 0.01 55);
+  --code-number: oklch(0.55 0.02 50);
+  --selection: oklch(0.65 0.18 45 / 20%); /* Coral highlight tint */
+  --selection-foreground: var(--foreground);
 
   /* Semantic accent colors (custom extension — CRM needs) */
   --success: oklch(0.957 0.038 162.48);
-  --success-foreground: oklch(0.596 0.145 163.225);
+  --success-foreground: oklch(0.42 0.15 160);
 
   --warning: oklch(0.956 0.063 85.34);
-  --warning-foreground: oklch(0.609 0.126 66.947);
+  --warning-foreground: oklch(0.55 0.15 65);
 
   --info: oklch(0.923 0.046 259.815);
-  --info-foreground: oklch(0.546 0.245 262.881);
+  --info-foreground: oklch(0.45 0.20 260);
 
-  /* Chart — Monochrome Grayscale */
-  --chart-1: oklch(0.205 0 0); /* Dark / primary */
-  --chart-2: oklch(0.556 0 0); /* Medium gray / muted-foreground */
-  --chart-3: oklch(0.800 0 0); /* Light gray */
-  --chart-4: oklch(0.400 0 0); /* Darker gray */
-  --chart-5: oklch(0.922 0 0); /* Very light gray / border */
+  /* Stats card glows (custom variables) */
+  --glow-coral: rgba(255, 127, 80, 0.12);
+  --glow-emerald: rgba(16, 185, 129, 0.12);
+  --glow-blue: rgba(59, 130, 246, 0.12);
+  --glow-violet: rgba(139, 92, 246, 0.12);
+
+  /* Chart — Warm Accents matching reference */
+  --chart-1: oklch(0.65 0.18 45);  /* Coral */
+  --chart-2: oklch(0.62 0.16 290); /* Violet */
+  --chart-3: oklch(0.55 0.18 150); /* Green */
+  --chart-4: oklch(0.50 0.15 240); /* Blue */
+  --chart-5: oklch(0.22 0.015 45); /* Dark */
 
   /* Sidebar */
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: oklch(1 0 0);                /* Pure white sidebar background */
+  --sidebar-foreground: oklch(0.3 0.02 50);
+  --sidebar-primary: oklch(0.65 0.18 45);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.97 0.01 55);
+  --sidebar-accent-foreground: oklch(0.22 0.015 45);
+  --sidebar-border: oklch(0.95 0.015 55);
+  --sidebar-ring: oklch(0.68 0.15 45);
+}
 }
 
 /* ═══════════════════════════════════════════

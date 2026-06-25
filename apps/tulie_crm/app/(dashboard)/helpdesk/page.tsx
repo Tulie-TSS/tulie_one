@@ -1,22 +1,5 @@
-import { getTickets } from '@/lib/supabase/services/ticket-service'
-import { getUsers } from '@/lib/supabase/services/user-service'
-import { getCustomers } from '@/lib/supabase/services/customer-service'
-import { HelpdeskClient } from './helpdesk-client'
+import { notFound } from 'next/navigation'
 
-export const dynamic = 'force-dynamic'
-
-export default async function HelpdeskPage() {
-    const [tickets, users, customers] = await Promise.all([
-        getTickets(),
-        getUsers(),
-        getCustomers('business')
-    ])
-
-    return (
-        <HelpdeskClient
-            initialTickets={tickets}
-            users={users}
-            customers={customers}
-        />
-    )
+export default function HelpdeskPage() {
+    notFound()
 }

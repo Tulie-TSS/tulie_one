@@ -144,7 +144,7 @@ export function DataTable<TData, TValue>({
     }
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 bg-card text-card-foreground border border-border/80 rounded-3xl p-6 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.04)]">
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent>
                     <DialogHeader>
@@ -165,7 +165,7 @@ export function DataTable<TData, TValue>({
             </Dialog>
 
             {/* Toolbar */}
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex flex-1 flex-wrap items-center gap-2">
                     {searchKey && (
                         <div className="relative group">
@@ -332,7 +332,7 @@ export function DataTable<TData, TValue>({
                                     return (
                                         <DropdownMenuCheckboxItem
                                             key={column.id}
-                                            className="capitalize"
+                                            className=""
                                             checked={column.getIsVisible()}
                                             onCheckedChange={(value) =>
                                                 column.toggleVisibility(!!value)
@@ -356,7 +356,7 @@ export function DataTable<TData, TValue>({
                             <TableRow key={headerGroup.id} className="hover:bg-transparent border-b">
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id} className="first:pl-6 last:pr-6 whitespace-nowrap h-11 text-xs font-semibold text-muted-foreground">
+                                        <TableHead key={header.id} className="first:pl-6 last:pr-6 whitespace-nowrap h-9 text-xs font-semibold text-muted-foreground">
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
@@ -378,7 +378,7 @@ export function DataTable<TData, TValue>({
                                     className="group hover:bg-muted/30 transition-colors"
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id} className="first:pl-6 last:pr-6 py-3.5 text-sm font-medium">
+                                        <TableCell key={cell.id} className="first:pl-6 last:pr-6 py-1.5 text-sm font-medium">
                                             {flexRender(
                                                 cell.column.columnDef.cell,
                                                 cell.getContext()

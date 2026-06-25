@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '../server'
+import { createAdminClient } from '../admin'
 import { Contract, ContractMilestone } from '@/types'
 import { revalidatePath } from 'next/cache'
 import { logActivity, logDestructiveAction } from './activity-service'
@@ -455,6 +456,53 @@ export async function updateContract(id: string, contract: Partial<Contract>, mi
         console.error('Fatal error in updateContract:', err)
         return { success: false, error: err.message || 'Lỗi hệ thống khi cập nhật hợp đồng' }
     }
+}
+
+/** Copy the commercial terms from a contract to its linked quotation. */
+export async function syncContractTermsToQuotation(contractId: string): Promise<void> {
+    const supabase = createAdminClient()
+    const { data: contract, error } = await supabase
+        .from('contracts')
+        .select('quotation_id, warranty_months, milestones:contract_milestones(*)')
+        .eq('id', contractId)
+        .single()
+
+    if (error) throw error
+    if (!contract?.quotation_id) return
+
+    const { data: quotation, error: quoteError } = await supabase
+        .from('quotations')
+        .select('proposal_content')
+        .eq('id', contract.quotation_id)
+        .single()
+    if (quoteError) throw quoteError
+
+    const paymentMilestones = (contract.milestones || [])
+        .filter((milestone: any) => milestone.type === 'payment')
+        .map((milestone: any) => ({
+            id: milestone.id,
+            name: milestone.name,
+            description: milestone.description || '',
+            due_date: milestone.due_date || null,
+            status: milestone.status || 'pending',
+            type: 'payment',
+            percentage: milestone.percentage || 0,
+            amount: milestone.amount || 0,
+        }))
+
+    const proposalContent = {
+        ...(quotation?.proposal_content || {}),
+        warranty_months: contract.warranty_months ?? null,
+        payment_milestones: paymentMilestones,
+    }
+
+    const { error: updateError } = await supabase
+        .from('quotations')
+        .update({ proposal_content: proposalContent })
+        .eq('id', contract.quotation_id)
+    if (updateError) throw updateError
+
+    revalidatePath(`/quotations/${contract.quotation_id}`)
 }
 
 export async function deleteContract(id: string) {

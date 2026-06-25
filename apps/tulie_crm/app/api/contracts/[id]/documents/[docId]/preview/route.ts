@@ -40,10 +40,19 @@ export async function GET(
             const formattedAmount = new Intl.NumberFormat('vi-VN').format(totalAmount)
 
             // Render legacy stored documents with the current unified appendix title.
-            documentContent = documentContent.replace(
-                'BẢNG BÁO GIÁ CHI TIẾT',
-                'VỀ PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, BẢNG GIÁ VÀ LỘ TRÌNH TRIỂN KHAI'
-            )
+            documentContent = documentContent
+                .replace(
+                    /<p[^>]*>\s*PHỤ LỤC SỐ 01\s*<\/p>\s*<p[^>]*>\s*VỀ (?:CHI TIẾT SẢN PHẨM, SỐ LƯỢNG, ĐƠN GIÁ VÀ THUẾ GTGT|PHẠM VI CÔNG VIỆC VÀ BẢNG GIÁ CHI TIẾT)\s*<\/p>/gi,
+                    '<p style="text-align:center; font-weight:bold; font-size:13pt; margin: 0 0 6px 0;">Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai</p>'
+                )
+                .replace(
+                    'BẢNG BÁO GIÁ CHI TIẾT',
+                    'Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai'
+                )
+                .replace(
+                    /\(Kèm theo Hợp đồng dịch vụ/gi,
+                    '(Đính kèm hợp đồng dịch vụ'
+                )
 
             // Existing stored documents remain printable with the current placement.
             documentContent = documentContent.replace(/<br><br>\s*<strong>Tổng giá trị thanh toán:<\/strong>[\s\S]*?Khoản 2\.2 dưới đây\./, '')

@@ -10,7 +10,7 @@ export async function getCustomers(type?: 'individual' | 'business') {
         const supabase = await createClient()
         let query = supabase
             .from('customers')
-            .select('*, assigned_user:users!assigned_to(*)')
+            .select('*, assigned_user:users!assigned_to(*), quotations(total_amount, status), contracts(total_amount, status), retail_orders(total_amount, paid_amount, payment_status, order_status)')
 
         if (type) {
             query = query.eq('customer_type', type)
@@ -23,7 +23,40 @@ export async function getCustomers(type?: 'individual' | 'business') {
             return []
         }
 
-        return data as Customer[]
+        const customersWithRevenue = (data || []).map((customer: any) => {
+            const quotations = customer.quotations || []
+            const contracts = customer.contracts || []
+            const retailOrders = customer.retail_orders || []
+            
+            let quotationRevenue = 0
+            let actualRevenue = 0
+            
+            if (customer.customer_type === 'individual') {
+                quotationRevenue = retailOrders
+                    .filter((o: any) => o.order_status !== 'cancelled')
+                    .reduce((sum: number, o: any) => sum + (o.total_amount || 0), 0)
+                
+                actualRevenue = retailOrders
+                    .filter((o: any) => o.order_status !== 'cancelled')
+                    .reduce((sum: number, o: any) => sum + (o.paid_amount || 0), 0)
+            } else {
+                quotationRevenue = quotations
+                    .filter((q: any) => ['sent', 'accepted', 'converted'].includes(q.status))
+                    .reduce((sum: number, q: any) => sum + (q.total_amount || 0), 0)
+                    
+                actualRevenue = contracts
+                    .filter((c: any) => ['signed', 'active', 'completed'].includes(c.status))
+                    .reduce((sum: number, c: any) => sum + (c.total_amount || 0), 0)
+            }
+                
+            return {
+                ...customer,
+                quotation_revenue: quotationRevenue,
+                actual_revenue: actualRevenue
+            }
+        })
+
+        return customersWithRevenue as Customer[]
     } catch (err) {
         console.error('[getCustomers] Fatal error:', err)
         return []
@@ -35,7 +68,7 @@ export async function getCustomerById(id: string) {
         const supabase = await createClient()
         const { data, error } = await supabase
             .from('customers')
-            .select('*, assigned_user:users!assigned_to(*)')
+            .select('*, assigned_user:users!assigned_to(*), quotations(total_amount, status), contracts(total_amount, status), retail_orders(total_amount, paid_amount, payment_status, order_status)')
             .eq('id', id)
             .single()
 
@@ -44,7 +77,40 @@ export async function getCustomerById(id: string) {
             return null
         }
 
-        return data as Customer
+        if (data) {
+            const quotations = data.quotations || []
+            const contracts = data.contracts || []
+            const retailOrders = data.retail_orders || []
+            
+            let quotationRevenue = 0
+            let actualRevenue = 0
+            
+            if (data.customer_type === 'individual') {
+                quotationRevenue = retailOrders
+                    .filter((o: any) => o.order_status !== 'cancelled')
+                    .reduce((sum: number, o: any) => sum + (o.total_amount || 0), 0)
+                
+                actualRevenue = retailOrders
+                    .filter((o: any) => o.order_status !== 'cancelled')
+                    .reduce((sum: number, o: any) => sum + (o.paid_amount || 0), 0)
+            } else {
+                quotationRevenue = quotations
+                    .filter((q: any) => ['sent', 'accepted', 'converted'].includes(q.status))
+                    .reduce((sum: number, q: any) => sum + (q.total_amount || 0), 0)
+                    
+                actualRevenue = contracts
+                    .filter((c: any) => ['signed', 'active', 'completed'].includes(c.status))
+                    .reduce((sum: number, c: any) => sum + (c.total_amount || 0), 0)
+            }
+                
+            return {
+                ...data,
+                quotation_revenue: quotationRevenue,
+                actual_revenue: actualRevenue
+            } as Customer
+        }
+
+        return null
     } catch (err) {
         console.error('[getCustomerById] Fatal error:', err)
         return null

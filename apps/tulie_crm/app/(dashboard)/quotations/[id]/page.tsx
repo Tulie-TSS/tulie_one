@@ -319,35 +319,35 @@ export default function QuotationDetailPage() {
 
                 <EntityPipelineTracker entityType="quotation" entityId={id} />
 
-                <div className="pt-2" />
-                    <div className="grid gap-8 lg:grid-cols-3">
-                        <div className="lg:col-span-2 space-y-6">
+                <div className="pt-1" />
+                    <div className="grid gap-4 lg:grid-cols-3">
+                        <div className="lg:col-span-2 space-y-4">
                             {/* Customer Info Card */}
                             <Card>
-                                <CardHeader className="flex flex-row items-center gap-2">
+                                <CardHeader className="flex flex-row items-center gap-2 pb-2 pt-3 px-4">
                                     <Building2 className="h-4 w-4 text-muted-foreground shrink-0" />
-                                    <CardTitle>Thông tin khách hàng</CardTitle>
+                                    <CardTitle className="text-sm font-semibold">Thông tin khách hàng</CardTitle>
                                 </CardHeader>
-                                <CardContent>
-                                    <div className="grid gap-6 sm:grid-cols-2">
-                                        <div className="space-y-5">
+                                <CardContent className="px-4 pb-3 pt-1">
+                                    <div className="grid gap-4 sm:grid-cols-2">
+                                        <div className="space-y-3">
                                             <div>
-                                                <p className="text-xs font-medium text-muted-foreground mb-1.5">Đơn vị</p>
-                                                <p className="font-semibold text-lg leading-tight text-foreground">{quotation.customer?.company_name}</p>
+                                                <p className="text-[10px] font-medium text-muted-foreground mb-0.5">Đơn vị</p>
+                                                <p className="font-bold text-sm leading-tight text-foreground">{quotation.customer?.company_name}</p>
                                             </div>
                                             <div>
-                                                <p className="text-xs font-medium text-muted-foreground mb-1.5">Địa chỉ</p>
-                                                <p className="text-sm leading-relaxed text-foreground">{quotation.customer?.address || 'N/A'}</p>
+                                                <p className="text-[10px] font-medium text-muted-foreground mb-0.5">Địa chỉ</p>
+                                                <p className="text-xs leading-relaxed text-foreground">{quotation.customer?.address || 'N/A'}</p>
                                             </div>
                                         </div>
-                                        <div className="space-y-5">
+                                        <div className="space-y-3">
                                             <div>
-                                                <p className="text-xs font-medium text-muted-foreground mb-1.5">Email tiếp nhận</p>
-                                                <p className="text-sm font-medium text-foreground">{quotation.customer?.email || 'N/A'}</p>
+                                                <p className="text-[10px] font-medium text-muted-foreground mb-0.5">Email tiếp nhận</p>
+                                                <p className="text-xs font-semibold text-foreground">{quotation.customer?.email || 'N/A'}</p>
                                             </div>
                                             <div>
-                                                <p className="text-xs font-medium text-muted-foreground mb-1.5">Hotline liên hệ</p>
-                                                <p className="text-sm font-medium text-foreground">{quotation.customer?.phone || 'N/A'}</p>
+                                                <p className="text-[10px] font-medium text-muted-foreground mb-0.5">Hotline liên hệ</p>
+                                                <p className="text-xs font-semibold text-foreground">{quotation.customer?.phone || 'N/A'}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -357,16 +357,16 @@ export default function QuotationDetailPage() {
                             {/* Proposal Content */}
                             {hasProposal && proposalSections.length > 0 && (
                                 <Card>
-                                    <CardHeader className="flex flex-row items-center justify-between">
-                                        <div className="space-y-1">
-                                            <CardTitle>Đề xuất giải pháp</CardTitle>
-                                            <CardDescription>Proposal — {proposalSections.length} Stages</CardDescription>
+                                    <CardHeader className="pb-2 pt-3 px-4 flex flex-row items-center justify-between border-b">
+                                        <div className="space-y-0.5">
+                                            <CardTitle className="text-sm font-semibold">Đề xuất giải pháp</CardTitle>
+                                            <CardDescription className="text-[11px]">Proposal — {proposalSections.length} Stages</CardDescription>
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <Dialog>
                                                 <DialogTrigger asChild>
-                                                    <Button variant="outline" size="sm" className="h-8 gap-1.5 text-xs font-medium">
-                                                        <Maximize2 className="h-3.5 w-3.5" />
+                                                    <Button variant="outline" size="sm" className="h-7 gap-1 text-[11px] font-medium">
+                                                        <Maximize2 className="h-3 w-3" />
                                                         <span className="hidden sm:inline">Phóng to</span>
                                                     </Button>
                                                 </DialogTrigger>
@@ -388,34 +388,34 @@ export default function QuotationDetailPage() {
                                                                     </h3>
                                                                 </div>
                                                                 <div className="pl-11 text-sm text-zinc-700 leading-relaxed whitespace-pre-line">
-                                                                    {pc[section.key]}
+                                                                    {section.content}
                                                                 </div>
                                                             </div>
                                                         ))}
                                                     </div>
                                                 </DialogContent>
                                             </Dialog>
-                                            <Target className="h-5 w-5 text-muted-foreground ml-1" />
+                                            <Target className="h-4.5 w-4.5 text-muted-foreground ml-1" />
                                         </div>
                                     </CardHeader>
-                                    <CardContent className="pt-6">
-                                        <div className="relative pl-12 before:absolute before:left-[17px] before:top-[32px] before:bottom-8 before:w-[2px] before:bg-muted before:rounded-full">
+                                    <CardContent className="pt-3 px-4 pb-3">
+                                        <div className="relative pl-8 before:absolute before:left-[13px] before:top-[16px] before:bottom-4 before:w-[1.5px] before:bg-muted before:rounded-full">
                                             {proposalSections.map((section, idx) => (
-                                                <div key={idx} className="relative mb-8 last:mb-0">
-                                                    <div className="absolute -left-12 top-[32px] -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center text-white bg-zinc-950 text-[12px] z-10  border-[3px] border-white">
+                                                <div key={idx} className="relative mb-3.5 last:mb-0">
+                                                    <div className="absolute -left-8 top-[14px] -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center text-white bg-zinc-950 text-[10px] z-10 border-2 border-white dark:border-background">
                                                         {idx + 1}
                                                     </div>
                                                     <div className="rounded-md border bg-card text-card-foreground shadow-sm overflow-hidden transition-all group">
-                                                        <div className="flex items-center gap-4 px-6 py-4 border-b bg-muted/50 transition-colors">
-                                                            <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900 text-white shadow group-hover:scale-105 transition-transform duration-300">
-                                                                {sectionIcons[section.key] || <Info className="h-4 w-4" />}
+                                                        <div className="flex items-center gap-3 px-4 py-2 border-b bg-muted/50 transition-colors">
+                                                            <span className="flex items-center justify-center w-6 h-6 rounded bg-zinc-900 text-white shadow group-hover:scale-105 transition-transform duration-300">
+                                                                {React.cloneElement((sectionIcons[section.key] || <Info className="h-3.5 w-3.5" />) as React.ReactElement<any>, { className: 'h-3.5 w-3.5' })}
                                                             </span>
-                                                            <h4 className="text-[14px] font-medium text-foreground">
+                                                            <h4 className="text-xs font-semibold text-foreground">
                                                                 {section.label}
                                                             </h4>
                                                         </div>
-                                                        <div className="px-6 py-5 text-[13px] text-muted-foreground font-medium leading-relaxed whitespace-pre-line bg-card">
-                                                            {pc[section.key]}
+                                                        <div className="px-4 py-3 text-xs text-muted-foreground leading-relaxed whitespace-pre-line bg-card">
+                                                            {section.content}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -427,12 +427,12 @@ export default function QuotationDetailPage() {
 
                             {/* Items Table */}
                             <Card>
-                                <CardHeader className="flex flex-row items-center justify-between">
-                                    <div className="space-y-1">
-                                        <CardTitle className="text-xl">Chi tiết hạng mục</CardTitle>
-                                        <CardDescription>Investment Plan & Pricing Framework</CardDescription>
+                                <CardHeader className="pb-2 pt-3 px-4 flex flex-row items-center justify-between border-b">
+                                    <div className="space-y-0.5">
+                                        <CardTitle className="text-sm font-semibold">Chi tiết hạng mục</CardTitle>
+                                        <CardDescription className="text-[11px]">Investment Plan & Pricing Framework</CardDescription>
                                     </div>
-                                    <Receipt className="h-5 w-5 text-muted-foreground shrink-0" />
+                                    <Receipt className="h-4.5 w-4.5 text-muted-foreground shrink-0" />
                                 </CardHeader>
                                 <CardContent className="p-0">
                                     <Table>
@@ -452,87 +452,87 @@ export default function QuotationDetailPage() {
                                                 <React.Fragment key={sectionIdx}>
                                                     {sectionName && (
                                                         <TableRow className="bg-muted/50 hover:bg-muted/50">
-                                                            <TableCell className="py-2 w-12 text-center">
-                                                                <div className="w-6 h-6 rounded-md bg-primary text-primary-foreground text-xs font-semibold flex items-center justify-center mx-auto">
+                                                            <TableCell className="py-1.5 w-12 text-center">
+                                                                <div className="w-5 h-5 rounded bg-primary text-primary-foreground text-[10px] font-semibold flex items-center justify-center mx-auto">
                                                                     {sectionIdx + 1}
                                                                 </div>
                                                             </TableCell>
-                                                            <TableCell colSpan={6} className="py-2">
+                                                            <TableCell colSpan={6} className="py-1.5">
                                                                 <span className="text-xs font-semibold text-foreground">{sectionName}</span>
                                                             </TableCell>
                                                         </TableRow>
                                                     )}
                                                     {sectionItems.map((item: any, idx: number) => (
                                                         <TableRow key={item.id} className="group align-top">
-                                                            <TableCell className="text-center w-12 py-3">
+                                                            <TableCell className="text-center w-12 py-1.5">
                                                                 {!sectionName && (
                                                                     <span className="text-xs font-medium text-muted-foreground tabular-nums">
                                                                         {idx + 1}
                                                                     </span>
                                                                 )}
                                                             </TableCell>
-                                                            <TableCell className="py-3">
+                                                            <TableCell className="py-1.5">
                                                                 <div className="flex items-baseline gap-2">
                                                                     {sectionName && (
                                                                         <span className="text-xs font-medium text-muted-foreground tabular-nums shrink-0">
                                                                             {`${sectionIdx + 1}.${idx + 1}`}
                                                                         </span>
                                                                     )}
-                                                                    <div className="space-y-1 min-w-0">
-                                                                        <div className="flex items-baseline gap-2 flex-wrap">
-                                                                            <p className="font-semibold text-foreground text-sm leading-tight">{item.product_name}</p>
+                                                                    <div className="space-y-0.5 min-w-0">
+                                                                        <div className="flex items-baseline gap-1.5 flex-wrap">
+                                                                            <p className="font-semibold text-foreground text-xs leading-tight">{item.product_name}</p>
                                                                             {item.is_optional && (
-                                                                                <Badge variant="outline" className="h-4 px-1 text-[11px] font-medium border-border bg-muted text-muted-foreground">Tùy chọn</Badge>
+                                                                                <Badge variant="outline" className="h-3.5 px-1 text-[10px] font-medium border-border bg-muted text-muted-foreground">Tùy chọn</Badge>
                                                                             )}
                                                                         </div>
                                                                         {item.description && (
-                                                                            <p className="text-xs text-muted-foreground leading-relaxed whitespace-pre-line">
+                                                                            <p className="text-[11px] text-muted-foreground leading-relaxed whitespace-pre-line">
                                                                                 {item.description}
                                                                             </p>
                                                                         )}
                                                                     </div>
                                                                 </div>
                                                             </TableCell>
-                                                            <TableCell className="text-center text-sm text-muted-foreground whitespace-nowrap py-3 align-top">{item.unit}</TableCell>
-                                                            <TableCell className="text-center text-sm font-medium text-foreground py-3 align-top">{item.quantity}</TableCell>
-                                                            <TableCell className="text-right text-sm text-muted-foreground tabular-nums whitespace-nowrap py-3 align-top">{formatCurrency(item.unit_price)}</TableCell>
-                                                            <TableCell className="text-center text-sm text-muted-foreground tabular-nums whitespace-nowrap py-3 align-top">{item.discount ? `${item.discount}%` : '—'}</TableCell>
-                                                            <TableCell className="text-right pr-6 text-sm font-semibold text-foreground tabular-nums whitespace-nowrap py-3 align-top">{formatCurrency(item.total_price)}</TableCell>
+                                                            <TableCell className="text-center text-xs text-muted-foreground whitespace-nowrap py-1.5 align-top">{item.unit}</TableCell>
+                                                            <TableCell className="text-center text-xs font-medium text-foreground py-1.5 align-top">{item.quantity}</TableCell>
+                                                            <TableCell className="text-right text-xs text-muted-foreground tabular-nums whitespace-nowrap py-1.5 align-top">{formatCurrency(item.unit_price)}</TableCell>
+                                                            <TableCell className="text-center text-xs text-muted-foreground tabular-nums whitespace-nowrap py-1.5 align-top">{item.discount ? `${item.discount}%` : '—'}</TableCell>
+                                                            <TableCell className="text-right pr-6 text-xs font-semibold text-foreground tabular-nums whitespace-nowrap py-1.5 align-top">{formatCurrency(item.total_price)}</TableCell>
                                                         </TableRow>
                                                     ))}
                                                 </React.Fragment>
                                             ))}
                                         </TableBody>
                                     </Table>
-                                    <div className="border-t bg-muted/50 px-8 py-6 flex justify-end">
-                                        <div className="w-full max-w-sm space-y-4">
-                                            <div className="flex justify-between items-center text-xs font-medium text-muted-foreground">
+                                    <div className="border-t bg-muted/50 px-6 py-4 flex justify-end">
+                                        <div className="w-full max-w-xs space-y-2">
+                                            <div className="flex justify-between items-center text-[11px] font-medium text-muted-foreground">
                                                 <span>Tạm tính:</span>
-                                                <span className="text-foreground text-sm">{formatCurrency(subtotalRaw)}</span>
+                                                <span className="text-foreground text-xs">{formatCurrency(subtotalRaw)}</span>
                                             </div>
                                             {totalDiscount > 0 && (
-                                                <div className="flex justify-between items-center text-xs font-medium text-muted-foreground">
+                                                <div className="flex justify-between items-center text-[11px] font-medium text-muted-foreground">
                                                     <span>Chiết khấu:</span>
-                                                    <span className="text-foreground text-sm">-{formatCurrency(totalDiscount)}</span>
+                                                    <span className="text-foreground text-xs">-{formatCurrency(totalDiscount)}</span>
                                                 </div>
                                             )}
                                             {totalDiscount > 0 && (
-                                                <div className="flex justify-between items-center text-xs font-medium text-foreground">
-                                                    <span className="font-semibold">Thành tiền sau CK:</span>
-                                                    <span className="text-sm">{formatCurrency(subtotalNet)}</span>
+                                                <div className="flex justify-between items-center text-[11px] font-medium text-foreground">
+                                                    <span className="font-semibold">Sau CK:</span>
+                                                    <span className="text-xs">{formatCurrency(subtotalNet)}</span>
                                                 </div>
                                             )}
-                                            <div className="flex justify-between items-center text-xs font-medium text-muted-foreground">
-                                                <span>Thuế VAT ({quotation.vat_percent || 0}%):</span>
-                                                <span className="text-foreground text-sm">{formatCurrency(quotation.vat_amount || 0)}</span>
+                                            <div className="flex justify-between items-center text-[11px] font-medium text-muted-foreground">
+                                                <span>{quotation.vat_exempt_status === 'exempt' ? 'Không thuế GTGT (KCT):' : `Thuế VAT (${quotation.vat_percent || 0}%):`}</span>
+                                                <span className="text-foreground text-xs">{formatCurrency(quotation.vat_amount || 0)}</span>
                                             </div>
-                                            <div className="pt-4 border-t border-border flex justify-between items-center">
-                                                <span className="text-sm font-medium text-muted-foreground">Tổng thanh toán:</span>
-                                                <span className="text-3xl tabular-nums text-foreground">{formatCurrency(quotation.total_amount || 0)}</span>
+                                            <div className="pt-2 border-t border-border flex justify-between items-center">
+                                                <span className="text-xs font-medium text-muted-foreground">Tổng thanh toán:</span>
+                                                <span className="text-xl tabular-nums font-bold text-foreground">{formatCurrency(quotation.total_amount || 0)}</span>
                                             </div>
-                                            <div className="flex justify-between items-start pt-2 text-[11px] text-muted-foreground font-medium">
+                                            <div className="flex justify-between items-start pt-1.5 text-[10px] text-muted-foreground font-medium">
                                                 <span className="shrink-0">Bằng chữ:</span>
-                                                <span className="text-right ml-4">{readNumberToWords(quotation.total_amount || 0)}</span>
+                                                <span className="text-right ml-4 leading-snug">{readNumberToWords(quotation.total_amount || 0)}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -540,26 +540,26 @@ export default function QuotationDetailPage() {
                             </Card>
 
                             {/* Terms & Notes */}
-                            <div className="grid gap-6 sm:grid-cols-2">
+                            <div className="grid gap-4 sm:grid-cols-2">
                                 <Card>
-                                    <CardHeader className="flex flex-row items-center gap-2">
-                                        <BookOpen className="h-4 w-4 text-muted-foreground shrink-0" />
-                                        <CardTitle>Điều khoản thanh toán</CardTitle>
+                                    <CardHeader className="pb-2 pt-3 px-4 flex flex-row items-center gap-2 border-b">
+                                        <BookOpen className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                        <CardTitle className="text-xs font-semibold">Điều khoản thanh toán</CardTitle>
                                     </CardHeader>
-                                    <CardContent>
-                                        <div className="text-sm text-foreground leading-relaxed whitespace-pre-line p-5 rounded-lg bg-muted border border-border/50">
+                                    <CardContent className="px-4 pb-3 pt-2.5">
+                                        <div className="text-xs text-foreground leading-relaxed whitespace-pre-line p-3 rounded-lg bg-muted border border-border/50">
                                             {quotation.terms || 'Chưa có thông tin điều khoản.'}
                                         </div>
                                     </CardContent>
                                 </Card>
 
                                 <Card>
-                                    <CardHeader className="flex flex-row items-center gap-2">
-                                        <Info className="h-4 w-4 text-muted-foreground shrink-0" />
-                                        <CardTitle>Ghi chú bổ sung</CardTitle>
+                                    <CardHeader className="pb-2 pt-3 px-4 flex flex-row items-center gap-2 border-b">
+                                        <Info className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                        <CardTitle className="text-xs font-semibold">Ghi chú bổ sung</CardTitle>
                                     </CardHeader>
-                                    <CardContent>
-                                        <div className="text-sm text-foreground leading-relaxed whitespace-pre-line p-5 rounded-lg bg-muted border border-border/50">
+                                    <CardContent className="px-4 pb-3 pt-2.5">
+                                        <div className="text-xs text-foreground leading-relaxed whitespace-pre-line p-3 rounded-lg bg-muted border border-border/50">
                                             {quotation.notes || 'Không có ghi chú nào.'}
                                         </div>
                                     </CardContent>
@@ -567,27 +567,27 @@ export default function QuotationDetailPage() {
                             </div>
                         </div>
 
-                        <div className="space-y-6">
+                        <div className="space-y-4">
                             {/* Combined Status Card */}
                             <Card>
-                                <CardHeader>
-                                    <CardTitle>Khái quát</CardTitle>
+                                <CardHeader className="pb-2 pt-3 px-4 flex flex-row items-center justify-between border-b">
+                                    <CardTitle className="text-xs font-semibold">Khái quát</CardTitle>
                                 </CardHeader>
-                                <CardContent className="p-6 pt-0">
-                                    <div className="space-y-4">
-                                        <div className="flex justify-between items-center text-sm pb-4 border-b border-border">
+                                <CardContent className="px-4 pb-3 pt-2.5">
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between items-center text-xs pb-2 border-b border-border">
                                             <span className="text-muted-foreground font-medium">Ngày hết hạn</span>
                                             <span className="font-semibold text-foreground">
                                                 {quotation.valid_until ? formatDate(quotation.valid_until) : 'N/A'}
                                             </span>
                                         </div>
-                                        <div className="space-y-3">
-                                            <div className="flex justify-between items-center text-sm">
+                                        <div className="space-y-2">
+                                            <div className="flex justify-between items-center text-xs">
                                                 <span className="text-muted-foreground font-medium">Khởi tạo</span>
                                                 <span className="font-medium text-foreground">{formatDate(quotation.created_at)}</span>
                                             </div>
                                             {quotation.updated_at !== quotation.created_at && (
-                                                <div className="flex justify-between items-center text-sm">
+                                                <div className="flex justify-between items-center text-xs">
                                                     <span className="text-muted-foreground font-medium">Cập nhật</span>
                                                     <span className="font-medium text-foreground">{formatDate(quotation.updated_at)}</span>
                                                 </div>
@@ -602,32 +602,32 @@ export default function QuotationDetailPage() {
 
                             {/* Payment Details Card */}
                             <Card>
-                                <CardHeader className="flex flex-row items-center justify-between">
+                                <CardHeader className="pb-2 pt-3 px-4 flex flex-row items-center justify-between border-b">
                                     <div className="flex items-center gap-2">
-                                        <CreditCard className="h-4 w-4 text-muted-foreground shrink-0" />
-                                        <CardTitle>Thông tin thanh toán</CardTitle>
+                                        <CreditCard className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                        <CardTitle className="text-xs font-semibold">Thông tin thanh toán</CardTitle>
                                     </div>
-                                    <Globe className="h-4 w-4 text-muted-foreground opacity-50 shrink-0" />
+                                    <Globe className="h-3.5 w-3.5 text-muted-foreground opacity-50 shrink-0" />
                                 </CardHeader>
-                                <CardContent className="space-y-6">
-                                    <div className="space-y-1.5">
-                                        <p className="text-xs font-medium text-muted-foreground">Đơn vị thụ hưởng</p>
-                                        <p className="font-bold text-sm text-foreground">{quotation.bank_account_name || brandConfig?.bank_account_name || "CÔNG TY TNHH TULIE"}</p>
+                                <CardContent className="space-y-3 px-4 pb-3 pt-2.5">
+                                    <div className="space-y-0.5">
+                                        <p className="text-[10px] font-medium text-muted-foreground">Đơn vị thụ hưởng</p>
+                                        <p className="font-bold text-xs text-foreground">{quotation.bank_account_name || brandConfig?.bank_account_name || "CÔNG TY TNHH TULIE"}</p>
                                     </div>
-                                    <div className="space-y-1.5">
-                                        <p className="text-xs font-medium text-muted-foreground">Số tài khoản chính</p>
-                                        <p className="font-bold text-2xl tracking-tighter text-foreground font-mono select-all">
+                                    <div className="space-y-0.5">
+                                        <p className="text-[10px] font-medium text-muted-foreground">Số tài khoản chính</p>
+                                        <p className="font-bold text-lg tracking-tighter text-foreground font-mono select-all">
                                             {quotation.bank_account_no || brandConfig?.bank_account_no || "0110163102"}
                                         </p>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-6 pt-3 border-t border-border/50">
-                                        <div className="space-y-1.5">
-                                            <p className="text-xs font-medium text-muted-foreground">Ngân hàng</p>
-                                            <p className="font-bold text-sm text-foreground">{quotation.bank_name || brandConfig?.bank_name || "MB BANK"}</p>
+                                    <div className="grid grid-cols-2 gap-3 pt-2 border-t border-border/50">
+                                        <div className="space-y-0.5">
+                                            <p className="text-[10px] font-medium text-muted-foreground">Ngân hàng</p>
+                                            <p className="font-bold text-xs text-foreground">{quotation.bank_name || brandConfig?.bank_name || "MB BANK"}</p>
                                         </div>
-                                        <div className="space-y-1.5">
-                                            <p className="text-xs font-medium text-muted-foreground">Chi nhánh</p>
-                                            <p className="font-bold text-sm text-foreground">{quotation.bank_branch || brandConfig?.bank_branch || "VIỆT NAM"}</p>
+                                        <div className="space-y-0.5">
+                                            <p className="text-[10px] font-medium text-muted-foreground">Chi nhánh</p>
+                                            <p className="font-bold text-xs text-foreground">{quotation.bank_branch || brandConfig?.bank_branch || "VIỆT NAM"}</p>
                                         </div>
                                     </div>
                                 </CardContent>

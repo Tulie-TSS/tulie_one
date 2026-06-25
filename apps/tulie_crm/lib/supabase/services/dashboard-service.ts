@@ -6,17 +6,25 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     try {
         const supabase = await createClient()
 
+        const now = new Date()
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
+        const quarterStart = new Date(now.getFullYear(), Math.floor(now.getMonth() / 3) * 3, 1)
+        const isSameOrAfter = (value: string | null | undefined, start: Date) => {
+            if (!value) return false
+            return new Date(value).getTime() >= start.getTime()
+        }
+
         // Fetch all invoices to calculate revenue
         const { data: invoices, error: invError } = await supabase
             .from('invoices')
-            .select('id, paid_amount, total_amount, status, type')
+            .select('id, paid_amount, total_amount, status, type, issue_date')
 
         if (invError) console.error('Error fetching invoices for stats:', invError)
 
         // Fetch retail orders (Studio/Academy) for revenue
         const { data: retailOrders, error: roError } = await supabase
             .from('retail_orders')
-            .select('id, total_amount, paid_amount, payment_status, order_status')
+            .select('id, total_amount, paid_amount, payment_status, order_status, created_at')
             .neq('order_status', 'cancelled')
 
         if (roError) console.error('Error fetching retail orders for stats:', roError)
@@ -86,7 +94,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         // SePay payment_transactions: actual bank transfers
         const { data: sepayTxns, error: sepayError } = await supabase
             .from('payment_transactions')
-            .select('amount_in, transfer_type, matched_order_id, matched_invoice_id')
+            .select('amount_in, transfer_type, transaction_date, matched_order_id, matched_invoice_id')
             .eq('transfer_type', 'in')
 
         if (sepayError) console.error('Error fetching SePay stats:', sepayError)
@@ -100,8 +108,28 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         const unmatchedInvRevenue = invoices?.filter(i => i.type === 'output' && !matchedInvIds.has(i.id)).reduce((sum, i) => sum + (i.paid_amount || 0), 0) || 0
         const unmatchedRetailRevenue = retailOrders?.filter(o => !matchedOrdIds.has(o.id)).reduce((sum, o) => sum + (o.paid_amount || 0), 0) || 0
 
+        const b2bSepayRevenue = sepayTxns?.filter(tx => tx.matched_invoice_id).reduce((sum, tx) => sum + (Number(tx.amount_in) || 0), 0) || 0
+        const b2cSepayRevenue = sepayTxns?.filter(tx => !tx.matched_invoice_id && tx.matched_order_id).reduce((sum, tx) => sum + (Number(tx.amount_in) || 0), 0) || 0
+        const b2bRevenue = b2bSepayRevenue + unmatchedInvRevenue
+        const b2cRevenue = b2cSepayRevenue + unmatchedRetailRevenue
+
         // Total = SePay (B2C) + unmatched invoices/orders (B2B)
         const totalRevenue = sepayRevenue + unmatchedInvRevenue + unmatchedRetailRevenue
+
+        const periodRevenue = (start: Date) => {
+            const sepayInPeriod = matchedSepayTxns.filter(tx => isSameOrAfter(tx.transaction_date, start))
+            const b2bSepay = sepayInPeriod.filter(tx => tx.matched_invoice_id).reduce((sum, tx) => sum + (Number(tx.amount_in) || 0), 0)
+            const b2cSepay = sepayInPeriod.filter(tx => !tx.matched_invoice_id && tx.matched_order_id).reduce((sum, tx) => sum + (Number(tx.amount_in) || 0), 0)
+            const invoiceUnmatched = invoices?.filter(i => i.type === 'output' && !matchedInvIds.has(i.id) && isSameOrAfter(i.issue_date, start)).reduce((sum, i) => sum + (i.paid_amount || 0), 0) || 0
+            const retailUnmatched = retailOrders?.filter(o => !matchedOrdIds.has(o.id) && isSameOrAfter(o.created_at, start)).reduce((sum, o) => sum + (o.paid_amount || 0), 0) || 0
+            return {
+                b2b: b2bSepay + invoiceUnmatched,
+                b2c: b2cSepay + retailUnmatched,
+                total: b2bSepay + b2cSepay + invoiceUnmatched + retailUnmatched
+            }
+        }
+        const monthRevenue = periodRevenue(monthStart)
+        const quarterRevenue = periodRevenue(quarterStart)
 
         // Fetch total value from active contracts (excluding freelancers)
         const { data: activeContracts } = await supabase
@@ -115,10 +143,10 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         // Fetch deals for conversion rate
         const { data: deals } = await supabase
             .from('deals')
-            .select('status')
+            .select('stage')
 
         const totalDeals = deals?.length || 0
-        const wonDeals = deals?.filter(d => d.status === 'closed_won').length || 0
+        const wonDeals = deals?.filter(d => d.stage === 'won' || d.stage === 'closed_won').length || 0
         const conversionRate = totalDeals > 0 ? (wonDeals / totalDeals) * 100 : 0
 
         // Calculate health score: ratio of paid amount to total amount on output invoices
@@ -133,6 +161,14 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         return {
             revenue: {
                 total: totalRevenue,
+                b2b: b2bRevenue,
+                b2c: b2cRevenue,
+                month: monthRevenue.total,
+                quarter: quarterRevenue.total,
+                b2b_month: monthRevenue.b2b,
+                b2b_quarter: quarterRevenue.b2b,
+                b2c_month: monthRevenue.b2c,
+                b2c_quarter: quarterRevenue.b2c,
                 change: totalPendingRevenue,
                 period: 'Chờ thanh toán'
             },
@@ -160,6 +196,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
                 overdue: 0,
                 total_outstanding: totalPendingRevenue
             },
+            retail: { orders: retailOrders?.length || 0 },
             health_score: Math.round(healthScore),
             conversion_rate: Math.round(conversionRate),
             efficiency_score: Math.round(efficiencyScore)
@@ -167,11 +204,12 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     } catch (err) {
         console.error('Fatal error in getDashboardStats:', err)
         return {
-            revenue: { total: 0, change: 0, period: 'Tháng này' },
+            revenue: { total: 0, b2b: 0, b2c: 0, month: 0, quarter: 0, b2b_month: 0, b2b_quarter: 0, b2c_month: 0, b2c_quarter: 0, change: 0, period: 'Tháng này' },
             customers: { total: 0, new: 0, change: 0 },
             leads: { total: 0, new: 0, contacted: 0, qualified: 0 },
             contracts: { active: 0, completed: 0, pending: 0, overdue: 0, total_value: 0, change: 0 },
             invoices: { pending: 0, overdue: 0, total_outstanding: 0 },
+            retail: { orders: 0 },
             health_score: 0,
             conversion_rate: 0,
             efficiency_score: 0
@@ -390,7 +428,7 @@ export async function getDealStats() {
         // 1. Fetch Deals
         const { data: deals, error: dError } = await supabase
             .from('deals')
-            .select('status, budget')
+            .select('stage, value')
 
         // 2. Fetch standalone Quotations (those not linked to a deal, yet to be converted)
         const { data: quotes, error: qError } = await supabase
@@ -413,10 +451,26 @@ export async function getDealStats() {
         }
 
         // Add Deal values
+        const stageToStat: Record<string, keyof typeof stats | null> = {
+            lead: 'new',
+            prospecting: 'new',
+            qualified: 'briefing',
+            meeting: 'briefing',
+            proposal: 'proposal_sent',
+            won: 'closed_won',
+            lost: 'closed_lost',
+            // Support records created under the earlier CRM schema.
+            new: 'new',
+            briefing: 'briefing',
+            proposal_sent: 'proposal_sent',
+            closed_won: 'closed_won',
+            closed_lost: 'closed_lost',
+        }
+
         deals?.forEach(deal => {
-            const status = deal.status as keyof typeof stats
-            const value = parseFloat(deal.budget || 0)
-            if (status in stats) {
+            const status = stageToStat[deal.stage] ?? null
+            const value = Number(deal.value) || 0
+            if (status && status in stats) {
                 (stats as any)[status] += value
             }
             if (status !== 'closed_lost') {
@@ -432,10 +486,59 @@ export async function getDealStats() {
         })
 
         return stats
-    } catch (err) {
-        console.error('Error in getDealStats:', err)
+    } catch (err: any) {
+        console.error('Error in getDealStats:', {
+            code: err?.code,
+            message: err?.message,
+            details: err?.details,
+            hint: err?.hint,
+        })
         return null
     }
+}
+
+export async function getProjectLifecycleStats() {
+    const supabase = await createClient()
+    const today = new Date().toISOString().slice(0, 10)
+    const { data: milestones, error } = await supabase
+        .from('contract_milestones')
+        .select('type, status, due_date, amount, contract:contracts!inner(category, status)')
+        .neq('contract.category', 'freelancer')
+        .in('contract.status', ['active', 'sent', 'signed'])
+
+    if (error) {
+        console.error('Error in getProjectLifecycleStats:', error.message)
+        return { pendingPayments: 0, pendingPaymentValue: 0, overdueMilestones: 0, completedMilestones: 0 }
+    }
+
+    return (milestones || []).reduce((stats, milestone: any) => {
+        const completed = milestone.status === 'completed'
+        if (completed) stats.completedMilestones += 1
+        if (!completed && milestone.due_date && milestone.due_date.slice(0, 10) < today) stats.overdueMilestones += 1
+        if (milestone.type === 'payment' && !completed) {
+            stats.pendingPayments += 1
+            stats.pendingPaymentValue += Number(milestone.amount) || 0
+        }
+        return stats
+    }, { pendingPayments: 0, pendingPaymentValue: 0, overdueMilestones: 0, completedMilestones: 0 })
+}
+
+export async function getActiveContractTimelines() {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+        .from('contracts')
+        .select('id, contract_number, title, total_amount, start_date, signed_date, end_date, customer:customers(abbreviation, company_name), milestones:contract_milestones(id, name, type, status, due_date, amount, percentage)')
+        .eq('status', 'active')
+        .neq('category', 'freelancer')
+        .not('end_date', 'is', null)
+        .order('end_date', { ascending: true })
+
+    if (error) {
+        console.error('Error in getActiveContractTimelines:', error.message)
+        return []
+    }
+
+    return (data || []).filter(contract => contract.start_date || contract.signed_date)
 }
 
 export interface CRMAlert {
@@ -476,15 +579,15 @@ export async function getCRMAlerts(): Promise<CRMAlert[]> {
         const threeDaysAgo = new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString()
         const { data: idleDeals } = await supabase
             .from('deals')
-            .select('id, title, created_at')
-            .eq('status', 'new')
+            .select('id, name, created_at')
+            .in('stage', ['lead', 'prospecting'])
             .lt('created_at', threeDaysAgo)
 
         idleDeals?.forEach(deal => alerts.push({
             id: `deal_${deal.id}`,
             type: 'idle_deal',
             title: 'Cơ hội chưa xử lý',
-            description: deal.title,
+            description: deal.name,
             severity: 'warning',
             link: `/deals/${deal.id}`,
             date: deal.created_at

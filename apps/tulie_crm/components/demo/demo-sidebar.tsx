@@ -17,7 +17,6 @@ const navGroups = [
             { title: 'Khách hàng', href: '/demo/customers', icon: Users },
             { title: 'Báo giá', href: '/demo/quotations', icon: FileText },
             { title: 'Hợp đồng', href: '/demo/contracts', icon: FilePenLine },
-            { title: 'Dự án', href: '/demo/projects', icon: Rocket },
             { title: 'Hóa đơn', href: '/demo/invoices', icon: Receipt },
         ]
     },

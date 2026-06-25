@@ -281,21 +281,6 @@ export function InvoiceForm({ invoice, customers, vendors, contracts, projects =
                             )}
 
                             <div className="space-y-2">
-                                <Label>Dự án</Label>
-                                <Select value={projectId} onValueChange={setProjectId}>
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Chọn dự án..." />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="">Không chọn</SelectItem>
-                                        {projects.map(p => (
-                                            <SelectItem key={p.id} value={p.id}>{p.title}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            <div className="space-y-2">
                                 <Label>Hợp đồng</Label>
                                 <Select value={contractId} onValueChange={setContractId}>
                                     <SelectTrigger className="w-full">

@@ -139,25 +139,25 @@ export function ContractLifecycle({ contract, project }: ContractLifecycleProps)
 
     return (
         <Card>
-            <CardHeader className="pb-3">
+            <CardHeader className="pb-2 pt-3 px-4 border-b">
                 <div className="flex items-center justify-between">
-                    <CardTitle className="text-base font-semibold flex items-center gap-2">
-                        <Rocket className="h-4 w-4" />
+                    <CardTitle className="text-sm font-semibold flex items-center gap-1.5">
+                        <Rocket className="h-3.5 w-3.5 text-muted-foreground" />
                         Vòng đời dự án
                     </CardTitle>
-                    <Badge variant={progress === 100 ? 'default' : 'secondary'} className="text-xs">
+                    <Badge variant={progress === 100 ? 'default' : 'secondary'} className="text-[10px] h-5 px-1.5">
                         {progress}% hoàn thành
                     </Badge>
                 </div>
                 {/* Progress bar */}
-                <div className="h-1.5 bg-muted rounded-full overflow-hidden mt-2">
+                <div className="h-1 bg-muted rounded-full overflow-hidden mt-1.5">
                     <div
                         className="h-full bg-primary rounded-full transition-all duration-700"
                         style={{ width: `${progress}%` }}
                     />
                 </div>
             </CardHeader>
-            <CardContent className="space-y-0">
+            <CardContent className="space-y-0.5 px-4 pb-3 pt-2.5">
                 {steps.map((step, index) => {
                     const isLast = index === steps.length - 1
                     const isCompleted = step.status === 'completed'
@@ -168,24 +168,24 @@ export function ContractLifecycle({ contract, project }: ContractLifecycleProps)
                             {/* Connector line */}
                             {!isLast && (
                                 <div className={cn(
-                                    "absolute left-[23px] top-[40px] w-[2px] h-[calc(100%-24px)]",
+                                    "absolute left-[21px] top-[36px] w-[1.5px] h-[calc(100%-20px)]",
                                     isCompleted ? "bg-primary" : "bg-muted"
                                 )} />
                             )}
 
                             <div className={cn(
-                                "flex items-start gap-3 py-2 px-2 rounded-lg transition-colors",
+                                "flex items-start gap-3 py-1.5 px-1.5 rounded-lg transition-colors",
                                 isActive && "bg-muted/50"
                             )}>
                                 {/* Status icon */}
                                 <div className={cn(
-                                    "h-8 w-8 rounded-full flex items-center justify-center shrink-0 text-xs font-medium border-2 relative z-10",
+                                    "h-7 w-7 rounded-full flex items-center justify-center shrink-0 text-[10px] font-semibold border-2 relative z-10",
                                     isCompleted && "bg-primary border-primary text-primary-foreground",
                                     isActive && "bg-background border-primary text-primary",
                                     !isCompleted && !isActive && "bg-muted border-muted text-muted-foreground"
                                 )}>
                                     {isCompleted ? (
-                                        <Check className="h-4 w-4" />
+                                        <Check className="h-3.5 w-3.5" />
                                     ) : (
                                         <span>{index + 1}</span>
                                     )}
@@ -195,27 +195,27 @@ export function ContractLifecycle({ contract, project }: ContractLifecycleProps)
                                 <div className="flex-1 min-w-0 pt-0.5">
                                     <div className="flex items-center gap-2">
                                         <p className={cn(
-                                            "text-sm font-medium",
+                                            "text-xs font-semibold",
                                             !isCompleted && !isActive && "text-muted-foreground"
                                         )}>
                                             {step.label}
                                         </p>
                                         {isActive && (
-                                            <Badge variant="outline" className="text-[10px] h-5 border-primary/30 text-primary">
+                                            <Badge className="text-[9px] h-4.5 px-1.5 bg-orange-600 hover:bg-orange-600 text-white rounded-full border-none">
                                                 Đang thực hiện
                                             </Badge>
                                         )}
                                     </div>
-                                    <p className="text-xs text-muted-foreground mt-0.5">{step.description}</p>
+                                    <p className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed">{step.description}</p>
 
                                     {/* Actions row */}
                                     {(step.link || step.document) && (isCompleted || isActive) && (
-                                        <div className="flex items-center gap-2 mt-1.5">
+                                        <div className="flex items-center gap-2 mt-1">
                                             {step.link && (
-                                                <Button variant="ghost" size="sm" className="h-6 text-xs px-2" asChild>
+                                                <Button variant="ghost" size="sm" className="h-5 text-[10px] px-1.5" asChild>
                                                     <Link href={step.link}>
                                                         Xem chi tiết
-                                                        <ChevronRight className="h-3 w-3 ml-1" />
+                                                        <ChevronRight className="h-3 w-3 ml-0.5" />
                                                     </Link>
                                                 </Button>
                                             )}
@@ -223,12 +223,12 @@ export function ContractLifecycle({ contract, project }: ContractLifecycleProps)
                                                 <Button
                                                     variant="ghost"
                                                     size="sm"
-                                                    className="h-6 text-xs px-2"
+                                                    className="h-5 text-[10px] px-1.5"
                                                     onClick={() => {
                                                         window.open(`/api/contracts/${contract.id}/preview?type=${step.documentType}`, '_blank')
                                                     }}
                                                 >
-                                                    <FileText className="h-3 w-3 mr-1" />
+                                                    <FileText className="h-3 w-3 mr-0.5" />
                                                     {step.document}
                                                 </Button>
                                             )}
@@ -238,7 +238,7 @@ export function ContractLifecycle({ contract, project }: ContractLifecycleProps)
 
                                 {/* Date */}
                                 {step.date && !isNaN(new Date(step.date).getTime()) && (
-                                    <span className="text-[10px] text-muted-foreground shrink-0 pt-1">
+                                    <span className="text-[9px] text-muted-foreground shrink-0 pt-1">
                                         {new Date(step.date).toLocaleDateString('vi-VN')}
                                     </span>
                                 )}

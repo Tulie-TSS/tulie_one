@@ -156,20 +156,6 @@ function NewInvoiceForm({ initialCustomers, initialContracts, initialProjects = 
 
                                 <div className="grid gap-4 sm:grid-cols-2">
                                     <div className="space-y-2">
-                                        <Label>Dự án</Label>
-                                        <Select value={projectId} onValueChange={setProjectId}>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Chọn dự án..." />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="">Không chọn</SelectItem>
-                                                {initialProjects.map((p) => (
-                                                    <SelectItem key={p.id} value={p.id}>{p.title}</SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                    <div className="space-y-2">
                                         <Label>Hợp đồng</Label>
                                         <Select value={contractId} onValueChange={setContractId}>
                                             <SelectTrigger>

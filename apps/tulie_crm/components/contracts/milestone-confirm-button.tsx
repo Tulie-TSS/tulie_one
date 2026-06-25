@@ -51,7 +51,7 @@ export function MilestoneConfirmButton({ milestoneId, milestoneName, amount, sta
 
             if (result.success) {
                 toast.success('Đã xác nhận thanh toán', {
-                    description: `Milestone "${milestoneName}" — ${formatCurrency(amount)}. Hóa đơn đã được tạo tự động.`,
+                    description: `Milestone "${milestoneName}" — ${formatCurrency(amount)}.`,
                 })
                 setIsOpen(false)
                 router.refresh()
@@ -78,8 +78,7 @@ export function MilestoneConfirmButton({ milestoneId, milestoneName, amount, sta
                     <AlertDialogTitle>Xác nhận thanh toán milestone</AlertDialogTitle>
                     <AlertDialogDescription>
                         Xác nhận khách hàng đã thanh toán đợt <strong>"{milestoneName}"</strong> với
-                        số tiền <strong>{formatCurrency(amount)}</strong>. Hệ thống sẽ tự động tạo
-                        hóa đơn và ghi nhận vào doanh thu.
+                        số tiền <strong>{formatCurrency(amount)}</strong>. Hệ thống sẽ ghi nhận thông tin thanh toán vào doanh thu.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <div className="space-y-4 py-2">
@@ -114,7 +113,7 @@ export function MilestoneConfirmButton({ milestoneId, milestoneName, amount, sta
                         ) : (
                             <>
                                 <CheckCircle className="h-4 w-4" />
-                                Xác nhận & Tạo hóa đơn
+                                Xác nhận thanh toán
                             </>
                         )}
                     </AlertDialogAction>

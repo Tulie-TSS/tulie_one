@@ -312,25 +312,6 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                             )}
 
                             <div className="space-y-2">
-                                <Label>Dự án liên kết {category === 'freelancer' && <span className="text-xs text-zinc-500">(để kế thừa hạng mục từ HĐ khách hàng)</span>}</Label>
-                                <Select value={projectId || 'none'} onValueChange={(v) => setProjectId(v === 'none' ? '' : v)}>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Chọn dự án (tùy chọn)" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="none">-- Không thuộc dự án --</SelectItem>
-                                        {initialProjects
-                                            .filter(p => category === 'freelancer' || !customerId || p.customer_id === customerId)
-                                            .map((p) => (
-                                                <SelectItem key={p.id} value={p.id}>
-                                                    {p.title}
-                                                </SelectItem>
-                                            ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            <div className="space-y-2">
                                 <Label>Tiêu đề hợp đồng</Label>
                                 <Input
                                     value={title}

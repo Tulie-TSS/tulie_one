@@ -76,7 +76,7 @@ export default function LabPage() {
 
             <div className="grid gap-6 md:grid-cols-2">
                 <Card className="border-border/50 backdrop-blur-sm overflow-hidden rounded-md">
-                    <CardHeader className="bg-muted/30 border-b border-border">
+                    <CardHeader className="border-b border-border">
                         <CardTitle className="text-lg font-semibold flex items-center gap-2">
                             <Key className="h-4 w-4 text-muted-foreground" />
                             Cấu hình kết nôi
@@ -103,7 +103,7 @@ export default function LabPage() {
                 </Card>
 
                 <Card className="border-border/50 backdrop-blur-sm overflow-hidden rounded-md">
-                    <CardHeader className="bg-muted/30 border-b border-border">
+                    <CardHeader className="border-b border-border">
                         <CardTitle className="text-lg font-semibold flex items-center gap-2">
                             <Database className="h-4 w-4 text-muted-foreground" />
                             Trạng thái Lab

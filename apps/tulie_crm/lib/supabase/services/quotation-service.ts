@@ -97,23 +97,30 @@ export async function getQuotations(customerId?: string, brand?: string) {
         try {
             const ids = expired.map(q => q.id)
             if (ids.length > 0) {
-                const { data: viewCounts } = await supabase
+                const { data: viewCounts, error: viewError } = await supabase
                     .from('quotation_views')
                     .select('quotation_id')
                     .in('quotation_id', ids)
 
-                if (viewCounts) {
+                if (viewError) {
+                    console.warn('quotation_views query failed, using table view_count:', viewError.message)
+                    // Fallback: keep existing view_count from quotations table (already in the data)
+                } else if (viewCounts && viewCounts.length > 0) {
                     const countMap: Record<string, number> = {}
                     viewCounts.forEach((v: any) => {
                         countMap[v.quotation_id] = (countMap[v.quotation_id] || 0) + 1
                     })
                     expired.forEach(q => {
-                        (q as any).view_count = countMap[q.id] || 0
+                        const computedCount = countMap[q.id] || 0
+                        // Use the higher of computed vs stored (handles both sources)
+                        ;(q as any).view_count = Math.max(computedCount, (q as any).view_count || 0)
                     })
                 }
+                // If viewCounts is empty, keep existing view_count from quotations table
             }
-        } catch {
-            // Silently ignore — view_count will use the field from quotations table
+        } catch (err) {
+            console.warn('view_count computation failed, using table values:', err)
+            // Fallback: keep existing view_count from quotations table
         }
 
         return expired;
@@ -336,7 +343,12 @@ export async function createQuotation(quotation: Partial<Quotation>, items: Part
     }
 }
 
-export async function updateQuotation(id: string, quotation: Partial<Quotation>, items: Partial<QuotationItem>[]) {
+export async function updateQuotation(
+    id: string,
+    quotation: Partial<Quotation>,
+    items: Partial<QuotationItem>[],
+    options: { syncLinkedContract?: boolean } = {}
+) {
     try {
         const supabase = await createClient()
 
@@ -460,8 +472,9 @@ export async function updateQuotation(id: string, quotation: Partial<Quotation>,
             quoteDataToUpdate.brand
         )
 
-        // Sync changes to any linked contract and regenerate its documents
-        try {
+        // A linked contract is overwritten only after the user explicitly
+        // confirms this action in the quotation form.
+        if (options.syncLinkedContract) try {
             const { createAdminClient } = await import('../admin')
             const adminSupabase = createAdminClient()
 
@@ -491,7 +504,8 @@ export async function updateQuotation(id: string, quotation: Partial<Quotation>,
                         title: quoteDataToUpdate.title || undefined,
                         terms: quoteDataToUpdate.terms || undefined,
                         vat_exempt_status: quoteDataToUpdate.vat_exempt_status || undefined,
-                        product_name_in_contract: quoteDataToUpdate.product_name_in_contract || undefined
+                        product_name_in_contract: quoteDataToUpdate.product_name_in_contract || undefined,
+                        warranty_months: quoteDataToUpdate.proposal_content?.warranty_months ?? undefined,
                     }
                     
                     if (customerSnapshot) {
@@ -558,6 +572,17 @@ export async function updateQuotation(id: string, quotation: Partial<Quotation>,
         console.error('Fatal error in updateQuotation:', err)
         throw new Error(err.message || 'Lỗi hệ thống khi cập nhật báo giá')
     }
+}
+
+export async function hasLinkedContract(quotationId: string): Promise<boolean> {
+    const supabase = await createClient()
+    const { count, error } = await supabase
+        .from('contracts')
+        .select('*', { count: 'exact', head: true })
+        .eq('quotation_id', quotationId)
+
+    if (error) throw error
+    return (count || 0) > 0
 }
 
 export async function duplicateQuotation(id: string) {

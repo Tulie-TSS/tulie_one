@@ -17,18 +17,18 @@ import { CustomerStatus, QuotationStatus, ContractStatus, InvoiceStatus, DealSta
 //   cancelled = inactive, churned (line-through)
 // ═══════════════════════════════════════════════════════════════
 
-// — Reusable color tokens (Neutral Greyscale) —
+// — Reusable color tokens (CRM Professional) —
 const C = {
-    ghost:     'bg-zinc-100 text-zinc-600 border border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700',
-    outline:   'bg-transparent text-zinc-600 border border-zinc-200 dark:text-zinc-400 dark:border-zinc-800',
-    blue:      'bg-zinc-900 text-zinc-50 border border-zinc-900 dark:bg-zinc-50 dark:text-zinc-900 dark:border-zinc-50', 
-    sky:       'bg-zinc-200 text-zinc-800 border border-zinc-300 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-700',
-    emerald:   'bg-zinc-900 text-zinc-50 border border-zinc-900 dark:bg-zinc-50 dark:text-zinc-900 dark:border-zinc-50', 
-    amber:     'bg-zinc-100 text-zinc-900 border border-zinc-300 dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-600',
-    danger:    'bg-zinc-950 text-white border border-zinc-950 dark:bg-zinc-50 dark:text-zinc-950 dark:border-zinc-50', 
-    violet:    'bg-zinc-900 text-zinc-50 border border-zinc-900 dark:bg-zinc-50 dark:text-zinc-900 dark:border-zinc-50',
-    orange:    'bg-zinc-100 text-zinc-800 border border-zinc-300',
-    cancelled: 'bg-zinc-50 text-zinc-400 border border-zinc-100 line-through dark:bg-zinc-900 dark:text-zinc-600 dark:border-zinc-800',
+    ghost:     'bg-zinc-400 text-white dark:bg-zinc-600 border-none',
+    outline:   'bg-zinc-400 text-white dark:bg-zinc-600 border-none',
+    blue:      'bg-orange-600 text-white dark:bg-orange-600 border-none',
+    sky:       'bg-sky-500 text-white dark:bg-sky-500 border-none',
+    emerald:   'bg-emerald-600 text-white dark:bg-emerald-600 border-none',
+    amber:     'bg-amber-500 text-white dark:bg-amber-500 border-none',
+    danger:    'bg-red-600 text-white dark:bg-red-600 border-none',
+    violet:    'bg-violet-600 text-white dark:bg-violet-600 border-none',
+    orange:    'bg-orange-600 text-white dark:bg-orange-600 border-none',
+    cancelled: 'bg-zinc-300 text-zinc-600 line-through dark:bg-zinc-700 dark:text-zinc-400 border-none',
 } as const
 
 // Customer Status
@@ -121,11 +121,11 @@ export const DEAL_STATUS_LABELS: Record<DealStatus, string> = {
 }
 
 export const DEAL_CHART_COLORS: Record<DealStatus, string> = {
-    new: '#d4d4d8',          // zinc-300
-    briefing: '#a1a1aa',     // zinc-400
-    proposal_sent: '#52525b', // zinc-600
-    closed_won: '#18181b',    // zinc-900
-    closed_lost: '#f4f4f5'    // zinc-100
+    new: '#60a5fa',          // blue-400
+    briefing: '#38bdf8',     // sky-400
+    proposal_sent: '#fbbf24', // amber-400
+    closed_won: '#34d399',    // emerald-400
+    closed_lost: '#f87171'    // red-400
 }
 
 export const DEAL_STATUS_COLORS: Record<DealStatus, string> = {

@@ -6,12 +6,59 @@ import { revalidatePath } from 'next/cache'
 import { logActivity, logDestructiveAction } from './activity-service'
 import { notifyDealWon, notifyDealLost } from './notification-service'
 
+const stageToStatus: Record<string, DealStatus> = {
+    lead: 'new',
+    prospecting: 'new',
+    qualified: 'briefing',
+    meeting: 'briefing',
+    proposal: 'proposal_sent',
+    won: 'closed_won',
+    lost: 'closed_lost',
+    new: 'new',
+    briefing: 'briefing',
+    proposal_sent: 'proposal_sent',
+    closed_won: 'closed_won',
+    closed_lost: 'closed_lost',
+}
+
+const statusToStage: Record<DealStatus, string> = {
+    new: 'lead',
+    briefing: 'qualified',
+    proposal_sent: 'proposal',
+    closed_won: 'won',
+    closed_lost: 'lost',
+}
+
+function normalizeDeal(row: any): Deal {
+    const status = stageToStatus[row.status || row.stage] || 'new'
+    return {
+        ...row,
+        status,
+        budget: Number(row.budget ?? row.value ?? 0),
+        priority: row.priority || 'medium',
+        assigned_user: row.assigned_user || null,
+    } as Deal
+}
+
+function toNewDealSchemaPayload(deal: Partial<Deal>) {
+    const payload: any = { ...deal }
+    if (payload.status) {
+        payload.stage = statusToStage[payload.status as DealStatus] || payload.status
+        delete payload.status
+    }
+    if (payload.budget !== undefined) {
+        payload.value = payload.budget
+        delete payload.budget
+    }
+    return payload
+}
+
 export async function getDeals(customerId?: string, brand?: string) {
     try {
         const supabase = await createClient()
         let query = supabase
             .from('deals')
-            .select('*, customer:customers(id, company_name), assigned_user:users!assigned_to(*)')
+            .select('*, customer:customers(id, company_name)')
             .order('created_at', { ascending: false })
 
         if (customerId) {
@@ -25,11 +72,16 @@ export async function getDeals(customerId?: string, brand?: string) {
         const { data, error } = await query
 
         if (error) {
-            console.error('Error fetching deals:', error)
+            console.error('Error fetching deals:', {
+                code: error?.code,
+                message: error?.message,
+                details: error?.details,
+                hint: error?.hint,
+            })
             return []
         }
 
-        return data as Deal[]
+        return (data || []).map(normalizeDeal)
     } catch (err) {
         console.error('Fatal error in getDeals:', err)
         return []
@@ -41,16 +93,21 @@ export async function getDealById(id: string) {
         const supabase = await createClient()
         const { data, error } = await supabase
             .from('deals')
-            .select('*, customer:customers(*), assigned_user:users!assigned_to(*), creator:users!created_by(*), quotations(*)')
+            .select('*, customer:customers(*), quotations(*)')
             .eq('id', id)
             .single()
 
         if (error) {
-            console.error('Error fetching deal by id:', error)
+            console.error('Error fetching deal by id:', {
+                code: error?.code,
+                message: error?.message,
+                details: error?.details,
+                hint: error?.hint,
+            })
             return null
         }
 
-        return data as Deal
+        return normalizeDeal(data)
     } catch (err) {
         console.error('Fatal error in getDealById:', err)
         return null
@@ -65,7 +122,7 @@ export async function createDeal(deal: Partial<Deal>) {
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) throw new Error('Unauthorized')
 
-        const { data, error } = await supabase
+        let { data, error } = await supabase
             .from('deals')
             .insert([{
                 ...deal,
@@ -75,8 +132,32 @@ export async function createDeal(deal: Partial<Deal>) {
             .single()
 
         if (error) {
-            console.error('Error creating deal:', error)
-            throw error
+            const fallback = await supabase
+                .from('deals')
+                .insert([{
+                    ...toNewDealSchemaPayload(deal),
+                    created_by: user.id
+                }])
+                .select()
+                .single()
+
+            if (fallback.error) {
+                console.error('Error creating deal:', {
+                    code: error?.code,
+                    message: error?.message,
+                    details: error?.details,
+                    hint: error?.hint,
+                    fallback: {
+                        code: fallback.error?.code,
+                        message: fallback.error?.message,
+                        details: fallback.error?.details,
+                        hint: fallback.error?.hint,
+                    }
+                })
+                throw fallback.error
+            }
+            data = fallback.data
+            error = null
         }
 
         revalidatePath('/deals')
@@ -102,20 +183,41 @@ export async function updateDeal(id: string, deal: Partial<Deal>) {
         // Get current deal for status change detection
         const { data: currentDeal } = await supabase
             .from('deals')
-            .select('status, title, assigned_to, created_by, customer_id')
+            .select('*')
             .eq('id', id)
             .single()
 
-        const { error } = await supabase
+        let { error } = await supabase
             .from('deals')
             .update(deal)
             .eq('id', id)
 
         if (error) {
-            console.error('Error updating deal:', error)
-            throw error
+            const fallbackPayload = toNewDealSchemaPayload(deal)
+            const fallback = await supabase
+                .from('deals')
+                .update(fallbackPayload)
+                .eq('id', id)
+
+            if (fallback.error) {
+                console.error('Error updating deal:', {
+                    code: error?.code,
+                    message: error?.message,
+                    details: error?.details,
+                    hint: error?.hint,
+                    fallback: {
+                        code: fallback.error?.code,
+                        message: fallback.error?.message,
+                        details: fallback.error?.details,
+                        hint: fallback.error?.hint,
+                    }
+                })
+                throw fallback.error
+            }
+            error = null
         }
 
+        const currentStatus = currentDeal ? normalizeDeal(currentDeal).status : undefined
         await logActivity({
             action: 'update',
             entity_type: 'deal',
@@ -125,7 +227,7 @@ export async function updateDeal(id: string, deal: Partial<Deal>) {
         })
 
         // Notify on deal status changes
-        if (deal.status && currentDeal && deal.status !== currentDeal.status) {
+        if (deal.status && currentDeal && deal.status !== currentStatus) {
             const dealForNotify = {
                 id,
                 title: deal.title || currentDeal.title || '',

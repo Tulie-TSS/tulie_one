@@ -143,7 +143,7 @@ export default function NewBundlePage() {
                     {/* Customer & Contract Selection */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Thông tin khách hàng & Dự án</CardTitle>
+                            <CardTitle>Thông tin khách hàng & Hợp đồng</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
@@ -161,7 +161,7 @@ export default function NewBundlePage() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label>Chọn hợp đồng / Dự án (Tùy chọn)</Label>
+                                <Label>Chọn hợp đồng (Tùy chọn)</Label>
                                 <Select
                                     value={selectedContractId}
                                     onValueChange={setSelectedContractId}

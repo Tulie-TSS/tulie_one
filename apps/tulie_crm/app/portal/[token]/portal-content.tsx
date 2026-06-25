@@ -18,10 +18,7 @@ import { getGeneratedDocumentById } from '@/lib/supabase/services/document-templ
 import { toast } from 'sonner'
 import { formatCurrency, formatDate } from '@/lib/utils/format'
 import { usePortalTracking } from '@/hooks/use-portal-tracking'
-import { FeedbackBoard } from '@/components/portal/feedback-board'
 import PortalPasswordForm from './password-form'
-import { ProjectGanttChart } from '@/components/projects/project-gantt-chart'
-import { ProjectActivityHistory } from '@/components/projects/project-activity-history'
 import { sanitizeHtml } from '@/lib/security/sanitize'
 import { cn } from '@/lib/utils'
 
@@ -100,7 +97,6 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
     // Top Nav
     const navItems = [
         { value: 'progress', label: 'Thông tin chung', icon: FileText },
-        { value: 'feedback', label: 'Nhật ký xử lý', icon: ClipboardCheck },
     ]
 
     return (
@@ -116,18 +112,20 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                     <Separator orientation="vertical" className="h-6" />
                     <div className="flex flex-col">
                         <span className="text-base font-bold tracking-tight text-foreground leading-none">
-                            {isFreelance ? 'Freelancer Portal' : 'Project Portal'}
+                            {isFreelance ? 'Freelancer Portal' : 'Customer Portal'}
                         </span>
                         <span className="text-[0.65rem] uppercase font-medium text-muted-foreground mt-0.5">
-                            {isFreelance ? 'Cổng thông tin Cộng tác viên' : 'Cổng theo dõi dự án'}
+                            {isFreelance ? 'Cổng thông tin Cộng tác viên' : 'Cổng thông tin khách hàng'}
                         </span>
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
                     <span className="hidden md:inline text-sm font-medium text-foreground">{displayName}</span>
-                    <Badge variant="default" className="hidden sm:inline-flex">
-                        {project?.status === 'in_progress' ? 'Đang triển khai' : 'Đang thực hiện'}
-                    </Badge>
+                    {activeContract && (
+                        <Badge variant="default" className="hidden sm:inline-flex">
+                            {activeContract.status === 'active' ? 'Đang thực hiện' : activeContract.status === 'completed' ? 'Đã hoàn thành' : 'Hiệu lực'}
+                        </Badge>
+                    )}
                     {hasFinancialPassword && !isFinancialAuthenticated && (
                         <Dialog open={isUnlockModalOpen} onOpenChange={setIsUnlockModalOpen}>
                             <DialogTrigger asChild>
@@ -187,86 +185,21 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
 
                     {/* Tab 1: Execution / Progress */}
                     <TabsContent value="progress" className="mt-0 space-y-6 focus-visible:outline-none">
-                        <div className="grid gap-6 md:grid-cols-[1fr_300px]">
-                            <div className="space-y-6">
-                                {/* Project Description */}
-                                {(project?.description || contract?.description) && (
-                                    <Card className="bg-white border shadow-sm">
-                                        <CardHeader className="py-4 bg-muted/20 border-b">
-                                            <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
-                                                <FileText className="w-4 h-4 text-muted-foreground" />
-                                                Mô tả dự án
-                                            </CardTitle>
-                                        </CardHeader>
-                                        <CardContent className="pt-4">
-                                            <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-line">
-                                                {project?.description || contract?.description}
-                                            </p>
-                                        </CardContent>
-                                    </Card>
-                                )}
-                            </div>
-
-                            {/* Sidebar Resources */}
-                            <div className="space-y-6">
-                                <Card className="bg-white border shadow-sm overflow-hidden">
-                                    <CardHeader className="py-4 bg-muted/20 border-b">
-                                        <CardTitle className="text-sm font-semibold flex items-center gap-2">Tài nguyên dự án</CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="p-0 divide-y divide-border text-sm">
-                                        {projectMetadata?.source_link && (
-                                            <div className="p-4 flex flex-col gap-1.5 hover:bg-muted/30 transition-colors">
-                                                <span className="text-muted-foreground text-xs font-medium uppercase tracking-wider">Source Code / Figma</span>
-                                                <a href={projectMetadata.source_link} target="_blank" className="text-primary font-medium truncate flex items-center gap-1.5">
-                                                    Truy cập tài nguyên <ExternalLink className="w-3.5 h-3.5" />
-                                                </a>
-                                            </div>
-                                        )}
-                                        {projectMetadata?.ai_folder_link && (
-                                            <div className="p-4 flex flex-col gap-1.5 hover:bg-muted/30 transition-colors">
-                                                <span className="text-muted-foreground text-xs font-medium uppercase tracking-wider">Thư mục AI / Design</span>
-                                                <a href={projectMetadata.ai_folder_link} target="_blank" className="text-primary font-medium truncate flex items-center gap-1.5">
-                                                    Google Drive <ExternalLink className="w-3.5 h-3.5" />
-                                                </a>
-                                            </div>
-                                        )}
-                                        {projectMetadata?.figma_link && (
-                                            <div className="p-4 flex flex-col gap-1.5 hover:bg-muted/30 transition-colors">
-                                                <span className="text-muted-foreground text-xs font-medium uppercase tracking-wider">Bản vẽ Figma</span>
-                                                <a href={projectMetadata.figma_link} target="_blank" className="text-primary font-medium truncate flex items-center gap-1.5">
-                                                    Bản thiết kế UI/UX <ExternalLink className="w-3.5 h-3.5" />
-                                                </a>
-                                            </div>
-                                        )}
-                                        {!projectMetadata?.source_link && !projectMetadata?.ai_folder_link && !projectMetadata?.figma_link && (
-                                            <div className="p-6 text-center text-xs text-muted-foreground">
-                                                Tài nguyên đang được cập nhật
-                                            </div>
-                                        )}
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </div>
-                    </TabsContent>
-
-                    {/* Tab 2: Feedback & History */}
-                    <TabsContent value="feedback" className="mt-0 space-y-6 focus-visible:outline-none">
-                        <div className="grid gap-6 md:grid-cols-[1fr_350px]">
-                            <div className="bg-card rounded-xl border shadow-sm overflow-hidden">
-                                {project?.id && (
-                                    <FeedbackBoard
-                                        projectId={project.id}
-                                        customerId={customer?.id}
-                                        customerName={displayName}
-                                        isAdmin={isFinancialAuthenticated}
-                                    />
-                                )}
-                            </div>
-                            <div>
-                                <h3 className="font-semibold mb-4 text-foreground">Lịch sử hoạt động</h3>
-                                <ProjectActivityHistory projectId={project?.id} activities={activities} />
-                            </div>
-                        </div>
+                        {contract?.description && (
+                            <Card className="bg-white border shadow-sm">
+                                <CardHeader className="py-4 border-b">
+                                    <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
+                                        <FileText className="w-4 h-4 text-muted-foreground" />
+                                        Mô tả hợp đồng
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent className="pt-4">
+                                    <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-line">
+                                        {contract.description}
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        )}
                     </TabsContent>
 
                     {/* Tab 3: Finance (Protected) */}
@@ -290,7 +223,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             </div>
 
                             <Card className="bg-white border shadow-sm">
-                                <CardHeader className="py-4 bg-muted/20 border-b flex flex-row items-center justify-between">
+                                <CardHeader className="py-4 border-b flex flex-row items-center justify-between">
                                     <CardTitle className="text-base font-semibold">Lịch trình thanh toán</CardTitle>
                                 </CardHeader>
                                 <CardContent className="p-0">
@@ -338,7 +271,7 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                             
                             {activeContract?.documents && activeContract.documents.filter((d: any) => d.is_visible_on_portal).length > 0 && (
                                 <Card className="bg-white border shadow-sm">
-                                    <CardHeader className="border-b py-4 bg-muted/20">
+                                    <CardHeader className="border-b py-4">
                                         <CardTitle className="text-base font-semibold">Hợp đồng & Văn bản pháp lý</CardTitle>
                                     </CardHeader>
                                     <CardContent className="p-0 divide-y">

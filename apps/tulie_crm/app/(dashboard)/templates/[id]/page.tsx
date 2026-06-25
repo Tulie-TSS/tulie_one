@@ -441,7 +441,7 @@ export default function TemplateDetailPage() {
                     } catch { /* ignore */ }
                 }
                 if (sections.length > 0) {
-                    proposalAppendixHtml = `<div style="page-break-before: always;"></div><p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá &amp; Lộ trình triển khai</p><p style="text-align:center; font-style:italic; margin-bottom:20px; font-size:9pt;">(Đính kèm {{contract_type}} số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>`
+                    proposalAppendixHtml = `<div style="page-break-before: always;"></div><p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 6px 0;">Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá &amp; Lộ trình triển khai</p><p style="text-align:center; font-style:italic; margin-bottom:20px; font-size:9pt;">(Đính kèm {{contract_type}} số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>`
                     sections.forEach((sec, idx) => {
                         const content = sec.content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                         proposalAppendixHtml += `<div style="margin-bottom:16px;"><p style="font-weight:bold; font-size:10pt; margin: 0 0 6px 0; border-bottom:1px solid #ddd; padding-bottom:4px;">${idx + 1}. ${sec.label}</p><div style="font-size:9.5pt; text-align:justify; line-height:1.6; padding-left:4px;">${content}</div></div>`

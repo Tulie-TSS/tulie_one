@@ -15,6 +15,7 @@ import {
 interface Props {
   entityType: 'deal' | 'quotation' | 'contract' | 'project'
   entityId: string
+  minimal?: boolean
 }
 
 interface StepData {
@@ -27,7 +28,7 @@ interface StepData {
   statusColor: string
 }
 
-export function EntityPipelineTracker({ entityType, entityId }: Props) {
+export function EntityPipelineTracker({ entityType, entityId, minimal = false }: Props) {
   const [lineage, setLineage] = useState<EntityLineage | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -42,8 +43,8 @@ export function EntityPipelineTracker({ entityType, entityId }: Props) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center gap-2 py-2.5 px-1 print:hidden">
-        <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
+      <div className="flex items-center gap-2 py-2 px-1 print:hidden">
+        <Loader2 className="h-3 w-3 animate-spin text-muted-foreground" />
         <span className="text-xs text-muted-foreground">Đang tải luồng tiến trình...</span>
       </div>
     )
@@ -52,15 +53,6 @@ export function EntityPipelineTracker({ entityType, entityId }: Props) {
   if (!lineage) return null
 
   const steps: StepData[] = [
-    {
-      type: 'deal',
-      label: 'Cơ hội',
-      entity: lineage.deal,
-      url: lineage.deal ? `/deals/${lineage.deal.id}` : null,
-      displayText: lineage.deal?.title || null,
-      statusLabel: lineage.deal ? (DEAL_STATUS_LABELS as any)[lineage.deal.status] || null : null,
-      statusColor: lineage.deal ? (DEAL_STATUS_COLORS as any)[lineage.deal.status] || '' : '',
-    },
     {
       type: 'quotation',
       label: 'Báo giá',
@@ -79,15 +71,6 @@ export function EntityPipelineTracker({ entityType, entityId }: Props) {
       statusLabel: lineage.contract ? (CONTRACT_STATUS_LABELS as any)[lineage.contract.status] || null : null,
       statusColor: lineage.contract ? (CONTRACT_STATUS_COLORS as any)[lineage.contract.status] || '' : '',
     },
-    {
-      type: 'project',
-      label: 'Dự án',
-      entity: lineage.project,
-      url: lineage.project ? `/projects/${lineage.project.id}` : null,
-      displayText: lineage.project?.title || null,
-      statusLabel: lineage.project ? (PROJECT_STATUS_LABELS as any)[lineage.project.status] || null : null,
-      statusColor: lineage.project ? (PROJECT_STATUS_COLORS as any)[lineage.project.status] || '' : '',
-    },
   ]
 
   // Don't render if no linked entities found at all (only self)
@@ -95,8 +78,13 @@ export function EntityPipelineTracker({ entityType, entityId }: Props) {
   if (linkedCount <= 1) return null
 
   return (
-    <nav aria-label="Luồng tiến trình" className="w-full print:hidden">
-      <div className="flex flex-row flex-wrap md:flex-nowrap items-center justify-between gap-3 bg-zinc-50/50 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 rounded-xl p-3.5 shadow-sm">
+    <nav aria-label="Luồng tiến trình" className={cn("print:hidden", minimal ? "w-auto" : "w-full")}>
+      <div className={cn(
+        "flex flex-row flex-wrap items-center gap-3",
+        minimal 
+          ? "bg-transparent p-0 border-none shadow-none justify-start md:justify-end" 
+          : "bg-zinc-50/50 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 rounded-xl p-3.5 shadow-sm justify-between"
+      )}>
         {steps.map((step, index) => {
           const isCurrent = step.type === entityType
           const hasData = !!step.entity
@@ -111,25 +99,27 @@ export function EntityPipelineTracker({ entityType, entityId }: Props) {
 
           const stepContent = (
             <div className={cn(
-              "flex items-center gap-3 py-1.5 px-2 rounded-lg transition-all",
+              "flex items-center gap-2 rounded-lg transition-all",
+              minimal ? "py-0.5 px-1.5" : "py-1.5 px-2",
               hasData && !isCurrent && "hover:bg-zinc-100/80 dark:hover:bg-zinc-800/80"
             )}>
               {/* Icon Circle */}
               <div className={cn(
-                "h-9 w-9 rounded-full flex items-center justify-center shrink-0 transition-all border",
+                "rounded-full flex items-center justify-center shrink-0 transition-all border",
+                minimal ? "h-7.5 w-7.5" : "h-9 w-9",
                 isCurrent 
                   ? "bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950 border-zinc-950 dark:border-zinc-100 shadow-sm ring-4 ring-zinc-950/10 dark:ring-zinc-100/10" 
                   : hasData
                     ? "bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-sm"
-                    : "bg-zinc-50/50 dark:bg-zinc-950/20 text-zinc-400 dark:text-zinc-655 border-dashed border-zinc-200 dark:border-zinc-800"
+                    : "bg-zinc-50/50 dark:bg-zinc-950/20 text-zinc-400 dark:text-zinc-650 border-dashed border-zinc-200 dark:border-zinc-800"
               )}>
-                <Icon className={cn("h-4.5 w-4.5", !isCurrent && !hasData && "opacity-60")} />
+                <Icon className={cn(minimal ? "h-3.5 w-3.5" : "h-4.5 w-4.5", !isCurrent && !hasData && "opacity-60")} />
               </div>
 
               {/* Text Info */}
               <div className="flex flex-col min-w-0">
                 <span className={cn(
-                  "text-[10px] uppercase tracking-wider font-bold",
+                  "text-[9px] uppercase tracking-wider font-bold",
                   isCurrent 
                     ? "text-zinc-950 dark:text-zinc-100" 
                     : hasData 
@@ -142,14 +132,14 @@ export function EntityPipelineTracker({ entityType, entityId }: Props) {
                 {hasData ? (
                   <div className="flex items-center gap-1.5 mt-0.5 min-w-0 flex-wrap sm:flex-nowrap">
                     <span className={cn(
-                      "text-xs font-semibold truncate max-w-[120px] md:max-w-[150px]",
+                      "text-xs font-semibold truncate max-w-[110px] md:max-w-[140px]",
                       isCurrent ? "text-zinc-950 dark:text-white" : "text-zinc-700 dark:text-zinc-300"
                     )}>
                       {step.displayText}
                     </span>
                     {step.statusLabel && (
                       <span className={cn(
-                        "inline-flex items-center rounded px-1.5 py-0.5 text-[9px] font-bold tracking-tight border border-current/10 whitespace-nowrap",
+                        "inline-flex items-center rounded-full px-1.5 py-0.5 text-[8.5px] font-bold tracking-tight whitespace-nowrap",
                         step.statusColor
                       )}>
                         {step.statusLabel}
@@ -157,7 +147,7 @@ export function EntityPipelineTracker({ entityType, entityId }: Props) {
                     )}
                   </div>
                 ) : (
-                  <span className="text-xs text-zinc-455/60 dark:text-zinc-600/60 mt-0.5">
+                  <span className="text-xs text-zinc-450/60 dark:text-zinc-600/60 mt-0.5">
                     Chưa tạo
                   </span>
                 )}
@@ -169,7 +159,7 @@ export function EntityPipelineTracker({ entityType, entityId }: Props) {
             <React.Fragment key={step.type}>
               {/* Connector line on desktop */}
               {index > 0 && (
-                <div className="hidden md:block flex-1 h-[2px] mx-1 min-w-[20px] self-center">
+                <div className={cn("hidden md:block flex-1 mx-1 self-center", minimal ? "h-[1.5px] min-w-[24px] max-w-[60px]" : "h-[2px] min-w-[20px]")}>
                   <div className={cn(
                     "h-full w-full rounded-full transition-colors duration-300",
                     steps[index - 1].entity && steps[index].entity

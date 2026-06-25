@@ -494,7 +494,7 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
                             </View>
                         )}
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Text style={{ fontSize: 9 }}>VAT ({quotation.vat_percent || 0}%):</Text>
+                            <Text style={{ fontSize: 9 }}>{quotation.vat_exempt_status === 'exempt' ? 'Không chịu thuế GTGT (KCT):' : `VAT (${quotation.vat_percent || 0}%):`}</Text>
                             <Text style={{ fontSize: 9, fontFamily: 'Roboto-Bold' }}>{formatCurrency(quotation.vat_amount || 0)}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: '#000', borderRadius: 4, marginTop: 5 }}>

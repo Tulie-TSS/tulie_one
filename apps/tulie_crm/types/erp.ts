@@ -138,6 +138,14 @@ export interface Product {
 export interface DashboardStats {
   revenue: {
     total: number
+    b2b: number
+    b2c: number
+    month: number
+    quarter: number
+    b2b_month: number
+    b2b_quarter: number
+    b2c_month: number
+    b2c_quarter: number
     change: number
     period: string
   }
@@ -164,6 +172,9 @@ export interface DashboardStats {
     pending: number
     overdue: number
     total_outstanding: number
+  }
+  retail: {
+    orders: number
   }
   health_score: number
   conversion_rate: number
@@ -196,3 +207,44 @@ export interface InvoiceFilters {
   date_from?: string
   date_to?: string
 }
+
+// ─── Finance Module Types ───
+
+export interface PnLData {
+  revenue: number
+  revenue_b2b: number
+  revenue_b2c: number
+  cogs: number
+  cogs_ctv: number
+  cogs_input_invoices: number
+  gross_profit: number
+  opex: number
+  net_profit: number
+  gross_margin: number
+  net_margin: number
+}
+
+export interface PnLMonthly {
+  date: string
+  revenue: number
+  cogs: number
+  gross_profit: number
+  opex: number
+  net_profit: number
+}
+
+export interface CashFlowMonth {
+  date: string
+  inflow: number
+  outflow: number
+  net: number
+  cumulative: number
+}
+
+export interface ExpenseSummary {
+  category: string
+  amount: number
+  percentage: number
+  count: number
+}
+

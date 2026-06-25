@@ -170,9 +170,9 @@ export default function NewCtvContractClient({ freelancers = [] }: { freelancers
                     <Link href="/contracts/ctv"><ArrowLeft className="h-4 w-4" /></Link>
                 </Button>
                 <div>
-                    <h1 className="text-xl font-semibold">Tạo hợp đồng Cộng tác viên</h1>
+                    <h1 className="text-xl font-semibold">Tạo hợp đồng Cộng tác & Khoán việc</h1>
                     <p className="text-sm text-muted-foreground mt-0.5">
-                        Sau khi tạo, hệ thống sẽ sinh link để gửi CTV tự điền thông tin cá nhân
+                        Sau khi tạo, hệ thống sẽ sinh link để người nhận thù lao tự điền thông tin cá nhân
                     </p>
                 </div>
             </div>
@@ -185,19 +185,19 @@ export default function NewCtvContractClient({ freelancers = [] }: { freelancers
                         <CardHeader className="pb-3">
                             <div className="flex items-center gap-2">
                                 <User className="h-4 w-4 text-primary" />
-                                <CardTitle className="text-base">Chọn Cộng tác viên</CardTitle>
+                                <CardTitle className="text-base">Chọn người nhận thù lao</CardTitle>
                             </div>
                             <CardDescription>Chọn từ danh sách đã có hoặc nhập mới</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-1.5">
-                                <Label>Danh sách CTV đã từng hợp tác</Label>
+                                <Label>Danh sách cộng tác viên, freelancer và chuyên gia</Label>
                                 <Select value={selectedFreelancer} onValueChange={handleFreelancerSelect}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Chọn cộng tác viên..." />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="new">-- Cộng tác viên mới --</SelectItem>
+                                        <SelectItem value="new">-- Người hợp tác mới --</SelectItem>
                                         {freelancers.map((f, i) => (
                                             <SelectItem key={i} value={f.email || f.phone}>
                                                 {f.name} ({f.email || f.phone})
@@ -211,7 +211,7 @@ export default function NewCtvContractClient({ freelancers = [] }: { freelancers
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="f_name">Họ tên CTV</Label>
+                                    <Label htmlFor="f_name">Họ tên người hợp tác</Label>
                                     <Input
                                         id="f_name"
                                         value={freelancerInfo.name}
@@ -246,7 +246,7 @@ export default function NewCtvContractClient({ freelancers = [] }: { freelancers
                     <Card>
                         <CardHeader className="pb-3">
                             <CardTitle className="text-base">Thông tin hợp đồng</CardTitle>
-                            <CardDescription>Nội dung chính của hợp đồng cộng tác viên</CardDescription>
+                            <CardDescription>Nội dung chính của hợp đồng chi trả cộng tác/khoán việc</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-1.5">

@@ -1,4 +1,3 @@
-import { Badge } from '@repo/ui'
 import { cn } from '@/lib/utils'
 import {
     CUSTOMER_STATUS_LABELS,
@@ -14,6 +13,21 @@ import {
     RETAIL_ORDER_STATUS_LABELS,
     RETAIL_PAYMENT_STATUS_LABELS,
     MILESTONE_STATUS_LABELS,
+} from '@/lib/constants/status'
+import {
+    CUSTOMER_STATUS_COLORS,
+    QUOTATION_STATUS_COLORS,
+    CONTRACT_STATUS_COLORS,
+    INVOICE_STATUS_COLORS,
+    DEAL_STATUS_COLORS,
+    PROJECT_STATUS_COLORS,
+    PRODUCT_STATUS_COLORS,
+    BRAND_COLORS,
+    TICKET_STATUS_COLORS,
+    TICKET_PRIORITY_COLORS,
+    RETAIL_ORDER_STATUS_COLORS,
+    RETAIL_PAYMENT_STATUS_COLORS,
+    MILESTONE_STATUS_COLORS,
 } from '@/lib/constants/status'
 
 type EntityType = 'customer' | 'quotation' | 'contract' | 'invoice' | 'deal' | 'project' | 'product' | 'brand' | 'ticket' | 'ticket_priority' | 'retail_order' | 'retail_payment' | 'milestone' | 'none'
@@ -42,50 +56,65 @@ const LABEL_MAPPINGS: Record<Exclude<EntityType, 'none'>, any> = {
     milestone: MILESTONE_STATUS_LABELS,
 }
 
+const COLOR_MAPPINGS: Record<Exclude<EntityType, 'none'>, any> = {
+    customer: CUSTOMER_STATUS_COLORS,
+    quotation: QUOTATION_STATUS_COLORS,
+    contract: CONTRACT_STATUS_COLORS,
+    invoice: INVOICE_STATUS_COLORS,
+    deal: DEAL_STATUS_COLORS,
+    project: PROJECT_STATUS_COLORS,
+    product: PRODUCT_STATUS_COLORS,
+    brand: BRAND_COLORS,
+    ticket: TICKET_STATUS_COLORS,
+    ticket_priority: TICKET_PRIORITY_COLORS,
+    retail_order: RETAIL_ORDER_STATUS_COLORS,
+    retail_payment: RETAIL_PAYMENT_STATUS_COLORS,
+    milestone: MILESTONE_STATUS_COLORS,
+}
+
 /**
- * Shadcn v4 standard Badge — uses only `variant` for visual styling.
- * No custom colors, no hardcoded classes.
- * Maps status → shadcn Badge variant (default | secondary | outline | destructive)
+ * StatusBadge with per-entity semantic colors.
+ * Uses *_STATUS_COLORS mappings for distinct color per status (emerald, blue, amber, red, violet).
  */
 export function StatusBadge({ status, label, entityType = 'none', className, showDot }: StatusBadgeProps) {
     let displayLabel = label || status
+    let colorClass = ''
 
     if (entityType !== 'none') {
         const labels = LABEL_MAPPINGS[entityType]
         displayLabel = label || labels?.[status as keyof typeof labels] || status
+
+        const colors = COLOR_MAPPINGS[entityType]
+        colorClass = colors?.[status as keyof typeof colors] || getFallbackColor(status)
+    } else {
+        colorClass = getFallbackColor(status)
     }
 
-    const variant = getVariant(status)
-
     return (
-        <Badge variant={variant} className={cn(className)}>
+        <span className={cn(
+            "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap",
+            colorClass,
+            className
+        )}>
             {displayLabel}
-        </Badge>
+        </span>
     )
 }
 
 /**
- * Map any status string → standard shadcn Badge variant.
- * No custom colors — only the 4 built-in variants.
+ * Fallback color when no entity-specific color mapping is found.
  */
-function getVariant(status: string): "default" | "secondary" | "outline" | "destructive" {
+function getFallbackColor(status: string): string {
     const s = status.toLowerCase()
 
-    // Destructive states
     if (['rejected', 'failed', 'cancelled', 'error', 'overdue', 'urgent', 'blocked', 'churned'].includes(s)) {
-        return 'destructive'
+        return 'bg-red-600 text-white border-none'
     }
-
-    // Success / active states → default (primary)
     if (['completed', 'done', 'active', 'paid', 'signed', 'accepted', 'approved', 'ready', 'resolved', 'closed_won', 'vip', 'converted', 'edit_done'].includes(s)) {
-        return 'default'
+        return 'bg-emerald-600 text-white border-none'
     }
-
-    // In-progress / waiting → secondary
     if (['in_progress', 'running', 'processing', 'sent', 'viewed', 'shipping', 'waiting_ship', 'waiting', 'open', 'editing', 'briefing', 'prospect', 'proposal_sent', 'partial', 'review', 'pending_review', 'changes_requested'].includes(s)) {
-        return 'secondary'
+        return 'bg-orange-600 text-white border-none'
     }
-
-    // Default → outline (draft, pending, todo, etc.)
-    return 'outline'
+    return 'bg-zinc-400 text-white border-none'
 }

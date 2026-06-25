@@ -437,8 +437,8 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
     if (!isFreelance && !contract.quotation_id) missingDocFields.push('Báo giá liên kết (danh sách sản phẩm)')
 
     return (
-        <Card>
-            <CardHeader className="pb-4 border-b bg-muted/20">
+        <Card className="overflow-hidden">
+            <CardHeader className="pb-4 border-b">
                 <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1.5">
                         <CardTitle className="flex items-center gap-2 text-base">
@@ -461,10 +461,10 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                     </Button>
                 </div>
             </CardHeader>
-            <CardContent className="space-y-4 pt-6">
+            <CardContent className="pt-6">
                 {/* Warning for missing data */}
                 {missingDocFields.length > 0 && (
-                    <Alert className="bg-amber-50 border-amber-200">
+                    <Alert className="bg-amber-50 border-amber-200 mb-4">
                         <AlertTriangle className="h-4 w-4 text-amber-600" />
                         <AlertDescription className="text-xs text-amber-800">
                             <strong>Thiếu thông tin:</strong> {missingDocFields.join(' • ')}.
@@ -473,316 +473,309 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                     </Alert>
                 )}
 
-                {/* Editable customer info form */}
-                {!isFreelance ? (
-                <div className="rounded-lg border border-dashed">
-                    <button
-                        type="button"
-                        className="w-full flex items-center justify-between p-3 text-left hover:bg-muted/50 rounded-lg transition-colors"
-                        onClick={() => setShowForm(!showForm)}
-                    >
-                        <div>
-                            <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">
-                                Thông tin điền vào giấy tờ
-                            </p>
-                            <p className="text-[10px] text-muted-foreground mt-0.5">
-                                {customerInfo.customer_company || 'Chưa có'} • {customerInfo.customer_representative || 'Chưa có đại diện'}
-                            </p>
-                        </div>
-                        <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${showForm ? 'rotate-180' : ''}`} />
-                    </button>
-
-                    {showForm && (
-                        <div className="px-3 pb-3 space-y-2.5 border-t">
-                            <div className="grid grid-cols-1 gap-2 pt-2.5">
-                                <div className="space-y-1">
-                                    <Label className="text-[10px] text-muted-foreground">Công ty</Label>
-                                    <div className="relative">
-                                        <Building2 className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                                        <Input
-                                            name="customer_company"
-                                            value={customerInfo.customer_company}
-                                            onChange={handleInfoChange}
-                                            className="pl-8 h-8 text-xs"
-                                            placeholder="Tên công ty"
-                                        />
-                                    </div>
+                <div className="grid lg:grid-cols-2 gap-4">
+                    {/* LEFT COLUMN: Customer info */}
+                    <div>
+                        {!isFreelance ? (
+                            <div className="rounded-lg border bg-muted/5 p-4 space-y-3">
+                                <div>
+                                    <p className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                                        Thông tin điền vào giấy tờ
+                                    </p>
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        {customerInfo.customer_company || 'Chưa có'} • {customerInfo.customer_representative || 'Chưa có đại diện'}
+                                    </p>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-2">
-                                    <div className="space-y-1">
-                                        <Label className="text-[10px] text-muted-foreground">Đại diện pháp luật</Label>
-                                        <div className="flex gap-1.5">
-                                            <select
-                                                name="customer_representative_title"
-                                                value={customerInfo.customer_representative_title}
-                                                onChange={(e) => { setCustomerInfo(prev => ({ ...prev, customer_representative_title: e.target.value })); setInfoChanged(true) }}
-                                                className="h-8 rounded-md border border-input bg-background px-2 text-xs min-w-[60px]"
-                                            >
-                                                <option value="">—</option>
-                                                <option value="Ông">Ông</option>
-                                                <option value="Bà">Bà</option>
-                                            </select>
-                                            <div className="relative flex-1">
-                                                <User className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                                <div className="space-y-3 pt-3 border-t border-dashed">
+                                    <div className="grid grid-cols-1 gap-2.5">
+                                        <div className="space-y-1">
+                                            <Label className="text-xs font-medium text-muted-foreground">Công ty</Label>
+                                            <div className="relative">
+                                                <Building2 className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
                                                 <Input
-                                                    name="customer_representative"
-                                                    value={customerInfo.customer_representative}
+                                                    name="customer_company"
+                                                    value={customerInfo.customer_company}
                                                     onChange={handleInfoChange}
                                                     className="pl-8 h-8 text-xs"
-                                                    placeholder="Họ tên"
+                                                    placeholder="Tên công ty"
                                                 />
                                             </div>
                                         </div>
-                                        {customerInfo.customer_representative_title && customerInfo.customer_representative && (
-                                            <p className="text-[9px] text-muted-foreground">{customerInfo.customer_representative_title} {customerInfo.customer_representative}</p>
+
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <div className="space-y-1">
+                                                <Label className="text-xs font-medium text-muted-foreground">Đại diện pháp luật</Label>
+                                                <div className="flex gap-1.5">
+                                                    <select
+                                                        name="customer_representative_title"
+                                                        value={customerInfo.customer_representative_title}
+                                                        onChange={(e) => { setCustomerInfo(prev => ({ ...prev, customer_representative_title: e.target.value })); setInfoChanged(true) }}
+                                                        className="h-8 rounded-md border border-input bg-background px-2 text-xs min-w-[60px]"
+                                                    >
+                                                        <option value="">—</option>
+                                                        <option value="Ông">Ông</option>
+                                                        <option value="Bà">Bà</option>
+                                                    </select>
+                                                    <div className="relative flex-1">
+                                                        <User className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                                                        <Input
+                                                            name="customer_representative"
+                                                            value={customerInfo.customer_representative}
+                                                            onChange={handleInfoChange}
+                                                            className="pl-8 h-8 text-xs"
+                                                            placeholder="Họ tên"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                {customerInfo.customer_representative_title && customerInfo.customer_representative && (
+                                                    <p className="text-[9px] text-muted-foreground">{customerInfo.customer_representative_title} {customerInfo.customer_representative}</p>
+                                                )}
+                                            </div>
+                                            <div className="space-y-1">
+                                                <Label className="text-xs font-medium text-muted-foreground">Chức vụ</Label>
+                                                <Input
+                                                    name="customer_position"
+                                                    value={customerInfo.customer_position}
+                                                    onChange={handleInfoChange}
+                                                    className="h-8 text-xs"
+                                                    placeholder="Giám đốc..."
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <div className="space-y-1">
+                                                <Label className="text-xs font-medium text-muted-foreground">Email</Label>
+                                                <div className="relative">
+                                                    <Mail className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                                                    <Input
+                                                        name="customer_email"
+                                                        value={customerInfo.customer_email}
+                                                        onChange={handleInfoChange}
+                                                        className="pl-8 h-8 text-xs"
+                                                        placeholder="email@..."
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="space-y-1">
+                                                <Label className="text-xs font-medium text-muted-foreground">SĐT</Label>
+                                                <div className="relative">
+                                                    <Phone className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                                                    <Input
+                                                        name="customer_phone"
+                                                        value={customerInfo.customer_phone}
+                                                        onChange={handleInfoChange}
+                                                        className="pl-8 h-8 text-xs"
+                                                        placeholder="0xxx..."
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-1">
+                                            <Label className="text-xs font-medium text-muted-foreground">MST</Label>
+                                            <Input
+                                                name="customer_tax_code"
+                                                value={customerInfo.customer_tax_code}
+                                                onChange={handleInfoChange}
+                                                className="h-8 text-xs"
+                                                placeholder="Mã số thuế"
+                                            />
+                                        </div>
+
+                                        <div className="space-y-1">
+                                            <Label className="text-xs font-medium text-muted-foreground">Hình thức bàn giao</Label>
+                                            <Select
+                                                value={customerInfo.delivery_method}
+                                                onValueChange={(val) => {
+                                                    setCustomerInfo(prev => {
+                                                        const updated = { ...prev, delivery_method: val }
+                                                        if (val === 'digital' && (prev.delivery_address === '' || prev.delivery_address === (snapshot?.address || cust?.address || ''))) {
+                                                            updated.delivery_address = 'Bản mềm qua Internet (Email/Cloud/Drive)'
+                                                        } else if (val === 'physical' && (prev.delivery_address === '' || prev.delivery_address === 'Bản mềm qua Internet (Email/Cloud/Drive)')) {
+                                                            updated.delivery_address = snapshot?.address || cust?.address || ''
+                                                        }
+                                                        return updated
+                                                    })
+                                                    setInfoChanged(true)
+                                                }}
+                                            >
+                                                <SelectTrigger className="w-full h-8 text-xs font-medium">
+                                                    <SelectValue />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="digital" className="text-xs">Sản phẩm kỹ thuật số (Bản mềm)</SelectItem>
+                                                    <SelectItem value="physical" className="text-xs">Sản phẩm vật lý (Giao hàng tận nơi)</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+
+                                        <div className="space-y-1">
+                                            <Label className="text-xs font-medium text-muted-foreground">Địa chỉ / Phương thức bàn giao</Label>
+                                            <Input
+                                                name="delivery_address"
+                                                value={customerInfo.delivery_address}
+                                                onChange={(e) => {
+                                                    setCustomerInfo(prev => ({ ...prev, delivery_address: e.target.value }))
+                                                    setInfoChanged(true)
+                                                }}
+                                                className="h-8 text-xs"
+                                                placeholder="Địa chỉ giao hàng hoặc phương thức bàn giao"
+                                            />
+                                        </div>
+
+                                        <div className="space-y-1">
+                                            <Label className="text-xs font-medium text-muted-foreground">Địa chỉ trụ sở</Label>
+                                            <div className="relative">
+                                                <MapPin className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                                                <Input
+                                                    name="customer_address"
+                                                    value={customerInfo.customer_address}
+                                                    onChange={handleInfoChange}
+                                                    className="pl-8 h-8 text-xs"
+                                                    placeholder="Địa chỉ đăng ký kinh doanh"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-1">
+                                            <Label className="text-xs font-medium text-muted-foreground">Địa chỉ xuất hóa đơn (nếu khác)</Label>
+                                            <div className="relative">
+                                                <FileText className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground opacity-50" />
+                                                <Input
+                                                    name="customer_invoice_address"
+                                                    value={customerInfo.customer_invoice_address}
+                                                    onChange={handleInfoChange}
+                                                    className="pl-8 h-8 text-xs"
+                                                    placeholder="Bỏ trống nếu trùng địa chỉ trụ sở"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <Button
+                                        size="sm"
+                                        variant={infoChanged ? "default" : "outline"}
+                                        onClick={handleSaveCustomerInfo}
+                                        disabled={savingInfo || !infoChanged}
+                                        className="w-full mt-2"
+                                    >
+                                        {savingInfo ? (
+                                            <><LoadingSpinner size="sm" className="mr-2" /> Đang lưu...</>
+                                        ) : infoChanged ? (
+                                            <><Save className="mr-2 h-3.5 w-3.5" /> Lưu thông tin khách hàng</>
+                                        ) : (
+                                            <><Check className="mr-2 h-3.5 w-3.5" /> Đã lưu</>
+                                        )}
+                                    </Button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="rounded-lg border border-dashed bg-muted/30 p-3 text-center">
+                                <p className="text-[11px] text-muted-foreground">Dữ liệu giấy tờ Cộng tác viên được đồng bộ tự động.</p>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* RIGHT COLUMN: Document list */}
+                    <div className="space-y-2">
+                        {docItems.map((item, idx) => {
+                            const isActive = loading === item.key
+                            const isGenerated = item.fromDb
+                            const isSigned = item.docStatus === 'signed'
+
+                            return (
+                                <div
+                                    key={item.key}
+                                    className={`group flex items-center gap-2 rounded-lg border px-3 py-2 transition-colors hover:bg-muted/50 ${isSigned ? 'bg-zinc-50 border-zinc-200 dark:bg-zinc-900/10 dark:border-zinc-800' : ''}`}
+                                >
+                                    {isGenerated ? (
+                                        <button
+                                            onClick={() => handleToggleStatus(item)}
+                                            className="shrink-0 focus:outline-none"
+                                            title={isSigned ? 'Đã hoàn thành — bấm để chuyển về nháp' : 'Bấm để đánh dấu hoàn thành'}
+                                        >
+                                            {isSigned
+                                                ? <CircleCheck className="h-5 w-5 text-zinc-900 dark:text-zinc-100" />
+                                                : <Circle className="h-5 w-5 text-zinc-300 hover:text-muted-foreground transition-colors" />
+                                            }
+                                        </button>
+                                    ) : (
+                                        <item.icon className="h-4 w-4 text-muted-foreground shrink-0" />
+                                    )}
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-1.5">
+                                            <p className={`text-sm font-medium truncate ${isSigned ? 'text-zinc-900 dark:text-zinc-100' : ''}`}>{item.label}</p>
+                                            {isSigned && (
+                                                <Badge variant="outline" className="text-[10px] leading-none px-1.5 py-0.5 text-zinc-800 border-zinc-200 bg-zinc-50 dark:text-zinc-200 dark:border-zinc-800 dark:bg-zinc-800 shrink-0">
+                                                    Xong
+                                                </Badge>
+                                            )}
+                                        </div>
+                                        <p className="text-[11px] text-muted-foreground truncate">{item.description}</p>
+                                    </div>
+                                    <div className="flex items-center gap-1 shrink-0">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-8 w-8"
+                                            onClick={() => handlePreviewDoc(item)}
+                                            disabled={isActive}
+                                            title="Xem bản xem trước"
+                                        >
+                                            {isActive ? <LoadingSpinner size="sm" /> : <ExternalLink className="h-4 w-4" />}
+                                        </Button>
+                                        {isGenerated && (
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-8 w-8"
+                                                onClick={() => handleToggleVisibility(item)}
+                                                disabled={isActive}
+                                                title={item.isVisible ? "Đang hiện trên Portal — bấm để ẩn" : "Đang ẩn — bấm để hiện trên Portal"}
+                                            >
+                                                {item.isVisible ? <Eye className="h-4 w-4 text-zinc-600 dark:text-zinc-400" /> : <EyeOff className="h-4 w-4 text-muted-foreground" />}
+                                            </Button>
+                                        )}
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-8 w-8"
+                                            onClick={() => handlePrintDoc(item)}
+                                            disabled={isActive}
+                                            title="In"
+                                        >
+                                            <Printer className="h-4 w-4" />
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-8 w-8"
+                                            onClick={() => handleDownloadDoc(item)}
+                                            disabled={isActive}
+                                            title="Tải xuống"
+                                        >
+                                            <Download className="h-4 w-4" />
+                                        </Button>
+                                        {isGenerated && !isSigned && (
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
+                                                onClick={() => { setDeleteTargetItem(item); setShowDeleteDialog(true) }}
+                                                disabled={isActive}
+                                                title="Xóa giấy tờ này"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
                                         )}
                                     </div>
-                                    <div className="space-y-1">
-                                        <Label className="text-[10px] text-muted-foreground">Chức vụ</Label>
-                                        <Input
-                                            name="customer_position"
-                                            value={customerInfo.customer_position}
-                                            onChange={handleInfoChange}
-                                            className="h-8 text-xs"
-                                            placeholder="Giám đốc..."
-                                        />
-                                    </div>
                                 </div>
-
-                                <div className="grid grid-cols-2 gap-2">
-                                    <div className="space-y-1">
-                                        <Label className="text-[10px] text-muted-foreground">Email</Label>
-                                        <div className="relative">
-                                            <Mail className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                                            <Input
-                                                name="customer_email"
-                                                value={customerInfo.customer_email}
-                                                onChange={handleInfoChange}
-                                                className="pl-8 h-8 text-xs"
-                                                placeholder="email@..."
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <Label className="text-[10px] text-muted-foreground">SĐT</Label>
-                                        <div className="relative">
-                                            <Phone className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                                            <Input
-                                                name="customer_phone"
-                                                value={customerInfo.customer_phone}
-                                                onChange={handleInfoChange}
-                                                className="pl-8 h-8 text-xs"
-                                                placeholder="0xxx..."
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <Label className="text-[10px] text-muted-foreground">MST</Label>
-                                    <Input
-                                        name="customer_tax_code"
-                                        value={customerInfo.customer_tax_code}
-                                        onChange={handleInfoChange}
-                                        className="h-8 text-xs"
-                                        placeholder="Mã số thuế"
-                                    />
-                                </div>
-
-                                <div className="space-y-1">
-                                    <Label className="text-[10px] text-muted-foreground">Hình thức bàn giao</Label>
-                                    <Select
-                                        value={customerInfo.delivery_method}
-                                        onValueChange={(val) => {
-                                            setCustomerInfo(prev => {
-                                                const updated = { ...prev, delivery_method: val }
-                                                if (val === 'digital' && (prev.delivery_address === '' || prev.delivery_address === (snapshot?.address || cust?.address || ''))) {
-                                                    updated.delivery_address = 'Bản mềm qua Internet (Email/Cloud/Drive)'
-                                                } else if (val === 'physical' && (prev.delivery_address === '' || prev.delivery_address === 'Bản mềm qua Internet (Email/Cloud/Drive)')) {
-                                                    updated.delivery_address = snapshot?.address || cust?.address || ''
-                                                }
-                                                return updated
-                                            })
-                                            setInfoChanged(true)
-                                        }}
-                                    >
-                                        <SelectTrigger className="w-full h-8 text-xs font-medium">
-                                            <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="digital" className="text-xs">Sản phẩm kỹ thuật số (Bản mềm)</SelectItem>
-                                            <SelectItem value="physical" className="text-xs">Sản phẩm vật lý (Giao hàng tận nơi)</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <Label className="text-[10px] text-muted-foreground">Địa chỉ / Phương thức bàn giao</Label>
-                                    <Input
-                                        name="delivery_address"
-                                        value={customerInfo.delivery_address}
-                                        onChange={(e) => {
-                                            setCustomerInfo(prev => ({ ...prev, delivery_address: e.target.value }))
-                                            setInfoChanged(true)
-                                        }}
-                                        className="h-8 text-xs"
-                                        placeholder="Địa chỉ giao hàng hoặc phương thức bàn giao"
-                                    />
-                                </div>
-
-                                <div className="space-y-1">
-                                    <Label className="text-[10px] text-muted-foreground">Địa chỉ trụ sở</Label>
-                                    <div className="relative">
-                                        <MapPin className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                                        <Input
-                                            name="customer_address"
-                                            value={customerInfo.customer_address}
-                                            onChange={handleInfoChange}
-                                            className="pl-8 h-8 text-xs"
-                                            placeholder="Địa chỉ đăng ký kinh doanh"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <Label className="text-[10px] text-muted-foreground">Địa chỉ xuất hóa đơn (nếu khác)</Label>
-                                    <div className="relative">
-                                        <FileText className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground opacity-50" />
-                                        <Input
-                                            name="customer_invoice_address"
-                                            value={customerInfo.customer_invoice_address}
-                                            onChange={handleInfoChange}
-                                            className="pl-8 h-8 text-xs"
-                                            placeholder="Bỏ trống nếu trùng địa chỉ trụ sở"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                                <Button
-                                    size="sm"
-                                    variant={infoChanged ? "default" : "outline"}
-                                    onClick={handleSaveCustomerInfo}
-                                    disabled={savingInfo || !infoChanged}
-                                    className="w-full mt-2"
-                                >
-                                    {savingInfo ? (
-                                        <><LoadingSpinner size="sm" className="mr-2" /> Đang lưu...</>
-                                    ) : infoChanged ? (
-                                        <><Save className="mr-2 h-3.5 w-3.5" /> Lưu thông tin khách hàng</>
-                                    ) : (
-                                        <><Check className="mr-2 h-3.5 w-3.5" /> Đã lưu</>
-                                    )}
-                                </Button>
-                        </div>
-                    )}
-                </div>
-                ) : (
-                    <div className="rounded-lg border border-dashed bg-muted/30 p-3 text-center">
-                        <p className="text-[11px] text-muted-foreground">Dữ liệu giấy tờ Cộng tác viên được đồng bộ tự động.</p>
+                            )
+                        })}
                     </div>
-                )}
-
-                {/* Document list */}
-                <div className="space-y-2">
-                {docItems.map((item, idx) => {
-                    const isActive = loading === item.key
-                    const isGenerated = item.fromDb
-                    const isSigned = item.docStatus === 'signed'
-
-                    return (
-                        <div
-                            key={item.key}
-                            className={`group flex items-center gap-2 rounded-lg border px-3 py-2 transition-colors hover:bg-muted/50 ${isSigned ? 'bg-zinc-50 border-zinc-200 dark:bg-zinc-900/10 dark:border-zinc-800' : ''}`}
-                        >
-                            {isGenerated ? (
-                                <button
-                                    onClick={() => handleToggleStatus(item)}
-                                    className="shrink-0 focus:outline-none"
-                                    title={isSigned ? 'Đã hoàn thành — bấm để chuyển về nháp' : 'Bấm để đánh dấu hoàn thành'}
-                                >
-                                    {isSigned
-                                        ? <CircleCheck className="h-5 w-5 text-zinc-900 dark:text-zinc-100" />
-                                        : <Circle className="h-5 w-5 text-zinc-300 hover:text-muted-foreground transition-colors" />
-                                    }
-                                </button>
-                            ) : (
-                                <item.icon className="h-4 w-4 text-muted-foreground shrink-0" />
-                            )}
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-1.5">
-                                    <p className={`text-sm font-medium truncate ${isSigned ? 'text-zinc-900 dark:text-zinc-100' : ''}`}>{item.label}</p>
-                                    {isSigned && (
-                                        <Badge variant="outline" className="text-[10px] leading-none px-1.5 py-0.5 text-zinc-800 border-zinc-200 bg-zinc-50 dark:text-zinc-200 dark:border-zinc-800 dark:bg-zinc-800 shrink-0">
-                                            Xong
-                                        </Badge>
-                                    )}
-                                </div>
-                                <p className="text-[11px] text-muted-foreground truncate">{item.description}</p>
-                            </div>
-                            <div className="flex items-center gap-1 shrink-0">
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={() => handlePreviewDoc(item)}
-                                    disabled={isActive}
-                                    title="Xem bản xem trước"
-                                >
-                                    {isActive ? <LoadingSpinner size="sm" /> : <ExternalLink className="h-4 w-4" />}
-                                </Button>
-                                {isGenerated && (
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-8 w-8"
-                                        onClick={() => handleToggleVisibility(item)}
-                                        disabled={isActive}
-                                        title={item.isVisible ? "Đang hiện trên Portal — bấm để ẩn" : "Đang ẩn — bấm để hiện trên Portal"}
-                                    >
-                                        {item.isVisible ? <Eye className="h-4 w-4 text-zinc-600 dark:text-zinc-400" /> : <EyeOff className="h-4 w-4 text-muted-foreground" />}
-                                    </Button>
-                                )}
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={() => handlePrintDoc(item)}
-                                    disabled={isActive}
-                                    title="In"
-                                >
-                                    <Printer className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={() => handleDownloadDoc(item)}
-                                    disabled={isActive}
-                                    title="Tải xuống"
-                                >
-                                    <Download className="h-4 w-4" />
-                                </Button>
-                                {isGenerated && !isSigned && (
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
-                                        onClick={() => { setDeleteTargetItem(item); setShowDeleteDialog(true) }}
-                                        disabled={isActive}
-                                        title="Xóa giấy tờ này"
-                                    >
-                                        <Trash2 className="h-4 w-4" />
-                                    </Button>
-                                )}
-                            </div>
-                        </div>
-                    )
-                })}
                 </div>
-
-
             </CardContent>
 
             <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>

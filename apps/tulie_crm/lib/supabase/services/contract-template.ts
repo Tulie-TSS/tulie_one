@@ -217,11 +217,11 @@ export const contractSoftwareTemplate = `
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
         <strong>Phương thức thanh toán:</strong><br>
         Bên A thanh toán cho Bên B bằng chuyển khoản vào tài khoản ngân hàng sau:<br>
-        <div style="margin-left: 20px; margin-top: 4px; line-height: 1.6;">
-          - Tên tài khoản: <strong>CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</strong><br>
-          - Số tài khoản: <strong>86683979</strong><br>
-          - Ngân hàng: <strong>TMCP Kỹ Thương Việt Nam (Techcombank) – Trung tâm giao dịch Hội Sở</strong>
-        </div>
+        <table style="margin-left:10px; margin-top:4px; border-collapse:collapse; line-height:1.6; font-size:inherit;">
+          <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Tên tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</strong></td></tr>
+          <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Số tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>86683979</strong></td></tr>
+          <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Ngân hàng:</td><td style="padding:1px 0 1px 6px;"><strong>TMCP Kỹ Thương Việt Nam (Techcombank) – Trung tâm giao dịch Hội Sở</strong></td></tr>
+        </table>
         Ngày thanh toán được xác định là ngày tiền được ghi Có vào tài khoản của Bên B.
       </td>
     </tr>
@@ -244,7 +244,7 @@ export const contractSoftwareTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Tổng thời gian thực hiện dự kiến:</strong> {{delivery_time}} ngày làm việc, được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày hoàn thành dự kiến:</strong> {{end_date}}. Lộ trình chi tiết được quy định tại Phụ lục 01. Ngày hoàn thành dự kiến, ngày nghiệm thu/bàn giao dự kiến và các mốc liên quan được tự động điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán, hoặc khi phát sinh thay đổi phạm vi theo Điều 6. Thời gian gia hạn theo văn bản của hai bên không bị tính là chậm tiến độ của Bên B.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thời hạn thực hiện dự kiến:</strong> {{delivery_time}} ngày theo lịch (tính cả ngày bắt đầu và ngày kết thúc), được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày hoàn thành dự kiến:</strong> {{end_date}}. Lộ trình chi tiết được quy định tại Phụ lục 01. Ngày hoàn thành dự kiến, ngày nghiệm thu/bàn giao dự kiến và các mốc liên quan được tự động điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán, hoặc khi phát sinh thay đổi phạm vi theo Điều 6. Thời gian gia hạn theo văn bản của hai bên không bị tính là chậm tiến độ của Bên B.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td>
@@ -549,7 +549,7 @@ export const contractSoftwareTemplate = `
 
   <!-- ========== PHỤ LỤC 01: PHẠM VI CÔNG VIỆC, BẢNG GIÁ & LỘ TRÌNH ========== -->
   <div style="page-break-before: always;"></div>
-  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai</p>
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 0 0 6px 0;">Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai</p>
   <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Đính kèm {{contract_type}} số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
 
   <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">I. DANH MỤC SẢN PHẨM, DỊCH VỤ VÀ BÁO GIÁ CHI TIẾT</p>
@@ -592,7 +592,7 @@ export const contractSoftwareTemplate = `
   </table>
 
   {{proposal_appendix_content_html}}
-  <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">III. CAM KẾT</p>
+  <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">II. CAM KẾT</p>
   <p style="margin: 0 0 15px 0;">Phụ lục này là một phần không tách rời của Hợp đồng số {{contract_number}}. Các điều khoản khác của Hợp đồng không được sửa đổi trong Phụ lục này vẫn giữ nguyên hiệu lực.</p>
 
   <!-- Signatures -->
@@ -799,11 +799,11 @@ export const contractDesignTemplate = `
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
         <strong>Phương thức thanh toán:</strong><br>
         Bên A thanh toán cho Bên B bằng chuyển khoản vào tài khoản ngân hàng sau:<br>
-        <div style="margin-left: 20px; margin-top: 4px; line-height: 1.6;">
-          - Tên tài khoản: <strong>CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</strong><br>
-          - Số tài khoản: <strong>86683979</strong><br>
-          - Ngân hàng: <strong>TMCP Kỹ Thương Việt Nam (Techcombank) – Trung tâm giao dịch Hội Sở</strong>
-        </div>
+        <table style="margin-left:10px; margin-top:4px; border-collapse:collapse; line-height:1.6; font-size:inherit;">
+          <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Tên tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</strong></td></tr>
+          <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Số tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>86683979</strong></td></tr>
+          <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Ngân hàng:</td><td style="padding:1px 0 1px 6px;"><strong>TMCP Kỹ Thương Việt Nam (Techcombank) – Trung tâm giao dịch Hội Sở</strong></td></tr>
+        </table>
         Ngày thanh toán được xác định là ngày tiền được ghi Có vào tài khoản của Bên B.
       </td>
     </tr>
@@ -842,7 +842,7 @@ export const contractDesignTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.5.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Tổng thời gian thực hiện dự kiến:</strong> {{delivery_time}} ngày làm việc, được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày hoàn thành dự kiến:</strong> {{end_date}}. Ngày hoàn thành dự kiến được điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán.{{timeline_appendix_ref}}</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thời hạn thực hiện dự kiến:</strong> {{delivery_time}} ngày theo lịch (tính cả ngày bắt đầu và ngày kết thúc), được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày hoàn thành dự kiến:</strong> {{end_date}}. Ngày hoàn thành dự kiến được điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán.{{timeline_appendix_ref}}</td>
     </tr>
   </table>
 
@@ -1137,7 +1137,7 @@ export const contractDesignTemplate = `
 
   <!-- ========== PHỤ LỤC 01: PHẠM VI CÔNG VIỆC, BẢNG GIÁ & LỘ TRÌNH ========== -->
   <div style="page-break-before: always;"></div>
-  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 10px 0;">Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai</p>
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 0 0 6px 0;">Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai</p>
   <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Đính kèm {{contract_type}} số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
 
   <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">I. DANH MỤC SẢN PHẨM, DỊCH VỤ VÀ IN ẤN CHI TIẾT</p>
@@ -1180,7 +1180,7 @@ export const contractDesignTemplate = `
   </table>
 
   {{proposal_appendix_content_html}}
-  <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">III. CAM KẾT</p>
+  <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">II. CAM KẾT</p>
   <p style="margin: 0 0 15px 0;">Phụ lục này là một phần không tách rời của Hợp đồng số {{contract_number}}. Các điều khoản về chất lượng, nghiệm thu, thanh toán, phạt vi phạm, bảo mật, sở hữu trí tuệ, giải quyết tranh chấp... được áp dụng theo Hợp đồng chính.</p>
 
   <!-- Signatures -->

@@ -129,12 +129,6 @@ export function ContractCellAction({ data, from }: ContractCellActionProps) {
                         Nhân bản hợp đồng
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                        <Link href={`/invoices/new?contract=${data.id}`}>
-                            <Receipt className="h-4 w-4" />
-                            Tạo hóa đơn
-                        </Link>
-                    </DropdownMenuItem>
                     <DropdownMenuItem>
                         <FileText className="h-4 w-4" />
                         In hợp đồng

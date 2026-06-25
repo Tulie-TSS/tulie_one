@@ -651,7 +651,7 @@ export default function SettingsPage() {
                     {/* Company Settings */}
                     <TabsContent value="company">
                         <Card className="rounded-md border-border overflow-hidden">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Thông tin công ty</CardTitle>
                                 <CardDescription>
                                     Cập nhật thông tin hiển thị trên báo giá và hóa đơn
@@ -773,7 +773,7 @@ export default function SettingsPage() {
                     {/* Categories Settings */}
                     <TabsContent value="categories">
                         <Card className="rounded-md border-border overflow-hidden">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Danh mục sản phẩm</CardTitle>
                                 <CardDescription>
                                     Quản lý các nhóm sản phẩm và dịch vụ của bạn
@@ -825,7 +825,7 @@ export default function SettingsPage() {
                     {/* Units Settings */}
                     <TabsContent value="units">
                         <Card className="rounded-md border-border overflow-hidden">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Đơn vị tính (ĐVT)</CardTitle>
                                 <CardDescription>
                                     Quản lý các đơn vị tính cho sản phẩm và dịch vụ
@@ -877,7 +877,7 @@ export default function SettingsPage() {
                     {/* Brands Settings (New) */}
                     <TabsContent value="brands">
                         <Card className="rounded-md border-border overflow-hidden">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Danh mục Thương hiệu</CardTitle>
                                 <CardDescription>
                                     Quản lý các thương hiệu con của hệ thống (Tulie Agency, Tulie Studio...)
@@ -930,7 +930,7 @@ export default function SettingsPage() {
                     <TabsContent value="statuses">
                         <div className="grid gap-6">
                             <Card className="rounded-md border-border overflow-hidden">
-                                <CardHeader className="bg-muted/30 border-b border-border">
+                                <CardHeader className="border-b border-border">
                                     <CardTitle>Trạng thái Khách hàng</CardTitle>
                                     <CardDescription>Các giai đoạn trong phễu bán hàng Agency</CardDescription>
                                 </CardHeader>
@@ -950,7 +950,7 @@ export default function SettingsPage() {
                             </Card>
 
                             <Card className="rounded-md border-border overflow-hidden">
-                                <CardHeader className="bg-muted/30 border-b border-border">
+                                <CardHeader className="border-b border-border">
                                     <CardTitle>Trạng thái Báo giá</CardTitle>
                                     <CardDescription>Quy trình phê duyệt báo giá từ Agency</CardDescription>
                                 </CardHeader>
@@ -974,7 +974,7 @@ export default function SettingsPage() {
                     {/* Telegram Settings */}
                     <TabsContent value="telegram">
                         <Card className="rounded-md border-border overflow-hidden">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Cấu hình Telegram Bot</CardTitle>
                                 <CardDescription>
                                     Tích hợp thông báo đơn hàng và thanh toán trực tiếp qua Telegram.
@@ -1083,7 +1083,7 @@ export default function SettingsPage() {
                     {/* Payment Gateway Settings */}
                     <TabsContent value="payment-gateway">
                         <Card className="rounded-md border-border overflow-hidden">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Cổng thanh toán</CardTitle>
                                 <CardDescription>
                                     Cấu hình SePay API và Webhook để tự động đối soát thanh toán.
@@ -1189,7 +1189,7 @@ export default function SettingsPage() {
                     {/* Academy Integration Settings */}
                     <TabsContent value="academy">
                         <Card className="rounded-md border-border overflow-hidden">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Tulie Academy</CardTitle>
                                 <CardDescription>
                                     Cấu hình Webhook kết nối hệ thống học tập với CRM.
@@ -1239,7 +1239,7 @@ export default function SettingsPage() {
                     {/* Email SMTP Settings */}
                     <TabsContent value="mail">
                         <Card className="rounded-md border-border overflow-hidden">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Email SMTP</CardTitle>
                                 <CardDescription>Cấu hình máy chủ gửi email cho khách hàng.</CardDescription>
                             </CardHeader>
@@ -1332,7 +1332,7 @@ export default function SettingsPage() {
                     {/* Notification Settings */}
                     <TabsContent value="notifications">
                         <Card className="rounded-md border-border overflow-hidden">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Cài đặt thông báo</CardTitle>
                                 <CardDescription>
                                     Quản lý cách bạn nhận thông báo từ hệ thống
@@ -1382,7 +1382,7 @@ export default function SettingsPage() {
                     {/* Appearance Settings */}
                     <TabsContent value="appearance">
                         <Card className="rounded-md border-border overflow-hidden">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Giao diện</CardTitle>
                                 <CardDescription>
                                     Tùy chỉnh giao diện hiển thị của ứng dụng
@@ -1424,7 +1424,7 @@ export default function SettingsPage() {
                     {/* Security Settings */}
                     <TabsContent value="security">
                         <Card className="rounded-md border-border overflow-hidden">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Bảo mật</CardTitle>
                                 <CardDescription>
                                     Quản lý mật khẩu và bảo mật tài khoản
@@ -1456,7 +1456,7 @@ export default function SettingsPage() {
                     {/* Data Settings */}
                     <TabsContent value="data">
                         <Card className="rounded-md border-border overflow-hidden">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Quản lý dữ liệu</CardTitle>
                                 <CardDescription>
                                     Xuất và nhập dữ liệu hệ thống linh hoạt
@@ -1494,7 +1494,7 @@ export default function SettingsPage() {
                     {/* Bundles Settings */}
                     <TabsContent value="bundles">
                         <Card className="rounded-md border-border overflow-hidden">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Bộ chứng từ (Document Bundles)</CardTitle>
                                 <CardDescription>
                                     Thiết lập các nhóm mẫu giấy tờ để tự động hóa quy trình hợp đồng & báo giá.
@@ -1570,7 +1570,7 @@ export default function SettingsPage() {
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {bundles.map(bundle => (
                                             <Card key={bundle.id} className="overflow-hidden border-border rounded-md group hover:border-zinc-900/40 hover: transition-all duration-300">
-                                                <CardHeader className="p-5 bg-muted/30 border-b border-border flex flex-row items-center justify-between space-y-0">
+                                                <CardHeader className="p-5 border-b border-border flex flex-row items-center justify-between space-y-0">
                                                     <div>
                                                         <CardTitle className="text-base text-foreground">{bundle.name}</CardTitle>
                                                         {bundle.description && <CardDescription className="text-xs font-medium mt-0.5 line-clamp-1">{bundle.description}</CardDescription>}
@@ -1615,7 +1615,7 @@ export default function SettingsPage() {
                         <div className="space-y-6">
                             {/* Tài khoản công ty */}
                             <Card className="rounded-md border-border">
-                                <CardHeader className="bg-muted/30 border-b border-border">
+                                <CardHeader className="border-b border-border">
                                 <CardTitle>Tài khoản công ty</CardTitle>
                                 <CardDescription>Hiển thị khi tạo báo giá B2B (Agency)</CardDescription>
                             </CardHeader>
@@ -1736,7 +1736,7 @@ export default function SettingsPage() {
 
                             {/* Tài khoản cá nhân */}
                             <Card className="rounded-md border-border">
-                                <CardHeader className="bg-muted/30 border-b border-border">
+                                <CardHeader className="border-b border-border">
                                 <CardTitle>Tài khoản cá nhân</CardTitle>
                                 <CardDescription>Hiển thị ở Studio B2C và cũng dùng được cho Agency B2B</CardDescription>
                             </CardHeader>
@@ -1868,7 +1868,7 @@ export default function SettingsPage() {
 
                     <TabsContent value="note-templates">
                         <Card className="rounded-md border-border">
-                            <CardHeader className="bg-muted/30 border-b border-border">
+                            <CardHeader className="border-b border-border">
                                 <CardTitle>Mẫu Ghi chú & Điều khoản</CardTitle>
                                 <CardDescription>Cấu hình các mẫu văn bản cho từng loại dịch vụ để chọn nhanh khi tạo báo giá.</CardDescription>
                             </CardHeader>

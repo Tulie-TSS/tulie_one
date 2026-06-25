@@ -22,21 +22,13 @@ import {
     FileText,
     FilePenLine,
     Banknote,
-
-    UserCheck,
+    Wallet,
     PieChart,
+    Receipt,
     Settings,
     Files,
-    TrendingUp,
     Rocket,
     Camera,
-    Contact,
-    Headphones,
-    ExternalLink,
-    DollarSign,
-    Briefcase,
-    Bot,
-    Handshake,
     UserRound
 } from 'lucide-react'
 
@@ -45,16 +37,11 @@ const navGroups = [
     {
         title: 'Tulie Agency',
         items: [
-            { title: 'Khách hàng tiềm năng', href: '/leads', icon: Contact },
-            { title: 'Leads & Cơ hội', href: '/deals', icon: TrendingUp },
             { title: 'Khách hàng', href: '/customers', icon: Users },
             { title: 'Báo giá', href: '/quotations', icon: FileText },
             { title: 'Portal Báo giá', href: '/quotations/portals', icon: LayoutGrid },
             { title: 'Hợp đồng', href: '/contracts', icon: FilePenLine },
-            { title: 'Hợp đồng Cộng tác viên', href: '/contracts/ctv', icon: UserRound },
-            { title: 'Dự án', href: '/projects', icon: Rocket },
-
-            { title: 'Helpdesk', href: '/helpdesk', icon: Headphones },
+            { title: 'Cộng tác & Khoán việc', href: '/contracts/ctv', icon: UserRound },
         ]
     },
     {
@@ -62,16 +49,20 @@ const navGroups = [
         items: [
             { title: 'Đơn hàng Studio', href: '/studio', icon: Camera },
             { title: 'Khách hàng Studio', href: '/studio/customers', icon: Users },
-            { title: 'Cấu hình Sự kiện', href: '/studio/events', icon: ExternalLink },
+        ]
+    },
+    {
+        title: 'Tài chính',
+        items: [
+            { title: 'Báo cáo P&L', href: '/finance', icon: PieChart },
+            { title: 'Chi phí', href: '/finance/expenses', icon: Receipt },
+            { title: 'Dòng tiền', href: '/finance/cashflow', icon: Wallet },
         ]
     },
     {
         title: 'Hệ thống',
         items: [
-            { title: 'Nhân sự', href: '/team', icon: UserCheck },
-            { title: 'Đối tác (CTV)', href: '/team/partners', icon: Handshake },
             { title: 'Mẫu giấy tờ', href: '/templates', icon: Files },
-            { title: 'Báo cáo', href: '/reports', icon: PieChart },
             { title: 'Cài đặt', href: '/settings', icon: Settings },
         ]
     }
@@ -92,12 +83,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild onClick={handleLinkClick}>
                             <Link href="/dashboard">
-                                <div className="flex aspect-square size-8 items-center justify-center">
-                                    <img src="/logo-icon.png" alt="Tulie" className="size-8 object-contain" />
+                                <div className="flex aspect-square size-8 items-center justify-center overflow-hidden shrink-0">
+                                    <img src="/logo.png" alt="Tulie Logo" className="size-8 object-contain" />
                                 </div>
-                                <div className="grid flex-1 text-left text-sm leading-tight">
-                                    <span className="truncate font-semibold">Tulie CRM</span>
-                                    <span className="truncate text-xs">Agency Edition</span>
+                                <div className="grid flex-1 text-left leading-tight ml-0.5">
+                                    <span className="truncate font-bold text-[15px] tracking-tight text-foreground">Tulie CRM</span>
                                 </div>
                             </Link>
                         </SidebarMenuButton>
@@ -127,11 +117,13 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                                 {group.items.map((item) => {
                                     // exactMatch: true for routes that have sub-routes we don't want to activate
                                     // e.g. /contracts should NOT be active when on /contracts/ctv
-                                    const EXACT_MATCH_ROUTES = ['/contracts', '/studio']
+                                    const EXACT_MATCH_ROUTES = ['/contracts', '/studio', '/finance']
                                     const useExact = EXACT_MATCH_ROUTES.includes(item.href)
                                     const isActive = useExact
                                         ? pathname === item.href
-                                        : pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href + '/'))
+                                        : item.href === '/quotations'
+                                            ? pathname === '/quotations' || (pathname.startsWith('/quotations/') && !pathname.startsWith('/quotations/portals'))
+                                            : pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href + '/'))
                                     return (
                                         <SidebarMenuItem key={item.title}>
                                             <SidebarMenuButton asChild isActive={isActive} tooltip={item.title} onClick={handleLinkClick}>
@@ -148,28 +140,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                     </SidebarGroup>
                 ))}
 
-                <SidebarGroup>
-                    <SidebarGroupLabel>Ứng dụng khác</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            {[
-                                { title: 'ERP - Tài chính', href: 'https://erp.tulie.app', icon: DollarSign, color: 'text-foreground' },
-                                { title: 'Workspace', href: 'https://workspace.tulie.app', icon: Briefcase, color: 'text-foreground' },
-                                { title: 'Workforce - AI', href: 'https://ai.tulie.app', icon: Bot, color: 'text-foreground' },
-                            ].map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild tooltip={item.title}>
-                                        <a href={item.href} target="_blank" rel="noopener">
-                                            <item.icon className={item.color} />
-                                            <span>{item.title}</span>
-                                            <ExternalLink className="ml-auto w-4 h-4 opacity-50" />
-                                        </a>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
             </SidebarContent>
             
             <SidebarRail />

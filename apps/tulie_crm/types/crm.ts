@@ -30,6 +30,8 @@ export interface Customer {
   created_by: string
   created_at: string
   updated_at: string
+  quotation_revenue?: number
+  actual_revenue?: number
 }
 
 export interface Contact {

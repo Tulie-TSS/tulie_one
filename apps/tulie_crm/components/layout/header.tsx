@@ -158,13 +158,16 @@ export function Header() {
                 {/* Layout Sidebar Toggle */}
                 <SidebarTrigger className="-ml-1 mr-2" />
 
-                {/* Search - Responsive */}
+                {/* Search - Premium Inset */}
                 <div className="relative group hidden sm:block">
-                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground group-focus-within:text-foreground transition-colors" />
+                    <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/80 group-focus-within:text-primary transition-colors" />
                     <Input
-                        placeholder="Tìm kiếm thông tin..."
-                        className="w-[200px] md:w-[320px] pl-10 bg-muted/50 border-transparent rounded-md focus-visible:bg-white focus-visible:border-border focus-visible:ring-0 transition-all text-sm font-medium"
+                        placeholder="Tìm kiếm..."
+                        className="w-[200px] md:w-[280px] pl-10 pr-9 bg-white/70 border border-border/70 rounded-full focus-visible:bg-white focus-visible:border-primary/40 focus-visible:ring-4 focus-visible:ring-primary/5 transition-all text-xs font-semibold shadow-xs"
                     />
+                    <kbd className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 h-4 select-none items-center gap-1 rounded bg-muted/50 px-1.5 font-mono text-[9px] font-bold text-muted-foreground/80 flex">
+                        /
+                    </kbd>
                 </div>
                 <Button variant="ghost" size="icon" className="sm:hidden">
                     <Search className="h-5 w-5" />
@@ -272,18 +275,17 @@ export function Header() {
                 {/* User Menu */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="flex items-center gap-2 sm:gap-3 px-1.5 sm:px-2 h-11 rounded-md hover:bg-muted transition-all border border-transparent hover:border-border">
-                            <Avatar className="h-8 w-8 ring-2 ring-background">
+                        <Button variant="outline" className="flex items-center gap-2 !pl-[5px] h-9 rounded-full bg-white/70 border border-border/70 hover:border-primary/25 hover:bg-white hover:shadow-xs transition-all pr-3 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.03)] cursor-pointer">
+                            <Avatar className="h-6.5 w-6.5 ring-1 ring-border/50 shrink-0">
                                 <AvatarImage src={user?.avatar} />
-                                <AvatarFallback className="bg-zinc-950 text-white text-[10px]">
+                                <AvatarFallback className="bg-primary text-white text-[9px] font-extrabold">
                                     {user?.name?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'TL'}
                                 </AvatarFallback>
                             </Avatar>
                             <div className="hidden xs:flex flex-col items-start text-left">
-                                <span className="text-sm text-foreground leading-none">{user?.name || 'Đang tải...'}</span>
-                                <span className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1 leading-none">{user?.role || 'Admin'}</span>
+                                <span className="text-xs font-bold text-foreground leading-none">{user?.name || 'Đang tải...'}</span>
                             </div>
-                            <ChevronDown className="h-4 w-4 text-muted-foreground hidden sm:block" />
+                            <ChevronDown className="h-3 w-3 text-muted-foreground hidden sm:block ml-0.5" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-56">

@@ -48,7 +48,7 @@ import {
 } from '@repo/ui'
 import { PriceInput } from '@repo/ui'
 import { Quotation, QuotationItem, Customer, Product } from '@/types'
-import { updateQuotation } from '@/lib/supabase/services/quotation-service'
+import { hasLinkedContract, updateQuotation } from '@/lib/supabase/services/quotation-service'
 import { toast } from 'sonner'
 import { getBankAccounts, getNoteTemplates } from '@/lib/supabase/services/settings-service'
 import {
@@ -61,7 +61,7 @@ import {
 } from "@repo/ui"
 import { ProductCombobox } from '@/components/quotations/product-combobox'
 import { DocumentAttachmentManager, AttachmentItem } from '@/components/quotations/document-attachment-manager'
-import { getDefaultWebsiteContractAppendix } from '@/lib/constants/website-contract-appendix'
+import { getDefaultDesignPrintContractAppendix, getDefaultWebsiteContractAppendix } from '@/lib/constants/website-contract-appendix'
 
 interface QuotationFormProps {
     quotation?: Quotation
@@ -864,7 +864,13 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 vat_percent: item.vat_percent !== undefined ? Number(item.vat_percent) : vatPercent,
             }))
 
-            await updateQuotation(quotation.id, updateData, cleanedItems)
+            const syncLinkedContract = await hasLinkedContract(quotation.id)
+                ? window.confirm(
+                    'Báo giá này đã liên kết với hợp đồng. Lưu thay đổi sẽ ghi đè mốc thanh toán và thời hạn bảo hành trên hợp đồng. Bạn có muốn đồng bộ không?'
+                )
+                : false
+
+            await updateQuotation(quotation.id, updateData, cleanedItems, { syncLinkedContract })
             toast.success('Cập nhật báo giá thành công')
             router.push(`/quotations/${quotation.id}`)
             router.refresh()
@@ -880,18 +886,18 @@ export function QuotationForm({ quotation, customers, products, units, projects,
         <div className="space-y-6">
             {/* Header */}
             {!hideHeader && (
-                <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                        <Button variant="ghost" size="icon" asChild className="rounded-full">
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                        <Button variant="ghost" size="icon" asChild className="rounded-full h-8 w-8">
                             <Link href={quotation ? `/quotations/${quotation.id}` : "/quotations"}>
-                                <ArrowLeft className="h-5 w-5" />
+                                <ArrowLeft className="h-4 w-4" />
                             </Link>
                         </Button>
                         <div>
-                            <h1 className="text-3xl text-foreground">
+                            <h1 className="text-xl font-semibold text-foreground">
                                 {quotation ? `Chỉnh sửa ${quotation.quotation_number}` : "Tạo báo giá mới"}
                             </h1>
-                            <p className="text-[14px] text-muted-foreground mt-1">
+                            <p className="text-[12px] text-muted-foreground">
                                 {quotation ? "Cập nhật dữ liệu & Proposal" : "Khởi tạo hồ sơ báo giá mới"}
                             </p>
                         </div>
@@ -899,16 +905,16 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                 </div>
             )}
 
-            <div className="space-y-8 pb-12">
+            <div className="space-y-4 pb-10">
                 {/* Main Content */}
-                <div className="space-y-6">
+                <div className="space-y-4">
                     {/* Basic Info */}
                     <Card className="overflow-hidden">
-                        <CardHeader className="py-6 px-6">
-                            <CardTitle>Thông tin cơ bản</CardTitle>
+                        <CardHeader className="py-3 px-4 border-b">
+                            <CardTitle className="text-sm">Thông tin cơ bản</CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="grid gap-4 sm:grid-cols-2">
+                        <CardContent className="space-y-3 px-4 py-4">
+                            <div className="grid gap-3 sm:grid-cols-3">
                                 <div className="space-y-2">
                                     <Label>Khách hàng</Label>
                                     <Select value={customerId || ""} onValueChange={setCustomerId}>
@@ -932,100 +938,89 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                         onChange={(e) => setValidityDays(parseInt(e.target.value) || 30)}
                                     />
                                 </div>
-                                <div className="space-y-2">
-                                    <Label>Dự án (Portal Group)</Label>
-                                    <Select value={projectId || "none"} onValueChange={(v) => setProjectId(v === "none" ? "" : v)}>
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Chọn dự án để gộp portal..." />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="none">-- Không thuộc dự án --</SelectItem>
-                                            {projects?.filter(p => !customerId || p.customer_id === customerId).map((p) => (
-                                                <SelectItem key={p.id} value={p.id}>
-                                                    {p.title}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
                             </div>
-                            <div className="space-y-2">
-                                <div className="flex flex-wrap items-center justify-between gap-3">
-                                    <Label>Loại báo giá</Label>
-                                    <Button type="button" variant="outline" size="sm" onClick={() => {
-                                        setType('proposal')
-                                        setProposalContent((current: any) => ({ ...current, sections: getDefaultWebsiteContractAppendix() }))
-                                        toast.success('Đã áp dụng mẫu Phụ lục 01 mặc định cho báo giá website')
-                                    }}>
-                                        <RotateCcw className="h-4 w-4" />
-                                        Khôi phục mẫu Phụ lục website
-                                    </Button>
-                                </div>
+                            <div className="flex flex-wrap items-center gap-2 border rounded-md p-2.5">
+                                <span className="text-[11px] font-medium text-muted-foreground mr-2">Loại:</span>
                                 <RadioGroup
                                     value={type}
                                     onValueChange={(val: any) => setType(val)}
-                                    className="flex items-center space-x-6 h-10"
+                                    className="flex items-center space-x-4 flex-1"
                                 >
-                                    <div className="flex items-center space-x-2">
+                                    <div className="flex items-center space-x-1.5">
                                         <RadioGroupItem value="standard" id="type-standard" />
-                                        <Label htmlFor="type-standard" className="cursor-pointer">Tiêu chuẩn (Excel)</Label>
+                                        <Label htmlFor="type-standard" className="cursor-pointer text-sm">Tiêu chuẩn</Label>
                                     </div>
-                                    <div className="flex items-center space-x-2">
+                                    <div className="flex items-center space-x-1.5">
                                         <RadioGroupItem value="proposal" id="type-proposal" />
-                                        <Label htmlFor="type-proposal" className="cursor-pointer">Hồ sơ đề xuất (Mkt/Dev)</Label>
+                                        <Label htmlFor="type-proposal" className="cursor-pointer text-sm">Hồ sơ đề xuất</Label>
                                     </div>
                                 </RadioGroup>
+                                <Button type="button" variant="ghost" size="sm" className="h-7 text-xs px-2" onClick={() => {
+                                    setType('proposal')
+                                    setProposalContent((current: any) => ({ ...current, sections: getDefaultWebsiteContractAppendix() }))
+                                    toast.success('Đã áp dụng mẫu Phụ lục 01 mặc định cho báo giá website')
+                                }}>
+                                    <RotateCcw className="h-3 w-3 mr-1" />
+                                    Website
+                                </Button>
+                                <Button type="button" variant="ghost" size="sm" className="h-7 text-xs px-2" onClick={() => {
+                                    setType('proposal')
+                                    setProposalContent((current: any) => ({ ...current, sections: getDefaultDesignPrintContractAppendix() }))
+                                    toast.success('Đã áp dụng mẫu Phụ lục thiết kế & in ấn')
+                                }}>
+                                    <RotateCcw className="h-3 w-3 mr-1" />
+                                    Thiết kế
+                                </Button>
                             </div>
-                            <div className="grid gap-4 sm:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label>Tên SP/Dịch vụ hiển thị hợp đồng</Label>
+                            <div className="grid gap-3 sm:grid-cols-3">
+                                <div className="space-y-1.5 sm:col-span-1">
+                                    <Label className="text-xs">Tiêu đề</Label>
+                                    <Input value={title} onChange={(e) => setTitle(e.target.value)} className="h-8 text-sm" />
+                                </div>
+                                <div className="space-y-1.5">
+                                    <Label className="text-xs">Phiên bản (Tuỳ chọn)</Label>
+                                    <Input value={versionName} onChange={(e) => setVersionName(e.target.value)} placeholder="Option 1 - Cơ bản" className="h-8 text-sm" />
+                                </div>
+                                <div className="space-y-1.5">
+                                    <Label className="text-xs">Tên SP/Dịch vụ hiển thị hợp đồng</Label>
                                     <Input
-                                        placeholder="Ví dụ: Thiết kế website"
+                                        placeholder="Thiết kế website"
                                         value={productNameInContract}
                                         onChange={(e) => setProductNameInContract(e.target.value)}
+                                        className="h-8 text-sm"
                                     />
                                 </div>
                             </div>
-                            <div className="grid gap-4 sm:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label>Tiêu đề</Label>
-                                    <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Phiên bản / Phương án (Tuỳ chọn)</Label>
-                                    <Input value={versionName} onChange={(e) => setVersionName(e.target.value)} placeholder="VD: Option 1 - Cơ bản" />
-                                </div>
-                            </div>
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 bg-secondary/10 p-3 rounded-md border border-border mt-2">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 bg-secondary/10 p-2 rounded-md border border-border">
                                 <div className="flex items-center space-x-2">
-                                    <Checkbox 
-                                        id="is-primary" 
-                                        checked={isPrimary} 
-                                        onCheckedChange={(checked) => setIsPrimary(checked as boolean)} 
+                                    <Checkbox
+                                        id="is-primary"
+                                        checked={isPrimary}
+                                        onCheckedChange={(checked) => setIsPrimary(checked as boolean)}
                                     />
                                     <Label htmlFor="is-primary" className="font-semibold cursor-pointer text-sm">Báo giá chính</Label>
                                 </div>
-                                <p className="text-xs text-muted-foreground m-0">Chỉ báo giá chính mới được cộng vào tổng giá trị cơ hội/dòng tiền (Pipeline).</p>
+                                <p className="text-xs text-muted-foreground m-0">Chỉ báo giá chính mới được cộng vào tổng Pipeline.</p>
                             </div>
-                            <div className="space-y-2">
-                                <Label>Mã báo giá</Label>
-                                <Input value={quotationNumber} onChange={(e) => setQuotationNumber(e.target.value)} />
-                                <p className="text-xs text-muted-foreground">Mã báo giá phải là duy nhất. Báo lỗi khi lưu nếu trùng lặp.</p>
+                            <div className="space-y-1.5">
+                                <Label className="text-xs">Mã báo giá</Label>
+                                <Input value={quotationNumber} onChange={(e) => setQuotationNumber(e.target.value)} className="h-8 text-sm" />
+                                <p className="text-[10px] text-muted-foreground">Mã phải duy nhất. Lưu sẽ báo lỗi nếu trùng lặp.</p>
                             </div>
                         </CardContent>
                     </Card>
 
                     {type === 'proposal' && (
                         <Card>
-                            <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-6 py-6">
+                            <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 py-3 border-b">
                                 <div>
-                                    <CardTitle>Phụ lục 01 – Phạm vi công việc & Điều khoản</CardTitle>
-                                    <CardDescription className="mt-1">Nội dung chuẩn cho báo giá website; chỉnh sửa khi có yêu cầu riêng của khách hàng.</CardDescription>
+                                    <CardTitle className="text-sm">Phụ lục 01 – Phạm vi công việc & Điều khoản</CardTitle>
+                                    <CardDescription className="text-[11px] mt-0.5">Nội dung chuẩn cho báo giá website; chỉnh sửa khi có yêu cầu riêng của khách hàng.</CardDescription>
                                 </div>
                                 <div className="flex gap-2">
                                     <Button type="button" variant="outline" size="sm" onClick={handleExportProposalJson}>
                                         <FileJson className="h-4 w-4" />
-                                        <span>Proposal JSON</span>
+                                        <span className="hidden sm:inline">Proposal JSON</span>
                                     </Button>
                                 </div>
                             </CardHeader>
@@ -1172,10 +1167,10 @@ export function QuotationForm({ quotation, customers, products, units, projects,
 
                     {/* Items */}
                     <Card className="overflow-hidden">
-                        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-6 gap-4 py-6">
+                        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 gap-3 py-3 border-b">
                             <div>
-                                <CardTitle>Sản phẩm / Dịch vụ</CardTitle>
-                                <CardDescription className="mt-1">Danh sách hạng mục báo giá được phân loại</CardDescription>
+                                <CardTitle className="text-sm">Sản phẩm / Dịch vụ</CardTitle>
+                                <CardDescription className="text-[11px] mt-0.5">Danh sách hạng mục báo giá được phân loại</CardDescription>
                             </div>
                             <div className="flex gap-2 flex-wrap">
                                 <Button type="button" variant="outline" size="sm" onClick={() => {
@@ -1595,11 +1590,11 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                     </Card>
                 </div>
 
-                <div className="grid gap-6 lg:grid-cols-2">
+                <div className="grid gap-4 lg:grid-cols-2">
                     {/* Terms & Notes */}
                     <Card className="overflow-hidden">
-                        <CardHeader className="py-6 px-6 flex flex-row items-center justify-between space-y-0">
-                            <CardTitle>Điều khoản & Ghi chú</CardTitle>
+                        <CardHeader className="py-3 px-4 border-b flex flex-row items-center justify-between space-y-0">
+                            <CardTitle className="text-sm">Điều khoản & Ghi chú</CardTitle>
                             {availableNotes.length > 0 && (
                                 <Select onValueChange={(val) => {
                                     const t = availableNotes.find(x => x.name === val)
@@ -1635,8 +1630,8 @@ export function QuotationForm({ quotation, customers, products, units, projects,
 
                     {/* Bank Transfer Info */}
                     <Card className="overflow-hidden">
-                        <CardHeader className="py-6 px-6 flex flex-row items-center justify-between space-y-0">
-                            <CardTitle>Thông tin chuyển khoản</CardTitle>
+                        <CardHeader className="py-3 px-4 border-b flex flex-row items-center justify-between space-y-0">
+                            <CardTitle className="text-sm">Thông tin chuyển khoản</CardTitle>
                             {availableBanks.length > 0 && (
                                 <Select onValueChange={(val) => {
                                     const b = availableBanks.find(x => x.account_no === val)
@@ -1717,18 +1712,17 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                     </Card>
                 </div>
 
-                {/* Contract attachment settings (Optional) */}
-                <Card className="overflow-hidden mt-6">
-                    <CardHeader className="py-6 px-6">
-                        <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
-                            <span>Thông tin đính kèm Hợp đồng (Tùy chọn)</span>
-                            <span className="text-xs font-normal text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-full border border-slate-200/50">Tùy chọn</span>
-                        </CardTitle>
-                        <CardDescription>
-                            Các thông tin dưới đây sẽ được sử dụng để tự động điền vào Hợp đồng in/mẫu giấy tờ và tự động thiết lập khi chuyển đổi báo giá thành Hợp đồng chính thức.
+                <Card className="overflow-hidden mt-4">
+                    <CardHeader className="py-3 px-4 border-b">
+                        <div className="flex items-center gap-2">
+                            <CardTitle className="text-sm">Thông tin đính kèm Hợp đồng</CardTitle>
+                            <span className="text-[10px] font-normal text-muted-foreground bg-muted px-2 py-0.5 rounded-full border">Tuỳ chọn</span>
+                        </div>
+                        <CardDescription className="text-[11px] mt-0.5">
+                            Các thông tin dưới đây được sử dụng để tự động điền vào Hợp đồng in/mẫu giấy tờ và thiết lập khi chuyển đổi báo giá thành Hợp đồng chính thức.
                         </CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-6">
+                    <CardContent className="space-y-4 px-4 py-4">
                         <div className="grid gap-6 md:grid-cols-2">
                             {/* Delivery time */}
                             <div className="space-y-2">

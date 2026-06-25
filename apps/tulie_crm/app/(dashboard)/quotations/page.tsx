@@ -16,7 +16,7 @@ export default async function QuotationsPage() {
     const quotations = await getQuotations()
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-4">
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">

@@ -8,8 +8,8 @@ import { Plus, Users, UserRound } from 'lucide-react'
 import Link from 'next/link'
 
 export const metadata = {
-    title: 'Hợp đồng Cộng tác viên | Tulie CRM',
-    description: 'Quản lý hợp đồng freelancer / CTV theo từng cộng tác viên',
+    title: 'Cộng tác & Khoán việc | Tulie CRM',
+    description: 'Quản lý hợp đồng chi trả cho cộng tác viên, freelancer và chuyên gia',
 }
 
 type FreelancerMeta = {
@@ -83,27 +83,27 @@ export default async function CtvContractsPage() {
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center border border-border">
+                    <div className="h-12 w-12 rounded-2xl bg-muted flex items-center justify-center border border-border">
                         <Users className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">Hợp đồng Cộng tác viên</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Cộng tác & Khoán việc</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
-                            {groups.length} CTV · {contracts.length} hợp đồng
+                            {groups.length} nhân sự hợp tác · {contracts.length} hợp đồng
                         </p>
                     </div>
                 </div>
                 <Button asChild>
                     <Link href="/contracts/ctv/new">
                         <Plus className="h-4 w-4" />
-                        Tạo hợp đồng CTV
+                        Tạo mới
                     </Link>
                 </Button>
             </div>
 
             {/* Stats Summary */}
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-                <StatsCard title="Tổng CTV" value={groups.length} />
+                <StatsCard title="Nhân sự hợp tác" value={groups.length} />
                 <StatsCard title="Đang thực hiện" value={activeCount} />
                 <StatsCard title="Tổng giá trị chi trả" value={formatCurrency(totalValue)} />
                 <StatsCard title="Chờ điền thông tin" value={pendingInfo} />
@@ -115,9 +115,9 @@ export default async function CtvContractsPage() {
                     <Card>
                         <CardContent className="py-16 text-center">
                             <UserRound className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
-                            <p className="text-muted-foreground text-sm font-medium">Chưa có hợp đồng cộng tác viên nào.</p>
+                            <p className="text-muted-foreground text-sm font-medium">Chưa có hợp đồng cộng tác hoặc khoán việc nào.</p>
                             <Button asChild size="sm" className="mt-4">
-                                <Link href="/contracts/ctv/new">Tạo hợp đồng CTV đầu tiên</Link>
+                                <Link href="/contracts/ctv/new">Tạo mới</Link>
                             </Button>
                         </CardContent>
                     </Card>
