@@ -10,7 +10,7 @@ export async function getCustomers(type?: 'individual' | 'business') {
         const supabase = await createClient()
         let query = supabase
             .from('customers')
-            .select('*, assigned_user:users!assigned_to(*), quotations(total_amount, status), contracts(total_amount, status), retail_orders(total_amount, paid_amount, payment_status, order_status)')
+            .select('*, assigned_user:users!assigned_to(*), quotations(total_amount, status), contracts(total_amount, status), retail_orders(id, total_amount, paid_amount, payment_status, order_status)')
 
         if (type) {
             query = query.eq('customer_type', type)
@@ -32,7 +32,7 @@ export async function getCustomers(type?: 'individual' | 'business') {
         if (phoneNumbers.length > 0) {
             const { data: phoneOrders } = await supabase
                 .from('retail_orders')
-                .select('customer_phone, total_amount, paid_amount, payment_status, order_status, customer_id')
+                .select('id, customer_phone, total_amount, paid_amount, payment_status, order_status, customer_id')
                 .in('customer_phone', phoneNumbers)
             
             if (phoneOrders) {
@@ -52,13 +52,17 @@ export async function getCustomers(type?: 'individual' | 'business') {
             let actualRevenue = 0
             
             if (customer.customer_type === 'individual') {
-                // Merge orders from FK join and phone matching (deduplicate)
+                // Merge orders from FK join and phone matching (deduplicate by id)
                 const fkOrders = customer.retail_orders || []
                 const phoneMatchedOrders = customer.phone ? (ordersByPhone[customer.phone] || []) : []
                 
-                // Use phone-matched orders as primary (they include all orders for this phone)
-                // FK orders are a subset, so phone-matched is the superset
-                const allOrders = phoneMatchedOrders.length > 0 ? phoneMatchedOrders : fkOrders
+                const mergedOrders = [...fkOrders, ...phoneMatchedOrders]
+                const uniqueOrdersMap = new Map()
+                mergedOrders.forEach(o => {
+                    if (o.id) uniqueOrdersMap.set(o.id, o)
+                })
+                
+                const allOrders = Array.from(uniqueOrdersMap.values())
                 
                 quotationRevenue = allOrders
                     .filter((o: any) => o.order_status !== 'cancelled')
@@ -96,7 +100,7 @@ export async function getCustomerById(id: string) {
         const supabase = await createClient()
         const { data, error } = await supabase
             .from('customers')
-            .select('*, assigned_user:users!assigned_to(*), quotations(total_amount, status), contracts(total_amount, status), retail_orders(total_amount, paid_amount, payment_status, order_status)')
+            .select('*, assigned_user:users!assigned_to(*), quotations(total_amount, status), contracts(total_amount, status), retail_orders(id, total_amount, paid_amount, payment_status, order_status)')
             .eq('id', id)
             .single()
 
@@ -120,11 +124,16 @@ export async function getCustomerById(id: string) {
                 if (data.phone) {
                     const { data: phoneOrders } = await supabase
                         .from('retail_orders')
-                        .select('total_amount, paid_amount, payment_status, order_status')
+                        .select('id, total_amount, paid_amount, payment_status, order_status')
                         .eq('customer_phone', data.phone)
                     
                     if (phoneOrders && phoneOrders.length > 0) {
-                        allOrders = phoneOrders
+                        const mergedOrders = [...fkOrders, ...phoneOrders]
+                        const uniqueOrdersMap = new Map()
+                        mergedOrders.forEach((o: any) => {
+                            if (o.id) uniqueOrdersMap.set(o.id, o)
+                        })
+                        allOrders = Array.from(uniqueOrdersMap.values())
                     }
                 }
                 
