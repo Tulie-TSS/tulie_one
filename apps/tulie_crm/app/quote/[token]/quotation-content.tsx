@@ -917,35 +917,53 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                 {/* Left Column: Notes & Terms */}
                                 <Card className="border-slate-200 shadow-sm">
                                     <CardContent className="p-4 flex flex-col gap-4 h-full">
-                                        <div>
-                                            <h4 className="font-semibold text-slate-900 mb-2 text-[13px]">
-                                                Ghi chú <span className="text-muted-foreground italic font-normal">/ Notes</span>
-                                            </h4>
-                                            <div className="text-[12px] text-slate-700 leading-relaxed space-y-1.5">
-                                                {pc?.notes && Array.isArray(pc.notes) ? (
-                                                    pc.notes.map((note: string, i: number) => (
-                                                        <div key={i} className="flex gap-2 items-start">
-                                                            <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
-                                                            <span>{note}</span>
-                                                        </div>
-                                                    ))
-                                                ) : (
-                                                    (currentQuotation.notes ?? brandConfig?.default_notes ?? 'Báo giá có hiệu lực trong vòng 07 ngày.\nGiá trên chưa bao gồm chi phí mua tên miền & hosting (nếu có).\nNội dung công việc sẽ được mô tả chi tiết trong hợp đồng.').split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
-                                                        <div key={i} className="flex gap-2 items-start">
-                                                            <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
-                                                            <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
-                                                        </div>
-                                                    ))
-                                                )}
+                                        {(() => {
+                                            const hasPcNotes = pc?.notes && Array.isArray(pc.notes) && pc.notes.length > 0;
+                                            const notesStr = currentQuotation.notes ?? brandConfig?.default_notes ?? 'Báo giá có hiệu lực trong vòng 07 ngày.\nGiá trên chưa bao gồm chi phí mua tên miền & hosting (nếu có).\nNội dung công việc sẽ được mô tả chi tiết trong hợp đồng.';
+                                            const notesLines = notesStr.split('\n').filter((line: string) => line.trim());
+                                            const hasNotes = hasPcNotes || notesLines.length > 0;
+
+                                            const hasPcTerms = pc?.payment_terms && pc.payment_terms.installments && pc.payment_terms.installments.length > 0;
+                                            const termsStr = currentQuotation.terms ?? brandConfig?.default_payment_terms ?? "50% đặt cọc khi xác nhận báo giá\n50% còn lại thanh toán khi hoàn thành";
+                                            const termsLines = termsStr.split('\n').filter((line: string) => line.trim());
+                                            const hasTerms = hasPcTerms || termsLines.length > 0;
+
+                                            if (!hasNotes && !hasTerms) return <div className="text-sm text-slate-400 italic">Không có ghi chú và điều khoản</div>;
+
+                                            return (
+                                                <>
+                                        {hasNotes && (
+                                            <div>
+                                                <h4 className="font-semibold text-slate-900 mb-2 text-[13px]">
+                                                    Ghi chú <span className="text-muted-foreground italic font-normal">/ Notes</span>
+                                                </h4>
+                                                <div className="text-[12px] text-slate-700 leading-relaxed space-y-1.5">
+                                                    {hasPcNotes ? (
+                                                        pc.notes.map((note: string, i: number) => (
+                                                            <div key={i} className="flex gap-2 items-start">
+                                                                <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
+                                                                <span>{note}</span>
+                                                            </div>
+                                                        ))
+                                                    ) : (
+                                                        notesLines.map((line: string, i: number) => (
+                                                            <div key={i} className="flex gap-2 items-start">
+                                                                <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
+                                                                <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
+                                                            </div>
+                                                        ))
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <Separator />
-                                        <div>
-                                            <h4 className="font-semibold text-slate-900 mb-2 text-[13px]">
-                                                Điều khoản thanh toán <span className="text-muted-foreground italic font-normal">/ Payment Terms</span>
-                                            </h4>
-                                            <div className="text-[12px] text-slate-700 leading-relaxed space-y-1.5">
-                                                {pc?.payment_terms && pc.payment_terms.installments ? (
+                                        )}
+                                        {hasNotes && hasTerms && <Separator />}
+                                        {hasTerms && (
+                                            <div>
+                                                <h4 className="font-semibold text-slate-900 mb-2 text-[13px]">
+                                                    Điều khoản thanh toán <span className="text-muted-foreground italic font-normal">/ Payment Terms</span>
+                                                </h4>
+                                                <div className="text-[12px] text-slate-700 leading-relaxed space-y-1.5">
+                                                    {hasPcTerms ? (
                                                     <div className="space-y-3">
                                                         <div className="space-y-1.5">
                                                             {pc.payment_terms.installments.map((inst: any, i: number) => (
@@ -976,16 +994,20 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                             )}
                                                         </div>
                                                     </div>
-                                                ) : (
-                                                    (currentQuotation.terms ?? brandConfig?.default_payment_terms ?? "50% đặt cọc khi xác nhận báo giá\n50% còn lại thanh toán khi hoàn thành").split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
-                                                        <div key={i} className="flex gap-2 items-start">
-                                                            <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
-                                                            <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
-                                                        </div>
-                                                    ))
-                                                )}
+                                                    ) : (
+                                                        termsLines.map((line: string, i: number) => (
+                                                            <div key={i} className="flex gap-2 items-start">
+                                                                <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
+                                                                <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
+                                                            </div>
+                                                        ))
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
+                                                </>
+                                            );
+                                        })()}
                                     </CardContent>
                                 </Card>
 

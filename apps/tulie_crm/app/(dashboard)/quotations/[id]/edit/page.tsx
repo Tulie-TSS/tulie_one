@@ -1,7 +1,7 @@
 import { getQuotationById } from '@/lib/supabase/services/quotation-service'
 import { getCustomers } from '@/lib/supabase/services/customer-service'
 import { getProducts } from '@/lib/supabase/services/product-service'
-import { getProductUnits } from '@/lib/supabase/services/settings-service'
+import { getProductUnits, getBrandConfig } from '@/lib/supabase/services/settings-service'
 import { getProjects } from '@/lib/supabase/services/project-service'
 import { notFound } from 'next/navigation'
 import { QuotationForm } from '@/components/quotations/quotation-form'
@@ -21,12 +21,13 @@ export default async function EditQuotationPage({ params }: EditQuotationPagePro
     }
 
     try {
-        const [quotation, customers, products, units, projects] = await Promise.all([
+        const [quotation, customers, products, units, projects, brandConfig] = await Promise.all([
             getQuotationById(id),
             getCustomers('business'),
             getProducts(),
             getProductUnits(),
-            getProjects()
+            getProjects(),
+            getBrandConfig()
         ])
 
         if (!quotation) {
@@ -41,6 +42,7 @@ export default async function EditQuotationPage({ params }: EditQuotationPagePro
                 products={products || []}
                 units={units || []}
                 projects={projects || []}
+                brandConfig={brandConfig}
             />
         )
     } catch (err) {
