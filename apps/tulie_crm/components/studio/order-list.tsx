@@ -60,15 +60,6 @@ export function RetailOrderList({ initialData }: RetailOrderListProps) {
                         ],
                     },
                     {
-                        columnId: 'brand',
-                        title: 'Thương hiệu',
-                        options: [
-                            { label: 'Agency', value: 'agency' },
-                            { label: 'Studio', value: 'studio' },
-                            { label: 'Academy', value: 'academy' },
-                        ],
-                    },
-                    {
                         columnId: 'payment_status',
                         title: 'Thanh toán',
                         options: [

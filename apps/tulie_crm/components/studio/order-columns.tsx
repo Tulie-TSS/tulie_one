@@ -88,18 +88,7 @@ export const retailOrderColumns: ColumnDef<RetailOrder>[] = [
             )
         },
     },
-    {
-        accessorKey: 'brand',
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Brand" />
-        ),
-        cell: ({ row }) => {
-            const brand = row.original.brand || 'studio'
-            return (
-                <StatusBadge status={brand} entityType="brand" />
-            )
-        },
-    },
+
     {
         accessorKey: 'customer_name',
         header: ({ column }) => (
