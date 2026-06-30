@@ -87,7 +87,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                                     <img src="/logo.png" alt="Tulie Logo" className="size-8 object-contain" />
                                 </div>
                                 <div className="grid flex-1 text-left leading-tight ml-0.5">
-                                    <span className="truncate font-bold text-[15px] tracking-tight text-foreground">Tulie CRM</span>
+                                    <span className="truncate font-bold text-[15px] text-foreground">Tulie CRM</span>
                                 </div>
                             </Link>
                         </SidebarMenuButton>

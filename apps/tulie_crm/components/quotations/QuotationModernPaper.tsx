@@ -354,7 +354,7 @@ export function QuotationModernPaper({ quotation, brandConfig, selectedItemIds }
                             })()}
                             <div className="pt-3 border-t border-slate-200 flex justify-between items-center">
                                 <span className="font-bold text-slate-950 text-sm">Tổng cộng thanh toán</span>
-                                <span className="font-bold text-2xl text-slate-950 tracking-tighter">{formatCurrency(finalAmount)}</span>
+                                <span className="font-bold text-2xl text-slate-950">{formatCurrency(finalAmount)}</span>
                             </div>
                             <div className="text-right pt-2 text-[10px] text-slate-500 font-medium">
                                 Số tiền viết bằng chữ: {readNumberToWords(finalAmount)}
@@ -418,7 +418,7 @@ export function QuotationModernPaper({ quotation, brandConfig, selectedItemIds }
 
             {/* SYNCED DECORATIVE FOOTER */}
             <div className="mt-auto p-10 print:p-0 border-t border-slate-100 flex flex-col items-center">
-                <div className="flex justify-between items-center w-full text-[11px] text-slate-500 tracking-wide">
+                <div className="flex justify-between items-center w-full text-[11px] text-slate-500">
                     <div className="flex items-center gap-4">
                         <span className="text-slate-950">{brandConfig?.brand_name || "Tulie Agency"}</span>
                         <span className="h-3 w-px bg-slate-200"></span>

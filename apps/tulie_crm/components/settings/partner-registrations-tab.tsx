@@ -261,7 +261,7 @@ export function PartnerRegistrationsTab() {
                                             <div className="col-span-2 font-mono bg-muted px-1 w-fit rounded">{selectedReg.bank_account_number || '-'}</div>
                                             
                                             <div className="text-muted-foreground">Chủ TK:</div>
-                                            <div className="col-span-2 uppercase">{selectedReg.bank_account_name || '-'}</div>
+                                            <div className="col-span-2">{selectedReg.bank_account_name || '-'}</div>
                                         </div>
                                     </div>
                                     

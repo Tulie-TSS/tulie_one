@@ -28,17 +28,17 @@ export default async function ContractsPage() {
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center border border-border">
-                        <FileSignature className="h-6 w-6 text-foreground" />
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 to-orange-400 flex items-center justify-center text-white shadow-sm shrink-0">
+                        <FileSignature className="h-5 w-5" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">Hợp đồng</h1>
+                        <h1 className="text-2xl font-semibold">Hợp đồng</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý và theo dõi các hợp đồng
                         </p>
                     </div>
                 </div>
-                <Button asChild>
+                <Button asChild className="bg-gradient-to-tr from-rose-500 to-orange-500 text-white border-none hover:opacity-90 transition-all shadow-sm hover:shadow-md rounded-md">
                     <Link href="/contracts/new">
                         <Plus className="h-4 w-4" />
                         Tạo hợp đồng

@@ -479,7 +479,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                         {!isFreelance ? (
                             <div className="rounded-lg border bg-muted/5 p-4 space-y-3">
                                 <div>
-                                    <p className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                                    <p className="text-xs font-semibold text-foreground">
                                         Thông tin điền vào giấy tờ
                                     </p>
                                     <p className="text-xs text-muted-foreground mt-1">

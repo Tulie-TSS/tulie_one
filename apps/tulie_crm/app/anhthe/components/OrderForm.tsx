@@ -636,7 +636,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                         <div className="flex flex-col items-end gap-2 shrink-0">
                           <div className="text-right">
                             <div className="flex items-baseline gap-0.5">
-                              <span className="text-lg sm:text-xl font-bold text-foreground tracking-tighter tabular-nums">{new Intl.NumberFormat('vi-VN').format(pkg.price)}</span>
+                              <span className="text-lg sm:text-xl font-bold text-foreground tabular-nums">{new Intl.NumberFormat('vi-VN').format(pkg.price)}</span>
                               <span className="text-xs font-semibold text-muted-foreground">đ</span>
                             </div>
                             <p className="text-[10px] text-muted-foreground font-medium mt-0.5">/ người</p>
@@ -663,7 +663,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                     {isSelected && (
                       <div className="px-4 sm:px-5 pb-4 sm:pb-5">
                         <div className="bg-muted/50 rounded-xl p-4 border border-zinc-200/50 space-y-2">
-                          <Label className="text-[11px] font-bold text-muted-foreground uppercase tracking-tight">
+                          <Label className="text-[11px] font-bold text-muted-foreground">
                             Ghi chú gói này (size in, yêu cầu đặc biệt…)
                           </Label>
                           <Textarea
@@ -1098,9 +1098,9 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
           <Card className="sticky bottom-4 z-50 shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-zinc-200/50 backdrop-blur-sm bg-white/95">
             <CardContent className="px-4 py-2.5 sm:px-6 sm:py-3 flex items-center justify-between gap-4">
               <div className="min-w-0">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter opacity-70">Tạm tính</p>
+                <p className="text-[10px] font-bold text-muted-foreground opacity-70">Tạm tính</p>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tighter tabular-nums">
+                  <span className="text-xl sm:text-2xl font-extrabold text-foreground tabular-nums">
                     {new Intl.NumberFormat('vi-VN').format(totalPrice)}
                   </span>
                   <span className="text-[10px] font-bold text-muted-foreground">đ</span>

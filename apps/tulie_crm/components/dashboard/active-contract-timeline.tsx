@@ -114,7 +114,7 @@ export function ActiveContractTimeline({ contracts }: { contracts: TimelineContr
             <section className="relative rounded-3xl border border-white/50 dark:border-zinc-900/30 bg-white/70 dark:bg-zinc-950/60 backdrop-blur-xl text-card-foreground shadow-[0_8px_32px_-8px_rgba(0,0,0,0.04)] overflow-hidden">
                 <div className="flex items-center justify-between px-6 py-5 border-b border-border bg-muted/10">
                     <div>
-                        <h2 className="text-sm font-semibold tracking-tight text-foreground">Tiến độ hợp đồng đang triển khai</h2>
+                        <h2 className="text-sm font-semibold text-foreground">Tiến độ hợp đồng đang triển khai</h2>
                         <p className="text-[11px] text-muted-foreground mt-0.5">Theo dõi mốc đến hạn và doanh thu</p>
                     </div>
                 </div>
@@ -159,7 +159,7 @@ export function ActiveContractTimeline({ contracts }: { contracts: TimelineContr
             {/* Header với Toolbar */}
             <div className="flex flex-col md:flex-row md:items-center justify-between px-6 py-4 border-b border-border gap-4 bg-muted/5">
                 <div>
-                    <h2 className="text-sm font-semibold tracking-tight text-foreground">Tiến độ hợp đồng đang triển khai</h2>
+                    <h2 className="text-sm font-semibold text-foreground">Tiến độ hợp đồng đang triển khai</h2>
                     <p className="text-[11px] text-muted-foreground mt-0.5">
                         Quản trị tiến trình, mốc thanh toán và bàn giao theo tiêu chuẩn dự án
                     </p>
@@ -220,7 +220,7 @@ export function ActiveContractTimeline({ contracts }: { contracts: TimelineContr
                     <div className="w-52 md:w-60 shrink-0 sticky left-0 z-30 bg-card/95 backdrop-blur-sm border-r border-border shadow-[4px_0_12px_rgba(0,0,0,0.02)] divide-y divide-border/60">
                         {/* Góc trống header */}
                         <div className="h-10 border-b border-border bg-muted/20 flex items-center px-4">
-                            <span className="text-[10px] font-bold tracking-wider text-muted-foreground/80">Hợp đồng / Khách hàng</span>
+                            <span className="text-[10px] font-bold text-muted-foreground/80">Hợp đồng / Khách hàng</span>
                         </div>
                         {validContracts.map(contract => {
                             const startValue = contract.start_date || contract.signed_date!
@@ -367,7 +367,7 @@ export function ActiveContractTimeline({ contracts }: { contracts: TimelineContr
                                                                         <span className="font-bold text-zinc-900 dark:text-zinc-100 whitespace-normal break-words max-w-[130px] leading-snug text-[11.5px]" title={m.name}>
                                                                             {m.name}
                                                                         </span>
-                                                                        <span className={cn("text-[9px] font-extrabold px-1.5 py-0.5 rounded font-mono shrink-0 tracking-wider",
+                                                                        <span className={cn("text-[9px] font-extrabold px-1.5 py-0.5 rounded font-mono shrink-0 ",
                                                                             mState === 'done' ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400" :
                                                                             mState === 'overdue' ? "bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400" :
                                                                             m.type === 'payment' ? "bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400" : 

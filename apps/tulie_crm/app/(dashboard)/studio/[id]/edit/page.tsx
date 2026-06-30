@@ -20,7 +20,7 @@ export default async function EditRetailOrderPage({ params }: any) {
                     </Link>
                 </Button>
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-3">
+                    <h1 className="text-2xl font-semibold flex items-center gap-3">
                         Chỉnh sửa đơn hàng
                     </h1>
                     <p className="text-muted-foreground text-sm">Cập nhật thông tin đơn hàng {order.order_number}</p>

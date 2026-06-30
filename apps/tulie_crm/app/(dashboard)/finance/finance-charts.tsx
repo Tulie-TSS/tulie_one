@@ -121,7 +121,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                                                     content={({ active, payload, label }) => {
                                                         if (active && payload && payload.length) {
                                                             return (
-                                                                <div className="rounded-lg border bg-background p-3 ">
+                                                                <div className="rounded-lg border bg-background p-3">
                                                                     <p className="text-xs font-medium text-muted-foreground mb-2">Tháng {label}</p>
                                                                     <div className="space-y-1">
                                                                         {payload.map((entry, index) => (
@@ -248,7 +248,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                                             content={({ active, payload, label }) => {
                                                 if (active && payload && payload.length) {
                                                     return (
-                                                        <div className="rounded-lg border bg-background p-3 ">
+                                                        <div className="rounded-lg border bg-background p-3">
                                                             <p className="text-xs font-medium text-muted-foreground mb-1">Tháng {label}</p>
                                                             <p className="text-sm">{payload[0].value} tr</p>
                                                         </div>
@@ -361,7 +361,7 @@ export function FinanceCharts({ monthlyData, recentTransactions }: FinanceCharts
                                             content={({ active, payload, label }) => {
                                                 if (active && payload && payload.length) {
                                                     return (
-                                                        <div className="rounded-lg border bg-background p-3 ">
+                                                        <div className="rounded-lg border bg-background p-3">
                                                             <p className="text-xs font-medium text-muted-foreground mb-1">Tháng {label}</p>
                                                             <p className="text-sm text-red-500">{payload[0].value} tr</p>
                                                         </div>

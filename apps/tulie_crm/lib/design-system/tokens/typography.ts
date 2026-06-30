@@ -3,9 +3,9 @@
  *
  * RULES:
  * 1. Font family: Inter (already set in layout.tsx)
- * 2. NO uppercase in dashboard UI — ever (except PDF document templates)
+ * 2. NO  in dashboard UI — ever (except PDF document templates)
  * 3. NO font-black (900) in dashboard UI — max is font-bold (700)
- * 4. NO tracking-widest — use  or normal only
+ * 4. NO  — use  or normal only
  * 5. NO arbitrary font sizes (text-[9px], text-[10px]) — use Tailwind scale
  * 6. Font weight follows shadcn: medium (500) for labels, semibold (600) for titles
  */
@@ -67,12 +67,12 @@ export const TEXT = {
 // ─── Letter Spacing Reference ───────────────────────────────────────────────
 // ✅ ALLOWED:
 //      — for large headings, stat values
-//   tracking-normal  — default, most text
+//     — default, most text
 //
 // ❌ NOT ALLOWED in dashboard:
-//   tracking-wide    — not shadcn style
-//   tracking-wider   — not shadcn style
-//   tracking-widest  — ONLY for PDF/document templates
+//       — not shadcn style
+//      — not shadcn style
+//     — ONLY for PDF/document templates
 
 // ─── Font Size Reference ────────────────────────────────────────────────────
 // ✅ ALLOWED (Tailwind standard scale only):

@@ -153,7 +153,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
 
                 {/* Company Contact Info */}
                  <div>
-                    <h3 className="text-[13px] uppercase mb-1">
+                    <h3 className="text-[13px] mb-1">
                         {(brandConfig?.company_name || "Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie").toUpperCase()}
                     </h3>
                     <div className="text-[11px] space-y-0.5 font-normal">
@@ -177,13 +177,13 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
 
             {/* Title */}
             <div className="text-center mb-10">
-                <h1 className="text-[24px] uppercase">Báo giá dịch vụ</h1>
+                <h1 className="text-[24px]">Báo giá dịch vụ</h1>
                 <p className="text-[12px] mt-1 font-medium">(V/v: Cung cấp giải pháp {quotation.title || 'Marketing & Công nghệ'})</p>
             </div>
 
             {/* Receiver Section */}
             <div className="mb-8 space-y-3">
-                <p className="font-bold text-[13px]">Kính gửi: <span className="uppercase">{quotation.customer?.company_name || quotation.customer?.full_name || quotation.customer?.name}</span></p>
+                <p className="font-bold text-[13px]">Kính gửi: <span >{quotation.customer?.company_name || quotation.customer?.full_name || quotation.customer?.name}</span></p>
                 <div className="grid grid-cols-1 gap-2 text-[12px] ml-4 font-medium">
                     <p><span className="inline-block w-32">Người đại diện:</span> {quotation.customer?.representative || quotation.customer?.full_name || '................................'}</p>
                     <p><span className="inline-block w-32">Địa chỉ:</span> {quotation.customer?.address || '................................'}</p>
@@ -199,7 +199,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
             {/* Proposal sections */}
             {hasProposal && proposalSections.length > 0 && (
                 <div className="mb-8 space-y-4" style={{ pageBreakInside: 'avoid' }}>
-                    <h3 className="text-[14px] uppercase font-bold border-b-2 border-black pb-1.5 mb-3">
+                    <h3 className="text-[14px] font-bold border-b-2 border-black pb-1.5 mb-3">
                         I. Đề xuất giải pháp & Kế hoạch (Proposal)
                     </h3>
                     <div className="space-y-4 ml-4">
@@ -218,7 +218,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
             )}
 
             {hasProposal && proposalSections.length > 0 && (
-                <h3 className="text-[14px] uppercase font-bold border-b-2 border-black pb-1.5 mb-4 mt-8" style={{ pageBreakInside: 'avoid' }}>
+                <h3 className="text-[14px] font-bold border-b-2 border-black pb-1.5 mb-4 mt-8" style={{ pageBreakInside: 'avoid' }}>
                     II. Bảng báo giá chi tiết & Kế hoạch đầu tư (Pricing & Investment Plan)
                 </h3>
             )}
@@ -226,9 +226,9 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
             {/* Main Items Table — flexible widths, nowrap on numbers */}
             <table className="w-full border-collapse border border-black text-[11px] mb-8" style={{ tableLayout: 'auto' }}>
                 <thead>
-                    <tr className="bg-muted grayscale">
+                    <tr className="bg-slate-100">
                         <th className="border border-black py-2 px-1 text-center text-[10px] whitespace-nowrap">STT<br /><span className="text-[7pt] font-normal opacity-60">No.</span></th>
-                        <th className="border border-black py-2 px-3 text-left uppercase text-[10px]" style={{ width: '100%' }}>
+                        <th className="border border-black py-2 px-3 text-left text-[10px]" style={{ width: '100%' }}>
                             Hạng mục & Mô tả chi tiết <br />
                             <span className="text-[7pt] font-normal opacity-60 normal-case">Items & Description</span>
                         </th>
@@ -273,7 +273,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
                     {sectionEntries.map(([sectionName, sectionItems], sIdx) => (
                         <React.Fragment key={sectionName || sIdx}>
                             {sectionName && (
-                                <tr className="bg-muted">
+                                <tr className="bg-slate-100">
                                     <td colSpan={11} className="border border-black py-1.5 px-3 font-bold text-[10px]">
                                         {sectionName}
                                     </td>
@@ -371,14 +371,14 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
                                         </tr>
                                     ));
                                 })()}
-                                <tr className="bg-muted">
-                                    <td colSpan={10} className="border border-black py-3 px-3 text-right uppercase text-[11px] font-bold">Tổng cộng thanh toán / Grand Total:</td>
+                                <tr className="bg-slate-100">
+                                    <td colSpan={10} className="border border-black py-3 px-3 text-right text-[11px] font-bold">Tổng cộng thanh toán / Grand Total:</td>
                                     <td colSpan={1} className="border border-black py-3 px-1 text-right text-[13px] tabular-nums whitespace-nowrap font-bold">{formatCurrency(displayTotal).replace('₫', '')} VND</td>
                                 </tr>
                                 <tr>
                                     <td colSpan={11} className="border border-black py-3 px-3 text-[11px] font-medium">
-                                        <span className="font-bold underline uppercase mr-1">Bằng chữ:</span> 
-                                        <span className="first-letter:uppercase">{readNumberToWords(displayTotal)}</span>
+                                        <span className="font-bold underline mr-1">Bằng chữ:</span> 
+                                        <span className="first-letter:">{readNumberToWords(displayTotal)}</span>
                                     </td>
                                 </tr>
                             </>
@@ -389,7 +389,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
 
             {/* Terms & Conditions / Notes */}
             <div className="mb-8 space-y-4">
-                <h4 className="text-[13px] uppercase underline">Điều khoản & Ghi chú (Terms & Conditions):</h4>
+                <h4 className="text-[13px] underline">Điều khoản & Ghi chú (Terms & Conditions):</h4>
                 <div className="grid grid-cols-1 gap-1.5 text-[11px] ml-4 font-medium leading-relaxed">
                     {(() => {
                         const pc = quotation.proposal_content || {};
@@ -432,11 +432,11 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
             </div>
 
             {/* Banking Info Section */}
-            <div className="mb-12 p-5 border border-black bg-muted grayscale">
-                <h4 className="text-[13px] uppercase underline mb-4">Thông tin chuyển khoản (Payment Information):</h4>
+            <div className="mb-12 p-5 border border-black bg-slate-100">
+                <h4 className="text-[13px] underline mb-4">Thông tin chuyển khoản (Payment Information):</h4>
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-6 text-[12px] ml-4 font-medium">
                     <div className="space-y-2 md:col-span-3">
-                        <p><span className="font-bold">Chủ tài khoản:</span> <span className="uppercase">{quotation.bank_account_name || brandConfig?.bank_account_name || 'CÔNG TY TNHH TULIE'}</span></p>
+                        <p><span className="font-bold">Chủ tài khoản:</span> <span >{quotation.bank_account_name || brandConfig?.bank_account_name || 'CÔNG TY TNHH TULIE'}</span></p>
                         <p><span className="font-bold">Số tài khoản:</span> <span className="text-[14px]">{quotation.bank_account_no || brandConfig?.bank_account_no || '0110163102'}</span></p>
                     </div>
                     <div className="space-y-2 md:col-span-2">
@@ -449,13 +449,13 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
             {/* Signature Section */}
             <div className="grid grid-cols-2 gap-10 mt-12 text-center text-[12px]">
                 <div className="space-y-1">
-                    <p className="font-bold uppercase text-foreground">Đại diện khách hàng</p>
+                    <p className="font-bold text-foreground">Đại diện khách hàng</p>
                     <p className="italic text-[10px] text-muted-foreground">(Ký & ghi rõ họ tên / Customer Signature)</p>
                     <div className="h-24"></div>
                     <div className="h-px w-32 bg-muted mx-auto" />
                 </div>
                 <div className="space-y-1">
-                    <p className="font-bold uppercase text-foreground">Đại diện {brandConfig?.brand_name || "Công ty Tulie"}</p>
+                    <p className="font-bold text-foreground">Đại diện {brandConfig?.brand_name || "Công ty Tulie"}</p>
 
                     <p className="italic text-[10px] text-muted-foreground">(Ký & đóng dấu / Authorized Signature)</p>
                     <div className="h-28 flex items-center justify-center opacity-10 grayscale">

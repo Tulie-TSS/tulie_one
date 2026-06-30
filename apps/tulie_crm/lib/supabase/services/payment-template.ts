@@ -38,7 +38,7 @@ export const paymentTemplate = `
   </table>
 
   <!-- Tiêu đề văn bản -->
-  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 24px 0; text-transform:uppercase;">
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 20px 0 24px 0; text-transform:;">
     ĐỀ NGHỊ THANH TOÁN
   </p>
 

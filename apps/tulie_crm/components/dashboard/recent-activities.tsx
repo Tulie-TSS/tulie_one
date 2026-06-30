@@ -1,5 +1,7 @@
 'use client'
 
+import { useState, useEffect } from 'react'
+
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { ScrollArea } from '@repo/ui'
 import { formatRelativeTime } from '@/lib/utils/format'
@@ -36,8 +38,14 @@ const getActivityIcon = (type: ActivityLog['action']) => {
 }
 
 export function RecentActivities({ data, hideCard = false }: RecentActivitiesProps) {
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
     const scrollContent = (
-        <ScrollArea className="h-[320px]">
+        <ScrollArea className="flex-1 min-h-[320px]">
             <div className="flex flex-col gap-3 px-4 pb-4 pt-3">
                 {data.length > 0 ? (
                     data.map((activity) => (
@@ -54,7 +62,7 @@ export function RecentActivities({ data, hideCard = false }: RecentActivitiesPro
                                         {activity.user?.full_name || 'Hệ thống'}
                                     </p>
                                     <p className="text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                        {formatRelativeTime(activity.created_at)}
+                                        {!mounted ? '...' : formatRelativeTime(activity.created_at)}
                                     </p>
                                 </div>
                                 <p className="text-xs text-muted-foreground font-normal line-clamp-1 leading-snug">
@@ -68,7 +76,7 @@ export function RecentActivities({ data, hideCard = false }: RecentActivitiesPro
                                     </p>
                                 )}
                                 <p className="text-[10px] text-muted-foreground/60 font-medium group-hover:hidden">
-                                    {formatRelativeTime(activity.created_at)}
+                                    {!mounted ? '...' : formatRelativeTime(activity.created_at)}
                                 </p>
                             </div>
                         </div>

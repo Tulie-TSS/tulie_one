@@ -95,17 +95,7 @@ export const getCustomerColumns = (isStudio = false): ColumnDef<Customer>[] => [
             )
         },
     },
-    {
-        accessorKey: 'status',
-        header: 'Trạng thái',
-        cell: ({ row }) => {
-            const status = row.getValue('status') as string
-            return <StatusBadge entityType="customer" status={status} />
-        },
-        filterFn: (row, id, value) => {
-            return value.includes(row.getValue(id))
-        },
-    },
+
     {
         accessorKey: 'quotation_revenue',
         header: ({ column }) => {

@@ -29,7 +29,7 @@ export default async function InvoicesPage() {
                         <Banknote className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">Hóa đơn</h1>
+                        <h1 className="text-2xl font-semibold">Hóa đơn</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý hóa đơn bán hàng và mua vào
                         </p>

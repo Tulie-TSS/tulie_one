@@ -60,7 +60,7 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                         <Lock className="h-6 w-6 text-white" />
                     </div>
                     <div className="space-y-1">
-                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Secure Access</p>
+                        <p className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground">Secure Access</p>
                         <h1 className="text-2xl font-bold text-foreground">Portal Khách Hàng</h1>
                     </div>
                 </div>
@@ -90,7 +90,7 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                             
                             <div className="space-y-5">
                                 <div className="space-y-2">
-                                    <Label htmlFor="password" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Mật khẩu truy cập</Label>
+                                    <Label htmlFor="password" className="text-[10px] font-bold text-muted-foreground ml-1">Mật khẩu truy cập</Label>
                                     <div className="relative group">
                                         <Input
                                             id="password"
@@ -109,7 +109,7 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
 
                                 <div className="space-y-2">
                                     <div className="flex items-center justify-between ml-1">
-                                        <Label htmlFor="captcha" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Xác thực con người</Label>
+                                        <Label htmlFor="captcha" className="text-[10px] font-bold text-muted-foreground">Xác thực con người</Label>
                                         <span className="text-[10px] font-bold text-foreground bg-muted px-2 py-0.5 rounded-md border border-border">
                                             {captcha.a} + {captcha.b} = ?
                                         </span>
@@ -128,7 +128,7 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
 
                             <Button
                                 type="submit"
-                                className="w-full h-12 text-[11px] font-bold uppercase tracking-widest rounded-md bg-zinc-950 hover:bg-zinc-800 text-white transition-all active:scale-[0.97] shadow-xl shadow-zinc-950/10 mt-2"
+                                className="w-full h-12 text-[11px] font-bold rounded-md bg-zinc-950 hover:bg-zinc-800 text-white transition-all active:scale-[0.97] shadow-xl shadow-zinc-950/10 mt-2"
                                 disabled={isLoading || !password || !captchaValue}
                             >
                                 {isLoading ? (

@@ -55,11 +55,7 @@ export default function WeeklyTimeline({ overview }: WeeklyTimelineProps) {
                             return (
                                 <div
                                     key={day.key}
-                                    className={`rounded-lg p-2 min-h-[80px] ${
-                                        day.isToday
-                                            ? 'bg-blue-50 border-2 border-blue-200'
-                                            : 'bg-muted/30 border'
-                                    }`}
+                                    className={`rounded-lg p-2 min-h-[80px] ${ day.isToday ? 'bg-blue-50 border-2 border-blue-200' : 'bg-muted/30 border' }`}
                                 >
                                     <div className={`text-center mb-1 ${day.isToday ? 'text-blue-700' : 'text-muted-foreground'}`}>
                                         <div className="text-xs">{day.dayName}</div>

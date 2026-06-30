@@ -17,7 +17,7 @@ export default async function PartnersPage() {
                         <Handshake className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">Đối tác & CTV</h1>
+                        <h1 className="text-2xl font-semibold">Đối tác & CTV</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý, xét duyệt đơn đăng ký Đối tác liên kết
                         </p>

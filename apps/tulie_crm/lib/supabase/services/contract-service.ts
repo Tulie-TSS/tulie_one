@@ -88,7 +88,7 @@ export async function createContract(contract: Partial<Contract>, milestones: Pa
     if (contract.customer_id && !contract.customer_snapshot) {
         const { data: custData } = await supabase
             .from('customers')
-            .select('company_name, tax_code, email, phone, address, invoice_address, representative, position')
+            .select('company_name, tax_code, email, phone, address, invoice_address, representative, position, representative_title')
             .eq('id', contract.customer_id)
             .single()
         if (custData) {
@@ -644,6 +644,7 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
             invoice_address: quotation.customer.invoice_address,
             representative: quotation.customer.representative,
             position: quotation.customer.position,
+            representative_title: quotation.customer.representative_title,
         } : null
 
         const authUserResponse = await supabase.auth.getUser()

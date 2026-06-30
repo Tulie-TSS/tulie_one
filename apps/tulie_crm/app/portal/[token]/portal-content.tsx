@@ -111,10 +111,10 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                     />
                     <Separator orientation="vertical" className="h-6" />
                     <div className="flex flex-col">
-                        <span className="text-base font-bold tracking-tight text-foreground leading-none">
+                        <span className="text-base font-bold text-foreground leading-none">
                             {isFreelance ? 'Freelancer Portal' : 'Customer Portal'}
                         </span>
-                        <span className="text-[0.65rem] uppercase font-medium text-muted-foreground mt-0.5">
+                        <span className="text-[0.65rem] font-medium text-muted-foreground mt-0.5">
                             {isFreelance ? 'Cổng thông tin Cộng tác viên' : 'Cổng thông tin khách hàng'}
                         </span>
                     </div>
@@ -213,8 +213,8 @@ export default function PortalContent({ data, token, isFinancialAuthenticated = 
                                 ].map((stat, i) => (
                                     <Card key={i} className="bg-white border shadow-sm">
                                         <CardHeader className="py-4">
-                                            <CardDescription className="text-xs font-medium uppercase tracking-wider">{stat.label}</CardDescription>
-                                            <CardTitle className="text-2xl font-bold tabular-nums tracking-tight">
+                                            <CardDescription className="text-xs font-medium">{stat.label}</CardDescription>
+                                            <CardTitle className="text-2xl font-bold tabular-nums">
                                                 {typeof stat.value === 'number' ? formatCurrency(stat.value).replace(/\s*[₫đ]\s*$/g, '').trim() : stat.value}
                                             </CardTitle>
                                         </CardHeader>

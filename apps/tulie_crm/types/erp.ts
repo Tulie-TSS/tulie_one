@@ -146,6 +146,15 @@ export interface DashboardStats {
     b2b_quarter: number
     b2c_month: number
     b2c_quarter: number
+    b2b_month_growth?: number
+    b2b_quarter_growth?: number
+    b2c_month_growth?: number
+    b2c_quarter_growth?: number
+    targets?: {
+      month: number
+      quarter: number
+      year: number
+    }
     change: number
     period: string
   }

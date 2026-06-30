@@ -96,7 +96,7 @@ export function TransactionsClient({ initialData, initialTotal }: TransactionsCl
                         </p>
                     </div>
                 </div>
-                <Button onClick={handleSync} disabled={isSyncing} className="font-bold rounded-md ">
+                <Button onClick={handleSync} disabled={isSyncing} className="font-bold rounded-md">
                     {isSyncing ? <LoadingSpinner size="sm" className="mr-2" /> : <RefreshCw className="h-4 w-4" />}
                     Đồng bộ SePay
                 </Button>

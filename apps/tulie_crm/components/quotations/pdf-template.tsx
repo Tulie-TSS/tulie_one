@@ -324,7 +324,7 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 40, alignItems: 'flex-start' }}>
                     {/* Left: Company Logo & Info */}
                     <View style={{ width: '60%' }}>
-                        <Text style={{ fontSize: 13, fontFamily: 'Roboto-Bold', color: '#000', marginBottom: 6, textTransform: 'uppercase' }}>
+                        <Text style={{ fontSize: 13, fontFamily: 'Roboto-Bold', color: '#000', marginBottom: 6, textTransform: '' }}>
                             Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie
                         </Text>
                         <View style={{ gap: 2 }}>
@@ -337,7 +337,7 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
 
                     {/* Right: Title & Meta */}
                     <View style={{ width: '35%', textAlign: 'right' }}>
-                        <Text style={{ fontSize: 42, fontFamily: 'Roboto-Bold', color: '#000', letterSpacing: -1, textTransform: 'uppercase', lineHeight: 0.8 }}>Báo giá</Text>
+                        <Text style={{ fontSize: 42, fontFamily: 'Roboto-Bold', color: '#000', letterSpacing: -1, textTransform: '', lineHeight: 0.8 }}>Báo giá</Text>
                         <Text style={{ fontSize: 18, fontFamily: 'Roboto', color: '#666', marginBottom: 15 }}>Quotation</Text>
 
                         <View style={{ gap: 2 }}>
@@ -359,7 +359,7 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
 
                 {/* Customer Info */}
                 <View style={{ marginBottom: 30, backgroundColor: '#fcfcfc', padding: 15, borderRadius: 8, border: '1px solid #efefef' }}>
-                    <Text style={{ fontSize: 9, color: '#888', textTransform: 'uppercase', marginBottom: 6, fontFamily: 'Roboto-Bold' }}>Thông tin khách hàng / Customer:</Text>
+                    <Text style={{ fontSize: 9, color: '#888', textTransform: '', marginBottom: 6, fontFamily: 'Roboto-Bold' }}>Thông tin khách hàng / Customer:</Text>
                     <Text style={{ fontSize: 13, fontFamily: 'Roboto-Bold', color: '#000', marginBottom: 4 }}>{quotation.customer?.company_name || quotation.customer_name || 'Quý khách hàng'}</Text>
                     <Text style={{ fontSize: 9, color: '#444' }}>Địa chỉ: {quotation.customer?.address || 'N/A'}</Text>
                     <View style={{ flexDirection: 'row', marginTop: 4, gap: 20 }}>
@@ -372,7 +372,7 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
                 {hasProposal && (
                     <View style={{ marginBottom: 30 }}>
                         <View style={{ backgroundColor: '#000', padding: 10, borderRadius: 4, marginBottom: 15 }}>
-                            <Text style={{ color: '#fff', fontSize: 11, fontFamily: 'Roboto-Bold', textTransform: 'uppercase' }}>Đề xuất giải pháp / Proposal</Text>
+                            <Text style={{ color: '#fff', fontSize: 11, fontFamily: 'Roboto-Bold', textTransform: '' }}>Đề xuất giải pháp / Proposal</Text>
                         </View>
 
                         {/* Map dynamic sections */}
@@ -385,7 +385,7 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
                                             <View style={{ backgroundColor: '#000', color: '#fff', width: 14, height: 14, borderRadius: 7, justifyContent: 'center', alignItems: 'center', marginRight: 8 }}>
                                                 <Text style={{ fontSize: 8, fontFamily: 'Roboto-Bold' }}>{idx + 1}</Text>
                                             </View>
-                                            <Text style={{ fontSize: 10, fontFamily: 'Roboto-Bold', textTransform: 'uppercase' }}>{s.label}</Text>
+                                            <Text style={{ fontSize: 10, fontFamily: 'Roboto-Bold', textTransform: '' }}>{s.label}</Text>
                                         </View>
                                         <Text style={{ fontSize: 9, color: '#555', lineHeight: 1.6 }}>{s.content}</Text>
                                     </View>
@@ -412,7 +412,7 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
                                             <View style={{ backgroundColor: '#000', color: '#fff', width: 14, height: 14, borderRadius: 7, justifyContent: 'center', alignItems: 'center', marginRight: 8 }}>
                                                 <Text style={{ fontSize: 8, fontFamily: 'Roboto-Bold' }}>{idx + 1}</Text>
                                             </View>
-                                            <Text style={{ fontSize: 10, fontFamily: 'Roboto-Bold', textTransform: 'uppercase' }}>{labels[key] || key}</Text>
+                                            <Text style={{ fontSize: 10, fontFamily: 'Roboto-Bold', textTransform: '' }}>{labels[key] || key}</Text>
                                         </View>
                                         <Text style={{ fontSize: 9, color: '#555', lineHeight: 1.6 }}>{value}</Text>
                                     </View>
@@ -449,7 +449,7 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
                             {/* Section Divider */}
                             {(sectionName !== DEFAULT_SECTION || sectionEntries.length > 1) && (
                                 <View style={{ backgroundColor: '#f9f9f9', padding: 8, borderBottom: '1px solid #efefef' }}>
-                                    <Text style={{ fontSize: 9, fontFamily: 'Roboto-Bold', textTransform: 'uppercase' }}>{sectionName}</Text>
+                                    <Text style={{ fontSize: 9, fontFamily: 'Roboto-Bold', textTransform: '' }}>{sectionName}</Text>
                                 </View>
                             )}
 
@@ -508,7 +508,7 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
                 <View style={{ marginTop: 40, flexDirection: 'row', gap: 30 }}>
                     {/* Notes & Terms */}
                     <View style={{ flex: 1 }}>
-                        <Text style={{ fontSize: 9, fontFamily: 'Roboto-Bold', marginBottom: 8, textTransform: 'uppercase' }}>Ghi chú & Điều khoản / Terms:</Text>
+                        <Text style={{ fontSize: 9, fontFamily: 'Roboto-Bold', marginBottom: 8, textTransform: '' }}>Ghi chú & Điều khoản / Terms:</Text>
                         <View style={{ gap: 6 }}>
                             {renderPdfStructuredNotes(quotation.terms || quotation.brandConfig?.default_payment_terms || '')}
                             {renderPdfStructuredNotes(quotation.notes || quotation.brandConfig?.default_notes || '')}
@@ -517,7 +517,7 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
 
                     {/* Bank Info */}
                     <View style={{ width: '40%', padding: 12, backgroundColor: '#fcfcfc', borderRadius: 8, border: '1px solid #efefef' }}>
-                        <Text style={{ fontSize: 9, fontFamily: 'Roboto-Bold', marginBottom: 8, textTransform: 'uppercase', textAlign: 'center' }}>Thông tin thanh toán</Text>
+                        <Text style={{ fontSize: 9, fontFamily: 'Roboto-Bold', marginBottom: 8, textTransform: '', textAlign: 'center' }}>Thông tin thanh toán</Text>
                         <View style={{ gap: 4 }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text style={{ fontSize: 8, color: '#888' }}>Số TK:</Text>

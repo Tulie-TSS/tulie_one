@@ -95,7 +95,7 @@ function StatusBadge({ status }: { status: string }) {
     return (
         <div className={cn("inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md border", s.bg, s.border)}>
             <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", s.dot)} />
-            <span className={cn("text-[11px] font-semibold tracking-wide whitespace-nowrap", s.text)}>{s.label}</span>
+            <span className={cn("text-[11px] font-semibold  whitespace-nowrap", s.text)}>{s.label}</span>
         </div>
     )
 }
@@ -376,7 +376,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         <ListTodo className="w-6 h-6 text-foreground" />
                     </div>
                     <div>
-                        <h2 className="text-lg text-foreground uppercase">Nhật ký xử lý yêu cầu</h2>
+                        <h2 className="text-lg text-foreground">Nhật ký xử lý yêu cầu</h2>
                         <div className="text-sm font-medium text-muted-foreground flex items-center gap-2 mt-0.5">
                             <span>Revision & Feedback Log</span>
                             <span className="w-1 h-1 rounded-full bg-zinc-300" />
@@ -446,7 +446,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                         <div>
                             <label className="text-xs text-zinc-700 mb-2 block">
                                 Diễn giải chi tiết
-                                <span className="text-muted-foreground font-medium normal-case tracking-normal ml-2">Hỗ trợ dán ảnh (Ctrl+V)</span>
+                                <span className="text-muted-foreground font-medium normal-case ml-2">Hỗ trợ dán ảnh (Ctrl+V)</span>
                             </label>
                             <Textarea
                                 ref={textareaRef}
@@ -762,7 +762,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                                             <MessageCircle className="w-3 h-3 text-blue-700" />
                                                                         </div>
                                                                         <div>
-                                                                            <p className="text-xs text-blue-900 uppercase">
+                                                                            <p className="text-xs text-blue-900">
                                                                                 Agency phản hồi
                                                                             </p>
                                                                             {item.responded_at && (

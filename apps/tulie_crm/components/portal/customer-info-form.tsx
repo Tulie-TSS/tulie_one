@@ -81,7 +81,7 @@ export function CustomerInfoForm({ customer, token, onComplete, onDraftSave }: C
         <form onSubmit={handleSubmit} className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
                 <div className="space-y-2">
-                    <Label htmlFor="company_name" className="text-[10px] uppercase tracking-widest text-muted-foreground">Tên công ty / Tổ chức</Label>
+                    <Label htmlFor="company_name" className="text-[10px] text-muted-foreground">Tên công ty / Tổ chức</Label>
                     <div className="relative">
                         <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
@@ -96,7 +96,7 @@ export function CustomerInfoForm({ customer, token, onComplete, onDraftSave }: C
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="tax_code" className="text-[10px] uppercase tracking-widest text-muted-foreground">Mã số thuế</Label>
+                    <Label htmlFor="tax_code" className="text-[10px] text-muted-foreground">Mã số thuế</Label>
                     <div className="relative">
                         <FileText className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
@@ -111,7 +111,7 @@ export function CustomerInfoForm({ customer, token, onComplete, onDraftSave }: C
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="representative" className="text-[10px] uppercase tracking-widest text-muted-foreground">Người đại diện pháp luật</Label>
+                    <Label htmlFor="representative" className="text-[10px] text-muted-foreground">Người đại diện pháp luật</Label>
                     <div className="flex gap-2">
                         <select
                             name="representative_title"
@@ -141,7 +141,7 @@ export function CustomerInfoForm({ customer, token, onComplete, onDraftSave }: C
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="position" className="text-[10px] uppercase tracking-widest text-muted-foreground">Chức vụ</Label>
+                    <Label htmlFor="position" className="text-[10px] text-muted-foreground">Chức vụ</Label>
                     <div className="relative">
                         <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground rotate-180" />
                         <Input
@@ -156,7 +156,7 @@ export function CustomerInfoForm({ customer, token, onComplete, onDraftSave }: C
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="email" className="text-[10px] uppercase tracking-widest text-muted-foreground">Email giao dịch</Label>
+                    <Label htmlFor="email" className="text-[10px] text-muted-foreground">Email giao dịch</Label>
                     <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
@@ -172,7 +172,7 @@ export function CustomerInfoForm({ customer, token, onComplete, onDraftSave }: C
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-[10px] uppercase tracking-widest text-muted-foreground">Số điện thoại</Label>
+                    <Label htmlFor="phone" className="text-[10px] text-muted-foreground">Số điện thoại</Label>
                     <div className="relative">
                         <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
@@ -187,7 +187,7 @@ export function CustomerInfoForm({ customer, token, onComplete, onDraftSave }: C
                 </div>
 
                 <div className="col-span-1 md:col-span-2 space-y-2">
-                    <Label htmlFor="address" className="text-[10px] uppercase tracking-widest text-muted-foreground">Địa chỉ trụ sở</Label>
+                    <Label htmlFor="address" className="text-[10px] text-muted-foreground">Địa chỉ trụ sở</Label>
                     <div className="relative">
                         <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
@@ -202,7 +202,7 @@ export function CustomerInfoForm({ customer, token, onComplete, onDraftSave }: C
                 </div>
 
                 <div className="col-span-1 md:col-span-2 space-y-2">
-                    <Label htmlFor="invoice_address" className="text-[10px] uppercase tracking-widest text-muted-foreground">Địa chỉ xuất hóa đơn (nếu khác)</Label>
+                    <Label htmlFor="invoice_address" className="text-[10px] text-muted-foreground">Địa chỉ xuất hóa đơn (nếu khác)</Label>
                     <div className="relative">
                         <FileText className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
                         <Input

@@ -449,7 +449,7 @@ export default function LandingPage() {
                             { value: "24/7", label: "Hỗ trợ kỹ thuật" },
                         ].map((stat, i) => (
                             <div key={i} className="space-y-2">
-                                <div className="text-4xl md:text-5xl font-black text-white tracking-tighter tabular-nums">
+                                <div className="text-4xl md:text-5xl font-black text-white tabular-nums">
                                     {stat.value}
                                 </div>
                                 <div className="text-xs font-semibold text-muted-foreground">

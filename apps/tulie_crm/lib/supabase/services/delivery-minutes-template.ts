@@ -25,7 +25,7 @@ export const deliveryMinutesTemplate = `
     </tr>
   </table>
 
-  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0; text-transform: uppercase;">BIÊN BẢN NGHIỆM THU VÀ BÀN GIAO SẢN PHẨM/DỊCH VỤ</p>
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0; text-transform: ;">BIÊN BẢN NGHIỆM THU VÀ BÀN GIAO SẢN PHẨM/DỊCH VỤ</p>
 
   <!-- Căn cứ -->
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Hợp đồng dịch vụ số {{contract_number}} đã ký kết giữa Bên A và Bên B;</p>
@@ -39,7 +39,7 @@ export const deliveryMinutesTemplate = `
     <colgroup><col style="width:210px"><col style="width:auto"><col style="width:80px"><col style="width:auto"></colgroup>
     <tr style="border-bottom:1px solid #000;">
       <td style="font-weight:bold; padding:4px 20px 4px 0; vertical-align:top; white-space:nowrap;">Bên sử dụng dịch vụ (Bên A)</td>
-      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top; text-transform:uppercase;">{{customer_company}}</td>
+      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top; text-transform:;">{{customer_company}}</td>
     </tr>
     <tr><td style="vertical-align:top;">Người đại diện pháp luật:</td><td style="font-weight:bold; vertical-align:top;">{{customer_representative_title}} {{customer_representative}}</td><td style="vertical-align:top;">Chức vụ:</td><td style="vertical-align:top;">{{customer_position}}</td></tr>
     <tr><td style="vertical-align:top;">Địa chỉ liên hệ:</td><td colspan="3" style="vertical-align:top;">{{customer_address}}</td></tr>

@@ -67,7 +67,7 @@ export const THEME = {
 // ─── Quick Reference: What NOT to do ──────────────────────────────────────
 // ❌ rounded-md on buttons/cards/dropdown items
 // ❌ font-black (900) in dashboard
-// ❌ uppercase + tracking-widest in dashboard
+// ❌  +  in dashboard
 // ❌ shadow-xl, shadow-lg on buttons/cards
 // ❌ text-[9px], text-[10px], text-[11px] arbitrary sizes
 // ❌ bg-green-500, bg-red-100, bg-yellow-100 colorful backgrounds

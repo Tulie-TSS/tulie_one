@@ -26,7 +26,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                     </Button>
                     <div className="space-y-2">
                         <div className="flex items-center gap-3 flex-wrap">
-                            <h1 className="text-2xl font-semibold tracking-tight">{contract.title}</h1>
+                            <h1 className="text-2xl font-semibold">{contract.title}</h1>
                             <div className="px-2.5 py-0.5 rounded-md border bg-muted/50 font-medium text-xs flex items-center">
                                 {contract.contract_number}
                             </div>
@@ -271,7 +271,7 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                                                                 {milestone.name || milestone.label}
                                                             </span>
                                                             {milestone.type === 'delivery' && (
-                                                                <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-600 bg-zinc-100 px-1.5 py-0.5 rounded w-fit dark:bg-zinc-800 dark:text-zinc-300">Bàn giao</span>
+                                                                <span className="text-[10px] font-bold text-zinc-600 bg-zinc-100 px-1.5 py-0.5 rounded w-fit dark:bg-zinc-800 dark:text-zinc-300">Bàn giao</span>
                                                             )}
                                                         </div>
                                                     </TableCell>

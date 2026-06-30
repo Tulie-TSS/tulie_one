@@ -64,7 +64,7 @@ export function StatCard({
                 )}
             </CardHeader>
             <CardContent>
-                <div className="text-3xl font-bold tracking-tight">{value}</div>
+                <div className="text-3xl font-bold">{value}</div>
                 {description && (
                     <div className="mt-4 flex items-center gap-2 text-sm">
                         <span className="font-medium text-foreground">{description}</span>

@@ -55,7 +55,7 @@ export default function QuotePasswordForm({ token, customerName }: { token: stri
                         <Lock className="h-6 w-6 text-white" />
                     </div>
                     <div className="space-y-1">
-                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Secure Access</p>
+                        <p className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground">Secure Access</p>
                         <h1 className="text-2xl font-bold text-foreground">Xem Báo Giá</h1>
                     </div>
                 </div>
@@ -120,7 +120,7 @@ export default function QuotePasswordForm({ token, customerName }: { token: stri
 
                             <Button
                                 type="submit"
-                                className="w-full h-12 text-[11px] font-bold uppercase tracking-widest rounded-md bg-zinc-950 hover:bg-zinc-800 text-white transition-all active:scale-[0.97] shadow-xl shadow-zinc-950/10 mt-2"
+                                className="w-full h-12 text-[11px] font-bold rounded-md bg-zinc-950 hover:bg-zinc-800 text-white transition-all active:scale-[0.97] shadow-xl shadow-zinc-950/10 mt-2"
                                 disabled={isLoading || !password || !captchaValue}
                             >
                                 {isLoading ? (

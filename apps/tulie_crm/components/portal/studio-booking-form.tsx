@@ -371,12 +371,12 @@ export function StudioBookingForm() {
 
                                 {/* Bank Info */}
                                 <div className="border-t pt-4 space-y-2">
-                                    <p className="text-xs uppercase tracking-wide text-muted-foreground">Thông tin chuyển khoản</p>
+                                    <p className="text-xs text-muted-foreground">Thông tin chuyển khoản</p>
                                     <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-sm">
                                         <span className="text-muted-foreground">Ngân hàng:</span>
                                         <span className="font-bold">Vietinbank</span>
                                         <span className="text-muted-foreground">Số TK:</span>
-                                        <span className="font-bold font-mono tracking-wider">104002106705</span>
+                                        <span className="font-bold font-mono">104002106705</span>
                                         <span className="text-muted-foreground">Chủ TK:</span>
                                         <span className="font-bold">NGHIEM THI LIEN</span>
                                         <span className="text-muted-foreground">Nội dung:</span>

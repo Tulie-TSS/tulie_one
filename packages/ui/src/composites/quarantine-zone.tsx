@@ -142,7 +142,7 @@ export function QuarantineZone({
               <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
                 {task.requestedBy && <span>By: {task.requestedBy}</span>}
                 {task.priority && (
-                  <span className="font-medium uppercase">{task.priority}</span>
+                  <span className="font-medium">{task.priority}</span>
                 )}
                 {task.effort && <span>{task.effort}</span>}
                 {task.conflictsWith && (

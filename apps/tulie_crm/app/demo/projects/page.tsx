@@ -53,15 +53,15 @@ export default function DemoProjects() {
 
                                 <div className="grid grid-cols-3 gap-3 pt-2 border-t border-border">
                                     <div>
-                                        <p className="text-[10px] font-semibold text-muted-foreground uppercase">Designer</p>
+                                        <p className="text-[10px] font-semibold text-muted-foreground">Designer</p>
                                         <p className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 mt-0.5">{p.designer}</p>
                                     </div>
                                     <div>
-                                        <p className="text-[10px] font-semibold text-muted-foreground uppercase">Giá trị</p>
+                                        <p className="text-[10px] font-semibold text-muted-foreground">Giá trị</p>
                                         <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200 mt-0.5">{formatCurrency(p.value)}</p>
                                     </div>
                                     <div>
-                                        <p className="text-[10px] font-semibold text-muted-foreground uppercase">Thời gian</p>
+                                        <p className="text-[10px] font-semibold text-muted-foreground">Thời gian</p>
                                         <p className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 mt-0.5">{p.startDate.slice(5)} → {p.endDate.slice(5)}</p>
                                     </div>
                                 </div>

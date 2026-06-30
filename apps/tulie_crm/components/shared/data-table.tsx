@@ -332,7 +332,7 @@ export function DataTable<TData, TValue>({
                                     return (
                                         <DropdownMenuCheckboxItem
                                             key={column.id}
-                                            className=""
+                                            
                                             checked={column.getIsVisible()}
                                             onCheckedChange={(value) =>
                                                 column.toggleVisibility(!!value)

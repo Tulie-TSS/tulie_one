@@ -5,7 +5,7 @@ export const quotationTemplate = `
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
         <tr>
             <td style="width: 45%; text-align: left; vertical-align: top;">
-                <p style="margin: 0; font-weight: 800; font-size: 10pt; text-transform: uppercase; border-bottom: 2px solid #000; display: inline-block; padding-bottom: 2px;">CÔNG TY TNHH TULIE AGENCY</p>
+                <p style="margin: 0; font-weight: 800; font-size: 10pt; text-transform: ; border-bottom: 2px solid #000; display: inline-block; padding-bottom: 2px;">CÔNG TY TNHH TULIE AGENCY</p>
                 <div style="font-size: 8pt; margin-top: 8px; font-weight: 500;">
                     <p style="margin: 2px 0;">MST: 0110163102</p>
                     <p style="margin: 2px 0;">Hotline: 098.898.4554</p>
@@ -22,14 +22,14 @@ export const quotationTemplate = `
 
     <!-- TITLE -->
     <div style="text-align: center; margin-bottom: 40px; border-top: 1px solid #eee; pt-20px;">
-        <h1 style="font-size: 18pt; font-weight: 900; text-transform: uppercase; margin: 20px 0 5px 0; letter-spacing: -0.5px;">Báo giá / Đơn đặt hàng</h1>
-        <p style="font-size: 10pt; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 2px;">QUOTATION & PURCHASE ORDER</p>
+        <h1 style="font-size: 18pt; font-weight: 900; text-transform: ; margin: 20px 0 5px 0; letter-spacing: -0.5px;">Báo giá / Đơn đặt hàng</h1>
+        <p style="font-size: 10pt; font-weight: 700; color: #666; text-transform: ; letter-spacing: 2px;">QUOTATION & PURCHASE ORDER</p>
         <p style="font-size: 9pt; font-weight: 800; margin-top: 10px;">Số: {{quotation_number}}</p>
     </div>
 
     <!-- CÁC BÊN -->
     <div style="margin-bottom: 25px;">
-        <h3 style="font-size: 11pt; font-weight: 800; text-transform: uppercase; border-left: 4px solid #000; padding-left: 10px; margin-bottom: 15px;">Bên đặt hàng (Client): {{customer_company}}</h3>
+        <h3 style="font-size: 11pt; font-weight: 800; text-transform: ; border-left: 4px solid #000; padding-left: 10px; margin-bottom: 15px;">Bên đặt hàng (Client): {{customer_company}}</h3>
         <table style="width: 100%; border-collapse: collapse; font-size: 10pt; margin-left: 14px;">
             <tr><td style="width: 25%; padding: 4px 0;">Người đại diện:</td><td style="width: 45%; padding: 4px 0;"><strong>{{customer_representative_title}} {{customer_representative}}</strong></td><td style="width: 10%; padding: 4px 0;">Chức vụ:</td><td style="padding: 4px 0;">{{customer_position}}</td></tr>
             <tr><td style="padding: 4px 0;">Địa chỉ:</td><td colspan="3" style="padding: 4px 0;">{{customer_address}}</td></tr>
@@ -39,7 +39,7 @@ export const quotationTemplate = `
     </div>
 
     <div style="margin-bottom: 35px;">
-        <h3 style="font-size: 11pt; font-weight: 800; text-transform: uppercase; border-left: 4px solid #000; padding-left: 10px; margin-bottom: 15px;">Bên nhận đặt hàng (Provider): TULIE AGENCY</h3>
+        <h3 style="font-size: 11pt; font-weight: 800; text-transform: ; border-left: 4px solid #000; padding-left: 10px; margin-bottom: 15px;">Bên nhận đặt hàng (Provider): TULIE AGENCY</h3>
         <table style="width: 100%; border-collapse: collapse; font-size: 10pt; margin-left: 14px;">
             <tr><td style="width: 25%; padding: 4px 0;">Người đại diện:</td><td style="width: 45%; padding: 4px 0;"><strong>Ông Nguyễn Thanh Tùng</strong></td><td style="width: 10%; padding: 4px 0;">Chức vụ:</td><td style="padding: 4px 0;">Giám đốc</td></tr>
             <tr><td style="padding: 4px 0;">Địa chỉ:</td><td colspan="3" style="padding: 4px 0;">Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Thành phố Hà Nội, Việt Nam</td></tr>
@@ -48,7 +48,7 @@ export const quotationTemplate = `
     </div>
 
     <!-- ĐIỀU KHOẢN -->
-    <h3 style="font-size: 11pt; font-weight: 800; text-transform: uppercase; margin-bottom: 15px;">Điều 1: Nội dung và giá trị đơn đặt hàng</h3>
+    <h3 style="font-size: 11pt; font-weight: 800; text-transform: ; margin-bottom: 15px;">Điều 1: Nội dung và giá trị đơn đặt hàng</h3>
     <p style="font-size: 10pt; margin-bottom: 15px;">1.1 Bên A cam kết đặt hàng các sản phẩm, dịch vụ như sau:</p>
     
     <table style="width:100%; border-collapse:collapse; margin-bottom:12px; font-size:8pt;">
@@ -78,7 +78,7 @@ export const quotationTemplate = `
       </tr>
     </table>
 
-    <h3 style="font-size: 11pt; font-weight: 800; text-transform: uppercase; margin-top: 30px; margin-bottom: 15px;">Điều 2: Giá trị hợp đồng và thanh toán</h3>
+    <h3 style="font-size: 11pt; font-weight: 800; text-transform: ; margin-top: 30px; margin-bottom: 15px;">Điều 2: Giá trị hợp đồng và thanh toán</h3>
     <div style="font-size: 10pt; border: 1px solid #000; padding: 20px; background-color: #fafafa;">
         <p style="margin: 0 0 10px 0;">2.1. Tổng giá trị: <strong>{{total_amount_number}} VND</strong></p>
         <p style="margin: 0 0 15px 0;">(Bằng chữ: <em>{{amount_in_words}}</em>)</p>
@@ -93,12 +93,12 @@ export const quotationTemplate = `
     <table style="width: 100%; border-collapse: collapse; margin-top: 60px; text-align: center; font-size: 10pt; page-break-inside: avoid;">
         <tr>
             <td style="width: 50%;">
-                <p style="font-weight: 800; text-transform: uppercase; margin: 0;">Đại diện Bên A</p>
+                <p style="font-weight: 800; text-transform: ; margin: 0;">Đại diện Bên A</p>
                 <p style="margin: 5px 0 80px 0; font-size: 8pt; font-style: italic; color: #666;">(Ký và ghi rõ họ tên)</p>
                 <p style="font-weight: 800;">{{customer_representative}}</p>
             </td>
             <td style="width: 50%;">
-                <p style="font-weight: 800; text-transform: uppercase; margin: 0;">Đại diện Bên B</p>
+                <p style="font-weight: 800; text-transform: ; margin: 0;">Đại diện Bên B</p>
                 <p style="margin: 5px 0 80px 0; font-size: 8pt; font-style: italic; color: #666;">(Ký và đóng dấu)</p>
                 <p style="font-weight: 800;">NGUYỄN THANH TÙNG</p>
             </td>

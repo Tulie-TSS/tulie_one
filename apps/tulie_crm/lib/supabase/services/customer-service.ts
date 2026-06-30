@@ -23,20 +23,48 @@ export async function getCustomers(type?: 'individual' | 'business') {
             return []
         }
 
+        // For individual customers, also fetch retail_orders by phone to catch
+        // orders that weren't linked via customer_id FK
+        const individualCustomers = (data || []).filter((c: any) => c.customer_type === 'individual' && c.phone)
+        const phoneNumbers = individualCustomers.map((c: any) => c.phone).filter(Boolean)
+        
+        let ordersByPhone: Record<string, any[]> = {}
+        if (phoneNumbers.length > 0) {
+            const { data: phoneOrders } = await supabase
+                .from('retail_orders')
+                .select('customer_phone, total_amount, paid_amount, payment_status, order_status, customer_id')
+                .in('customer_phone', phoneNumbers)
+            
+            if (phoneOrders) {
+                for (const order of phoneOrders) {
+                    const phone = order.customer_phone
+                    if (!ordersByPhone[phone]) ordersByPhone[phone] = []
+                    ordersByPhone[phone].push(order)
+                }
+            }
+        }
+
         const customersWithRevenue = (data || []).map((customer: any) => {
             const quotations = customer.quotations || []
             const contracts = customer.contracts || []
-            const retailOrders = customer.retail_orders || []
             
             let quotationRevenue = 0
             let actualRevenue = 0
             
             if (customer.customer_type === 'individual') {
-                quotationRevenue = retailOrders
+                // Merge orders from FK join and phone matching (deduplicate)
+                const fkOrders = customer.retail_orders || []
+                const phoneMatchedOrders = customer.phone ? (ordersByPhone[customer.phone] || []) : []
+                
+                // Use phone-matched orders as primary (they include all orders for this phone)
+                // FK orders are a subset, so phone-matched is the superset
+                const allOrders = phoneMatchedOrders.length > 0 ? phoneMatchedOrders : fkOrders
+                
+                quotationRevenue = allOrders
                     .filter((o: any) => o.order_status !== 'cancelled')
                     .reduce((sum: number, o: any) => sum + (o.total_amount || 0), 0)
                 
-                actualRevenue = retailOrders
+                actualRevenue = allOrders
                     .filter((o: any) => o.order_status !== 'cancelled')
                     .reduce((sum: number, o: any) => sum + (o.paid_amount || 0), 0)
             } else {
@@ -80,17 +108,31 @@ export async function getCustomerById(id: string) {
         if (data) {
             const quotations = data.quotations || []
             const contracts = data.contracts || []
-            const retailOrders = data.retail_orders || []
             
             let quotationRevenue = 0
             let actualRevenue = 0
             
             if (data.customer_type === 'individual') {
-                quotationRevenue = retailOrders
+                // Also fetch orders by phone to catch unlinked orders
+                const fkOrders = data.retail_orders || []
+                let allOrders = fkOrders
+                
+                if (data.phone) {
+                    const { data: phoneOrders } = await supabase
+                        .from('retail_orders')
+                        .select('total_amount, paid_amount, payment_status, order_status')
+                        .eq('customer_phone', data.phone)
+                    
+                    if (phoneOrders && phoneOrders.length > 0) {
+                        allOrders = phoneOrders
+                    }
+                }
+                
+                quotationRevenue = allOrders
                     .filter((o: any) => o.order_status !== 'cancelled')
                     .reduce((sum: number, o: any) => sum + (o.total_amount || 0), 0)
                 
-                actualRevenue = retailOrders
+                actualRevenue = allOrders
                     .filter((o: any) => o.order_status !== 'cancelled')
                     .reduce((sum: number, o: any) => sum + (o.paid_amount || 0), 0)
             } else {

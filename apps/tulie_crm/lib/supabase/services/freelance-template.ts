@@ -45,7 +45,7 @@ export const freelanceTemplate = `
     <!-- BÊN A -->
     <tr style="border-bottom:1px solid #000;">
       <td style="font-weight:bold; padding:4px 10px 4px 0; vertical-align:top; white-space:nowrap; font-size:9pt;">Bên thuê dịch vụ (Bên A)</td>
-      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top; text-transform:uppercase;">CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</td>
+      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top; text-transform:;">CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</td>
     </tr>
     <tr>
       <td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td>
@@ -82,7 +82,7 @@ export const freelanceTemplate = `
     <!-- BÊN B -->
     <tr style="border-bottom:1px solid #000;">
       <td style="font-weight:bold; padding:4px 10px 4px 0; vertical-align:top; white-space:nowrap; font-size:9pt;">Bên thực hiện (Bên B)</td>
-      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top; text-transform:uppercase;">{{freelancer_name}}</td>
+      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top; text-transform:;">{{freelancer_name}}</td>
     </tr>
     <tr>
       <td style="vertical-align:top; white-space:nowrap;">Số CCCD/CMND:</td>

@@ -339,7 +339,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                         </div>
                                                     )}
                                                 </div>
-                                                <h4 className={cn("text-base font-bold leading-tight tracking-tight", isActive ? "text-slate-900" : "text-slate-800")}>
+                                                <h4 className={cn("text-base font-bold leading-tight ", isActive ? "text-slate-900" : "text-slate-800")}>
                                                     {opt.title || `Gói tùy chọn ${idx + 1}`}
                                                 </h4>
                                                 
@@ -354,7 +354,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                         <div className="text-[11px] font-medium text-muted-foreground mb-0.5">
                                                             Tổng đầu tư
                                                         </div>
-                                                        <div className="text-xl font-bold tabular-nums tracking-tight text-slate-900 leading-none">
+                                                        <div className="text-xl font-bold tabular-nums text-slate-900 leading-none">
                                                             {formatCurrency(opt.total_amount)}
                                                         </div>
                                                     </div>
@@ -375,7 +375,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                         <Clock className="h-5 w-5" />
                                     </div>
                                     <div className="flex flex-col gap-1 pt-0.5">
-                                        <CardTitle className="text-lg sm:text-[19px] font-bold tracking-tight text-slate-900 leading-none">
+                                        <CardTitle className="text-lg sm:text-[19px] font-bold text-slate-900 leading-none">
                                             Lịch sử phiên bản
                                         </CardTitle>
                                         <CardDescription className="text-[13px] text-slate-500 font-medium leading-relaxed mt-1">
@@ -447,7 +447,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                         )}
                                                     </div>
                                                     <div className="shrink-0 flex flex-col items-end gap-1">
-                                                        <span className={cn("text-[15px] font-bold tabular-nums tracking-tight", isActive ? "text-emerald-900" : "text-slate-900")}>
+                                                        <span className={cn("text-[15px] font-bold tabular-nums ", isActive ? "text-emerald-900" : "text-slate-900")}>
                                                             {formatCurrency(item.total_amount)}
                                                         </span>
                                                         <span className={cn("text-[11px] font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity", isActive ? "text-emerald-600" : "text-slate-600 hover:text-slate-900")}>
@@ -901,7 +901,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                         </div>
                                         <div className="flex justify-between items-center py-3 bg-slate-50 -mx-4 px-4 rounded-b-lg">
                                             <span className="font-bold text-slate-900 text-[15px]">Tổng cộng thanh toán</span>
-                                            <span className="font-bold text-xl text-slate-900 tabular-nums tracking-tight">{formatCurrency(finalAmount)}</span>
+                                            <span className="font-bold text-xl text-slate-900 tabular-nums">{formatCurrency(finalAmount)}</span>
                                         </div>
                                         <div className="flex justify-between items-start pt-2.5 text-[11px] text-muted-foreground">
                                             <span className="shrink-0 italic">Số tiền viết bằng chữ:</span>
@@ -1061,14 +1061,14 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                 </span>
                             </div>
                             <div className="flex items-baseline gap-1.5">
-                                <span className="text-[28px] font-bold text-slate-900 leading-none tabular-nums tracking-tight">{new Intl.NumberFormat('vi-VN').format(finalAmount)}</span>
+                                <span className="text-[28px] font-bold text-slate-900 leading-none tabular-nums">{new Intl.NumberFormat('vi-VN').format(finalAmount)}</span>
                                 <span className="text-sm font-bold text-muted-foreground">VND</span>
                             </div>
                         </div>
                         
                         <div className="sm:hidden flex flex-col items-center w-full mb-1">
                             <span className="text-[12px] font-medium text-muted-foreground mb-0.5">Tổng thanh toán</span>
-                            <span className="text-2xl font-bold text-slate-900 tabular-nums tracking-tight">{new Intl.NumberFormat('vi-VN').format(finalAmount)} <span className="text-sm text-muted-foreground">VND</span></span>
+                            <span className="text-2xl font-bold text-slate-900 tabular-nums">{new Intl.NumberFormat('vi-VN').format(finalAmount)} <span className="text-sm text-muted-foreground">VND</span></span>
                         </div>
 
                         <div className="grid grid-cols-2 sm:flex sm:items-center gap-2.5 w-full sm:w-auto">

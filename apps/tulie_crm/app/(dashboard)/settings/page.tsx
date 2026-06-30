@@ -12,7 +12,7 @@ import { Label } from '@repo/ui'
 import { Separator } from '@repo/ui'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@repo/ui'
 import { Switch } from '@repo/ui'
-import { Building2, Bell, Palette, Shield, Database as DatabaseIcon, Tag, ListFilter, Plus, Trash2, Box, Send, Mail, CheckCircle2, Globe, Settings, BookOpen, FileText, CreditCard, Wallet, RefreshCw, Copy, GraduationCap, User } from 'lucide-react'
+import { Building2, Bell, Palette, Shield, Database as DatabaseIcon, Tag, ListFilter, Plus, Trash2, Box, Send, Mail, CheckCircle2, Globe, Settings, BookOpen, FileText, CreditCard, Wallet, RefreshCw, Copy, GraduationCap, User, Target } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import { toast } from 'sonner'
 import { useTheme } from 'next-themes'
@@ -36,7 +36,9 @@ import {
     getBankAccounts,
     updateBankAccounts,
     getNoteTemplates,
-    updateNoteTemplates
+    updateNoteTemplates,
+    getCashflowTargets,
+    updateCashflowTargets
 } from '@/lib/supabase/services/settings-service'
 import { testTelegramConnection } from '@/lib/supabase/services/telegram-service'
 import { testSmtpConnection, sendEmail } from '@/lib/supabase/services/email-service'
@@ -114,6 +116,14 @@ export default function SettingsPage() {
     const [noteTemplates, setNoteTemplates] = useState<any[]>([])
     const [isSavingNoteTemplates, setIsSavingNoteTemplates] = useState(false)
 
+    // States for Cashflow Targets
+    const [cashflowTargets, setCashflowTargets] = useState({
+        month: 50000000,
+        quarter: 150000000,
+        year: 600000000
+    })
+    const [isSavingTargets, setIsSavingTargets] = useState(false)
+
     const [loadedTabs, setLoadedTabs] = React.useState<Set<string>>(new Set(['company']))
 
     const loadTabData = React.useCallback((tab: string) => {
@@ -130,6 +140,7 @@ export default function SettingsPage() {
             case 'bundles': loadBundles(); break
             case 'bank-accounts': loadBankAccounts(); break
             case 'note-templates': loadNoteTemplates(); break
+            case 'targets': loadTargets(); break
             case 'statuses': break // static data
             case 'notifications': break
             case 'security': break
@@ -140,6 +151,7 @@ export default function SettingsPage() {
     useEffect(() => {
         loadCompanySettings()
         loadBrand()
+        loadTargets()
     }, [])
 
     const [bundles, setBundles] = useState<DocumentBundle[]>([])
@@ -249,6 +261,27 @@ export default function SettingsPage() {
             setBrands(data)
         } catch (error) {
             console.error('Failed to load brands:', error)
+        }
+    }
+
+    async function loadTargets() {
+        try {
+            const targets = await getCashflowTargets()
+            setCashflowTargets(targets)
+        } catch (error) {
+            console.error('Failed to load cashflow targets:', error)
+        }
+    }
+
+    const handleSaveTargets = async () => {
+        setIsSavingTargets(true)
+        try {
+            await updateCashflowTargets(cashflowTargets)
+            toast.success('Đã lưu mục tiêu dòng tiền')
+        } catch (error) {
+            toast.error('Lỗi khi lưu mục tiêu dòng tiền')
+        } finally {
+            setIsSavingTargets(false)
         }
     }
 
@@ -500,11 +533,11 @@ export default function SettingsPage() {
         <div className="space-y-6">
             {/* Page Header */}
             <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center border border-border">
-                    <Settings className="h-6 w-6 text-foreground" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 to-orange-400 flex items-center justify-center text-white shadow-sm shrink-0">
+                    <Settings className="h-5 w-5" />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight">Cài đặt</h1>
+                    <h1 className="text-2xl font-semibold">Cài đặt</h1>
                     <p className="text-sm font-medium text-muted-foreground mt-1">
                         Quản lý cấu hình hệ thống, thương hiệu và tích hợp.
                     </p>
@@ -576,6 +609,13 @@ export default function SettingsPage() {
                         >
                             <FileText className="h-4 w-4" />
                             Mẫu ghi chú / Điều khoản
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="targets"
+                            className="justify-start gap-3 px-3 py-2 data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-foreground data-[state=active]:rounded-lg hover:bg-muted/50 transition-all border-none"
+                        >
+                            <Target className="h-4 w-4" />
+                            Mục tiêu dòng tiền
                         </TabsTrigger>
 
                         <div className="py-2 px-3">
@@ -1557,7 +1597,7 @@ export default function SettingsPage() {
                                         </div>
                                     </div>
 
-                                    <Button onClick={handleCreateBundle} disabled={isSavingBundle} className="w-full h-12 rounded-md  text-base">
+                                    <Button onClick={handleCreateBundle} disabled={isSavingBundle} className="w-full h-12 rounded-md text-base">
                                         {isSavingBundle ? <LoadingSpinner size="sm" className="mr-2" /> : <Plus className="mr-2 h-5 w-5" />}
                                         Lưu bộ mẫu chứng từ
                                     </Button>
@@ -1858,7 +1898,7 @@ export default function SettingsPage() {
 
                             {/* Nút lưu chung */}
                             <div className="flex justify-end">
-                                <Button onClick={() => handleSaveBankAccounts(bankAccounts)} disabled={isSavingBankAccounts} className="rounded-md px-10 ">
+                                <Button onClick={() => handleSaveBankAccounts(bankAccounts)} disabled={isSavingBankAccounts} className="rounded-md px-10">
                                     {isSavingBankAccounts && <LoadingSpinner size="sm" className="mr-2" />}
                                     Lưu danh sách
                                 </Button>
@@ -1958,9 +1998,74 @@ export default function SettingsPage() {
                                     </Button>
                                 </div>
                                 <div className="flex justify-end pt-4">
-                                    <Button onClick={() => handleSaveNoteTemplates(noteTemplates)} disabled={isSavingNoteTemplates} className="rounded-md px-10 ">
+                                    <Button onClick={() => handleSaveNoteTemplates(noteTemplates)} disabled={isSavingNoteTemplates} className="rounded-md px-10">
                                         {isSavingNoteTemplates && <LoadingSpinner size="sm" className="mr-2" />}
                                         Lưu danh sách
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+
+                    {/* Targets Settings */}
+                    <TabsContent value="targets">
+                        <Card className="rounded-md border-border overflow-hidden">
+                            <CardHeader className="border-b border-border">
+                                <CardTitle>Mục tiêu dòng tiền (Doanh thu)</CardTitle>
+                                <CardDescription>
+                                    Cài đặt mục tiêu tài chính theo tháng, quý và năm để hệ thống tự động tính điểm sức khỏe doanh nghiệp.
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-6 pt-6">
+                                <div className="grid gap-6 sm:grid-cols-3">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="target_month">Mục tiêu theo tháng (VND)</Label>
+                                        <Input
+                                            id="target_month"
+                                            type="number"
+                                            value={cashflowTargets.month}
+                                            onChange={(e) => setCashflowTargets({ ...cashflowTargets, month: Number(e.target.value) })}
+                                            className="rounded-md"
+                                        />
+                                        <p className="text-[11px] text-muted-foreground font-semibold">
+                                            Định dạng: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(cashflowTargets.month || 0)}
+                                        </p>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="target_quarter">Mục tiêu theo quý (VND)</Label>
+                                        <Input
+                                            id="target_quarter"
+                                            type="number"
+                                            value={cashflowTargets.quarter}
+                                            onChange={(e) => setCashflowTargets({ ...cashflowTargets, quarter: Number(e.target.value) })}
+                                            className="rounded-md"
+                                        />
+                                        <p className="text-[11px] text-muted-foreground font-semibold">
+                                            Định dạng: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(cashflowTargets.quarter || 0)}
+                                        </p>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="target_year">Mục tiêu theo năm (VND)</Label>
+                                        <Input
+                                            id="target_year"
+                                            type="number"
+                                            value={cashflowTargets.year}
+                                            onChange={(e) => setCashflowTargets({ ...cashflowTargets, year: Number(e.target.value) })}
+                                            className="rounded-md"
+                                        />
+                                        <p className="text-[11px] text-muted-foreground font-semibold">
+                                            Định dạng: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(cashflowTargets.year || 0)}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex justify-end border-t border-border pt-4">
+                                    <Button
+                                        onClick={handleSaveTargets}
+                                        disabled={isSavingTargets}
+                                        className="h-9 px-6 font-medium rounded-md"
+                                    >
+                                        {isSavingTargets && <LoadingSpinner size="sm" className="mr-2" />}
+                                        Lưu cài đặt
                                     </Button>
                                 </div>
                             </CardContent>

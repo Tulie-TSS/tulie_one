@@ -140,17 +140,17 @@ export default function TemplatesPage() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center border border-border">
-                        <Files className="h-6 w-6 text-foreground" />
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 to-orange-400 flex items-center justify-center text-white shadow-sm shrink-0">
+                        <Files className="h-5 w-5" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">Mẫu giấy tờ</h1>
+                        <h1 className="text-2xl font-semibold">Mẫu giấy tờ</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Quản lý các mẫu báo giá, hợp đồng, đơn hàng, đề nghị thanh toán, biên bản giao nhận
                         </p>
                     </div>
                 </div>
-                <Button asChild>
+                <Button asChild className="bg-gradient-to-tr from-rose-500 to-orange-500 text-white border-none hover:opacity-90 transition-all shadow-sm hover:shadow-md rounded-md">
                     <Link href="/templates/new">
                         <Plus className="h-4 w-4" />
                         Thêm mẫu mới

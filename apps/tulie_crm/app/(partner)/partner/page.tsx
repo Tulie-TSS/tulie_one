@@ -59,7 +59,7 @@ export default async function PartnerDashboardPage() {
     return (
         <div className="space-y-6 max-w-5xl mx-auto w-full pb-10">
             <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-semibold tracking-tight">Partner Portal</h1>
+                <h1 className="text-2xl font-semibold">Partner Portal</h1>
                 <p className="text-sm text-muted-foreground">
                     Theo dõi khách hàng và tiến độ hoa hồng của bạn
                 </p>
@@ -153,7 +153,7 @@ export default async function PartnerDashboardPage() {
                                     )}
                                     <h4 className={`text-xs font-semibold mb-1 ${isAchieved ? 'text-primary' : 'text-muted-foreground'}`}>{tier.label}</h4>
                                     <div className="text-[11px] text-muted-foreground mb-1">Mốc {tier.revenue / 1000000}Tr</div>
-                                    <Badge variant={isAchieved ? 'default' : 'secondary'} className={`text-[10px] uppercase font-bold ${isAchieved ? 'bg-amber-500 text-white hover:bg-amber-600' : ''}`}>
+                                    <Badge variant={isAchieved ? 'default' : 'secondary'} className={`text-[10px] font-bold ${isAchieved ? 'bg-amber-500 text-white hover:bg-amber-600' : ''}`}>
                                         +{tier.bonus / 1000000}Tr VND
                                     </Badge>
                                 </div>
@@ -192,7 +192,7 @@ export default async function PartnerDashboardPage() {
                                                 </Badge>
                                             </td>
                                             <td className="p-4 align-middle text-muted-foreground">{deal.budget ? formatCurrency(deal.budget) : 'Chưa chốt'}</td>
-                                            <td className="p-4 align-middle uppercase text-[10px] tracking-wider font-semibold text-muted-foreground">
+                                            <td className="p-4 align-middle text-[10px] font-semibold text-muted-foreground">
                                                 {deal.partner_role === 'lead_only' ? 'Giới thiệu' : deal.partner_role === 'consult_close' ? 'Tư vấn chốt' : 'Tự chốt deal'}
                                             </td>
                                             <td className="p-4 align-middle text-right font-medium text-primary">

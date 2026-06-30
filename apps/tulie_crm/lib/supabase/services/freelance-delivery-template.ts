@@ -21,7 +21,7 @@ export const freelanceDeliveryTemplate = `
     </tr>
   </table>
 
-  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0; text-transform: uppercase;">BIÊN BẢN NGHIỆM THU VÀ BÀN GIAO SẢN PHẨM/DỊCH VỤ</p>
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0; text-transform: ;">BIÊN BẢN NGHIỆM THU VÀ BÀN GIAO SẢN PHẨM/DỊCH VỤ</p>
   <p style="text-align:center; font-size:11pt; margin: -15px 0 20px 0;">(KHOÁN VIỆC LẬP TRÌNH)</p>
 
   <!-- Căn cứ -->
@@ -37,7 +37,7 @@ export const freelanceDeliveryTemplate = `
     <!-- BÊN NHẬN (BÊN A) -->
     <tr style="border-bottom:1px solid #000;">
       <td style="font-weight:bold; padding:4px 20px 4px 0; vertical-align:top; white-space:nowrap;">Bên nhận bàn giao (Bên A)</td>
-      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top; text-transform:uppercase;">CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</td>
+      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top; text-transform:;">CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</td>
     </tr>
     <tr>
       <td style="vertical-align:top;">Người đại diện pháp luật:</td>
@@ -67,7 +67,7 @@ export const freelanceDeliveryTemplate = `
     <!-- BÊN GIAO (BÊN B) -->
     <tr style="border-bottom:1px solid #000;">
       <td style="font-weight:bold; padding:4px 20px 4px 0; vertical-align:top; white-space:nowrap;">Bên bàn giao (Bên B)</td>
-      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top; text-transform:uppercase;">{{freelancer_name}}</td>
+      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top; text-transform:;">{{freelancer_name}}</td>
     </tr>
     <tr>
       <td style="vertical-align:top;">Số CCCD/CMND:</td>

@@ -223,7 +223,7 @@ export default function ExpensesPage() {
                         <Receipt className="h-5 w-5" />
                     </div>
                     <div className="flex flex-col gap-0.5">
-                        <h1 className="text-2xl font-bold tracking-tight text-foreground">Quản lý Chi phí</h1>
+                        <h1 className="text-2xl font-bold text-foreground">Quản lý Chi phí</h1>
                         <p className="text-xs text-muted-foreground">Theo dõi và quản lý các khoản chi phí vận hành (OpEx) phục vụ báo cáo P&L</p>
                     </div>
                 </div>
@@ -253,8 +253,8 @@ export default function ExpensesPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="md:col-span-1 rounded-3xl border border-rose-100 dark:border-rose-950/20 bg-rose-50/30 dark:bg-rose-950/5 p-5 flex items-center justify-between shadow-sm">
                     <div className="space-y-1">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-450">Tổng chi phí đã nhập</span>
-                        <h2 className="text-2xl font-extrabold tracking-tight text-rose-650 leading-none">
+                        <span className="text-[11px] font-bold text-rose-600 dark:text-rose-450">Tổng chi phí đã nhập</span>
+                        <h2 className="text-2xl font-extrabold text-rose-650 leading-none">
                             {formatCurrency(totalAmount)}
                         </h2>
                     </div>

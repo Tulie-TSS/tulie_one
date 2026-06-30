@@ -195,7 +195,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                 <div className="bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm mb-8">
                     <div className="flex items-start justify-between gap-4">
                         <div>
-                            <p className="text-zinc-500 text-xs font-medium uppercase tracking-wider mb-1">
+                            <p className="text-zinc-500 text-xs font-medium mb-1">
                                 {contract.contract_number || 'Hợp đồng đang chờ ký kết'}
                             </p>
                             <h1 className="text-zinc-900 font-semibold text-lg leading-tight">{contract.title}</h1>
@@ -226,11 +226,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                     {STEPS.map((s, i) => (
                         <Fragment key={s.id}>
                             <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 shrink-0">
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
-                                    step > s.id ? 'bg-zinc-900 text-white' :
-                                    step === s.id ? 'bg-zinc-900 text-white ring-4 ring-zinc-900/10' :
-                                    'bg-zinc-100 border border-zinc-200 text-zinc-400'
-                                }`}>
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${ step > s.id ? 'bg-zinc-900 text-white' : step === s.id ? 'bg-zinc-900 text-white ring-4 ring-zinc-900/10' : 'bg-zinc-100 border border-zinc-200 text-zinc-400' }`}>
                                     {step > s.id ? <CheckCircle2 className="w-4 h-4" /> : <s.icon className="w-4 h-4" />}
                                 </div>
                                 <span className={`text-[10px] sm:text-xs font-medium transition-colors whitespace-nowrap ${step >= s.id ? 'text-zinc-900' : 'text-zinc-400'}`}>
@@ -377,7 +373,7 @@ export default function CtvForm({ token, contract, initialData, isAlreadySubmitt
                                         value={form.bank_account_name}
                                         onChange={set('bank_account_name')}
                                         placeholder="Ví dụ: NGUYEN VAN A"
-                                        className={`${inputCls} uppercase`}
+                                        className={`${inputCls}`}
                                     />
                                 </Field>
 
@@ -563,7 +559,7 @@ function ReviewSection({ title, children }: { title: string; children: React.Rea
     return (
         <div className="rounded-xl border bg-white overflow-hidden">
             <div className="bg-zinc-50 border-b px-4 py-2.5">
-                <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">{title}</p>
+                <p className="text-xs font-semibold text-zinc-500">{title}</p>
             </div>
             <div className="p-4 divide-y divide-zinc-100">{children}</div>
         </div>

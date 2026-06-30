@@ -26,7 +26,7 @@ import { Separator } from '@repo/ui'
 import { ArrowLeft, Save, Trash2 } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Customer, User } from '@/types'
 import { updateCustomer, deleteCustomer } from '@/lib/supabase/services/customer-service'
 import { getUsers } from '@/lib/supabase/services/user-service'
@@ -53,6 +53,9 @@ const customerSchema = z.object({
  status: z.enum(['lead', 'prospect', 'customer', 'vip', 'churned']),
  assigned_to: z.string().min(1, 'Vui lòng chọn người phụ trách'),
  notes: z.string().optional(),
+ representative: z.string().optional(),
+ representative_title: z.string().optional(),
+ position: z.string().optional(),
 })
 
 type CustomerFormData = z.infer<typeof customerSchema>
@@ -69,13 +72,13 @@ export function CustomerForm({ customer, isStudio = false }: CustomerFormProps) 
  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
  const [staff, setStaff] = useState<User[]>([])
 
- useState(() => {
- const fetchStaff = async () => {
- const users = await getUsers()
- setStaff(users)
- }
- fetchStaff()
- })
+ useEffect(() => {
+   const fetchStaff = async () => {
+     const users = await getUsers()
+     setStaff(users)
+   }
+   fetchStaff()
+ }, [])
 
  const {
  register,
@@ -97,6 +100,9 @@ export function CustomerForm({ customer, isStudio = false }: CustomerFormProps) 
  status: customer.status,
  assigned_to: customer.assigned_to || '',
  notes: customer.notes || '',
+ representative: customer.representative || '',
+ representative_title: customer.representative_title || '',
+ position: customer.position || '',
  },
  })
 
@@ -186,16 +192,16 @@ export function CustomerForm({ customer, isStudio = false }: CustomerFormProps) 
 
  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
  <div className="grid gap-6 lg:grid-cols-2">
- {/* Basic Info */}
+ {/* Card 1: Thông tin liên hệ & Quản lý */}
  <Card>
  <CardHeader>
- <CardTitle>Thông tin cơ bản</CardTitle>
- <CardDescription>Thông tin chính của doanh nghiệp</CardDescription>
+ <CardTitle>Thông tin liên hệ</CardTitle>
+ <CardDescription>Thông tin liên lạc và quản lý khách hàng</CardDescription>
  </CardHeader>
  <CardContent className="space-y-4">
  <div className="space-y-2">
  <Label htmlFor="company_name">
- Tên công ty <span className="text-destructive">*</span>
+ Tên khách hàng / Công ty <span className="text-destructive">*</span>
  </Label>
  <Input id="company_name" {...register('company_name')} />
  {errors.company_name && (
@@ -203,12 +209,11 @@ export function CustomerForm({ customer, isStudio = false }: CustomerFormProps) 
  )}
  </div>
 
- <div className="space-y-2">
- <Label htmlFor="tax_code">{isStudio ? 'Số CCCD' : 'Mã số thuế'}</Label>
- <Input id="tax_code" {...register('tax_code')} />
- </div>
-
  <div className="grid gap-4 sm:grid-cols-2">
+ <div className="space-y-2">
+ <Label htmlFor="phone">Số điện thoại</Label>
+ <Input id="phone" {...register('phone')} />
+ </div>
  <div className="space-y-2">
  <Label htmlFor="email">Email</Label>
  <Input id="email" type="email" {...register('email')} />
@@ -216,12 +221,17 @@ export function CustomerForm({ customer, isStudio = false }: CustomerFormProps) 
  <p className="text-sm text-destructive">{errors.email.message}</p>
  )}
  </div>
- <div className="space-y-2">
- <Label htmlFor="phone">Số điện thoại</Label>
- <Input id="phone" {...register('phone')} />
- </div>
  </div>
 
+ <div className="space-y-2">
+ <Label htmlFor="website">Website</Label>
+ <Input id="website" placeholder="https://..." {...register('website')} />
+ {errors.website && (
+ <p className="text-sm text-destructive">{errors.website.message}</p>
+ )}
+ </div>
+
+ <div className="grid gap-4 sm:grid-cols-2">
  <div className="space-y-2">
  <Label htmlFor="status">Trạng thái</Label>
  <Select
@@ -262,27 +272,7 @@ export function CustomerForm({ customer, isStudio = false }: CustomerFormProps) 
  <p className="text-sm text-destructive">{errors.assigned_to.message}</p>
  )}
  </div>
- </CardContent>
- </Card>
-
- {/* Address & Other */}
- <Card>
- <CardHeader>
- <CardTitle>Địa chỉ & Thông tin khác</CardTitle>
- <CardDescription>Thông tin địa chỉ và xuất hóa đơn</CardDescription>
- </CardHeader>
- <CardContent className="space-y-4">
- <div className="space-y-2">
- <Label htmlFor="address">Địa chỉ</Label>
- <Textarea id="address" {...register('address')} />
  </div>
-
- <div className="space-y-2">
- <Label htmlFor="invoice_address">Địa chỉ xuất hóa đơn</Label>
- <Textarea id="invoice_address" placeholder="Để trống nếu giống địa chỉ công ty" {...register('invoice_address')} />
- </div>
-
- <Separator />
 
  <div className="grid gap-4 sm:grid-cols-2">
  <div className="space-y-2">
@@ -317,6 +307,45 @@ export function CustomerForm({ customer, isStudio = false }: CustomerFormProps) 
  </SelectContent>
  </Select>
  </div>
+ </div>
+ </CardContent>
+ </Card>
+
+ {/* Card 2: Thông tin đứng tên hợp đồng (Thông tin pháp lý) */}
+ <Card>
+ <CardHeader>
+ <CardTitle>Thông tin đứng tên hợp đồng</CardTitle>
+ <CardDescription>Thông tin pháp lý đại diện ký kết hợp đồng</CardDescription>
+ </CardHeader>
+ <CardContent className="space-y-4">
+ <div className="grid gap-4 sm:grid-cols-3">
+ <div className="space-y-2">
+ <Label htmlFor="representative_title">Danh xưng</Label>
+ <Input id="representative_title" placeholder="Ông/Bà/Anh/Chị..." {...register('representative_title')} />
+ </div>
+ <div className="space-y-2">
+ <Label htmlFor="representative">Người đại diện</Label>
+ <Input id="representative" placeholder="Họ và tên..." {...register('representative')} />
+ </div>
+ <div className="space-y-2">
+ <Label htmlFor="position">Chức vụ</Label>
+ <Input id="position" placeholder="Chức vụ..." {...register('position')} />
+ </div>
+ </div>
+
+ <div className="space-y-2">
+ <Label htmlFor="tax_code">{isStudio ? 'Số CCCD' : 'Mã số thuế'}</Label>
+ <Input id="tax_code" placeholder="0123456789..." {...register('tax_code')} />
+ </div>
+
+ <div className="space-y-2">
+ <Label htmlFor="address">Địa chỉ trụ sở</Label>
+ <Textarea id="address" rows={2} {...register('address')} />
+ </div>
+
+ <div className="space-y-2">
+ <Label htmlFor="invoice_address">Địa chỉ xuất hóa đơn</Label>
+ <Textarea id="invoice_address" placeholder="Để trống nếu giống địa chỉ công ty" rows={2} {...register('invoice_address')} />
  </div>
 
  <div className="space-y-2">

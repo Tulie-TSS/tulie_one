@@ -35,7 +35,7 @@ export default async function ProfilePage() {
                     </Avatar>
                 </div>
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight">Hồ sơ cá nhân</h1>
+                    <h1 className="text-2xl font-semibold">Hồ sơ cá nhân</h1>
                     <p className="text-sm font-medium text-muted-foreground mt-1">
                         Quản lý thông tin tài khoản và cấu hình cá nhân của bạn
                     </p>
@@ -48,7 +48,7 @@ export default async function ProfilePage() {
                     <CardHeader className="text-center pb-8">
                         <div className="flex justify-center mb-4">
                             <div className="relative">
-                                <Avatar className="h-28 w-28 border-4 border-background ">
+                                <Avatar className="h-28 w-28 border-4 border-background">
                                     <AvatarImage src={avatarUrl} />
                                     <AvatarFallback className="text-3xl bg-zinc-950 text-white">
                                         {fullName.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
@@ -56,7 +56,7 @@ export default async function ProfilePage() {
                                 </Avatar>
                             </div>
                         </div>
-                        <CardTitle className="text-xl text-foreground uppercase">{fullName}</CardTitle>
+                        <CardTitle className="text-xl text-foreground">{fullName}</CardTitle>
                         <CardDescription className="capitalize font-medium text-muted-foreground mt-1">{role}</CardDescription>
                     </CardHeader>
                     <CardContent className="p-6">

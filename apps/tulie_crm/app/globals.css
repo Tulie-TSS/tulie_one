@@ -363,8 +363,7 @@ body {
 [data-slot="table-head"] {
   font-size: 11px !important;
   font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
+  letter-spacing: normal !important;
   color: var(--muted-foreground) !important;
   border-bottom: 1px solid oklch(0.94 0.018 55 / 0.6) !important;
   height: 40px !important;

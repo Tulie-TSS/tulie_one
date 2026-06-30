@@ -47,7 +47,7 @@ export function PortalTitleEditor({ portalId, initialTitle }: PortalTitleEditorP
             <div className="flex items-center gap-2">
                 <Input
                     autoFocus
-                    className="h-8 max-w-[300px] text-lg font-semibold tracking-tight"
+                    className="h-8 max-w-[300px] text-lg font-semibold"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     onKeyDown={(e) => {
@@ -74,7 +74,7 @@ export function PortalTitleEditor({ portalId, initialTitle }: PortalTitleEditorP
 
     return (
         <div className="flex items-center gap-2 group">
-            <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
+            <h1 className="text-2xl font-semibold">{title}</h1>
             <Button 
                 size="icon" 
                 variant="ghost" 

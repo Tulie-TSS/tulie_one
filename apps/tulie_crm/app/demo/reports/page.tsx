@@ -97,7 +97,7 @@ export default function DemoReports() {
                         <CardContent className="pt-6 pb-4">
                             <kpi.icon className="h-5 w-5 text-muted-foreground mx-auto mb-2" />
                             <div className="text-2xl font-bold text-foreground dark:text-zinc-50">{kpi.value}</div>
-                            <p className="text-[10px] font-semibold text-muted-foreground uppercase mt-1">{kpi.label}</p>
+                            <p className="text-[10px] font-semibold text-muted-foreground mt-1">{kpi.label}</p>
                         </CardContent>
                     </Card>
                 ))}

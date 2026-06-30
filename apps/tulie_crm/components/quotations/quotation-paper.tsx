@@ -56,7 +56,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                 {/* Right Side: Large 'Báo giá' Header */}
                 <div className="text-right flex flex-col justify-start">
                     <div className="h-20 sm:h-24 flex flex-col justify-start items-end mb-10">
-                        <h2 className="text-[58px] text-black leading-[0.8] uppercase tracking-tighter" style={{ fontFamily: "'Kaine', 'Inter', sans-serif" }}>Báo giá</h2>
+                        <h2 className="text-[58px] text-black leading-[0.8]" style={{ fontFamily: "'Kaine', 'Inter', sans-serif" }}>Báo giá</h2>
                         <p className="text-[24px] text-foreground mt-1" style={{ fontFamily: "'Kaine', 'Inter', sans-serif" }}>Quotation</p>
                     </div>
                 </div>
@@ -65,7 +65,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
 
                 {/* Left Side: Full Company Specs */}
                 <div className="space-y-4 pt-2">
-                    <h1 className="text-[14px] text-black uppercase mb-2 whitespace-nowrap block w-full max-w-full">Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie</h1>
+                    <h1 className="text-[14px] text-black mb-2 whitespace-nowrap block w-full max-w-full">Công ty TNHH Dịch vụ và Giải pháp Công nghệ Tulie</h1>
                     <div className="space-y-2 text-[11px] text-foreground font-medium">
                         <div className="flex items-start gap-3">
                             <MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0 text-slate-400" />
@@ -88,7 +88,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
 
                 {/* Right Side: Quote Metadata */}
                 <div className="pt-2">
-                    <div className="space-y-2 text-[11px] uppercase text-right">
+                    <div className="space-y-2 text-[11px] text-right">
                         <div className="flex justify-end gap-2 group">
                             <span className="text-slate-400 group-hover:text-black">No.</span>
                             <span className="text-black bg-muted px-2 py-0.5 rounded ml-2">#{quotation.quotation_number}</span>
@@ -109,8 +109,8 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
             <div className="mt-12 bg-zinc-950 p-8 rounded-md text-white flex items-center justify-between relative overflow-hidden print:bg-black" style={{ backgroundImage: 'radial-gradient(circle at top right, #27272a, #09090b)', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
                 <div className="relative z-10 w-full grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 items-center">
                     <div>
-                        <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] mb-3">Người nhận — <span className="text-white font-semibold">Customer Information</span></p>
-                        <h3 className="text-2xl mb-4 uppercase">{quotation.customers?.company_name || quotation.customers?.full_name}</h3>
+                        <p className="text-[10px] text-muted-foreground tracking-[0.2em] mb-3">Người nhận — <span className="text-white font-semibold">Customer Information</span></p>
+                        <h3 className="text-2xl mb-4">{quotation.customers?.company_name || quotation.customers?.full_name}</h3>
                         <div className="flex flex-wrap gap-x-8 gap-y-2 text-[11px] font-medium text-zinc-300">
                             <div className="flex items-center gap-2">
                                 <Users className="h-3.5 w-3.5 text-muted-foreground" />
@@ -137,8 +137,8 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                             backgroundImage: 'radial-gradient(circle at 70% 20%, rgba(255,255,255,0.1) 0%, transparent 50%)'
                         }} />
                         <div className="relative z-10">
-                            <h3 className="text-[18px] uppercase text-white !important">Đề xuất giải pháp</h3>
-                            <p className="text-[10px] text-muted-foreground mt-0.5 uppercase tracking-widest font-medium">proposal — {proposalSections.length} hạng mục</p>
+                            <h3 className="text-[18px] text-white !important">Đề xuất giải pháp</h3>
+                            <p className="text-[10px] text-muted-foreground mt-0.5 font-medium">proposal — {proposalSections.length} hạng mục</p>
                         </div>
                     </div>
 
@@ -148,7 +148,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                                 {/* Group Title */}
                                 <div className="flex items-center gap-3 mb-8">
                                     <div className="h-2 w-2 rounded-full bg-zinc-950" />
-                                    <h4 className="text-[13px] text-foreground uppercase bg-muted border border-slate-100 px-4 py-1.5 rounded-full">
+                                    <h4 className="text-[13px] text-foreground bg-muted border border-slate-100 px-4 py-1.5 rounded-full">
                                         {section.label}
                                     </h4>
                                 </div>
@@ -167,7 +167,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                                             </div>
                                             <div className="text-center">
                                                 <p className="text-[10px] text-muted-foreground">Bước 1</p>
-                                                <h4 className="text-[13px] text-foreground uppercase">Báo giá & Đề xuất</h4>
+                                                <h4 className="text-[13px] text-foreground">Báo giá & Đề xuất</h4>
                                             </div>
                                         </div>
                                         <div className="rounded-md border border-slate-100 bg-white overflow-hidden group hover:border-input transition-all p-4">
@@ -185,7 +185,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                                             </div>
                                             <div className="text-center">
                                                 <p className="text-[10px] text-muted-foreground">Bước 2</p>
-                                                <h4 className="text-[12px] text-foreground uppercase">Hợp đồng dịch vụ</h4>
+                                                <h4 className="text-[12px] text-foreground">Hợp đồng dịch vụ</h4>
                                             </div>
                                         </div>
                                         <div className="rounded-md border border-dashed border-slate-200 bg-slate-50/50 p-4 h-[100px] flex items-center justify-center text-center">
@@ -201,7 +201,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                                             </div>
                                             <div className="text-center">
                                                 <p className="text-[10px] text-muted-foreground">Bước 3</p>
-                                                <h4 className="text-[12px] text-foreground uppercase">Bàn giao</h4>
+                                                <h4 className="text-[12px] text-foreground">Bàn giao</h4>
                                             </div>
                                         </div>
                                         <div className="rounded-md border border-dashed border-slate-200 bg-slate-50/50 p-4 h-[100px] flex items-center justify-center text-center">
@@ -222,17 +222,17 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                 <div className="rounded-md overflow-hidden border border-slate-200 relative">
                     {/* Subtle Watermark */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] rotate-[-15deg] z-0">
-                        <span className="text-[120px] uppercase whitespace-nowrap">Tulie Agency</span>
+                        <span className="text-[120px] whitespace-nowrap">Tulie Agency</span>
                     </div>
                     <table className="w-full text-left border-collapse text-[12px] relative z-10">
                         <thead>
                             <tr className="text-white relative overflow-hidden" style={{ backgroundImage: 'linear-gradient(to right, #09090b, #171717, #404040)', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
                                 <th className="py-3 px-3 font-semibold w-10 text-center relative z-10 font-mono">#</th>
-                                <th className="py-3 px-4 font-semibold uppercase relative z-10">Dịch vụ & Mô tả</th>
-                                <th className="py-3 px-3 font-semibold text-center w-24 uppercase relative z-10">ĐVT</th>
-                                <th className="py-3 px-3 font-semibold text-center w-16 uppercase relative z-10">SL</th>
-                                <th className="py-3 px-4 font-semibold text-right w-32 uppercase relative z-10">Đơn giá</th>
-                                <th className="py-3 px-4 font-semibold text-right w-36 uppercase relative z-10">Thành tiền</th>
+                                <th className="py-3 px-4 font-semibold relative z-10">Dịch vụ & Mô tả</th>
+                                <th className="py-3 px-3 font-semibold text-center w-24 relative z-10">ĐVT</th>
+                                <th className="py-3 px-3 font-semibold text-center w-16 relative z-10">SL</th>
+                                <th className="py-3 px-4 font-semibold text-right w-32 relative z-10">Đơn giá</th>
+                                <th className="py-3 px-4 font-semibold text-right w-36 relative z-10">Thành tiền</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
@@ -240,7 +240,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                                 <React.Fragment key={sectionName || 'default'}>
                                     {sectionName && (
                                         <tr className="bg-slate-50/50">
-                                            <td colSpan={6} className="py-2.5 px-4 text-[10px] text-foreground uppercase tracking-widest border-l-2 border-zinc-950">
+                                            <td colSpan={6} className="py-2.5 px-4 text-[10px] text-foreground border-l-2 border-zinc-950">
                                                 {sectionName}
                                             </td>
                                         </tr>
@@ -249,7 +249,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                                         <tr key={item.id} className="hover:bg-slate-50/30 transition-colors group">
                                             <td className="py-3 px-3 text-center text-slate-400 font-mono align-top">{idx + 1}</td>
                                             <td className="py-3 px-4 align-top">
-                                                <p className="font-bold text-foreground text-[13px] mb-0.5 uppercase">{item.name}</p>
+                                                <p className="font-bold text-foreground text-[13px] mb-0.5">{item.name}</p>
                                                 {item.description && (
                                                     <div className="text-slate-500 text-[11px] leading-relaxed mt-1">
                                                         {item.description.split('\n').map((line: string, lineIdx: number) => {
@@ -289,29 +289,29 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
             {/* Totals Section */}
             <div className="mt-8 grid grid-cols-1 md:grid-cols-[1fr_360px] gap-12 items-start">
                 <div className="bg-slate-50 p-6 rounded-md border border-slate-100">
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-2 flex items-center gap-2">
+                    <p className="text-[10px] text-muted-foreground mb-2 flex items-center gap-2">
                         <Info className="h-3 w-3" />
                         Bằng chữ / Amount in words
                     </p>
-                    <p className="text-[11px] text-zinc-800 font-semibold leading-relaxed first-letter:uppercase">
+                    <p className="text-[11px] text-zinc-800 font-semibold leading-relaxed first-letter:">
                         {readNumberToWords(finalAmount)}
                     </p>
                 </div>
 
                 <div className="space-y-2.5">
                     <div className="flex justify-between items-center text-[11px] px-2">
-                        <span className="text-slate-500 uppercase">Tạm tính / Subtotal</span>
+                        <span className="text-slate-500">Tạm tính / Subtotal</span>
                         <span className="text-foreground">{formatCurrency(subtotalRaw)}</span>
                     </div>
                     {totalDiscount > 0 && (
                         <div className="flex justify-between items-center text-[11px] px-2 text-green-600 font-medium">
-                            <span className="font-bold uppercase">Chiết khấu / Discount</span>
+                            <span className="font-bold">Chiết khấu / Discount</span>
                             <span className="font-bold">-{formatCurrency(totalDiscount)}</span>
                         </div>
                     )}
                     {totalDiscount > 0 && (
                         <div className="flex justify-between items-center text-[11px] px-2 border-t border-slate-200 pt-2">
-                            <span className="text-foreground uppercase">Thành tiền sau CK</span>
+                            <span className="text-foreground">Thành tiền sau CK</span>
                             <span className="text-foreground">{formatCurrency(subtotal)}</span>
                         </div>
                     )}
@@ -329,7 +329,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                         const sortedRates = Object.keys(vatGroups).map(Number).sort((a, b) => a - b);
                         return sortedRates.map(rate => (
                             <div key={rate} className="flex justify-between items-center text-[11px] px-2">
-                                <span className="text-slate-500 uppercase">
+                                <span className="text-slate-500">
                                     {rate === 0 && quotation.vat_exempt_status === 'exempt' ? 'Không chịu thuế GTGT (KCT)' : `VAT (${rate}%)`}
                                 </span>
                                 <span className="text-foreground">{formatCurrency(vatGroups[rate])}</span>
@@ -337,7 +337,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                         ));
                     })()}
                     <div className="pt-3 mt-3 border-t-2 border-zinc-950 flex justify-between items-center bg-zinc-950 text-white p-4 rounded-md shadow-lg print:bg-black" style={{ WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
-                        <span className="text-[12px] uppercase tracking-widest">Tổng cộng / Total</span>
+                        <span className="text-[12px]">Tổng cộng / Total</span>
                         <span className="text-xl">{formatCurrency(finalAmount)}</span>
                     </div>
                 </div>
@@ -350,13 +350,13 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                         <div className="h-8 w-8 rounded-full bg-zinc-950 text-white flex items-center justify-center print:bg-black">
                             <CheckCircle2 size={16} />
                         </div>
-                        <h4 className="text-[11px] text-foreground uppercase tracking-widest">Tulie Agency (Công ty)</h4>
+                        <h4 className="text-[11px] text-foreground">Tulie Agency (Công ty)</h4>
                     </div>
                     <div className="space-y-1.5 text-[10px] font-medium">
-                        <p className="text-slate-500 uppercase">Chủ TK: <span className="text-foreground">{brandConfig?.bank_account_name}</span></p>
-                        <p className="text-slate-500 uppercase">Số TK: <span className="text-foreground font-semibold text-[12px]">{brandConfig?.bank_account_no}</span></p>
-                        <p className="text-slate-500 uppercase">Ngân hàng: <span className="text-foreground">{brandConfig?.bank_name}</span></p>
-                        {brandConfig?.bank_branch && <p className="text-slate-500 uppercase font-italic">CN: {brandConfig.bank_branch}</p>}
+                        <p className="text-slate-500">Chủ TK: <span className="text-foreground">{brandConfig?.bank_account_name}</span></p>
+                        <p className="text-slate-500">Số TK: <span className="text-foreground font-semibold text-[12px]">{brandConfig?.bank_account_no}</span></p>
+                        <p className="text-slate-500">Ngân hàng: <span className="text-foreground">{brandConfig?.bank_name}</span></p>
+                        {brandConfig?.bank_branch && <p className="text-slate-500 font-italic">CN: {brandConfig.bank_branch}</p>}
                     </div>
                 </div>
 
@@ -365,13 +365,13 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                         <div className="h-8 w-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
                             <CheckCircle2 size={16} />
                         </div>
-                        <h4 className="text-[11px] text-slate-500 uppercase tracking-widest">Tulie Studio (Cá nhân)</h4>
+                        <h4 className="text-[11px] text-slate-500">Tulie Studio (Cá nhân)</h4>
                     </div>
                     <div className="space-y-1.5 text-[10px] font-medium">
-                        <p className="text-slate-500 uppercase">Chủ TK: <span className="text-foreground">{brandConfig?.studio_bank_account_name}</span></p>
-                        <p className="text-slate-500 uppercase">Số TK: <span className="text-foreground font-semibold text-[12px]">{brandConfig?.studio_bank_account_no}</span></p>
-                        <p className="text-slate-500 uppercase">Ngân hàng: <span className="text-foreground">{brandConfig?.studio_bank_name}</span></p>
-                        {brandConfig?.studio_bank_branch && <p className="text-slate-500 uppercase font-italic">CN: {brandConfig.studio_bank_branch}</p>}
+                        <p className="text-slate-500">Chủ TK: <span className="text-foreground">{brandConfig?.studio_bank_account_name}</span></p>
+                        <p className="text-slate-500">Số TK: <span className="text-foreground font-semibold text-[12px]">{brandConfig?.studio_bank_account_no}</span></p>
+                        <p className="text-slate-500">Ngân hàng: <span className="text-foreground">{brandConfig?.studio_bank_name}</span></p>
+                        {brandConfig?.studio_bank_branch && <p className="text-slate-500 font-italic">CN: {brandConfig.studio_bank_branch}</p>}
                     </div>
                 </div>
             </div>
@@ -381,7 +381,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                 <div className="space-y-6">
                     {quotation.notes && (
                         <div className="space-y-2">
-                            <p className="text-[10px] text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                            <p className="text-[10px] text-muted-foreground flex items-center gap-2">
                                 <AlertCircle size={12} />
                                 Ghi chú / Notes
                             </p>
@@ -392,7 +392,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
                     )}
                     {brandConfig?.default_payment_terms && (
                         <div className="space-y-2">
-                            <p className="text-[10px] text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                            <p className="text-[10px] text-muted-foreground flex items-center gap-2">
                                 <Calendar size={12} />
                                 Điều khoản thanh toán
                             </p>
@@ -405,12 +405,12 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
 
                 <div className="text-center space-y-20 pb-10">
                     <div>
-                        <p className="text-[11px] uppercase tracking-widest text-foreground">Đại diện Tulie Agency</p>
-                        <p className="text-[9px] text-slate-400 uppercase">Authorized Signature</p>
+                        <p className="text-[11px] text-foreground">Đại diện Tulie Agency</p>
+                        <p className="text-[9px] text-slate-400">Authorized Signature</p>
                     </div>
                     <div className="space-y-1">
                         <div className="h-0.5 w-40 bg-muted mx-auto" />
-                        <p className="text-[11px] text-foreground uppercase">
+                        <p className="text-[11px] text-foreground">
                             {quotation.signer_name || brandConfig?.ceo_name || 'Nguyễn Đức Tùng'}
                         </p>
                         <p className="text-[9px] text-slate-400">
@@ -421,7 +421,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
             </div>
 
             {/* Print Footer */}
-            <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center text-[9px] text-slate-400 uppercase tracking-[0.2em]">
+            <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center text-[9px] text-slate-400 tracking-[0.2em]">
                 <div className="flex items-center gap-4">
                     <span className="text-foreground">www.tulie.vn</span>
                     <span className="w-1 h-1 rounded-full bg-slate-200" />

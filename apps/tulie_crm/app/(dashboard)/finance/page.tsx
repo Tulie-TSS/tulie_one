@@ -1,7 +1,7 @@
 import { getFinancePnL, getPnLMonthly, getExpenseBreakdown } from '@/lib/supabase/services/finance-service'
 import { formatCurrency } from '@/lib/utils/format'
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
-import { TrendingUp, TrendingDown, DollarSign, Receipt, Wallet, BarChart3, ArrowUpRight, ArrowDownRight } from 'lucide-react'
+import { TrendingUp, TrendingDown, DollarSign, Receipt, Wallet, BarChart3, ArrowUpRight, ArrowDownRight, PieChart } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { PnLCharts } from './pnl-charts'
@@ -26,7 +26,7 @@ function FinanceMetric({ title, value, subtitle, glow, icon: Icon, iconColor, ic
         <Card glow={glow} className="border border-border/50 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_32px_-8px_rgba(0,0,0,0.06)] transition-all">
             <CardContent className="p-4 flex flex-col justify-between min-h-[100px]">
                 <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-semibold text-muted-foreground tracking-wide">{title}</span>
+                    <span className="text-[10px] font-semibold text-muted-foreground">{title}</span>
                     <div className={cn("p-1 rounded-lg border shrink-0", iconBg)}>
                         <Icon className={cn("size-3.5", iconColor)} />
                     </div>
@@ -34,7 +34,7 @@ function FinanceMetric({ title, value, subtitle, glow, icon: Icon, iconColor, ic
                 <div className="mt-1 flex-1 flex flex-col justify-end">
                     <div className="flex items-baseline gap-1.5 flex-wrap">
                         <h3 className={cn(
-                            "text-lg font-bold tracking-tight leading-none",
+                            "text-lg font-bold  leading-none",
                             isNegative ? "text-red-600 dark:text-red-400" : "text-foreground"
                         )}>{value}</h3>
                         {trend && trend.value !== 0 && (
@@ -74,9 +74,14 @@ export default async function FinancePage() {
             <div className="space-y-6 max-w-[1600px] mx-auto w-full pb-8">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/40 pb-5">
-                    <div className="flex flex-col gap-0.5">
-                        <h1 className="text-2xl font-bold tracking-tight text-foreground">Báo cáo P&L</h1>
-                        <p className="text-xs text-muted-foreground">Lãi / Lỗ — Profit & Loss Statement</p>
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 to-orange-400 flex items-center justify-center text-white shadow-sm shrink-0">
+                            <PieChart className="h-5 w-5" />
+                        </div>
+                        <div className="flex flex-col gap-0.5">
+                            <h1 className="text-2xl font-bold text-foreground">Báo cáo P&L</h1>
+                            <p className="text-xs text-muted-foreground">Lãi / Lỗ — Profit & Loss Statement</p>
+                        </div>
                     </div>
                     <div className="flex items-center gap-2">
                         <Link
@@ -92,7 +97,7 @@ export default async function FinancePage() {
                 {/* Year Summary — 4 key metrics */}
                 <div className="space-y-3">
                     <div className="flex items-center gap-2 pb-1 border-b border-border/60">
-                        <h2 className="text-xs font-bold text-zinc-500 flex items-center gap-1.5 tracking-wide">
+                        <h2 className="text-xs font-bold text-zinc-500 flex items-center gap-1.5">
                             <BarChart3 className="size-3.5" />
                             Tổng kết năm nay
                         </h2>
@@ -145,7 +150,7 @@ export default async function FinancePage() {
                     {/* This month */}
                     <Card glow="blue" className="border border-border/50">
                         <CardHeader className="pb-2 pt-3.5 px-4 border-b border-border/40">
-                            <CardTitle className="text-xs font-bold text-foreground tracking-wide">Tháng này</CardTitle>
+                            <CardTitle className="text-xs font-bold text-foreground">Tháng này</CardTitle>
                         </CardHeader>
                         <CardContent className="p-4 space-y-2">
                             <div className="flex items-center justify-between text-sm">
@@ -178,7 +183,7 @@ export default async function FinancePage() {
                     {/* This quarter */}
                     <Card glow="violet" className="border border-border/50">
                         <CardHeader className="pb-2 pt-3.5 px-4 border-b border-border/40">
-                            <CardTitle className="text-xs font-bold text-foreground tracking-wide">Quý này</CardTitle>
+                            <CardTitle className="text-xs font-bold text-foreground">Quý này</CardTitle>
                         </CardHeader>
                         <CardContent className="p-4 space-y-2">
                             <div className="flex items-center justify-between text-sm">

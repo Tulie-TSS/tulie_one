@@ -101,7 +101,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                     </Button>
                     <div className="space-y-1">
                         <div className="flex items-center gap-3 flex-wrap">
-                            <h1 className="text-2xl font-bold tracking-tight text-foreground">{contract.contract_number}</h1>
+                            <h1 className="text-2xl font-bold text-foreground">{contract.contract_number}</h1>
                             <StatusBadge status={contract.status} entityType="contract" />
                         </div>
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -359,7 +359,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                                                         {milestone.name}
                                                                     </span>
                                                                     {milestone.type === 'delivery' && (
-                                                                        <span className="text-[9px] tracking-wider font-bold text-foreground bg-muted px-1.5 py-0.25 rounded w-fit">Bàn giao</span>
+                                                                        <span className="text-[9px] font-bold text-foreground bg-muted px-1.5 py-0.25 rounded w-fit">Bàn giao</span>
                                                                     )}
                                                                 </div>
                                                             </TableCell>

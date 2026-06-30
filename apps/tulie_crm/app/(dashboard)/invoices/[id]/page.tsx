@@ -64,7 +64,7 @@ export default async function InvoiceDetailPage({ params }: any) {
                                 </div>
                                 <StatusBadge status={invoice.status} entityType="invoice" />
                             </div>
-                            <h1 className="text-2xl font-semibold tracking-tight">{invoice.customer?.company_name}</h1>
+                            <h1 className="text-2xl font-semibold">{invoice.customer?.company_name}</h1>
                         </div>
                     </div>
                 </div>

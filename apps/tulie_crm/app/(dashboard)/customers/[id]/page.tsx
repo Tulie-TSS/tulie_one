@@ -29,7 +29,6 @@ import { getQuotations } from '@/lib/supabase/services/quotation-service'
 import { getContracts } from '@/lib/supabase/services/contract-service'
 import { getContactsByCustomerId } from '@/lib/supabase/services/contact-service'
 import { ContactList } from '@/components/customers/contact-list'
-import { UnlockPortalButton } from '@/components/customers/unlock-portal-button'
 import { notFound } from 'next/navigation'
 
 interface CustomerPageProps {
@@ -74,7 +73,7 @@ export default async function CustomerDetailPage({ params }: any) {
                         </Link>
                     </Button>
                     <div className="min-w-0">
-                        <h1 className="text-2xl font-semibold tracking-tight">{customer.company_name}</h1>
+                        <h1 className="text-2xl font-semibold">{customer.company_name}</h1>
                         <div className="flex items-center gap-2 flex-wrap mt-1.5">
                             <StatusBadge status={customer.status} entityType="customer" />
                             <Badge variant="outline" className="text-xs">
@@ -87,7 +86,6 @@ export default async function CustomerDetailPage({ params }: any) {
                     </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0 ml-11 sm:ml-0">
-                    <UnlockPortalButton customerId={customer.id} isUnlocked={customer.is_info_unlocked} />
                     <Button variant="outline" size="sm" asChild>
                         <Link href={`/quotations/new?customer=${customer.id}`}>
                             <FileText className="mr-1.5 h-4 w-4" />
@@ -103,62 +101,85 @@ export default async function CustomerDetailPage({ params }: any) {
                 </div>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-2 lg:items-stretch">
+            <div className="grid gap-6 lg:grid-cols-12 lg:items-stretch">
                 {/* Contact Info */}
-                <Card className="h-full">
+                <Card className="lg:col-span-4 h-full">
                     <CardHeader>
                         <CardTitle>Thông tin liên hệ</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid gap-4 sm:grid-cols-2">
-                        <div className="flex items-center gap-3 sm:col-span-2">
-                            <Building2 className="h-5 w-5 text-muted-foreground" />
+                    <CardContent className="space-y-4">
+                        <div className="flex items-center gap-3">
+                            <Phone className="h-5 w-5 text-muted-foreground shrink-0" />
+                            <div>
+                                <p className="text-sm text-muted-foreground">Điện thoại</p>
+                                <a href={`tel:${customer.phone}`} className="font-medium hover:underline break-all">
+                                    {customer.phone || 'Chưa cập nhật'}
+                                </a>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <Mail className="h-5 w-5 text-muted-foreground shrink-0" />
+                            <div>
+                                <p className="text-sm text-muted-foreground">Email</p>
+                                <a href={`mailto:${customer.email}`} className="font-medium hover:underline break-all">
+                                    {customer.email || 'Chưa cập nhật'}
+                                </a>
+                            </div>
+                        </div>
+                        {customer.website && (
+                            <div className="flex items-center gap-3">
+                                <ExternalLink className="h-5 w-5 text-muted-foreground shrink-0" />
+                                <div>
+                                    <p className="text-sm text-muted-foreground">Website</p>
+                                    <a href={customer.website} target="_blank" rel="noopener noreferrer" className="font-medium hover:underline break-all">
+                                        {customer.website}
+                                    </a>
+                                </div>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+
+                {/* Contract Signatory Info */}
+                <Card className="lg:col-span-5 h-full">
+                    <CardHeader>
+                        <CardTitle>Thông tin đứng tên hợp đồng</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="flex items-center gap-3">
+                            <Building2 className="h-5 w-5 text-muted-foreground shrink-0" />
                             <div>
                                 <p className="text-sm text-muted-foreground">Mã số thuế</p>
                                 <p className="font-medium">{customer.tax_code || 'Chưa cập nhật'}</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
-                            <User className="h-5 w-5 text-muted-foreground" />
+                            <User className="h-5 w-5 text-muted-foreground shrink-0" />
                             <div>
                                 <p className="text-sm text-muted-foreground">Người đại diện</p>
-                                <p className="font-medium">{customer.representative || 'Chưa cập nhật'}</p>
+                                <p className="font-medium">
+                                    {customer.representative_title ? `${customer.representative_title} ` : ''}
+                                    {customer.representative || 'Chưa cập nhật'}
+                                </p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
-                            <Briefcase className="h-5 w-5 text-muted-foreground" />
+                            <Briefcase className="h-5 w-5 text-muted-foreground shrink-0" />
                             <div>
                                 <p className="text-sm text-muted-foreground">Chức vụ</p>
                                 <p className="font-medium">{customer.position || 'Chưa cập nhật'}</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
-                            <Mail className="h-5 w-5 text-muted-foreground" />
-                            <div>
-                                <p className="text-sm text-muted-foreground">Email</p>
-                                <a href={`mailto:${customer.email}`} className="font-medium hover:underline">
-                                    {customer.email || 'Chưa cập nhật'}
-                                </a>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <Phone className="h-5 w-5 text-muted-foreground" />
-                            <div>
-                                <p className="text-sm text-muted-foreground">Điện thoại</p>
-                                <a href={`tel:${customer.phone}`} className="font-medium hover:underline">
-                                    {customer.phone || 'Chưa cập nhật'}
-                                </a>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-3 sm:col-span-2">
-                            <MapPin className="h-5 w-5 text-muted-foreground" />
+                            <MapPin className="h-5 w-5 text-muted-foreground shrink-0" />
                             <div>
                                 <p className="text-sm text-muted-foreground">Địa chỉ trụ sở</p>
                                 <p className="font-medium">{customer.address || 'Chưa cập nhật'}</p>
                             </div>
                         </div>
                         {customer.invoice_address && customer.invoice_address !== customer.address && (
-                            <div className="flex items-center gap-3 sm:col-span-2">
-                                <Receipt className="h-5 w-5 text-muted-foreground" />
+                            <div className="flex items-center gap-3">
+                                <Receipt className="h-5 w-5 text-muted-foreground shrink-0" />
                                 <div>
                                     <p className="text-sm text-muted-foreground">Địa chỉ xuất hóa đơn</p>
                                     <p className="font-medium">{customer.invoice_address}</p>
@@ -169,7 +190,7 @@ export default async function CustomerDetailPage({ params }: any) {
                 </Card>
 
                 {/* Summary Box */}
-                <Card className="h-full">
+                <Card className="lg:col-span-3 h-full">
                     <CardHeader>
                         <CardTitle>Tổng quan</CardTitle>
                     </CardHeader>

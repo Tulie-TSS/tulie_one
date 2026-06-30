@@ -39,11 +39,11 @@ export function StatsCard({
             className={cn('border border-border/50 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_24px_-8px_rgba(0,0,0,0.06)] transition-all', className)}
         >
             <CardContent className={cn("p-4 flex flex-col justify-between", compact ? "min-h-[84px] py-3" : "min-h-[96px]")}>
-                <p className="text-[11px] font-bold text-muted-foreground tracking-wide leading-snug mb-1.5">
+                <p className="text-[11px] font-bold text-muted-foreground leading-snug mb-1.5">
                     {title}
                 </p>
                 <div className={cn(
-                    'font-bold tabular-nums text-foreground tracking-tight leading-none',
+                    'font-bold tabular-nums text-foreground  leading-none',
                     compact ? 'text-lg' : 'text-2xl'
                 )}>
                     {value}

@@ -64,7 +64,7 @@ export default async function TeamMemberDetailPage({ params }: PageProps) {
                         </Avatar>
                         <div>
                             <div className="flex items-center gap-3">
-                                <h1 className="text-2xl font-semibold tracking-tight">{member.full_name}</h1>
+                                <h1 className="text-2xl font-semibold">{member.full_name}</h1>
                                 <Badge variant={member.is_active ? 'default' : 'secondary'} className="rounded-full px-3">
                                     {member.is_active ? 'Hoạt động' : 'Tạm dừng'}
                                 </Badge>

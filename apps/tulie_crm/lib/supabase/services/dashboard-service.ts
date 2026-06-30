@@ -6,6 +6,15 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     try {
         const supabase = await createClient()
 
+        // Fetch cashflow targets from system_settings
+        const { data: targetSetting } = await supabase
+            .from('system_settings')
+            .select('value')
+            .eq('key', 'cashflow_targets')
+            .maybeSingle()
+        
+        const cashflowTargets = targetSetting?.value || { month: 50000000, quarter: 150000000, year: 600000000 }
+
         const now = new Date()
         const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
         const quarterStart = new Date(now.getFullYear(), Math.floor(now.getMonth() / 3) * 3, 1)
@@ -131,6 +140,53 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         const monthRevenue = periodRevenue(monthStart)
         const quarterRevenue = periodRevenue(quarterStart)
 
+        // Calculate previous periods for growth tracking
+        const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+        const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999)
+        const currentQuarterStartMonth = Math.floor(now.getMonth() / 3) * 3
+        const lastQuarterStart = new Date(now.getFullYear(), currentQuarterStartMonth - 3, 1)
+        const lastQuarterEnd = new Date(now.getFullYear(), currentQuarterStartMonth, 0, 23, 59, 59, 999)
+
+        const isBetween = (value: string | null | undefined, start: Date, end: Date) => {
+            if (!value) return false
+            const time = new Date(value).getTime()
+            return time >= start.getTime() && time <= end.getTime()
+        }
+
+        const rangeRevenue = (start: Date, end: Date) => {
+            const sepayInPeriod = matchedSepayTxns.filter(tx => isBetween(tx.transaction_date, start, end))
+            const b2bSepay = sepayInPeriod.filter(tx => tx.matched_invoice_id).reduce((sum, tx) => sum + (Number(tx.amount_in) || 0), 0)
+            const b2cSepay = sepayInPeriod.filter(tx => !tx.matched_invoice_id && tx.matched_order_id).reduce((sum, tx) => sum + (Number(tx.amount_in) || 0), 0)
+            const invoiceUnmatched = invoices?.filter(i => i.type === 'output' && !matchedInvIds.has(i.id) && isBetween(i.issue_date, start, end)).reduce((sum, i) => sum + (i.paid_amount || 0), 0) || 0
+            const retailUnmatched = retailOrders?.filter(o => !matchedOrdIds.has(o.id) && isBetween(o.created_at, start, end)).reduce((sum, o) => sum + (o.paid_amount || 0), 0) || 0
+            return {
+                b2b: b2bSepay + invoiceUnmatched,
+                b2c: b2cSepay + retailUnmatched,
+                total: b2bSepay + b2cSepay + invoiceUnmatched + retailUnmatched
+            }
+        }
+
+        const lastMonthRevenue = rangeRevenue(lastMonthStart, lastMonthEnd)
+        const lastQuarterRevenue = rangeRevenue(lastQuarterStart, lastQuarterEnd)
+
+        // Calculate growth percentage MoM
+        const b2bMonthGrowth = lastMonthRevenue.b2b > 0 
+            ? ((monthRevenue.b2b - lastMonthRevenue.b2b) / lastMonthRevenue.b2b) * 100 
+            : monthRevenue.b2b > 0 ? 100 : 0
+
+        const b2cMonthGrowth = lastMonthRevenue.b2c > 0 
+            ? ((monthRevenue.b2c - lastMonthRevenue.b2c) / lastMonthRevenue.b2c) * 100 
+            : monthRevenue.b2c > 0 ? 100 : 0
+
+        // Calculate growth percentage QoQ
+        const b2bQuarterGrowth = lastQuarterRevenue.b2b > 0 
+            ? ((quarterRevenue.b2b - lastQuarterRevenue.b2b) / lastQuarterRevenue.b2b) * 100 
+            : quarterRevenue.b2b > 0 ? 100 : 0
+
+        const b2cQuarterGrowth = lastQuarterRevenue.b2c > 0 
+            ? ((quarterRevenue.b2c - lastQuarterRevenue.b2c) / lastQuarterRevenue.b2c) * 100 
+            : quarterRevenue.b2c > 0 ? 100 : 0
+
         // Fetch total value from active contracts (excluding freelancers)
         const { data: activeContracts } = await supabase
             .from('contracts')
@@ -169,8 +225,13 @@ export async function getDashboardStats(): Promise<DashboardStats> {
                 b2b_quarter: quarterRevenue.b2b,
                 b2c_month: monthRevenue.b2c,
                 b2c_quarter: quarterRevenue.b2c,
+                b2b_month_growth: b2bMonthGrowth,
+                b2b_quarter_growth: b2bQuarterGrowth,
+                b2c_month_growth: b2cMonthGrowth,
+                b2c_quarter_growth: b2cQuarterGrowth,
                 change: totalPendingRevenue,
-                period: 'Chờ thanh toán'
+                period: 'Chờ thanh toán',
+                targets: cashflowTargets
             },
             customers: {
                 total: customerCount || 0,
@@ -204,7 +265,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     } catch (err) {
         console.error('Fatal error in getDashboardStats:', err)
         return {
-            revenue: { total: 0, b2b: 0, b2c: 0, month: 0, quarter: 0, b2b_month: 0, b2b_quarter: 0, b2c_month: 0, b2c_quarter: 0, change: 0, period: 'Tháng này' },
+            revenue: { total: 0, b2b: 0, b2c: 0, month: 0, quarter: 0, b2b_month: 0, b2b_quarter: 0, b2c_month: 0, b2c_quarter: 0, change: 0, period: 'Tháng này', targets: { month: 50000000, quarter: 150000000, year: 600000000 } },
             customers: { total: 0, new: 0, change: 0 },
             leads: { total: 0, new: 0, contacted: 0, qualified: 0 },
             contracts: { active: 0, completed: 0, pending: 0, overdue: 0, total_value: 0, change: 0 },
@@ -543,7 +604,7 @@ export async function getActiveContractTimelines() {
 
 export interface CRMAlert {
     id: string
-    type: 'idle_lead' | 'idle_deal' | 'pending_quotation' | 'overdue_invoice'
+    type: 'idle_lead' | 'idle_deal' | 'pending_quotation' | 'overdue_invoice' | 'overdue_task' | 'upcoming_task' | 'overdue_milestone' | 'upcoming_milestone' | 'stale_contract'
     title: string
     description: string
     severity: 'warning' | 'danger'
@@ -556,14 +617,16 @@ export async function getCRMAlerts(): Promise<CRMAlert[]> {
         const supabase = await createClient()
         const alerts: CRMAlert[] = []
         const now = new Date()
+        const thirtyDaysAgoStr = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString()
 
-        // 1. Idle Leads (vào hệ thống > 24h nhưng status vẫn new)
+        // 1. Idle Leads (vào hệ thống > 24h nhưng status vẫn new, giới hạn trong 30 ngày)
         const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString()
         const { data: idleLeads } = await supabase
             .from('leads')
             .select('id, full_name, company_name, created_at')
             .eq('status', 'new')
             .lt('created_at', oneDayAgo)
+            .gt('created_at', thirtyDaysAgoStr)
             
         idleLeads?.forEach(lead => alerts.push({
             id: `lead_${lead.id}`,
@@ -575,13 +638,14 @@ export async function getCRMAlerts(): Promise<CRMAlert[]> {
             date: lead.created_at
         }))
 
-        // 2. Idle Deals (> 3 ngày vẫn new)
+        // 2. Idle Deals (> 3 ngày vẫn new, giới hạn trong 30 ngày)
         const threeDaysAgo = new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString()
         const { data: idleDeals } = await supabase
             .from('deals')
             .select('id, name, created_at')
             .in('stage', ['lead', 'prospecting'])
             .lt('created_at', threeDaysAgo)
+            .gt('created_at', thirtyDaysAgoStr)
 
         idleDeals?.forEach(deal => alerts.push({
             id: `deal_${deal.id}`,
@@ -629,6 +693,203 @@ export async function getCRMAlerts(): Promise<CRMAlert[]> {
             link: `/invoices/${invoice.id}`,
             date: invoice.due_date || new Date().toISOString()
         }))
+
+        // 5. Overdue & Upcoming Project Tasks (Công việc sắp tới hạn & quá hạn)
+        const { data: projectTasks } = await supabase
+            .from('project_tasks')
+            .select('id, title, end_date, status, project:projects(id, title)')
+            .neq('status', 'completed')
+            .not('end_date', 'is', null)
+
+        projectTasks?.forEach(task => {
+            const taskDueDate = new Date(task.end_date)
+            const isOverdue = taskDueDate < now
+            const isUpcoming = taskDueDate >= now && taskDueDate <= new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000)
+            const projTitle = (task.project as any)?.title || 'Chưa rõ'
+            
+            if (isOverdue) {
+                alerts.push({
+                    id: `task_overdue_${task.id}`,
+                    type: 'overdue_task',
+                    title: 'Công việc quá hạn',
+                    description: `Nhiệm vụ "${task.title}" của dự án "${projTitle}"`,
+                    severity: 'danger',
+                    link: `/workspace/tasks`,
+                    date: task.end_date
+                })
+            } else if (isUpcoming) {
+                alerts.push({
+                    id: `task_upcoming_${task.id}`,
+                    type: 'upcoming_task',
+                    title: 'Công việc sắp tới hạn',
+                    description: `Nhiệm vụ "${task.title}" của dự án "${projTitle}"`,
+                    severity: 'warning',
+                    link: `/workspace/tasks`,
+                    date: task.end_date
+                })
+            }
+        })
+
+        // 6. Overdue & Upcoming Milestones (Mốc thanh toán/bàn giao hợp đồng)
+        const { data: contractMilestones } = await supabase
+            .from('contract_milestones')
+            .select('id, name, due_date, status, contract:contracts(id, title, contract_number)')
+            .neq('status', 'completed')
+            .not('due_date', 'is', null)
+
+        contractMilestones?.forEach(milestone => {
+            const msDueDate = new Date(milestone.due_date)
+            const isOverdue = msDueDate < now
+            const isUpcoming = msDueDate >= now && msDueDate <= new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000)
+            const contractTitle = (milestone.contract as any)?.title || 'Chưa rõ'
+            const contractNumber = (milestone.contract as any)?.contract_number || ''
+            const msDesc = `Mốc "${milestone.name}" của HĐ ${contractNumber} - "${contractTitle}"`
+            
+            if (isOverdue) {
+                alerts.push({
+                    id: `milestone_overdue_${milestone.id}`,
+                    type: 'overdue_milestone',
+                    title: 'Mốc hợp đồng quá hạn',
+                    description: msDesc,
+                    severity: 'danger',
+                    link: `/contracts/${(milestone.contract as any)?.id || ''}`,
+                    date: milestone.due_date
+                })
+            } else if (isUpcoming) {
+                alerts.push({
+                    id: `milestone_upcoming_${milestone.id}`,
+                    type: 'upcoming_milestone',
+                    title: 'Mốc hợp đồng sắp tới hạn',
+                    description: msDesc,
+                    severity: 'warning',
+                    link: `/contracts/${(milestone.contract as any)?.id || ''}`,
+                    date: milestone.due_date
+                })
+            }
+        })
+
+        // 7. Stale Active Contracts (Hợp đồng trì trệ > 30 ngày)
+        const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+        const { data: staleContracts } = await supabase
+            .from('contracts')
+            .select('id, contract_number, title, status, updated_at, category')
+            .eq('status', 'active')
+            .neq('category', 'freelancer')
+            .lt('updated_at', thirtyDaysAgo.toISOString())
+
+        staleContracts?.forEach(contract => {
+            alerts.push({
+                id: `stale_contract_${contract.id}`,
+                type: 'stale_contract',
+                title: 'Hợp đồng lâu chưa xử lý',
+                description: `HĐ ${contract.contract_number} - "${contract.title}" không có cập nhật trong hơn 30 ngày`,
+                severity: 'warning',
+                link: `/contracts/${contract.id}`,
+                date: contract.updated_at
+            })
+        })
+
+        // Background push to Telegram for new alerts
+        if (alerts.length > 0) {
+            (async () => {
+                try {
+                    const { sendTelegramNotification } = await import('./telegram-service')
+                    const { data: telSetting } = await supabase
+                        .from('system_settings')
+                        .select('value')
+                        .eq('key', 'telegram_config')
+                        .maybeSingle()
+                    const telConfig = telSetting?.value
+                    
+                    if (telConfig && telConfig.is_enabled && telConfig.bot_token && telConfig.chat_id) {
+                        // Fetch already notified alerts
+                        const { data: notifiedSetting } = await supabase
+                            .from('system_settings')
+                            .select('value')
+                            .eq('key', 'notified_alert_ids')
+                            .maybeSingle()
+                        
+                        const notifiedIds: string[] = Array.isArray(notifiedSetting?.value) ? notifiedSetting.value : []
+                        const newAlerts = alerts.filter(alert => !notifiedIds.includes(alert.id))
+                        
+                        if (newAlerts.length > 0) {
+                            const updatedIds = [...notifiedIds]
+                            
+                            if (newAlerts.length <= 2) {
+                                for (const alert of newAlerts) {
+                                    let emoji = '🔔'
+                                    if (alert.severity === 'danger') emoji = '🚨'
+                                    
+                                    let alertTypeText = 'Cảnh báo hệ thống'
+                                    if (alert.type === 'overdue_task') alertTypeText = '📋 Công việc quá hạn'
+                                    else if (alert.type === 'upcoming_task') alertTypeText = '⏳ Công việc sắp tới hạn'
+                                    else if (alert.type === 'overdue_milestone') alertTypeText = '🚩 Mốc hợp đồng quá hạn'
+                                    else if (alert.type === 'upcoming_milestone') alertTypeText = '📅 Mốc hợp đồng sắp tới hạn'
+                                    else if (alert.type === 'stale_contract') alertTypeText = '📁 Hợp đồng trì trệ'
+                                    else if (alert.type === 'idle_lead') alertTypeText = '👤 Lead mới chưa xử lý'
+                                    else if (alert.type === 'idle_deal') alertTypeText = '🎯 Cơ hội chưa xử lý'
+                                    else if (alert.type === 'pending_quotation') alertTypeText = '📄 Báo giá chưa chốt'
+                                    else if (alert.type === 'overdue_invoice') alertTypeText = '💰 Hóa đơn quá hạn'
+                                    
+                                    const dateFormatted = alert.date ? new Date(alert.date).toLocaleDateString('vi-VN') : 'N/A'
+                                    const message = `
+<b>${emoji} ${alertTypeText.toUpperCase()}</b>
+━━━━━━━━━━━━━━━━━━
+📝 <b>Chi tiết:</b> ${alert.description}
+📅 <b>Thời hạn/Mốc:</b> <code>${dateFormatted}</code>
+🔗 <b>Liên kết:</b> <a href="https://crm.tulie.app${alert.link}">Xem chi tiết</a>
+━━━━━━━━━━━━━━━━━━
+<i>Vui lòng xử lý ngay trên hệ thống!</i>`
+                                    
+                                    const success = await sendTelegramNotification(message.trim())
+                                    if (success) {
+                                        updatedIds.push(alert.id)
+                                    }
+                                }
+                            } else {
+                                // Send consolidated summary message to avoid spamming and timeouts
+                                let summaryText = `<b>🚨 PHÁT HIỆN ${newAlerts.length} CẢNH BÁO MỚI</b>\n━━━━━━━━━━━━━━━━━━\n`
+                                // List first 10 alerts in detail, then summarize rest
+                                const visibleAlerts = newAlerts.slice(0, 10)
+                                visibleAlerts.forEach((alert, idx) => {
+                                    let typeLabel = 'Cảnh báo'
+                                    if (alert.type === 'overdue_task') typeLabel = '📋 Việc quá hạn'
+                                    else if (alert.type === 'upcoming_task') typeLabel = '⏳ Việc sắp hạn'
+                                    else if (alert.type === 'overdue_milestone') typeLabel = '🚩 Mốc HĐ quá hạn'
+                                    else if (alert.type === 'upcoming_milestone') typeLabel = '📅 Mốc HĐ sắp hạn'
+                                    else if (alert.type === 'stale_contract') typeLabel = '📁 HĐ trì trệ'
+                                    else if (alert.type === 'idle_lead') typeLabel = '👤 Lead mới'
+                                    else if (alert.type === 'idle_deal') typeLabel = '🎯 Deal mới'
+                                    
+                                    summaryText += `${idx + 1}. <b>[${typeLabel}]</b> ${alert.description.substring(0, 60)}${alert.description.length > 60 ? '...' : ''}\n`
+                                })
+                                if (newAlerts.length > 10) {
+                                    summaryText += `... và <b>${newAlerts.length - 10}</b> cảnh báo khác.\n`
+                                }
+                                summaryText += `━━━━━━━━━━━━━━━━━━\n🔗 <a href="https://crm.tulie.app/dashboard">Vào Dashboard để xử lý ngay!</a>`
+                                
+                                const success = await sendTelegramNotification(summaryText.trim())
+                                if (success) {
+                                    newAlerts.forEach(alert => updatedIds.push(alert.id))
+                                }
+                            }
+                            
+                            // Limit notifiedIds to prevent database field bloat
+                            const finalIds = updatedIds.slice(-1000)
+                            await supabase
+                                .from('system_settings')
+                                .upsert({
+                                    key: 'notified_alert_ids',
+                                    value: finalIds,
+                                    updated_at: new Date().toISOString()
+                                }, { onConflict: 'key' })
+                        }
+                    }
+                } catch (telegramErr) {
+                    console.error('Error in background Telegram notification sync:', telegramErr)
+                }
+            })().catch(err => console.error('Unhandled background alert notification error:', err))
+        }
 
         // Sort by priority (danger first, then date ascending so oldest is shown first)
         return alerts.sort((a, b) => {

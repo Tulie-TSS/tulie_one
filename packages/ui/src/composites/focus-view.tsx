@@ -112,7 +112,7 @@ export function FocusView({
       {/* Focus indicator */}
       <div className="flex items-center gap-2 mb-4">
         <div className="h-2 w-2 rounded-full bg-success-foreground animate-pulse" />
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+        <span className="text-xs font-medium text-muted-foreground">
           Deep Focus
         </span>
       </div>

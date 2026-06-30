@@ -223,3 +223,14 @@ export async function getNoteTemplates() {
 export async function updateNoteTemplates(templates: any[]) {
     return updateSystemSetting('note_templates', templates)
 }
+
+// Cashflow targets
+export async function getCashflowTargets() {
+    const targets = await getSystemSetting('cashflow_targets')
+    return targets || { month: 50000000, quarter: 150000000, year: 600000000 }
+}
+
+export async function updateCashflowTargets(targets: { month: number; quarter: number; year: number }) {
+    return updateSystemSetting('cashflow_targets', targets)
+}
+

@@ -96,7 +96,7 @@ export default function CustomerDetail({ params }: { params: Promise<{ id: strin
                     <Card key={i} className="rounded-md border-border text-center">
                         <CardContent className="pt-5 pb-4">
                             <div className="text-2xl font-bold text-foreground dark:text-zinc-50">{s.value}</div>
-                            <p className="text-[10px] font-semibold text-muted-foreground uppercase mt-1">{s.label}</p>
+                            <p className="text-[10px] font-semibold text-muted-foreground mt-1">{s.label}</p>
                         </CardContent>
                     </Card>
                 ))}

@@ -23,7 +23,7 @@ export default function LoginPage() {
                 <div className="inline-flex items-center justify-center w-12 h-12 mb-4">
                     <img src="/logo-icon.png" alt="Tulie" className="w-12 h-12 object-contain" />
                 </div>
-                <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+                <h1 className="text-2xl font-bold text-slate-900">
                     Tulie CRM
                 </h1>
                 <p className="text-slate-500 text-sm">Hệ thống quản trị doanh nghiệp</p>

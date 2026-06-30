@@ -42,6 +42,9 @@ const customerSchema = z.object({
     customer_type: z.enum(['individual', 'business']),
     status: z.enum(['lead', 'prospect', 'customer', 'vip', 'churned']),
     notes: z.string().optional(),
+    representative: z.string().optional(),
+    representative_title: z.string().optional(),
+    position: z.string().optional(),
 })
 
 type CustomerFormData = z.infer<typeof customerSchema>
@@ -63,6 +66,19 @@ export default function NewCustomerPage() {
         defaultValues: {
             status: 'lead',
             customer_type: 'business',
+            company_name: '',
+            tax_code: '',
+            email: '',
+            phone: '',
+            address: '',
+            invoice_address: '',
+            industry: '',
+            company_size: '',
+            website: '',
+            notes: '',
+            representative: '',
+            representative_title: '',
+            position: '',
         },
     })
 
@@ -92,6 +108,9 @@ export default function NewCustomerPage() {
                 company_size: data.company_size || undefined,
                 website: data.website || undefined,
                 notes: data.notes || undefined,
+                representative: data.representative || undefined,
+                representative_title: data.representative_title || undefined,
+                position: data.position || undefined,
             }
 
             const result = await createCustomer({
@@ -126,7 +145,7 @@ export default function NewCustomerPage() {
                     </Link>
                 </Button>
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight">Thêm khách hàng doanh nghiệp</h1>
+                    <h1 className="text-2xl font-semibold">Thêm khách hàng doanh nghiệp</h1>
                     <p className="text-muted-foreground">
                         Nhập thông tin doanh nghiệp / tổ chức đối tác mới
                     </p>
@@ -135,12 +154,12 @@ export default function NewCustomerPage() {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid gap-6 lg:grid-cols-2">
-                    {/* Basic Info */}
+                    {/* Card 1: Thông tin liên hệ & Quản lý */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Thông tin cơ bản</CardTitle>
+                            <CardTitle>Thông tin liên hệ</CardTitle>
                             <CardDescription>
-                                Thông tin chính của doanh nghiệp
+                                Thông tin liên lạc và quản lý khách hàng
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
@@ -160,16 +179,15 @@ export default function NewCustomerPage() {
                                 )}
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="tax_code">Mã số thuế / CCCD</Label>
-                                <Input
-                                    id="tax_code"
-                                    placeholder="0123456789"
-                                    {...register('tax_code')}
-                                />
-                            </div>
-
                             <div className="grid gap-4 sm:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label htmlFor="phone">Số điện thoại</Label>
+                                    <Input
+                                        id="phone"
+                                        placeholder="0901234567"
+                                        {...register('phone')}
+                                    />
+                                </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="email">Email</Label>
                                     <Input
@@ -183,14 +201,6 @@ export default function NewCustomerPage() {
                                             {errors.email.message}
                                         </p>
                                     )}
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="phone">Số điện thoại</Label>
-                                    <Input
-                                        id="phone"
-                                        placeholder="0901234567"
-                                        {...register('phone')}
-                                    />
                                 </div>
                             </div>
 
@@ -208,61 +218,27 @@ export default function NewCustomerPage() {
                                 )}
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="status">Trạng thái</Label>
-                                <Select
-                                    defaultValue="lead"
-                                    onValueChange={(value) =>
-                                        setValue('status', value as CustomerFormData['status'])
-                                    }
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Chọn trạng thái" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="lead">Tiềm năng</SelectItem>
-                                        <SelectItem value="prospect">Đang theo dõi</SelectItem>
-                                        <SelectItem value="customer">Khách hàng</SelectItem>
-                                        <SelectItem value="vip">VIP</SelectItem>
-                                        <SelectItem value="churned">Đã rời bỏ</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Address & Invoice */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Địa chỉ & Thông tin xuất hóa đơn</CardTitle>
-                            <CardDescription>
-                                Thông tin địa chỉ và xuất hóa đơn VAT
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="address">Địa chỉ</Label>
-                                <Textarea
-                                    id="address"
-                                    placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố"
-                                    {...register('address')}
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label htmlFor="invoice_address">
-                                    Địa chỉ xuất hóa đơn
-                                </Label>
-                                <Textarea
-                                    id="invoice_address"
-                                    placeholder="Để trống nếu giống địa chỉ công ty"
-                                    {...register('invoice_address')}
-                                />
-                            </div>
-
-                            <Separator />
-
                             <div className="grid gap-4 sm:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label htmlFor="status">Trạng thái</Label>
+                                    <Select
+                                        defaultValue="lead"
+                                        onValueChange={(value) =>
+                                            setValue('status', value as CustomerFormData['status'])
+                                        }
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Chọn trạng thái" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="lead">Tiềm năng</SelectItem>
+                                            <SelectItem value="prospect">Đang theo dõi</SelectItem>
+                                            <SelectItem value="customer">Khách hàng</SelectItem>
+                                            <SelectItem value="vip">VIP</SelectItem>
+                                            <SelectItem value="churned">Đã rời bỏ</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="industry">Ngành nghề</Label>
                                     <Select onValueChange={(value) => setValue('industry', value)}>
@@ -280,23 +256,91 @@ export default function NewCustomerPage() {
                                         </SelectContent>
                                     </Select>
                                 </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="company_size">Quy mô</Label>
+                                <Select
+                                    onValueChange={(value) => setValue('company_size', value)}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Chọn quy mô" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="1-10">1-10 nhân viên</SelectItem>
+                                        <SelectItem value="11-50">11-50 nhân viên</SelectItem>
+                                        <SelectItem value="51-200">51-200 nhân viên</SelectItem>
+                                        <SelectItem value="201-500">201-500 nhân viên</SelectItem>
+                                        <SelectItem value="500+">500+ nhân viên</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Card 2: Thông tin đứng tên hợp đồng (Thông tin pháp lý) */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Thông tin đứng tên hợp đồng</CardTitle>
+                            <CardDescription>
+                                Thông tin pháp lý đại diện ký kết hợp đồng
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="grid gap-4 sm:grid-cols-3">
                                 <div className="space-y-2">
-                                    <Label htmlFor="company_size">Quy mô</Label>
-                                    <Select
-                                        onValueChange={(value) => setValue('company_size', value)}
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Chọn quy mô" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="1-10">1-10 nhân viên</SelectItem>
-                                            <SelectItem value="11-50">11-50 nhân viên</SelectItem>
-                                            <SelectItem value="51-200">51-200 nhân viên</SelectItem>
-                                            <SelectItem value="201-500">201-500 nhân viên</SelectItem>
-                                            <SelectItem value="500+">500+ nhân viên</SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                    <Label htmlFor="representative_title">Danh xưng</Label>
+                                    <Input
+                                        id="representative_title"
+                                        placeholder="Ông/Bà/Anh/Chị..."
+                                        {...register('representative_title')}
+                                    />
                                 </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="representative">Người đại diện</Label>
+                                    <Input
+                                        id="representative"
+                                        placeholder="Họ và tên..."
+                                        {...register('representative')}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="position">Chức vụ</Label>
+                                    <Input
+                                        id="position"
+                                        placeholder="Chức vụ..."
+                                        {...register('position')}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="tax_code">Mã số thuế / CCCD</Label>
+                                <Input
+                                    id="tax_code"
+                                    placeholder="0123456789"
+                                    {...register('tax_code')}
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="address">Địa chỉ trụ sở</Label>
+                                <Textarea
+                                    id="address"
+                                    placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố"
+                                    rows={2}
+                                    {...register('address')}
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="invoice_address">Địa chỉ xuất hóa đơn</Label>
+                                <Textarea
+                                    id="invoice_address"
+                                    placeholder="Để trống nếu giống địa chỉ công ty"
+                                    rows={2}
+                                    {...register('invoice_address')}
+                                />
                             </div>
 
                             <div className="space-y-2">
@@ -304,8 +348,8 @@ export default function NewCustomerPage() {
                                 <Textarea
                                     id="notes"
                                     placeholder="Ghi chú về khách hàng..."
-                                    {...register('notes')}
                                     rows={4}
+                                    {...register('notes')}
                                 />
                             </div>
                         </CardContent>

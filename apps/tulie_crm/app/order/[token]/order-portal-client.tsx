@@ -349,7 +349,7 @@ export default function OrderPortalClient({ order: initialOrder }: OrderPortalCl
                                     <>
                                         <div className="bg-white p-6 rounded-xl border shadow-sm space-y-4">
                                             <div className="space-y-1">
-                                                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Thông tin đơn hàng</p>
+                                                <p className="text-sm font-medium text-muted-foreground">Thông tin đơn hàng</p>
                                                 <p className="text-xl font-bold font-mono text-primary">{order.order_number}</p>
                                             </div>
                                             <div className="bg-muted/30 p-2 rounded-lg inline-block">

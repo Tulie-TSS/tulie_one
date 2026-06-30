@@ -167,7 +167,7 @@ export function PartnersClient({ initialData }: { initialData: PartnerRegistrati
                                 {selectedPartner.id_card_type === 'images' ? (
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="space-y-2">
-                                            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest">Mặt trước</p>
+                                            <p className="text-[10px] text-muted-foreground font-semibold">Mặt trước</p>
                                             {selectedPartner.id_card_front_url ? (
                                                 <a href={selectedPartner.id_card_front_url} target="_blank" rel="noopener noreferrer">
                                                     <img src={selectedPartner.id_card_front_url} alt="CCCD Mặt trước" className="rounded-lg object-cover w-full h-auto border shadow-sm aspect-[1.6] hover:opacity-90 transition-opacity" />
@@ -177,7 +177,7 @@ export function PartnersClient({ initialData }: { initialData: PartnerRegistrati
                                             )}
                                         </div>
                                         <div className="space-y-2">
-                                            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest">Mặt sau</p>
+                                            <p className="text-[10px] text-muted-foreground font-semibold">Mặt sau</p>
                                             {selectedPartner.id_card_back_url ? (
                                                 <a href={selectedPartner.id_card_back_url} target="_blank" rel="noopener noreferrer">
                                                     <img src={selectedPartner.id_card_back_url} alt="CCCD Mặt sau" className="rounded-lg object-cover w-full h-auto border shadow-sm aspect-[1.6] hover:opacity-90 transition-opacity" />

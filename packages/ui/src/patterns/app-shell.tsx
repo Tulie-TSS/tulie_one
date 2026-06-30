@@ -190,7 +190,7 @@ export function AppShell({
                 {navigation.map((group, gi) => (
                   <div key={gi} className="space-y-1">
                     {group.label && !collapsed && (
-                      <p className="px-2 text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
+                      <p className="px-2 text-xs font-medium text-muted-foreground mb-1">
                         {group.label}
                       </p>
                     )}

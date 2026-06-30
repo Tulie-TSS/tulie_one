@@ -17,17 +17,29 @@ function calculateHealthScore(stats: any, dealStats: any) {
     let score = 0
     const metrics: { label: string; value: number; max: number; status: string; colorClass: string; target: string }[] = []
 
-    // 1. Revenue score (0-30): based on total revenue vs target 50M
-    const TARGET_REVENUE = 50000000
-    const revenueScore = Math.min(Math.round((stats.revenue.total / TARGET_REVENUE) * 30), 30)
+    // 1. Revenue score (0-30): based on monthly revenue vs target
+    const TARGET_REVENUE = stats.revenue.targets?.month || 50000000
+    const currentMonthRevenue = stats.revenue.month || 0
+    const revenueScore = Math.min(Math.round((currentMonthRevenue / TARGET_REVENUE) * 30), 30)
     score += revenueScore
+    
+    // Status text depending on percentage of monthly target achieved
+    const achPercent = TARGET_REVENUE > 0 ? (currentMonthRevenue / TARGET_REVENUE) * 100 : 0
+    const statusText = achPercent >= 90 
+        ? 'Tốt' 
+        : achPercent >= 50 
+            ? 'Trung bình' 
+            : currentMonthRevenue > 0 
+                ? 'Yếu' 
+                : 'Chưa có'
+
     metrics.push({
         label: 'Dòng tiền',
         value: revenueScore,
         max: 30,
-        status: stats.revenue.total > 30000000 ? 'Tốt' : stats.revenue.total > 10000000 ? 'Trung bình' : stats.revenue.total > 0 ? 'Yếu' : 'Chưa có',
+        status: statusText,
         colorClass: '[&>div]:bg-indigo-500',
-        target: `Mục tiêu: ${formatCurrency(TARGET_REVENUE)}`
+        target: `Mục tiêu: ${formatCurrency(TARGET_REVENUE)}/tháng`
     })
 
     // 2. Customer growth (0-25): based on new customers
@@ -101,14 +113,14 @@ function MetricCard({
         <Card glow={glow} className="border border-border/50 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_32px_-8px_rgba(0,0,0,0.06)] transition-all">
             <CardContent className="p-4 flex flex-col justify-between min-h-[100px]">
                 <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-semibold text-muted-foreground tracking-wide">{title}</span>
+                    <span className="text-[10px] font-semibold text-muted-foreground">{title}</span>
                     <div className={cn("p-1 rounded-lg border shrink-0", iconBg)}>
                         <Icon className={cn("size-3.5", iconColor)} />
                     </div>
                 </div>
                 <div className="mt-1 flex-1 flex flex-col justify-end">
                     <div className="flex items-baseline gap-1.5 flex-wrap">
-                        <h3 className="text-lg font-bold text-foreground tracking-tight leading-none">{value}</h3>
+                        <h3 className="text-lg font-bold text-foreground leading-none">{value}</h3>
                         {trend && trend.value !== 0 && (
                             <span className={cn(
                                 "inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[9px] font-bold font-mono border shrink-0",
@@ -147,14 +159,11 @@ export default async function DashboardPage() {
         const scoreColorClass = getScoreColorClass(health.score)
         const scoreLabel = getScoreLabel(health.score)
 
-        // Tính toán các tỷ lệ tăng trưởng thực tế từ dữ liệu
-        const b2bGrowth = stats.revenue.b2b_quarter > 0 
-            ? ((stats.revenue.b2b_month * 3) / stats.revenue.b2b_quarter - 1) * 100 
-            : 0
-
-        const b2cGrowth = stats.revenue.b2c_quarter > 0 
-            ? ((stats.revenue.b2c_month * 3) / stats.revenue.b2c_quarter - 1) * 100 
-            : 0
+        // Lấy các tỷ lệ tăng trưởng thực tế từ dữ liệu
+        const b2bMonthGrowth = stats.revenue.b2b_month_growth || 0
+        const b2bQuarterGrowth = stats.revenue.b2b_quarter_growth || 0
+        const b2cMonthGrowth = stats.revenue.b2c_month_growth || 0
+        const b2cQuarterGrowth = stats.revenue.b2c_quarter_growth || 0
 
         const customerGrowth = stats.customers.total > 0
             ? (stats.customers.new / stats.customers.total) * 100
@@ -165,7 +174,7 @@ export default async function DashboardPage() {
                 {/* Header Row */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/40 pb-5">
                     <div className="flex flex-col gap-0.5">
-                        <h1 className="text-2xl font-bold tracking-tight text-foreground">Dashboard</h1>
+                        <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
                         <p className="text-xs text-muted-foreground">Tổng quan hoạt động kinh doanh Tulie Agency</p>
                     </div>
                 </div>
@@ -173,7 +182,7 @@ export default async function DashboardPage() {
                 {/* B2B Section */}
                 <div className="space-y-3">
                     <div className="flex items-center gap-2 pb-1 border-b border-border/60">
-                        <h2 className="text-xs font-bold text-zinc-500 flex items-center gap-1.5 tracking-wide">
+                        <h2 className="text-xs font-bold text-zinc-500 flex items-center gap-1.5">
                             <Landmark className="size-3.5" />
                             B2B · Doanh nghiệp
                         </h2>
@@ -186,7 +195,7 @@ export default async function DashboardPage() {
                             icon={Landmark}
                             iconColor="text-orange-500"
                             iconBg="bg-orange-50 border border-orange-100"
-                            trend={b2bGrowth !== 0 ? { value: b2bGrowth, label: 'MoM' } : undefined}
+                            trend={b2bMonthGrowth !== 0 ? { value: b2bMonthGrowth, label: 'MoM' } : undefined}
                             footer={null}
                         />
                         <MetricCard 
@@ -196,6 +205,7 @@ export default async function DashboardPage() {
                             icon={Calendar}
                             iconColor="text-orange-500"
                             iconBg="bg-orange-50 border border-orange-100"
+                            trend={b2bMonthGrowth !== 0 ? { value: b2bMonthGrowth, label: 'MoM' } : undefined}
                             footer={null}
                         />
                         <MetricCard 
@@ -205,6 +215,7 @@ export default async function DashboardPage() {
                             icon={Calendar}
                             iconColor="text-orange-500"
                             iconBg="bg-orange-50 border border-orange-100"
+                            trend={b2bQuarterGrowth !== 0 ? { value: b2bQuarterGrowth, label: 'QoQ' } : undefined}
                             footer={null}
                         />
                         <MetricCard 
@@ -242,7 +253,7 @@ export default async function DashboardPage() {
                 {/* B2C Section */}
                 <div className="space-y-3">
                     <div className="flex items-center gap-2 pb-1 border-b border-border/60">
-                        <h2 className="text-xs font-bold text-zinc-500 flex items-center gap-1.5 tracking-wide">
+                        <h2 className="text-xs font-bold text-zinc-500 flex items-center gap-1.5">
                             <ShoppingBag className="size-3.5" />
                             B2C · Bán lẻ
                         </h2>
@@ -255,7 +266,7 @@ export default async function DashboardPage() {
                             icon={ShoppingBag}
                             iconColor="text-purple-500"
                             iconBg="bg-purple-50 border border-purple-100"
-                            trend={b2cGrowth !== 0 ? { value: b2cGrowth, label: 'MoM' } : undefined}
+                            trend={b2cMonthGrowth !== 0 ? { value: b2cMonthGrowth, label: 'MoM' } : undefined}
                             footer={null}
                         />
                         <MetricCard 
@@ -265,6 +276,7 @@ export default async function DashboardPage() {
                             icon={Calendar}
                             iconColor="text-purple-500"
                             iconBg="bg-purple-50 border border-purple-100"
+                            trend={b2cMonthGrowth !== 0 ? { value: b2cMonthGrowth, label: 'MoM' } : undefined}
                             footer={null}
                         />
                         <MetricCard 
@@ -274,6 +286,7 @@ export default async function DashboardPage() {
                             icon={Calendar}
                             iconColor="text-purple-500"
                             iconBg="bg-purple-50 border border-purple-100"
+                            trend={b2cQuarterGrowth !== 0 ? { value: b2cQuarterGrowth, label: 'QoQ' } : undefined}
                             footer={null}
                         />
                         <MetricCard 
@@ -320,7 +333,7 @@ export default async function DashboardPage() {
                         <Card className="flex flex-col h-full border border-border/50">
                             <Tabs defaultValue="alerts" className="flex flex-col h-full">
                                 <div className="flex items-center justify-between border-b px-4 py-3 shrink-0">
-                                    <span className="text-xs font-bold text-muted-foreground tracking-wide">
+                                    <span className="text-xs font-bold text-muted-foreground">
                                         Vận hành hệ thống
                                     </span>
                                     <TabsList className="h-7.5 w-[240px] grid grid-cols-2 rounded-full p-0.5 bg-secondary/50 border border-border/30">
@@ -345,7 +358,7 @@ export default async function DashboardPage() {
                     {/* Business Health Card */}
                     <Card glow="coral" className="lg:col-span-4 flex flex-col h-full border border-border/50">
                         <CardHeader className="pb-2 pt-3.5 px-4 flex flex-row items-center justify-between border-b border-border/40">
-                            <CardTitle className="text-xs font-bold text-foreground tracking-wide">Sức khỏe doanh nghiệp</CardTitle>
+                            <CardTitle className="text-xs font-bold text-foreground">Sức khỏe doanh nghiệp</CardTitle>
                             <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger>
@@ -397,7 +410,7 @@ export default async function DashboardPage() {
                                     <span className="text-3xl font-bold text-foreground leading-none">
                                         {health.score}
                                     </span>
-                                    <span className={cn("text-[10px] font-bold tracking-wide mt-1.5 px-2.5 py-0.5 rounded-full border bg-white shadow-xs", scoreColorClass)}>
+                                    <span className={cn("text-[10px] font-bold  mt-1.5 px-2.5 py-0.5 rounded-full border bg-white shadow-xs", scoreColorClass)}>
                                         {scoreLabel}
                                     </span>
                                 </div>
@@ -425,7 +438,7 @@ export default async function DashboardPage() {
 
                             {/* Improvement recommendations */}
                             <div className="pt-2 border-t border-border/40 mt-auto">
-                                <h4 className="text-xs font-bold tracking-wide text-foreground mb-1.5 flex items-center gap-1.5">
+                                <h4 className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
                                     <Lightbulb className="h-3.5 w-3.5 text-amber-500" />
                                     Hướng dẫn cải thiện
                                 </h4>

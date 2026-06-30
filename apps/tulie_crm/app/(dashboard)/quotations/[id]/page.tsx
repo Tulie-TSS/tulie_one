@@ -197,7 +197,7 @@ export default function QuotationDetailPage() {
                                     <Badge>Chính</Badge>
                                 )}
                             </div>
-                            <h1 className="text-2xl font-semibold tracking-tight truncate">{quotation.customer?.company_name}</h1>
+                            <h1 className="text-2xl font-semibold truncate">{quotation.customer?.company_name}</h1>
                             {(quotation.title || quotation.version_name) && (
                                 <p className="text-sm text-muted-foreground flex items-center gap-1.5 truncate">
                                     {quotation.version_name ? <span className="font-semibold text-foreground shrink-0">{quotation.version_name}</span> : null}
@@ -616,7 +616,7 @@ export default function QuotationDetailPage() {
                                     </div>
                                     <div className="space-y-0.5">
                                         <p className="text-[10px] font-medium text-muted-foreground">Số tài khoản chính</p>
-                                        <p className="font-bold text-lg tracking-tighter text-foreground font-mono select-all">
+                                        <p className="font-bold text-lg text-foreground font-mono select-all">
                                             {quotation.bank_account_no || brandConfig?.bank_account_no || "0110163102"}
                                         </p>
                                     </div>

@@ -128,7 +128,7 @@ export default function NewBundlePage() {
                     </Link>
                 </Button>
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-2">
+                    <h1 className="text-2xl font-semibold flex items-center gap-2">
                         <FileStack className="h-7 w-7" />
                         Đóng gói bộ tài liệu
                     </h1>
@@ -201,8 +201,7 @@ export default function NewBundlePage() {
                                 {templates.map(t => (
                                     <div
                                         key={t.id}
-                                        className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${selectedTemplateIds.includes(t.id) ? 'bg-primary/5 border-primary' : 'hover:bg-muted/50'
-                                            }`}
+                                        className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${selectedTemplateIds.includes(t.id) ? 'bg-primary/5 border-primary' : 'hover:bg-muted/50' }`}
                                         onClick={() => toggleTemplate(t.id)}
                                     >
                                         <div className="flex items-center gap-3">

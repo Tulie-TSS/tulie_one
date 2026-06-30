@@ -9,7 +9,7 @@ export const ORDER_CODE_PATTERN = /DH_\d{2}_\d{4}_\d+_[A-Z]?\d+/
 const ORDER_CODE_STRIPPED_PATTERN = /DH\d{2}\d{4}\d{3,}\d+/
 
 /**
- * Normalize order code by removing underscores and converting to uppercase
+ * Normalize order code by removing underscores and converting to 
  * DH_26_0310_811_I99 → DH260310811I99
  */
 export function normalizeOrderCode(code: string): string {

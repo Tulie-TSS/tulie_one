@@ -97,7 +97,7 @@
   padding: 6px 14px;
   border-radius: 99px;
   margin-bottom: 16px;
-  text-transform: uppercase;
+  text-transform: ;
   letter-spacing: 0.5px;
 }
 .dot {
@@ -141,7 +141,7 @@
   color: var(--text3);
   font-weight: 600;
   margin-bottom: 8px;
-  text-transform: uppercase;
+  text-transform: ;
   letter-spacing: 1px;
   display: flex;
   align-items: center;
@@ -171,7 +171,7 @@
 .lbl {
   font-size: 10px;
   color: var(--text3);
-  text-transform: uppercase;
+  text-transform: ;
   letter-spacing: 0.5px;
   margin-top: 1px;
 }
@@ -316,7 +316,7 @@
   display: inline-block;
   font-size: 10px;
   font-weight: 600;
-  text-transform: uppercase;
+  text-transform: ;
   letter-spacing: 0.5px;
   padding: 3px 8px;
   border-radius: 4px;

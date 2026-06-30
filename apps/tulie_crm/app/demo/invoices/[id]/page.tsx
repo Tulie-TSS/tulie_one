@@ -62,7 +62,7 @@ export default function InvoiceDetail({ params }: { params: Promise<{ id: string
 
                 {/* Amount */}
                 <div className="text-center py-6 bg-muted dark:bg-zinc-800/50 rounded-md">
-                    <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Số tiền</p>
+                    <p className="text-xs font-semibold text-muted-foreground mb-2">Số tiền</p>
                     <p className="text-4xl font-black text-foreground dark:text-zinc-50">{formatCurrency(invoice.amount)}</p>
                 </div>
 
@@ -72,7 +72,7 @@ export default function InvoiceDetail({ params }: { params: Promise<{ id: string
                         <div className="flex items-center gap-3">
                             <User className="h-4 w-4 text-muted-foreground shrink-0" />
                             <div>
-                                <p className="text-[10px] font-semibold text-muted-foreground uppercase">Khách hàng</p>
+                                <p className="text-[10px] font-semibold text-muted-foreground">Khách hàng</p>
                                 {customer ? (
                                     <Link href={`/demo/customers/${customer.id}`} className="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">
                                         {invoice.customerName}
@@ -85,7 +85,7 @@ export default function InvoiceDetail({ params }: { params: Promise<{ id: string
                         <div className="flex items-center gap-3">
                             <CreditCard className="h-4 w-4 text-muted-foreground shrink-0" />
                             <div>
-                                <p className="text-[10px] font-semibold text-muted-foreground uppercase">Phương thức</p>
+                                <p className="text-[10px] font-semibold text-muted-foreground">Phương thức</p>
                                 <p className="text-sm font-semibold text-foreground dark:text-zinc-50">Chuyển khoản ngân hàng</p>
                             </div>
                         </div>
@@ -94,14 +94,14 @@ export default function InvoiceDetail({ params }: { params: Promise<{ id: string
                         <div className="flex items-center gap-3">
                             <Calendar className="h-4 w-4 text-muted-foreground shrink-0" />
                             <div>
-                                <p className="text-[10px] font-semibold text-muted-foreground uppercase">Ngày tạo</p>
+                                <p className="text-[10px] font-semibold text-muted-foreground">Ngày tạo</p>
                                 <p className="text-sm font-semibold text-foreground dark:text-zinc-50">{invoice.dueDate}</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
                             <Calendar className="h-4 w-4 text-muted-foreground shrink-0" />
                             <div>
-                                <p className="text-[10px] font-semibold text-muted-foreground uppercase">Ngày thanh toán</p>
+                                <p className="text-[10px] font-semibold text-muted-foreground">Ngày thanh toán</p>
                                 <p className="text-sm font-semibold text-foreground dark:text-zinc-50">{invoice.paidDate || '—'}</p>
                             </div>
                         </div>
@@ -110,7 +110,7 @@ export default function InvoiceDetail({ params }: { params: Promise<{ id: string
 
                 {/* Timeline */}
                 <div className="border-t border-border pt-6">
-                    <p className="text-xs font-semibold text-muted-foreground uppercase mb-4">Lịch sử</p>
+                    <p className="text-xs font-semibold text-muted-foreground mb-4">Lịch sử</p>
                     <div className="space-y-4">
                         <div className="flex items-start gap-3">
                             <div className="w-2 h-2 rounded-full bg-zinc-400 mt-1.5 shrink-0" />

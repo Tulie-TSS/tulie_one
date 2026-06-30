@@ -741,10 +741,12 @@ export function QuotationForm({ quotation, customers, products, units, projects,
 
             if (data.payment_terms) {
                 newProposalContent.payment_terms = data.payment_terms;
+                setTerms(data.payment_terms);
                 count++;
             }
-            if (data.notes && Array.isArray(data.notes)) {
+            if (data.notes) {
                 newProposalContent.notes = data.notes;
+                setNotes(Array.isArray(data.notes) ? data.notes.join('\n') : data.notes);
                 count++;
             }
 
@@ -1791,7 +1793,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                         variant="outline"
                                         size="sm"
                                         onClick={() => autoAllocate([50, 50])}
-                                        className="text-xs bg-emerald-50/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 hover:bg-emerald-50 dark:hover:bg-emerald-950/20"
+                                        className="text-[11px] bg-white text-emerald-600 border-emerald-200 hover:bg-emerald-50 h-7 px-2.5"
                                     >
                                         Phân bổ 50% - 50%
                                     </Button>
@@ -1800,7 +1802,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                         variant="outline"
                                         size="sm"
                                         onClick={() => autoAllocate([50, 40, 10])}
-                                        className="text-xs bg-blue-50/20 text-blue-700 dark:text-blue-400 border-blue-200 hover:bg-blue-50 dark:hover:bg-blue-950/20"
+                                        className="text-[11px] bg-white text-blue-600 border-blue-200 hover:bg-blue-50 h-7 px-2.5"
                                     >
                                         Phân bổ 50% - 40% - 10%
                                     </Button>
@@ -1809,7 +1811,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                         variant="outline"
                                         size="sm"
                                         onClick={() => autoAllocate([30, 40, 30])}
-                                        className="text-xs bg-indigo-50/20 text-indigo-700 dark:text-indigo-400 border-indigo-200 hover:bg-indigo-50 dark:hover:bg-indigo-950/20"
+                                        className="text-[11px] bg-white text-violet-600 border-violet-200 hover:bg-violet-50 h-7 px-2.5"
                                     >
                                         Phân bổ 30% - 40% - 30%
                                     </Button>
@@ -1817,7 +1819,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                         type="button"
                                         onClick={addMilestone}
                                         size="sm"
-                                        className="text-xs font-semibold"
+                                        className="text-[11px] font-semibold bg-[#ea580c] hover:bg-[#c2410c] text-white border-0 h-7 px-2.5"
                                     >
                                         <Plus className="h-3 w-3 mr-1" />
                                         Thêm đợt
@@ -1835,7 +1837,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                     <div className="overflow-x-auto">
                                         <table className="w-full text-sm border-collapse text-left">
                                             <thead>
-                                                <tr className="bg-muted/40 border-b border-slate-200 text-xs font-semibold text-muted-foreground uppercase">
+                                                <tr className="bg-muted/40 border-b border-slate-200 text-xs font-semibold text-muted-foreground">
                                                     <th className="p-3 w-[40px] text-center">#</th>
                                                     <th className="p-3">Tên đợt thanh toán</th>
                                                     <th className="p-3 w-[150px]">Loại tính</th>

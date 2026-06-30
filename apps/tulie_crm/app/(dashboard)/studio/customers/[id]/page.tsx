@@ -67,7 +67,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                     </Button>
                     <div className="min-w-0">
                         <div className="flex items-center gap-3">
-                            <h1 className="text-2xl font-semibold tracking-tight">{customer.company_name}</h1>
+                            <h1 className="text-2xl font-semibold">{customer.company_name}</h1>
                             <StatusBadge status={customer.status} entityType="customer" />
                         </div>
                         <div className="flex items-center gap-2 flex-wrap mt-1.5">
@@ -111,7 +111,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                                 <Phone className="h-5 w-5 text-muted-foreground" />
                             </div>
                             <div className="flex-1">
-                                <p className="text-[11px] text-muted-foreground font-medium tracking-tight">Số điện thoại</p>
+                                <p className="text-[11px] text-muted-foreground font-medium">Số điện thoại</p>
                                 <div className="flex items-center justify-between">
                                     <a href={`tel:${customer.phone}`} className="font-semibold hover:underline text-base text-foreground">
                                         {customer.phone || 'Chưa cập nhật'}
@@ -138,7 +138,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                                 <Mail className="h-5 w-5 text-muted-foreground" />
                             </div>
                             <div>
-                                <p className="text-[11px] text-muted-foreground font-medium tracking-tight">Email</p>
+                                <p className="text-[11px] text-muted-foreground font-medium">Email</p>
                                 <a href={`mailto:${customer.email}`} className="font-semibold hover:underline text-foreground">
                                     {customer.email || 'Chưa cập nhật'}
                                 </a>
@@ -149,7 +149,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                                 <MapPin className="h-5 w-5 text-muted-foreground" />
                             </div>
                             <div>
-                                <p className="text-[11px] text-muted-foreground font-medium tracking-tight">Địa chỉ giao hàng</p>
+                                <p className="text-[11px] text-muted-foreground font-medium">Địa chỉ giao hàng</p>
                                 <p className="font-medium text-foreground">{customer.address || 'Chưa cập nhật'}</p>
                             </div>
                         </div>
@@ -158,7 +158,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                                 <BadgeCheck className="h-5 w-5 text-muted-foreground" />
                             </div>
                             <div>
-                                <p className="text-[11px] text-muted-foreground font-medium tracking-tight">Số CCCD</p>
+                                <p className="text-[11px] text-muted-foreground font-medium">Số CCCD</p>
                                 <p className="font-medium text-foreground">{customer.tax_code || 'Chưa cập nhật'}</p>
                             </div>
                         </div>
@@ -189,7 +189,7 @@ export default async function StudioCustomerDetailPage({ params }: any) {
                     </CardHeader>
                     <CardContent className="flex flex-col items-center justify-center flex-1 py-8">
                         <div className="text-center space-y-1">
-                            <p className="text-3xl font-bold tracking-tight">
+                            <p className="text-3xl font-bold">
                                 {formatCurrency(totalSpent)}
                             </p>
                             <p className="text-muted-foreground text-[12px]">Tổng chi tiêu đã ghi nhận</p>

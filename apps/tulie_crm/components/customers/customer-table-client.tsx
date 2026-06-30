@@ -2,8 +2,8 @@
 
 import { DataTable } from '@/components/shared/data-table'
 import { getCustomerColumns } from './customer-columns'
-import { Tag, UserPlus, Building2, User } from 'lucide-react'
-import { deleteCustomers, updateCustomersStatus, reassignCustomers } from '@/lib/supabase/services/customer-service'
+import { UserPlus, Building2, User } from 'lucide-react'
+import { deleteCustomers, reassignCustomers } from '@/lib/supabase/services/customer-service'
 import { Tabs, TabsList, TabsTrigger } from '@repo/ui'
 import { useState } from 'react'
 
@@ -27,30 +27,10 @@ export function CustomerTableClient({
         await deleteCustomers(ids)
     }
 
-    const handleBulkStatusChange = async (rows: any[], status: string) => {
-        const ids = rows.map((r) => r.id)
-        await updateCustomersStatus(ids, status)
-    }
-
     const handleBulkReassign = async (rows: any[], userId: string) => {
         const ids = rows.map((r) => r.id)
         await reassignCustomers(ids, userId)
     }
-
-    const statusOptions = [
-        { label: 'Tiềm năng', value: 'lead' },
-        { label: 'Đang theo dõi', value: 'prospect' },
-        { label: 'Khách hàng', value: 'customer' },
-        { label: 'VIP', value: 'vip' },
-        { label: 'Đã rời bỏ', value: 'churned' },
-    ]
-
-    // Create specific status actions
-    const statusActions = statusOptions.map(opt => ({
-        label: `Chuyển thành: ${opt.label}`,
-        icon: <Tag className="h-4 w-4" />,
-        onAction: async (rows: any[]) => handleBulkStatusChange(rows, opt.value)
-    }))
 
     const reassignmentActions = users.map(user => ({
         label: `Giao cho: ${user.full_name}`,
@@ -84,15 +64,9 @@ export function CustomerTableClient({
                 data={filteredData}
                 searchKey={hideTabs ? (defaultTab === 'business' ? "company_name" : "representative") : (activeTab === 'business' ? "company_name" : "representative")}
                 searchPlaceholder={hideTabs ? (defaultTab === 'business' ? "Tìm theo tên công ty..." : "Tìm tên khách hàng...") : (activeTab === 'business' ? "Tìm theo tên công ty..." : "Tìm tên khách hàng...")}
-                filters={[
-                    {
-                        columnId: 'status',
-                        title: 'Trạng thái',
-                        options: statusOptions
-                    }
-                ]}
+                filters={[]}
                 onDelete={handleDelete}
-                bulkActions={[...statusActions, ...reassignmentActions]}
+                bulkActions={reassignmentActions}
             />
         </div>
     )

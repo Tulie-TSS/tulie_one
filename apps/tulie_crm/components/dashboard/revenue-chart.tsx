@@ -29,7 +29,18 @@ interface RevenueChartProps {
 export function RevenueChart({ data }: RevenueChartProps) {
     const [period, setPeriod] = useState('year')
 
-    const hasData = data && data.length > 0 && data.some(d => d.revenue > 0 || d.profit > 0)
+    const filteredData = (() => {
+        if (period === 'month') {
+            // Show last 2 months so Recharts can draw a monotone curve line representing MoM trend
+            return data.slice(-2)
+        }
+        if (period === 'quarter') {
+            return data.slice(-3)
+        }
+        return data
+    })()
+
+    const hasData = filteredData && filteredData.length > 0 && filteredData.some(d => d.revenue > 0 || d.profit > 0)
 
     return (
         <Card glow="blue" className="shadow-[0_4px_24px_-8px_rgba(0,0,0,0.04)] border border-border/50 transition-all hover:shadow-[0_10px_24px_-8px_rgba(0,0,0,0.06)]">
@@ -57,8 +68,8 @@ export function RevenueChart({ data }: RevenueChartProps) {
                     </div>
                 ) : (
                     <div className="h-[230px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={data} margin={{ top: 5, right: 5, left: -10, bottom: 0 }}>
+                        <ResponsiveContainer width="100%" height="100%" key={period}>
+                            <AreaChart key={period} data={filteredData} margin={{ top: 5, right: 5, left: -10, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
                                         <stop offset="5%" stopColor="#2563eb" stopOpacity={0.4} />
@@ -133,6 +144,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
                                     strokeWidth={3}
                                     fillOpacity={1}
                                     fill="url(#revenueGrad)"
+                                    dot={{ r: 3, strokeWidth: 0, fill: '#2563eb' }}
                                     activeDot={{ r: 6, strokeWidth: 0, fill: '#2563eb' }}
                                 />
                                 <Area
@@ -143,6 +155,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
                                     strokeWidth={3}
                                     fillOpacity={1}
                                     fill="url(#profitGrad)"
+                                    dot={{ r: 3, strokeWidth: 0, fill: '#10b981' }}
                                     activeDot={{ r: 6, strokeWidth: 0, fill: '#10b981' }}
                                 />
                             </AreaChart>

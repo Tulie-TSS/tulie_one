@@ -421,7 +421,7 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
             {/* Document Header */}
             <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4 border-b border-transparent">
                 <div className="space-y-1.5 flex-1 pr-4">
-                    <CardTitle className="text-base font-semibold leading-none tracking-tight">Nhật ký xử lý yêu cầu</CardTitle>
+                    <CardTitle className="text-base font-semibold leading-none">Nhật ký xử lý yêu cầu</CardTitle>
                     <CardDescription className="text-sm text-muted-foreground pt-1">Danh sách yêu cầu chỉnh sửa và theo dõi trạng thái</CardDescription>
                 </div>
                 <div className="shrink-0 flex items-center">
@@ -648,10 +648,10 @@ export function FeedbackBoard({ projectId, customerId, customerName, isAdmin = f
                                                         {item.title}
                                                     </span>
                                                     <div className="flex items-center gap-2 shrink-0">
-                                                        <Badge variant="outline" className={cn("text-[10px] uppercase font-bold px-1.5 py-0", priorityConf.colorClass)}>
+                                                        <Badge variant="outline" className={cn("text-[10px]  font-bold px-1.5 py-0", priorityConf.colorClass)}>
                                                             {priorityConf.label}
                                                         </Badge>
-                                                        <Badge variant={isCompleted ? "secondary" : "outline"} className={cn("text-[10px] uppercase px-1.5 py-0 font-semibold", sConfig.colorClass)}>
+                                                        <Badge variant={isCompleted ? "secondary" : "outline"} className={cn("text-[10px]  px-1.5 py-0 font-semibold", sConfig.colorClass)}>
                                                             {sConfig.label}
                                                         </Badge>
                                                         {hasAttachments && (

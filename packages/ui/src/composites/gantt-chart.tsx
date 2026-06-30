@@ -136,7 +136,7 @@ export function GanttChart({
             <div className="h-[28px] border-b border-border" />
             {/* Day header space */}
             <div className="h-[24px] border-b border-border px-3 flex items-center">
-              <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+              <span className="text-[10px] font-medium text-muted-foreground">
                 Task
               </span>
             </div>

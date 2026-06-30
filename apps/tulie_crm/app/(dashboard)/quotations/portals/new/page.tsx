@@ -116,7 +116,7 @@ export default function NewPortalPage() {
                         <Globe className="h-6 w-6 text-foreground" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">Tạo Portal báo giá</h1>
+                        <h1 className="text-2xl font-semibold">Tạo Portal báo giá</h1>
                         <p className="text-sm font-medium text-muted-foreground mt-1">
                             Tạo trang chia sẻ nhiều phương án báo giá cho khách hàng
                         </p>
@@ -184,11 +184,7 @@ export default function NewPortalPage() {
                                     {filteredQuotations.map((q) => (
                                         <div
                                             key={q.id}
-                                            className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
-                                                selectedQuotationIds.includes(q.id)
-                                                    ? 'bg-primary/5 border-primary'
-                                                    : 'hover:bg-muted/50'
-                                            }`}
+                                            className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${ selectedQuotationIds.includes(q.id) ? 'bg-primary/5 border-primary' : 'hover:bg-muted/50' }`}
                                             onClick={() => toggleQuotation(q.id)}
                                         >
                                             <div className="flex items-center gap-3">

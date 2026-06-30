@@ -1,5 +1,7 @@
 'use client'
 
+import { useState, useEffect } from 'react'
+
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui'
 import { Badge } from '@repo/ui'
 import { ScrollArea } from '@repo/ui'
@@ -9,7 +11,10 @@ import {
     Receipt, 
     UserPlus, 
     AlertTriangle,
-    Target
+    Target,
+    CheckSquare,
+    Flag,
+    Clock
 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { vi } from 'date-fns/locale'
@@ -23,12 +28,23 @@ interface CRMAlertsProps {
 }
 
 export function CRMAlerts({ alerts, hideCard = false }: CRMAlertsProps) {
+    const [mounted, setMounted] = useState(false)
+    
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
     const getIcon = (type: string) => {
         switch (type) {
             case 'idle_lead': return <UserPlus className="h-4 w-4" />
             case 'idle_deal': return <Target className="h-4 w-4" />
             case 'pending_quotation': return <FileText className="h-4 w-4" />
             case 'overdue_invoice': return <Receipt className="h-4 w-4" />
+            case 'overdue_task':
+            case 'upcoming_task': return <CheckSquare className="h-4 w-4" />
+            case 'overdue_milestone':
+            case 'upcoming_milestone': return <Flag className="h-4 w-4" />
+            case 'stale_contract': return <Clock className="h-4 w-4" />
             default: return <AlertCircle className="h-4 w-4" />
         }
     }
@@ -47,7 +63,7 @@ export function CRMAlerts({ alerts, hideCard = false }: CRMAlertsProps) {
             <p className="text-[11px] mt-0.5 text-muted-foreground">Mọi cơ hội và hóa đơn đều đang đi đúng hướng.</p>
         </div>
     ) : (
-        <ScrollArea className="h-[320px]">
+        <ScrollArea className="flex-1 min-h-[320px]">
             <div className="flex flex-col gap-3 px-4 pb-4 pt-3">
                 {alerts.map((alert) => (
                     <Link 
@@ -70,7 +86,7 @@ export function CRMAlerts({ alerts, hideCard = false }: CRMAlertsProps) {
                                 "text-[9px] font-semibold mt-0.5 inline-block",
                                 alert.severity === 'danger' ? 'text-destructive font-semibold' : 'text-muted-foreground'
                             )}>
-                                {formatDistanceToNow(new Date(alert.date), {
+                                {!mounted ? '...' : formatDistanceToNow(new Date(alert.date), {
                                     addSuffix: true,
                                     locale: vi
                                 })}

@@ -239,7 +239,7 @@ export function KanbanCard({
           <div className="flex items-center gap-2">
             {priority && (
               <span
-                className={cn("text-[10px] font-semibold uppercase", priorityColors[priority])}
+                className={cn("text-[10px] font-semibold ", priorityColors[priority])}
               >
                 {priority}
               </span>

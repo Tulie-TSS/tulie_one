@@ -60,7 +60,7 @@ export default function LabPage() {
                         <Layout className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">Tulie Lab Control</h1>
+                        <h1 className="text-2xl font-semibold">Tulie Lab Control</h1>
                         <p className="text-muted-foreground font-normal">Đồng bộ dữ liệu tập trung từ thelab.tulie.vn.</p>
                     </div>
                 </div>
@@ -119,17 +119,17 @@ export default function LabPage() {
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                     <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                                    <span className="text-xs font-semibold text-emerald-600 dark:text-green-400 uppercase">Trực tuyến</span>
+                                    <span className="text-xs font-semibold text-emerald-600 dark:text-green-400">Trực tuyến</span>
                                 </div>
                             </div>
 
                             <div className="space-y-2">
                                 <div className="flex justify-between text-xs">
-                                    <span className="text-muted-foreground uppercase tracking-tighter opacity-50">Lần đồng bộ cuối</span>
+                                    <span className="text-muted-foreground opacity-50">Lần đồng bộ cuối</span>
                                     <span className="font-mono">Chưa bao giờ</span>
                                 </div>
                                 <div className="flex justify-between text-xs">
-                                    <span className="text-muted-foreground uppercase tracking-tighter opacity-50">Dung lượng dữ liệu</span>
+                                    <span className="text-muted-foreground opacity-50">Dung lượng dữ liệu</span>
                                     <span className="font-mono">-- MB</span>
                                 </div>
                                 <div className="pt-4">

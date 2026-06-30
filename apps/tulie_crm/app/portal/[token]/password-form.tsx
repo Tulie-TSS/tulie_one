@@ -60,8 +60,8 @@ export default function PortalPasswordForm({ token, companyName, isModal = false
                         <Lock className="h-6 w-6 text-white" />
                     </div>
                     <div className="space-y-1">
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Secure Access</p>
-                        <h1 className="text-2xl font-bold tracking-tight text-foreground">
+                        <p className="text-xs font-semibold text-muted-foreground">Secure Access</p>
+                        <h1 className="text-2xl font-bold text-foreground">
                             {type === 'portal' 
                                 ? (isFreelance ? 'Portal Cộng tác viên' : 'Portal Khách Hàng') 
                                 : (isFreelance ? 'Hợp đồng & Thanh toán' : 'Tài liệu Tài chính')}

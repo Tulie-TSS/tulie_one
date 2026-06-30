@@ -129,7 +129,7 @@ export function OrderDetailHeader({ order }: OrderDetailHeaderProps) {
                             </>
                         )}
                         <span className="h-1 w-1 rounded-full bg-zinc-300" />
-                        <span className="flex items-center gap-1 text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
+                        <span className="flex items-center gap-1 text-[11px] font-semibold text-muted-foreground">
                             <Calendar className="h-3 w-3" />
                             {new Date(order.order_date || order.created_at).toLocaleDateString('vi-VN')}
                         </span>
@@ -175,7 +175,7 @@ export function OrderDetailHeader({ order }: OrderDetailHeaderProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-64 rounded-md border-border shadow-lg p-1">
                         <div className="px-3 py-2">
-                            <p className="text-[11px] text-muted-foreground uppercase tracking-widest">
+                            <p className="text-[11px] text-muted-foreground">
                                 Chuyển trạng thái {isPhysical ? '(có ship)' : '(file mềm)'}
                             </p>
                         </div>
@@ -196,7 +196,7 @@ export function OrderDetailHeader({ order }: OrderDetailHeaderProps) {
                         ))}
                         <DropdownMenuSeparator className="bg-muted my-1" />
                         <div className="px-3 py-2">
-                            <p className="text-[11px] text-muted-foreground uppercase tracking-widest">Tác vụ đơn hàng</p>
+                            <p className="text-[11px] text-muted-foreground">Tác vụ đơn hàng</p>
                         </div>
                         <DropdownMenuItem asChild className="rounded-lg cursor-pointer px-3">
                             <Link href={`/studio/${order.id}/edit`} className="flex items-center gap-3 w-full">

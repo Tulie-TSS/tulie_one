@@ -95,7 +95,7 @@ export function DemoSidebar() {
 
                     {navGroups.map((group, idx) => (
                         <div key={idx} className="flex flex-col">
-                            <h4 className="px-3 py-1.5 mt-4 text-[11px] font-semibold text-muted-foreground/70 uppercase">
+                            <h4 className="px-3 py-1.5 mt-4 text-[11px] font-semibold text-muted-foreground/70">
                                 {group.title}
                             </h4>
                             <div className="flex flex-col gap-0.5">

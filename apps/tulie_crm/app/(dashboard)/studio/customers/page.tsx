@@ -18,11 +18,11 @@ export default async function StudioCustomersPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 rounded-md bg-muted flex items-center justify-center">
-                        <Camera className="h-6 w-6 text-foreground" />
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 to-orange-400 flex items-center justify-center text-white shadow-sm shrink-0">
+                        <Camera className="h-5 w-5" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">Khách hàng Studio</h1>
+                        <h1 className="text-2xl font-semibold">Khách hàng Studio</h1>
                         <p className="text-[14px] text-muted-foreground">
                             Quản lý danh sách khách hàng cá nhân cho khối Studio
                         </p>
@@ -34,7 +34,7 @@ export default async function StudioCustomersPage() {
                         <Download className="h-4 w-4" />
                         Xuất file
                     </Button>
-                    <Button asChild className="px-6 h-10">
+                    <Button asChild className="bg-gradient-to-tr from-rose-500 to-orange-500 text-white border-none hover:opacity-90 transition-all shadow-sm hover:shadow-md rounded-md px-6 h-10">
                         <Link href="/studio/customers/new">
                             <Plus className="h-4 w-4" />
                             Thêm khách hàng

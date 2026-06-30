@@ -184,11 +184,11 @@ export default async function NotificationsPage({
         <div className="space-y-6 p-4 md:p-8 pt-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                        <Bell className="h-5 w-5 text-zinc-900 dark:text-zinc-100" />
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 to-orange-400 flex items-center justify-center text-white shadow-sm shrink-0">
+                        <Bell className="h-5 w-5" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">Thông báo</h1>
+                        <h1 className="text-2xl font-semibold">Thông báo</h1>
                         <p className="text-muted-foreground">Theo dõi hoạt động hệ thống và các sự kiện quan trọng</p>
                     </div>
                 </div>
@@ -323,7 +323,7 @@ export default async function NotificationsPage({
                             {Object.entries(groupedNotifications).map(([dateGroup, groupNotifs]) => (
                                 <div key={dateGroup}>
                                     <div className="flex items-center gap-3 mb-3">
-                                        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{dateGroup}</h3>
+                                        <h3 className="text-xs font-semibold text-muted-foreground">{dateGroup}</h3>
                                         <div className="flex-1 h-px bg-border" />
                                         <span className="text-xs text-muted-foreground">{groupNotifs.length} thông báo</span>
                                     </div>

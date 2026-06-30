@@ -119,7 +119,7 @@ export function EntityPipelineTracker({ entityType, entityId, minimal = false }:
               {/* Text Info */}
               <div className="flex flex-col min-w-0">
                 <span className={cn(
-                  "text-[9px] uppercase tracking-wider font-bold",
+                  "text-[9px]   font-bold",
                   isCurrent 
                     ? "text-zinc-950 dark:text-zinc-100" 
                     : hasData 
@@ -139,7 +139,7 @@ export function EntityPipelineTracker({ entityType, entityId, minimal = false }:
                     </span>
                     {step.statusLabel && (
                       <span className={cn(
-                        "inline-flex items-center rounded-full px-1.5 py-0.5 text-[8.5px] font-bold tracking-tight whitespace-nowrap",
+                        "inline-flex items-center rounded-full px-1.5 py-0.5 text-[8.5px] font-bold  whitespace-nowrap",
                         step.statusColor
                       )}>
                         {step.statusLabel}

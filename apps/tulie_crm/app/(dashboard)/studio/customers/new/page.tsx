@@ -124,7 +124,7 @@ export default function NewStudioCustomerPage() {
                     </Link>
                 </Button>
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight">Thêm khách hàng Studio mới</h1>
+                    <h1 className="text-2xl font-semibold">Thêm khách hàng Studio mới</h1>
                     <p className="text-muted-foreground">
                         Nhập thông tin khách hàng cá nhân cho khối Studio
                     </p>

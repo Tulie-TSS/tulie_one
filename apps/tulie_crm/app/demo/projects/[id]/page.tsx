@@ -87,7 +87,7 @@ export default function ProjectDetail({ params }: { params: Promise<{ id: string
                         <CardContent className="pt-5 pb-4 flex items-center gap-3">
                             <s.icon className="h-4 w-4 text-muted-foreground shrink-0" />
                             <div>
-                                <p className="text-[10px] font-semibold text-muted-foreground uppercase">{s.label}</p>
+                                <p className="text-[10px] font-semibold text-muted-foreground">{s.label}</p>
                                 <p className="text-sm font-bold text-foreground dark:text-zinc-50">{s.value}</p>
                             </div>
                         </CardContent>

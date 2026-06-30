@@ -759,7 +759,7 @@ export default function RetailOrderPortalContent({ order, brandConfig, token, ba
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm text-muted-foreground">Tổng giá trị</span>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-2xl font-bold text-foreground tracking-tighter tabular-nums">{formatCurrency(order.total_amount).replace(' đ', '')}</span>
+                                        <span className="text-2xl font-bold text-foreground tabular-nums">{formatCurrency(order.total_amount).replace(' đ', '')}</span>
                                         <span className="text-sm font-semibold text-muted-foreground">đ</span>
                                     </div>
                                 </div>

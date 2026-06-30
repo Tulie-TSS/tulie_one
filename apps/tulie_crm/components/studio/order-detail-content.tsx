@@ -489,10 +489,10 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                 {/* Payment Card */}
                 <Card className="rounded-md border-border overflow-hidden">
                     <CardHeader className="border-b pb-3">
-                        <Badge variant="outline" className="w-fit mb-2 text-[11px] uppercase tracking-widest px-3 py-1">
+                        <Badge variant="outline" className="w-fit mb-2 text-[11px] px-3 py-1">
                             Thanh toán
                         </Badge>
-                        <CardTitle className="text-3xl tracking-tighter tabular-nums">
+                        <CardTitle className="text-3xl tabular-nums">
                             {formatCurrency(remainingAmount)}
                         </CardTitle>
                         <CardDescription className="font-normal">Công nợ còn phải thu</CardDescription>
@@ -587,7 +587,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
                                 {/* Bank Info */}
                                 <div className="p-3 rounded-lg bg-blue-50/70 border border-blue-100 space-y-1.5">
-                                    <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest text-blue-600">
+                                    <div className="flex items-center gap-1.5 text-[11px] text-blue-600">
                                         <Building2 className="h-3 w-3" />
                                         Thông tin chuyển khoản
                                     </div>
@@ -595,7 +595,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                                         <span className="text-muted-foreground font-medium">Ngân hàng:</span>
                                         <span className="font-bold">{bankInfo.bank_name}</span>
                                         <span className="text-muted-foreground font-medium">Số TK:</span>
-                                        <span className="font-bold font-mono tracking-wider flex items-center gap-1.5">
+                                        <span className="font-bold font-mono flex items-center gap-1.5">
                                             {bankInfo.account_no}
                                             <button onClick={() => { navigator.clipboard.writeText(bankInfo.account_no); toast.success('Đã copy STK') }} className="text-muted-foreground hover:text-foreground transition-colors">
                                                 <Copy className="h-3 w-3" />
@@ -615,7 +615,7 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
 
                                 {/* QR Code */}
                                 <div className="flex flex-col items-center gap-3 p-4 rounded-md border bg-muted/20">
-                                    <div className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+                                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                         <QrCode className="h-4 w-4" />
                                         Mã QR thanh toán nhanh
                                     </div>

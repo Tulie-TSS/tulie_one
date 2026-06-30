@@ -702,11 +702,7 @@ export default function TemplateDetailPage() {
                         {/* Clean mode toggle */}
                         <button
                             onClick={() => setCleanMode(v => !v)}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all ${
-                                cleanMode
-                                    ? 'border-blue-400 bg-blue-50 text-blue-700'
-                                    : 'border-dashed border-muted-foreground/40 text-muted-foreground hover:border-muted-foreground/70'
-                            }`}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all ${ cleanMode ? 'border-blue-400 bg-blue-50 text-blue-700' : 'border-dashed border-muted-foreground/40 text-muted-foreground hover:border-muted-foreground/70' }`}
                             title={cleanMode ? 'Đang xem chế độ gửi khách — biến trống ẩn đi' : 'Bật chế độ gửi khách — biến trống sẽ hiển thị trống'}
                         >
                             {cleanMode ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
