@@ -127,7 +127,7 @@ export default function QuotationDetailPage() {
 
     // Proposal content helpers
     const pc = quotation.proposal_content || {}
-    const hasProposal = pc && Object.values(pc).some(v => v && String(v).trim().length > 0)
+    const hasProposal = quotation.type === 'proposal' && pc && Object.values(pc).some(v => v && String(v).trim().length > 0)
 
     const sectionIcons: Record<string, React.ReactNode> = {
         'introduction': <Target className="h-4 w-4" />,

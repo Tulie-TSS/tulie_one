@@ -37,7 +37,7 @@ export function QuotationPaper({ quotation, brandConfig }: QuotationPaperProps) 
     const finalAmount = subtotal + vatAmount;
 
     const proposalSections = quotation.proposal_sections || []
-    const hasProposal = proposalSections.length > 0
+    const hasProposal = quotation.type === 'proposal' && proposalSections.length > 0
 
     return (
         <div className="bg-white text-foreground font-sans p-10 sm:p-14 min-h-[297mm] shadow-lg relative overflow-hidden flex flex-col print:shadow-none print:p-8" id="quotation-print">

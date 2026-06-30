@@ -295,7 +295,7 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
     const items = quotation.items || [];
     const hasDiscount = items.some((item: any) => item.discount > 0);
     const pc = quotation.proposal_content || {};
-    const hasProposal = pc && Object.values(pc).some(v => v && String(v).trim().length > 0);
+    const hasProposal = quotation.type === 'proposal' && pc && Object.values(pc).some(v => v && String(v).trim().length > 0);
 
     // Calculate discount totals
     const subtotalRaw = items.reduce((sum: number, item: any) => sum + (item.quantity * item.unit_price), 0);
