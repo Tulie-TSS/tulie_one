@@ -435,7 +435,7 @@ export default function QuotationDetailPage() {
                                     <Receipt className="h-4.5 w-4.5 text-muted-foreground shrink-0" />
                                 </CardHeader>
                                 <CardContent className="p-4">
-                                    <div className="rounded-md border overflow-hidden">
+                                    <div className="rounded-md border overflow-hidden bg-muted/50">
                                         <Table>
                                         <TableHeader>
                                             <TableRow>
@@ -448,7 +448,7 @@ export default function QuotationDetailPage() {
                                                 <TableHead className="text-right pr-6 text-xs">Thành tiền</TableHead>
                                             </TableRow>
                                         </TableHeader>
-                                        <TableBody>
+                                        <TableBody className="bg-card">
                                             {sectionEntries.map(([sectionName, sectionItems], sectionIdx) => (
                                                 <React.Fragment key={sectionIdx}>
                                                     {sectionName && (
