@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto-Bold',
         textAlign: 'center',
         marginBottom: 20,
-        textTransform: '',
+        textTransform: 'none',
     },
     table: {
         display: 'flex',
