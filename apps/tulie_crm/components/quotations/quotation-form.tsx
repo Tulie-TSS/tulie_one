@@ -1312,11 +1312,11 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                                     <TableRow className="hover:bg-transparent">
                                                         <TableHead className="w-[40px]"></TableHead>
                                                         <TableHead className="pl-0 min-w-[200px]">Sản phẩm / Dịch vụ</TableHead>
-                                                        <TableHead className="w-[60px] px-1">ĐVT</TableHead>
-                                                        <TableHead className="w-[65px] px-1">SL</TableHead>
+                                                        <TableHead className="w-[80px] px-1">ĐVT</TableHead>
+                                                        <TableHead className="w-[80px] px-1">SL</TableHead>
                                                         <TableHead className="min-w-[110px] px-1">Đơn giá</TableHead>
-                                                        <TableHead className="w-[60px] px-1 text-center">CK %</TableHead>
-                                                        <TableHead className="w-[60px] px-1 text-center">VAT %</TableHead>
+                                                        <TableHead className="w-[70px] px-1 text-center">CK %</TableHead>
+                                                        <TableHead className="w-[70px] px-1 text-center">VAT %</TableHead>
                                                         <TableHead className="min-w-[120px] text-right">Thành tiền</TableHead>
                                                         <TableHead className="w-[40px] pr-4"></TableHead>
                                                     </TableRow>
