@@ -434,8 +434,9 @@ export default function QuotationDetailPage() {
                                     </div>
                                     <Receipt className="h-4.5 w-4.5 text-muted-foreground shrink-0" />
                                 </CardHeader>
-                                <CardContent className="p-0">
-                                    <Table>
+                                <CardContent className="p-4">
+                                    <div className="rounded-md border overflow-hidden">
+                                        <Table>
                                         <TableHeader>
                                             <TableRow>
                                                 <TableHead className="w-12 text-center text-xs">#</TableHead>
@@ -536,8 +537,9 @@ export default function QuotationDetailPage() {
                                             </div>
                                         </div>
                                     </div>
-                                </CardContent>
-                            </Card>
+                                </div>
+                            </CardContent>
+                        </Card>
 
                             {/* Terms & Notes */}
                             <div className="grid gap-4 sm:grid-cols-2">
