@@ -369,7 +369,7 @@ export function QuotationModernPaper({ quotation, brandConfig, selectedItemIds }
                         <div>
                             <h4 className="font-bold text-black mb-2.5 text-[13px]">Ghi chú <span className="text-[0.8em] font-normal opacity-70">/ Notes</span></h4>
                             <div className="text-[11px] text-slate-800 space-y-1.5 font-medium">
-                                {(quotation.notes || brandConfig?.default_notes || 'Báo giá có hiệu lực trong vòng 07 ngày.').split('\n').filter((l: string) => l.trim()).map((line: string, i: number) => (
+                                {(quotation.notes ?? brandConfig?.default_notes ?? 'Báo giá có hiệu lực trong vòng 07 ngày.').split('\n').filter((l: string) => l.trim()).map((line: string, i: number) => (
                                     <div key={i} className="flex gap-2.5 items-start">
                                         <span className="shrink-0 text-slate-400 mt-1">•</span>
                                         <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
@@ -380,7 +380,7 @@ export function QuotationModernPaper({ quotation, brandConfig, selectedItemIds }
                         <div className="border-t border-slate-200 pt-5 mt-auto">
                             <h4 className="font-bold text-black mb-2.5 text-[13px]">Thanh toán <span className="text-[0.8em] font-normal opacity-70">/ Payment</span></h4>
                             <div className="text-[11px] text-slate-800 space-y-1.5 font-medium">
-                                {(quotation.terms || brandConfig?.default_payment_terms || "50% đặt cọc khi xác nhận\n50% khi hoàn thành").split('\n').filter((l: string) => l.trim()).map((line: string, i: number) => (
+                                {(quotation.terms ?? brandConfig?.default_payment_terms ?? 'Thanh toán 100% sau khi ký hợp đồng.').split('\n').filter((l: string) => l.trim()).map((line: string, i: number) => (
                                     <div key={i} className="flex gap-2.5 items-start">
                                         <span className="shrink-0 text-slate-400 mt-1">•</span>
                                         <span>{line.replace(/^[•\-\*]\s*/, '')}</span>

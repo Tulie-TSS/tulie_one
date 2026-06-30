@@ -406,7 +406,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
                                     </>
                                 ) : (
                                     <>
-                                        {renderStructuredNotes(quotation.terms || brandConfig?.default_payment_terms || `1. Phương thức thanh toán: Chuyển khoản hoặc Tiền mặt.
+                                        {renderStructuredNotes(quotation.terms ?? brandConfig?.default_payment_terms ?? `1. Phương thức thanh toán: Chuyển khoản hoặc Tiền mặt.
 2. Thời gian thực hiện: Theo thỏa thuận chi tiết trong phụ lục hợp đồng.`)}
                                     </>
                                 )}
@@ -422,7 +422,7 @@ export function QuotationDocumentPaper({ quotation, brandConfig, selectedItemIds
                                     </>
                                 ) : (
                                     <>
-                                        {renderStructuredNotes(quotation.notes || brandConfig?.default_notes || `3. Hiệu lực báo giá: Trong vòng 30 ngày kể từ ngày ban hành văn bản này.`)}
+                                        {renderStructuredNotes(quotation.notes ?? brandConfig?.default_notes ?? `3. Hiệu lực báo giá: Trong vòng 30 ngày kể từ ngày ban hành văn bản này.`)}
                                     </>
                                 )}
                             </>

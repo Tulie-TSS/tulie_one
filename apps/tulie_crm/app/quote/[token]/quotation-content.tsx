@@ -930,7 +930,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                         </div>
                                                     ))
                                                 ) : (
-                                                    (currentQuotation.notes || brandConfig?.default_notes || 'Báo giá có hiệu lực trong vòng 07 ngày.\nGiá trên chưa bao gồm chi phí mua tên miền & hosting (nếu có).\nNội dung công việc sẽ được mô tả chi tiết trong hợp đồng.').split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
+                                                    (currentQuotation.notes ?? brandConfig?.default_notes ?? 'Báo giá có hiệu lực trong vòng 07 ngày.\nGiá trên chưa bao gồm chi phí mua tên miền & hosting (nếu có).\nNội dung công việc sẽ được mô tả chi tiết trong hợp đồng.').split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
                                                         <div key={i} className="flex gap-2 items-start">
                                                             <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
                                                             <span>{line.replace(/^[•\-\*]\s*/, '')}</span>
@@ -977,7 +977,7 @@ export function QuotationContent({ quotation: initialQuotation, brandConfig }: Q
                                                         </div>
                                                     </div>
                                                 ) : (
-                                                    (currentQuotation.terms || brandConfig?.default_payment_terms || "50% đặt cọc khi xác nhận báo giá\n50% còn lại thanh toán khi hoàn thành").split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
+                                                    (currentQuotation.terms ?? brandConfig?.default_payment_terms ?? "50% đặt cọc khi xác nhận báo giá\n50% còn lại thanh toán khi hoàn thành").split('\n').filter((line: string) => line.trim()).map((line: string, i: number) => (
                                                         <div key={i} className="flex gap-2 items-start">
                                                             <div className="shrink-0 mt-[7px] w-1 h-1 rounded-full bg-slate-400" />
                                                             <span>{line.replace(/^[•\-\*]\s*/, '')}</span>

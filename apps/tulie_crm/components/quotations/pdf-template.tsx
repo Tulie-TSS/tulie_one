@@ -510,8 +510,8 @@ const PdfTemplate: React.FC<PdfTemplateProps> = ({ quotation }) => {
                     <View style={{ flex: 1 }}>
                         <Text style={{ fontSize: 9, fontFamily: 'Roboto-Bold', marginBottom: 8, textTransform: 'none' }}>Ghi chú & Điều khoản / Terms:</Text>
                         <View style={{ gap: 6 }}>
-                            {renderPdfStructuredNotes(quotation.terms || quotation.brandConfig?.default_payment_terms || '')}
-                            {renderPdfStructuredNotes(quotation.notes || quotation.brandConfig?.default_notes || '')}
+                            {renderPdfStructuredNotes(quotation.terms ?? quotation.brandConfig?.default_payment_terms ?? '')}
+                            {renderPdfStructuredNotes(quotation.notes ?? quotation.brandConfig?.default_notes ?? '')}
                         </View>
                     </View>
 
