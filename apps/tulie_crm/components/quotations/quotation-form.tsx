@@ -1793,7 +1793,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                         variant="outline"
                                         size="sm"
                                         onClick={() => autoAllocate([50, 50])}
-                                        className="text-[11px] bg-white text-emerald-600 border-emerald-200 hover:bg-emerald-50 h-7 px-2.5"
+                                        className="text-[11px] bg-emerald-500 text-white hover:bg-emerald-600 border-0 h-7 px-2.5 font-medium shadow-sm"
                                     >
                                         Phân bổ 50% - 50%
                                     </Button>
@@ -1802,7 +1802,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                         variant="outline"
                                         size="sm"
                                         onClick={() => autoAllocate([50, 40, 10])}
-                                        className="text-[11px] bg-white text-blue-600 border-blue-200 hover:bg-blue-50 h-7 px-2.5"
+                                        className="text-[11px] bg-blue-500 text-white hover:bg-blue-600 border-0 h-7 px-2.5 font-medium shadow-sm"
                                     >
                                         Phân bổ 50% - 40% - 10%
                                     </Button>
@@ -1811,7 +1811,7 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                         variant="outline"
                                         size="sm"
                                         onClick={() => autoAllocate([30, 40, 30])}
-                                        className="text-[11px] bg-white text-violet-600 border-violet-200 hover:bg-violet-50 h-7 px-2.5"
+                                        className="text-[11px] bg-violet-500 text-white hover:bg-violet-600 border-0 h-7 px-2.5 font-medium shadow-sm"
                                     >
                                         Phân bổ 30% - 40% - 30%
                                     </Button>
