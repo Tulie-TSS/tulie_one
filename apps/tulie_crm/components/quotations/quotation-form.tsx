@@ -1980,54 +1980,69 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                     </div>
                                 </div>
 
-                                <div className="space-y-1">
-                                    <p className="text-[11px] text-muted-foreground">Thuế VAT (Mặc định)</p>
-                                    <div className="flex items-center gap-3">
-                                        <Select 
-                                            value={vatPercent === 0 ? (vatExemptStatus === 'exempt' ? 'exempt' : '0') : vatPercent.toString()} 
-                                            onValueChange={(v) => {
-                                                if (v === 'exempt') {
-                                                    setVatPercent(0);
-                                                    setVatExemptStatus('exempt');
-                                                } else {
-                                                    setVatPercent(parseInt(v));
-                                                    setVatExemptStatus('0_percent');
-                                                }
-                                            }}
-                                        >
-                                            <SelectTrigger className="w-[150px] h-9 text-xs border-border">
-                                                <SelectValue />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="exempt">Không chịu thuế</SelectItem>
-                                                <SelectItem value="0">Thuế 0%</SelectItem>
-                                                <SelectItem value="8">Thuế 8%</SelectItem>
-                                                <SelectItem value="10">Thuế 10%</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <div className="flex flex-col gap-1 min-w-[120px]">
-                                            {Object.entries(vatGroups).sort((a, b) => Number(a[0]) - Number(b[0])).map(([rate, amt]) => (
-                                                    <div key={rate} className="flex items-center justify-between gap-4">
-                                                        <span className="text-[10px] text-muted-foreground whitespace-nowrap">
-                                                            {rate === "0" && vatExemptStatus === 'exempt' ? 'K.chịu thuế:' : `VAT ${rate}%:`}
-                                                        </span>
-                                                        <span className="text-[13px] font-medium text-foreground tabular-nums">{formatNumber(amt as number)} <span className="text-[10px]">đ</span></span>
+                                {(() => {
+                                    const hasSpecificVat = items.some(item => item.vat_percent !== undefined);
+                                    
+                                    if (hasSpecificVat) {
+                                        return (
+                                            <div className="space-y-1">
+                                                <p className="text-[11px] text-muted-foreground">Chi tiết Thuế VAT</p>
+                                                <div className="flex flex-col gap-1 min-w-[200px] mt-2">
+                                                    {Object.entries(vatGroups).sort((a, b) => Number(a[0]) - Number(b[0])).map(([rate, amt]) => (
+                                                        <div key={rate} className="flex items-center justify-between gap-4">
+                                                            <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                                                                {rate === "0" && vatExemptStatus === 'exempt' ? 'Không chịu thuế:' : `VAT ${rate}%:`}
+                                                            </span>
+                                                            <span className="text-[13px] font-medium text-foreground tabular-nums">{formatNumber(amt as number)} <span className="text-[10px]">đ</span></span>
+                                                        </div>
+                                                    ))}
+                                                    {Object.keys(vatGroups).length > 1 && (
+                                                        <div className="flex items-center justify-between gap-4 border-t border-border pt-1 mt-1">
+                                                            <span className="text-[10px] font-bold text-foreground">Tổng thuế:</span>
+                                                            <span className="text-[13px] font-bold text-foreground tabular-nums">{formatNumber(vatAmount)} <span className="text-[10px]">đ</span></span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        );
+                                    }
+
+                                    return (
+                                        <div className="space-y-1">
+                                            <p className="text-[11px] text-muted-foreground">Thuế VAT (Mặc định)</p>
+                                            <div className="flex items-center gap-3">
+                                                <Select 
+                                                    value={vatPercent === 0 ? (vatExemptStatus === 'exempt' ? 'exempt' : '0') : vatPercent.toString()} 
+                                                    onValueChange={(v) => {
+                                                        if (v === 'exempt') {
+                                                            setVatPercent(0);
+                                                            setVatExemptStatus('exempt');
+                                                        } else {
+                                                            setVatPercent(parseInt(v));
+                                                            setVatExemptStatus('0_percent');
+                                                        }
+                                                    }}
+                                                >
+                                                    <SelectTrigger className="w-[150px] h-9 text-xs border-border">
+                                                        <SelectValue />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="exempt">Không chịu thuế</SelectItem>
+                                                        <SelectItem value="0">Thuế 0%</SelectItem>
+                                                        <SelectItem value="8">Thuế 8%</SelectItem>
+                                                        <SelectItem value="10">Thuế 10%</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                                <div className="flex flex-col gap-1 min-w-[120px]">
+                                                    <div className="flex items-center justify-between gap-4">
+                                                        <span className="text-[10px] text-muted-foreground whitespace-nowrap">Tổng thuế:</span>
+                                                        <span className="text-[13px] font-medium text-foreground tabular-nums">{formatNumber(vatAmount)} <span className="text-[10px]">đ</span></span>
                                                     </div>
-                                            ))}
-                                            {Object.keys(vatGroups).length > 1 && (
-                                                <div className="flex items-center justify-between gap-4 border-t border-border pt-1 mt-1">
-                                                    <span className="text-[10px] font-bold text-foreground">Tổng thuế:</span>
-                                                    <span className="text-[13px] font-bold text-foreground tabular-nums">{formatNumber(vatAmount)} <span className="text-[10px]">đ</span></span>
                                                 </div>
-                                            )}
-                                            {Object.keys(vatGroups).length <= 1 && Object.keys(vatGroups).length > 0 && (
-                                                <div className="flex items-baseline gap-1">
-                                                    {/* Handled by the map above */}
-                                                </div>
-                                            )}
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    );
+                                })()}
 
                                 <div className="space-y-1">
                                     <p className="text-[11px] text-muted-foreground">Tổng cộng</p>
