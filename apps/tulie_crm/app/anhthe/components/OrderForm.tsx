@@ -572,18 +572,18 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
 
           {/* Section 2: Package Selection — Multi-quantity */}
           {orderMode === 'edit_print' && (
-            <Card className="bg-transparent border-0 shadow-none ring-0 p-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <CardHeader className="flex flex-row items-center gap-3 space-y-0 px-1 py-0 mb-4 sm:mb-5">
-              <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
-                <span className="text-sm font-bold text-white">2</span>
+            <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="flex flex-row items-center gap-3 px-1 mb-4 sm:mb-5">
+                <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
+                  <span className="text-sm font-bold text-white">2</span>
+                </div>
+                <div>
+                  <div className="text-sm sm:text-base font-bold text-foreground">Chọn gói dịch vụ</div>
+                  <div className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Mỗi gói tương ứng 1 bộ ảnh cho 1 người chụp</div>
+                </div>
               </div>
-              <div>
-                <CardTitle className="text-sm sm:text-base font-bold">Chọn gói dịch vụ</CardTitle>
-                <CardDescription className="text-[11px] sm:text-xs mt-0.5">Mỗi gói tương ứng 1 bộ ảnh cho 1 người chụp</CardDescription>
-              </div>
-            </CardHeader>
 
-            <CardContent className="p-0 grid gap-4">
+              <div className="grid gap-4">
               {PACKAGES.map(pkg => {
                 const qty = pkgQuantities[pkg.id] || 0
                 const isSelected = qty > 0
@@ -679,23 +679,23 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                   </Card>
                 )
               })}
-            </CardContent>
-          </Card>
+              </div>
+            </div>
           )}
 
           {/* Section 3: Print Options */}
-          <Card className="bg-transparent border-0 shadow-none ring-0 p-0">
-            <CardHeader className="flex flex-row items-center gap-3 space-y-0 px-1 py-0 mb-4 sm:mb-5">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-row items-center gap-3 px-1 mb-4 sm:mb-5">
               <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
                 <span className="text-sm font-bold text-white">3</span>
               </div>
               <div>
-                <CardTitle className="text-sm sm:text-base font-bold">Dịch vụ In ấn</CardTitle>
-                <CardDescription className="text-[11px] sm:text-xs mt-0.5">Giấy in chính hãng Canon — độ bền lên tới 100 năm</CardDescription>
+                <div className="text-sm sm:text-base font-bold text-foreground">Dịch vụ In ấn</div>
+                <div className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Giấy in chính hãng Canon — độ bền lên tới 100 năm</div>
               </div>
-            </CardHeader>
+            </div>
 
-            <CardContent className="p-0">
+            <div>
               <Card className="overflow-hidden">
               {/* Toggle */}
               <div className="p-4 sm:p-5 space-y-3">
@@ -1006,23 +1006,23 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                 </div>
               )}
               </Card>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Section 4: Discount — admin only */}
           {isAdmin && (
-          <Card className="bg-transparent border-0 shadow-none ring-0 p-0">
-            <CardHeader className="flex flex-row items-center gap-3 space-y-0 px-1 py-0 mb-4 sm:mb-5">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-row items-center gap-3 px-1 mb-4 sm:mb-5">
               <div className="w-9 h-9 rounded-md bg-zinc-900 flex items-center justify-center shrink-0">
                 <span className="text-sm font-bold text-white">4</span>
               </div>
               <div>
-                <CardTitle className="text-sm sm:text-base font-bold">Giảm giá</CardTitle>
-                <CardDescription className="text-[11px] sm:text-xs mt-0.5">Nhập mã giảm giá hoặc ưu đãi đặc biệt</CardDescription>
+                <div className="text-sm sm:text-base font-bold text-foreground">Giảm giá</div>
+                <div className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Nhập mã giảm giá hoặc ưu đãi đặc biệt</div>
               </div>
-            </CardHeader>
+            </div>
 
-            <CardContent className="p-0">
+            <div>
               <Card className="p-4 sm:p-5">
               <div className="flex flex-col sm:flex-row gap-3">
                 {/* Type toggle */}
@@ -1090,8 +1090,8 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                 </div>
               )}
               </Card>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
           )}
 
           {/* Order Summary + Submit (Compact Sticky) */}
