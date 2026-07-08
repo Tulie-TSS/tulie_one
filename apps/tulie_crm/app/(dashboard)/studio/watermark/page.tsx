@@ -63,6 +63,79 @@ interface AfterFile {
     processed: ProcessedResult | null;
 }
 
+const createCombinedImage = (
+    beforeDataUrl: string,
+    afterDataUrl: string
+): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const imgBefore = new Image()
+        imgBefore.onload = () => {
+            const imgAfter = new Image()
+            imgAfter.onload = () => {
+                const hB = imgBefore.naturalHeight || imgBefore.height
+                const wB = imgBefore.naturalWidth || imgBefore.width
+                const hA = imgAfter.naturalHeight || imgAfter.height
+                const wA = imgAfter.naturalWidth || imgAfter.width
+
+                // Scale After image to match the height of Before image
+                const scale = hB / hA
+                const wA_scaled = Math.round(wA * scale)
+
+                const canvas = document.createElement('canvas')
+                const dividerWidth = 4
+                canvas.width = wB + wA_scaled + dividerWidth
+                canvas.height = hB
+
+                const ctx = canvas.getContext('2d')
+                if (!ctx) {
+                    reject(new Error('Context error'))
+                    return
+                }
+
+                // Draw left image (Before)
+                ctx.drawImage(imgBefore, 0, 0, wB, hB)
+
+                // Draw divider (white vertical line)
+                ctx.fillStyle = '#ffffff'
+                ctx.fillRect(wB, 0, dividerWidth, hB)
+
+                // Draw right image (After)
+                ctx.drawImage(imgAfter, wB + dividerWidth, 0, wA_scaled, hB)
+
+                // Draw labels: "TRƯỚC (ẢNH GỐC)" and "SAU (DEMO BẢO VỆ)"
+                const fontSize = Math.max(14, Math.round(hB * 0.025))
+                ctx.font = `bold ${fontSize}px Inter, "Segoe UI", sans-serif`
+                ctx.textBaseline = 'top'
+                
+                const padding = 10
+                const tagMargin = Math.max(10, Math.round(hB * 0.02))
+
+                // Left Label
+                const textB = 'TRƯỚC (ẢNH GỐC)'
+                const textB_width = ctx.measureText(textB).width
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.65)'
+                ctx.fillRect(tagMargin, tagMargin, textB_width + padding * 2, fontSize + padding * 2)
+                ctx.fillStyle = '#ffffff'
+                ctx.fillText(textB, tagMargin + padding, tagMargin + padding)
+
+                // Right Label
+                const textA = 'SAU (DEMO BẢO VỆ)'
+                const textA_width = ctx.measureText(textA).width
+                ctx.fillStyle = 'rgba(239, 68, 68, 0.85)'
+                ctx.fillRect(wB + dividerWidth + tagMargin, tagMargin, textA_width + padding * 2, fontSize + padding * 2)
+                ctx.fillStyle = '#ffffff'
+                ctx.fillText(textA, wB + dividerWidth + tagMargin + padding, tagMargin + padding)
+
+                resolve(canvas.toDataURL('image/jpeg', 0.85))
+            }
+            imgAfter.onerror = () => reject(new Error('Failed to load after image'))
+            imgAfter.src = afterDataUrl
+        }
+        imgBefore.onerror = () => reject(new Error('Failed to load before image'))
+        imgBefore.src = beforeDataUrl
+    })
+}
+
 export default function WatermarkToolPage() {
     // ----------------------------------------------------
     // Watermark Configuration State
@@ -163,21 +236,22 @@ export default function WatermarkToolPage() {
         ctx.textBaseline = 'middle'
         ctx.textAlign = 'center'
 
-        // Contrast text effect: Fill with white, stroke with black (or vice versa)
+        // Elegant text effect: Fill with pure color and draw soft drop shadow to contrast on light areas
         ctx.fillStyle = config.color
-        ctx.strokeStyle = config.color === '#ffffff' ? '#000000' : '#ffffff'
-        ctx.lineWidth = 1.5
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.45)'
+        ctx.shadowBlur = 4
+        ctx.shadowOffsetX = 1.5
+        ctx.shadowOffsetY = 1.5
 
         const angleRad = (config.rotation * Math.PI) / 180
 
         if (config.pattern === 'center') {
-            // Draw single center watermark with outline
+            // Draw single center watermark
             ctx.translate(width / 2, height / 2)
             ctx.rotate(angleRad)
             ctx.fillText(config.text, 0, 0)
-            ctx.strokeText(config.text, 0, 0)
         } else {
-            // Tiled/Grid pattern with outline
+            // Tiled/Grid pattern
             const stepX = Math.max(120, config.fontSize * 7)
             const stepY = Math.max(120, config.fontSize * 5)
             
@@ -190,7 +264,6 @@ export default function WatermarkToolPage() {
             for (let x = -bounds / 2; x < bounds / 2; x += stepX) {
                 for (let y = -bounds / 2; y < bounds / 2; y += stepY) {
                     ctx.fillText(config.text, x, y)
-                    ctx.strokeText(config.text, x, y)
                 }
             }
         }
@@ -416,19 +489,39 @@ export default function WatermarkToolPage() {
         const toastId = toast.loading('Đang chuẩn bị tải xuống toàn bộ...')
         let count = 0
 
-        // Download processed "Before" if available
-        if (beforeProcessed && beforeFile) {
-            downloadSingleFile(beforeProcessed.dataUrl, beforeFile.name, 'watermarked_before')
-            count++
-        }
-
-        // Sequential download with a small gap to prevent browser blocking
-        for (let i = 0; i < afterFiles.length; i++) {
-            const item = afterFiles[i]
-            if (item.processed) {
-                await new Promise(resolve => setTimeout(resolve, 200))
-                downloadSingleFile(item.processed.dataUrl, item.file.name, `watermarked_demo_${i + 1}`)
+        if (activeTab === 'side-by-side') {
+            if (!beforeProcessed) {
+                toast.error('Cần tải lên ảnh gốc để tạo ảnh song song', { id: toastId })
+                return
+            }
+            // Download combined side-by-side comparisons
+            for (let i = 0; i < afterFiles.length; i++) {
+                const item = afterFiles[i]
+                if (item.processed) {
+                    try {
+                        await new Promise(resolve => setTimeout(resolve, 250))
+                        const combinedUrl = await createCombinedImage(beforeProcessed.dataUrl, item.processed.dataUrl)
+                        downloadSingleFile(combinedUrl, item.file.name, `combined_compare_${i + 1}`)
+                        count++
+                    } catch (err) {
+                        console.error('Lỗi khi ghép ảnh song song:', err)
+                    }
+                }
+            }
+        } else {
+            // Download individual processed images
+            if (beforeProcessed && beforeFile) {
+                downloadSingleFile(beforeProcessed.dataUrl, beforeFile.name, 'watermarked_before')
                 count++
+            }
+
+            for (let i = 0; i < afterFiles.length; i++) {
+                const item = afterFiles[i]
+                if (item.processed) {
+                    await new Promise(resolve => setTimeout(resolve, 200))
+                    downloadSingleFile(item.processed.dataUrl, item.file.name, `watermarked_demo_${i + 1}`)
+                    count++
+                }
             }
         }
 
@@ -916,6 +1009,25 @@ export default function WatermarkToolPage() {
                                                 <Info className="h-3.5 w-3.5 text-blue-500 shrink-0" />
                                                 Giao diện xem song song giúp khách hàng dễ dàng đối chiếu trực tiếp sự thay đổi giữa hai hình ảnh.
                                             </p>
+                                            <div className="flex justify-end gap-2 mt-2">
+                                                <Button 
+                                                    variant="outline"
+                                                    size="sm"
+                                                    onClick={async () => {
+                                                        if (!beforeProcessed || !activeAfterItem?.processed) return
+                                                        const loadingId = toast.loading('Đang ghép ảnh song song...')
+                                                        try {
+                                                            const combinedUrl = await createCombinedImage(beforeProcessed.dataUrl, activeAfterItem.processed.dataUrl)
+                                                            downloadSingleFile(combinedUrl, activeAfterItem.file.name, 'combined_compare')
+                                                            toast.success('Đã tải ảnh song song thành công', { id: loadingId })
+                                                        } catch (err) {
+                                                            toast.error('Lỗi khi tạo ảnh song song', { id: loadingId })
+                                                        }
+                                                    }}
+                                                >
+                                                    <Download className="mr-1.5 h-3.5 w-3.5" /> Tải ảnh ghép song song này
+                                                </Button>
+                                            </div>
                                         </div>
                                     ) : (
                                         <div className="aspect-[4/3] w-full rounded-2xl border-2 border-dashed flex flex-col items-center justify-center bg-muted/10 p-6 text-center">
