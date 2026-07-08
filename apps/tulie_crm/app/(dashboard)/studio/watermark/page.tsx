@@ -231,7 +231,9 @@ export default function WatermarkToolPage() {
 
         // Setup watermark text settings
         ctx.save()
-        ctx.font = `bold ${config.fontSize}px Inter, "Segoe UI", sans-serif`
+        // Center watermark has a larger font size compared to repeated tiled grid watermarks
+        const actualFontSize = config.pattern === 'center' ? config.fontSize * 2.2 : config.fontSize
+        ctx.font = `bold ${actualFontSize}px Inter, "Segoe UI", sans-serif`
         ctx.globalAlpha = config.opacity
         ctx.textBaseline = 'middle'
         ctx.textAlign = 'center'
@@ -543,8 +545,8 @@ export default function WatermarkToolPage() {
                     </Button>
                     <div>
                         <h1 className="text-2xl font-semibold flex items-center gap-3">
-                            <Sparkles className="h-5 w-5 text-rose-500" />
-                            Đóng dấu & So sánh Ảnh
+                            <Split className="h-5 w-5 text-rose-500" />
+                            Đóng dấu & so sánh ảnh
                         </h1>
                         <p className="text-muted-foreground text-sm">
                             Giảm dung lượng độ phân giải, chèn watermark bảo vệ và so sánh before/after cho khách hàng chọn.
@@ -581,7 +583,7 @@ export default function WatermarkToolPage() {
                             
                             {/* Upload BEFORE File */}
                             <div className="space-y-2">
-                                <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                                <Label className="text-xs font-semibold text-muted-foreground">
                                     1. Ảnh gốc trước khi sửa (Before)
                                 </Label>
                                 {beforeFile ? (
@@ -631,7 +633,7 @@ export default function WatermarkToolPage() {
 
                             {/* Upload AFTER Files */}
                             <div className="space-y-2">
-                                <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                                <Label className="text-xs font-semibold text-muted-foreground">
                                     2. Ảnh demo sau khi sửa (After - Nhiều option)
                                 </Label>
                                 
@@ -947,7 +949,7 @@ export default function WatermarkToolPage() {
                                             <Split className="h-10 w-10 text-muted-foreground/60 mb-3" />
                                             <h3 className="font-semibold text-sm mb-1">Chưa đủ ảnh để so sánh</h3>
                                             <p className="text-xs text-muted-foreground max-w-sm">
-                                                Bạn cần tải lên **ít nhất 1 ảnh gốc (Before)** và **ít nhất 1 ảnh sau khi sửa (After)** để sử dụng trình so sánh thanh trượt.
+                                                Bạn cần tải lên <strong>ít nhất 1 ảnh gốc (Before)</strong> và <strong>ít nhất 1 ảnh sau khi sửa (After)</strong> để sử dụng trình so sánh thanh trượt.
                                             </p>
                                             <div className="mt-4 flex gap-2">
                                                 {!beforeFile && (
@@ -979,7 +981,7 @@ export default function WatermarkToolPage() {
                                         <div className="space-y-4">
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 <div className="space-y-2">
-                                                    <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block text-center md:text-left">
+                                                    <span className="text-xs font-semibold text-muted-foreground block text-center md:text-left">
                                                         Ảnh gốc (Before)
                                                     </span>
                                                     <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border bg-zinc-950/20 shadow-inner">
@@ -992,8 +994,8 @@ export default function WatermarkToolPage() {
                                                     </div>
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <span className="text-xs font-semibold text-rose-500 uppercase tracking-wider block text-center md:text-left">
-                                                        Ảnh Demo đã bảo vệ (After)
+                                                    <span className="text-xs font-semibold text-rose-500 block text-center md:text-left">
+                                                        Ảnh demo đã bảo vệ (After)
                                                     </span>
                                                     <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border bg-zinc-950/20 shadow-inner">
                                                         <img 
@@ -1034,7 +1036,7 @@ export default function WatermarkToolPage() {
                                             <Columns2 className="h-10 w-10 text-muted-foreground/60 mb-3" />
                                             <h3 className="font-semibold text-sm mb-1">Chưa đủ ảnh để xem song song</h3>
                                             <p className="text-xs text-muted-foreground max-w-sm">
-                                                Bạn cần tải lên **ít nhất 1 ảnh gốc (Before)** và **ít nhất 1 ảnh sau khi sửa (After)** để sử dụng chế độ xem song song.
+                                                Bạn cần tải lên <strong>ít nhất 1 ảnh gốc (Before)</strong> và <strong>ít nhất 1 ảnh sau khi sửa (After)</strong> để sử dụng chế độ xem song song.
                                             </p>
                                         </div>
                                     )}
@@ -1062,17 +1064,17 @@ export default function WatermarkToolPage() {
                                             {/* Size comparison statistics card */}
                                             <div className="grid grid-cols-3 gap-4 p-4 rounded-2xl border bg-muted/20">
                                                 <div>
-                                                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Ảnh gốc</span>
+                                                    <span className="text-[10px] text-muted-foreground font-semibold">Ảnh gốc</span>
                                                     <p className="text-sm font-semibold mt-0.5 truncate">{formatBytes(activeAfterItem.file.size)}</p>
                                                     <p className="text-[10px] text-muted-foreground mt-0.5">Chưa có dấu</p>
                                                 </div>
                                                 <div>
-                                                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Ảnh Demo đã nén</span>
+                                                    <span className="text-[10px] text-muted-foreground font-semibold">Ảnh demo đã nén</span>
                                                     <p className="text-sm font-semibold text-rose-500 mt-0.5 truncate">{formatBytes(activeAfterItem.processed.sizeBytes)}</p>
                                                     <p className="text-[10px] text-muted-foreground mt-0.5">Đã chèn watermark</p>
                                                 </div>
                                                 <div>
-                                                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Mức độ bảo vệ</span>
+                                                    <span className="text-[10px] text-muted-foreground font-semibold">Mức độ bảo vệ</span>
                                                     <p className="text-sm font-semibold text-emerald-500 mt-0.5">
                                                         -{Math.round(((activeAfterItem.file.size - activeAfterItem.processed.sizeBytes) / activeAfterItem.file.size) * 100)}%
                                                     </p>
@@ -1115,13 +1117,13 @@ export default function WatermarkToolPage() {
                         </CardHeader>
                         <CardContent className="text-xs text-muted-foreground space-y-2">
                             <p>
-                                1. **Ảnh gốc (Before)**: Tải lên hình ảnh khách hàng chưa được chỉnh sửa trang phục/vóc dáng.
+                                1. <strong className="font-semibold">Ảnh gốc (Before)</strong>: Tải lên hình ảnh khách hàng chưa được chỉnh sửa trang phục/vóc dáng.
                             </p>
                             <p>
-                                2. **Ảnh demo (After)**: Tải lên nhiều phương án sau khi ghép áo. Bạn có thể nhấn vào biểu tượng <RefreshCw className="inline h-3 w-3 mx-0.5" /> ở từng hàng để thay đổi nhanh từng áo.
+                                2. <strong className="font-semibold">Ảnh demo (After)</strong>: Tải lên nhiều phương án sau khi ghép áo. Bạn có thể nhấn vào biểu tượng <RefreshCw className="inline h-3 w-3 mx-0.5" /> ở từng hàng để thay đổi nhanh từng áo.
                             </p>
                             <p>
-                                3. **Cấu hình & Tải về**: Khống chế độ phân giải ở mức **1000px** hoặc **1200px** và đóng dấu **Lưới lặp lại** sẽ làm bức ảnh bị vỡ khi phóng to và không thể chỉnh sửa xóa chữ đè, giúp tránh khách hàng tự ý tải ảnh demo về sử dụng.
+                                3. <strong className="font-semibold">Cấu hình & Tải về</strong>: Khống chế độ phân giải ở mức <strong>1000px</strong> hoặc <strong>1200px</strong> và đóng dấu <strong>Lưới lặp lại</strong> sẽ làm bức ảnh bị vỡ khi phóng to và không thể chỉnh sửa xóa chữ đè, giúp tránh khách hàng tự ý tải ảnh demo về sử dụng.
                             </p>
                         </CardContent>
                     </Card>

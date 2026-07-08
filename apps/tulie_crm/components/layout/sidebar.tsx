@@ -30,7 +30,7 @@ import {
     Rocket,
     Camera,
     UserRound,
-    Images
+    Split
 } from 'lucide-react'
 
 // Using the same navigation items
@@ -50,7 +50,7 @@ const navGroups = [
         items: [
             { title: 'Đơn hàng Studio', href: '/studio', icon: Camera },
             { title: 'Khách hàng Studio', href: '/studio/customers', icon: Users },
-            { title: 'Đóng dấu & So sánh', href: '/studio/watermark', icon: Images },
+            { title: 'Đóng dấu & so sánh', href: '/studio/watermark', icon: Split },
         ]
     },
     {
