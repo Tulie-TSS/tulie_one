@@ -482,7 +482,7 @@ export default function WatermarkToolPage() {
         document.body.removeChild(link)
     }
 
-    const handleDownloadAll = async () => {
+    const handleDownloadAll = async (downloadCombined = false) => {
         if (afterFiles.length === 0) {
             toast.error('Không có ảnh demo để tải xuống')
             return
@@ -554,12 +554,23 @@ export default function WatermarkToolPage() {
                     </div>
                 </div>
                 {afterFiles.length > 0 && (
-                    <Button 
-                        onClick={handleDownloadAll} 
-                        className="bg-gradient-to-tr from-rose-500 to-orange-500 text-white border-none hover:opacity-90 transition-all shadow-sm rounded-md"
-                    >
-                        <Download className="mr-2 h-4 w-4" /> Tải xuống tất cả ({afterFiles.length + (beforeFile ? 1 : 0)})
-                    </Button>
+                    <div className="flex gap-2">
+                        {beforeFile && (
+                            <Button 
+                                onClick={() => handleDownloadAll(true)} 
+                                variant="outline"
+                                className="border-zinc-300 shadow-sm rounded-md hover:bg-muted"
+                            >
+                                <Columns2 className="mr-2 h-4 w-4 text-rose-500" /> Tải tất cả ảnh song song ({afterFiles.length})
+                            </Button>
+                        )}
+                        <Button 
+                            onClick={() => handleDownloadAll(false)} 
+                            className="bg-gradient-to-tr from-rose-500 to-orange-500 text-white border-none hover:opacity-90 transition-all shadow-sm rounded-md"
+                        >
+                            <Download className="mr-2 h-4 w-4" /> Tải tất cả ảnh demo ({afterFiles.length + (beforeFile ? 1 : 0)})
+                        </Button>
+                    </div>
                 )}
             </div>
 
@@ -984,24 +995,24 @@ export default function WatermarkToolPage() {
                                                     <span className="text-xs font-semibold text-muted-foreground block text-center md:text-left">
                                                         Ảnh gốc (Before)
                                                     </span>
-                                                    <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border bg-zinc-950/20 shadow-inner">
+                                                    <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border bg-zinc-950/20 shadow-inner flex items-center justify-center">
                                                         <img 
                                                             src={beforeProcessed?.dataUrl || URL.createObjectURL(beforeFile)} 
                                                             alt="Before comparison"
-                                                            className="w-full h-full object-contain pointer-events-none select-none"
+                                                            className="max-w-full max-h-full w-auto h-auto object-contain pointer-events-none select-none"
                                                             draggable={false}
                                                         />
                                                     </div>
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <span className="text-xs font-semibold text-rose-500 block text-center md:text-left">
+                                                    <span className="text-xs font-semibold text-rose-500 tracking-wider block text-center md:text-left">
                                                         Ảnh demo đã bảo vệ (After)
                                                     </span>
-                                                    <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border bg-zinc-950/20 shadow-inner">
+                                                    <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border bg-zinc-950/20 shadow-inner flex items-center justify-center">
                                                         <img 
                                                             src={activeAfterItem.processed.dataUrl} 
                                                             alt="After comparison"
-                                                            className="w-full h-full object-contain pointer-events-none select-none"
+                                                            className="max-w-full max-h-full w-auto h-auto object-contain pointer-events-none select-none"
                                                             draggable={false}
                                                         />
                                                     </div>
@@ -1048,11 +1059,11 @@ export default function WatermarkToolPage() {
                                 <div className="space-y-4">
                                     {activeAfterItem?.processed ? (
                                         <div className="space-y-4">
-                                            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border bg-zinc-900/40">
+                                            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border bg-zinc-900/40 flex items-center justify-center">
                                                 <img 
                                                     src={activeAfterItem.processed.dataUrl} 
                                                     alt="Watermarked Demo Result" 
-                                                    className="w-full h-full object-contain"
+                                                    className="max-w-full max-h-full w-auto h-auto object-contain"
                                                 />
                                                 <div className="absolute bottom-3 right-3 bg-black/60 px-3 py-1.5 rounded-lg text-[10px] text-white backdrop-blur-sm flex flex-col gap-0.5">
                                                     <span className="font-semibold">Kích thước demo:</span>
@@ -1083,9 +1094,29 @@ export default function WatermarkToolPage() {
                                             </div>
 
                                             <div className="flex gap-2 justify-end">
+                                                {beforeProcessed && (
+                                                    <Button 
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={async () => {
+                                                            if (!beforeProcessed || !activeAfterItem?.processed) return
+                                                            const loadingId = toast.loading('Đang ghép ảnh song song...')
+                                                            try {
+                                                                const combinedUrl = await createCombinedImage(beforeProcessed.dataUrl, activeAfterItem.processed.dataUrl)
+                                                                downloadSingleFile(combinedUrl, activeAfterItem.file.name, 'combined_compare')
+                                                                toast.success('Đã tải ảnh song song thành công', { id: loadingId })
+                                                            } catch (err) {
+                                                                toast.error('Lỗi khi tạo ảnh song song', { id: loadingId })
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Columns2 className="mr-1.5 h-3.5 w-3.5 text-rose-500" /> Tải ảnh ghép song song
+                                                    </Button>
+                                                )}
                                                 <Button 
-                                                    variant="outline"
+                                                    variant="default"
                                                     size="sm"
+                                                    className="bg-rose-500 text-white hover:bg-rose-600 border-none"
                                                     onClick={() => downloadSingleFile(activeAfterItem.processed!.dataUrl, activeAfterItem.file.name, 'watermarked_demo')}
                                                 >
                                                     <Download className="mr-1.5 h-3.5 w-3.5" /> Tải ảnh này về
