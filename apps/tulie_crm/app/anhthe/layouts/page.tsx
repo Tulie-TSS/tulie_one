@@ -1,7 +1,8 @@
 import { PrintLayoutPreview } from '../components/PrintLayoutPreview'
 
 const PRINT_SIZES = [
-  { id: 'mix', name: 'Vỉ Mix', desc: '3×4x6 + 5×3x4 + 3×2x3', photos: '11 ảnh/vỉ' },
+  { id: 'mix', name: 'Vỉ Mix', desc: '3 ảnh 4×6 · 5 ảnh 3×4 · 3 ảnh 2×3', photos: '11 ảnh/vỉ' },
+  { id: 'mix2', name: 'Vỉ Mix 2', desc: '3 ảnh 4×6 · 6 ảnh 3×4 · 1 ảnh 2×3', photos: '10 ảnh/vỉ' },
   { id: '2x3', name: 'Cỡ 2×3 cm', desc: 'Ảnh thẻ nhỏ', photos: '18 ảnh/vỉ' },
   { id: '3x4', name: 'Cỡ 3×4 cm', desc: 'Ảnh thẻ phổ biến', photos: '10 ảnh/vỉ' },
   { id: '4x6', name: 'Cỡ 4×6 cm', desc: 'Ảnh thẻ lớn', photos: '5 ảnh/vỉ' },

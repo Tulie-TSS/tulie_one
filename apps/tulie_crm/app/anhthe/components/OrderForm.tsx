@@ -47,7 +47,8 @@ function getPackageMeta(product: Product) {
 }
 
 const PRINT_SIZES = [
-  { id: 'mix', name: 'Vỉ Mix (3×4x6 + 5×3x4 + 3×2x3)' },
+  { id: 'mix', name: 'Vỉ Mix (3 ảnh 4×6 · 5 ảnh 3×4 · 3 ảnh 2×3)' },
+  { id: 'mix2', name: 'Vỉ Mix 2 (3 ảnh 4×6 · 6 ảnh 3×4 · 1 ảnh 2×3)' },
   { id: '2x3', name: 'Cỡ 2×3 cm — 18 ảnh/vỉ' },
   { id: '3x4', name: 'Cỡ 3×4 cm — 10 ảnh/vỉ' },
   { id: '4x6', name: 'Cỡ 4×6 cm — 5 ảnh/vỉ' },
@@ -756,7 +757,7 @@ export default function OrderForm({ products, isAdmin = false }: { products: Pro
                     </div>
                     {/* Scrollable content */}
                     <div className="max-h-[70vh] overflow-y-auto p-4 sm:p-6">
-                      <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="grid gap-4">
                         {PRINT_SIZES.map(size => (
                           <div key={size.id} className="rounded-md border border-border overflow-hidden">
                             <div className="px-3 py-2 border-b border-border bg-muted">

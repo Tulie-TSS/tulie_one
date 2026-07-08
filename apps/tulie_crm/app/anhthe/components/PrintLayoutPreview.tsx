@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 
-// Canvas: 300px = 15cm, 200px = 10cm → scale = 20px/cm
-const S = 20;
+// Canvas: 240px = 15cm, 160px = 10cm → scale = 16px/cm (fits better in containers without overflow)
+const S = 16;
 
 type Slot = { x: number; y: number; w: number; h: number; label: string; colorClass: string }
 
@@ -77,6 +77,28 @@ function buildSlots(sizeId: string): Slot[] {
       }
       break;
     }
+    case 'mix2': {
+      const c46 = getColor('4x6');
+      const c34 = getColor('3x4');
+      const c23 = getColor('2x3');
+
+      // 3× 4x6 portrait (4W×6H) → top-left 12cm
+      slots.push({ x: 0, y: 0, w: 4 * S, h: 6 * S, label: '4×6', colorClass: c46 });
+      slots.push({ x: 4 * S, y: 0, w: 4 * S, h: 6 * S, label: '4×6', colorClass: c46 });
+      slots.push({ x: 8 * S, y: 0, w: 4 * S, h: 6 * S, label: '4×6', colorClass: c46 });
+
+      // 1× 2x3 landscape (3W×2H) → top-right column, top space (y: 0cm)
+      slots.push({ x: 12 * S, y: 0, w: 3 * S, h: 2 * S, label: '↻2×3', colorClass: c23 });
+
+      // 1× 3x4 portrait (3W×4H) → top-right 3cm column, aligned to bottom of 4x6 (y: 2cm)
+      slots.push({ x: 12 * S, y: 2 * S, w: 3 * S, h: 4 * S, label: '3×4', colorClass: c34 });
+
+      // 5× 3x4 portrait (3W×4H) → bottom 4cm strip, full 15cm wide
+      for (let i = 0; i < 5; i++) {
+        slots.push({ x: i * 3 * S, y: 6 * S, w: 3 * S, h: 4 * S, label: '3×4', colorClass: c34 });
+      }
+      break;
+    }
     case '3.5x4.5': {
       // 8 photos: 4 cols × 2 rows = 14×9cm
       for (let r = 0; r < 2; r++) {
@@ -124,16 +146,16 @@ export function PrintLayoutPreview({ sizeId }: { sizeId: string }) {
   if (slots.length === 0) return null;
 
   return (
-    <div className="flex flex-col items-center gap-3 py-4">
+    <div className="flex flex-col items-center gap-2 py-3 px-3 bg-zinc-50 rounded-lg border border-zinc-100 shadow-sm w-full">
       <div
-        className="relative border-2 border-input bg-white rounded-sm shadow-inner overflow-hidden box-content"
-        style={{ width: 300, height: 200 }}
+        className="relative border border-zinc-300 bg-white rounded-[3px] shadow-[0_4px_12px_rgba(0,0,0,0.06)] overflow-hidden box-content"
+        style={{ width: 15 * S, height: 10 * S }}
       >
         {slots.map((s, i) => (
           <div
             key={i}
             className={cn(
-              "absolute flex items-center justify-center border text-[10px] font-bold select-none rounded-[2px]",
+              "absolute flex items-center justify-center border text-[9px] font-bold select-none rounded-[2px]",
               s.colorClass,
             )}
             style={{ left: s.x, top: s.y, width: s.w, height: s.h }}
@@ -142,7 +164,7 @@ export function PrintLayoutPreview({ sizeId }: { sizeId: string }) {
           </div>
         ))}
       </div>
-      <p className="text-[11px] text-muted-foreground font-medium">
+      <p className="text-[10px] text-muted-foreground font-semibold">
         Khổ giấy in 10 × 15 cm
       </p>
     </div>

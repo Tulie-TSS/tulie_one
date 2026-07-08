@@ -376,7 +376,8 @@ export function OrderDetailContent({ order }: OrderDetailContentProps) {
                             {/* Per-vỉ size info from metadata */}
                             {(order as any).metadata?.vi_sizes?.length > 0 && (() => {
                                 const SIZE_NAMES: Record<string, string> = {
-                                    'mix': 'Mix (3×4×6 + 5×3×4 + 3×2×3)',
+                                    'mix': 'Mix (3 ảnh 4×6 · 5 ảnh 3×4 · 3 ảnh 2×3)',
+                                    'mix2': 'Mix 2 (3 ảnh 4×6 · 6 ảnh 3×4 · 1 ảnh 2×3)',
                                     '2x3': '2×3 cm', '3x4': '3×4 cm', '4x6': '4×6 cm',
                                     '3.5x4.5': '3.5×4.5 cm', '3.3x4.8': '3.3×4.8 cm',
                                     '4.5x4.5': '4.5×4.5 cm', '5x5': '5×5 cm',

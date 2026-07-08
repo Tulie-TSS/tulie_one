@@ -47,12 +47,26 @@ type Slot = { x: number; y: number; w: number; h: number }
 
 const PRINT_LAYOUTS: Record<string, { id: string; name: string; desc: string; count: number; slots: Slot[] }> = {
   'mix': {
-    id: 'mix', name: 'Vỉ Mix', desc: '3×4x6 + 5×3x4 + 3×2x3', count: 11,
+    id: 'mix', name: 'Vỉ Mix', desc: '3 ảnh 4×6 · 5 ảnh 3×4 · 3 ảnh 2×3', count: 11,
     slots: [
       // 3× 4x6 portrait top
       { x: 0, y: 0, w: 4, h: 6 }, { x: 4, y: 0, w: 4, h: 6 }, { x: 8, y: 0, w: 4, h: 6 },
       // 3× 2x3 landscape right column
       { x: 12, y: 0, w: 3, h: 2 }, { x: 12, y: 2, w: 3, h: 2 }, { x: 12, y: 4, w: 3, h: 2 },
+      // 5× 3x4 portrait bottom
+      { x: 0, y: 6, w: 3, h: 4 }, { x: 3, y: 6, w: 3, h: 4 }, { x: 6, y: 6, w: 3, h: 4 },
+      { x: 9, y: 6, w: 3, h: 4 }, { x: 12, y: 6, w: 3, h: 4 },
+    ],
+  },
+  'mix2': {
+    id: 'mix2', name: 'Vỉ Mix 2', desc: '3 ảnh 4×6 · 6 ảnh 3×4 · 1 ảnh 2×3', count: 10,
+    slots: [
+      // 3× 4x6 portrait top
+      { x: 0, y: 0, w: 4, h: 6 }, { x: 4, y: 0, w: 4, h: 6 }, { x: 8, y: 0, w: 4, h: 6 },
+      // 1× 2x3 landscape right column top
+      { x: 12, y: 0, w: 3, h: 2 },
+      // 1× 3x4 portrait right column bottom
+      { x: 12, y: 2, w: 3, h: 4 },
       // 5× 3x4 portrait bottom
       { x: 0, y: 6, w: 3, h: 4 }, { x: 3, y: 6, w: 3, h: 4 }, { x: 6, y: 6, w: 3, h: 4 },
       { x: 9, y: 6, w: 3, h: 4 }, { x: 12, y: 6, w: 3, h: 4 },
@@ -113,6 +127,7 @@ const LAYOUT_COLORS: Record<string, string> = {
   '4.5x4.5': 'bg-teal-100 border-teal-300',
   '5x5': 'bg-orange-100 border-orange-300',
   'mix': 'bg-muted border-input',
+  'mix2': 'bg-muted border-input',
 }
 
 // ═══════════════════════════════════════════════════
