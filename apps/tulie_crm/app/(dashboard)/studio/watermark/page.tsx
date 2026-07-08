@@ -102,7 +102,7 @@ const createCombinedImage = (
                 // Draw right image (After)
                 ctx.drawImage(imgAfter, wB + dividerWidth, 0, wA_scaled, hB)
 
-                // Draw labels: "TRƯỚC (ẢNH GỐC)" and "SAU (DEMO BẢO VỆ)"
+                // Draw labels: "Ảnh gốc" and "Ảnh sau chỉnh sửa"
                 const fontSize = Math.max(14, Math.round(hB * 0.025))
                 ctx.font = `bold ${fontSize}px Inter, "Segoe UI", sans-serif`
                 ctx.textBaseline = 'top'
@@ -111,7 +111,7 @@ const createCombinedImage = (
                 const tagMargin = Math.max(10, Math.round(hB * 0.02))
 
                 // Left Label
-                const textB = 'TRƯỚC (ẢNH GỐC)'
+                const textB = 'Ảnh gốc'
                 const textB_width = ctx.measureText(textB).width
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.65)'
                 ctx.fillRect(tagMargin, tagMargin, textB_width + padding * 2, fontSize + padding * 2)
@@ -119,7 +119,7 @@ const createCombinedImage = (
                 ctx.fillText(textB, tagMargin + padding, tagMargin + padding)
 
                 // Right Label
-                const textA = 'SAU (DEMO BẢO VỆ)'
+                const textA = 'Ảnh sau chỉnh sửa'
                 const textA_width = ctx.measureText(textA).width
                 ctx.fillStyle = 'rgba(239, 68, 68, 0.85)'
                 ctx.fillRect(wB + dividerWidth + tagMargin, tagMargin, textA_width + padding * 2, fontSize + padding * 2)
@@ -947,8 +947,8 @@ export default function WatermarkToolPage() {
                                             <BeforeAfterSlider
                                                 beforeUrl={beforeProcessed?.dataUrl || URL.createObjectURL(beforeFile)}
                                                 afterUrl={activeAfterItem.processed.dataUrl}
-                                                beforeLabel="Trước (Ảnh gốc)"
-                                                afterLabel={`Sau (Watermark • ${activeAfterItem.processed.width}x${activeAfterItem.processed.height})`}
+                                                beforeLabel="Ảnh gốc"
+                                                afterLabel={`Ảnh sau chỉnh sửa (${activeAfterItem.processed.width}x${activeAfterItem.processed.height})`}
                                             />
                                             <p className="text-center text-xs text-muted-foreground italic flex items-center justify-center gap-1.5">
                                                 <Info className="h-3.5 w-3.5 text-blue-500 shrink-0" />
