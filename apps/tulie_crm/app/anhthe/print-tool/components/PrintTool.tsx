@@ -47,7 +47,7 @@ type Slot = { x: number; y: number; w: number; h: number }
 
 const PRINT_LAYOUTS: Record<string, { id: string; name: string; desc: string; count: number; slots: Slot[] }> = {
   'mix': {
-    id: 'mix', name: 'Vỉ Mix', desc: '3 ảnh 4×6 · 5 ảnh 3×4 · 3 ảnh 2×3', count: 11,
+    id: 'mix', name: 'Vỉ Mix 1', desc: '3 ảnh 4×6 · 5 ảnh 3×4 · 3 ảnh 2×3', count: 11,
     slots: [
       // 3× 4x6 portrait top
       { x: 0, y: 0, w: 4, h: 6 }, { x: 4, y: 0, w: 4, h: 6 }, { x: 8, y: 0, w: 4, h: 6 },

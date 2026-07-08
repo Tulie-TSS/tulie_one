@@ -100,7 +100,7 @@ export async function submitPhotoOrder(formData: FormData) {
       const extraPaid = Math.max(0, printQty - totalFreePrints)
 
       const SIZE_NAMES: Record<string, string> = {
-        'mix': 'Mix (3 ảnh 4×6 · 5 ảnh 3×4 · 3 ảnh 2×3)',
+        'mix': 'Mix 1 (3 ảnh 4×6 · 5 ảnh 3×4 · 3 ảnh 2×3)',
         'mix2': 'Mix 2 (3 ảnh 4×6 · 6 ảnh 3×4 · 1 ảnh 2×3)',
         '2x3': '2×3 cm',
         '3x4': '3×4 cm',
@@ -168,7 +168,7 @@ export async function submitPhotoOrder(formData: FormData) {
       packageSummary.length > 0 ? `Gói: ${packageSummary.join(', ')}` : null,
       viSizes.length > 0 ? `In vỉ: ${viSizes.map((s: string, i: number) => {
         const label = viLabels[i] || ''
-        const sizeName = ({'mix':'Mix','mix2':'Mix 2','2x3':'2×3cm','3x4':'3×4cm','4x6':'4×6cm','3.5x4.5':'3.5×4.5cm','3.3x4.8':'3.3×4.8cm','4.5x4.5':'4.5×4.5cm','5x5':'5×5cm'} as any)[s] || s
+        const sizeName = ({'mix':'Mix 1','mix2':'Mix 2','2x3':'2×3cm','3x4':'3×4cm','4x6':'4×6cm','3.5x4.5':'3.5×4.5cm','3.3x4.8':'3.3×4.8cm','4.5x4.5':'4.5×4.5cm','5x5':'5×5cm'} as any)[s] || s
         return `Vỉ ${i + 1}${label ? ` (${label})` : ''}: ${sizeName}`
       }).join(', ')}` : null,
       photoUrls.length > 0 ? `Ảnh đã upload: ${photoUrls.length} ảnh` : null,

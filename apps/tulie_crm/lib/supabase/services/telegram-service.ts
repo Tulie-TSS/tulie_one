@@ -87,7 +87,7 @@ export async function formatNewRetailOrder(order: any) {
     const viLabels = metadata.vi_labels || []
     
     const SIZE_NAMES: Record<string, string> = {
-        'mix': 'Mix', 'mix2': 'Mix 2', '2x3': '2x3cm', '3x4': '3x4cm', '4x6': '4x6cm',
+        'mix': 'Mix 1', 'mix2': 'Mix 2', '2x3': '2x3cm', '3x4': '3x4cm', '4x6': '4x6cm',
         '3.5x4.5': '3.5x4.5cm', '3.3x4.8': '3.3x4.8cm', '4.5x4.5': '4.5x4.5cm', '5x5': '5x5cm',
     }
 

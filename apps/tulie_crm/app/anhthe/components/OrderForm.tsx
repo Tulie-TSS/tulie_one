@@ -47,7 +47,7 @@ function getPackageMeta(product: Product) {
 }
 
 const PRINT_SIZES = [
-  { id: 'mix', name: 'Vỉ Mix (3 ảnh 4×6 · 5 ảnh 3×4 · 3 ảnh 2×3)' },
+  { id: 'mix', name: 'Vỉ Mix 1 (3 ảnh 4×6 · 5 ảnh 3×4 · 3 ảnh 2×3)' },
   { id: 'mix2', name: 'Vỉ Mix 2 (3 ảnh 4×6 · 6 ảnh 3×4 · 1 ảnh 2×3)' },
   { id: '2x3', name: 'Cỡ 2×3 cm — 18 ảnh/vỉ' },
   { id: '3x4', name: 'Cỡ 3×4 cm — 10 ảnh/vỉ' },
