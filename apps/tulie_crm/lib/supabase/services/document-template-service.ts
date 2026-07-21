@@ -536,10 +536,10 @@ export async function generateDocument(
             }
         }
 
-        // Build document numbers based on format: yyyymmdd/TYPE-TL-ABBR
-        const contractDocNumber = isFreelance
-            ? (dateStr && cleanInitials ? `${dateStr}/HĐCTV-TL-${cleanInitials}` : contract?.contract_number || '')
-            : (dateStr && abbr ? `${dateStr}/HDKT-TL-${abbr.toUpperCase()}` : contract?.contract_number || '')
+        // Build document numbers: prioritize contract.contract_number if specified
+        const contractDocNumber = contract?.contract_number || (isFreelance
+            ? (dateStr && cleanInitials ? `${dateStr}/HĐCTV-TL-${cleanInitials}` : '')
+            : (dateStr && abbr ? `${dateStr}/HDKT-TL-${abbr.toUpperCase()}` : ''))
             
         const paymentDocNumber = (dateStr && (abbr || cleanInitials))
             ? `${dateStr}/DNTT-TL-${(abbr || cleanInitials).toUpperCase()}`
@@ -1405,10 +1405,10 @@ function getNextVersionDocNumber(
     const mutableDoc = existingDocs.find(d => d.status !== 'signed')
     const signedDocs = existingDocs.filter(d => d.status === 'signed')
     if (mutableDoc) {
-        // Check if the mutable document's number conflicts with a signed document in the group
-        const hasConflict = signedDocs.some(sd => sd.doc_number && sd.doc_number === mutableDoc.doc_number)
+        // Check if the baseDocNum conflicts with a signed document in the group
+        const hasConflict = signedDocs.some(sd => sd.doc_number && sd.doc_number === baseDocNum)
         if (!hasConflict) {
-            return { nextDocNum: mutableDoc.doc_number || baseDocNum, isNewVersion: false }
+            return { nextDocNum: baseDocNum, isNewVersion: false }
         }
     }
 

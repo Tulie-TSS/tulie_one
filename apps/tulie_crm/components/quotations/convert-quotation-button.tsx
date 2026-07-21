@@ -23,8 +23,8 @@ export function ConvertQuotationButton({ quotationId }: { quotationId: string })
         try {
             const res = await convertQuotationToOrder(quotationId, type)
             if (res.success) {
-                toast.success(type === 'order' ? 'Đã tạo đơn hàng thành công' : 'Đã tạo hợp đồng thành công')
-                router.push(`/contracts/${res.id}`)
+                toast.success(type === 'order' ? 'Đã tạo đơn hàng thành công. Chuyển sang chỉnh sửa...' : 'Đã tạo hợp đồng thành công. Chuyển sang chỉnh sửa...')
+                router.push(`/contracts/${res.id}/edit`)
             } else {
                 toast.error(res.error || 'Có lỗi xảy ra')
             }

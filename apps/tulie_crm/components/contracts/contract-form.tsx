@@ -305,10 +305,10 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                 return
             }
 
-            if (quotationId && window.confirm(
-                'Hợp đồng này liên kết với báo giá. Lưu thay đổi sẽ ghi đè mốc thanh toán và thời hạn bảo hành trên báo giá. Bạn có muốn đồng bộ không?'
-            )) {
-                await syncContractTermsToQuotation(contract.id)
+            if (quotationId) {
+                await syncContractTermsToQuotation(contract.id).catch(err => {
+                    console.warn('Failed to sync contract terms to quotation:', err)
+                })
             }
 
             toast.success('Cập nhật hợp đồng thành công')

@@ -447,7 +447,7 @@ export async function updateContract(id: string, contract: Partial<Contract>, mi
         }
 
         // Auto-regenerate document bundle (all draft docs)
-        generateDocumentBundle(id).catch(err => {
+        await generateDocumentBundle(id).catch(err => {
             console.error('Error regenerating document bundle:', err)
         })
 

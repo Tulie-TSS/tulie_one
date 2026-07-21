@@ -597,8 +597,8 @@ export default function TemplateDetailPage() {
             })
             const data = await res.json()
             if (res.ok && data.success) {
-                toast.success('Hợp đồng đã được tạo thành công!')
-                setTimeout(() => router.push(`/contracts/${data.id}`), 1200)
+                toast.success('Hợp đồng đã được tạo thành công! Chuyển sang chỉnh sửa...')
+                setTimeout(() => router.push(`/contracts/${data.id}/edit`), 1200)
             } else {
                 toast.error(data.error || 'Không thể tạo hợp đồng')
             }
