@@ -122,7 +122,7 @@ export const contractSoftwareTemplate = `
       <td style="vertical-align:top;">Số tài khoản:</td>
       <td style="vertical-align:top;">86683979</td>
       <td style="vertical-align:top;">tại</td>
-      <td style="vertical-align:top;">Ngân hàng Techcombank - CN Hội sở</td>
+      <td style="vertical-align:top;">Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank) - TTGD Hội sở</td>
     </tr>
   </table>
 
@@ -220,7 +220,7 @@ export const contractSoftwareTemplate = `
         <table style="margin-left:10px; margin-top:4px; border-collapse:collapse; line-height:1.6; font-size:inherit;">
           <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Tên tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</strong></td></tr>
           <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Số tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>86683979</strong></td></tr>
-          <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Ngân hàng:</td><td style="padding:1px 0 1px 6px;"><strong>TMCP Kỹ Thương Việt Nam (Techcombank) – Trung tâm giao dịch Hội Sở</strong></td></tr>
+          <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Ngân hàng:</td><td style="padding:1px 0 1px 6px;"><strong>TMCP Kỹ Thương Việt Nam (Techcombank) – TTGD Hội Sở</strong></td></tr>
         </table>
         Ngày thanh toán được xác định là ngày tiền được ghi Có vào tài khoản của Bên B.
       </td>
@@ -726,7 +726,7 @@ export const contractDesignTemplate = `
       <td style="vertical-align:top;">Số tài khoản:</td>
       <td style="vertical-align:top;">86683979</td>
       <td style="vertical-align:top;">tại</td>
-      <td style="vertical-align:top;">Ngân hàng Techcombank - CN Hội sở</td>
+      <td style="vertical-align:top;">Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank) - TTGD Hội sở</td>
     </tr>
   </table>
 
@@ -802,7 +802,7 @@ export const contractDesignTemplate = `
         <table style="margin-left:10px; margin-top:4px; border-collapse:collapse; line-height:1.6; font-size:inherit;">
           <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Tên tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</strong></td></tr>
           <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Số tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>86683979</strong></td></tr>
-          <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Ngân hàng:</td><td style="padding:1px 0 1px 6px;"><strong>TMCP Kỹ Thương Việt Nam (Techcombank) – Trung tâm giao dịch Hội Sở</strong></td></tr>
+          <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Ngân hàng:</td><td style="padding:1px 0 1px 6px;"><strong>TMCP Kỹ Thương Việt Nam (Techcombank) – TTGD Hội Sở</strong></td></tr>
         </table>
         Ngày thanh toán được xác định là ngày tiền được ghi Có vào tài khoản của Bên B.
       </td>

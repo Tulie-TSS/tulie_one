@@ -203,7 +203,7 @@ Theo điều khoản thanh toán, chúng tôi kính đề nghị Quý khách hà
 \\textbf{Thông tin chuyển khoản:} \\\\
 - Tên chủ tài khoản: \\textbf{CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE} \\\\
 - Số tài khoản: \\textbf{86683979} \\\\
-- Ngân hàng: \\textbf{Techcombank - Chi nhánh Hội sở} \\\\
+- Ngân hàng: \\textbf{Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank) - TTGD Hội sở} \\\\
 - Nội dung: \\textbf{Thanh toán HĐ {{contract_number}} }
 
 \\vspace{10pt}

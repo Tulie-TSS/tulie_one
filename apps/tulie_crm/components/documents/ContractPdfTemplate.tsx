@@ -100,7 +100,7 @@ const ContractPdfTemplate: React.FC<ContractPdfTemplateProps> = ({ data }) => {
                     </View>
                     <View style={styles.partyInfo}>
                         <Text style={styles.partyLabel}>Số tài khoản:</Text>
-                        <Text style={styles.partyValue}>86683979 tại Ngân hàng Techcombank - CN Hội sở</Text>
+                        <Text style={styles.partyValue}>86683979 tại Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank) - TTGD Hội sở</Text>
                     </View>
                 </View>
 

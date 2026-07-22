@@ -57,7 +57,7 @@ export const deliveryMinutesTemplate = `
     <tr><td style="vertical-align:top;">Địa chỉ liên hệ:</td><td colspan="3" style="vertical-align:top;">Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Thành phố Hà Nội, Việt Nam</td></tr>
     <tr><td style="vertical-align:top;">Điện thoại:</td><td style="vertical-align:top;"></td><td style="vertical-align:top;">Di động:</td><td style="vertical-align:top;">+84 98 898 4554</td></tr>
     <tr><td style="vertical-align:top;">Mã số thuế:</td><td style="vertical-align:top;">0110163102</td><td style="vertical-align:top;">Email:</td><td style="vertical-align:top;">info@tulie.vn</td></tr>
-    <tr><td style="vertical-align:top;">Số tài khoản:</td><td style="vertical-align:top;">86683979</td><td style="vertical-align:top;">tại</td><td style="vertical-align:top;">Ngân hàng Techcombank - CN Hội sở</td></tr>
+    <tr><td style="vertical-align:top;">Số tài khoản:</td><td style="vertical-align:top;">86683979</td><td style="vertical-align:top;">tại</td><td style="vertical-align:top;">Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank) - TTGD Hội sở</td></tr>
   </table>
 
   <p style="margin:10px 0; font-weight:bold;">1. Nội dung bàn giao chi tiết:</p>
