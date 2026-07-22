@@ -536,16 +536,31 @@ export async function generateDocument(
             }
         }
 
-        // Build document numbers: prioritize contract.contract_number if specified
-        const contractDocNumber = contract?.contract_number || (isFreelance
-            ? (dateStr && cleanInitials ? `${dateStr}/HĐCTV-TL-${cleanInitials}` : '')
-            : (dateStr && abbr ? `${dateStr}/HDKT-TL-${abbr.toUpperCase()}` : ''))
+        // Build document numbers: prioritize contract.contract_number if specified, but normalize legacy default format HD-YYYYMMDD-XXX
+        const rawCn = (contract?.contract_number || '').trim()
+        const isLegacyFormat = !rawCn || /^H[DĐ]-\d{8}-\d+$/i.test(rawCn) || /^H[DĐ]-\d+$/i.test(rawCn)
+
+        let contractDocNumber = rawCn
+        if (isFreelance) {
+            if (isLegacyFormat && dateStr && cleanInitials) {
+                contractDocNumber = `${dateStr}/HĐCTV-TL-${cleanInitials}`
+            } else if (!contractDocNumber && dateStr && cleanInitials) {
+                contractDocNumber = `${dateStr}/HĐCTV-TL-${cleanInitials}`
+            }
+        } else {
+            if (isLegacyFormat && dateStr && abbr) {
+                contractDocNumber = `${dateStr}/HDKT-TL-${abbr.toUpperCase()}`
+            } else if (!contractDocNumber && dateStr && abbr) {
+                contractDocNumber = `${dateStr}/HDKT-TL-${abbr.toUpperCase()}`
+            }
+        }
+        if (!contractDocNumber) contractDocNumber = rawCn
 
         let paymentDocNumber = ''
         let deliveryDocNumber = ''
 
-        if (contract?.contract_number && contract.contract_number.trim()) {
-            const cn = contract.contract_number.trim()
+        if (contractDocNumber && contractDocNumber.trim()) {
+            const cn = contractDocNumber.trim()
             if (/HĐCTV-TL/i.test(cn)) {
                 paymentDocNumber = cn.replace(/HĐCTV-TL/i, 'DNTT-TL')
                 deliveryDocNumber = cn.replace(/HĐCTV-TL/i, 'BGNT-TL')
@@ -1717,6 +1732,15 @@ export async function generateDocumentBundle(contractId: string) {
         }
         
         await Promise.all(upsertPromises)
+
+        // Sync main contract_number in contracts table if it was updated during bundle generation
+        const contractDoc = docs.find(d => d.type === 'contract' || d.type === 'freelance_contract' || d.type === 'order')
+        if (contractDoc?.doc_number && contractDoc.doc_number !== rawContract.contract_number) {
+            await supabase
+                .from('contracts')
+                .update({ contract_number: contractDoc.doc_number })
+                .eq('id', contractId)
+        }
 
 
         // 6. Cleanup obsolete documents that have not been signed.
