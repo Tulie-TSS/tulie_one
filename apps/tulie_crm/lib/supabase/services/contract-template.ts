@@ -197,7 +197,7 @@ export const contractSoftwareTemplate = `
       </td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">2.2.3.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
         <strong>Tổng giá trị thanh toán:</strong><br>
         Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>{{total_amount_number}} VNĐ</strong><br>
@@ -205,7 +205,7 @@ export const contractSoftwareTemplate = `
       </td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">2.3.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.4.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
         <strong>Tiến độ thanh toán:</strong><br>
         Trừ khi hai bên có thỏa thuận khác bằng văn bản, tiến độ thanh toán được quy định như sau:<br>
@@ -213,7 +213,7 @@ export const contractSoftwareTemplate = `
       </td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">2.4.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.5.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
         <strong>Phương thức thanh toán:</strong><br>
         Bên A thanh toán cho Bên B bằng chuyển khoản vào tài khoản ngân hàng sau:<br>
@@ -226,7 +226,7 @@ export const contractSoftwareTemplate = `
       </td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">2.5.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.6.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Chậm thanh toán:</strong><br>
         a) Nếu Bên A chậm thanh toán bất kỳ khoản nào quá 05 (năm) ngày làm việc so với hạn thanh toán, Bên A phải chịu lãi chậm trả với mức 0,05%/ngày tính trên số tiền chậm trả và số ngày chậm trả, nhưng tổng mức phạt và lãi chậm trả không vượt quá 8% giá trị phần nghĩa vụ thanh toán bị vi phạm, phù hợp Điều 301 Luật Thương mại 2005;<br>
         b) Nếu Bên A chậm thanh toán quá 15 (mười lăm) ngày làm việc, Bên B có quyền tạm dừng thực hiện công việc cho đến khi nhận đủ khoản thanh toán tương ứng, kéo dài thời hạn thực hiện Hợp đồng tương ứng thời gian tạm dừng mà không bị coi là chậm tiến độ, đồng thời yêu cầu Bên A bồi thường thiệt hại thực tế (nếu có).
