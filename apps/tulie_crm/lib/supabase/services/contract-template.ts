@@ -137,9 +137,9 @@ export const contractSoftwareTemplate = `
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">1.1.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">1.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B cung cấp cho Bên A dịch vụ phát triển phần mềm ứng dụng dạng website (sau đây gọi là &ldquo;Phần mềm&rdquo;), bao gồm nhưng không giới hạn các công việc chính sau:
-        <div style="margin-left: 10px; margin-top: 4px; line-height: 1.6;">
+        <div style="margin-left: 0px; margin-top: 4px; line-height: 1.6;">
           a) Khảo sát, phân tích yêu cầu nghiệp vụ, yêu cầu chức năng của Bên A;<br>
           b) Thiết kế kiến trúc hệ thống, cơ sở dữ liệu, luồng xử lý;<br>
           c) Phát triển, lập trình các mô-đun giao diện người dùng, mô-đun xử lý nghiệp vụ, hệ thống quản trị nội dung (CMS) và các chức năng kèm theo;<br>
@@ -152,15 +152,15 @@ export const contractSoftwareTemplate = `
     </tr>
     {{clause_1_2_html}}
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">{{clause_total_value_number}}</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">{{clause_total_value_number}}</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">{{scope_appendix_ref}}</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">{{clause_appendix_number}}</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">{{clause_appendix_number}}</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên thống nhất: Dịch vụ theo Hợp đồng này là sản phẩm phần mềm/dịch vụ phần mềm theo quy định của pháp luật về công nghệ thông tin.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">{{clause_appendix_number_plus1}}</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">{{clause_appendix_number_plus1}}</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mọi yêu cầu bổ sung, thay đổi ngoài phạm vi quy định tại các Phụ lục được coi là yêu cầu thay đổi phạm vi công việc và được xử lý theo Điều 6 Hợp đồng này.</td>
     </tr>
   </table>
@@ -174,50 +174,37 @@ export const contractSoftwareTemplate = `
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">2.1.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">2.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
-        <strong>Giá trị hợp đồng:</strong><br>
-        Tổng giá trị Hợp đồng: <strong>{{total_amount_number}} VNĐ</strong><br>
-        (Bằng chữ: <em>{{amount_in_words}}</em>).<br>
-        Cơ cấu giá chi tiết theo Phụ lục 01.
+        <strong>Giá trị hợp đồng:</strong> Tổng giá trị Hợp đồng: <strong>{{total_amount_number}} VNĐ</strong> (Bằng chữ: <em>{{amount_in_words}}</em>). Cơ cấu giá chi tiết theo Phụ lục 01.
       </td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">2.2.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">2.2.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Dịch vụ theo Hợp đồng này thuộc nhóm sản phẩm phần mềm/dịch vụ phần mềm theo Luật Công nghệ thông tin và Nghị định 71/2007/NĐ-CP, thuộc đối tượng không chịu thuế giá trị gia tăng theo Khoản 21 Điều 4 Thông tư 219/2013/TT-BTC và các văn bản sửa đổi, bổ sung (nếu có). Giá trị Hợp đồng nêu tại Khoản 2.1 là giá trị không chịu thuế GTGT.</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">2.2.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Trường hợp tại thời điểm xuất hóa đơn hoặc theo văn bản/kết luận chính thức của cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng này phải chịu thuế GTGT, hai bên sẽ lập Phụ lục điều chỉnh giá trị thanh toán tương ứng và Bên A có trách nhiệm thanh toán bổ sung phần thuế GTGT theo hóa đơn hợp lệ do Bên B xuất. Việc điều chỉnh này không được coi là vi phạm Hợp đồng của Bên B.</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">2.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
-        <strong>Thuế giá trị gia tăng:</strong><br>
-        2.2.1. Hai bên thống nhất:<br>
-        a) Dịch vụ theo Hợp đồng này thuộc nhóm sản phẩm phần mềm/dịch vụ phần mềm theo Luật Công nghệ thông tin và Nghị định 71/2007/NĐ-CP;<br>
-        b) Do đó, dịch vụ này thuộc đối tượng không chịu thuế giá trị gia tăng theo Khoản 21 Điều 4 Thông tư 219/2013/TT-BTC và các văn bản sửa đổi, bổ sung (nếu có);<br>
-        c) Giá trị Hợp đồng nêu tại Khoản 2.1 là giá trị không chịu thuế GTGT.<br>
-        2.2.2. Trường hợp tại thời điểm xuất hóa đơn hoặc theo văn bản/kết luận chính thức của cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng này phải chịu thuế GTGT, hai bên sẽ:<br>
-        a) Lập Phụ lục điều chỉnh giá trị thanh toán tương ứng với số thuế GTGT phát sinh theo quy định pháp luật;<br>
-        b) Bên A có trách nhiệm thanh toán bổ sung phần thuế GTGT theo hóa đơn hợp lệ do Bên B xuất;<br>
-        c) Việc điều chỉnh này không được coi là vi phạm Hợp đồng của Bên B.
+        <strong>Tổng giá trị thanh toán:</strong> Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>{{total_amount_number}} VNĐ</strong> (Bằng chữ: <em>{{amount_in_words}}</em>). Giá trị này chưa bao gồm thuế GTGT nếu phát sinh theo quy định.
       </td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">2.3.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">2.4.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
-        <strong>Tổng giá trị thanh toán:</strong><br>
-        Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>{{total_amount_number}} VNĐ</strong><br>
-        (Bằng chữ: <em>{{amount_in_words}}</em>). Giá trị này chưa bao gồm thuế GTGT nếu pháp luật hoặc cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng phải chịu thuế GTGT; phần thuế phát sinh được xử lý theo Khoản 2.2 nêu trên.
-      </td>
-    </tr>
-    <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">2.4.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">
-        <strong>Tiến độ thanh toán:</strong><br>
-        Trừ khi hai bên có thỏa thuận khác bằng văn bản, tiến độ thanh toán được quy định như sau:<br>
+        <strong>Tiến độ thanh toán:</strong> Trừ khi hai bên có thỏa thuận khác bằng văn bản, tiến độ thanh toán được quy định như sau:<br>
         {{payment_terms}}
       </td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">2.5.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">2.5.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
-        <strong>Phương thức thanh toán:</strong><br>
-        Bên A thanh toán cho Bên B bằng chuyển khoản vào tài khoản ngân hàng sau:<br>
-        <table style="margin-left:10px; margin-top:4px; border-collapse:collapse; line-height:1.6; font-size:inherit;">
+        <strong>Phương thức thanh toán:</strong> Bên A thanh toán cho Bên B bằng chuyển khoản vào tài khoản ngân hàng sau:<br>
+        <table style="margin-left:0px; margin-top:4px; border-collapse:collapse; line-height:1.6; font-size:inherit;">
           <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Tên tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</strong></td></tr>
           <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Số tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>86683979</strong></td></tr>
           <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Ngân hàng:</td><td style="padding:1px 0 1px 6px;"><strong>TMCP Kỹ Thương Việt Nam (Techcombank) – TTGD Hội Sở</strong></td></tr>
@@ -226,11 +213,12 @@ export const contractSoftwareTemplate = `
       </td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">2.6.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Chậm thanh toán:</strong><br>
-        a) Nếu Bên A chậm thanh toán bất kỳ khoản nào quá 05 (năm) ngày làm việc so với hạn thanh toán, Bên A phải chịu lãi chậm trả với mức 0,05%/ngày tính trên số tiền chậm trả và số ngày chậm trả, nhưng tổng mức phạt và lãi chậm trả không vượt quá 8% giá trị phần nghĩa vụ thanh toán bị vi phạm, phù hợp Điều 301 Luật Thương mại 2005;<br>
-        b) Nếu Bên A chậm thanh toán quá 15 (mười lăm) ngày làm việc, Bên B có quyền tạm dừng thực hiện công việc cho đến khi nhận đủ khoản thanh toán tương ứng, kéo dài thời hạn thực hiện Hợp đồng tương ứng thời gian tạm dừng mà không bị coi là chậm tiến độ, đồng thời yêu cầu Bên A bồi thường thiệt hại thực tế (nếu có).
-      </td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">2.6.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu Bên A chậm thanh toán bất kỳ khoản nào quá 05 ngày làm việc so với hạn thanh toán, Bên A phải chịu lãi chậm trả với mức 0,05%/ngày tính trên số tiền chậm trả, nhưng tổng mức phạt và lãi chậm trả không vượt quá 8% giá trị phần nghĩa vụ thanh toán bị vi phạm (Điều 301 Luật Thương mại 2005).</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">2.6.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu Bên A chậm thanh toán quá 15 ngày làm việc, Bên B có quyền tạm dừng thực hiện công việc cho đến khi nhận đủ khoản thanh toán tương ứng, kéo dài thời hạn thực hiện Hợp đồng tương ứng thời gian tạm dừng mà không bị coi là chậm tiến độ, đồng thời yêu cầu Bên A bồi thường thiệt hại thực tế (nếu có).</td>
     </tr>
   </table>
 
@@ -243,26 +231,31 @@ export const contractSoftwareTemplate = `
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">3.1.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">3.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thời hạn thực hiện dự kiến:</strong> {{delivery_time}} ngày theo lịch (tính cả ngày bắt đầu và ngày kết thúc), được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày hoàn thành dự kiến:</strong> {{end_date}}. Lộ trình chi tiết được quy định tại Phụ lục 01. Ngày hoàn thành dự kiến, ngày nghiệm thu/bàn giao dự kiến và các mốc liên quan được tự động điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán, hoặc khi phát sinh thay đổi phạm vi theo Điều 6. Thời gian gia hạn theo văn bản của hai bên không bị tính là chậm tiến độ của Bên B.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">3.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bản dùng thử (Staging):</strong> Sau khi hoàn thành bản dùng thử trên môi trường kiểm thử, Bên B thông báo cho Bên A bằng email/văn bản. Bên A có 05 ngày làm việc để kiểm tra và gửi góp ý chỉnh sửa (không quá 03 vòng chỉnh sửa theo phạm vi Phụ lục 01). Nếu quá thời hạn trên Bên A không có ý kiến phản hồi bằng văn bản/email, bản dùng thử được coi là đã được chấp thuận, làm căn cứ để Bên A thanh toán đợt tương ứng.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">3.3.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu và bàn giao Phần mềm:</strong><br>
-      a) Sau khi hoàn thành Phần mềm, Bên B gửi thông báo bàn giao kèm tài khoản kiểm thử cho Bên A. Trong thời hạn 05 ngày làm việc, Bên A có trách nhiệm kiểm tra và ký Biên bản nghiệm thu. Lỗi kỹ thuật nghiêm trọng (làm gián đoạn chức năng chính, rò rỉ dữ liệu hoặc không thể vận hành) sẽ được Bên B khắc phục miễn phí trong thời gian hợp lý. Các lỗi hiển thị, căn chỉnh giao diện nhỏ (lỗi không nghiêm trọng) không là lý do để Bên A từ chối ký Biên bản nghiệm thu và sẽ được khắc phục trong thời hạn bảo hành.<br>
-      b) <strong>Coi như nghiệm thu:</strong> Phần mềm được mặc nhiên coi là đã nghiệm thu hoàn thành đạt chất lượng và Bên A có nghĩa vụ thanh toán đủ 100% giá trị Hợp đồng nếu xảy ra một trong các trường hợp: (i) Quá 05 ngày làm việc kể từ khi nhận thông báo bàn giao mà Bên A không phản hồi bằng văn bản/email; hoặc (ii) Bên A tự ý/cho phép đưa Phần mềm vào vận hành chính thức, gắn tên miền chính (Production), hoặc nạp dữ liệu kinh doanh thực tế để sử dụng.<br>
-      c) Bên B có quyền tạm hoãn bàn giao mã nguồn chi tiết/tài khoản quản trị cao nhất (Root/Admin) cho đến khi Bên A hoàn tất 100% nghĩa vụ thanh toán.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">3.3.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu và bàn giao Phần mềm:</strong> Sau khi hoàn thành Phần mềm, Bên B gửi thông báo bàn giao kèm tài khoản kiểm thử cho Bên A. Trong thời hạn 05 ngày làm việc, Bên A có trách nhiệm kiểm tra và ký Biên bản nghiệm thu. Lỗi kỹ thuật nghiêm trọng (làm gián đoạn chức năng chính, rò rỉ dữ liệu hoặc không thể vận hành) sẽ được Bên B khắc phục miễn phí trong thời gian hợp lý. Các lỗi hiển thị, căn chỉnh giao diện nhỏ (lỗi không nghiêm trọng) không là lý do để Bên A từ chối ký Biên bản nghiệm thu và sẽ được khắc phục trong thời hạn bảo hành.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">3.4.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">3.3.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Coi như nghiệm thu:</strong> Phần mềm được mặc nhiên coi là đã nghiệm thu hoàn thành đạt chất lượng và Bên A có nghĩa vụ thanh toán đủ 100% giá trị Hợp đồng nếu xảy ra một trong các trường hợp: (i) Quá 05 ngày làm việc kể từ khi nhận thông báo bàn giao mà Bên A không phản hồi bằng văn bản/email; hoặc (ii) Bên A tự ý/cho phép đưa Phần mềm vào vận hành chính thức, gắn tên miền chính (Production), hoặc nạp dữ liệu kinh doanh thực tế để sử dụng.</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">3.3.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B có quyền tạm hoãn bàn giao mã nguồn chi tiết/tài khoản quản trị cao nhất (Root/Admin) cho đến khi Bên A hoàn tất 100% nghĩa vụ thanh toán.</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">3.4.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Điều chỉnh tiến độ do lỗi của Bên A:</strong> Nếu Bên A chậm cung cấp thông tin, dữ liệu, phê duyệt, tài khoản truy cập, quyền truy cập hạ tầng, hoặc không phối hợp theo yêu cầu hợp lý của Bên B dẫn đến chậm tiến độ, thì thời hạn thực hiện sẽ được kéo dài tương ứng; Bên B không bị coi là chậm tiến độ và không phải chịu phạt; các chi phí phát sinh (nếu có) sẽ được hai bên thỏa thuận bổ sung bằng văn bản. Thời gian gia hạn do phát sinh hoặc do Bên A chậm phối hợp không tính vào thời gian chậm tiến độ của Bên B.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">3.5.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">3.5.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Chậm tiến độ do lỗi của Bên B:</strong> Nếu Bên B chậm bàn giao Phần mềm so với tiến độ đã thống nhất (sau khi đã trừ đi thời gian chậm trễ do Bên A, phát sinh được chấp thuận, hoặc do bất khả kháng), Bên B phải chịu phạt chậm tiến độ với mức 0,1%/ngày trên giá trị phần nghĩa vụ bị chậm, nhưng tổng mức phạt không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm, theo Điều 301 Luật Thương mại 2005.</td>
     </tr>
   </table>
