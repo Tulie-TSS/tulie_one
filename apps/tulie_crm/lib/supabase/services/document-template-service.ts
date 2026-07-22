@@ -540,13 +540,48 @@ export async function generateDocument(
         const contractDocNumber = contract?.contract_number || (isFreelance
             ? (dateStr && cleanInitials ? `${dateStr}/HĐCTV-TL-${cleanInitials}` : '')
             : (dateStr && abbr ? `${dateStr}/HDKT-TL-${abbr.toUpperCase()}` : ''))
-            
-        const paymentDocNumber = (dateStr && (abbr || cleanInitials))
-            ? `${dateStr}/DNTT-TL-${(abbr || cleanInitials).toUpperCase()}`
-            : ''
-        const deliveryDocNumber = (dateStr && (abbr || cleanInitials))
-            ? `${dateStr}/BGNT-TL-${(abbr || cleanInitials).toUpperCase()}`
-            : ''
+
+        let paymentDocNumber = ''
+        let deliveryDocNumber = ''
+
+        if (contract?.contract_number && contract.contract_number.trim()) {
+            const cn = contract.contract_number.trim()
+            if (/HĐCTV-TL/i.test(cn)) {
+                paymentDocNumber = cn.replace(/HĐCTV-TL/i, 'DNTT-TL')
+                deliveryDocNumber = cn.replace(/HĐCTV-TL/i, 'BGNT-TL')
+            } else if (/HDKT-TL/i.test(cn)) {
+                paymentDocNumber = cn.replace(/HDKT-TL/i, 'DNTT-TL')
+                deliveryDocNumber = cn.replace(/HDKT-TL/i, 'BGNT-TL')
+            } else if (/HĐCTV/i.test(cn)) {
+                paymentDocNumber = cn.replace(/HĐCTV/i, 'DNTT')
+                deliveryDocNumber = cn.replace(/HĐCTV/i, 'BGNT')
+            } else if (/HDKT/i.test(cn)) {
+                paymentDocNumber = cn.replace(/HDKT/i, 'DNTT')
+                deliveryDocNumber = cn.replace(/HDKT/i, 'BGNT')
+            } else if (/^H[DĐ]-/i.test(cn)) {
+                paymentDocNumber = cn.replace(/^H[DĐ]-/i, 'DNTT-')
+                deliveryDocNumber = cn.replace(/^H[DĐ]-/i, 'BGNT-')
+            } else if (/^H[DĐ]/i.test(cn)) {
+                paymentDocNumber = cn.replace(/^H[DĐ]/i, 'DNTT-')
+                deliveryDocNumber = cn.replace(/^H[DĐ]/i, 'BGNT-')
+            } else if (/\/H[DĐ]-/i.test(cn)) {
+                paymentDocNumber = cn.replace(/\/H[DĐ]-/i, '/DNTT-')
+                deliveryDocNumber = cn.replace(/\/H[DĐ]-/i, '/BGNT-')
+            } else if (/\/H[DĐ]/i.test(cn)) {
+                paymentDocNumber = cn.replace(/\/H[DĐ]/i, '/DNTT-')
+                deliveryDocNumber = cn.replace(/\/H[DĐ]/i, '/BGNT-')
+            } else {
+                paymentDocNumber = `DNTT-${cn}`
+                deliveryDocNumber = `BGNT-${cn}`
+            }
+        } else {
+            paymentDocNumber = (dateStr && (abbr || cleanInitials))
+                ? `${dateStr}/DNTT-TL-${(abbr || cleanInitials).toUpperCase()}`
+                : ''
+            deliveryDocNumber = (dateStr && (abbr || cleanInitials))
+                ? `${dateStr}/BGNT-TL-${(abbr || cleanInitials).toUpperCase()}`
+                : ''
+        }
 
         // Build variables map
         const variables: Record<string, string> = {
@@ -1584,9 +1619,8 @@ export async function generateDocumentBundle(contractId: string) {
                                 milestoneVars,
                                 { template, customer, contract }
                             )
-                            const docNum = result.variables?.payment_number 
-                                ? `${result.variables.payment_number}-${i + 1}` 
-                                : ''
+                            const basePaymentNum = result.variables?.payment_number || ''
+                            const docNum = basePaymentNum ? `${basePaymentNum}-${i + 1}` : ''
                             
                             return {
                                 contract_id: contractId,
