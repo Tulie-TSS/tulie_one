@@ -248,11 +248,14 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bản dùng thử:</strong> Sau khi hoàn thành bản dùng thử Phần mềm trên môi trường kiểm thử (staging), Bên B thông báo cho Bên A bằng email/văn bản. Bên A có 05 ngày làm việc để kiểm tra và gửi góp ý chỉnh sửa (không quá 03 vòng chỉnh sửa theo phạm vi đã thống nhất). Nếu quá thời hạn trên Bên A không có ý kiến bằng văn bản/email, bản dùng thử được coi là đã được chấp thuận, là căn cứ để Bên A thanh toán đợt tương ứng.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bản dùng thử (Staging):</strong> Sau khi hoàn thành bản dùng thử trên môi trường kiểm thử, Bên B thông báo cho Bên A bằng email/văn bản. Bên A có 05 ngày làm việc để kiểm tra và gửi góp ý chỉnh sửa (không quá 03 vòng chỉnh sửa theo phạm vi Phụ lục 01). Nếu quá thời hạn trên Bên A không có ý kiến phản hồi bằng văn bản/email, bản dùng thử được coi là đã được chấp thuận, làm căn cứ để Bên A thanh toán đợt tương ứng.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.3.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu và bàn giao Phần mềm:</strong> Sau khi hoàn thành toàn bộ Phần mềm theo Hợp đồng này, Bên B thông báo bàn giao và cung cấp đường dẫn, tài khoản truy cập để Bên A kiểm tra. Bên A có 05 ngày làm việc để kiểm tra và ký Biên bản nghiệm thu nếu sản phẩm đạt yêu cầu hoặc gửi danh sách lỗi/bất cập bằng văn bản/email. Lỗi kỹ thuật được hiểu là lỗi làm hệ thống không hoạt động hoặc hoạt động sai so với mô tả đã chốt; lỗi nghiêm trọng là lỗi làm gián đoạn chức năng chính, mất dữ liệu, rò rỉ dữ liệu hoặc không thể vận hành; lỗi không nghiêm trọng là lỗi hiển thị, căn chỉnh, tối ưu nhỏ, không ảnh hưởng chức năng chính. Bên B có trách nhiệm sửa các lỗi kỹ thuật thuộc phạm vi công việc trong thời hạn hợp lý và thông báo lại cho Bên A nghiệm thu. Nếu quá thời hạn 05 ngày làm việc kể từ khi nhận thông báo bàn giao mà Bên A không phản hồi bằng văn bản/email, hoặc Bên A đã đưa Phần mềm vào sử dụng chính thức, thì được coi như Bên A đã nghiệm thu đầy đủ. Bên B có quyền tạm hoãn bàn giao mã nguồn/tài khoản quản trị đầy đủ cho đến khi Bên A thanh toán đủ các khoản đến hạn.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu và bàn giao Phần mềm:</strong><br>
+      a) Sau khi hoàn thành Phần mềm, Bên B gửi thông báo bàn giao kèm tài khoản kiểm thử cho Bên A. Trong thời hạn 05 ngày làm việc, Bên A có trách nhiệm kiểm tra và ký Biên bản nghiệm thu. Lỗi kỹ thuật nghiêm trọng (làm gián đoạn chức năng chính, rò rỉ dữ liệu hoặc không thể vận hành) sẽ được Bên B khắc phục miễn phí trong thời gian hợp lý. Các lỗi hiển thị, căn chỉnh giao diện nhỏ (lỗi không nghiêm trọng) không là lý do để Bên A từ chối ký Biên bản nghiệm thu và sẽ được khắc phục trong thời hạn bảo hành.<br>
+      b) <strong>Coi như nghiệm thu:</strong> Phần mềm được mặc nhiên coi là đã nghiệm thu hoàn thành đạt chất lượng và Bên A có nghĩa vụ thanh toán đủ 100% giá trị Hợp đồng nếu xảy ra một trong các trường hợp: (i) Quá 05 ngày làm việc kể từ khi nhận thông báo bàn giao mà Bên A không phản hồi bằng văn bản/email; hoặc (ii) Bên A tự ý/cho phép đưa Phần mềm vào vận hành chính thức, gắn tên miền chính (Production), hoặc nạp dữ liệu kinh doanh thực tế để sử dụng.<br>
+      c) Bên B có quyền tạm hoãn bàn giao mã nguồn chi tiết/tài khoản quản trị cao nhất (Root/Admin) cho đến khi Bên A hoàn tất 100% nghĩa vụ thanh toán.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.4.</td>
@@ -367,7 +370,9 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Đối với dữ liệu cá nhân của người dùng Phần mềm (khách hàng, đối tác của Bên A): Bên A là bên kiểm soát dữ liệu (data controller), chịu trách nhiệm xin sự đồng ý hợp lệ của chủ thể dữ liệu, ban hành và công bố Chính sách bảo mật, Điều khoản sử dụng phù hợp pháp luật (bao gồm Nghị định 13/2023/NĐ-CP và các quy định liên quan). Bên B là bên xử lý dữ liệu (data processor) trong phạm vi công việc, chỉ xử lý dữ liệu cá nhân theo chỉ dẫn hợp pháp của Bên A và theo Hợp đồng này. Mọi chỉ dẫn xử lý dữ liệu cá nhân của Bên A phải được thể hiện bằng văn bản hoặc email; nếu chỉ dẫn có dấu hiệu trái pháp luật, Bên B có quyền từ chối thực hiện và yêu cầu Bên A tự chịu trách nhiệm đối với hậu quả phát sinh.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo vệ dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP):</strong><br>
+      a) Bên A xác định là Bên Kiểm soát dữ liệu cá nhân (Data Controller), chịu trách nhiệm toàn bộ về tính hợp pháp của việc thu thập, xin sự đồng ý (Consent) của chủ thể dữ liệu và thực hiện thủ tục Đánh giá tác động xử lý dữ liệu (DPIA) với cơ quan có thẩm quyền. Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor), chỉ thực hiện xử lý dữ liệu kỹ thuật theo chỉ dẫn hợp pháp bằng văn bản/email của Bên A.<br>
+      b) Bên B được miễn trừ hoàn toàn mọi nghĩa vụ, trách nhiệm bồi thường và các khoản tiền phạt hành chính nếu Bên A bị cơ quan quản lý xử phạt do vi phạm quy định về bảo vệ dữ liệu cá nhân mà nguyên nhân không xuất phát từ lỗi lập trình cố ý của Bên B. Trường hợp chỉ dẫn của Bên A có dấu hiệu vi phạm NĐ 13/2023/NĐ-CP, Bên B có quyền từ chối thực hiện mà không bị coi là vi phạm Hợp đồng.</td>
     </tr>
   </table>
 
@@ -385,11 +390,11 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">8.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Đối với mã nguồn, thiết kế, cấu trúc hệ thống do Bên B phát triển trong phạm vi Hợp đồng: Bên A chỉ được cấp quyền sử dụng sau khi đã thanh toán đủ 100% giá trị Hợp đồng và các khoản phát sinh (nếu có). Trước thời điểm đó, Bên A chỉ có quyền sử dụng trên môi trường do Bên B triển khai, không được sao chép, sửa đổi, dịch ngược, tách rời, chuyển giao hoặc khai thác lại mã nguồn dưới bất kỳ hình thức nào. Bên A không được sử dụng mã nguồn để phát triển sản phẩm phần mềm cạnh tranh trực tiếp với sản phẩm/dịch vụ của Bên B nếu không có thỏa thuận bằng văn bản.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Quyền đối với Mã nguồn dự án:</strong> Bên B cấp cho Bên A quyền sử dụng độc quyền (hoặc sở hữu mã nguồn thành phẩm thiết kế riêng cho Bên A) sau khi Bên A đã hoàn tất thanh toán 100% giá trị Hợp đồng và các khoản phát sinh (nếu có). Trước thời điểm thanh toán đủ 100%, toàn bộ quyền sở hữu trí tuệ đối với mã nguồn thuộc về Bên B; Bên A chỉ có quyền sử dụng trên môi trường do Bên B triển khai, không được trích xuất, sao chép, sửa đổi, chuyển giao hoặc bán lại cho Bên thứ ba.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">8.3.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B vẫn giữ quyền sở hữu và quyền sử dụng đối với các thư viện, framework, công cụ, thành phần mã nguồn dùng chung, ý tưởng, giải pháp kỹ thuật, kiến trúc hệ thống; và quyền tái sử dụng các thành phần này cho các dự án khác, với điều kiện không tiết lộ thông tin mật, dữ liệu kinh doanh của Bên A.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Mã nguồn nền tảng & Thư viện dùng chung:</strong> Bên B bảo lưu hoàn toàn quyền sở hữu trí tuệ đối với các cấu trúc mã nguồn cốt lõi (Core Framework), thư viện lập trình dùng chung, thuật toán, công cụ tích hợp sẵn do Bên B phát triển. Bên A được cấp quyền sử dụng vĩnh viễn, không mất phí bản quyền (Royalty-free non-exclusive license) đối với các thành phần dùng chung này chỉ nhằm mục đích vận hành Phần mềm theo Hợp đồng. Bên B có quyền tái sử dụng các thành phần dùng chung này cho các dự án khác với điều kiện không tiết lộ thông tin mật của Bên A.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">8.4.</td>
@@ -407,11 +412,11 @@ export const contractSoftwareTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">9.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Tổng trách nhiệm bồi thường của Bên B (nếu có) phát sinh từ hoặc liên quan đến Hợp đồng này, trong mọi trường hợp, không vượt quá tổng giá trị thực tế Bên A đã thanh toán cho Bên B theo Hợp đồng.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Tổng trách nhiệm bồi thường của Bên B (nếu có) phát sinh từ hoặc liên quan đến Hợp đồng này, trong mọi trường hợp, không vượt quá tổng giá trị thực tế Bên A đã thanh toán cho Bên B theo Hợp đồng. Mọi yêu cầu bồi thường thiệt hại của Bên A phải được gửi bằng văn bản cho Bên B trong vòng 30 ngày kể từ ngày phát sinh sự cố. Quá thời hạn này, Bên B được mặc nhiên miễn trừ trách nhiệm.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">9.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B không chịu trách nhiệm đối với: thiệt hại gián tiếp, lợi nhuận bị mất, mất dữ liệu, mất cơ hội kinh doanh, tổn thất uy tín của Bên A; hoặc sự cố do lỗi của bên thứ ba (nhà cung cấp hosting, tên miền, email, nền tảng cloud, …) hoặc do Bên A/nhân sự/Bên thứ ba do Bên A chỉ định can thiệp vào hệ thống.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B không chịu trách nhiệm đối với: thiệt hại gián tiếp, lợi nhuận bị mất, mất dữ liệu, mất cơ hội kinh doanh, tổn thất uy tín của Bên A; hoặc sự cố do lỗi của bên thứ ba (nhà cung cấp hosting, tên miền, email, nền tảng cloud, tấn công DDoS, mã độc…) hoặc do Bên A/nhân sự/Bên thứ ba do Bên A chỉ định can thiệp vào hệ thống.</td>
     </tr>
   </table>
 
@@ -455,7 +460,10 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">11.4.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Hậu quả của việc đơn phương chấm dứt:</strong> Nếu Bên A đơn phương chấm dứt Hợp đồng không do lỗi của Bên B: Bên B được giữ lại toàn bộ số tiền Bên A đã thanh toán; Bên A thanh toán cho Bên B phần giá trị công việc Bên B đã thực hiện nhưng chưa được thanh toán (nếu có); hai bên thanh lý Hợp đồng, Bên B không phải hoàn trả tiền đã nhận, trừ khi có thỏa thuận khác. Nếu Bên B đơn phương chấm dứt Hợp đồng không do lỗi của Bên A: Bên B hoàn trả cho Bên A phần tiền đã nhận tương ứng với phần công việc chưa thực hiện; Bên B chịu phạt vi phạm (nếu có) nhưng không vượt quá 8% giá trị phần nghĩa vụ chưa thực hiện bị vi phạm.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Hậu quả của việc đơn phương chấm dứt & Chuyển giao dữ liệu:</strong><br>
+      a) Nếu Bên A đơn phương chấm dứt Hợp đồng không do lỗi của Bên B: Bên B được giữ lại toàn bộ số tiền Bên A đã thanh toán; Bên A có nghĩa vụ thanh toán bổ sung cho Bên B tương ứng với 100% khối lượng công việc Bên B đã thực hiện tính đến thời điểm chấm dứt.<br>
+      b) Nếu Bên B đơn phương chấm dứt Hợp đồng không do lỗi của Bên A: Bên B hoàn trả cho Bên A phần tiền đã nhận tương ứng với phần khối lượng công việc chưa thực hiện; chịu phạt vi phạm (nếu có) nhưng không vượt quá 8% giá trị phần nghĩa vụ chưa thực hiện bị vi phạm.<br>
+      c) <strong>Bàn giao dữ liệu và mã nguồn khi chấm dứt:</strong> Bên B chỉ thực hiện bàn giao mã nguồn và xuất dữ liệu thô (định dạng SQL/Excel/JSON) cho Bên A với điều kiện Bên A đã hoàn tất 100% nghĩa vụ thanh toán cho phần việc đã làm. Chi phí trích xuất dữ liệu nâng cao hoặc hỗ trợ chuyển giao (migration) sang hạ tầng mới nằm ngoài phạm vi Hợp đồng sẽ do Bên A chi trả theo đơn giá dịch vụ của Bên B tại thời điểm đó.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">11.5.</td>
