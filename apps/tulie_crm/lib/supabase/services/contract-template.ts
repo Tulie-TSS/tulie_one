@@ -131,13 +131,13 @@ export const contractSoftwareTemplate = `
   <!-- ========== ĐIỀU 1 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">1</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">1</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 1. ĐỐI TƯỢNG VÀ PHẠM VI DỊCH VỤ</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">1.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">1.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B cung cấp cho Bên A dịch vụ phát triển phần mềm ứng dụng dạng website (sau đây gọi là &ldquo;Phần mềm&rdquo;), bao gồm nhưng không giới hạn các công việc chính sau:
         <div style="margin-left: 10px; margin-top: 4px; line-height: 1.6;">
           a) Khảo sát, phân tích yêu cầu nghiệp vụ, yêu cầu chức năng của Bên A;<br>
@@ -152,15 +152,15 @@ export const contractSoftwareTemplate = `
     </tr>
     {{clause_1_2_html}}
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">{{clause_total_value_number}}</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">{{clause_total_value_number}}</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">{{scope_appendix_ref}}</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">{{clause_appendix_number}}</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">{{clause_appendix_number}}</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên thống nhất: Dịch vụ theo Hợp đồng này là sản phẩm phần mềm/dịch vụ phần mềm theo quy định của pháp luật về công nghệ thông tin.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">{{clause_appendix_number_plus1}}</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">{{clause_appendix_number_plus1}}</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mọi yêu cầu bổ sung, thay đổi ngoài phạm vi quy định tại các Phụ lục được coi là yêu cầu thay đổi phạm vi công việc và được xử lý theo Điều 6 Hợp đồng này.</td>
     </tr>
   </table>
@@ -168,43 +168,43 @@ export const contractSoftwareTemplate = `
   <!-- ========== ĐIỀU 2 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">2</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">2</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 2. GIÁ TRỊ HỢP ĐỒNG, THUẾ GIÁ TRỊ GIA TĂNG VÀ PHƯƠNG THỨC THANH TOÁN</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">2.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
         <strong>Giá trị hợp đồng:</strong> Tổng giá trị Hợp đồng: <strong>{{total_amount_number}} VNĐ</strong> (Bằng chữ: <em>{{amount_in_words}}</em>). Cơ cấu giá chi tiết theo Phụ lục 01.
       </td>
     </tr>
     <tr>
-      <td style="width:55px; font-weight:bold; vertical-align:top; padding:2px 0;">2.2.</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">2.2.</td>
       <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Thuế giá trị gia tăng:</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">2.2.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.2.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên thống nhất: Dịch vụ theo Hợp đồng này thuộc nhóm sản phẩm phần mềm/dịch vụ phần mềm theo Luật Công nghệ thông tin và Nghị định 71/2007/NĐ-CP, thuộc đối tượng không chịu thuế giá trị gia tăng theo Khoản 21 Điều 4 Thông tư 219/2013/TT-BTC. Giá trị Hợp đồng nêu tại Khoản 2.1 là giá trị không chịu thuế GTGT.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">2.2.2.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.2.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Trường hợp cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng này phải chịu thuế GTGT, hai bên sẽ lập Phụ lục điều chỉnh giá trị thanh toán tương ứng phần thuế GTGT phát sinh. Bên A có trách nhiệm thanh toán bổ sung phần thuế GTGT theo hóa đơn hợp lệ do Bên B xuất. Việc điều chỉnh này không bị coi là vi phạm Hợp đồng của Bên B.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">2.3.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
         <strong>Tổng giá trị thanh toán:</strong> Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>{{total_amount_number}} VNĐ</strong> (Bằng chữ: <em>{{amount_in_words}}</em>). Giá trị này chưa bao gồm thuế GTGT nếu phát sinh theo kết luận của cơ quan thuế có thẩm quyền.
       </td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">2.4.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.4.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
         <strong>Tiến độ thanh toán:</strong> Trừ khi hai bên có thỏa thuận khác bằng văn bản, tiến độ thanh toán được quy định như sau:<br>{{payment_terms}}
       </td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">2.5.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.5.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
         <strong>Phương thức thanh toán:</strong> Bên A thanh toán cho Bên B bằng chuyển khoản vào tài khoản ngân hàng sau:<br>
         <table style="margin-left:0; margin-top:4px; border-collapse:collapse; line-height:1.6; font-size:inherit;">
@@ -216,15 +216,15 @@ export const contractSoftwareTemplate = `
       </td>
     </tr>
     <tr>
-      <td style="width:55px; font-weight:bold; vertical-align:top; padding:2px 0;">2.6.</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">2.6.</td>
       <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Chậm thanh toán:</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">2.6.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.6.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu Bên A chậm thanh toán bất kỳ khoản nào quá 05 (năm) ngày làm việc so với hạn thanh toán, Bên A phải chịu lãi chậm trả với mức 0,05%/ngày tính trên số tiền chậm trả, nhưng tổng mức phạt và lãi chậm trả không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm theo Điều 301 Luật Thương mại 2005.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">2.6.2.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.6.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu Bên A chậm thanh toán quá 15 (mười lăm) ngày làm việc, Bên B có quyền tạm dừng thực hiện công việc cho đến khi nhận đủ khoản thanh toán tương ứng, kéo dài thời hạn thực hiện Hợp đồng tương ứng thời gian tạm dừng mà không bị coi là chậm tiến độ.</td>
     </tr>
   </table>
@@ -232,7 +232,7 @@ export const contractSoftwareTemplate = `
   <!-- ========== ĐIỀU 3 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">3</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">3</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 3. THỜI GIAN THỰC HIỆN, NGHIỆM THU VÀ BÀN GIAO</td>
     </tr>
   </table>
@@ -267,86 +267,129 @@ export const contractSoftwareTemplate = `
   <!-- ========== ĐIỀU 4 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">4</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">4</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 4. QUYỀN VÀ NGHĨA VỤ CỦA BÊN B</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">4.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">
-        <strong>Quyền của Bên B:</strong><br>
-        4.1.1. Nhận đầy đủ và đúng hạn các khoản thanh toán theo Điều 2.<br>
-        4.1.2. Yêu cầu Bên A cung cấp kịp thời, đầy đủ thông tin, nội dung, tài liệu cần thiết để thực hiện hợp đồng.<br>
-        4.1.3. Từ chối các yêu cầu thay đổi, bổ sung tính năng, nội dung, phạm vi công việc nằm ngoài Hợp đồng và Phụ lục, trừ khi hai bên có thỏa thuận phát sinh bằng văn bản.<br>
-        4.1.4. Tạm dừng thực hiện dịch vụ trong trường hợp Bên A chậm thanh toán, không phối hợp hoặc vi phạm nghĩa vụ theo Hợp đồng, sau khi đã thông báo bằng văn bản cho Bên A.<br>
-        4.1.5. Tạm hoãn bàn giao mã nguồn, tài khoản quản trị đầy đủ hoặc các quyền truy cập kỹ thuật khác nếu Bên A chưa thanh toán đủ các khoản đến hạn.
-      </td>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">4.1.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Quyền của Bên B:</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">4.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">
-        <strong>Nghĩa vụ của Bên B:</strong><br>
-        4.2.1. Thực hiện công việc theo đúng nội dung, phạm vi, chất lượng, tiến độ đã thỏa thuận.<br>
-        4.2.2. Bảo mật thông tin, dữ liệu, tài khoản truy cập do Bên A cung cấp, trừ trường hợp phải cung cấp theo yêu cầu của cơ quan nhà nước có thẩm quyền.<br>
-        4.2.3. Phối hợp với Bên A trong quá trình nghiệm thu, bàn giao, đào tạo sử dụng Phần mềm.<br>
-        4.2.4. Thông báo kịp thời cho Bên A về các sự cố, phát sinh, bất khả kháng ảnh hưởng đến tiến độ, chất lượng dịch vụ.
-      </td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.1.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nhận đầy đủ và đúng hạn các khoản thanh toán theo Điều 2.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.1.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Yêu cầu Bên A cung cấp kịp thời, đầy đủ thông tin, nội dung, tài liệu cần thiết để thực hiện hợp đồng.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.1.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Từ chối các yêu cầu thay đổi, bổ sung tính năng, nội dung, phạm vi công việc nằm ngoài Hợp đồng và Phụ lục, trừ khi hai bên có thỏa thuận phát sinh bằng văn bản.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.1.4.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Tạm dừng thực hiện dịch vụ trong trường hợp Bên A chậm thanh toán, không phối hợp hoặc vi phạm nghĩa vụ theo Hợp đồng, sau khi đã thông báo bằng văn bản cho Bên A.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.1.5.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Tạm hoãn bàn giao mã nguồn, tài khoản quản trị đầy đủ hoặc các quyền truy cập kỹ thuật khác nếu Bên A chưa thanh toán đủ các khoản đến hạn.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">4.2.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Nghĩa vụ của Bên B:</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.2.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Thực hiện công việc theo đúng nội dung, phạm vi, chất lượng, tiến độ đã thỏa thuận.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.2.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật thông tin, dữ liệu, tài khoản truy cập do Bên A cung cấp, trừ trường hợp phải cung cấp theo yêu cầu của cơ quan nhà nước có thẩm quyền.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.2.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Phối hợp với Bên A trong quá trình nghiệm thu, bàn giao, đào tạo sử dụng Phần mềm.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.2.4.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Thông báo kịp thời cho Bên A về các sự cố, phát sinh, bất khả kháng ảnh hưởng đến tiến độ, chất lượng dịch vụ.</td>
     </tr>
   </table>
 
   <!-- ========== ĐIỀU 5 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">5</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">5</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 5. QUYỀN VÀ NGHĨA VỤ CỦA BÊN A</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">5.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">
-        <strong>Quyền của Bên A:</strong><br>
-        5.1.1. Yêu cầu Bên B cung cấp dịch vụ đúng chất lượng, tiến độ, phạm vi đã thỏa thuận.<br>
-        5.1.2. Kiểm tra, giám sát tiến độ thực hiện; yêu cầu Bên B báo cáo tình hình triển khai khi cần thiết.<br>
-        5.1.3. Đề nghị Bên B sửa lỗi, bảo hành theo Điều 3.
-      </td>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">5.1.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Quyền của Bên A:</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">5.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">
-        <strong>Nghĩa vụ của Bên A:</strong><br>
-        5.2.1. Thanh toán đầy đủ, đúng hạn cho Bên B theo Điều 2.<br>
-        5.2.2. Cung cấp kịp thời, đầy đủ và đảm bảo tính hợp pháp của toàn bộ nội dung, dữ liệu, hình ảnh, tài liệu và yêu cầu chi tiết để lập trình Phần mềm.<br>
-        5.2.3. Chịu trách nhiệm trước pháp luật về tính hợp pháp của toàn bộ nội dung, dữ liệu cung cấp cho Bên B để đưa lên Phần mềm.<br>
-        5.2.4. Phối hợp nghiệm thu, ký biên bản nghiệm thu/bàn giao trong thời hạn quy định.<br>
-        5.2.5. Không tự ý can thiệp vào mã nguồn, cấu hình hệ thống khi chưa có sự đồng ý của Bên B trong thời gian bảo hành; nếu tự ý can thiệp dẫn đến lỗi, Bên B có quyền từ chối bảo hành miễn phí.
-      </td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.1.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Yêu cầu Bên B cung cấp dịch vụ đúng chất lượng, tiến độ, phạm vi đã thỏa thuận.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.1.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Kiểm tra, giám sát tiến độ thực hiện; yêu cầu Bên B báo cáo tình hình triển khai khi cần thiết.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.1.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Đề nghị Bên B sửa lỗi, bảo hành theo Điều 3.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">5.2.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Nghĩa vụ của Bên A:</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.2.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Thanh toán đầy đủ, đúng hạn cho Bên B theo Điều 2.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.2.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Cung cấp kịp thời, đầy đủ và đảm bảo tính hợp pháp của toàn bộ nội dung, dữ liệu, hình ảnh, tài liệu và yêu cầu chi tiết để lập trình Phần mềm.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.2.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Chịu trách nhiệm trước pháp luật về tính hợp pháp của toàn bộ nội dung, dữ liệu cung cấp cho Bên B để đưa lên Phần mềm.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.2.4.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Phối hợp nghiệm thu, ký biên bản nghiệm thu/bàn giao trong thời hạn quy định.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.2.5.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Không tự ý can thiệp vào mã nguồn, cấu hình hệ thống khi chưa có sự đồng ý của Bên B trong thời gian bảo hành; nếu tự ý can thiệp dẫn đến lỗi, Bên B có quyền từ chối bảo hành miễn phí.</td>
     </tr>
   </table>
 
   <!-- ========== ĐIỀU 6 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">6</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">6</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 6. THAY ĐỔI PHẠM VI CÔNG VIỆC</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">6.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">6.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mọi yêu cầu thay đổi, bổ sung phạm vi công việc, tính năng, giao diện, nội dung ngoài những gì đã mô tả trong {{change_scope_ref}} phải được Bên A gửi cho Bên B bằng văn bản/email.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">6.2.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">6.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Trong vòng 05 ngày làm việc kể từ khi nhận được yêu cầu, Bên B đánh giá tác động đến thời gian, chi phí, kỹ thuật và gửi lại đề xuất cho Bên A.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">6.3.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">6.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B chỉ triển khai phần phát sinh sau khi hai bên thống nhất bằng văn bản/email về nội dung thay đổi, chi phí và thời gian thực hiện. Bên A tạm ứng tối thiểu 50% giá trị phát sinh trước khi Bên B triển khai phần phát sinh.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">6.4.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">6.4.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu hai bên không thống nhất được, Bên B có quyền từ chối thực hiện phần phát sinh đó mà không bị coi là vi phạm Hợp đồng.</td>
     </tr>
   </table>
@@ -354,25 +397,25 @@ export const contractSoftwareTemplate = `
   <!-- ========== ĐIỀU 7 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">7</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">7</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 7. BẢO MẬT THÔNG TIN VÀ DỮ LIỆU CÁ NHÂN</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">7.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">7.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên cam kết giữ bí mật các thông tin nhận được của nhau trong quá trình thực hiện Hợp đồng, trừ khi thông tin đã công khai hoặc phải cung cấp theo yêu cầu của cơ quan nhà nước có thẩm quyền.</td>
     </tr>
     <tr>
-      <td style="width:55px; font-weight:bold; vertical-align:top; padding:2px 0;">7.2.</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">7.2.</td>
       <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Bảo vệ dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP):</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">7.2.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên A xác định là Bên Kiểm soát dữ liệu cá nhân (Data Controller), chịu trách nhiệm toàn bộ về tính hợp pháp của việc thu thập, xin sự đồng ý (Consent) của chủ thể dữ liệu và thực hiện thủ tục Đánh giá tác động xử lý dữ liệu (DPIA) với cơ quan có thẩm quyền. Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor), chỉ thực hiện xử lý dữ liệu kỹ thuật theo chỉ dẫn hợp pháp bằng văn bản/email của Bên A.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">7.2.2.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B được miễn trừ hoàn toàn mọi nghĩa vụ, trách nhiệm bồi thường và các khoản tiền phạt hành chính nếu Bên A bị cơ quan quản lý xử phạt do vi phạm quy định về bảo vệ dữ liệu cá nhân mà nguyên nhân không xuất phát từ lỗi lập trình cố ý của Bên B. Trường hợp chỉ dẫn của Bên A có dấu hiệu vi phạm NĐ 13/2023/NĐ-CP, Bên B có quyền từ chối thực hiện mà không bị coi là vi phạm Hợp đồng.</td>
     </tr>
   </table>
@@ -380,25 +423,25 @@ export const contractSoftwareTemplate = `
   <!-- ========== ĐIỀU 8 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">8</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">8</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 8. SỞ HỮU TRÍ TUỆ VÀ QUYỀN SỬ DỤNG</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">8.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">8.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên A giữ quyền sở hữu đối với toàn bộ nội dung, hình ảnh, tài liệu, logo, nhãn hiệu, dữ liệu do Bên A cung cấp hoặc do Bên A tự tạo ra.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">8.2.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">8.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Quyền đối với Mã nguồn dự án:</strong> Bên B cấp cho Bên A quyền sử dụng độc quyền (hoặc sở hữu mã nguồn thành phẩm thiết kế riêng cho Bên A) sau khi Bên A đã hoàn tất thanh toán 100% giá trị Hợp đồng và các khoản phát sinh (nếu có). Trước thời điểm thanh toán đủ 100%, toàn bộ quyền sở hữu trí tuệ đối với mã nguồn thuộc về Bên B; Bên A chỉ có quyền sử dụng trên môi trường do Bên B triển khai, không được trích xuất, sao chép, sửa đổi, chuyển giao hoặc bán lại cho Bên thứ ba.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">8.3.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">8.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Mã nguồn nền tảng & Thư viện dùng chung:</strong> Bên B bảo lưu hoàn toàn quyền sở hữu trí tuệ đối với các cấu trúc mã nguồn cốt lõi (Core Framework), thư viện lập trình dùng chung, thuật toán, công cụ tích hợp sẵn do Bên B phát triển. Bên A được cấp quyền sử dụng vĩnh viễn, không mất phí bản quyền (Royalty-free non-exclusive license) đối với các thành phần dùng chung này chỉ nhằm mục đích vận hành Phần mềm theo Hợp đồng. Bên B có quyền tái sử dụng các thành phần dùng chung này cho các dự án khác với điều kiện không tiết lộ thông tin mật của Bên A.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">8.4.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">8.4.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B được quyền trích dẫn hình ảnh Phần mềm, tên dự án vào hồ sơ năng lực/portfolio của mình sau khi được Bên A đồng ý bằng văn bản/email.</td>
     </tr>
   </table>
@@ -406,17 +449,17 @@ export const contractSoftwareTemplate = `
   <!-- ========== ĐIỀU 9 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">9</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">9</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 9. GIỚI HẠN TRÁCH NHIỆM</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">9.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">9.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Tổng trách nhiệm bồi thường của Bên B (nếu có) phát sinh từ hoặc liên quan đến Hợp đồng này, trong mọi trường hợp, không vượt quá tổng giá trị thực tế Bên A đã thanh toán cho Bên B theo Hợp đồng. Mọi yêu cầu bồi thường thiệt hại của Bên A phải được gửi bằng văn bản cho Bên B trong vòng 30 ngày kể từ ngày phát sinh sự cố. Quá thời hạn này, Bên B được mặc nhiên miễn trừ trách nhiệm.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">9.2.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">9.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B không chịu trách nhiệm đối với: thiệt hại gián tiếp, lợi nhuận bị mất, mất dữ liệu, mất cơ hội kinh doanh, tổn thất uy tín của Bên A; hoặc sự cố do lỗi của bên thứ ba (nhà cung cấp hosting, tên miền, email, nền tảng cloud, tấn công DDoS, mã độc…) hoặc do Bên A/nhân sự/Bên thứ ba do Bên A chỉ định can thiệp vào hệ thống.</td>
     </tr>
   </table>
@@ -424,17 +467,17 @@ export const contractSoftwareTemplate = `
   <!-- ========== ĐIỀU 10 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">10</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">10</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 10. VI PHẠM HỢP ĐỒNG VÀ PHẠT VI PHẠM</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">10.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">10.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên nào vi phạm nghĩa vụ cơ bản theo Hợp đồng gây thiệt hại cho bên kia thì, ngoài việc phải khắc phục vi phạm, còn phải bồi thường thiệt hại thực tế (nếu bên bị vi phạm chứng minh được) và chịu phạt vi phạm nếu có thỏa thuận.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">10.2.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">10.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mức phạt vi phạm (bao gồm phạt chậm tiến độ, chậm thanh toán và các vi phạm khác nếu có thỏa thuận) không vượt quá 8% giá trị phần nghĩa vụ hợp đồng bị vi phạm, phù hợp Điều 301 Luật Thương mại 2005.</td>
     </tr>
   </table>
@@ -442,41 +485,41 @@ export const contractSoftwareTemplate = `
   <!-- ========== ĐIỀU 11 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">11</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">11</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 11. HIỆU LỰC, SỬA ĐỔI VÀ CHẤM DỨT HỢP ĐỒNG</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">11.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">11.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng có hiệu lực kể từ ngày đại diện hợp pháp của hai bên ký và đóng dấu (nếu có) đến khi các bên hoàn thành nghĩa vụ, trừ khi chấm dứt trước hạn theo quy định tại Điều này.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">11.2.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">11.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mọi sửa đổi, bổ sung Hợp đồng phải được lập thành văn bản (hoặc email có xác nhận hai bên) và là bộ phận không tách rời của Hợp đồng.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">11.3.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">11.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Quyền đơn phương chấm dứt Hợp đồng:</strong> Mỗi bên có quyền đơn phương chấm dứt Hợp đồng trong các trường hợp: (a) Bên kia vi phạm nghiêm trọng nghĩa vụ thanh toán/giao hàng/bảo mật và không khắc phục trong vòng 15 ngày làm việc kể từ khi nhận được thông báo bằng văn bản; (b) Bên kia lâm vào tình trạng phá sản, giải thể hoặc không còn khả năng thực hiện Hợp đồng; (c) Các trường hợp khác theo quy định pháp luật.</td>
     </tr>
     <tr>
-      <td style="width:55px; font-weight:bold; vertical-align:top; padding:2px 0;">11.4.</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">11.4.</td>
       <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Hậu quả của việc đơn phương chấm dứt & Chuyển giao dữ liệu:</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">11.4.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">11.4.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu Bên A đơn phương chấm dứt Hợp đồng không do lỗi của Bên B: Bên B được giữ lại toàn bộ số tiền Bên A đã thanh toán; Bên A có nghĩa vụ thanh toán bổ sung cho Bên B tương ứng với 100% khối lượng công việc Bên B đã thực hiện tính đến thời điểm chấm dứt.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">11.4.2.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">11.4.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu Bên B đơn phương chấm dứt Hợp đồng không do lỗi của Bên A: Bên B hoàn trả cho Bên A phần tiền đã nhận tương ứng với phần khối lượng công việc chưa thực hiện; chịu phạt vi phạm (nếu có) nhưng không vượt quá 8% giá trị phần nghĩa vụ chưa thực hiện bị vi phạm.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">11.4.3.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">11.4.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bàn giao dữ liệu và mã nguồn khi chấm dứt:</strong> Bên B chỉ thực hiện bàn giao mã nguồn và xuất dữ liệu thô (định dạng SQL/Excel/JSON) cho Bên A với điều kiện Bên A đã hoàn tất 100% nghĩa vụ thanh toán cho phần việc đã làm. Chi phí trích xuất dữ liệu nâng cao hoặc hỗ trợ chuyển giao (migration) sang hạ tầng mới nằm ngoài phạm vi Hợp đồng sẽ do Bên A chi trả theo đơn giá dịch vụ của Bên B tại thời điểm đó.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">11.5.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">11.5.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Trường hợp chấm dứt do bất khả kháng hoặc lý do khách quan khác theo thỏa thuận, hai bên sẽ thương lượng để thanh toán phần công việc đã thực hiện và không bên nào phải chịu phạt.</td>
     </tr>
   </table>
@@ -484,17 +527,17 @@ export const contractSoftwareTemplate = `
   <!-- ========== ĐIỀU 12 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">12</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">12</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 12. SỰ KIỆN BẤT KHẢ KHÁNG</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">12.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">12.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bất khả kháng là các sự kiện xảy ra một cách khách quan, không thể lường trước và không thể khắc phục được dù đã áp dụng mọi biện pháp cần thiết và khả năng cho phép, như: thiên tai, hỏa hoạn lớn, chiến tranh, bạo loạn, dịch bệnh, thay đổi chính sách pháp luật làm cho việc thực hiện Hợp đồng trở nên không thể thực hiện được...</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">12.2.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">12.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên gặp sự kiện bất khả kháng phải thông báo cho bên kia trong thời hạn 05 ngày làm việc kể từ khi xảy ra sự kiện và cung cấp tài liệu chứng minh (nếu có). Hai bên sẽ thương lượng để gia hạn thời gian thực hiện hoặc các biện pháp khác.</td>
     </tr>
   </table>
@@ -502,21 +545,21 @@ export const contractSoftwareTemplate = `
   <!-- ========== ĐIỀU 13 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">13</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">13</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 13. GIẢI QUYẾT TRANH CHẤP VÀ LUẬT ÁP DỤNG</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">13.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">13.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng này được điều chỉnh và giải thích theo pháp luật nước Cộng hòa Xã hội Chủ nghĩa Việt Nam.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">13.2.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">13.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mọi tranh chấp phát sinh từ hoặc liên quan đến Hợp đồng trước hết được giải quyết thông qua thương lượng, hòa giải trên tinh thần hợp tác, tôn trọng lẫn nhau trong thời hạn 30 ngày kể từ ngày phát sinh tranh chấp.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">13.3.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">13.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu hết thời hạn trên mà không giải quyết được, tranh chấp sẽ được đưa ra Tòa án nhân dân có thẩm quyền tại Thành phố Hà Nội để giải quyết. Quyết định của Tòa án là quyết định cuối cùng, các bên có nghĩa vụ thi hành. Án phí, lệ phí do bên thua kiện chịu, trừ khi Tòa án có quyết định khác.</td>
     </tr>
   </table>
@@ -524,25 +567,25 @@ export const contractSoftwareTemplate = `
   <!-- ========== ĐIỀU 14 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">14</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">14</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 14. ĐIỀU KHOẢN CHUNG & PHỤ LỤC HỢP ĐỒNG</td>
     </tr>
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">14.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">14.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Các Phụ lục kèm theo Hợp đồng này (bao gồm nhưng không giới hạn: Phụ lục phạm vi công việc, Phụ lục bảng giá chi tiết, Phụ lục bổ sung phát sinh…) là bộ phận không tách rời và có giá trị pháp lý như Hợp đồng.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">14.2.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">14.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Trường hợp có mâu thuẫn giữa nội dung Hợp đồng và Phụ lục, thì ưu tiên áp dụng nội dung tại Phụ lục mới nhất (được ký sau cùng) đối với phần công việc, giá trị, tiến độ được điều chỉnh. Các nội dung khác không được điều chỉnh trong Phụ lục vẫn áp dụng theo Hợp đồng chính. Việc ký thêm Phụ lục không làm mất hiệu lực của các điều khoản khác trong Hợp đồng, trừ khi các bên có thỏa thuận khác bằng văn bản. Phụ lục có thể lập dưới hình thức văn bản giấy hoặc email có xác nhận của hai bên.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">14.3.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">14.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Những vấn đề không được quy định hoặc quy định chưa đầy đủ trong Hợp đồng này sẽ được áp dụng theo quy định của pháp luật Việt Nam hiện hành.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">14.4.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">14.4.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng gồm {{contract_clause_count}}, kèm theo {{appendix_list_text}}, được lập thành 02 (hai) bản gốc bằng tiếng Việt, mỗi bên giữ 01 (một) bản, có giá trị pháp lý như nhau.</td>
     </tr>
   </table>
@@ -753,7 +796,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 1 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">1</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">1</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 1. ĐỐI TƯỢNG VÀ PHẠM VI DỊCH VỤ</td>
     </tr>
   </table>
@@ -776,7 +819,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 2 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">2</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">2</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 2. GIÁ TRỊ HỢP ĐỒNG, THUẾ GTGT VÀ PHƯƠNG THỨC THANH TOÁN</td>
     </tr>
   </table>
@@ -834,7 +877,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 3 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">3</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">3</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 3. NGHIỆM THU DỊCH VỤ</td>
     </tr>
   </table>
@@ -869,7 +912,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 4 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">4</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">4</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 4. QUYỀN VÀ NGHĨA VỤ CỦA BÊN B</td>
     </tr>
   </table>
@@ -903,7 +946,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 5 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">5</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">5</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 5. QUYỀN VÀ NGHĨA VỤ CỦA BÊN A</td>
     </tr>
   </table>
@@ -933,7 +976,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 6 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">6</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">6</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 6. THAY ĐỔI PHẠM VI CÔNG VIỆC</td>
     </tr>
   </table>
@@ -955,7 +998,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 7 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">7</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">7</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 7. BẢO MẬT THÔNG TIN</td>
     </tr>
   </table>
@@ -973,7 +1016,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 8 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">8</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">8</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 8. QUYỀN SỞ HỮU TRÍ TUỆ</td>
     </tr>
   </table>
@@ -999,7 +1042,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 9 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">9</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">9</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 9. GIỚI HẠN TRÁCH NHIỆM</td>
     </tr>
   </table>
@@ -1017,7 +1060,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 10 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">10</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">10</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 10. VI PHẠM HỢP ĐỒNG VÀ PHẠT VI PHẠM</td>
     </tr>
   </table>
@@ -1035,7 +1078,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 11 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">11</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">11</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 11. HIỆU LỰC, SỬA ĐỔI VÀ CHẤM DỨT HỢP ĐỒNG</td>
     </tr>
   </table>
@@ -1072,7 +1115,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 12 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">12</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">12</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 12. SỰ KIỆN BẤT KHẢ KHÁNG</td>
     </tr>
   </table>
@@ -1090,7 +1133,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 13 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">13</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">13</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 13. GIẢI QUYẾT TRANH CHẤP VÀ LUẬT ÁP DỤNG</td>
     </tr>
   </table>
@@ -1112,7 +1155,7 @@ export const contractDesignTemplate = `
   <!-- ========== ĐIỀU 14 ========== -->
   <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
     <tr>
-      <td style="width:30px; font-weight:bold; vertical-align:top;">14</td>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">14</td>
       <td style="font-weight:bold; vertical-align:top;">ĐIỀU 14. ĐIỀU KHOẢN CHUNG & PHỤ LỤC HỢP ĐỒNG</td>
     </tr>
   </table>

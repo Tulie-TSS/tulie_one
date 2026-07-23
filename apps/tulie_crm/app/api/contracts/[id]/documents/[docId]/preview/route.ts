@@ -70,6 +70,116 @@ export async function GET(
     $1`
                 )
             }
+            // Normalize width columns so section title numbers and clause numbers align at 50px
+            documentContent = documentContent
+                .replace(/style="width:30px;/gi, 'style="width:50px;')
+                .replace(/style="width:55px;/gi, 'style="width:50px;')
+                .replace(/width="30"/gi, 'width="50"')
+                .replace(/width="55"/gi, 'width="50"')
+
+            // Convert legacy 4.1 embedded sub-items into separate table rows
+            documentContent = documentContent.replace(
+                /<tr>\s*<td[^>]*>\s*4\.1\.\s*<\/td>\s*<td[^>]*>\s*<strong>\s*Quyền của Bên B:\s*<\/strong><br>\s*4\.1\.1\.\s*([\s\S]*?)<\/td>\s*<\/tr>/gi,
+                `<tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">4.1.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Quyền của Bên B:</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.1.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nhận đầy đủ và đúng hạn các khoản thanh toán theo Điều 2.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.1.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Yêu cầu Bên A cung cấp kịp thời, đầy đủ thông tin, nội dung, tài liệu cần thiết để thực hiện hợp đồng.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.1.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Từ chối các yêu cầu thay đổi, bổ sung tính năng, nội dung, phạm vi công việc nằm ngoài Hợp đồng và Phụ lục, trừ khi hai bên có thỏa thuận phát sinh bằng văn bản.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.1.4.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Tạm dừng thực hiện dịch vụ trong trường hợp Bên A chậm thanh toán, không phối hợp hoặc vi phạm nghĩa vụ theo Hợp đồng, sau khi đã thông báo bằng văn bản cho Bên A.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.1.5.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Tạm hoãn bàn giao mã nguồn, tài khoản quản trị đầy đủ hoặc các quyền truy cập kỹ thuật khác nếu Bên A chưa thanh toán đủ các khoản đến hạn.</td>
+    </tr>`
+            )
+
+            // Convert legacy 4.2 embedded sub-items into separate table rows
+            documentContent = documentContent.replace(
+                /<tr>\s*<td[^>]*>\s*4\.2\.\s*<\/td>\s*<td[^>]*>\s*<strong>\s*Nghĩa vụ của Bên B:\s*<\/strong><br>\s*4\.2\.1\.\s*([\s\S]*?)<\/td>\s*<\/tr>/gi,
+                `<tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">4.2.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Nghĩa vụ của Bên B:</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.2.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Thực hiện công việc theo đúng nội dung, phạm vi, chất lượng, tiến độ đã thỏa thuận.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.2.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật thông tin, dữ liệu, tài khoản truy cập do Bên A cung cấp, trừ trường hợp phải cung cấp theo yêu cầu của cơ quan nhà nước có thẩm quyền.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.2.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Phối hợp với Bên A trong quá trình nghiệm thu, bàn giao, đào tạo sử dụng Phần mềm.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.2.4.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Thông báo kịp thời cho Bên A về các sự cố, phát sinh, bất khả kháng ảnh hưởng đến tiến độ, chất lượng dịch vụ.</td>
+    </tr>`
+            )
+
+            // Convert legacy 5.1 embedded sub-items into separate table rows
+            documentContent = documentContent.replace(
+                /<tr>\s*<td[^>]*>\s*5\.1\.\s*<\/td>\s*<td[^>]*>\s*<strong>\s*Quyền của Bên A:\s*<\/strong><br>\s*5\.1\.1\.\s*([\s\S]*?)<\/td>\s*<\/tr>/gi,
+                `<tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">5.1.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Quyền của Bên A:</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.1.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Yêu cầu Bên B cung cấp dịch vụ đúng chất lượng, tiến độ, phạm vi đã thỏa thuận.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.1.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Kiểm tra, giám sát tiến độ thực hiện; yêu cầu Bên B báo cáo tình hình triển khai khi cần thiết.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.1.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Đề nghị Bên B sửa lỗi, bảo hành theo Điều 3.</td>
+    </tr>`
+            )
+
+            // Convert legacy 5.2 embedded sub-items into separate table rows
+            documentContent = documentContent.replace(
+                /<tr>\s*<td[^>]*>\s*5\.2\.\s*<\/td>\s*<td[^>]*>\s*<strong>\s*Nghĩa vụ của Bên A:\s*<\/strong><br>\s*5\.2\.1\.\s*([\s\S]*?)<\/td>\s*<\/tr>/gi,
+                `<tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">5.2.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Nghĩa vụ của Bên A:</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.2.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Thanh toán đầy đủ, đúng hạn cho Bên B theo Điều 2.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.2.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Cung cấp kịp thời, đầy đủ và đảm bảo tính hợp pháp của toàn bộ nội dung, dữ liệu, hình ảnh, tài liệu và yêu cầu chi tiết để lập trình Phần mềm.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.2.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Chịu trách nhiệm trước pháp luật về tính hợp pháp của toàn bộ nội dung, dữ liệu cung cấp cho Bên B để đưa lên Phần mềm.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.2.4.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Phối hợp nghiệm thu, ký biên bản nghiệm thu/bàn giao trong thời hạn quy định.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.2.5.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Không tự ý can thiệp vào mã nguồn, cấu hình hệ thống khi chưa có sự đồng ý của Bên B trong thời gian bảo hành; nếu tự ý can thiệp dẫn đến lỗi, Bên B có quyền từ chối bảo hành miễn phí.</td>
+    </tr>`
+            )
         }
 
         const DOC_LABELS: Record<string, string> = {

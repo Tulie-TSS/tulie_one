@@ -58,7 +58,12 @@ export async function GET(
             additionalVariables
         )
 
-        const html = result.content || ''
+        let html = result.content || ''
+        html = html
+            .replace(/style="width:30px;/gi, 'style="width:50px;')
+            .replace(/style="width:55px;/gi, 'style="width:50px;')
+            .replace(/width="30"/gi, 'width="50"')
+            .replace(/width="55"/gi, 'width="50"')
         const DOCUMENT_LABELS: Record<string, string> = {
             contract: 'Hợp đồng dịch vụ',
             freelance_contract: 'Hợp đồng Cộng tác viên',
