@@ -139,7 +139,7 @@ async function diagnose() {
 
         const contractDocNumber = isFreelance
             ? (dateStr && cleanInitials ? `${dateStr}/HĐCTV-TL-${cleanInitials}` : contract.contract_number || '')
-            : (dateStr && abbr ? `${dateStr}/HDKT-TL-${abbr.toUpperCase()}` : contract.contract_number || '')
+            : (dateStr && abbr ? `${dateStr}/HDDV-TL-${abbr.toUpperCase()}` : contract.contract_number || '')
             
         const paymentDocNumber = (dateStr && (abbr || cleanInitials))
             ? `${dateStr}/DNTT-TL-${(abbr || cleanInitials).toUpperCase()}`

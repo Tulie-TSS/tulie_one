@@ -155,7 +155,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                 return
             }
             const dateStr = format(signedDate, 'yyyyMMdd')
-            setContractNumber(`${dateStr}/HDKT-TL-${customerAbbreviation.toUpperCase()}`)
+            setContractNumber(`${dateStr}/HDDV-TL-${customerAbbreviation.toUpperCase()}`)
         }
     }
     const [orderNumber, setOrderNumber] = useState(contract.order_number || '')
@@ -639,7 +639,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                         onChange={(e) => setCustomerAbbreviation(e.target.value.toUpperCase())}
                                         placeholder="VD: VSTEM"
                                     />
-                                    <p className="text-[10px] text-muted-foreground">Dùng để tạo mã giấy tờ: HDKT-TL-{customerAbbreviation || 'XXX'}</p>
+                                    <p className="text-[10px] text-muted-foreground">Dùng để tạo mã giấy tờ: HDDV-TL-{customerAbbreviation || 'XXX'}</p>
                                 </div>
                                 )}
                                 <div className="space-y-2">
@@ -664,7 +664,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                     <p className="text-[10px] text-muted-foreground">
                                         {category === 'freelancer'
                                             ? `Format: yyyymmdd/HĐCTV-TL-[Viết tắt tên CTV]`
-                                            : `Format: yyyymmdd/HDKT-TL-${customerAbbreviation || 'XXX'}`
+                                            : `Format: yyyymmdd/HDDV-TL-${customerAbbreviation || 'XXX'}`
                                         }
                                     </p>
                                 </div>

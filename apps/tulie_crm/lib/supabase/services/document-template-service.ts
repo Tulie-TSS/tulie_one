@@ -536,9 +536,9 @@ export async function generateDocument(
             }
         }
 
-        // Build document numbers: prioritize contract.contract_number if specified, but normalize legacy default format HD-YYYYMMDD-XXX
+        // Build document numbers: prioritize contract.contract_number if specified, but normalize legacy default formats (e.g., HD-YYYYMMDD-XXX or HDKT-TL)
         const rawCn = (contract?.contract_number || '').trim()
-        const isLegacyFormat = !rawCn || /^H[DĐ]-\d{8}-\d+$/i.test(rawCn) || /^H[DĐ]-\d+$/i.test(rawCn)
+        const isLegacyFormat = !rawCn || /^H[DĐ]-\d{8}-\d+$/i.test(rawCn) || /^H[DĐ]-\d+$/i.test(rawCn) || /\/HDKT-TL-/i.test(rawCn) || /\/HDKT-/i.test(rawCn) || /^HDKT/i.test(rawCn)
 
         let contractDocNumber = rawCn
         if (isFreelance) {
@@ -549,9 +549,11 @@ export async function generateDocument(
             }
         } else {
             if (isLegacyFormat && dateStr && abbr) {
-                contractDocNumber = `${dateStr}/HDKT-TL-${abbr.toUpperCase()}`
+                contractDocNumber = `${dateStr}/HDDV-TL-${abbr.toUpperCase()}`
             } else if (!contractDocNumber && dateStr && abbr) {
-                contractDocNumber = `${dateStr}/HDKT-TL-${abbr.toUpperCase()}`
+                contractDocNumber = `${dateStr}/HDDV-TL-${abbr.toUpperCase()}`
+            } else if (contractDocNumber && /HDKT/i.test(contractDocNumber)) {
+                contractDocNumber = contractDocNumber.replace(/HDKT/gi, 'HDDV')
             }
         }
         if (!contractDocNumber) contractDocNumber = rawCn
@@ -564,15 +566,15 @@ export async function generateDocument(
             if (/HĐCTV-TL/i.test(cn)) {
                 paymentDocNumber = cn.replace(/HĐCTV-TL/i, 'DNTT-TL')
                 deliveryDocNumber = cn.replace(/HĐCTV-TL/i, 'BGNT-TL')
-            } else if (/HDKT-TL/i.test(cn)) {
-                paymentDocNumber = cn.replace(/HDKT-TL/i, 'DNTT-TL')
-                deliveryDocNumber = cn.replace(/HDKT-TL/i, 'BGNT-TL')
+            } else if (/HDDV-TL|HDKT-TL/i.test(cn)) {
+                paymentDocNumber = cn.replace(/HDDV-TL|HDKT-TL/i, 'DNTT-TL')
+                deliveryDocNumber = cn.replace(/HDDV-TL|HDKT-TL/i, 'BGNT-TL')
             } else if (/HĐCTV/i.test(cn)) {
                 paymentDocNumber = cn.replace(/HĐCTV/i, 'DNTT')
                 deliveryDocNumber = cn.replace(/HĐCTV/i, 'BGNT')
-            } else if (/HDKT/i.test(cn)) {
-                paymentDocNumber = cn.replace(/HDKT/i, 'DNTT')
-                deliveryDocNumber = cn.replace(/HDKT/i, 'BGNT')
+            } else if (/HDDV|HDKT/i.test(cn)) {
+                paymentDocNumber = cn.replace(/HDDV|HDKT/i, 'DNTT')
+                deliveryDocNumber = cn.replace(/HDDV|HDKT/i, 'BGNT')
             } else if (/^H[DĐ]-/i.test(cn)) {
                 paymentDocNumber = cn.replace(/^H[DĐ]-/i, 'DNTT-')
                 deliveryDocNumber = cn.replace(/^H[DĐ]-/i, 'BGNT-')

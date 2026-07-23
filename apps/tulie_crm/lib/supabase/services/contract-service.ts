@@ -625,7 +625,7 @@ export async function convertQuotationToOrder(quotationId: string, type: 'contra
         const customerAbbr = quotation.customer?.abbreviation || ''
         let formattedNum: string
         if (customerAbbr) {
-            const typePrefix = type === 'order' ? 'DH' : 'HDKT'
+            const typePrefix = type === 'order' ? 'DH' : 'HDDV'
             formattedNum = `${dateStr}/${typePrefix}-TL-${customerAbbr.toUpperCase()}`
         } else {
             const prefix = type === 'order' ? 'DH' : 'HD'
