@@ -621,8 +621,6 @@ export const contractSoftwareTemplate = `
       <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; white-space:nowrap;">ĐVT</th>
       <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; white-space:nowrap;">SL</th>
       <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Đơn giá (chưa VAT)</th>
-      <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; white-space:nowrap;">CK(%)</th>
-      <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Giảm giá</th>
       <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Thành tiền (chưa VAT)</th>
       <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; white-space:nowrap;">VAT(%)</th>
       <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Tiền VAT</th>
@@ -630,25 +628,16 @@ export const contractSoftwareTemplate = `
     </tr>
     {{contract_items_table}}
     <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Tạm tính</strong></td>
-      <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{gross_total}}</td>
-    </tr>
-    {{discount_row_html}}
-    <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Tổng chiết khấu</strong></td>
-      <td style="border:1px solid #000; padding:4px; text-align:right; white-space:nowrap;">-{{total_discount}}</td>
-    </tr>
-    <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Cộng tiền hàng</strong></td>
+      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Cộng tiền hàng</strong></td>
       <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
     </tr>
     {{vat_breakdown_html}}
     <tr style="background:#e8e8e8;">
-      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="10"><strong>Tổng cộng thanh toán (không chịu thuế GTGT theo Khoản 21 Điều 4 Thông tư 219/2013/TT-BTC)</strong></td>
+      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="8"><strong>Tổng cộng thanh toán (không chịu thuế GTGT theo Khoản 21 Điều 4 Thông tư 219/2013/TT-BTC)</strong></td>
       <td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold; font-size:9pt; white-space:nowrap;">{{total_amount_number}} VND</td>
     </tr>
     <tr>
-      <td style="border:1px solid #000; padding:4px;" colspan="11">Số tiền viết bằng chữ: <em>{{amount_in_words}}</em></td>
+      <td style="border:1px solid #000; padding:4px;" colspan="9">Số tiền viết bằng chữ: <em>{{amount_in_words}}</em></td>
     </tr>
   </table>
 
@@ -1209,8 +1198,6 @@ export const contractDesignTemplate = `
       <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; white-space:nowrap;">ĐVT</th>
       <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; white-space:nowrap;">SL</th>
       <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Đơn giá (chưa VAT)</th>
-      <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; white-space:nowrap;">CK(%)</th>
-      <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Giảm giá</th>
       <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Thành tiền (chưa VAT)</th>
       <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; white-space:nowrap;">VAT(%)</th>
       <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Tiền VAT</th>
@@ -1218,25 +1205,16 @@ export const contractDesignTemplate = `
     </tr>
     {{contract_items_table}}
     <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Tạm tính</strong></td>
-      <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{gross_total}}</td>
-    </tr>
-    {{discount_row_html}}
-    <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Tổng chiết khấu</strong></td>
-      <td style="border:1px solid #000; padding:4px; text-align:right; white-space:nowrap;">-{{total_discount}}</td>
-    </tr>
-    <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="10"><strong>Cộng tiền hàng (chưa VAT)</strong></td>
+      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Cộng tiền hàng (chưa VAT)</strong></td>
       <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
     </tr>
     {{vat_breakdown_html}}
     <tr style="background:#e8e8e8;">
-      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="10"><strong>Tổng cộng thanh toán (đã bao gồm VAT)</strong></td>
+      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="8"><strong>Tổng cộng thanh toán (đã bao gồm VAT)</strong></td>
       <td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold; font-size:9pt; white-space:nowrap;">{{total_amount_number}} VND</td>
     </tr>
     <tr>
-      <td style="border:1px solid #000; padding:4px;" colspan="11">Số tiền viết bằng chữ: <em>{{amount_in_words}}</em></td>
+      <td style="border:1px solid #000; padding:4px;" colspan="9">Số tiền viết bằng chữ: <em>{{amount_in_words}}</em></td>
     </tr>
   </table>
 

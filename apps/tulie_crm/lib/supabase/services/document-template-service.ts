@@ -745,8 +745,8 @@ export async function generateDocument(
                     }
                 }
 
-                // Check dynamically which columns to display
-                hasDiscount = items.some((item: any) => (item.discount || 0) > 0)
+                // Check dynamically which columns to display (contracts must never display discount columns/promotions)
+                hasDiscount = (template.type === 'contract') ? false : items.some((item: any) => (item.discount || 0) > 0)
                 hasVat = vatStatus !== 'exempt' && items.some((item: any) => {
                     const itemVatRate = item.vat_percent !== undefined && item.vat_percent !== null 
                         ? item.vat_percent 
@@ -798,6 +798,8 @@ export async function generateDocument(
                         const discountPct = item.discount || 0 // discount is a percentage (0-100)
                         const discountAmount = Math.round(itemGross * discountPct / 100)
                         const afterDiscount = itemGross - discountAmount
+                        // For contracts, display net unit price so qty * netUnitPrice = afterDiscount (hiding promotion details)
+                        const displayUnitPrice = (!hasDiscount && qty > 0) ? Math.round(afterDiscount / qty) : unitPrice
                         const itemVatRate = vatStatus === 'exempt' ? 0 : (item.vat_percent !== undefined && item.vat_percent !== null 
                             ? item.vat_percent 
                             : (contract.quotation?.vat_percent || 0))
@@ -825,7 +827,7 @@ export async function generateDocument(
                             <td style="border:1px solid #000; padding:4px; vertical-align:top;"><strong>${item.product_name}</strong>${descHtml}</td>
                             <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${item.unit || 'Gói'}</td>
                             <td style="border:1px solid #000; padding:4px; text-align:center; vertical-align:top; white-space:nowrap;">${qty}</td>
-                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(unitPrice)}</td>`
+                            <td style="border:1px solid #000; padding:4px; text-align:right; vertical-align:top; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(displayUnitPrice)}</td>`
 
                         if (hasDiscount) {
                             rowHtml += `
@@ -1292,19 +1294,10 @@ export async function generateDocument(
             templateContent = freelanceDeliveryTemplate
         }
 
-        if (!hasDiscount) {
+        if (!hasDiscount || template.type === 'contract') {
             templateContent = templateContent
                 .replace(/<th[^>]*>(?:(?!<th|<\/th>)[\s\S])*?CK\(%\)[\s\S]*?<\/th>/gi, '')
                 .replace(/<th[^>]*>(?:(?!<th|<\/th>)[\s\S])*?(Giảm giá|Discount)[\s\S]*?<\/th>/gi, '')
-        }
-
-        const overallDiscountAmount = contract?.quotation?.discount_amount || 0
-        const hasAnyDiscount = contract
-            ? ((contract.items && contract.items.length > 0 && contract.items.some((item: any) => (item.discount || 0) > 0)) || overallDiscountAmount > 0)
-            : false
-
-        if (!hasAnyDiscount) {
-            templateContent = templateContent
                 .replace(/<tr[^>]*>\s*<td[^>]*>\s*<strong>Tạm tính<\/strong>[\s\S]*?<\/tr>/gi, '')
                 .replace(/<tr[^>]*>\s*<td[^>]*>\s*<strong>Tổng chiết khấu<\/strong>[\s\S]*?<\/tr>/gi, '')
         }

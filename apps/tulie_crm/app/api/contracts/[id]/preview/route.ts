@@ -64,6 +64,21 @@ export async function GET(
             .replace(/style="width:55px;/gi, 'style="width:50px;')
             .replace(/width="30"/gi, 'width="50"')
             .replace(/width="55"/gi, 'width="50"')
+
+        if (type === 'contract') {
+            html = html
+                .replace(/<tr[^>]*>\s*<td[^>]*>\s*<strong>Tạm tính<\/strong>[\s\S]*?<\/tr>/gi, '')
+                .replace(/<tr[^>]*>\s*<td[^>]*>\s*<strong>Tổng chiết khấu<\/strong>[\s\S]*?<\/tr>/gi, '')
+                .replace(/<tr[^>]*>\s*<td[^>]*>\s*<strong>Chiết khấu tổng[\s\S]*?<\/tr>/gi, '')
+                .replace(/<th[^>]*>(?:(?!<th|<\/th>)[\s\S])*?CK\(%\)[\s\S]*?<\/th>/gi, '')
+                .replace(/<th[^>]*>(?:(?!<th|<\/th>)[\s\S])*?(Giảm giá|Discount)[\s\S]*?<\/th>/gi, '')
+                .replace(/colspan="10"/gi, 'colspan="8"')
+                .replace(/colspan="11"/gi, 'colspan="9"')
+                .replace(
+                    /<td([^>]*)>\s*[\d.]+\s*<\/td>\s*<td[^>]*>\s*(?:\d+%\s*|-)\s*<\/td>\s*<td[^>]*>\s*(?:[\d.]+\s*|-)\s*<\/td>\s*<td([^>]*)>\s*([\d.]+)\s*<\/td>/gi,
+                    '<td$1>$3</td><td$2>$3</td>'
+                )
+        }
         const DOCUMENT_LABELS: Record<string, string> = {
             contract: 'Hợp đồng dịch vụ',
             freelance_contract: 'Hợp đồng Cộng tác viên',
