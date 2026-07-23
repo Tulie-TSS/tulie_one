@@ -139,7 +139,7 @@ export const contractSoftwareTemplate = `
     <tr>
       <td style="width:55px; vertical-align:top; padding:2px 0;">1.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B cung cấp cho Bên A dịch vụ phát triển phần mềm ứng dụng dạng website (sau đây gọi là &ldquo;Phần mềm&rdquo;), bao gồm nhưng không giới hạn các công việc chính sau:
-        <div style="margin-left: 0px; margin-top: 4px; line-height: 1.6;">
+        <div style="margin-left: 10px; margin-top: 4px; line-height: 1.6;">
           a) Khảo sát, phân tích yêu cầu nghiệp vụ, yêu cầu chức năng của Bên A;<br>
           b) Thiết kế kiến trúc hệ thống, cơ sở dữ liệu, luồng xử lý;<br>
           c) Phát triển, lập trình các mô-đun giao diện người dùng, mô-đun xử lý nghiệp vụ, hệ thống quản trị nội dung (CMS) và các chức năng kèm theo;<br>
@@ -180,31 +180,34 @@ export const contractSoftwareTemplate = `
       </td>
     </tr>
     <tr>
+      <td style="width:55px; font-weight:bold; vertical-align:top; padding:2px 0;">2.2.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Thuế giá trị gia tăng:</td>
+    </tr>
+    <tr>
       <td style="width:55px; vertical-align:top; padding:2px 0;">2.2.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Dịch vụ theo Hợp đồng này thuộc nhóm sản phẩm phần mềm/dịch vụ phần mềm theo Luật Công nghệ thông tin và Nghị định 71/2007/NĐ-CP, thuộc đối tượng không chịu thuế giá trị gia tăng theo Khoản 21 Điều 4 Thông tư 219/2013/TT-BTC và các văn bản sửa đổi, bổ sung (nếu có). Giá trị Hợp đồng nêu tại Khoản 2.1 là giá trị không chịu thuế GTGT.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên thống nhất: Dịch vụ theo Hợp đồng này thuộc nhóm sản phẩm phần mềm/dịch vụ phần mềm theo Luật Công nghệ thông tin và Nghị định 71/2007/NĐ-CP, thuộc đối tượng không chịu thuế giá trị gia tăng theo Khoản 21 Điều 4 Thông tư 219/2013/TT-BTC. Giá trị Hợp đồng nêu tại Khoản 2.1 là giá trị không chịu thuế GTGT.</td>
     </tr>
     <tr>
       <td style="width:55px; vertical-align:top; padding:2px 0;">2.2.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Trường hợp tại thời điểm xuất hóa đơn hoặc theo văn bản/kết luận chính thức của cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng này phải chịu thuế GTGT, hai bên sẽ lập Phụ lục điều chỉnh giá trị thanh toán tương ứng và Bên A có trách nhiệm thanh toán bổ sung phần thuế GTGT theo hóa đơn hợp lệ do Bên B xuất. Việc điều chỉnh này không được coi là vi phạm Hợp đồng của Bên B.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Trường hợp cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng này phải chịu thuế GTGT, hai bên sẽ lập Phụ lục điều chỉnh giá trị thanh toán tương ứng phần thuế GTGT phát sinh. Bên A có trách nhiệm thanh toán bổ sung phần thuế GTGT theo hóa đơn hợp lệ do Bên B xuất. Việc điều chỉnh này không bị coi là vi phạm Hợp đồng của Bên B.</td>
     </tr>
     <tr>
       <td style="width:55px; vertical-align:top; padding:2px 0;">2.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
-        <strong>Tổng giá trị thanh toán:</strong> Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>{{total_amount_number}} VNĐ</strong> (Bằng chữ: <em>{{amount_in_words}}</em>). Giá trị này chưa bao gồm thuế GTGT nếu phát sinh theo quy định.
+        <strong>Tổng giá trị thanh toán:</strong> Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>{{total_amount_number}} VNĐ</strong> (Bằng chữ: <em>{{amount_in_words}}</em>). Giá trị này chưa bao gồm thuế GTGT nếu phát sinh theo kết luận của cơ quan thuế có thẩm quyền.
       </td>
     </tr>
     <tr>
       <td style="width:55px; vertical-align:top; padding:2px 0;">2.4.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
-        <strong>Tiến độ thanh toán:</strong> Trừ khi hai bên có thỏa thuận khác bằng văn bản, tiến độ thanh toán được quy định như sau:<br>
-        {{payment_terms}}
+        <strong>Tiến độ thanh toán:</strong> Trừ khi hai bên có thỏa thuận khác bằng văn bản, tiến độ thanh toán được quy định như sau:<br>{{payment_terms}}
       </td>
     </tr>
     <tr>
       <td style="width:55px; vertical-align:top; padding:2px 0;">2.5.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">
         <strong>Phương thức thanh toán:</strong> Bên A thanh toán cho Bên B bằng chuyển khoản vào tài khoản ngân hàng sau:<br>
-        <table style="margin-left:0px; margin-top:4px; border-collapse:collapse; line-height:1.6; font-size:inherit;">
+        <table style="margin-left:0; margin-top:4px; border-collapse:collapse; line-height:1.6; font-size:inherit;">
           <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Tên tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</strong></td></tr>
           <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Số tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>86683979</strong></td></tr>
           <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Ngân hàng:</td><td style="padding:1px 0 1px 6px;"><strong>TMCP Kỹ Thương Việt Nam (Techcombank) – TTGD Hội Sở</strong></td></tr>
@@ -213,12 +216,16 @@ export const contractSoftwareTemplate = `
       </td>
     </tr>
     <tr>
+      <td style="width:55px; font-weight:bold; vertical-align:top; padding:2px 0;">2.6.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Chậm thanh toán:</td>
+    </tr>
+    <tr>
       <td style="width:55px; vertical-align:top; padding:2px 0;">2.6.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu Bên A chậm thanh toán bất kỳ khoản nào quá 05 ngày làm việc so với hạn thanh toán, Bên A phải chịu lãi chậm trả với mức 0,05%/ngày tính trên số tiền chậm trả, nhưng tổng mức phạt và lãi chậm trả không vượt quá 8% giá trị phần nghĩa vụ thanh toán bị vi phạm (Điều 301 Luật Thương mại 2005).</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu Bên A chậm thanh toán bất kỳ khoản nào quá 05 (năm) ngày làm việc so với hạn thanh toán, Bên A phải chịu lãi chậm trả với mức 0,05%/ngày tính trên số tiền chậm trả, nhưng tổng mức phạt và lãi chậm trả không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm theo Điều 301 Luật Thương mại 2005.</td>
     </tr>
     <tr>
       <td style="width:55px; vertical-align:top; padding:2px 0;">2.6.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu Bên A chậm thanh toán quá 15 ngày làm việc, Bên B có quyền tạm dừng thực hiện công việc cho đến khi nhận đủ khoản thanh toán tương ứng, kéo dài thời hạn thực hiện Hợp đồng tương ứng thời gian tạm dừng mà không bị coi là chậm tiến độ, đồng thời yêu cầu Bên A bồi thường thiệt hại thực tế (nếu có).</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu Bên A chậm thanh toán quá 15 (mười lăm) ngày làm việc, Bên B có quyền tạm dừng thực hiện công việc cho đến khi nhận đủ khoản thanh toán tương ứng, kéo dài thời hạn thực hiện Hợp đồng tương ứng thời gian tạm dừng mà không bị coi là chậm tiến độ.</td>
     </tr>
   </table>
 
@@ -231,31 +238,26 @@ export const contractSoftwareTemplate = `
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">3.1.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">3.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thời hạn thực hiện dự kiến:</strong> {{delivery_time}} ngày theo lịch (tính cả ngày bắt đầu và ngày kết thúc), được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày hoàn thành dự kiến:</strong> {{end_date}}. Lộ trình chi tiết được quy định tại Phụ lục 01. Ngày hoàn thành dự kiến, ngày nghiệm thu/bàn giao dự kiến và các mốc liên quan được tự động điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán, hoặc khi phát sinh thay đổi phạm vi theo Điều 6. Thời gian gia hạn theo văn bản của hai bên không bị tính là chậm tiến độ của Bên B.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">3.2.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bản dùng thử (Staging):</strong> Sau khi hoàn thành bản dùng thử trên môi trường kiểm thử, Bên B thông báo cho Bên A bằng email/văn bản. Bên A có 05 ngày làm việc để kiểm tra và gửi góp ý chỉnh sửa (không quá 03 vòng chỉnh sửa theo phạm vi Phụ lục 01). Nếu quá thời hạn trên Bên A không có ý kiến phản hồi bằng văn bản/email, bản dùng thử được coi là đã được chấp thuận, làm căn cứ để Bên A thanh toán đợt tương ứng.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">3.3.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu và bàn giao Phần mềm:</strong> Sau khi hoàn thành Phần mềm, Bên B gửi thông báo bàn giao kèm tài khoản kiểm thử cho Bên A. Trong thời hạn 05 ngày làm việc, Bên A có trách nhiệm kiểm tra và ký Biên bản nghiệm thu. Lỗi kỹ thuật nghiêm trọng (làm gián đoạn chức năng chính, rò rỉ dữ liệu hoặc không thể vận hành) sẽ được Bên B khắc phục miễn phí trong thời gian hợp lý. Các lỗi hiển thị, căn chỉnh giao diện nhỏ (lỗi không nghiêm trọng) không là lý do để Bên A từ chối ký Biên bản nghiệm thu và sẽ được khắc phục trong thời hạn bảo hành.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">3.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu và bàn giao Phần mềm:</strong><br>
+      a) Sau khi hoàn thành Phần mềm, Bên B gửi thông báo bàn giao kèm tài khoản kiểm thử cho Bên A. Trong thời hạn 05 ngày làm việc, Bên A có trách nhiệm kiểm tra và ký Biên bản nghiệm thu. Lỗi kỹ thuật nghiêm trọng (làm gián đoạn chức năng chính, rò rỉ dữ liệu hoặc không thể vận hành) sẽ được Bên B khắc phục miễn phí trong thời gian hợp lý. Các lỗi hiển thị, căn chỉnh giao diện nhỏ (lỗi không nghiêm trọng) không là lý do để Bên A từ chối ký Biên bản nghiệm thu và sẽ được khắc phục trong thời hạn bảo hành.<br>
+      b) <strong>Coi như nghiệm thu:</strong> Phần mềm được mặc nhiên coi là đã nghiệm thu hoàn thành đạt chất lượng và Bên A có nghĩa vụ thanh toán đủ 100% giá trị Hợp đồng nếu xảy ra một trong các trường hợp: (i) Quá 05 ngày làm việc kể từ khi nhận thông báo bàn giao mà Bên A không phản hồi bằng văn bản/email; hoặc (ii) Bên A tự ý/cho phép đưa Phần mềm vào vận hành chính thức, gắn tên miền chính (Production), hoặc nạp dữ liệu kinh doanh thực tế để sử dụng.<br>
+      c) Bên B có quyền tạm hoãn bàn giao mã nguồn chi tiết/tài khoản quản trị cao nhất (Root/Admin) cho đến khi Bên A hoàn tất 100% nghĩa vụ thanh toán.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">3.3.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Coi như nghiệm thu:</strong> Phần mềm được mặc nhiên coi là đã nghiệm thu hoàn thành đạt chất lượng và Bên A có nghĩa vụ thanh toán đủ 100% giá trị Hợp đồng nếu xảy ra một trong các trường hợp: (i) Quá 05 ngày làm việc kể từ khi nhận thông báo bàn giao mà Bên A không phản hồi bằng văn bản/email; hoặc (ii) Bên A tự ý/cho phép đưa Phần mềm vào vận hành chính thức, gắn tên miền chính (Production), hoặc nạp dữ liệu kinh doanh thực tế để sử dụng.</td>
-    </tr>
-    <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">3.3.3.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B có quyền tạm hoãn bàn giao mã nguồn chi tiết/tài khoản quản trị cao nhất (Root/Admin) cho đến khi Bên A hoàn tất 100% nghĩa vụ thanh toán.</td>
-    </tr>
-    <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">3.4.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">3.4.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Điều chỉnh tiến độ do lỗi của Bên A:</strong> Nếu Bên A chậm cung cấp thông tin, dữ liệu, phê duyệt, tài khoản truy cập, quyền truy cập hạ tầng, hoặc không phối hợp theo yêu cầu hợp lý của Bên B dẫn đến chậm tiến độ, thì thời hạn thực hiện sẽ được kéo dài tương ứng; Bên B không bị coi là chậm tiến độ và không phải chịu phạt; các chi phí phát sinh (nếu có) sẽ được hai bên thỏa thuận bổ sung bằng văn bản. Thời gian gia hạn do phát sinh hoặc do Bên A chậm phối hợp không tính vào thời gian chậm tiến độ của Bên B.</td>
     </tr>
     <tr>
-      <td style="width:55px; vertical-align:top; padding:2px 0;">3.5.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">3.5.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Chậm tiến độ do lỗi của Bên B:</strong> Nếu Bên B chậm bàn giao Phần mềm so với tiến độ đã thống nhất (sau khi đã trừ đi thời gian chậm trễ do Bên A, phát sinh được chấp thuận, hoặc do bất khả kháng), Bên B phải chịu phạt chậm tiến độ với mức 0,1%/ngày trên giá trị phần nghĩa vụ bị chậm, nhưng tổng mức phạt không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm, theo Điều 301 Luật Thương mại 2005.</td>
     </tr>
   </table>
@@ -332,20 +334,20 @@ export const contractSoftwareTemplate = `
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">6.1.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">6.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mọi yêu cầu thay đổi, bổ sung phạm vi công việc, tính năng, giao diện, nội dung ngoài những gì đã mô tả trong {{change_scope_ref}} phải được Bên A gửi cho Bên B bằng văn bản/email.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">6.2.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">6.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Trong vòng 05 ngày làm việc kể từ khi nhận được yêu cầu, Bên B đánh giá tác động đến thời gian, chi phí, kỹ thuật và gửi lại đề xuất cho Bên A.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">6.3.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B chỉ triển khai phần phát sinh sau khi hai bên thống nhất bằng văn bản/email về nội dung thay đổi, chi phí và thời gian thực hiện. Bên A tạm ứng tối thiểu 50% giá trị phát sinh trước khi Bên B triển khai phần phát sinh, phần còn lại thanh toán khi nghiệm thu phần phát sinh hoặc gộp vào đợt thanh toán gần nhất.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">6.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B chỉ triển khai phần phát sinh sau khi hai bên thống nhất bằng văn bản/email về nội dung thay đổi, chi phí và thời gian thực hiện. Bên A tạm ứng tối thiểu 50% giá trị phát sinh trước khi Bên B triển khai phần phát sinh.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">6.4.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu hai bên không thống nhất được, Bên B có quyền từ chối thực hiện phần phát sinh đó mà không bị coi là vi phạm Hợp đồng. Phần phát sinh, nếu được chấp thuận, sẽ tự động điều chỉnh tiến độ, ngày hoàn thành dự kiến, ngày nghiệm thu/bàn giao và các mốc liên quan tương ứng.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">6.4.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu hai bên không thống nhất được, Bên B có quyền từ chối thực hiện phần phát sinh đó mà không bị coi là vi phạm Hợp đồng.</td>
     </tr>
   </table>
 
@@ -358,14 +360,20 @@ export const contractSoftwareTemplate = `
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">7.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên cam kết giữ bí mật các thông tin nhận được của nhau trong quá trình thực hiện Hợp đồng, trừ khi thông tin đã công khai; việc tiết lộ là cần thiết cho luật sư, tư vấn, kiểm toán của mình; hoặc phải cung cấp theo yêu cầu của cơ quan nhà nước có thẩm quyền theo quy định pháp luật.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">7.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên cam kết giữ bí mật các thông tin nhận được của nhau trong quá trình thực hiện Hợp đồng, trừ khi thông tin đã công khai hoặc phải cung cấp theo yêu cầu của cơ quan nhà nước có thẩm quyền.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo vệ dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP):</strong><br>
-      a) Bên A xác định là Bên Kiểm soát dữ liệu cá nhân (Data Controller), chịu trách nhiệm toàn bộ về tính hợp pháp của việc thu thập, xin sự đồng ý (Consent) của chủ thể dữ liệu và thực hiện thủ tục Đánh giá tác động xử lý dữ liệu (DPIA) với cơ quan có thẩm quyền. Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor), chỉ thực hiện xử lý dữ liệu kỹ thuật theo chỉ dẫn hợp pháp bằng văn bản/email của Bên A.<br>
-      b) Bên B được miễn trừ hoàn toàn mọi nghĩa vụ, trách nhiệm bồi thường và các khoản tiền phạt hành chính nếu Bên A bị cơ quan quản lý xử phạt do vi phạm quy định về bảo vệ dữ liệu cá nhân mà nguyên nhân không xuất phát từ lỗi lập trình cố ý của Bên B. Trường hợp chỉ dẫn của Bên A có dấu hiệu vi phạm NĐ 13/2023/NĐ-CP, Bên B có quyền từ chối thực hiện mà không bị coi là vi phạm Hợp đồng.</td>
+      <td style="width:55px; font-weight:bold; vertical-align:top; padding:2px 0;">7.2.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Bảo vệ dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP):</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">7.2.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên A xác định là Bên Kiểm soát dữ liệu cá nhân (Data Controller), chịu trách nhiệm toàn bộ về tính hợp pháp của việc thu thập, xin sự đồng ý (Consent) của chủ thể dữ liệu và thực hiện thủ tục Đánh giá tác động xử lý dữ liệu (DPIA) với cơ quan có thẩm quyền. Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor), chỉ thực hiện xử lý dữ liệu kỹ thuật theo chỉ dẫn hợp pháp bằng văn bản/email của Bên A.</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">7.2.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B được miễn trừ hoàn toàn mọi nghĩa vụ, trách nhiệm bồi thường và các khoản tiền phạt hành chính nếu Bên A bị cơ quan quản lý xử phạt do vi phạm quy định về bảo vệ dữ liệu cá nhân mà nguyên nhân không xuất phát từ lỗi lập trình cố ý của Bên B. Trường hợp chỉ dẫn của Bên A có dấu hiệu vi phạm NĐ 13/2023/NĐ-CP, Bên B có quyền từ chối thực hiện mà không bị coi là vi phạm Hợp đồng.</td>
     </tr>
   </table>
 
@@ -378,19 +386,19 @@ export const contractSoftwareTemplate = `
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">8.1.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">8.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên A giữ quyền sở hữu đối với toàn bộ nội dung, hình ảnh, tài liệu, logo, nhãn hiệu, dữ liệu do Bên A cung cấp hoặc do Bên A tự tạo ra.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">8.2.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">8.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Quyền đối với Mã nguồn dự án:</strong> Bên B cấp cho Bên A quyền sử dụng độc quyền (hoặc sở hữu mã nguồn thành phẩm thiết kế riêng cho Bên A) sau khi Bên A đã hoàn tất thanh toán 100% giá trị Hợp đồng và các khoản phát sinh (nếu có). Trước thời điểm thanh toán đủ 100%, toàn bộ quyền sở hữu trí tuệ đối với mã nguồn thuộc về Bên B; Bên A chỉ có quyền sử dụng trên môi trường do Bên B triển khai, không được trích xuất, sao chép, sửa đổi, chuyển giao hoặc bán lại cho Bên thứ ba.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">8.3.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">8.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Mã nguồn nền tảng & Thư viện dùng chung:</strong> Bên B bảo lưu hoàn toàn quyền sở hữu trí tuệ đối với các cấu trúc mã nguồn cốt lõi (Core Framework), thư viện lập trình dùng chung, thuật toán, công cụ tích hợp sẵn do Bên B phát triển. Bên A được cấp quyền sử dụng vĩnh viễn, không mất phí bản quyền (Royalty-free non-exclusive license) đối với các thành phần dùng chung này chỉ nhằm mục đích vận hành Phần mềm theo Hợp đồng. Bên B có quyền tái sử dụng các thành phần dùng chung này cho các dự án khác với điều kiện không tiết lộ thông tin mật của Bên A.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">8.4.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">8.4.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B được quyền trích dẫn hình ảnh Phần mềm, tên dự án vào hồ sơ năng lực/portfolio của mình sau khi được Bên A đồng ý bằng văn bản/email.</td>
     </tr>
   </table>
@@ -404,11 +412,11 @@ export const contractSoftwareTemplate = `
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">9.1.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">9.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Tổng trách nhiệm bồi thường của Bên B (nếu có) phát sinh từ hoặc liên quan đến Hợp đồng này, trong mọi trường hợp, không vượt quá tổng giá trị thực tế Bên A đã thanh toán cho Bên B theo Hợp đồng. Mọi yêu cầu bồi thường thiệt hại của Bên A phải được gửi bằng văn bản cho Bên B trong vòng 30 ngày kể từ ngày phát sinh sự cố. Quá thời hạn này, Bên B được mặc nhiên miễn trừ trách nhiệm.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">9.2.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">9.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B không chịu trách nhiệm đối với: thiệt hại gián tiếp, lợi nhuận bị mất, mất dữ liệu, mất cơ hội kinh doanh, tổn thất uy tín của Bên A; hoặc sự cố do lỗi của bên thứ ba (nhà cung cấp hosting, tên miền, email, nền tảng cloud, tấn công DDoS, mã độc…) hoặc do Bên A/nhân sự/Bên thứ ba do Bên A chỉ định can thiệp vào hệ thống.</td>
     </tr>
   </table>
@@ -422,11 +430,11 @@ export const contractSoftwareTemplate = `
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">10.1.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">10.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên nào vi phạm nghĩa vụ cơ bản theo Hợp đồng gây thiệt hại cho bên kia thì, ngoài việc phải khắc phục vi phạm, còn phải bồi thường thiệt hại thực tế (nếu bên bị vi phạm chứng minh được) và chịu phạt vi phạm nếu có thỏa thuận.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">10.2.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">10.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mức phạt vi phạm (bao gồm phạt chậm tiến độ, chậm thanh toán và các vi phạm khác nếu có thỏa thuận) không vượt quá 8% giá trị phần nghĩa vụ hợp đồng bị vi phạm, phù hợp Điều 301 Luật Thương mại 2005.</td>
     </tr>
   </table>
@@ -440,26 +448,35 @@ export const contractSoftwareTemplate = `
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">11.1.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">11.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng có hiệu lực kể từ ngày đại diện hợp pháp của hai bên ký và đóng dấu (nếu có) đến khi các bên hoàn thành nghĩa vụ, trừ khi chấm dứt trước hạn theo quy định tại Điều này.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">11.2.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">11.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mọi sửa đổi, bổ sung Hợp đồng phải được lập thành văn bản (hoặc email có xác nhận hai bên) và là bộ phận không tách rời của Hợp đồng.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">11.3.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">11.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Quyền đơn phương chấm dứt Hợp đồng:</strong> Mỗi bên có quyền đơn phương chấm dứt Hợp đồng trong các trường hợp: (a) Bên kia vi phạm nghiêm trọng nghĩa vụ thanh toán/giao hàng/bảo mật và không khắc phục trong vòng 15 ngày làm việc kể từ khi nhận được thông báo bằng văn bản; (b) Bên kia lâm vào tình trạng phá sản, giải thể hoặc không còn khả năng thực hiện Hợp đồng; (c) Các trường hợp khác theo quy định pháp luật.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">11.4.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Hậu quả của việc đơn phương chấm dứt & Chuyển giao dữ liệu:</strong><br>
-      a) Nếu Bên A đơn phương chấm dứt Hợp đồng không do lỗi của Bên B: Bên B được giữ lại toàn bộ số tiền Bên A đã thanh toán; Bên A có nghĩa vụ thanh toán bổ sung cho Bên B tương ứng với 100% khối lượng công việc Bên B đã thực hiện tính đến thời điểm chấm dứt.<br>
-      b) Nếu Bên B đơn phương chấm dứt Hợp đồng không do lỗi của Bên A: Bên B hoàn trả cho Bên A phần tiền đã nhận tương ứng với phần khối lượng công việc chưa thực hiện; chịu phạt vi phạm (nếu có) nhưng không vượt quá 8% giá trị phần nghĩa vụ chưa thực hiện bị vi phạm.<br>
-      c) <strong>Bàn giao dữ liệu và mã nguồn khi chấm dứt:</strong> Bên B chỉ thực hiện bàn giao mã nguồn và xuất dữ liệu thô (định dạng SQL/Excel/JSON) cho Bên A với điều kiện Bên A đã hoàn tất 100% nghĩa vụ thanh toán cho phần việc đã làm. Chi phí trích xuất dữ liệu nâng cao hoặc hỗ trợ chuyển giao (migration) sang hạ tầng mới nằm ngoài phạm vi Hợp đồng sẽ do Bên A chi trả theo đơn giá dịch vụ của Bên B tại thời điểm đó.</td>
+      <td style="width:55px; font-weight:bold; vertical-align:top; padding:2px 0;">11.4.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Hậu quả của việc đơn phương chấm dứt & Chuyển giao dữ liệu:</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">11.5.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">11.4.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu Bên A đơn phương chấm dứt Hợp đồng không do lỗi của Bên B: Bên B được giữ lại toàn bộ số tiền Bên A đã thanh toán; Bên A có nghĩa vụ thanh toán bổ sung cho Bên B tương ứng với 100% khối lượng công việc Bên B đã thực hiện tính đến thời điểm chấm dứt.</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">11.4.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu Bên B đơn phương chấm dứt Hợp đồng không do lỗi của Bên A: Bên B hoàn trả cho Bên A phần tiền đã nhận tương ứng với phần khối lượng công việc chưa thực hiện; chịu phạt vi phạm (nếu có) nhưng không vượt quá 8% giá trị phần nghĩa vụ chưa thực hiện bị vi phạm.</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">11.4.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bàn giao dữ liệu và mã nguồn khi chấm dứt:</strong> Bên B chỉ thực hiện bàn giao mã nguồn và xuất dữ liệu thô (định dạng SQL/Excel/JSON) cho Bên A với điều kiện Bên A đã hoàn tất 100% nghĩa vụ thanh toán cho phần việc đã làm. Chi phí trích xuất dữ liệu nâng cao hoặc hỗ trợ chuyển giao (migration) sang hạ tầng mới nằm ngoài phạm vi Hợp đồng sẽ do Bên A chi trả theo đơn giá dịch vụ của Bên B tại thời điểm đó.</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">11.5.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Trường hợp chấm dứt do bất khả kháng hoặc lý do khách quan khác theo thỏa thuận, hai bên sẽ thương lượng để thanh toán phần công việc đã thực hiện và không bên nào phải chịu phạt.</td>
     </tr>
   </table>
@@ -473,11 +490,11 @@ export const contractSoftwareTemplate = `
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">12.1.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">12.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bất khả kháng là các sự kiện xảy ra một cách khách quan, không thể lường trước và không thể khắc phục được dù đã áp dụng mọi biện pháp cần thiết và khả năng cho phép, như: thiên tai, hỏa hoạn lớn, chiến tranh, bạo loạn, dịch bệnh, thay đổi chính sách pháp luật làm cho việc thực hiện Hợp đồng trở nên không thể thực hiện được...</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">12.2.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">12.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên gặp sự kiện bất khả kháng phải thông báo cho bên kia trong thời hạn 05 ngày làm việc kể từ khi xảy ra sự kiện và cung cấp tài liệu chứng minh (nếu có). Hai bên sẽ thương lượng để gia hạn thời gian thực hiện hoặc các biện pháp khác.</td>
     </tr>
   </table>
@@ -491,15 +508,15 @@ export const contractSoftwareTemplate = `
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">13.1.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">13.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng này được điều chỉnh và giải thích theo pháp luật nước Cộng hòa Xã hội Chủ nghĩa Việt Nam.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">13.2.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">13.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mọi tranh chấp phát sinh từ hoặc liên quan đến Hợp đồng trước hết được giải quyết thông qua thương lượng, hòa giải trên tinh thần hợp tác, tôn trọng lẫn nhau trong thời hạn 30 ngày kể từ ngày phát sinh tranh chấp.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">13.3.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">13.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nếu hết thời hạn trên mà không giải quyết được, tranh chấp sẽ được đưa ra Tòa án nhân dân có thẩm quyền tại Thành phố Hà Nội để giải quyết. Quyết định của Tòa án là quyết định cuối cùng, các bên có nghĩa vụ thi hành. Án phí, lệ phí do bên thua kiện chịu, trừ khi Tòa án có quyết định khác.</td>
     </tr>
   </table>
@@ -513,19 +530,19 @@ export const contractSoftwareTemplate = `
   </table>
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">14.1.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">14.1.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Các Phụ lục kèm theo Hợp đồng này (bao gồm nhưng không giới hạn: Phụ lục phạm vi công việc, Phụ lục bảng giá chi tiết, Phụ lục bổ sung phát sinh…) là bộ phận không tách rời và có giá trị pháp lý như Hợp đồng.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">14.2.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">14.2.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Trường hợp có mâu thuẫn giữa nội dung Hợp đồng và Phụ lục, thì ưu tiên áp dụng nội dung tại Phụ lục mới nhất (được ký sau cùng) đối với phần công việc, giá trị, tiến độ được điều chỉnh. Các nội dung khác không được điều chỉnh trong Phụ lục vẫn áp dụng theo Hợp đồng chính. Việc ký thêm Phụ lục không làm mất hiệu lực của các điều khoản khác trong Hợp đồng, trừ khi các bên có thỏa thuận khác bằng văn bản. Phụ lục có thể lập dưới hình thức văn bản giấy hoặc email có xác nhận của hai bên.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">14.3.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">14.3.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Những vấn đề không được quy định hoặc quy định chưa đầy đủ trong Hợp đồng này sẽ được áp dụng theo quy định của pháp luật Việt Nam hiện hành.</td>
     </tr>
     <tr>
-      <td style="width:50px; vertical-align:top; padding:2px 0;">14.4.</td>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">14.4.</td>
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng gồm {{contract_clause_count}}, kèm theo {{appendix_list_text}}, được lập thành 02 (hai) bản gốc bằng tiếng Việt, mỗi bên giữ 01 (một) bản, có giá trị pháp lý như nhau.</td>
     </tr>
   </table>

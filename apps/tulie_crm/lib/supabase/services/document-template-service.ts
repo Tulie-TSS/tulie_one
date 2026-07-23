@@ -1138,10 +1138,26 @@ export async function generateDocument(
 
             variables.warranty_clause_html = `
   <table style="width:100%; border-collapse:collapse;">
-    <tr><td style="width:55px; vertical-align:top; padding:2px 0;">3.6.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thời hạn bảo hành:</strong> Bên B cam kết bảo hành kỹ thuật cho website trong thời gian <strong>${warrantyMonths} (${warrantyMonthsText}) tháng</strong> kể từ ngày hai bên ký kết Biên bản Nghiệm thu và Bàn giao website.${warrantyEndDateNote} Bên B sửa chữa miễn phí các lỗi lập trình phát sinh so với Phụ lục 01.</td></tr>
-    <tr><td style="width:55px; vertical-align:top; padding:2px 0;">3.6.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Mức độ dịch vụ hỗ trợ (SLA):</strong> Khung giờ tiếp nhận hỗ trợ từ 08h00 đến 17h30 (Thứ 2 đến Thứ 6, trừ lễ Tết). Đối với sự cố nghiêm trọng (sập hệ thống, không truy cập được), Bên B phản hồi và xử lý trong vòng 04–08 giờ làm việc. Đối với sự cố thông thường, Bên B xử lý trong vòng 24–48 giờ làm việc kể từ khi nhận thông báo hợp lệ qua email/văn bản.</td></tr>
-    <tr><td style="width:55px; vertical-align:top; padding:2px 0;">3.6.3.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>An ninh mạng & Loại trừ bảo hành:</strong> Bên B cam kết bảo hành các lỗi hổng bảo mật trực tiếp do mã nguồn lập trình gây ra tại thời điểm bàn giao theo tiêu chuẩn OWASP. Bên B không chịu trách nhiệm bảo hành miễn phí đối với: các thay đổi nội dung/mã nguồn/cấu hình do Bên A tự chỉnh sửa; rò rỉ tài khoản quản trị do Bên A làm lộ; sự cố tấn công DDoS, mã độc từ máy chủ/hosting/tên miền hoặc các dịch vụ bên thứ ba do Bên A tự quản lý.</td></tr>
-    <tr><td style="width:55px; vertical-align:top; padding:2px 0;">3.6.4.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo trì sau bảo hành:</strong> Sau thời gian bảo hành, nếu Bên A có nhu cầu tiếp tục hỗ trợ kỹ thuật, hai bên sẽ thỏa thuận và ký kết hợp đồng bảo trì riêng theo thỏa thuận phát sinh.</td></tr>
+    <tr>
+      <td style="width:55px; font-weight:bold; vertical-align:top; padding:2px 0;">3.6.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Bảo hành, SLA và An toàn thông tin:</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">3.6.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thời hạn bảo hành:</strong> Bên B cam kết bảo hành kỹ thuật cho website trong thời gian <strong>${warrantyMonths} (${warrantyMonthsText}) tháng</strong> kể từ ngày hai bên ký kết Biên bản Nghiệm thu và Bàn giao website.${warrantyEndDateNote} Bên B sửa chữa miễn phí các lỗi lập trình phát sinh so với Phụ lục 01.</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">3.6.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Mức độ dịch vụ hỗ trợ (SLA):</strong> Khung giờ tiếp nhận hỗ trợ từ 08h00 đến 17h30 (Thứ 2 đến Thứ 6, trừ lễ Tết). Đối với sự cố nghiêm trọng (sập hệ thống, không truy cập được), Bên B phản hồi và xử lý trong vòng 04–08 giờ làm việc. Đối với sự cố thông thường, Bên B xử lý trong vòng 24–48 giờ làm việc kể từ khi nhận thông báo hợp lệ qua email/văn bản.</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">3.6.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>An ninh mạng & Loại trừ bảo hành:</strong> Bên B cam kết bảo hành các lỗi hổng bảo mật trực tiếp do mã nguồn lập trình gây ra tại thời điểm bàn giao theo tiêu chuẩn OWASP. Bên B không chịu trách nhiệm bảo hành miễn phí đối với: các thay đổi nội dung/mã nguồn/cấu hình do Bên A tự chỉnh sửa; rò rỉ tài khoản quản trị do Bên A làm lộ; sự cố tấn công DDoS, mã độc từ máy chủ/hosting/tên miền hoặc các dịch vụ bên thứ ba do Bên A tự quản lý.</td>
+    </tr>
+    <tr>
+      <td style="width:55px; vertical-align:top; padding:2px 0;">3.6.4.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo trì sau bảo hành:</strong> Sau thời gian bảo hành, nếu Bên A có nhu cầu tiếp tục hỗ trợ kỹ thuật, hai bên sẽ thỏa thuận và ký kết hợp đồng bảo trì riêng theo thỏa thuận phát sinh.</td>
+    </tr>
   </table>`
 
             variables.contract_clause_count = 'mười bốn (14) điều'
