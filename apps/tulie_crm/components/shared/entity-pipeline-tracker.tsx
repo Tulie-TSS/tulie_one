@@ -132,7 +132,7 @@ export function EntityPipelineTracker({ entityType, entityId, minimal = false }:
                 {hasData ? (
                   <div className="flex items-center gap-1.5 mt-0.5 min-w-0 flex-wrap sm:flex-nowrap">
                     <span className={cn(
-                      "text-xs font-semibold truncate max-w-[110px] md:max-w-[140px]",
+                      "text-xs font-semibold whitespace-nowrap",
                       isCurrent ? "text-zinc-950 dark:text-white" : "text-zinc-700 dark:text-zinc-300"
                     )}>
                       {step.displayText}
