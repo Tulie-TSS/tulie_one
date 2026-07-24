@@ -242,22 +242,22 @@ export const contractSoftwareTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Phân kỳ thực hiện, ngày nghiệm thu chi tiết và sản phẩm bàn giao:</strong> Thời hạn thực hiện dự kiến là {{delivery_time}} ngày theo lịch (tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được tạm ứng Đợt 1). Ngày hoàn thành dự kiến: {{end_date}}. Lộ trình và phân kỳ thực hiện được quy định chi tiết tại Phụ lục 01. Tại từng phân kỳ, Bên A có trách nhiệm tiến hành kiểm thử, nghiệm thu và gửi yêu cầu sửa lỗi (nếu có). Ngày hoàn thành và ngày nghiệm thu chi tiết được điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng do Bên A chậm phản hồi, chậm cung cấp thông tin hoặc khi phát sinh thay đổi phạm vi theo Điều 6. <strong>Sản phẩm bàn giao bao gồm:</strong> bàn giao mã nguồn (source code), tài liệu hướng dẫn sử dụng, cơ sở dữ liệu và tài liệu kỹ thuật hỗ trợ vận hành.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Phân kỳ thực hiện, ngày nghiệm thu chi tiết và sản phẩm bàn giao: Thời hạn thực hiện dự kiến là {{delivery_time}} ngày theo lịch (tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được tạm ứng Đợt 1). Ngày hoàn thành dự kiến: {{end_date}}. Lộ trình và phân kỳ thực hiện được quy định chi tiết tại Phụ lục 01. Tại từng phân kỳ, Bên A có trách nhiệm tiến hành kiểm thử, nghiệm thu và gửi yêu cầu sửa lỗi (nếu có). Ngày hoàn thành và ngày nghiệm thu chi tiết được điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng do Bên A chậm phản hồi, chậm cung cấp thông tin hoặc khi phát sinh thay đổi phạm vi theo Điều 6. Sản phẩm bàn giao bao gồm: bàn giao mã nguồn (source code), tài liệu hướng dẫn sử dụng, cơ sở dữ liệu và tài liệu kỹ thuật hỗ trợ vận hành.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bản dùng thử (Staging):</strong> Sau khi hoàn thành bản dùng thử trên môi trường kiểm thử, Bên B thông báo cho Bên A bằng email/văn bản. Bên A có 05 ngày làm việc để kiểm tra và gửi góp ý chỉnh sửa (không quá 03 vòng chỉnh sửa theo phạm vi Phụ lục 01). Nếu quá thời hạn trên Bên A không có ý kiến phản hồi bằng văn bản/email, bản dùng thử được coi là đã được chấp thuận, làm căn cứ để Bên A thanh toán đợt tương ứng.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bản dùng thử (Staging): Sau khi hoàn thành bản dùng thử trên môi trường kiểm thử, Bên B thông báo cho Bên A bằng email/văn bản. Bên A có 05 ngày làm việc để kiểm tra và gửi góp ý chỉnh sửa (không quá 03 vòng chỉnh sửa theo phạm vi Phụ lục 01). Nếu quá thời hạn trên Bên A không có ý kiến phản hồi bằng văn bản/email, bản dùng thử được coi là đã được chấp thuận, làm căn cứ để Bên A thanh toán đợt tương ứng.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.3.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu và bàn giao Phần mềm:</strong><br>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nghiệm thu và bàn giao Phần mềm:<br>
       a) Sau khi hoàn thành Phần mềm, Bên B gửi thông báo bàn giao kèm tài khoản kiểm thử cho Bên A. Trong thời hạn 05 ngày làm việc, Bên A có trách nhiệm kiểm tra và ký Biên bản nghiệm thu. Lỗi kỹ thuật nghiêm trọng (làm gián đoạn chức năng chính, rò rỉ dữ liệu hoặc không thể vận hành) sẽ được Bên B khắc phục miễn phí trong thời gian hợp lý. Các lỗi hiển thị, căn chỉnh giao diện nhỏ (lỗi không nghiêm trọng) không là lý do để Bên A từ chối ký Biên bản nghiệm thu và sẽ được khắc phục trong thời hạn bảo hành.<br>
-      b) <strong>Coi như nghiệm thu:</strong> Phần mềm được mặc nhiên coi là đã nghiệm thu hoàn thành đạt chất lượng và Bên A có nghĩa vụ thanh toán đủ 100% giá trị Hợp đồng nếu xảy ra một trong các trường hợp: (i) Quá 05 ngày làm việc kể từ khi nhận thông báo bàn giao mà Bên A không phản hồi bằng văn bản/email; hoặc (ii) Bên A tự ý/cho phép đưa Phần mềm vào vận hành chính thức, gắn tên miền chính (Production), hoặc nạp dữ liệu kinh doanh thực tế để sử dụng.<br>
+      b) Coi như nghiệm thu: Phần mềm được mặc nhiên coi là đã nghiệm thu hoàn thành đạt chất lượng và Bên A có nghĩa vụ thanh toán đủ 100% giá trị Hợp đồng nếu xảy ra một trong các trường hợp: (i) Quá 05 ngày làm việc kể từ khi nhận thông báo bàn giao mà Bên A không phản hồi bằng văn bản/email; hoặc (ii) Bên A tự ý/cho phép đưa Phần mềm vào vận hành chính thức, gắn tên miền chính (Production), hoặc nạp dữ liệu kinh doanh thực tế để sử dụng.<br>
       c) Bên B có quyền tạm hoãn bàn giao mã nguồn chi tiết/tài khoản quản trị cao nhất (Root/Admin) cho đến khi Bên A hoàn tất 100% nghĩa vụ thanh toán.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.4.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Điều chỉnh tiến độ do lỗi của Bên A:</strong> Nếu Bên A chậm cung cấp thông tin, dữ liệu, phê duyệt, tài khoản truy cập, quyền truy cập hạ tầng, hoặc không phối hợp theo yêu cầu hợp lý của Bên B dẫn đến chậm tiến độ, thì thời hạn thực hiện sẽ được kéo dài tương ứng; Bên B không bị coi là chậm tiến độ và không phải chịu phạt; các chi phí phát sinh (nếu có) sẽ được hai bên thỏa thuận bổ sung bằng văn bản. Thời gian gia hạn do phát sinh hoặc do Bên A chậm phối hợp không tính vào thời gian chậm tiến độ của Bên B.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Điều chỉnh tiến độ do lỗi của Bên A: Nếu Bên A chậm cung cấp thông tin, dữ liệu, phê duyệt, tài khoản truy cập, quyền truy cập hạ tầng, hoặc không phối hợp theo yêu cầu hợp lý của Bên B dẫn đến chậm tiến độ, thì thời hạn thực hiện sẽ được kéo dài tương ứng; Bên B không bị coi là chậm tiến độ và không phải chịu phạt; các chi phí phát sinh (nếu có) sẽ được hai bên thỏa thuận bổ sung bằng văn bản. Thời gian gia hạn do phát sinh hoặc do Bên A chậm phối hợp không tính vào thời gian chậm tiến độ của Bên B.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.5.</td>
@@ -877,8 +877,8 @@ export const contractSchoolTemplate = `
       </td>
     </tr>
     <tr>
-      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">2.6.</td>
-      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Chậm thanh toán: Theo Điều 301 Luật Thương mại 2005.</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.6.</td>
+      <td style="vertical-align:top; padding:2px 0;">Chậm thanh toán: Theo Điều 301 Luật Thương mại 2005.</td>
     </tr>
   </table>
 
@@ -892,21 +892,21 @@ export const contractSchoolTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Phân kỳ thực hiện, ngày nghiệm thu chi tiết và sản phẩm bàn giao:</strong> Thời hạn thực hiện dự kiến: {{delivery_time}} ngày theo lịch (tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được tạm ứng Đợt 1). Ngày hoàn thành dự kiến: {{end_date}}. Lộ trình triển khai được ghi cụ thể theo từng phân kỳ thực hiện tại Phụ lục 01. Tại từng mốc phân kỳ, Nhà trường (Bên A) tiến hành kiểm thử, nghiệm thu và gửi văn bản/email yêu cầu sửa lỗi (nếu có). Ngày nghiệm thu chi tiết được điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng do Bên A chậm phản hồi hoặc phát sinh thay đổi phạm vi theo Điều 6. <strong>Sản phẩm bàn giao bao gồm:</strong> Bàn giao mã nguồn (source code), tài liệu hướng dẫn sử dụng, cơ sở dữ liệu và tài liệu kỹ thuật hỗ trợ vận hành hệ thống.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Phân kỳ thực hiện, ngày nghiệm thu chi tiết và sản phẩm bàn giao: Thời hạn thực hiện dự kiến: {{delivery_time}} ngày theo lịch (tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được tạm ứng Đợt 1). Ngày hoàn thành dự kiến: {{end_date}}. Lộ trình triển khai được ghi cụ thể theo từng phân kỳ thực hiện tại Phụ lục 01. Tại từng mốc phân kỳ, Nhà trường (Bên A) tiến hành kiểm thử, nghiệm thu và gửi văn bản/email yêu cầu sửa lỗi (nếu có). Ngày nghiệm thu chi tiết được điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng do Bên A chậm phản hồi hoặc phát sinh thay đổi phạm vi theo Điều 6. Sản phẩm bàn giao bao gồm: Bàn giao mã nguồn (source code), tài liệu hướng dẫn sử dụng, cơ sở dữ liệu và tài liệu kỹ thuật hỗ trợ vận hành hệ thống.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bản dùng thử (Staging):</strong> Sau khi hoàn thành bản dùng thử trên môi trường kiểm thử, Bên B thông báo cho Bên A bằng email/văn bản. Bên A có 05 ngày làm việc để kiểm tra và gửi góp ý/yêu cầu sửa lỗi (không quá 03 vòng chỉnh sửa theo phạm vi Phụ lục 01). Nếu quá thời hạn trên Bên A không có ý kiến phản hồi bằng văn bản/email, bản dùng thử được coi là đã được chấp thuận.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bản dùng thử (Staging): Sau khi hoàn thành bản dùng thử trên môi trường kiểm thử, Bên B thông báo cho Bên A bằng email/văn bản. Bên A có 05 ngày làm việc để kiểm tra và gửi góp ý/yêu cầu sửa lỗi (không quá 03 vòng chỉnh sửa theo phạm vi Phụ lục 01). Nếu quá thời hạn trên Bên A không có ý kiến phản hồi bằng văn bản/email, bản dùng thử được coi là đã được chấp thuận.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.3.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu và bàn giao Phần mềm:</strong><br>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nghiệm thu và bàn giao Phần mềm:<br>
       a) Sau khi hoàn thành Phần mềm, Bên B gửi thông báo bàn giao kèm tài khoản kiểm thử cho Bên A. Trong thời hạn 05 ngày làm việc, Nhà trường có trách nhiệm kiểm tra và ký Biên bản nghiệm thu. Lỗi kỹ thuật phát sinh sẽ được Bên B khắc phục miễn phí trong thời gian hợp lý.<br>
-      b) <strong>Bàn giao đầy đủ:</strong> Bên B bàn giao mã nguồn (source code), cơ sở dữ liệu, tài liệu hướng dẫn sử dụng và tài liệu kỹ thuật hỗ trợ sau khi Bên A hoàn thành các nghĩa vụ thanh toán tương ứng theo Hợp đồng.</td>
+      b) Bàn giao đầy đủ: Bên B bàn giao mã nguồn (source code), cơ sở dữ liệu, tài liệu hướng dẫn sử dụng và tài liệu kỹ thuật hỗ trợ sau khi Bên A hoàn thành các nghĩa vụ thanh toán tương ứng theo Hợp đồng.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.4.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Điều chỉnh tiến độ do lỗi của Bên A:</strong> Nếu Bên A chậm cung cấp thông tin, dữ liệu hoặc chậm nghiệm thu, thời hạn thực hiện sẽ được gia hạn tương ứng.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Điều chỉnh tiến độ do lỗi của Bên A: Nếu Bên A chậm cung cấp thông tin, dữ liệu hoặc chậm nghiệm thu, thời hạn thực hiện sẽ được gia hạn tương ứng.</td>
     </tr>
   </table>
 
@@ -983,16 +983,16 @@ export const contractSchoolTemplate = `
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên cam kết giữ bí mật các thông tin nhận được của nhau trong quá trình thực hiện Hợp đồng.</td>
     </tr>
     <tr>
-      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">7.2.</td>
-      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Bảo mật thông tin và dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP và Luật An toàn thông tin mạng):</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.</td>
+      <td style="vertical-align:top; padding:2px 0;">Bảo mật thông tin và dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP và Luật An toàn thông tin mạng):</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật thông tin và quyền riêng tư:</strong> Bên B cam kết bảo mật tuyệt đối thông tin và quyền riêng tư gồm dữ liệu Học sinh (HS), Giáo viên (GV), Phụ huynh (PH) và Nhà trường; triển khai biện pháp kỹ thuật chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và thực hiện sao lưu dự phòng (backup) dữ liệu định kỳ đảm bảo an toàn dữ liệu.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật thông tin và quyền riêng tư: Bên B cam kết bảo mật tuyệt đối thông tin và quyền riêng tư gồm dữ liệu Học sinh (HS), Giáo viên (GV), Phụ huynh (PH) và Nhà trường; triển khai biện pháp kỹ thuật chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và thực hiện sao lưu dự phòng (backup) dữ liệu định kỳ đảm bảo an toàn dữ liệu.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật mã nguồn và dữ liệu nhà trường cụ thể là:</strong> Không được chia sẻ, sao chép hoặc sử dụng dữ liệu của nhà trường vào bất kỳ mục đích nào khác nếu không có sự đồng ý của Bên A bằng văn bản. Dữ liệu của Nhà trường là tài sản sở hữu riêng tuyệt đối của Bên A.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật mã nguồn và dữ liệu nhà trường cụ thể là: Không được chia sẻ, sao chép hoặc sử dụng dữ liệu của nhà trường vào bất kỳ mục đích nào khác nếu không có sự đồng ý của Bên A bằng văn bản. Dữ liệu của Nhà trường là tài sản sở hữu riêng tuyệt đối của Bên A.</td>
     </tr>
   </table>
 
