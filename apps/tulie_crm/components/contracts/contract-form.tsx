@@ -107,7 +107,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
     const [warrantyMonths, setWarrantyMonths] = useState<number | null>((contract as any).warranty_months ?? null)
 
     // Contract template and VAT overrides
-    const [contractTemplate, setContractTemplate] = useState<'software' | 'design'>(
+    const [contractTemplate, setContractTemplate] = useState<'software' | 'design' | 'school'>(
         contract.contract_template || 'software'
     )
     const [productNameInContract, setProductNameInContract] = useState(
@@ -409,9 +409,9 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                     <Label>Mẫu hợp đồng</Label>
                                     <Select 
                                         value={contractTemplate} 
-                                        onValueChange={(v: 'software' | 'design') => {
+                                        onValueChange={(v: 'software' | 'design' | 'school') => {
                                             setContractTemplate(v)
-                                            if (v === 'software') {
+                                            if (v === 'software' || v === 'school') {
                                                 setVatPercent(0)
                                                 setVatExemptStatus('exempt')
                                             } else {
@@ -426,6 +426,7 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                         <SelectContent>
                                             <SelectItem value="software">Mẫu 1: Phát triển phần mềm/website (Không chịu thuế)</SelectItem>
                                             <SelectItem value="design">Mẫu 2: Thiết kế, quay chụp, in ấn (VAT 8%)</SelectItem>
+                                            <SelectItem value="school">Mẫu 3: Trường học / Cơ sở Giáo dục (Không chịu thuế)</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>

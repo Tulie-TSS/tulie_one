@@ -38,6 +38,8 @@ export const contractSoftwareTemplate = `
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Bộ luật Dân sự số 91/2015/QH13 có hiệu lực từ ngày 01/01/2017;</p>
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Thương mại số 36/2005/QH11 có hiệu lực từ ngày 01/01/2006 và các văn bản hướng dẫn thi hành;</p>
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Công nghệ thông tin số 67/2006/QH11;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Sở hữu trí tuệ số 50/2005/QH11 (sửa đổi, bổ sung năm 2022);</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Nghị định số 52/2013/NĐ-CP về thương mại điện tử và các văn bản sửa đổi, bổ sung (áp dụng trong trường hợp phần mềm/website là ứng dụng TMĐT);</p>
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Nghị định số 71/2007/NĐ-CP về công nghiệp công nghệ thông tin;</p>
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Thuế giá trị gia tăng và Thông tư số 219/2013/TT-BTC của Bộ Tài chính, đặc biệt Khoản 21 Điều 4, và các văn bản sửa đổi, bổ sung;</p>
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ nhu cầu sử dụng dịch vụ của Bên A và khả năng cung cấp dịch vụ của Bên B;</p>
@@ -142,11 +144,12 @@ export const contractSoftwareTemplate = `
         <div style="margin-left: 10px; margin-top: 4px; line-height: 1.6;">
           a) Khảo sát, phân tích yêu cầu nghiệp vụ, yêu cầu chức năng của Bên A;<br>
           b) Thiết kế kiến trúc hệ thống, cơ sở dữ liệu, luồng xử lý;<br>
-          c) Phát triển, lập trình các mô-đun giao diện người dùng, mô-đun xử lý nghiệp vụ, hệ thống quản trị nội dung (CMS) và các chức năng kèm theo;<br>
-          d) Tích hợp các chức năng, mô-đun theo yêu cầu chi tiết tại {{appendix_list_text}};<br>
-          đ) Kiểm thử, hiệu chỉnh, tối ưu hiệu năng Phần mềm;<br>
-          e) Triển khai Phần mềm lên môi trường vận hành (production) theo cấu hình hai bên thống nhất;<br>
-          g) Bàn giao mã nguồn (source code), tài liệu kỹ thuật và tài liệu hướng dẫn sử dụng cho Bên A.
+          c) Thiết kế giao diện chuẩn đáp ứng (Responsive) hiển thị tối ưu trên điện thoại di động, máy tính bảng và máy tính để bàn, đảm bảo tiêu chuẩn về khả năng truy cập và trải nghiệm người dùng;<br>
+          d) Phát triển, lập trình các mô-đun giao diện người dùng, mô-đun xử lý nghiệp vụ, hệ thống quản trị nội dung (CMS) và các chức năng kèm theo;<br>
+          đ) Tích hợp các chức năng, mô-đun theo yêu cầu chi tiết tại {{appendix_list_text}};<br>
+          e) Kiểm thử, hiệu chỉnh, tối ưu hiệu năng và an toàn bảo mật Phần mềm;<br>
+          g) Triển khai Phần mềm lên môi trường vận hành (production) theo cấu hình hai bên thống nhất;<br>
+          h) Bàn giao mã nguồn (source code), cơ sở dữ liệu, tài liệu kỹ thuật hỗ trợ và tài liệu hướng dẫn sử dụng cho Bên A.
         </div>
       </td>
     </tr>
@@ -239,7 +242,7 @@ export const contractSoftwareTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Thời hạn thực hiện dự kiến:</strong> {{delivery_time}} ngày theo lịch (tính cả ngày bắt đầu và ngày kết thúc), được tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được thanh toán Đợt 1. <strong>Ngày hoàn thành dự kiến:</strong> {{end_date}}. Lộ trình chi tiết được quy định tại Phụ lục 01. Ngày hoàn thành dự kiến, ngày nghiệm thu/bàn giao dự kiến và các mốc liên quan được tự động điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng bởi việc Bên A chậm cung cấp thông tin, xác nhận hoặc thanh toán, hoặc khi phát sinh thay đổi phạm vi theo Điều 6. Thời gian gia hạn theo văn bản của hai bên không bị tính là chậm tiến độ của Bên B.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Phân kỳ thực hiện, ngày nghiệm thu chi tiết và sản phẩm bàn giao:</strong> Thời hạn thực hiện dự kiến là {{delivery_time}} ngày theo lịch (tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được tạm ứng Đợt 1). Ngày hoàn thành dự kiến: {{end_date}}. Lộ trình và phân kỳ thực hiện được quy định chi tiết tại Phụ lục 01. Tại từng phân kỳ, Bên A có trách nhiệm tiến hành kiểm thử, nghiệm thu và gửi yêu cầu sửa lỗi (nếu có). Ngày hoàn thành và ngày nghiệm thu chi tiết được điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng do Bên A chậm phản hồi, chậm cung cấp thông tin hoặc khi phát sinh thay đổi phạm vi theo Điều 6. <strong>Sản phẩm bàn giao bao gồm:</strong> bàn giao mã nguồn (source code), tài liệu hướng dẫn sử dụng, cơ sở dữ liệu và tài liệu kỹ thuật hỗ trợ vận hành.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td>
@@ -408,15 +411,15 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">7.2.</td>
-      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Bảo vệ dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP):</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Bảo mật thông tin và dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP):</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên A xác định là Bên Kiểm soát dữ liệu cá nhân (Data Controller), chịu trách nhiệm toàn bộ về tính hợp pháp của việc thu thập, xin sự đồng ý (Consent) của chủ thể dữ liệu và thực hiện thủ tục Đánh giá tác động xử lý dữ liệu (DPIA) với cơ quan có thẩm quyền. Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor), chỉ thực hiện xử lý dữ liệu kỹ thuật theo chỉ dẫn hợp pháp bằng văn bản/email của Bên A.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật thông tin và quyền riêng tư:</strong> Bên B cam kết đảm bảo an toàn, bảo mật thông tin và quyền riêng tư đối với dữ liệu của Bên A và người dùng; triển khai giải pháp kỹ thuật phòng chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và duy trì cơ chế sao lưu dự phòng (backup) dữ liệu định kỳ. Bên A là Bên Kiểm soát dữ liệu cá nhân (Data Controller), Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor).</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B được miễn trừ hoàn toàn mọi nghĩa vụ, trách nhiệm bồi thường và các khoản tiền phạt hành chính nếu Bên A bị cơ quan quản lý xử phạt do vi phạm quy định về bảo vệ dữ liệu cá nhân mà nguyên nhân không xuất phát từ lỗi lập trình cố ý của Bên B. Trường hợp chỉ dẫn của Bên A có dấu hiệu vi phạm NĐ 13/2023/NĐ-CP, Bên B có quyền từ chối thực hiện mà không bị coi là vi phạm Hợp đồng.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật mã nguồn và dữ liệu:</strong> Không được chia sẻ, sao chép hoặc sử dụng dữ liệu của Bên A vào bất kỳ mục đích nào khác nếu không có sự đồng ý của Bên A bằng văn bản. Bên B bảo lưu trách nhiệm kỹ thuật và tuân thủ tuyệt đối quy định bảo mật thông tin của Hợp đồng.</td>
     </tr>
   </table>
 
@@ -657,6 +660,430 @@ export const contractSoftwareTemplate = `
     </tr>
   </table>
 
+</div>
+`;
+
+// ==========================================
+// 1B. SCHOOL & EDUCATIONAL SOFTWARE / WEBSITE TEMPLATE (HĐ 3 - VAT EXEMPT)
+// ==========================================
+export const contractSchoolTemplate = `
+<div style="font-family: Arial, 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', 'MS Gothic', sans-serif; font-size: 10pt; color: #000; max-width: 210mm; margin: 0 auto; padding: 0; line-height: 1.5; text-align: justify;">
+  <!-- Header: 2 columns -->
+  <table style="width:100%; border-collapse:collapse; margin-bottom: 0;">
+    <tr>
+      <td style="width:50%; text-align:center; font-weight:bold; font-size:10pt; vertical-align:top; padding:0;">
+        CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP<br>
+        <span style="text-decoration:underline;">CÔNG NGHỆ TULIE</span>
+      </td>
+      <td style="width:50%; text-align:center; font-weight:bold; font-size:10pt; vertical-align:top; padding:0;">
+        CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM<br>
+        <span style="font-weight:bold; text-decoration:underline;">Độc lập - Tự do - Hạnh phúc</span>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Contract Number & Date -->
+  <table style="width:100%; border-collapse:collapse; margin: 6px 0 4px 0;">
+    <tr>
+      <td style="width:50%; text-align:center; font-size:10pt; padding:0;">Số: {{contract_number}}</td>
+      <td style="width:50%; text-align:right; font-style:italic; font-size:10pt; padding:0;">Hà Nội, ngày {{day}} tháng {{month}} năm {{year}}</td>
+    </tr>
+  </table>
+
+  <!-- Title -->
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 16px 0 20px 0;">{{contract_title_upper}}</p>
+
+  <!-- Legal grounds - Italicized -->
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Bộ luật Dân sự số 91/2015/QH13 có hiệu lực từ ngày 01/01/2017;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Thương mại số 36/2005/QH11 có hiệu lực từ ngày 01/01/2006 và các văn bản hướng dẫn thi hành;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Công nghệ thông tin số 67/2006/QH11;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Sở hữu trí tuệ năm 2005 (sửa đổi, bổ sung năm 2022);</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Nghị định số 52/2013/NĐ-CP về thương mại điện tử và các văn bản sửa đổi, bổ sung áp dụng trong trường hợp phần mềm/website là ứng dụng TMĐT;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Giáo dục số 43/2019/QH14 và các quy định pháp luật liên quan;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Nghị định số 71/2007/NĐ-CP về công nghiệp công nghệ thông tin;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ Luật Thuế giá trị gia tăng và Thông tư số 219/2013/TT-BTC của Bộ Tài chính, đặc biệt Khoản 21 Điều 4, và các văn bản sửa đổi, bổ sung;</p>
+  <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ nhu cầu sử dụng dịch vụ của Nhà trường (Bên A) và khả năng cung cấp dịch vụ của Bên B;</p>
+  <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào sự thỏa thuận của hai bên.</p>
+
+  <p style="margin:10px 0;">Hôm nay, tại văn phòng giao dịch của các bên, chúng tôi gồm:</p>
+
+  <!-- Parties A & B Table -->
+  <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
+    <colgroup>
+      <col style="width:160px">
+      <col style="width:auto">
+      <col style="width:70px">
+      <col style="width:auto">
+    </colgroup>
+
+    <!-- Bên A -->
+    <tr style="border-bottom:1px solid #000;">
+      <td style="font-weight:bold; padding:4px 10px 4px 0; vertical-align:top; white-space:nowrap; font-size:9pt;">Bên sử dụng dịch vụ (Bên A)</td>
+      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top;">{{customer_company}}</td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td>
+      <td style="font-weight:bold; vertical-align:top; white-space:nowrap;">{{customer_representative_title}} {{customer_representative}}</td>
+      <td style="vertical-align:top; white-space:nowrap;">Chức vụ:</td>
+      <td style="vertical-align:top; white-space:nowrap;">{{customer_position}}</td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top;">Địa chỉ liên hệ:</td>
+      <td colspan="3" style="vertical-align:top;">{{customer_address}}</td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top;">Điện thoại:</td>
+      <td style="vertical-align:top;">{{customer_phone}}</td>
+      <td style="vertical-align:top;">Di động:</td>
+      <td style="vertical-align:top;">{{customer_mobile}}</td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top;">Mã số thuế:</td>
+      <td style="vertical-align:top;">{{customer_tax_code}}</td>
+      <td style="vertical-align:top;">Email:</td>
+      <td style="vertical-align:top;">{{customer_email}}</td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top;">Số tài khoản:</td>
+      <td style="vertical-align:top;">{{customer_bank_account}}</td>
+      <td style="vertical-align:top;">tại</td>
+      <td style="vertical-align:top;">{{customer_bank_name}}</td>
+    </tr>
+
+    <!-- Spacer -->
+    <tr><td colspan="4" style="padding:6px 0;"></td></tr>
+
+    <!-- Bên B -->
+    <tr style="border-bottom:1px solid #000;">
+      <td style="font-weight:bold; padding:4px 10px 4px 0; vertical-align:top; white-space:nowrap; font-size:9pt;">Bên cung cấp dịch vụ (Bên B)</td>
+      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top;">CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td>
+      <td style="font-weight:bold; vertical-align:top; white-space:nowrap;">Ông Nguyễn Thanh Tùng</td>
+      <td style="vertical-align:top; white-space:nowrap;">Chức vụ:</td>
+      <td style="vertical-align:top; white-space:nowrap;">Giám đốc</td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top;">Địa chỉ liên hệ:</td>
+      <td colspan="3" style="vertical-align:top;">Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Thành phố Hà Nội, Việt Nam</td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top;">Điện thoại:</td>
+      <td style="vertical-align:top;"></td>
+      <td style="vertical-align:top;">Di động:</td>
+      <td style="vertical-align:top;">+84 98 898 4554</td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top;">Mã số thuế:</td>
+      <td style="vertical-align:top;">0110163102</td>
+      <td style="vertical-align:top;">Email:</td>
+      <td style="vertical-align:top;">info@tulie.vn</td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top;">Số tài khoản:</td>
+      <td style="vertical-align:top;">86683979</td>
+      <td style="vertical-align:top;">tại</td>
+      <td style="vertical-align:top;">Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank) - TTGD Hội sở</td>
+    </tr>
+  </table>
+
+  <p style="margin:15px 0;">Hai bên cùng thống nhất ký kết Hợp đồng này với các điều khoản sau:</p>
+
+  <!-- ========== ĐIỀU 1 ========== -->
+  <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">1</td>
+      <td style="font-weight:bold; vertical-align:top;">ĐIỀU 1. ĐỐI TƯỢNG VÀ PHẠM VI DỊCH VỤ</td>
+    </tr>
+  </table>
+  <table style="width:100%; border-collapse:collapse;">
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">1.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bên B cung cấp cho Bên A dịch vụ phát triển phần mềm ứng dụng dạng website trường học (sau đây gọi là &ldquo;Phần mềm&rdquo;), bao gồm nhưng không giới hạn các công việc chính sau:
+        <div style="margin-left: 10px; margin-top: 4px; line-height: 1.6;">
+          a) Khảo sát, phân tích yêu cầu nghiệp vụ quản lý, cổng thông tin và truyền thông của Nhà trường;<br>
+          b) Thiết kế kiến trúc hệ thống, cơ sở dữ liệu và luồng xử lý nghiệp vụ;<br>
+          c) <strong>Yêu cầu thiết kế giao diện:</strong> Giao diện Phần mềm/Website cần chuẩn thiết kế đáp ứng (Responsive) hiển thị tối ưu trên điện thoại di động, máy tính bảng và máy tính để bàn, đảm bảo tiêu chuẩn về khả năng truy cập, thẩm mỹ và trải nghiệm người dùng dành cho Học sinh, Giáo viên, Phụ huynh và Cán bộ quản lý;<br>
+          d) Phát triển, lập trình các mô-đun giao diện người dùng, mô-đun xử lý nghiệp vụ, hệ thống quản trị nội dung (CMS) và các chức năng kèm theo theo chi tiết tại {{appendix_list_text}};<br>
+          đ) Kiểm thử, hiệu chỉnh, tối ưu hiệu năng và an toàn bảo mật hệ thống;<br>
+          e) Triển khai Phần mềm lên môi trường vận hành (production) theo cấu hình hai bên thống nhất;<br>
+          g) Bàn giao mã nguồn (source code), cơ sở dữ liệu, tài liệu kỹ thuật hỗ trợ và tài liệu hướng dẫn sử dụng cho Nhà trường.
+        </div>
+      </td>
+    </tr>
+    {{clause_1_2_html}}
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">{{clause_total_value_number}}</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">{{scope_appendix_ref}}</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">{{clause_appendix_number}}</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên thống nhất: Dịch vụ theo Hợp đồng này là sản phẩm phần mềm/dịch vụ phần mềm theo quy định của pháp luật về công nghệ thông tin.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">{{clause_appendix_number_plus1}}</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mọi yêu cầu bổ sung, thay đổi ngoài phạm vi quy định tại các Phụ lục được coi là yêu cầu thay đổi phạm vi công việc và được xử lý theo Điều 6 Hợp đồng này.</td>
+    </tr>
+  </table>
+
+  <!-- ========== ĐIỀU 2 ========== -->
+  <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">2</td>
+      <td style="font-weight:bold; vertical-align:top;">ĐIỀU 2. GIÁ TRỊ HỢP ĐỒNG, THUẾ GIÁ TRỊ GIA TĂNG VÀ PHƯƠNG THỨC THANH TOÁN</td>
+    </tr>
+  </table>
+  <table style="width:100%; border-collapse:collapse;">
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">
+        <strong>Giá trị hợp đồng:</strong> Tổng giá trị Hợp đồng: <strong>{{total_amount_number}} VNĐ</strong> (Bằng chữ: <em>{{amount_in_words}}</em>). Cơ cấu giá chi tiết theo Phụ lục 01.
+      </td>
+    </tr>
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">2.2.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Thuế giá trị gia tăng:</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.2.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên thống nhất: Dịch vụ theo Hợp đồng này thuộc nhóm sản phẩm phần mềm/dịch vụ phần mềm theo Luật Công nghệ thông tin và Nghị định 71/2007/NĐ-CP, thuộc đối tượng không chịu thuế giá trị gia tăng theo Khoản 21 Điều 4 Thông tư 219/2013/TT-BTC. Giá trị Hợp đồng nêu tại Khoản 2.1 là giá trị không chịu thuế GTGT.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.2.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Trường hợp cơ quan thuế có thẩm quyền xác định dịch vụ theo Hợp đồng này phải chịu thuế GTGT, hai bên sẽ lập Phụ lục điều chỉnh giá trị thanh toán tương ứng phần thuế GTGT phát sinh.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">
+        <strong>Tổng giá trị thanh toán:</strong> Tổng giá trị thanh toán Bên A phải thanh toán cho Bên B theo Hợp đồng là: <strong>{{total_amount_number}} VNĐ</strong> (Bằng chữ: <em>{{amount_in_words}}</em>).
+      </td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.4.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">
+        <strong>Tiến độ thanh toán:</strong> Trừ khi hai bên có thỏa thuận khác bằng văn bản, tiến độ thanh toán được quy định như sau:<br>{{payment_terms}}
+      </td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">2.5.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">
+        <strong>Phương thức thanh toán:</strong> Bên A thanh toán cho Bên B bằng chuyển khoản vào tài khoản ngân hàng sau:<br>
+        <table style="margin-left:0; margin-top:4px; border-collapse:collapse; line-height:1.6; font-size:inherit;">
+          <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Tên tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</strong></td></tr>
+          <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Số tài khoản:</td><td style="padding:1px 0 1px 6px;"><strong>86683979</strong></td></tr>
+          <tr><td style="padding:1px 0; white-space:nowrap; vertical-align:top;">- Ngân hàng:</td><td style="padding:1px 0 1px 6px;"><strong>TMCP Kỹ Thương Việt Nam (Techcombank) – TTGD Hội Sở</strong></td></tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">2.6.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Chậm thanh toán: Theo Điều 301 Luật Thương mại 2005.</td>
+    </tr>
+  </table>
+
+  <!-- ========== ĐIỀU 3 ========== -->
+  <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">3</td>
+      <td style="font-weight:bold; vertical-align:top;">ĐIỀU 3. TIẾN ĐỘ THỰC HIỆN, NGHIỆM THU VÀ BÀN GIAO</td>
+    </tr>
+  </table>
+  <table style="width:100%; border-collapse:collapse;">
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">3.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Phân kỳ thực hiện, ngày nghiệm thu chi tiết và sản phẩm bàn giao:</strong> Thời hạn thực hiện dự kiến: {{delivery_time}} ngày theo lịch (tính từ ngày Hợp đồng có hiệu lực và Bên B nhận được tạm ứng Đợt 1). Ngày hoàn thành dự kiến: {{end_date}}. Lộ trình triển khai được ghi cụ thể theo từng phân kỳ thực hiện tại Phụ lục 01. Tại từng mốc phân kỳ, Nhà trường (Bên A) tiến hành kiểm thử, nghiệm thu và gửi văn bản/email yêu cầu sửa lỗi (nếu có). Ngày nghiệm thu chi tiết được điều chỉnh tương ứng nếu tiến độ bị ảnh hưởng do Bên A chậm phản hồi hoặc phát sinh thay đổi phạm vi theo Điều 6. <strong>Sản phẩm bàn giao bao gồm:</strong> Bàn giao mã nguồn (source code), tài liệu hướng dẫn sử dụng, cơ sở dữ liệu và tài liệu kỹ thuật hỗ trợ vận hành hệ thống.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">3.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bản dùng thử (Staging):</strong> Sau khi hoàn thành bản dùng thử trên môi trường kiểm thử, Bên B thông báo cho Bên A bằng email/văn bản. Bên A có 05 ngày làm việc để kiểm tra và gửi góp ý/yêu cầu sửa lỗi (không quá 03 vòng chỉnh sửa theo phạm vi Phụ lục 01). Nếu quá thời hạn trên Bên A không có ý kiến phản hồi bằng văn bản/email, bản dùng thử được coi là đã được chấp thuận.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">3.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Nghiệm thu và bàn giao Phần mềm:</strong><br>
+      a) Sau khi hoàn thành Phần mềm, Bên B gửi thông báo bàn giao kèm tài khoản kiểm thử cho Bên A. Trong thời hạn 05 ngày làm việc, Nhà trường có trách nhiệm kiểm tra và ký Biên bản nghiệm thu. Lỗi kỹ thuật phát sinh sẽ được Bên B khắc phục miễn phí trong thời gian hợp lý.<br>
+      b) <strong>Bàn giao đầy đủ:</strong> Bên B bàn giao mã nguồn (source code), cơ sở dữ liệu, tài liệu hướng dẫn sử dụng và tài liệu kỹ thuật hỗ trợ sau khi Bên A hoàn thành các nghĩa vụ thanh toán tương ứng theo Hợp đồng.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">3.4.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Điều chỉnh tiến độ do lỗi của Bên A:</strong> Nếu Bên A chậm cung cấp thông tin, dữ liệu hoặc chậm nghiệm thu, thời hạn thực hiện sẽ được gia hạn tương ứng.</td>
+    </tr>
+  </table>
+
+  {{warranty_clause_html}}
+
+  <!-- ========== ĐIỀU 4 ========== -->
+  <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">4</td>
+      <td style="font-weight:bold; vertical-align:top;">ĐIỀU 4. QUYỀN VÀ NGHĨA VỤ CỦA BÊN B</td>
+    </tr>
+  </table>
+  <table style="width:100%; border-collapse:collapse;">
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Nhận đầy đủ các khoản thanh toán theo Điều 2.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Thực hiện dịch vụ đúng chất lượng, tiến độ; bàn giao mã nguồn (source code), tài liệu HD sử dụng, cơ sở dữ liệu và tài liệu kỹ thuật hỗ trợ cho Nhà trường.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">4.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Tuân thủ tuyệt đối quy định về bảo mật thông tin và dữ liệu cá nhân tại Điều 7.</td>
+    </tr>
+  </table>
+
+  <!-- ========== ĐIỀU 5 ========== -->
+  <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">5</td>
+      <td style="font-weight:bold; vertical-align:top;">ĐIỀU 5. QUYỀN VÀ NGHĨA VỤ CỦA BÊN A</td>
+    </tr>
+  </table>
+  <table style="width:100%; border-collapse:collapse;">
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Yêu cầu Bên B thực hiện đúng tiến độ, nghiệm thu theo từng phân kỳ và yêu cầu sửa lỗi nếu Phần mềm chưa đạt yêu cầu.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Tiếp nhận bàn giao mã nguồn (source code), cơ sở dữ liệu, tài liệu HD sử dụng và tài liệu kỹ thuật hỗ trợ.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">5.3.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Thanh toán đầy đủ và đúng hạn cho Bên B theo Hợp đồng.</td>
+    </tr>
+  </table>
+
+  <!-- ========== ĐIỀU 6 ========== -->
+  <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">6</td>
+      <td style="font-weight:bold; vertical-align:top;">ĐIỀU 6. THAY ĐỔI PHẠM VI CÔNG VIỆC</td>
+    </tr>
+  </table>
+  <table style="width:100%; border-collapse:collapse;">
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">6.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mọi yêu cầu thay đổi, bổ sung phạm vi công việc ngoài Phụ lục phải được hai bên thống nhất bằng văn bản/email kèm đề xuất về chi phí và tiến độ.</td>
+    </tr>
+  </table>
+
+  <!-- ========== ĐIỀU 7 ========== -->
+  <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">7</td>
+      <td style="font-weight:bold; vertical-align:top;">ĐIỀU 7. BẢO MẬT THÔNG TIN VÀ DỮ LIỆU CÁ NHÂN</td>
+    </tr>
+  </table>
+  <table style="width:100%; border-collapse:collapse;">
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">7.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên cam kết giữ bí mật các thông tin nhận được của nhau trong quá trình thực hiện Hợp đồng.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">7.2.</td>
+      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Bảo mật thông tin và dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP và Luật An toàn thông tin mạng):</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật thông tin và quyền riêng tư:</strong> Bên B cam kết bảo mật tuyệt đối thông tin và quyền riêng tư gồm dữ liệu Học sinh (HS), Giáo viên (GV), Phụ huynh (PH) và Nhà trường; triển khai biện pháp kỹ thuật chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và thực hiện sao lưu dự phòng (backup) dữ liệu định kỳ đảm bảo an toàn dữ liệu.</td>
+    </tr>
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.2.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật mã nguồn và dữ liệu nhà trường cụ thể là:</strong> Không được chia sẻ, sao chép hoặc sử dụng dữ liệu của nhà trường vào bất kỳ mục đích nào khác nếu không có sự đồng ý của Bên A bằng văn bản. Dữ liệu của Nhà trường là tài sản sở hữu riêng tuyệt đối của Bên A.</td>
+    </tr>
+  </table>
+
+  <!-- ========== ĐIỀU 8 ========== -->
+  <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">8</td>
+      <td style="font-weight:bold; vertical-align:top;">ĐIỀU 8. SỞ HỮU TRÍ TUỆ VÀ QUYỀN SỬ DỤNG</td>
+    </tr>
+  </table>
+  <table style="width:100%; border-collapse:collapse;">
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">8.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Căn cứ Luật Sở hữu trí tuệ số 50/2005/QH11 (sửa đổi, bổ sung 2022), Nhà trường (Bên A) giữ quyền sở hữu đối với toàn bộ dữ liệu, thông tin, hình ảnh, tài liệu do Bên A cung cấp hoặc tạo ra trên Phần mềm. Sau khi Bên A thanh toán 100% giá trị Hợp đồng, Bên B giao toàn bộ mã nguồn dự án thành phẩm (source code) và quyền sử dụng theo thỏa thuận.</td>
+    </tr>
+  </table>
+
+  <!-- ========== ĐIỀU 9 - 14 ========== -->
+  <table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:6px;">
+    <tr>
+      <td style="width:50px; font-weight:bold; vertical-align:top;">9</td>
+      <td style="font-weight:bold; vertical-align:top;">ĐIỀU 9. GIỚI HẠN TRÁCH NHIỆM & GIẢI QUYẾT TRANH CHẤP</td>
+    </tr>
+  </table>
+  <table style="width:100%; border-collapse:collapse;">
+    <tr>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">9.1.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mọi tranh chấp phát sinh từ Hợp đồng trước hết được giải quyết thông qua thương lượng. Hợp đồng này được điều chỉnh và giải thích theo pháp luật nước Cộng hòa Xã hội Chủ nghĩa Việt Nam. Hợp đồng được lập thành 02 bản có giá trị pháp lý như nhau.</td>
+    </tr>
+  </table>
+
+  <!-- Signatures -->
+  <table style="width:100%; margin-top: 30px;">
+    <tr>
+      <td style="width:50%; text-align:center; font-weight:bold; vertical-align:top;">ĐẠI DIỆN BÊN A</td>
+      <td style="width:50%; text-align:center; font-weight:bold; vertical-align:top;">ĐẠI DIỆN BÊN B</td>
+    </tr>
+    <tr>
+      <td style="text-align:center; font-style:italic; font-size:9pt; color:#666;">(Ký, ghi rõ họ tên, đóng dấu)</td>
+      <td style="text-align:center; font-style:italic; font-size:9pt; color:#666;">(Ký, ghi rõ họ tên, đóng dấu)</td>
+    </tr>
+    <tr>
+      <td style="height:100px;"></td>
+      <td style="height:100px;"></td>
+    </tr>
+  </table>
+
+  <!-- ========== PHỤ LỤC 01 ========== -->
+  <div style="page-break-before: always;"></div>
+  <p style="text-align:center; font-weight:bold; font-size:13pt; margin: 0 0 6px 0;">Phụ lục 01 – Phạm vi công việc, Sản phẩm bàn giao, Bảng giá & Lộ trình triển khai</p>
+  <p style="text-align:center; font-style:italic; margin-bottom:16px; font-size:9pt;">(Đính kèm {{contract_type}} số {{contract_number}} ngày {{day}}/{{month}}/{{year}})</p>
+
+  <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">I. DANH MỤC SẢN PHẨM PHẦN MỀM / WEBSITE VÀ SẢN PHẨM BÀN GIAO CHI TIẾT</p>
+  <table style="width:100%; border-collapse:collapse; margin-bottom:12px; font-size:8pt; table-layout:auto;">
+    <tr style="background:#f5f5f5;">
+      <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; white-space:nowrap;">STT</th>
+      <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; width:100%;">Hạng mục & Quy cách kỹ thuật</th>
+      <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; white-space:nowrap;">ĐVT</th>
+      <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; white-space:nowrap;">SL</th>
+      <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Đơn giá (chưa VAT)</th>
+      <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Thành tiền (chưa VAT)</th>
+      <th style="border:1px solid #000; padding:4px 2px; text-align:center; font-weight:bold; white-space:nowrap;">VAT(%)</th>
+      <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Tiền VAT</th>
+      <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Tổng cộng</th>
+    </tr>
+    {{contract_items_table}}
+    <tr style="background:#f5f5f5;">
+      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Cộng tiền hàng (chưa VAT)</strong></td>
+      <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
+    </tr>
+    {{vat_breakdown_html}}
+    <tr style="background:#e8e8e8;">
+      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="8"><strong>Tổng cộng thanh toán (Không chịu thuế GTGT)</strong></td>
+      <td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold; font-size:9pt; white-space:nowrap;">{{total_amount_number}} VND</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #000; padding:4px;" colspan="9">Số tiền viết bằng chữ: <em>{{amount_in_words}}</em></td>
+    </tr>
+  </table>
+
+  {{proposal_appendix_content_html}}
+  <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">II. CAM KẾT VÀ BÀN GIAO</p>
+  <p style="margin: 0 0 15px 0;">Bên B cam kết bàn giao đầy đủ mã nguồn (source code), tài liệu hướng dẫn sử dụng, cơ sở dữ liệu và tài liệu kỹ thuật hỗ trợ cho Nhà trường. Phụ lục này là một phần không tách rời của Hợp đồng số {{contract_number}}.</p>
+
+  <!-- Signatures -->
+  <table style="width:100%; margin-top: 20px;">
+    <tr>
+      <td style="width:50%; text-align:center; font-weight:bold; vertical-align:top; font-size:9pt;">ĐẠI DIỆN BÊN A</td>
+      <td style="width:50%; text-align:center; font-weight:bold; vertical-align:top; font-size:9pt;">ĐẠI DIỆN BÊN B</td>
+    </tr>
+  </table>
 </div>
 `;
 

@@ -45,7 +45,7 @@ function getDocumentContractTitle(contract: any): string {
     return /hợp đồng kinh tế/i.test(title) || !title ? 'Hợp đồng dịch vụ' : title
 }
 
-import { contractSoftwareTemplate, contractDesignTemplate } from './contract-template'
+import { contractSoftwareTemplate, contractDesignTemplate, contractSchoolTemplate } from './contract-template'
 import { paymentTemplate } from './payment-template'
 import { orderTemplate } from './order-template'
 import { deliveryMinutesTemplate } from './delivery-minutes-template'
@@ -76,6 +76,22 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
         name: 'Hợp đồng dịch vụ (Mẫu chuẩn)',
         type: 'contract',
         content: contractSoftwareTemplate,
+        variables: [
+            'contract_number', 'day', 'month', 'year',
+            'customer_company', 'customer_representative', 'customer_position',
+            'customer_address', 'customer_phone', 'customer_mobile',
+            'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
+            'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
+            'total_amount_number', 'amount_in_words',
+            'payment_terms', 'delivery_time', 'end_date', 'delivery_address',
+            'service_description', 'product_service_declaration',
+            'contract_title_upper', 'contract_title_body'
+        ]
+    },
+    {
+        name: 'Hợp đồng dịch vụ trường học / giáo dục (Mẫu chuẩn)',
+        type: 'contract',
+        content: contractSchoolTemplate,
         variables: [
             'contract_number', 'day', 'month', 'year',
             'customer_company', 'customer_representative', 'customer_position',
@@ -219,6 +235,15 @@ export async function getDocumentTemplates() {
 
 function normalizeDocumentTemplate(template: DocumentTemplate): DocumentTemplate {
     if (template.type !== 'contract') return template
+
+    const matchedDefault = defaultTemplates.find(t => t.type === 'contract' && t.name === template.name)
+    if (matchedDefault) {
+        return {
+            ...template,
+            content: matchedDefault.content,
+            variables: matchedDefault.variables,
+        }
+    }
 
     const standardTemplate = defaultTemplates.find(t => t.type === 'contract' && t.name === 'Hợp đồng dịch vụ (Mẫu chuẩn)')
     // This named template is managed by the application. Always render its
@@ -1559,7 +1584,9 @@ export async function generateDocumentBundle(contractId: string) {
     for (const docType of docTypes) {
         let template = templates.find(t => t.type === docType)
         if (docType === 'contract') {
-            const targetName = contract.contract_template === 'design'
+            const targetName = contract.contract_template === 'school'
+                ? 'Hợp đồng dịch vụ trường học / giáo dục (Mẫu chuẩn)'
+                : contract.contract_template === 'design'
                 ? 'Hợp đồng thiết kế & in ấn (Mẫu chuẩn)'
                 : 'Hợp đồng dịch vụ (Mẫu chuẩn)'
             const specificTemplate = templates.find(t => t.name === targetName)

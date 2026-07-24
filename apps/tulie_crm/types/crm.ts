@@ -231,7 +231,7 @@ export interface Contract {
   project?: Project
   brand: Brand
   category?: 'customer' | 'freelancer'
-  contract_template?: 'software' | 'design'
+  contract_template?: 'software' | 'design' | 'school'
   freelancer_metadata?: {
     name?: string
     cccd?: string

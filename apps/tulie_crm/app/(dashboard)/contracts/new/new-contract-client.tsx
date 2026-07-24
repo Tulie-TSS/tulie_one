@@ -67,7 +67,7 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
     const [terms, setTerms] = useState('')
     
     // New fields
-    const [contractTemplate, setContractTemplate] = useState<'software' | 'design'>('software')
+    const [contractTemplate, setContractTemplate] = useState<'software' | 'design' | 'school'>('software')
     const [productNameInContract, setProductNameInContract] = useState('')
     const [vatExemptStatus, setVatExemptStatus] = useState<'0_percent' | 'exempt'>('0_percent')
     const [vatPercent, setVatPercent] = useState<number>(8)
@@ -271,9 +271,9 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                                     <Label>Mẫu hợp đồng</Label>
                                     <Select 
                                         value={contractTemplate} 
-                                        onValueChange={(v: 'software' | 'design') => {
+                                        onValueChange={(v: 'software' | 'design' | 'school') => {
                                             setContractTemplate(v)
-                                            if (v === 'software') {
+                                            if (v === 'software' || v === 'school') {
                                                 setVatPercent(0)
                                                 setVatExemptStatus('exempt')
                                             } else {
@@ -288,6 +288,7 @@ function NewContractForm({ initialCustomers, initialQuotations, initialProjects 
                                         <SelectContent>
                                             <SelectItem value="software">Mẫu 1: Phát triển phần mềm/website (Không chịu thuế)</SelectItem>
                                             <SelectItem value="design">Mẫu 2: Thiết kế, quay chụp, in ấn (VAT 8%)</SelectItem>
+                                            <SelectItem value="school">Mẫu 3: Trường học / Cơ sở Giáo dục (Không chịu thuế)</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>

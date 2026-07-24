@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin, isAuthError } from '@/lib/security/auth-guard'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { contractSoftwareTemplate, contractDesignTemplate } from '@/lib/supabase/services/contract-template'
+import { contractSoftwareTemplate, contractDesignTemplate, contractSchoolTemplate } from '@/lib/supabase/services/contract-template'
 import { paymentTemplate } from '@/lib/supabase/services/payment-template'
 import { orderTemplate } from '@/lib/supabase/services/order-template'
 import { deliveryMinutesTemplate } from '@/lib/supabase/services/delivery-minutes-template'
@@ -57,6 +57,22 @@ export async function POST(request: Request) {
                 name: 'Hợp đồng dịch vụ (Mẫu chuẩn)',
                 type: 'contract',
                 content: contractSoftwareTemplate,
+                variables: [
+                    'contract_number', 'day', 'month', 'year',
+                    'customer_company', 'customer_representative_title', 'customer_representative', 'customer_position',
+                    'customer_address', 'customer_phone', 'customer_mobile',
+                    'customer_tax_code', 'customer_email', 'customer_bank_account', 'customer_bank_name',
+                    'contract_items_table', 'subtotal', 'vat_rate', 'vat_amount',
+                    'total_amount_number', 'amount_in_words',
+                    'payment_terms', 'delivery_time', 'end_date', 'delivery_address',
+                    'service_description', 'warranty_clause_html', 'contract_clause_count',
+                    'contract_title_upper', 'contract_title_body'
+                ],
+            },
+            {
+                name: 'Hợp đồng dịch vụ trường học / giáo dục (Mẫu chuẩn)',
+                type: 'contract',
+                content: contractSchoolTemplate,
                 variables: [
                     'contract_number', 'day', 'month', 'year',
                     'customer_company', 'customer_representative_title', 'customer_representative', 'customer_position',
