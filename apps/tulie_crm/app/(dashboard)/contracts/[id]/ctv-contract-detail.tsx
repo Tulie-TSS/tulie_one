@@ -39,12 +39,6 @@ export function CtvContractDetail({ contract, backHref, progress, paidAmount }: 
                     </div>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap shrink-0">
-                    <SetPasswordDialog
-                        entityId={contract.id}
-                        tableName="contracts"
-                        hasPassword={!!contract.password_hash}
-                        hasFinancialPassword={!!contract.financial_password_hash}
-                    />
                     <ContractEmailButton contract={contract} />
                     {contract.public_token && (
                         <CtvLinkButton publicToken={contract.public_token} />

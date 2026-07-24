@@ -114,12 +114,6 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                     </div>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap shrink-0">
-                    <SetPasswordDialog
-                        entityId={contract.id}
-                        tableName="contracts"
-                        hasPassword={!!contract.password_hash}
-                        hasFinancialPassword={!!contract.financial_password_hash}
-                    />
                     <ContractEmailButton contract={contract} />
                     {isFreelancerContract && contract.public_token && (
                         <CtvLinkButton publicToken={contract.public_token} />

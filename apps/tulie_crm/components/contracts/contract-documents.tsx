@@ -99,8 +99,16 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
     const priorityMap: Record<string, number> = { signed: 4, sent: 3, pending: 2, draft: 1 }
 
 
+    const templateLabel = contract.category === 'freelancer'
+        ? 'Hợp đồng Cộng tác viên'
+        : contract.contract_template === 'school'
+        ? 'Mẫu 3: Trường học / Cơ sở Giáo dục'
+        : contract.contract_template === 'design'
+        ? 'Mẫu 2: Thiết kế, quay chụp, in ấn'
+        : 'Mẫu 1: Phát triển phần mềm / Website'
+
     const DOC_META: Record<string, { label: string; description: string; icon: any }> = {
-        contract: { label: contract.title || 'Hợp đồng dịch vụ', description: 'Hợp đồng ký kết giữa 2 bên với đầy đủ điều khoản pháp lý', icon: FileText },
+        contract: { label: contract.title || 'Hợp đồng dịch vụ', description: `Hợp đồng dịch vụ áp dụng ${templateLabel}`, icon: FileText },
         freelance_contract: { label: contract.title || 'Hợp đồng Cộng tác viên', description: 'Hợp đồng thỏa thuận cung cấp dịch vụ cá nhân', icon: FileText },
         order: { label: 'Đơn đặt hàng', description: 'Đơn đặt hàng chi tiết sản phẩm/dịch vụ', icon: ClipboardList },
         payment_request: { label: 'Đề nghị thanh toán', description: 'Đề nghị thanh toán theo hợp đồng dịch vụ', icon: CreditCard },
@@ -441,10 +449,15 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
             <CardHeader className="pb-4 border-b">
                 <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1.5">
-                        <CardTitle className="flex items-center gap-2 text-base">
-                            <FileText className="h-5 w-5" />
-                            Bộ giấy tờ
-                        </CardTitle>
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <CardTitle className="flex items-center gap-2 text-base">
+                                <FileText className="h-5 w-5" />
+                                Bộ giấy tờ
+                            </CardTitle>
+                            <Badge variant="secondary" className="text-xs font-normal border bg-muted text-foreground">
+                                Mẫu áp dụng: {templateLabel}
+                            </Badge>
+                        </div>
                         <p className="text-xs text-muted-foreground">
                             Xuất giấy tờ từ dữ liệu hợp đồng — tự động điền thông tin
                         </p>
