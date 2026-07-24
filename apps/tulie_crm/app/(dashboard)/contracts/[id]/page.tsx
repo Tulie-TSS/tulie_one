@@ -221,10 +221,22 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                         </Link>
                                     </div>
                                 )}
+                                <div className="flex justify-between items-center gap-4 border-b pb-1.5">
+                                    <span className="text-muted-foreground shrink-0">Mẫu hợp đồng</span>
+                                    <span className="font-semibold text-right truncate">
+                                        {contract.category === 'freelancer'
+                                            ? 'Hợp đồng Cộng tác viên'
+                                            : contract.contract_template === 'school'
+                                            ? 'Trường học / Giáo dục'
+                                            : contract.contract_template === 'design'
+                                            ? 'Thiết kế, in ấn'
+                                            : 'Phát triển phần mềm / Website'}
+                                    </span>
+                                </div>
                                 <div className="flex justify-between items-center gap-4">
                                     <span className="text-muted-foreground shrink-0">Phụ trách</span>
                                     <span className="font-semibold text-right truncate">
-                                        {contract.creator ? contract.creator.full_name : 'Hệ thống'}
+                                        {contract.creator ? contract.creator.full_name : 'Hệ thống Quản trị'}
                                     </span>
                                 </div>
                             </div>
