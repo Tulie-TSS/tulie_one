@@ -43,7 +43,6 @@ export async function GET(
                 '<tr><td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td><td style="font-weight:bold; vertical-align:top; white-space:nowrap;">'
             )
 
-        documentContent = cleanContractSummaryTableBorders(documentContent)
         if (doc.type === 'contract' && (documentContent.includes('Nhà trường') || documentContent.includes('trường') || documentContent.includes('TRƯỜNG') || documentContent.includes('MAPLE BEAR') || documentContent.includes('SUNSHINE'))) {
             documentContent = documentContent.replace(
                 /(Bên sử dụng dịch vụ \(Bên A\)<\/td>\s*<td[^>]*>\s*)(.*?)(<\/td>)/gi,
@@ -232,6 +231,8 @@ export async function GET(
                 /<td([^>]*)>\s*[\d.]+\s*<\/td>\s*<td[^>]*>\s*(?:\d+%\s*|-)\s*<\/td>\s*<td[^>]*>\s*(?:[\d.]+\s*|-)\s*<\/td>\s*<td([^>]*)>\s*([\d.]+)\s*<\/td>/gi,
                 '<td$1>$3</td><td$2>$3</td>'
             )
+
+        documentContent = cleanContractSummaryTableBorders(documentContent)
 
         const DOC_LABELS: Record<string, string> = {
             contract: 'Hợp đồng dịch vụ',

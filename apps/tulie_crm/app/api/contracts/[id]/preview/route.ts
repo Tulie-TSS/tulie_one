@@ -96,8 +96,6 @@ export async function GET(
             .replace(/width="30"/gi, 'width="50"')
             .replace(/width="55"/gi, 'width="50"')
 
-        html = cleanContractSummaryTableBorders(html)
-
         if (type === 'contract' && isSchool) {
             html = html.replace(
                 /(Bên sử dụng dịch vụ \(Bên A\)<\/td>\s*<td[^>]*>\s*)(.*?)(<\/td>)/gi,
@@ -121,9 +119,6 @@ export async function GET(
 
         if (type === 'contract') {
             html = html
-                .replace(/font-weight:\s*bold;?([^>]*>Bảo mật thông tin và dữ liệu cá nhân)/gi, '$1')
-                .replace(/<strong>Chậm tiến độ do lỗi của Bên B:<\/strong>/gi, 'Chậm tiến độ do lỗi của Bên B:')
-            html = html
                 .replace(/<tr[^>]*>\s*<td[^>]*>\s*<strong>Tạm tính<\/strong>[\s\S]*?<\/tr>/gi, '')
                 .replace(/<tr[^>]*>\s*<td[^>]*>\s*<strong>Tổng chiết khấu<\/strong>[\s\S]*?<\/tr>/gi, '')
                 .replace(/<tr[^>]*>\s*<td[^>]*>\s*<strong>Chiết khấu tổng[\s\S]*?<\/tr>/gi, '')
@@ -136,6 +131,9 @@ export async function GET(
                     '<td$1>$3</td><td$2>$3</td>'
                 )
         }
+
+        html = cleanContractSummaryTableBorders(html)
+
         const DOCUMENT_LABELS: Record<string, string> = {
             contract: 'Hợp đồng dịch vụ',
             freelance_contract: 'Hợp đồng Cộng tác viên',
