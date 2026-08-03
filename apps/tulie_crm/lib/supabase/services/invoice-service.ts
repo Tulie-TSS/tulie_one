@@ -34,11 +34,21 @@ export async function getInvoices() {
 export async function getInvoiceById(id: string) {
     try {
         const supabase = await createClient()
-        const { data, error } = await supabase
+        let { data, error } = await supabase
             .from('invoices')
             .select('*, customer:customers(*), creator:users(*), contract:contracts(id, contract_number), vendor:vendors(*), items:invoice_items(*), payments:invoice_payments(*)')
             .eq('id', id)
             .single()
+
+        if (error && (error.message?.includes('created_by') || error.message?.includes('creator') || error.message?.includes('relationship'))) {
+            const retry = await supabase
+                .from('invoices')
+                .select('*, customer:customers(*), contract:contracts(id, contract_number), vendor:vendors(*), items:invoice_items(*), payments:invoice_payments(*)')
+                .eq('id', id)
+                .single()
+            data = retry.data
+            error = retry.error
+        }
 
         if (error) {
             console.error('Error fetching invoice by id:', error)
@@ -56,11 +66,23 @@ export async function createInvoice(invoice: Partial<Invoice>, items: Partial<In
     const supabase = await createClient()
 
     // 1. Insert invoice
-    const { data: invoiceData, error: invoiceError } = await supabase
+    let { data: invoiceData, error: invoiceError } = await supabase
         .from('invoices')
         .insert([invoice])
         .select()
         .single()
+
+    if (invoiceError && invoiceError.message?.includes('created_by')) {
+        const fallbackInvoice = { ...invoice }
+        delete (fallbackInvoice as any).created_by
+        const retry = await supabase
+            .from('invoices')
+            .insert([fallbackInvoice])
+            .select()
+            .single()
+        invoiceData = retry.data
+        invoiceError = retry.error
+    }
 
     if (invoiceError) {
         console.error('Error creating invoice:', invoiceError)

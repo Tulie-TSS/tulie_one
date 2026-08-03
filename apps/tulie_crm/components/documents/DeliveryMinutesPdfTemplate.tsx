@@ -95,13 +95,23 @@ const DeliveryMinutesPdfTemplate: React.FC<DeliveryMinutesPdfTemplateProps> = ({
                     ))}
                 </View>
 
-                <View style={{ marginTop: 15 }}>
-                    <Text style={[styles.bold, { textDecoration: 'underline' }]}>Ý kiến nhận xét:</Text>
-                    <Text style={[styles.text, { marginTop: 5 }]}>- Chất lượng sản phẩm: Đạt yêu cầu theo thỏa thuận.</Text>
-                    <Text style={styles.text}>- Số lượng: Đầy đủ theo đúng đơn đặt hàng/hợp đồng.</Text>
+                <View style={{ marginTop: 12 }}>
+                    <Text style={[styles.bold, { textDecoration: 'underline', marginBottom: 4 }]}>Điều khoản và Quy định nghiệm thu:</Text>
+                    <Text style={[styles.text, { fontSize: 8, marginBottom: 3 }]}>
+                        1. <Text style={styles.bold}>Xác nhận hoàn thành:</Text> Hai bên thống nhất nghiệm thu các hạng mục nêu trên. Kể từ thời điểm ký biên bản này, Bên B được xác nhận đã hoàn thành đầy đủ, đúng hạn và đúng chất lượng toàn bộ nghĩa vụ theo Hợp đồng và Phụ lục (trừ các lỗi nhỏ được ghi nhận tại Phụ lục đính kèm nếu có).
+                    </Text>
+                    <Text style={[styles.text, { fontSize: 8, marginBottom: 3 }]}>
+                        2. <Text style={styles.bold}>Yêu cầu phát sinh:</Text> Mọi yêu cầu điều chỉnh, bổ sung tính năng, giao diện hoặc cấu trúc hệ thống phát sinh sau ngày ký biên bản này đều được tính là dịch vụ phát sinh ngoài Hợp đồng và sẽ được hai bên thỏa thuận chi phí riêng.
+                    </Text>
+                    <Text style={[styles.text, { fontSize: 8, marginBottom: 3 }]}>
+                        3. <Text style={styles.bold}>Nghĩa vụ thanh toán:</Text> Biên bản này là căn cứ đề nghị thanh toán. Bên A có nghĩa vụ thanh toán đợt cuối số tiền còn lại cho Bên B trong thời hạn tối đa 07 (bảy) ngày làm việc kể từ ngày ký biên bản này.
+                    </Text>
+                    <Text style={[styles.text, { fontSize: 8, marginBottom: 3 }]}>
+                        4. <Text style={styles.bold}>Chậm thanh toán & Tạm ngưng dịch vụ:</Text> Nếu Bên A chậm thanh toán quá thời hạn nêu trên, Bên B có quyền tính lãi chậm trả 15%/năm và có quyền tạm dừng dịch vụ bảo hành, bảo trì, hỗ trợ kỹ thuật hoặc ngưng vận hành hệ thống cho đến khi Bên A hoàn tất nghĩa vụ thanh toán.
+                    </Text>
                 </View>
 
-                <Text style={[styles.text, { marginTop: 15 }]}>
+                <Text style={[styles.text, { marginTop: 10, fontSize: 8 }]}>
                     Biên bản bàn giao và nghiệm thu được lập thành 02 bản, mỗi bên giữ 01 bản có giá trị pháp lý như nhau.
                 </Text>
 

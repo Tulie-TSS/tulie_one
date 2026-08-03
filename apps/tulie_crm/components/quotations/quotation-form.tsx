@@ -1490,18 +1490,24 @@ export function QuotationForm({ quotation, customers, products, units, projects,
                                                                 </TableCell>
                                                                 <TableCell className="align-top py-4 px-1">
                                                                     <Input
-                                                                        inputMode="numeric"
-                                                                        value={item.quantity === 0 || item.quantity === undefined ? '' : Number(item.quantity).toLocaleString('vi-VN')}
+                                                                        inputMode="decimal"
+                                                                        value={item.quantity === undefined || item.quantity === null ? '' : item.quantity}
                                                                         onChange={(e) => {
-                                                                            const raw = e.target.value.replace(/\D/g, '')
-                                                                            updateItem(item.id!, { quantity: raw === '' ? 0 : parseInt(raw) })
+                                                                            const val = e.target.value
+                                                                            if (val === '') {
+                                                                                updateItem(item.id!, { quantity: 0 })
+                                                                            } else {
+                                                                                const parsed = parseFloat(val.replace(',', '.'))
+                                                                                updateItem(item.id!, { quantity: isNaN(parsed) ? 0 : parsed })
+                                                                            }
                                                                         }}
                                                                         onFocus={(e) => {
-                                                                            const raw = String(item.quantity || '')
-                                                                            e.target.value = raw === '0' ? '' : raw
+                                                                            if (item.quantity === 0) e.target.value = ''
                                                                         }}
                                                                         onBlur={(e) => {
-                                                                            if (!e.target.value.trim()) updateItem(item.id!, { quantity: 1 })
+                                                                            if (item.quantity === undefined || item.quantity === null || isNaN(item.quantity)) {
+                                                                                updateItem(item.id!, { quantity: 1 })
+                                                                            }
                                                                         }}
                                                                         className="h-9 w-full text-center tabular-nums px-1"
                                                                     />

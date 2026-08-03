@@ -846,28 +846,44 @@ export async function confirmMilestonePayment(
         const invoiceNumber = `HD-${dateStr}-${((invoiceCount || 0) + 1).toString().padStart(3, '0')}`
         const milestoneAmount = milestone.amount || 0
 
-        const { data: invoice, error: invError } = await supabase
+        const invoicePayload: any = {
+            invoice_number: invoiceNumber,
+            type: 'output',
+            contract_id: contract.id,
+            project_id: milestone.project_id || null,
+            customer_id: contract.customer_id,
+            status: 'paid',
+            issue_date: paymentDate,
+            due_date: paymentDate,
+            subtotal: milestoneAmount,
+            vat_percent: 0,
+            vat_amount: 0,
+            total_amount: milestoneAmount,
+            paid_amount: milestoneAmount,
+            notes: options?.notes || `Thanh toán milestone: ${milestone.name}`,
+            brand: contract.brand,
+        }
+        if (user?.id) {
+            invoicePayload.created_by = user.id
+        }
+
+        let { data: invoice, error: invError } = await supabase
             .from('invoices')
-            .insert([{
-                invoice_number: invoiceNumber,
-                type: 'output',
-                contract_id: contract.id,
-                project_id: milestone.project_id || null,
-                customer_id: contract.customer_id,
-                created_by: user?.id,
-                status: 'paid',
-                issue_date: paymentDate,
-                due_date: paymentDate,
-                subtotal: milestoneAmount,
-                vat_percent: 0,
-                vat_amount: 0,
-                total_amount: milestoneAmount,
-                paid_amount: milestoneAmount,
-                notes: options?.notes || `Thanh toán milestone: ${milestone.name}`,
-                brand: contract.brand,
-            }])
+            .insert([invoicePayload])
             .select()
             .single()
+
+        // Fallback: If DB schema cache doesn't have created_by column yet, retry without created_by
+        if (invError && invError.message?.includes('created_by')) {
+            delete invoicePayload.created_by
+            const retry = await supabase
+                .from('invoices')
+                .insert([invoicePayload])
+                .select()
+                .single()
+            invoice = retry.data
+            invError = retry.error
+        }
 
         if (invError) {
             // Rollback milestone status
