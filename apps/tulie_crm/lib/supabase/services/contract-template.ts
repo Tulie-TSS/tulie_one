@@ -804,7 +804,7 @@ export const contractSchoolTemplate = `
         <div style="margin-left: 10px; margin-top: 4px; line-height: 1.6;">
           a) Khảo sát, phân tích yêu cầu nghiệp vụ quản lý, cổng thông tin và truyền thông của Nhà trường;<br>
           b) Thiết kế kiến trúc hệ thống, cơ sở dữ liệu và luồng xử lý nghiệp vụ;<br>
-          c) <strong>Yêu cầu thiết kế giao diện:</strong> Giao diện Phần mềm/Website cần chuẩn thiết kế đáp ứng (Responsive) hiển thị tối ưu trên điện thoại di động, máy tính bảng và máy tính để bàn, đảm bảo tiêu chuẩn về khả năng truy cập, thẩm mỹ và trải nghiệm người dùng dành cho Học sinh, Giáo viên, Phụ huynh và Cán bộ quản lý;<br>
+          c) Yêu cầu thiết kế giao diện: Giao diện Phần mềm/Website cần chuẩn thiết kế đáp ứng (Responsive) hiển thị tối ưu trên điện thoại di động, máy tính bảng và máy tính để bàn, đảm bảo tiêu chuẩn về khả năng truy cập, thẩm mỹ và trải nghiệm người dùng dành cho Học sinh, Giáo viên, Phụ huynh và Cán bộ quản lý;<br>
           d) Phát triển, lập trình các mô-đun giao diện người dùng, mô-đun xử lý nghiệp vụ, hệ thống quản trị nội dung (CMS) và các chức năng kèm theo theo chi tiết tại {{appendix_list_text}};<br>
           đ) Kiểm thử, hiệu chỉnh, tối ưu hiệu năng và an toàn bảo mật hệ thống;<br>
           e) Triển khai Phần mềm lên môi trường vận hành (production) theo cấu hình hai bên thống nhất;<br>

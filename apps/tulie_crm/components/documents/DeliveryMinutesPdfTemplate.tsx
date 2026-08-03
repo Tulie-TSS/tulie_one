@@ -107,7 +107,7 @@ const DeliveryMinutesPdfTemplate: React.FC<DeliveryMinutesPdfTemplateProps> = ({
                         3. <Text style={styles.bold}>Nghĩa vụ thanh toán:</Text> Biên bản này là căn cứ đề nghị thanh toán. Bên A có nghĩa vụ thanh toán đợt cuối số tiền còn lại cho Bên B trong thời hạn tối đa 07 (bảy) ngày làm việc kể từ ngày ký biên bản này.
                     </Text>
                     <Text style={[styles.text, { fontSize: 8, marginBottom: 3 }]}>
-                        4. <Text style={styles.bold}>Chậm thanh toán & Tạm ngưng dịch vụ:</Text> Nếu Bên A chậm thanh toán quá thời hạn nêu trên, Bên B có quyền tính lãi chậm trả 15%/năm và có quyền tạm dừng dịch vụ bảo hành, bảo trì, hỗ trợ kỹ thuật hoặc ngưng vận hành hệ thống cho đến khi Bên A hoàn tất nghĩa vụ thanh toán.
+                        4. <Text style={styles.bold}>Chậm thanh toán:</Text> Theo Điều 301 Luật Thương mại 2005, nếu Bên A chậm thanh toán quá thời hạn nêu trên, Bên A phải chịu phạt vi phạm 8% giá trị nghĩa vụ vi phạm, tính lãi chậm trả 15%/năm và Bên B có quyền tạm dừng dịch vụ bảo hành, bảo trì, hỗ trợ kỹ thuật hoặc ngưng vận hành hệ thống cho đến khi Bên A hoàn tất nghĩa vụ thanh toán.
                     </Text>
                 </View>
 

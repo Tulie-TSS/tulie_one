@@ -36,12 +36,12 @@ export const deliveryMinutesTemplate = `
 
   <!-- Bên A + Bên B (cùng 1 bảng) -->
   <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
-    <colgroup><col style="width:210px"><col style="width:auto"><col style="width:80px"><col style="width:auto"></colgroup>
+    <colgroup><col style="width:170px"><col style="width:auto"><col style="width:70px"><col style="width:auto"></colgroup>
     <tr style="border-bottom:1px solid #000;">
       <td style="font-weight:bold; padding:4px 20px 4px 0; vertical-align:top; white-space:nowrap;">Bên sử dụng dịch vụ (Bên A)</td>
       <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top; text-transform:;">{{customer_company}}</td>
     </tr>
-    <tr><td style="vertical-align:top;">Người đại diện pháp luật:</td><td style="font-weight:bold; vertical-align:top;">{{customer_representative_title}} {{customer_representative}}</td><td style="vertical-align:top;">Chức vụ:</td><td style="vertical-align:top;">{{customer_position}}</td></tr>
+    <tr><td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td><td style="font-weight:bold; vertical-align:top; white-space:nowrap;">{{customer_representative_title}} {{customer_representative}}</td><td style="vertical-align:top; white-space:nowrap;">Chức vụ:</td><td style="vertical-align:top; white-space:nowrap;">{{customer_position}}</td></tr>
     <tr><td style="vertical-align:top;">Địa chỉ liên hệ:</td><td colspan="3" style="vertical-align:top;">{{customer_address}}</td></tr>
     <tr><td style="vertical-align:top;">Điện thoại:</td><td style="vertical-align:top;">{{customer_phone}}</td><td style="vertical-align:top;">Di động:</td><td style="vertical-align:top;">{{customer_mobile}}</td></tr>
     <tr><td style="vertical-align:top;">Mã số thuế:</td><td style="vertical-align:top;">{{customer_tax_code}}</td><td style="vertical-align:top;">Email:</td><td style="vertical-align:top;">{{customer_email}}</td></tr>
@@ -53,7 +53,7 @@ export const deliveryMinutesTemplate = `
       <td style="font-weight:bold; padding:4px 20px 4px 0; vertical-align:top; white-space:nowrap;">Bên cung cấp dịch vụ (Bên B)</td>
       <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top;">CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP CÔNG NGHỆ TULIE</td>
     </tr>
-    <tr><td style="vertical-align:top;">Đại diện pháp luật:</td><td style="font-weight:bold; vertical-align:top;">Ông Nguyễn Thanh Tùng</td><td style="vertical-align:top;">Chức vụ:</td><td style="vertical-align:top;">Giám đốc</td></tr>
+    <tr><td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td><td style="font-weight:bold; vertical-align:top; white-space:nowrap;">Ông Nguyễn Thanh Tùng</td><td style="vertical-align:top; white-space:nowrap;">Chức vụ:</td><td style="vertical-align:top; white-space:nowrap;">Giám đốc</td></tr>
     <tr><td style="vertical-align:top;">Địa chỉ liên hệ:</td><td colspan="3" style="vertical-align:top;">Tầng 4, Tòa nhà SHG, Số 8 Quang Trung, Phường Hà Đông, Thành phố Hà Nội, Việt Nam</td></tr>
     <tr><td style="vertical-align:top;">Điện thoại:</td><td style="vertical-align:top;"></td><td style="vertical-align:top;">Di động:</td><td style="vertical-align:top;">+84 98 898 4554</td></tr>
     <tr><td style="vertical-align:top;">Mã số thuế:</td><td style="vertical-align:top;">0110163102</td><td style="vertical-align:top;">Email:</td><td style="vertical-align:top;">info@tulie.vn</td></tr>
@@ -106,15 +106,18 @@ export const deliveryMinutesTemplate = `
     <li>Cấu hình liên kết các nền tảng bên thứ ba (Google GA4, Search Console, GTM, Domain/DNS/Hosting).</li>
   </ul>
 
-  <p style="margin:10px 0; font-weight:bold;">4. Kết luận và Nghĩa vụ thanh toán tiếp theo:</p>
+  <p style="margin:10px 0; font-weight:bold;">4. Kết luận và Điều khoản nghiệm thu bàn giao:</p>
   <p style="margin:6px 0; text-align:justify;">
-    - Bên A đồng ý chính thức nghiệm thu toàn bộ website để đưa vào hoạt động kinh doanh kể từ ngày ký biên bản này.
+    - <strong>Xác nhận hoàn thành nghĩa vụ:</strong> Kể từ thời điểm ký biên bản này, Bên B được xác nhận đã hoàn thành đầy đủ, đúng hạn và đúng chất lượng toàn bộ nghĩa vụ theo Hợp đồng và các Phụ lục đính kèm (trừ các lỗi nhỏ được ghi nhận tại mục 2 nêu trên nếu có).
   </p>
   <p style="margin:6px 0; text-align:justify;">
-    - Trách nhiệm bảo hành kỹ thuật của Bên B sẽ bắt đầu được tính kể từ ngày ký biên bản này theo đúng thời hạn quy định tại Hợp đồng.
+    - <strong>Yêu cầu phát sinh ngoài phạm vi:</strong> Mọi yêu cầu điều chỉnh, bổ sung tính năng, giao diện hoặc cấu trúc hệ thống phát sinh sau ngày ký biên bản này đều được tính là dịch vụ phát sinh ngoài Hợp đồng và sẽ được hai bên thỏa thuận chi phí riêng.
   </p>
   <p style="margin:6px 0; text-align:justify;">
-    - Bên A chịu trách nhiệm thanh toán nốt đợt cuối (50% giá trị hợp đồng còn lại, tương đương: <strong>{{payment_amount}}</strong>) cho Bên B trong vòng 07 ngày làm việc kể từ ngày ký Biên bản này, phù hợp với tiến độ quy định tại Hợp đồng.
+    - <strong>Nghĩa vụ thanh toán đợt cuối:</strong> Biên bản này là căn cứ đề nghị thanh toán. Bên A có nghĩa vụ thanh toán đợt cuối số tiền còn lại (tương đương: <strong>{{payment_amount}}</strong>) cho Bên B trong thời hạn tối đa <strong>07 (bảy) ngày làm việc</strong> kể từ ngày ký Biên bản này.
+  </p>
+  <p style="margin:6px 0; text-align:justify;">
+    - <strong>Chậm thanh toán: Theo Điều 301 Luật Thương mại 2005</strong>, nếu Bên A chậm thanh toán quá thời hạn nêu trên, Bên A phải chịu phạt vi phạm 8% giá trị nghĩa vụ vi phạm, tính lãi chậm trả 15%/năm và Bên B có quyền tạm dừng dịch vụ bảo hành, bảo trì, hỗ trợ kỹ thuật hoặc tạm ngưng vận hành hệ thống cho đến khi Bên A hoàn tất nghĩa vụ thanh toán.
   </p>
 
   <p style="margin:14px 0 10px 0; text-align:justify;">Biên bản nghiệm thu bàn giao được lập thành hai (02) bản gốc có giá trị pháp lý như nhau, mỗi bên giữ một (01) bản.</p>

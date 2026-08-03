@@ -770,14 +770,14 @@ export async function generateDocument(
                     }
                 }
 
-                // Check dynamically which columns to display (contracts must never display discount columns/promotions)
+                // Check dynamically which columns to display (contracts must never display discount columns/promotions, but must keep VAT columns to match 9-col table layout)
                 hasDiscount = (template.type === 'contract') ? false : items.some((item: any) => (item.discount || 0) > 0)
-                hasVat = vatStatus !== 'exempt' && items.some((item: any) => {
+                hasVat = (template.type === 'contract') ? true : (vatStatus !== 'exempt' && items.some((item: any) => {
                     const itemVatRate = item.vat_percent !== undefined && item.vat_percent !== null 
                         ? item.vat_percent 
                         : (contract.quotation?.vat_percent || 0)
                     return itemVatRate > 0
-                })
+                }))
 
                 totalColumns = 11
                 if (!hasDiscount) totalColumns -= 2
