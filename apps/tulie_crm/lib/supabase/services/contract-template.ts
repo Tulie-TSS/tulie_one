@@ -631,9 +631,8 @@ export const contractSoftwareTemplate = `
     </tr>
     {{contract_items_table}}
     <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="5"><strong>Cộng tiền hàng (chưa VAT)</strong></td>
+      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Cộng tiền hàng (chưa VAT)</strong></td>
       <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
-      <td style="border:1px solid #000; padding:4px;" colspan="3"></td>
     </tr>
     {{vat_breakdown_html}}
     <tr style="background:#e8e8e8;">
@@ -1061,9 +1060,8 @@ export const contractSchoolTemplate = `
     </tr>
     {{contract_items_table}}
     <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="5"><strong>Cộng tiền hàng (chưa VAT)</strong></td>
+      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Cộng tiền hàng (chưa VAT)</strong></td>
       <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
-      <td style="border:1px solid #000; padding:4px;" colspan="3"></td>
     </tr>
     {{vat_breakdown_html}}
     <tr style="background:#e8e8e8;">
