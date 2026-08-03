@@ -261,7 +261,7 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">3.5.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Chậm tiến độ do lỗi của Bên B:</strong> Nếu Bên B chậm bàn giao Phần mềm so với tiến độ đã thống nhất (sau khi đã trừ đi thời gian chậm trễ do Bên A, phát sinh được chấp thuận, hoặc do bất khả kháng), Bên B phải chịu phạt chậm tiến độ với mức 0,1%/ngày trên giá trị phần nghĩa vụ bị chậm, nhưng tổng mức phạt không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm, theo Điều 301 Luật Thương mại 2005.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Chậm tiến độ do lỗi của Bên B: Nếu Bên B chậm bàn giao Phần mềm so với tiến độ đã thống nhất (sau khi đã trừ đi thời gian chậm trễ do Bên A, phát sinh được chấp thuận, hoặc do bất khả kháng), Bên B phải chịu phạt chậm tiến độ với mức 0,1%/ngày trên giá trị phần nghĩa vụ bị chậm, nhưng tổng mức phạt không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm, theo Điều 301 Luật Thương mại 2005.</td>
     </tr>
   </table>
 
@@ -415,11 +415,11 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật thông tin và quyền riêng tư:</strong> Bên B cam kết đảm bảo an toàn, bảo mật thông tin và quyền riêng tư đối với dữ liệu của Bên A và người dùng; triển khai giải pháp kỹ thuật phòng chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và duy trì cơ chế sao lưu dự phòng (backup) dữ liệu định kỳ. Bên A là Bên Kiểm soát dữ liệu cá nhân (Data Controller), Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor).</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật thông tin và quyền riêng tư: Bên B cam kết đảm bảo an toàn, bảo mật thông tin và quyền riêng tư đối với dữ liệu của Bên A và người dùng; triển khai giải pháp kỹ thuật phòng chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và duy trì cơ chế sao lưu dự phòng (backup) dữ liệu định kỳ. Bên A là Bên Kiểm soát dữ liệu cá nhân (Data Controller), Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor).</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật mã nguồn và dữ liệu:</strong> Không được chia sẻ, sao chép hoặc sử dụng dữ liệu của Bên A vào bất kỳ mục đích nào khác nếu không có sự đồng ý của Bên A bằng văn bản. Bên B bảo lưu trách nhiệm kỹ thuật và tuân thủ tuyệt đối quy định bảo mật thông tin của Hợp đồng.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật mã nguồn và dữ liệu: Không được chia sẻ, sao chép hoặc sử dụng dữ liệu của Bên A vào bất kỳ mục đích nào khác nếu không có sự đồng ý của Bên A bằng văn bản. Bên B bảo lưu trách nhiệm kỹ thuật và tuân thủ tuyệt đối quy định bảo mật thông tin của Hợp đồng.</td>
     </tr>
   </table>
 
@@ -437,11 +437,11 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">8.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Quyền đối với Mã nguồn dự án:</strong> Bên B cấp cho Bên A quyền sử dụng độc quyền (hoặc sở hữu mã nguồn thành phẩm thiết kế riêng cho Bên A) sau khi Bên A đã hoàn tất thanh toán 100% giá trị Hợp đồng và các khoản phát sinh (nếu có). Trước thời điểm thanh toán đủ 100%, toàn bộ quyền sở hữu trí tuệ đối với mã nguồn thuộc về Bên B; Bên A chỉ có quyền sử dụng trên môi trường do Bên B triển khai, không được trích xuất, sao chép, sửa đổi, chuyển giao hoặc bán lại cho Bên thứ ba.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Quyền đối với Mã nguồn dự án: Bên B cấp cho Bên A quyền sử dụng độc quyền (hoặc sở hữu mã nguồn thành phẩm thiết kế riêng cho Bên A) sau khi Bên A đã hoàn tất thanh toán 100% giá trị Hợp đồng và các khoản phát sinh (nếu có). Trước thời điểm thanh toán đủ 100%, toàn bộ quyền sở hữu trí tuệ đối với mã nguồn thuộc về Bên B; Bên A chỉ có quyền sử dụng trên môi trường do Bên B triển khai, không được trích xuất, sao chép, sửa đổi, chuyển giao hoặc bán lại cho Bên thứ ba.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">8.3.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Mã nguồn nền tảng & Thư viện dùng chung:</strong> Bên B bảo lưu hoàn toàn quyền sở hữu trí tuệ đối với các cấu trúc mã nguồn cốt lõi (Core Framework), thư viện lập trình dùng chung, thuật toán, công cụ tích hợp sẵn do Bên B phát triển. Bên A được cấp quyền sử dụng vĩnh viễn, không mất phí bản quyền (Royalty-free non-exclusive license) đối với các thành phần dùng chung này chỉ nhằm mục đích vận hành Phần mềm theo Hợp đồng. Bên B có quyền tái sử dụng các thành phần dùng chung này cho các dự án khác với điều kiện không tiết lộ thông tin mật của Bên A.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Mã nguồn nền tảng & Thư viện dùng chung: Bên B bảo lưu hoàn toàn quyền sở hữu trí tuệ đối với các cấu trúc mã nguồn cốt lõi (Core Framework), thư viện lập trình dùng chung, thuật toán, công cụ tích hợp sẵn do Bên B phát triển. Bên A được cấp quyền sử dụng vĩnh viễn, không mất phí bản quyền (Royalty-free non-exclusive license) đối với các thành phần dùng chung này chỉ nhằm mục đích vận hành Phần mềm theo Hợp đồng. Bên B có quyền tái sử dụng các thành phần dùng chung này cho các dự án khác với điều kiện không tiết lộ thông tin mật của Bên A.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">8.4.</td>
@@ -503,11 +503,11 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">11.3.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Quyền đơn phương chấm dứt Hợp đồng:</strong> Mỗi bên có quyền đơn phương chấm dứt Hợp đồng trong các trường hợp: (a) Bên kia vi phạm nghiêm trọng nghĩa vụ thanh toán/giao hàng/bảo mật và không khắc phục trong vòng 15 ngày làm việc kể từ khi nhận được thông báo bằng văn bản; (b) Bên kia lâm vào tình trạng phá sản, giải thể hoặc không còn khả năng thực hiện Hợp đồng; (c) Các trường hợp khác theo quy định pháp luật.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Quyền đơn phương chấm dứt Hợp đồng: Mỗi bên có quyền đơn phương chấm dứt Hợp đồng trong các trường hợp: (a) Bên kia vi phạm nghiêm trọng nghĩa vụ thanh toán/giao hàng/bảo mật và không khắc phục trong vòng 15 ngày làm việc kể từ khi nhận được thông báo bằng văn bản; (b) Bên kia lâm vào tình trạng phá sản, giải thể hoặc không còn khả năng thực hiện Hợp đồng; (c) Các trường hợp khác theo quy định pháp luật.</td>
     </tr>
     <tr>
-      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">11.4.</td>
-      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Hậu quả của việc đơn phương chấm dứt & Chuyển giao dữ liệu:</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">11.4.</td>
+      <td style="vertical-align:top; padding:2px 0; font-weight:bold;">Hậu quả của việc đơn phương chấm dứt & Chuyển giao dữ liệu:</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">11.4.1.</td>
@@ -519,7 +519,7 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">11.4.3.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bàn giao dữ liệu và mã nguồn khi chấm dứt:</strong> Bên B chỉ thực hiện bàn giao mã nguồn và xuất dữ liệu thô (định dạng SQL/Excel/JSON) cho Bên A với điều kiện Bên A đã hoàn tất 100% nghĩa vụ thanh toán cho phần việc đã làm. Chi phí trích xuất dữ liệu nâng cao hoặc hỗ trợ chuyển giao (migration) sang hạ tầng mới nằm ngoài phạm vi Hợp đồng sẽ do Bên A chi trả theo đơn giá dịch vụ của Bên B tại thời điểm đó.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bàn giao dữ liệu và mã nguồn khi chấm dứt: Bên B chỉ thực hiện bàn giao mã nguồn và xuất dữ liệu thô (định dạng SQL/Excel/JSON) cho Bên A với điều kiện Bên A đã hoàn tất 100% nghĩa vụ thanh toán cho phần việc đã làm. Chi phí trích xuất dữ liệu nâng cao hoặc hỗ trợ chuyển giao (migration) sang hạ tầng mới nằm ngoài phạm vi Hợp đồng sẽ do Bên A chi trả theo đơn giá dịch vụ của Bên B tại thời điểm đó.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">11.5.</td>
@@ -988,11 +988,11 @@ export const contractSchoolTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật thông tin và quyền riêng tư:</strong> Bên B cam kết bảo mật tuyệt đối thông tin và quyền riêng tư gồm dữ liệu Học sinh, Giáo viên, Phụ huynh và Nhà trường; triển khai biện pháp kỹ thuật chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và thực hiện sao lưu dự phòng (backup) dữ liệu định kỳ đảm bảo an toàn dữ liệu. Bên A là Bên Kiểm soát dữ liệu cá nhân (Data Controller), Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor).</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật thông tin và quyền riêng tư: Bên B cam kết bảo mật tuyệt đối thông tin và quyền riêng tư gồm dữ liệu Học sinh, Giáo viên, Phụ huynh và Nhà trường; triển khai biện pháp kỹ thuật chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và thực hiện sao lưu dự phòng (backup) dữ liệu định kỳ đảm bảo an toàn dữ liệu. Bên A là Bên Kiểm soát dữ liệu cá nhân (Data Controller), Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor).</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật mã nguồn và dữ liệu nhà trường:</strong> Không được chia sẻ, sao chép hoặc sử dụng dữ liệu của nhà trường vào bất kỳ mục đích nào khác nếu không có sự đồng ý của Bên A bằng văn bản. Dữ liệu của Nhà trường là tài sản sở hữu riêng tuyệt đối của Bên A.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật mã nguồn và dữ liệu nhà trường: Không được chia sẻ, sao chép hoặc sử dụng dữ liệu của nhà trường vào bất kỳ mục đích nào khác nếu không có sự đồng ý của Bên A bằng văn bản. Dữ liệu của Nhà trường là tài sản sở hữu riêng tuyệt đối của Bên A.</td>
     </tr>
   </table>
 

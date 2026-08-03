@@ -66,14 +66,15 @@ export async function GET(
             )
             .replace(
                 /7\.2\.1\.\s*[\s\S]*?<\/tr>/gi,
-                '<tr><td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật thông tin và quyền riêng tư:</strong> Bên B cam kết bảo mật tuyệt đối thông tin và quyền riêng tư gồm dữ liệu Học sinh, Giáo viên, Phụ huynh và Nhà trường; triển khai biện pháp kỹ thuật chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và thực hiện sao lưu dự phòng (backup) dữ liệu định kỳ đảm bảo an toàn dữ liệu. Bên A là Bên Kiểm soát dữ liệu cá nhân (Data Controller), Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor).</td></tr>'
+                '<tr><td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật thông tin và quyền riêng tư: Bên B cam kết bảo mật tuyệt đối thông tin và quyền riêng tư gồm dữ liệu Học sinh, Giáo viên, Phụ huynh và Nhà trường; triển khai biện pháp kỹ thuật chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và thực hiện sao lưu dự phòng (backup) dữ liệu định kỳ đảm bảo an toàn dữ liệu. Bên A là Bên Kiểm soát dữ liệu cá nhân (Data Controller), Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor).</td></tr>'
             )
             .replace(
                 /7\.2\.2\.\s*[\s\S]*?<\/tr>/gi,
-                '<tr><td style="width:50px; vertical-align:top; padding:2px 0;">7.2.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật mã nguồn và dữ liệu nhà trường:</strong> Không được chia sẻ, sao chép hoặc sử dụng dữ liệu của nhà trường vào bất kỳ mục đích nào khác nếu không có sự đồng ý của Bên A bằng văn bản. Dữ liệu của Nhà trường là tài sản sở hữu riêng tuyệt đối của Bên A.</td></tr>'
+                '<tr><td style="width:50px; vertical-align:top; padding:2px 0;">7.2.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật mã nguồn và dữ liệu nhà trường: Không được chia sẻ, sao chép hoặc sử dụng dữ liệu của nhà trường vào bất kỳ mục đích nào khác nếu không có sự đồng ý của Bên A bằng văn bản. Dữ liệu của Nhà trường là tài sản sở hữu riêng tuyệt đối của Bên A.</td></tr>'
             )
         }
         if (doc.type === 'contract') {
+            documentContent = documentContent.replace(/<strong>Chậm tiến độ do lỗi của Bên B:<\/strong>/gi, 'Chậm tiến độ do lỗi của Bên B:')
             const { data: contract } = await supabase
                 .from('contracts')
                 .select('total_amount')
