@@ -897,9 +897,9 @@ export async function generateDocument(
                 // discount columns are hidden but VAT columns remain visible.
                 let vatBreakdownHtml = ''
                 if (vatStatus === 'exempt') {
-                    vatBreakdownHtml = `<tr style="background:#f5f5f5;">
-                        <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Thuế suất GTGT (VAT):</strong></td>
-                        <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">Không chịu thuế</td>
+                    vatBreakdownHtml = `<tr style="background:#f9f9f9;">
+                        <td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold;" colspan="8">Thuế suất GTGT (VAT):</td>
+                        <td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">Không chịu thuế</td>
                     </tr>`
                 } else {
                     const vatGroupsMap: Record<number, number> = {}
@@ -921,9 +921,9 @@ export async function generateDocument(
                     })
 
                     Object.entries(vatGroupsMap).sort((a, b) => Number(a[0]) - Number(b[0])).forEach(([rate, amt]) => {
-                        vatBreakdownHtml += `<tr style="background:#f5f5f5;">
-                            <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Tổng thuế suất GTGT (VAT) ${rate}%:</strong></td>
-                            <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(amt as number)}</td>
+                        vatBreakdownHtml += `<tr style="background:#f9f9f9;">
+                            <td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold;" colspan="8">Thuế suất GTGT (VAT) ${rate}%:</td>
+                            <td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(amt as number)}</td>
                         </tr>`
                     })
                 }

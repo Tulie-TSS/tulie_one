@@ -67,6 +67,14 @@ export async function GET(
             .replace(/Hôm nay, tại văn phòng giao dịch của các bên, chúng tôi gồm:/g, 'Hôm nay, tại văn phòng của Bên A, chúng tôi gồm:')
             .replace(/Tổng cộng thanh toán\s*\([^)]*\)/gi, 'Tổng cộng thanh toán')
             .replace(
+                /<td[^>]*colspan="5"[^>]*>\s*<strong>\s*Cộng tiền hàng[^<]*<\/strong>\s*<\/td>\s*<td[^>]*>\s*([\s\S]*?)\s*<\/td>\s*<td[^>]*colspan="3"[^>]*>\s*<\/td>/gi,
+                '<td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold;" colspan="8">Cộng tiền hàng (chưa VAT):</td><td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">$1</td>'
+            )
+            .replace(
+                /<td[^>]*colspan="6"[^>]*>\s*<strong>\s*Thuế suất GTGT[^<]*<\/strong>\s*<\/td>\s*<td[^>]*colspan="2"[^>]*>\s*([\s\S]*?)\s*<\/td>\s*<td[^>]*>\s*<\/td>/gi,
+                '<td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold;" colspan="8">Thuế suất GTGT (VAT):</td><td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">$1</td>'
+            )
+            .replace(
                 /<tr><td style="vertical-align:top;">(Người đại diện pháp luật:|Đại diện pháp luật:)<\/td><td style="font-weight:bold; vertical-align:top;">/g,
                 '<tr><td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td><td style="font-weight:bold; vertical-align:top; white-space:nowrap;">'
             )

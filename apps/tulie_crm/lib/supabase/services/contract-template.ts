@@ -410,8 +410,8 @@ export const contractSoftwareTemplate = `
       <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên cam kết giữ bí mật các thông tin nhận được của nhau trong quá trình thực hiện Hợp đồng, trừ khi thông tin đã công khai hoặc phải cung cấp theo yêu cầu của cơ quan nhà nước có thẩm quyền.</td>
     </tr>
     <tr>
-      <td style="width:50px; font-weight:bold; vertical-align:top; padding:2px 0;">7.2.</td>
-      <td style="font-weight:bold; vertical-align:top; padding:2px 0;">Bảo mật thông tin và dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP):</td>
+      <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.</td>
+      <td style="vertical-align:top; padding:2px 0; font-weight:bold;">Bảo mật thông tin và dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP):</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td>
@@ -630,14 +630,14 @@ export const contractSoftwareTemplate = `
       <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Tổng cộng</th>
     </tr>
     {{contract_items_table}}
-    <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Cộng tiền hàng (chưa VAT)</strong></td>
-      <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
+    <tr style="background:#f9f9f9;">
+      <td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold;" colspan="8">Cộng tiền hàng (chưa VAT):</td>
+      <td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
     </tr>
     {{vat_breakdown_html}}
     <tr style="background:#e8e8e8;">
-      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="8"><strong>Tổng cộng thanh toán</strong></td>
-      <td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold; font-size:9pt; white-space:nowrap;">{{total_amount_number}} VND</td>
+      <td style="border:1px solid #000; padding:8px; text-align:right; font-weight:bold; font-size:10pt;" colspan="8">Tổng cộng thanh toán:</td>
+      <td style="border:1px solid #000; padding:8px; text-align:right; font-weight:bold; font-size:10pt; white-space:nowrap;">{{total_amount_number}} VND</td>
     </tr>
     <tr>
       <td style="border:1px solid #000; padding:4px;" colspan="9">Số tiền viết bằng chữ: <em>{{amount_in_words}}</em></td>
@@ -980,19 +980,19 @@ export const contractSchoolTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên cam kết giữ bí mật các thông tin nhận được của nhau trong quá trình thực hiện Hợp đồng.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hai bên cam kết giữ bí mật các thông tin nhận được của nhau trong quá trình thực hiện Hợp đồng, trừ khi thông tin đã công khai hoặc phải cung cấp theo yêu cầu của cơ quan nhà nước có thẩm quyền.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.</td>
-      <td style="vertical-align:top; padding:2px 0;">Bảo mật thông tin và dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP và Luật An toàn thông tin mạng):</td>
+      <td style="vertical-align:top; padding:2px 0; font-weight:bold;">Bảo mật thông tin và dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP và Luật An toàn thông tin mạng):</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật thông tin và quyền riêng tư: Bên B cam kết bảo mật tuyệt đối thông tin và quyền riêng tư gồm dữ liệu Học sinh, Giáo viên, Phụ huynh và Nhà trường; triển khai biện pháp kỹ thuật chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và thực hiện sao lưu dự phòng (backup) dữ liệu định kỳ đảm bảo an toàn dữ liệu.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật thông tin và quyền riêng tư:</strong> Bên B cam kết bảo mật tuyệt đối thông tin và quyền riêng tư gồm dữ liệu Học sinh, Giáo viên, Phụ huynh và Nhà trường; triển khai biện pháp kỹ thuật chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và thực hiện sao lưu dự phòng (backup) dữ liệu định kỳ đảm bảo an toàn dữ liệu. Bên A là Bên Kiểm soát dữ liệu cá nhân (Data Controller), Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor).</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật mã nguồn và dữ liệu nhà trường cụ thể là: Không được chia sẻ, sao chép hoặc sử dụng dữ liệu của nhà trường vào bất kỳ mục đích nào khác nếu không có sự đồng ý của Bên A bằng văn bản. Dữ liệu của Nhà trường là tài sản sở hữu riêng tuyệt đối của Bên A.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật mã nguồn và dữ liệu nhà trường:</strong> Không được chia sẻ, sao chép hoặc sử dụng dữ liệu của nhà trường vào bất kỳ mục đích nào khác nếu không có sự đồng ý của Bên A bằng văn bản. Dữ liệu của Nhà trường là tài sản sở hữu riêng tuyệt đối của Bên A.</td>
     </tr>
   </table>
 
@@ -1059,14 +1059,14 @@ export const contractSchoolTemplate = `
       <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Tổng cộng</th>
     </tr>
     {{contract_items_table}}
-    <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Cộng tiền hàng (chưa VAT)</strong></td>
-      <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
+    <tr style="background:#f9f9f9;">
+      <td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold;" colspan="8">Cộng tiền hàng (chưa VAT):</td>
+      <td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
     </tr>
     {{vat_breakdown_html}}
     <tr style="background:#e8e8e8;">
-      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="8"><strong>Tổng cộng thanh toán</strong></td>
-      <td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold; font-size:9pt; white-space:nowrap;">{{total_amount_number}} VND</td>
+      <td style="border:1px solid #000; padding:8px; text-align:right; font-weight:bold; font-size:10pt;" colspan="8">Tổng cộng thanh toán:</td>
+      <td style="border:1px solid #000; padding:8px; text-align:right; font-weight:bold; font-size:10pt; white-space:nowrap;">{{total_amount_number}} VND</td>
     </tr>
     <tr>
       <td style="border:1px solid #000; padding:4px;" colspan="9">Số tiền viết bằng chữ: <em>{{amount_in_words}}</em></td>
@@ -1631,14 +1631,14 @@ export const contractDesignTemplate = `
       <th style="border:1px solid #000; padding:4px 2px; text-align:right; font-weight:bold; white-space:nowrap;">Tổng cộng</th>
     </tr>
     {{contract_items_table}}
-    <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Cộng tiền hàng (chưa VAT)</strong></td>
-      <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
+    <tr style="background:#f9f9f9;">
+      <td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold;" colspan="8">Cộng tiền hàng (chưa VAT):</td>
+      <td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
     </tr>
     {{vat_breakdown_html}}
     <tr style="background:#e8e8e8;">
-      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="8"><strong>Tổng cộng thanh toán (đã bao gồm VAT)</strong></td>
-      <td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold; font-size:9pt; white-space:nowrap;">{{total_amount_number}} VND</td>
+      <td style="border:1px solid #000; padding:8px; text-align:right; font-weight:bold; font-size:10pt;" colspan="8">Tổng cộng thanh toán:</td>
+      <td style="border:1px solid #000; padding:8px; text-align:right; font-weight:bold; font-size:10pt; white-space:nowrap;">{{total_amount_number}} VND</td>
     </tr>
     <tr>
       <td style="border:1px solid #000; padding:4px;" colspan="9">Số tiền viết bằng chữ: <em>{{amount_in_words}}</em></td>
