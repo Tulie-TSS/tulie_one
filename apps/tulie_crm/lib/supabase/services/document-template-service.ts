@@ -1466,17 +1466,60 @@ function getDocTypesForContract(contractType: string, category?: string): string
  */
 export async function getContractDocuments(contractId: string) {
     const supabase = createAdminClient()
-    const { data, error } = await supabase
+    const { data: docs, error } = await supabase
         .from('contract_documents')
         .select('*')
         .eq('contract_id', contractId)
         .order('created_at', { ascending: true })
 
-    if (error) {
+    if (error || !docs) {
         console.error('Error fetching contract documents:', error)
         return []
     }
-    return data || []
+
+    // Fetch milestones to ensure payment request doc_numbers have milestone suffixes (-01, -02)
+    const { data: milestones } = await supabase
+        .from('contract_milestones')
+        .select('id, amount, name, due_date')
+        .eq('contract_id', contractId)
+        .order('id', { ascending: true })
+
+    const paymentMilestones = (milestones || []).filter((m: any) => m.amount > 0)
+
+    const updatedDocs = docs.map(doc => {
+        if (doc.type === 'payment_request') {
+            let mIdx = -1
+            if (doc.milestone_id) {
+                mIdx = paymentMilestones.findIndex((m: any) => m.id === doc.milestone_id)
+            }
+            // Fallback: if milestone_id is null, find by order among draft/signed payment_request docs
+            if (mIdx === -1) {
+                const sameTypeDocs = docs.filter(d => d.type === 'payment_request')
+                mIdx = sameTypeDocs.findIndex(d => d.id === doc.id)
+            }
+
+            if (mIdx !== -1) {
+                const suffix = `-${String(mIdx + 1).padStart(2, '0')}`
+                let num = doc.doc_number || ''
+                if (num && !num.endsWith(suffix) && !/-(?:0[1-9]|[1-9]\d)$/.test(num)) {
+                    const cleanNum = num.replace(/-(?:0[1-9]|[1-9]\d)$/, '').replace(/-\d+$/, '')
+                    const newDocNum = `${cleanNum}${suffix}`
+                    
+                    // Asynchronously sync DB record in background
+                    supabase
+                        .from('contract_documents')
+                        .update({ doc_number: newDocNum })
+                        .eq('id', doc.id)
+                        .then(() => {})
+
+                    return { ...doc, doc_number: newDocNum }
+                }
+            }
+        }
+        return doc
+    })
+
+    return updatedDocs
 }
 
 function getNextVersionDocNumber(

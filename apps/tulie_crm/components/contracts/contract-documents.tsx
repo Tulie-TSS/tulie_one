@@ -180,11 +180,20 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                     ? `ĐNTT ${paymentIdx}: ${milestone?.name || `Đợt ${paymentIdx}`}`
                     : meta.label
 
+                let docDescription = doc.doc_number || meta.description
+                if (doc.type === 'payment_request' && paymentIdx > 0 && docDescription) {
+                    const expectedSuffix = `-${String(paymentIdx).padStart(2, '0')}`
+                    if (!docDescription.endsWith(expectedSuffix) && !/-(?:0[1-9]|[1-9]\d)$/.test(docDescription)) {
+                        const cleanNum = docDescription.replace(/-(?:0[1-9]|[1-9]\d)$/, '').replace(/-\d+$/, '')
+                        docDescription = `${cleanNum}${expectedSuffix}`
+                    }
+                }
+
                 return {
                     key: doc.id,
                     type: doc.type,
                     label: `${baseLabel}${versionSuffix}`,
-                    description: doc.doc_number || meta.description,
+                    description: docDescription,
                     icon: meta.icon,
                     fromDb: true,
                     dbDocId: doc.id,
