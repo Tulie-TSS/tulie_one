@@ -75,20 +75,24 @@ export const deliveryMinutesTemplate = `
   <p style="margin:10px 0; font-weight:bold;">2. Kết quả kiểm thử và nghiệm thu kỹ thuật:</p>
   <table style="width:100%; border-collapse:collapse; margin-bottom: 12px; font-size:9.5pt;">
     <tr>
-      <td style="width:220px; padding:4px 0; font-weight:bold;">- Thiết kế và giao diện (UI/UX):</td>
-      <td style="padding:4px 0;">[✓] Đạt yêu cầu kỹ thuật & Responsive</td>
+      <td style="width:230px; padding:4px 0; font-weight:bold;">- Thiết kế & Giao diện (UI/UX):</td>
+      <td style="width:230px; padding:4px 0;">☑ Đạt yêu cầu kỹ thuật & Responsive</td>
+      <td style="padding:4px 0;">☐ Chưa đạt</td>
     </tr>
     <tr>
       <td style="font-weight:bold; padding:4px 0;">- Chức năng hệ thống (Feature):</td>
-      <td style="padding:4px 0;">[✓] Đạt yêu cầu vận hành theo hợp đồng</td>
+      <td style="padding:4px 0;">☑ Đạt yêu cầu vận hành theo hợp đồng</td>
+      <td style="padding:4px 0;">☐ Chưa đạt</td>
     </tr>
     <tr>
       <td style="font-weight:bold; padding:4px 0;">- Quản trị nội dung (CMS/Backend):</td>
-      <td style="padding:4px 0;">[✓] Đạt yêu cầu cập nhật & Phân quyền</td>
+      <td style="padding:4px 0;">☑ Đạt yêu cầu cập nhật & Phân quyền</td>
+      <td style="padding:4px 0;">☐ Chưa đạt</td>
     </tr>
     <tr>
       <td style="font-weight:bold; padding:4px 0;">- Tối ưu SEO & Tốc độ tải trang:</td>
-      <td style="padding:4px 0;">[✓] Đạt chỉ số cam kết (Lighthouse Performance)</td>
+      <td style="padding:4px 0;">☑ Đạt chỉ số cam kết (Lighthouse)</td>
+      <td style="padding:4px 0;">☐ Chưa đạt</td>
     </tr>
   </table>
 
@@ -114,7 +118,7 @@ export const deliveryMinutesTemplate = `
     - <strong>Yêu cầu phát sinh ngoài phạm vi:</strong> Mọi yêu cầu điều chỉnh, bổ sung tính năng, giao diện hoặc cấu trúc hệ thống phát sinh sau ngày ký biên bản này đều được tính là dịch vụ phát sinh ngoài Hợp đồng và sẽ được hai bên thỏa thuận chi phí riêng.
   </p>
   <p style="margin:6px 0; text-align:justify;">
-    - <strong>Nghĩa vụ thanh toán đợt cuối:</strong> Biên bản này là căn cứ đề nghị thanh toán. Bên A có nghĩa vụ thanh toán đợt cuối số tiền còn lại (tương đương: <strong>{{payment_amount}}</strong>) cho Bên B trong thời hạn tối đa <strong>07 (bảy) ngày làm việc</strong> kể từ ngày ký Biên bản này.
+    - <strong>Nghĩa vụ thanh toán đợt cuối:</strong> Biên bản này là căn cứ đề nghị thanh toán. Bên A có nghĩa vụ thanh toán đợt cuối số tiền còn lại (tương đương: <strong>{{payment_amount}}</strong> — Bằng chữ: <em>{{amount_in_words}} đồng./.</em>) cho Bên B trong thời hạn tối đa <strong>07 (bảy) ngày làm việc</strong> kể từ ngày ký Biên bản này.
   </p>
   <p style="margin:6px 0; text-align:justify;">
     - <strong>Chậm thanh toán: Theo Điều 301 Luật Thương mại 2005</strong>, nếu Bên A chậm thanh toán quá thời hạn nêu trên, Bên A phải chịu phạt vi phạm 8% giá trị nghĩa vụ vi phạm, tính lãi chậm trả 15%/năm và Bên B có quyền tạm dừng dịch vụ bảo hành, bảo trì, hỗ trợ kỹ thuật hoặc tạm ngưng vận hành hệ thống cho đến khi Bên A hoàn tất nghĩa vụ thanh toán.

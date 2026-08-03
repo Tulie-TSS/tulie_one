@@ -1,6 +1,7 @@
 import { requireAuth, isAuthError } from '@/lib/security/auth-guard'
 import { generateDocument, getDocumentTemplates } from '@/lib/supabase/services/document-template-service'
 import { cleanContractSummaryTableBorders } from '@/lib/utils/contract-html-cleaner'
+import { readNumberToWords } from '@/lib/utils/format'
 
 /**
  * GET /api/contracts/[id]/preview?type=contract
@@ -81,7 +82,13 @@ export async function GET(
 
         let html = result.content || ''
         html = html
-            .replace(/\[\s*\]/g, '[✓]')
+            .replace(/\[\s*✓\s*\]/g, '☑')
+            .replace(/\[\s*\]/g, '☐')
+            .replace(/\[✓\]/g, '☑')
+            .replace(/<td[^>]*>\s*☑\s*Đạt yêu cầu kỹ thuật & Responsive<\/td>/gi, '<td style="width:230px; padding:4px 0;">☑ Đạt yêu cầu kỹ thuật & Responsive</td><td style="padding:4px 0;">☐ Chưa đạt</td>')
+            .replace(/<td[^>]*>\s*☑\s*Đạt yêu cầu vận hành theo hợp đồng<\/td>/gi, '<td style="padding:4px 0;">☑ Đạt yêu cầu vận hành theo hợp đồng</td><td style="padding:4px 0;">☐ Chưa đạt</td>')
+            .replace(/<td[^>]*>\s*☑\s*Đạt yêu cầu cập nhật & Phân quyền<\/td>/gi, '<td style="padding:4px 0;">☑ Đạt yêu cầu cập nhật & Phân quyền</td><td style="padding:4px 0;">☐ Chưa đạt</td>')
+            .replace(/<td[^>]*>\s*☑\s*Đạt chỉ số cam kết \(Lighthouse Performance\)<\/td>/gi, '<td style="padding:4px 0;">☑ Đạt chỉ số cam kết (Lighthouse)</td><td style="padding:4px 0;">☐ Chưa đạt</td>')
             .replace(/<col style="width:210px">/gi, '<col style="width:170px">')
             .replace(/<col style="width:80px">/gi, '<col style="width:70px">')
             .replace(/Đại diện pháp luật:/g, 'Người đại diện pháp luật:')
@@ -90,6 +97,17 @@ export async function GET(
             .replace(
                 /<tr><td style="vertical-align:top;">(Người đại diện pháp luật:|Đại diện pháp luật:)<\/td><td style="font-weight:bold; vertical-align:top;">/g,
                 '<tr><td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td><td style="font-weight:bold; vertical-align:top; white-space:nowrap;">'
+            )
+            .replace(
+                /\(tương đương:\s*<strong>([\s\S]*?)<\/strong>\)(?!\s*—\s*Bằng chữ:)/gi,
+                (match: string, numText: string) => {
+                    const cleanNum = parseFloat(numText.replace(/[^0-9]/g, ''))
+                    if (!isNaN(cleanNum) && cleanNum > 0) {
+                        const words = readNumberToWords(cleanNum)
+                        return `(tương đương: <strong>${numText}</strong> — Bằng chữ: <em>${words} đồng./.</em>)`
+                    }
+                    return match
+                }
             )
             .replace(/style="width:30px;/gi, 'style="width:50px;')
             .replace(/style="width:55px;/gi, 'style="width:50px;')

@@ -1047,8 +1047,8 @@ export async function generateDocument(
                                 variables.payment_number = `${variables.payment_number}${milestoneSuffix}`
                             }
                             
-                            // Only overwrite amount_in_words if this is a payment request
-                            if (template.type === 'payment_request') {
+                            // Overwrite amount_in_words if this is a payment request or delivery minutes
+                            if (template.type === 'payment_request' || template.type === 'delivery_minutes') {
                                 if (!variables.amount_in_words || variables.amount_in_words === readNumberToWords(totalAmount)) {
                                     variables.amount_in_words = readNumberToWords(pendingMilestone.amount)
                                 }
