@@ -636,7 +636,7 @@ export const contractSoftwareTemplate = `
     </tr>
     {{vat_breakdown_html}}
     <tr style="background:#e8e8e8;">
-      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="8"><strong>Tổng cộng thanh toán (không chịu thuế GTGT theo Khoản 21 Điều 4 Thông tư 219/2013/TT-BTC)</strong></td>
+      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="8"><strong>Tổng cộng thanh toán</strong></td>
       <td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold; font-size:9pt; white-space:nowrap;">{{total_amount_number}} VND</td>
     </tr>
     <tr>
@@ -1065,7 +1065,7 @@ export const contractSchoolTemplate = `
     </tr>
     {{vat_breakdown_html}}
     <tr style="background:#e8e8e8;">
-      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="8"><strong>Tổng cộng thanh toán (Không chịu thuế GTGT)</strong></td>
+      <td style="border:1px solid #000; padding:6px; font-size:9pt;" colspan="8"><strong>Tổng cộng thanh toán</strong></td>
       <td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold; font-size:9pt; white-space:nowrap;">{{total_amount_number}} VND</td>
     </tr>
     <tr>

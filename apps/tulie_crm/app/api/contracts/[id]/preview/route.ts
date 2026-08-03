@@ -65,6 +65,7 @@ export async function GET(
             .replace(/<col style="width:80px">/gi, '<col style="width:70px">')
             .replace(/Đại diện pháp luật:/g, 'Người đại diện pháp luật:')
             .replace(/Hôm nay, tại văn phòng giao dịch của các bên, chúng tôi gồm:/g, 'Hôm nay, tại văn phòng của Bên A, chúng tôi gồm:')
+            .replace(/Tổng cộng thanh toán\s*\([^)]*\)/gi, 'Tổng cộng thanh toán')
             .replace(
                 /<tr><td style="vertical-align:top;">(Người đại diện pháp luật:|Đại diện pháp luật:)<\/td><td style="font-weight:bold; vertical-align:top;">/g,
                 '<tr><td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td><td style="font-weight:bold; vertical-align:top; white-space:nowrap;">'
@@ -73,6 +74,19 @@ export async function GET(
             .replace(/style="width:55px;/gi, 'style="width:50px;')
             .replace(/width="30"/gi, 'width="50"')
             .replace(/width="55"/gi, 'width="50"')
+
+        if (type === 'contract' && (html.includes('Nhà trường') || html.includes('trường') || html.includes('TRƯỜNG'))) {
+            html = html.replace(
+                /(Bên sử dụng dịch vụ \(Bên A\)<\/td>\s*<td[^>]*>\s*)(.*?)(<\/td>)/gi,
+                (match: string, p1: string, companyText: string, p3: string) => {
+                    if (!companyText.includes('Nhà trường')) {
+                        const cleanText = companyText.replace(/<\/?strong>/g, '').trim()
+                        return `${p1}<strong>${cleanText} (sau đây gọi tắt là &ldquo;Nhà trường&rdquo;)</strong>${p3}`
+                    }
+                    return match
+                }
+            )
+        }
 
         if (type === 'contract') {
             html = html

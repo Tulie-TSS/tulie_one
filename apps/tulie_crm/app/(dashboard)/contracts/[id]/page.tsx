@@ -273,7 +273,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                             Các đợt thanh toán ({contract.milestones?.filter((m: any) => (m.type === 'payment' || !m.type) && m.amount > 0).length || 0})
                                         </h4>
                                     </div>
-                                    <div className="rounded-md border overflow-hidden">
+                                    <div className="rounded-xl border overflow-hidden bg-card/40">
                                         <Table>
                                             <TableHeader>
                                                 <TableRow className="hover:bg-transparent">
@@ -343,7 +343,7 @@ export default async function ContractDetailPage({ params, searchParams }: any) 
                                                 Đầu việc & Bàn giao ({contract.milestones?.filter((m: any) => m.type === 'work' || m.type === 'delivery' || m.amount === 0).length || 0})
                                             </h4>
                                         </div>
-                                        <div className="rounded-md border overflow-hidden">
+                                        <div className="rounded-xl border overflow-hidden bg-card/40">
                                             <Table>
                                                 <TableHeader>
                                                     <TableRow className="hover:bg-transparent">
