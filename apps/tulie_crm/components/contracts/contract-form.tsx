@@ -424,9 +424,9 @@ export function ContractForm({ contract, customers, quotations, projects, userRo
                                             <SelectValue placeholder="Chọn mẫu hợp đồng..." />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="software">Mẫu 1: Phát triển phần mềm/website (Không chịu thuế)</SelectItem>
-                                            <SelectItem value="design">Mẫu 2: Thiết kế, quay chụp, in ấn (VAT 8%)</SelectItem>
-                                            <SelectItem value="school">Mẫu 3: Trường học / Cơ sở Giáo dục (Không chịu thuế)</SelectItem>
+                                            <SelectItem value="software">Mẫu 1: Dành cho Công ty / Doanh nghiệp - Phát triển phần mềm/website (KCT)</SelectItem>
+                                            <SelectItem value="design">Mẫu 2: Dành cho Công ty / Doanh nghiệp - Thiết kế, quay chụp, in ấn (VAT 8%)</SelectItem>
+                                            <SelectItem value="school">Mẫu 3: Dành cho Trường học / Cơ sở Giáo dục - Website & phần mềm trường học (KCT)</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
