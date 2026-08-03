@@ -76,19 +76,19 @@ export const deliveryMinutesTemplate = `
   <table style="width:100%; border-collapse:collapse; margin-bottom: 12px; font-size:9.5pt;">
     <tr>
       <td style="width:220px; padding:4px 0; font-weight:bold;">- Thiết kế và giao diện (UI/UX):</td>
-      <td style="padding:4px 0;">[  ] Đạt yêu cầu kỹ thuật & Responsive</td>
+      <td style="padding:4px 0;">[✓] Đạt yêu cầu kỹ thuật & Responsive</td>
     </tr>
     <tr>
       <td style="font-weight:bold; padding:4px 0;">- Chức năng hệ thống (Feature):</td>
-      <td style="padding:4px 0;">[  ] Đạt yêu cầu vận hành theo hợp đồng</td>
+      <td style="padding:4px 0;">[✓] Đạt yêu cầu vận hành theo hợp đồng</td>
     </tr>
     <tr>
       <td style="font-weight:bold; padding:4px 0;">- Quản trị nội dung (CMS/Backend):</td>
-      <td style="padding:4px 0;">[  ] Đạt yêu cầu cập nhật & Phân quyền</td>
+      <td style="padding:4px 0;">[✓] Đạt yêu cầu cập nhật & Phân quyền</td>
     </tr>
     <tr>
       <td style="font-weight:bold; padding:4px 0;">- Tối ưu SEO & Tốc độ tải trang:</td>
-      <td style="padding:4px 0;">[  ] Đạt chỉ số cam kết (Lighthouse Performance)</td>
+      <td style="padding:4px 0;">[✓] Đạt chỉ số cam kết (Lighthouse Performance)</td>
     </tr>
   </table>
 

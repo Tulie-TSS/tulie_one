@@ -234,10 +234,9 @@ export async function getDocumentTemplates() {
 }
 
 function normalizeDocumentTemplate(template: DocumentTemplate): DocumentTemplate {
-    if (template.type !== 'contract') return template
-
-    const matchedDefault = defaultTemplates.find(t => t.type === 'contract' && t.name === template.name)
-    if (matchedDefault) {
+    // For default templates, always use the current code template so DB snapshot is never stale
+    const matchedDefault = defaultTemplates.find(t => t.type === template.type && (t.name === template.name || template.is_default))
+    if (matchedDefault && (template.is_default || template.name === matchedDefault.name)) {
         return {
             ...template,
             content: matchedDefault.content,
@@ -245,9 +244,9 @@ function normalizeDocumentTemplate(template: DocumentTemplate): DocumentTemplate
         }
     }
 
+    if (template.type !== 'contract') return template
+
     const standardTemplate = defaultTemplates.find(t => t.type === 'contract' && t.name === 'Hợp đồng dịch vụ (Mẫu chuẩn)')
-    // This named template is managed by the application. Always render its
-    // current source so an outdated DB copy cannot reintroduce old clauses.
     if (template.name === 'Hợp đồng dịch vụ (Mẫu chuẩn)' && standardTemplate) {
         return {
             ...template,

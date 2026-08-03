@@ -60,6 +60,15 @@ export async function GET(
 
         let html = result.content || ''
         html = html
+            .replace(/\[\s*\]/g, '[✓]')
+            .replace(/<col style="width:210px">/gi, '<col style="width:170px">')
+            .replace(/<col style="width:80px">/gi, '<col style="width:70px">')
+            .replace(/Đại diện pháp luật:/g, 'Người đại diện pháp luật:')
+            .replace(/Hôm nay, tại văn phòng giao dịch của các bên, chúng tôi gồm:/g, 'Hôm nay, tại văn phòng của Bên A, chúng tôi gồm:')
+            .replace(
+                /<tr><td style="vertical-align:top;">(Người đại diện pháp luật:|Đại diện pháp luật:)<\/td><td style="font-weight:bold; vertical-align:top;">/g,
+                '<tr><td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td><td style="font-weight:bold; vertical-align:top; white-space:nowrap;">'
+            )
             .replace(/style="width:30px;/gi, 'style="width:50px;')
             .replace(/style="width:55px;/gi, 'style="width:50px;')
             .replace(/width="30"/gi, 'width="50"')
