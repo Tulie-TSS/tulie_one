@@ -1039,6 +1039,14 @@ export async function generateDocument(
                             variables.payment_amount = new Intl.NumberFormat('vi-VN').format(pendingMilestone.amount) + ' VND'
                             variables.payment_percentage = `${pct}%`
                             
+                            // Append milestone suffix (-01, -02) to payment_number if not already present
+                            const mIdx = (paymentMilestones || []).findIndex((m: any) => m.id === pendingMilestone.id)
+                            const milestoneNum = mIdx >= 0 ? mIdx + 1 : 1
+                            const milestoneSuffix = `-${String(milestoneNum).padStart(2, '0')}`
+                            if (variables.payment_number && !/-(?:0[1-9]|[1-9]\d)$/.test(variables.payment_number)) {
+                                variables.payment_number = `${variables.payment_number}${milestoneSuffix}`
+                            }
+                            
                             // Only overwrite amount_in_words if this is a payment request
                             if (template.type === 'payment_request') {
                                 if (!variables.amount_in_words || variables.amount_in_words === readNumberToWords(totalAmount)) {
@@ -1673,7 +1681,7 @@ export async function generateDocumentBundle(contractId: string) {
                                 { template, customer, contract }
                             )
                             const basePaymentNum = result.variables?.payment_number || ''
-                            const docNum = basePaymentNum ? `${basePaymentNum}-${i + 1}` : ''
+                            const docNum = basePaymentNum || (result.variables?.contract_number ? `${result.variables.contract_number.replace(/HDDV|HDKT|HĐCTV/gi, 'DNTT')}-${String(i + 1).padStart(2, '0')}` : '')
                             
                             return {
                                 contract_id: contractId,

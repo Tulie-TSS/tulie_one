@@ -43,6 +43,16 @@ export async function GET(
                 '<tr><td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td><td style="font-weight:bold; vertical-align:top; white-space:nowrap;">'
             )
 
+        if (doc.type === 'payment_request' && doc.doc_number) {
+            documentContent = documentContent.replace(
+                /(Số:\s*<i>\s*)([^\s<]+DNTT[^\s<]*?)(\s*<\/i>)/gi,
+                `$1${doc.doc_number}$3`
+            ).replace(
+                /(Số:\s*)([\d\/]+DNTT-TL-[A-Z0-9]+(?:\s*<\/i>)?)/gi,
+                `$1${doc.doc_number}`
+            )
+        }
+
         if (doc.type === 'contract' && (documentContent.includes('Nhà trường') || documentContent.includes('trường') || documentContent.includes('TRƯỜNG') || documentContent.includes('MAPLE BEAR') || documentContent.includes('SUNSHINE'))) {
             documentContent = documentContent.replace(
                 /(Bên sử dụng dịch vụ \(Bên A\)<\/td>\s*<td[^>]*>\s*)(.*?)(<\/td>)/gi,
