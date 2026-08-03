@@ -1583,7 +1583,14 @@ export async function generateDocumentBundle(contractId: string) {
     for (const docType of docTypes) {
         let template = templates.find(t => t.type === docType)
         if (docType === 'contract') {
-            const targetName = contract.contract_template === 'school'
+            const customerName = (customer?.company_name || customer?.name || '').toLowerCase()
+            const isSchoolCustomer = contract.contract_template === 'school' || 
+                                    customerName.includes('trường') || 
+                                    customerName.includes('giáo dục') || 
+                                    customerName.includes('school') || 
+                                    customerName.includes('maple bear') ||
+                                    customerName.includes('sunshine')
+            const targetName = isSchoolCustomer
                 ? 'Hợp đồng dịch vụ trường học / giáo dục (Mẫu chuẩn)'
                 : contract.contract_template === 'design'
                 ? 'Hợp đồng thiết kế & in ấn (Mẫu chuẩn)'

@@ -23,19 +23,12 @@ export async function GET(
         const type = url.searchParams.get('type') || 'contract'
         const milestoneIndex = url.searchParams.get('milestone')
 
-        // Find template
-        const templates = await getDocumentTemplates()
-        const template = templates.find(t => t.type === type)
-        if (!template) {
-            return new Response('Template not found', { status: 404 })
-        }
-
-        // Get contract
+        // Get contract and customer first
         const { createAdminClient } = await import('@/lib/supabase/admin')
         const adminSupabase = createAdminClient()
         const { data: contract, error } = await adminSupabase
             .from('contracts')
-            .select('id, customer_id')
+            .select('*, customer:customers(*)')
             .eq(isToken ? 'public_token' : 'id', paramId)
             .single()
 
@@ -44,6 +37,34 @@ export async function GET(
         }
         
         const contractId = contract.id
+
+        // Find template dynamically based on customer and contract type
+        const templates = await getDocumentTemplates()
+        let template = templates.find(t => t.type === type)
+
+        const companyName = (contract.customer?.company_name || contract.customer?.name || '').toLowerCase()
+        const isSchool = contract.contract_template === 'school' || 
+                         companyName.includes('trường') || 
+                         companyName.includes('giáo dục') || 
+                         companyName.includes('school') || 
+                         companyName.includes('maple bear') ||
+                         companyName.includes('sunshine')
+
+        if (type === 'contract') {
+            const targetName = isSchool
+                ? 'Hợp đồng dịch vụ trường học / giáo dục (Mẫu chuẩn)'
+                : contract.contract_template === 'design'
+                ? 'Hợp đồng thiết kế & in ấn (Mẫu chuẩn)'
+                : 'Hợp đồng dịch vụ (Mẫu chuẩn)'
+            const specificTemplate = templates.find(t => t.name === targetName)
+            if (specificTemplate) {
+                template = specificTemplate
+            }
+        }
+
+        if (!template) {
+            return new Response('Template not found', { status: 404 })
+        }
 
         const additionalVariables: Record<string, string> = {}
         if (milestoneIndex) {
@@ -68,11 +89,15 @@ export async function GET(
             .replace(/Tổng cộng thanh toán\s*\([^)]*\)/gi, 'Tổng cộng thanh toán')
             .replace(
                 /<td[^>]*colspan="5"[^>]*>\s*<strong>\s*Cộng tiền hàng[^<]*<\/strong>\s*<\/td>\s*<td[^>]*>\s*([\s\S]*?)\s*<\/td>\s*<td[^>]*colspan="3"[^>]*>\s*<\/td>/gi,
-                '<td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold;" colspan="8">Cộng tiền hàng (chưa VAT):</td><td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">$1</td>'
+                '<td style="border:1px solid #000; padding:6px 8px; text-align:left; font-weight:bold;" colspan="8">Cộng tiền hàng (chưa VAT):</td><td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">$1</td>'
             )
             .replace(
                 /<td[^>]*colspan="6"[^>]*>\s*<strong>\s*Thuế suất GTGT[^<]*<\/strong>\s*<\/td>\s*<td[^>]*colspan="2"[^>]*>\s*([\s\S]*?)\s*<\/td>\s*<td[^>]*>\s*<\/td>/gi,
-                '<td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold;" colspan="8">Thuế suất GTGT (VAT):</td><td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">$1</td>'
+                '<td style="border:1px solid #000; padding:6px 8px; text-align:left; font-weight:bold;" colspan="8">Thuế suất GTGT (VAT):</td><td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">$1</td>'
+            )
+            .replace(
+                /<td[^>]*colspan="5"[^>]*>\s*<strong>\s*Tổng cộng thanh toán[^<]*<\/strong>\s*<\/td>\s*<td[^>]*>\s*([\s\S]*?)\s*<\/td>\s*<td[^>]*colspan="3"[^>]*>\s*<\/td>/gi,
+                '<td style="border:1px solid #000; padding:8px; text-align:left; font-weight:bold; font-size:10pt;" colspan="8">Tổng cộng thanh toán:</td><td style="border:1px solid #000; padding:8px; text-align:right; font-weight:bold; font-size:10pt; white-space:nowrap;">$1</td>'
             )
             .replace(
                 /<tr><td style="vertical-align:top;">(Người đại diện pháp luật:|Đại diện pháp luật:)<\/td><td style="font-weight:bold; vertical-align:top;">/g,
@@ -83,7 +108,7 @@ export async function GET(
             .replace(/width="30"/gi, 'width="50"')
             .replace(/width="55"/gi, 'width="50"')
 
-        if (type === 'contract' && (html.includes('Nhà trường') || html.includes('trường') || html.includes('TRƯỜNG'))) {
+        if (type === 'contract' && isSchool) {
             html = html.replace(
                 /(Bên sử dụng dịch vụ \(Bên A\)<\/td>\s*<td[^>]*>\s*)(.*?)(<\/td>)/gi,
                 (match: string, p1: string, companyText: string, p3: string) => {
@@ -93,6 +118,14 @@ export async function GET(
                     }
                     return match
                 }
+            )
+            .replace(
+                /7\.2\.1\.\s*[\s\S]*?<\/tr>/gi,
+                '<tr><td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật thông tin và quyền riêng tư:</strong> Bên B cam kết bảo mật tuyệt đối thông tin và quyền riêng tư gồm dữ liệu Học sinh, Giáo viên, Phụ huynh và Nhà trường; triển khai biện pháp kỹ thuật chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và thực hiện sao lưu dự phòng (backup) dữ liệu định kỳ đảm bảo an toàn dữ liệu. Bên A là Bên Kiểm soát dữ liệu cá nhân (Data Controller), Bên B là Bên Xử lý dữ liệu cá nhân (Data Processor).</td></tr>'
+            )
+            .replace(
+                /7\.2\.2\.\s*[\s\S]*?<\/tr>/gi,
+                '<tr><td style="width:50px; vertical-align:top; padding:2px 0;">7.2.2.</td><td style="vertical-align:top; padding:2px 0; text-align:justify;"><strong>Bảo mật mã nguồn và dữ liệu nhà trường:</strong> Không được chia sẻ, sao chép hoặc sử dụng dữ liệu của nhà trường vào bất kỳ mục đích nào khác nếu không có sự đồng ý của Bên A bằng văn bản. Dữ liệu của Nhà trường là tài sản sở hữu riêng tuyệt đối của Bên A.</td></tr>'
             )
         }
 
