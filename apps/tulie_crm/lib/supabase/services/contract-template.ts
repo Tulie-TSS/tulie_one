@@ -411,7 +411,7 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.</td>
-      <td style="vertical-align:top; padding:2px 0; font-weight:bold;">Bảo mật thông tin và dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP):</td>
+      <td style="vertical-align:top; padding:2px 0;">Bảo mật thông tin và dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP):</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td>
@@ -507,7 +507,7 @@ export const contractSoftwareTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">11.4.</td>
-      <td style="vertical-align:top; padding:2px 0; font-weight:bold;">Hậu quả của việc đơn phương chấm dứt & Chuyển giao dữ liệu:</td>
+      <td style="vertical-align:top; padding:2px 0;">Hậu quả của việc đơn phương chấm dứt & Chuyển giao dữ liệu:</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">11.4.1.</td>
@@ -984,7 +984,7 @@ export const contractSchoolTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.</td>
-      <td style="vertical-align:top; padding:2px 0; font-weight:bold;">Bảo mật thông tin và dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP và Luật An toàn thông tin mạng):</td>
+      <td style="vertical-align:top; padding:2px 0;">Bảo mật thông tin và dữ liệu cá nhân (Tuân thủ Nghị định 13/2023/NĐ-CP và Luật An toàn thông tin mạng):</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td>

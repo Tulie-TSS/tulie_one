@@ -1,6 +1,7 @@
 import { requirePermission, isAuthError } from '@/lib/security/auth-guard'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { readNumberToWords } from '@/lib/utils/format'
+import { cleanContractSummaryTableBorders } from '@/lib/supabase/services/document-template-service'
 
 /**
  * GET /api/contracts/[id]/documents/[docId]/preview
@@ -38,21 +39,11 @@ export async function GET(
             .replace(/Hôm nay, tại văn phòng giao dịch của các bên, chúng tôi gồm:/g, 'Hôm nay, tại văn phòng của Bên A, chúng tôi gồm:')
             .replace(/Tổng cộng thanh toán\s*\([^)]*\)/gi, 'Tổng cộng thanh toán')
             .replace(
-                /<td[^>]*colspan="5"[^>]*>\s*<strong>\s*Cộng tiền hàng[^<]*<\/strong>\s*<\/td>\s*<td[^>]*>\s*([\s\S]*?)\s*<\/td>\s*<td[^>]*colspan="3"[^>]*>\s*<\/td>/gi,
-                '<td style="border:1px solid #000; padding:6px 8px; text-align:left; font-weight:bold;" colspan="8">Cộng tiền hàng (chưa VAT):</td><td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">$1</td>'
-            )
-            .replace(
-                /<td[^>]*colspan="6"[^>]*>\s*<strong>\s*Thuế suất GTGT[^<]*<\/strong>\s*<\/td>\s*<td[^>]*colspan="2"[^>]*>\s*([\s\S]*?)\s*<\/td>\s*<td[^>]*>\s*<\/td>/gi,
-                '<td style="border:1px solid #000; padding:6px 8px; text-align:left; font-weight:bold;" colspan="8">Thuế suất GTGT (VAT):</td><td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">$1</td>'
-            )
-            .replace(
-                /<td[^>]*colspan="5"[^>]*>\s*<strong>\s*Tổng cộng thanh toán[^<]*<\/strong>\s*<\/td>\s*<td[^>]*>\s*([\s\S]*?)\s*<\/td>\s*<td[^>]*colspan="3"[^>]*>\s*<\/td>/gi,
-                '<td style="border:1px solid #000; padding:8px; text-align:left; font-weight:bold; font-size:10pt;" colspan="8">Tổng cộng thanh toán:</td><td style="border:1px solid #000; padding:8px; text-align:right; font-weight:bold; font-size:10pt; white-space:nowrap;">$1</td>'
-            )
-            .replace(
                 /<tr><td style="vertical-align:top;">(Người đại diện pháp luật:|Đại diện pháp luật:)<\/td><td style="font-weight:bold; vertical-align:top;">/g,
                 '<tr><td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td><td style="font-weight:bold; vertical-align:top; white-space:nowrap;">'
             )
+
+        documentContent = cleanContractSummaryTableBorders(documentContent)
         if (doc.type === 'contract' && (documentContent.includes('Nhà trường') || documentContent.includes('trường') || documentContent.includes('TRƯỜNG') || documentContent.includes('MAPLE BEAR') || documentContent.includes('SUNSHINE'))) {
             documentContent = documentContent.replace(
                 /(Bên sử dụng dịch vụ \(Bên A\)<\/td>\s*<td[^>]*>\s*)(.*?)(<\/td>)/gi,
@@ -74,7 +65,9 @@ export async function GET(
             )
         }
         if (doc.type === 'contract') {
-            documentContent = documentContent.replace(/<strong>Chậm tiến độ do lỗi của Bên B:<\/strong>/gi, 'Chậm tiến độ do lỗi của Bên B:')
+            documentContent = documentContent
+                .replace(/font-weight:\s*bold;?([^>]*>Bảo mật thông tin và dữ liệu cá nhân)/gi, '$1')
+                .replace(/<strong>Chậm tiến độ do lỗi của Bên B:<\/strong>/gi, 'Chậm tiến độ do lỗi của Bên B:')
             const { data: contract } = await supabase
                 .from('contracts')
                 .select('total_amount')

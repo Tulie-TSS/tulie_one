@@ -53,6 +53,57 @@ import { quotationTemplate } from './quotation-template'
 import { freelanceTemplate } from './freelance-template'
 import { freelanceDeliveryTemplate } from './freelance-delivery-template'
 
+export function cleanContractSummaryTableBorders(html: string): string {
+    if (!html) return html
+    let clean = html
+
+    // 1. Replace any <tr> block containing "Cộng tiền hàng" with a clean 2-cell <tr>
+    clean = clean.replace(
+        /<tr[^>]*>(?:(?!<\/tr>)[\s\S])*?Cộng tiền hàng[\s\S]*?<\/tr>/gi,
+        (match) => {
+            const valMatch = match.match(/(?:>|\s)([\d,.]+)(?:\s*VND|\s*VNĐ|\s*<\/|<)/i)
+            const val = valMatch ? valMatch[1] : ''
+            return `<tr style="background:#f9f9f9;">
+                <td style="border:1px solid #000; padding:6px 8px; text-align:left; font-weight:normal;" colspan="8">Cộng tiền hàng (chưa VAT):</td>
+                <td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">${val}</td>
+            </tr>`
+        }
+    )
+
+    // 2. Replace any <tr> block containing "Thuế suất GTGT" or "Thuế GTGT" with a clean 2-cell <tr>
+    clean = clean.replace(
+        /<tr[^>]*>(?:(?!<\/tr>)[\s\S])*?Thuế suất GTGT[\s\S]*?<\/tr>/gi,
+        (match) => {
+            let vatVal = 'Không chịu thuế'
+            if (match.includes('Không chịu thuế') || match.includes('KCT') || match.includes('không chịu thuế')) {
+                vatVal = 'Không chịu thuế'
+            } else {
+                const valMatch = match.match(/(?:>|\s)([\d,.]+)(?:\s*VND|\s*VNĐ|\s*<\/|<)/i)
+                if (valMatch) vatVal = valMatch[1]
+            }
+            return `<tr style="background:#f9f9f9;">
+                <td style="border:1px solid #000; padding:6px 8px; text-align:left; font-weight:normal;" colspan="8">Thuế suất GTGT (VAT):</td>
+                <td style="border:1px solid #000; padding:6px 8px; text-align:right; font-weight:bold; white-space:nowrap;">${vatVal}</td>
+            </tr>`
+        }
+    )
+
+    // 3. Replace any <tr> block containing "Tổng cộng thanh toán" with a clean 2-cell <tr>
+    clean = clean.replace(
+        /<tr[^>]*>(?:(?!<\/tr>)[\s\S])*?Tổng cộng thanh toán[\s\S]*?<\/tr>/gi,
+        (match) => {
+            const valMatch = match.match(/(?:>|\s)([\d,.]+)(?:\s*VND|\s*VNĐ|\s*<\/|<)/i)
+            const val = valMatch ? `${valMatch[1]} VND` : ''
+            return `<tr style="background:#e8e8e8;">
+                <td style="border:1px solid #000; padding:8px; text-align:left; font-weight:bold; font-size:10pt;" colspan="8">Tổng cộng thanh toán:</td>
+                <td style="border:1px solid #000; padding:8px; text-align:right; font-weight:bold; font-size:10pt; white-space:nowrap;">${val}</td>
+            </tr>`
+        }
+    )
+
+    return clean
+}
+
 /**
  * Standard templates with common variables for HTML fallback and variable definition
  * Variables map to {{variable_name}} placeholders in HTML templates
@@ -1429,7 +1480,7 @@ export async function generateDocument(
         const filledContent = await fillTemplate(templateContent, variables)
 
         return {
-            content: filledContent,
+            content: cleanContractSummaryTableBorders(filledContent),
             variables
         }
     } catch (error) {
