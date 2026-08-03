@@ -899,8 +899,9 @@ export async function generateDocument(
                 let vatBreakdownHtml = ''
                 if (vatStatus === 'exempt') {
                     vatBreakdownHtml = `<tr style="background:#f5f5f5;">
-                        <td style="border:1px solid #000; padding:4px;" colspan="${totalColumns - 1}"><strong>Thuế suất GTGT (VAT):</strong></td>
-                        <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">Không chịu thuế</td>
+                        <td style="border:1px solid #000; padding:4px;" colspan="6"><strong>Thuế suất GTGT (VAT):</strong></td>
+                        <td style="border:1px solid #000; padding:4px; text-align:center; font-weight:bold;" colspan="2">Không chịu thuế</td>
+                        <td style="border:1px solid #000; padding:4px;"></td>
                     </tr>`
                 } else {
                     const vatGroupsMap: Record<number, number> = {}
@@ -923,8 +924,10 @@ export async function generateDocument(
 
                     Object.entries(vatGroupsMap).sort((a, b) => Number(a[0]) - Number(b[0])).forEach(([rate, amt]) => {
                         vatBreakdownHtml += `<tr style="background:#f5f5f5;">
-                            <td style="border:1px solid #000; padding:4px;" colspan="${totalColumns - 1}"><strong>Tổng thuế suất GTGT (VAT) ${rate}%:</strong></td>
+                            <td style="border:1px solid #000; padding:4px;" colspan="6"><strong>Thuế suất GTGT (VAT) ${rate}%:</strong></td>
+                            <td style="border:1px solid #000; padding:4px; text-align:center;">${rate}%</td>
                             <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">${new Intl.NumberFormat('vi-VN').format(amt as number)}</td>
+                            <td style="border:1px solid #000; padding:4px;"></td>
                         </tr>`
                     })
                 }

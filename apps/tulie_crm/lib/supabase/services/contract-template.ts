@@ -45,7 +45,7 @@ export const contractSoftwareTemplate = `
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ nhu cầu sử dụng dịch vụ của Bên A và khả năng cung cấp dịch vụ của Bên B;</p>
   <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào sự thỏa thuận của hai bên.</p>
 
-  <p style="margin:10px 0;">Hôm nay, tại văn phòng giao dịch của các bên, chúng tôi gồm:</p>
+  <p style="margin:10px 0;">Hôm nay, tại văn phòng của Bên A, chúng tôi gồm:</p>
 
   <!-- Parties A & B Table -->
   <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
@@ -631,8 +631,9 @@ export const contractSoftwareTemplate = `
     </tr>
     {{contract_items_table}}
     <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Cộng tiền hàng</strong></td>
+      <td style="border:1px solid #000; padding:4px;" colspan="5"><strong>Cộng tiền hàng (chưa VAT)</strong></td>
       <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
+      <td style="border:1px solid #000; padding:4px;" colspan="3"></td>
     </tr>
     {{vat_breakdown_html}}
     <tr style="background:#e8e8e8;">
@@ -705,7 +706,7 @@ export const contractSchoolTemplate = `
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ nhu cầu sử dụng dịch vụ của Nhà trường (Bên A) và khả năng cung cấp dịch vụ của Bên B;</p>
   <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào sự thỏa thuận của hai bên.</p>
 
-  <p style="margin:10px 0;">Hôm nay, tại văn phòng giao dịch của các bên, chúng tôi gồm:</p>
+  <p style="margin:10px 0;">Hôm nay, tại văn phòng của Bên A, chúng tôi gồm:</p>
 
   <!-- Parties A & B Table -->
   <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
@@ -1060,8 +1061,9 @@ export const contractSchoolTemplate = `
     </tr>
     {{contract_items_table}}
     <tr style="background:#f5f5f5;">
-      <td style="border:1px solid #000; padding:4px;" colspan="8"><strong>Cộng tiền hàng (chưa VAT)</strong></td>
+      <td style="border:1px solid #000; padding:4px;" colspan="5"><strong>Cộng tiền hàng (chưa VAT)</strong></td>
       <td style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold; white-space:nowrap;">{{subtotal}}</td>
+      <td style="border:1px solid #000; padding:4px;" colspan="3"></td>
     </tr>
     {{vat_breakdown_html}}
     <tr style="background:#e8e8e8;">
@@ -1124,7 +1126,7 @@ export const contractDesignTemplate = `
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ nhu cầu sử dụng dịch vụ của Bên A và khả năng cung cấp dịch vụ của Bên B;</p>
   <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào sự thỏa thuận của hai bên.</p>
 
-  <p style="margin:10px 0;">Hôm nay, tại văn phòng giao dịch của các bên, chúng tôi gồm:</p>
+  <p style="margin:10px 0;">Hôm nay, tại văn phòng của Bên A, chúng tôi gồm:</p>
 
   <!-- Parties A & B Table -->
   <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
@@ -1501,7 +1503,7 @@ export const contractDesignTemplate = `
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">11.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng có hiệu lực kể từ ngày đại diện hợp pháp của hai bên ký (và đóng dấu, nếu có) cho đến khi các bên hoàn thành toàn bộ nghĩa vụ, trừ khi chấm dứt trước hạn theo Điều này.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Hợp đồng có hiệu lực kể từ ngày đại diện hợp pháp của hai bên ký (và đóng dấu, nếu có) tại văn phòng của Bên A cho đến khi các bên hoàn thành toàn bộ nghĩa vụ, trừ khi chấm dứt trước hạn theo Điều này.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">11.2.</td>
