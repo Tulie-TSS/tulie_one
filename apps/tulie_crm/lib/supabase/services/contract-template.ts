@@ -719,7 +719,7 @@ export const contractSchoolTemplate = `
     <!-- Bên A -->
     <tr style="border-bottom:1px solid #000;">
       <td style="font-weight:bold; padding:4px 10px 4px 0; vertical-align:top; white-space:nowrap; font-size:9pt;">Bên sử dụng dịch vụ (Bên A)</td>
-      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top;">{{customer_company}}</td>
+      <td colspan="3" style="font-weight:bold; padding:4px 0; vertical-align:top;">{{customer_company}} (sau đây gọi tắt là &ldquo;Nhà trường&rdquo;)</td>
     </tr>
     <tr>
       <td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td>
@@ -926,7 +926,7 @@ export const contractSchoolTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">4.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Thực hiện dịch vụ đúng chất lượng, tiến độ; bàn giao mã nguồn (source code), tài liệu HD sử dụng, cơ sở dữ liệu và tài liệu kỹ thuật hỗ trợ cho Nhà trường.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Thực hiện dịch vụ đúng chất lượng, tiến độ; bàn giao mã nguồn (source code), tài liệu hướng dẫn sử dụng, cơ sở dữ liệu và tài liệu kỹ thuật hỗ trợ cho Nhà trường.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">4.3.</td>
@@ -948,7 +948,7 @@ export const contractSchoolTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">5.2.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Tiếp nhận bàn giao mã nguồn (source code), cơ sở dữ liệu, tài liệu HD sử dụng và tài liệu kỹ thuật hỗ trợ.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Tiếp nhận bàn giao mã nguồn (source code), cơ sở dữ liệu, tài liệu hướng dẫn sử dụng và tài liệu kỹ thuật hỗ trợ.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">5.3.</td>
@@ -988,7 +988,7 @@ export const contractSchoolTemplate = `
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.1.</td>
-      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật thông tin và quyền riêng tư: Bên B cam kết bảo mật tuyệt đối thông tin và quyền riêng tư gồm dữ liệu Học sinh (HS), Giáo viên (GV), Phụ huynh (PH) và Nhà trường; triển khai biện pháp kỹ thuật chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và thực hiện sao lưu dự phòng (backup) dữ liệu định kỳ đảm bảo an toàn dữ liệu.</td>
+      <td style="vertical-align:top; padding:2px 0; text-align:justify;">Bảo mật thông tin và quyền riêng tư: Bên B cam kết bảo mật tuyệt đối thông tin và quyền riêng tư gồm dữ liệu Học sinh, Giáo viên, Phụ huynh và Nhà trường; triển khai biện pháp kỹ thuật chống tấn công mạng, bảo vệ hệ thống khỏi rò rỉ dữ liệu và thực hiện sao lưu dự phòng (backup) dữ liệu định kỳ đảm bảo an toàn dữ liệu.</td>
     </tr>
     <tr>
       <td style="width:50px; vertical-align:top; padding:2px 0;">7.2.2.</td>
