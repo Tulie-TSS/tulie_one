@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server'
 import { requireAuth, isAuthError } from '@/lib/security/auth-guard'
-import { generateDocument, getDocumentTemplates, cleanContractSummaryTableBorders } from '@/lib/supabase/services/document-template-service'
+import { generateDocument, getDocumentTemplates } from '@/lib/supabase/services/document-template-service'
+import { cleanContractSummaryTableBorders } from '@/lib/utils/contract-html-cleaner'
 
 /**
  * GET /api/contracts/[id]/preview?type=contract

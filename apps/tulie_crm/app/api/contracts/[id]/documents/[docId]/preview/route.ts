@@ -1,7 +1,7 @@
 import { requirePermission, isAuthError } from '@/lib/security/auth-guard'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { readNumberToWords } from '@/lib/utils/format'
-import { cleanContractSummaryTableBorders } from '@/lib/supabase/services/document-template-service'
+import { cleanContractSummaryTableBorders } from '@/lib/utils/contract-html-cleaner'
 
 /**
  * GET /api/contracts/[id]/documents/[docId]/preview
