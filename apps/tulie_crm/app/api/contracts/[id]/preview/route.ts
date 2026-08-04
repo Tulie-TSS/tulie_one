@@ -88,22 +88,22 @@ export async function GET(
   <table style="width:100%; border-collapse:collapse; margin-bottom: 12px; font-size:9.5pt;">
     <tr>
       <td style="width:230px; padding:4px 0; font-weight:bold; vertical-align:middle;">- Thiết kế & Giao diện (UI/UX):</td>
-      <td style="padding:4px 0; vertical-align:middle;"><span style="font-size:11pt; line-height:1;">☑</span> Đạt yêu cầu kỹ thuật & Responsive</td>
-      <td style="width:100px; padding:4px 0; vertical-align:middle;"><span style="font-size:11pt; line-height:1; color:#555;">☐</span> Chưa đạt</td>
+      <td style="width:270px; padding:4px 0; vertical-align:middle;"><span style="font-size:11pt; line-height:1;">☑</span> Đạt yêu cầu kỹ thuật & Responsive</td>
+      <td style="padding:4px 0; vertical-align:middle;"><span style="font-size:11pt; line-height:1; color:#555;">☐</span> Chưa đạt</td>
     </tr>
     <tr>
       <td style="font-weight:bold; padding:4px 0; vertical-align:middle;">- Chức năng hệ thống (Feature):</td>
-      <td style="padding:4px 0; vertical-align:middle;"><span style="font-size:11pt; line-height:1;">☑</span> Đạt yêu cầu vận hành theo hợp đồng</td>
+      <td style="width:270px; padding:4px 0; vertical-align:middle;"><span style="font-size:11pt; line-height:1;">☑</span> Đạt yêu cầu vận hành theo hợp đồng</td>
       <td style="padding:4px 0; vertical-align:middle;"><span style="font-size:11pt; line-height:1; color:#555;">☐</span> Chưa đạt</td>
     </tr>
     <tr>
       <td style="font-weight:bold; padding:4px 0; vertical-align:middle;">- Quản trị nội dung (CMS/Backend):</td>
-      <td style="padding:4px 0; vertical-align:middle;"><span style="font-size:11pt; line-height:1;">☑</span> Đạt yêu cầu cập nhật & Phân quyền</td>
+      <td style="width:270px; padding:4px 0; vertical-align:middle;"><span style="font-size:11pt; line-height:1;">☑</span> Đạt yêu cầu cập nhật & Phân quyền</td>
       <td style="padding:4px 0; vertical-align:middle;"><span style="font-size:11pt; line-height:1; color:#555;">☐</span> Chưa đạt</td>
     </tr>
     <tr>
       <td style="font-weight:bold; padding:4px 0; vertical-align:middle;">- Tối ưu SEO & Tốc độ tải trang:</td>
-      <td style="padding:4px 0; vertical-align:middle;"><span style="font-size:11pt; line-height:1;">☑</span> Đạt chỉ số cam kết (Lighthouse)</td>
+      <td style="width:270px; padding:4px 0; vertical-align:middle;"><span style="font-size:11pt; line-height:1;">☑</span> Đạt chỉ số cam kết (Lighthouse)</td>
       <td style="padding:4px 0; vertical-align:middle;"><span style="font-size:11pt; line-height:1; color:#555;">☐</span> Chưa đạt</td>
     </tr>
   </table>`
