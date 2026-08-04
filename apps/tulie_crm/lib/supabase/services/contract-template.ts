@@ -48,7 +48,7 @@ export const contractSoftwareTemplate = `
   <p style="margin:10px 0;">Hôm nay, tại trụ sở {{customer_company}}, chúng tôi gồm:</p>
 
   <!-- Parties A & B Table -->
-  <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
+  <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt; text-align:left;" cellpadding="2">
     <colgroup>
       <col style="width:170px">
       <col style="width:220px">
@@ -708,7 +708,7 @@ export const contractSchoolTemplate = `
   <p style="margin:10px 0;">Hôm nay, tại trụ sở {{customer_company}}, chúng tôi gồm:</p>
 
   <!-- Parties A & B Table -->
-  <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
+  <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt; text-align:left;" cellpadding="2">
     <colgroup>
       <col style="width:170px">
       <col style="width:220px">
@@ -1127,7 +1127,7 @@ export const contractDesignTemplate = `
   <p style="margin:10px 0;">Hôm nay, tại trụ sở {{customer_company}}, chúng tôi gồm:</p>
 
   <!-- Parties A & B Table -->
-  <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
+  <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt; text-align:left;" cellpadding="2">
     <colgroup>
       <col style="width:170px">
       <col style="width:220px">

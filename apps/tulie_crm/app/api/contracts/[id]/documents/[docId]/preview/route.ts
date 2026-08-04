@@ -66,6 +66,9 @@ export async function GET(
     </tr>
   </table>`
             )
+            .replace(/<p[^>]*>\s*\*?\s*Ghi chú các lỗi\/chỉnh sửa nhỏ[\s\S]*?<\/p>/gi, '')
+            .replace(/\s*\(trừ các lỗi nhỏ được ghi nhận tại mục 2 nêu trên nếu có\)/gi, '')
+            .replace(/<table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;"/gi, '<table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt; text-align:left;"')
             .replace(/<colgroup><col style="width:(?:160|170|210)px"><col style="width:(?:auto|220px)">/gi, '<colgroup><col style="width:170px"><col style="width:220px">')
             .replace(/<td style="vertical-align:top; white-space:nowrap;">(Chức vụ:)<\/td>/gi, '<td style="vertical-align:top; white-space:nowrap; padding-left:15px;">$1</td>')
             .replace(/<td style="vertical-align:top;">(Di động:|Email:|tại)<\/td>/gi, '<td style="vertical-align:top; padding-left:15px;">$1</td>')

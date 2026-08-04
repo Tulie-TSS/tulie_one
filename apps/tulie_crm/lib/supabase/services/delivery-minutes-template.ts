@@ -35,7 +35,7 @@ export const deliveryMinutesTemplate = `
   <p style="margin:10px 0;">Hôm nay, ngày {{day}} tháng {{month}} năm {{year}}, tại trụ sở {{customer_company}}, chúng tôi gồm:</p>
 
   <!-- Bên A + Bên B (cùng 1 bảng) -->
-  <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
+  <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt; text-align:left;" cellpadding="2">
     <colgroup><col style="width:170px"><col style="width:220px"><col style="width:70px"><col style="width:auto"></colgroup>
     <tr style="border-bottom:1px solid #000;">
       <td style="font-weight:bold; padding:4px 20px 4px 0; vertical-align:top; white-space:nowrap;">Bên sử dụng dịch vụ (Bên A)</td>
@@ -96,11 +96,6 @@ export const deliveryMinutesTemplate = `
     </tr>
   </table>
 
-  <p style="margin:6px 0; text-align:left; font-style:italic;">
-    * Ghi chú các lỗi/chỉnh sửa nhỏ cần khắc phục (nếu có): .....................................................................................................<br>
-    Hai bên thống nhất các lỗi nhỏ này không ảnh hưởng đến nghiệm thu bàn giao chính thức. Bên B cam kết khắc phục trong vòng 05 ngày làm việc.
-  </p>
-
   <p style="margin:10px 0; font-weight:bold;">3. Thông tin tài khoản và tài liệu đã bàn giao:</p>
   <ul style="margin:0 0 14px 20px; padding:0; text-align:justify;">
     <li>Địa chỉ website hoạt động chính thức (URL): <strong>{{delivery_address}}</strong></li>
@@ -112,7 +107,7 @@ export const deliveryMinutesTemplate = `
 
   <p style="margin:10px 0; font-weight:bold;">4. Kết luận và Điều khoản nghiệm thu bàn giao:</p>
   <p style="margin:6px 0; text-align:justify;">
-    - <strong>Xác nhận hoàn thành nghĩa vụ:</strong> Kể từ thời điểm ký biên bản này, Bên B được xác nhận đã hoàn thành đầy đủ, đúng hạn và đúng chất lượng toàn bộ nghĩa vụ theo Hợp đồng và các Phụ lục đính kèm (trừ các lỗi nhỏ được ghi nhận tại mục 2 nêu trên nếu có).
+    - <strong>Xác nhận hoàn thành nghĩa vụ:</strong> Kể từ thời điểm ký biên bản này, Bên B được xác nhận đã hoàn thành đầy đủ, đúng hạn và đúng chất lượng toàn bộ nghĩa vụ theo Hợp đồng và các Phụ lục đính kèm.
   </p>
   <p style="margin:6px 0; text-align:justify;">
     - <strong>Yêu cầu phát sinh ngoài phạm vi:</strong> Mọi yêu cầu điều chỉnh, bổ sung tính năng, giao diện hoặc cấu trúc hệ thống phát sinh sau ngày ký biên bản này đều được tính là dịch vụ phát sinh ngoài Hợp đồng và sẽ được hai bên thỏa thuận chi phí riêng.
