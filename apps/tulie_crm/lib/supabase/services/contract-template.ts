@@ -45,7 +45,7 @@ export const contractSoftwareTemplate = `
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ nhu cầu sử dụng dịch vụ của Bên A và khả năng cung cấp dịch vụ của Bên B;</p>
   <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào sự thỏa thuận của hai bên.</p>
 
-  <p style="margin:10px 0;">Hôm nay, tại văn phòng của {{customer_company}}, chúng tôi gồm:</p>
+  <p style="margin:10px 0;">Hôm nay, tại trụ sở {{customer_company}}, chúng tôi gồm:</p>
 
   <!-- Parties A & B Table -->
   <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
@@ -705,7 +705,7 @@ export const contractSchoolTemplate = `
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ nhu cầu sử dụng dịch vụ của Nhà trường (Bên A) và khả năng cung cấp dịch vụ của Bên B;</p>
   <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào sự thỏa thuận của hai bên.</p>
 
-  <p style="margin:10px 0;">Hôm nay, tại văn phòng của {{customer_company}}, chúng tôi gồm:</p>
+  <p style="margin:10px 0;">Hôm nay, tại trụ sở {{customer_company}}, chúng tôi gồm:</p>
 
   <!-- Parties A & B Table -->
   <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
@@ -1124,7 +1124,7 @@ export const contractDesignTemplate = `
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ nhu cầu sử dụng dịch vụ của Bên A và khả năng cung cấp dịch vụ của Bên B;</p>
   <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào sự thỏa thuận của hai bên.</p>
 
-  <p style="margin:10px 0;">Hôm nay, tại văn phòng của {{customer_company}}, chúng tôi gồm:</p>
+  <p style="margin:10px 0;">Hôm nay, tại trụ sở {{customer_company}}, chúng tôi gồm:</p>
 
   <!-- Parties A & B Table -->
   <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">

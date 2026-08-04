@@ -112,12 +112,12 @@ export async function GET(
             .replace(/<col style="width:80px">/gi, '<col style="width:70px">')
             .replace(/Đại diện pháp luật:/g, 'Người đại diện pháp luật:')
             .replace(
-                /Hôm nay, (?:ngày [^,]+, )?tại (?:văn phòng giao dịch của các bên|văn phòng khách hàng|văn phòng của Bên A(?:\s*\([^)]+\))?|văn phòng của Bên A), chúng tôi gồm(?: có)?:/gi,
+                /Hôm nay, (?:ngày [^,]+, )?tại (?:văn phòng giao dịch của các bên|văn phòng khách hàng|văn phòng của Bên A|văn phòng của|trụ sở của|trụ sở)(?:\s*\([^)]+\))?, chúng tôi gồm(?: có)?:/gi,
                 (match: string) => {
                     const datePrefixMatch = match.match(/Hôm nay, (ngày [^,]+, )?/i)
                     const datePrefix = datePrefixMatch ? datePrefixMatch[0] : 'Hôm nay, '
                     const compStr = contract.customer?.company_name || contract.customer?.name || ''
-                    return `${datePrefix}tại văn phòng của ${compStr || 'Bên A'}, chúng tôi gồm:`
+                    return `${datePrefix}tại trụ sở ${compStr || 'Bên A'}, chúng tôi gồm:`
                 }
             )
             .replace(/Tổng cộng thanh toán\s*\([^)]*\)/gi, 'Tổng cộng thanh toán')
