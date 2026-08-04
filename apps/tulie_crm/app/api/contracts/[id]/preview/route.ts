@@ -82,13 +82,28 @@ export async function GET(
 
         let html = result.content || ''
         html = html
-            .replace(/\[\s*✓\s*\]/g, '☑')
-            .replace(/\[\s*\]/g, '☐')
-            .replace(/\[✓\]/g, '☑')
-            .replace(/<td[^>]*>\s*☑\s*Đạt yêu cầu kỹ thuật & Responsive<\/td>/gi, '<td style="width:230px; padding:4px 0;">☑ Đạt yêu cầu kỹ thuật & Responsive</td><td style="padding:4px 0;">☐ Chưa đạt</td>')
-            .replace(/<td[^>]*>\s*☑\s*Đạt yêu cầu vận hành theo hợp đồng<\/td>/gi, '<td style="padding:4px 0;">☑ Đạt yêu cầu vận hành theo hợp đồng</td><td style="padding:4px 0;">☐ Chưa đạt</td>')
-            .replace(/<td[^>]*>\s*☑\s*Đạt yêu cầu cập nhật & Phân quyền<\/td>/gi, '<td style="padding:4px 0;">☑ Đạt yêu cầu cập nhật & Phân quyền</td><td style="padding:4px 0;">☐ Chưa đạt</td>')
-            .replace(/<td[^>]*>\s*☑\s*Đạt chỉ số cam kết \(Lighthouse Performance\)<\/td>/gi, '<td style="padding:4px 0;">☑ Đạt chỉ số cam kết (Lighthouse)</td><td style="padding:4px 0;">☐ Chưa đạt</td>')
+            .replace(
+                /<p[^>]*>\s*2\.\s*Kết quả kiểm thử[\s\S]*?<\/table>/gi,
+                `<p style="margin:10px 0; font-weight:bold;">2. Kết quả kiểm thử và nghiệm thu kỹ thuật:</p>
+  <table style="width:100%; border-collapse:collapse; margin-bottom: 12px; font-size:9.5pt;">
+    <tr>
+      <td style="width:240px; padding:4px 0; font-weight:bold;">- Thiết kế & Giao diện (UI/UX):</td>
+      <td style="padding:4px 0;"><span style="font-weight:bold;">[✓]</span> Đạt yêu cầu kỹ thuật & Responsive &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#666;">[x]</span> Chưa đạt</td>
+    </tr>
+    <tr>
+      <td style="font-weight:bold; padding:4px 0;">- Chức năng hệ thống (Feature):</td>
+      <td style="padding:4px 0;"><span style="font-weight:bold;">[✓]</span> Đạt yêu cầu vận hành theo hợp đồng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#666;">[x]</span> Chưa đạt</td>
+    </tr>
+    <tr>
+      <td style="font-weight:bold; padding:4px 0;">- Quản trị nội dung (CMS/Backend):</td>
+      <td style="padding:4px 0;"><span style="font-weight:bold;">[✓]</span> Đạt yêu cầu cập nhật & Phân quyền &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#666;">[x]</span> Chưa đạt</td>
+    </tr>
+    <tr>
+      <td style="font-weight:bold; padding:4px 0;">- Tối ưu SEO & Tốc độ tải trang:</td>
+      <td style="padding:4px 0;"><span style="font-weight:bold;">[✓]</span> Đạt chỉ số cam kết (Lighthouse) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#666;">[x]</span> Chưa đạt</td>
+    </tr>
+  </table>`
+            )
             .replace(/<col style="width:210px">/gi, '<col style="width:170px">')
             .replace(/<col style="width:80px">/gi, '<col style="width:70px">')
             .replace(/Đại diện pháp luật:/g, 'Người đại diện pháp luật:')
