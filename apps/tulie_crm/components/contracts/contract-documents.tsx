@@ -6,7 +6,7 @@ import { Button } from '@repo/ui'
 import { Badge } from '@repo/ui'
 import { Input } from '@repo/ui'
 import { Label } from '@repo/ui'
-import { FileText, Download, Printer, Check, ChevronRight, ChevronDown, Building2, User, Mail, Phone, MapPin, ClipboardList, CreditCard, Package, AlertTriangle, Save, RefreshCw, Eye, EyeOff, CircleCheck, Circle, FileCheck, ExternalLink, Trash2, Settings } from 'lucide-react'
+import { FileText, Download, Printer, Check, ChevronRight, ChevronDown, Building2, User, Mail, Phone, MapPin, ClipboardList, CreditCard, Package, AlertTriangle, Save, RefreshCw, Eye, EyeOff, CircleCheck, Circle, FileCheck, ExternalLink, Trash2, Settings, Calendar } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import { Contract } from '@/types'
 import { Alert, AlertDescription } from '@repo/ui'
@@ -646,6 +646,23 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                                                 }}
                                                 className="h-8 text-xs"
                                                 placeholder="Địa chỉ giao hàng hoặc phương thức bàn giao"
+                                            />
+                                        </div>
+
+                                        <div className="space-y-1">
+                                            <Label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                                                <Calendar className="h-3.5 w-3.5 text-primary" />
+                                                Ngày bàn giao & nghiệm thu (Mặc định: Kết thúc HD)
+                                            </Label>
+                                            <Input
+                                                type="date"
+                                                name="delivery_date"
+                                                value={customerInfo.delivery_date || ''}
+                                                onChange={(e) => {
+                                                    setCustomerInfo(prev => ({ ...prev, delivery_date: e.target.value }))
+                                                    setInfoChanged(true)
+                                                }}
+                                                className="h-8 text-xs font-medium bg-background"
                                             />
                                         </div>
 
