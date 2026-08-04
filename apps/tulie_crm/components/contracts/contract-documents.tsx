@@ -6,7 +6,7 @@ import { Button } from '@repo/ui'
 import { Badge } from '@repo/ui'
 import { Input } from '@repo/ui'
 import { Label } from '@repo/ui'
-import { FileText, Download, Printer, Check, ChevronRight, ChevronDown, Building2, User, Mail, Phone, MapPin, ClipboardList, CreditCard, Package, AlertTriangle, Save, RefreshCw, Eye, EyeOff, CircleCheck, Circle, FileCheck, ExternalLink, Trash2 } from 'lucide-react'
+import { FileText, Download, Printer, Check, ChevronRight, ChevronDown, Building2, User, Mail, Phone, MapPin, ClipboardList, CreditCard, Package, AlertTriangle, Save, RefreshCw, Eye, EyeOff, CircleCheck, Circle, FileCheck, ExternalLink, Trash2, Settings } from 'lucide-react'
 import { LoadingSpinner } from '@repo/ui'
 import { Contract } from '@/types'
 import { Alert, AlertDescription } from '@repo/ui'
@@ -503,8 +503,8 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                         {!isFreelance ? (
                             <div className="rounded-lg border bg-muted/5 p-4 space-y-3">
                                 <div>
-                                    <p className="text-xs font-semibold text-foreground">
-                                        Thông tin điền vào giấy tờ
+                                    <p className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                                        <Settings className="h-3.5 w-3.5 text-primary" /> Cài đặt & Thông tin điền vào giấy tờ
                                     </p>
                                     <p className="text-xs text-muted-foreground mt-1">
                                         {customerInfo.customer_company || 'Chưa có'} • {customerInfo.customer_representative || 'Chưa có đại diện'}
