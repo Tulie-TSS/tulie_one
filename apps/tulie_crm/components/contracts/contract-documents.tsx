@@ -403,6 +403,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
         customer_invoice_address: snapshot?.invoice_address || cust?.invoice_address || '',
         delivery_method: initialDeliveryMethod,
         delivery_address: initialDeliveryAddress,
+        delivery_date: (snapshot as any)?.delivery_date || contract.end_date || '',
     })
     const [infoChanged, setInfoChanged] = useState(false)
     const [savingInfo, setSavingInfo] = useState(false)
@@ -432,11 +433,12 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
                     invoice_address: customerInfo.customer_invoice_address,
                     delivery_method: customerInfo.delivery_method,
                     delivery_address: customerInfo.delivery_address,
+                    delivery_date: customerInfo.delivery_date,
                 })
             })
             if (!res.ok) throw new Error('Lỗi lưu thông tin')
             setInfoChanged(false)
-            toast.success('Đã lưu thông tin khách hàng')
+            toast.success('Đã lưu thông tin giấy tờ')
         } catch (err: any) {
             toast.error(err.message || 'Không thể lưu thông tin')
         } finally {

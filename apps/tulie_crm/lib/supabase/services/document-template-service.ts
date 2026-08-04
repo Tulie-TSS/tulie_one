@@ -727,6 +727,39 @@ export async function generateDocument(
                 ? formatLocalDateString(contract.end_date)
                 : 'sẽ được các bên xác nhận tại Phụ lục 01'
 
+            // Calculate delivery date for delivery_minutes: manual override -> contract end_date -> last milestone due_date -> signedDate
+            const rawDeliveryDate = additionalVariables?.delivery_date || custData?.delivery_date || contract?.end_date || ''
+            let delivDateObj: Date
+            if (rawDeliveryDate) {
+                delivDateObj = parseLocalDateString(rawDeliveryDate)
+            } else if (contract?.milestones && contract.milestones.length > 0) {
+                const lastM = contract.milestones[contract.milestones.length - 1]
+                delivDateObj = lastM?.due_date ? parseLocalDateString(lastM.due_date) : (signedDate || new Date())
+            } else {
+                delivDateObj = signedDate || new Date()
+            }
+
+            if (template.type === 'delivery_minutes') {
+                const dDay = delivDateObj.getDate().toString().padStart(2, '0')
+                const dMonth = (delivDateObj.getMonth() + 1).toString().padStart(2, '0')
+                const dYear = delivDateObj.getFullYear().toString()
+
+                variables.day = dDay
+                variables.month = dMonth
+                variables.year = dYear
+                variables.date_day = dDay
+                variables.date_month = dMonth
+                variables.date_year = dYear
+                variables.delivery_date = formatLocalDate(delivDateObj)
+
+                const dDateStr = `${dYear}${dMonth}${dDay}`
+                if (abbr || cleanInitials) {
+                    variables.report_number = `${dDateStr}/BGNT-TL-${(abbr || cleanInitials).toUpperCase()}`
+                } else if (variables.contract_number) {
+                    variables.report_number = variables.contract_number.replace(/HDDV|HDKT|HĐCTV/gi, 'BGNT').replace(/^\d{8}/, dDateStr)
+                }
+            }
+
             // Use delivery_address from snapshot if available, otherwise fallback to default based on type
             variables.delivery_address = custData?.delivery_address || 
                 (isDigital 

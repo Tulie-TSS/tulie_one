@@ -94,6 +94,27 @@ export async function GET(
                 }
             )
 
+        if (doc.type === 'delivery_minutes') {
+            const customDelivDate = (contract?.customer_snapshot as any)?.delivery_date || contract?.end_date
+            if (customDelivDate) {
+                const dDate = parseLocalDateString(customDelivDate)
+                const dDay = String(dDate.getDate()).padStart(2, '0')
+                const dMonth = String(dDate.getMonth() + 1).padStart(2, '0')
+                const dYear = String(dDate.getFullYear())
+                const delivDateStr = `${dYear}${dMonth}${dDay}`
+
+                documentContent = documentContent.replace(
+                    /ngày\s+\d{2}\s+tháng\s+\d{2}\s+năm\s+\d{4}/gi,
+                    `ngày ${dDay} tháng ${dMonth} năm ${dYear}`
+                )
+
+                if (doc.doc_number) {
+                    const updatedDocNum = doc.doc_number.replace(/^\d{8}/, delivDateStr)
+                    documentContent = documentContent.replace(/Số:\s*[\d\/]+BGNT[^\s<]*/gi, `Số: ${updatedDocNum}`)
+                }
+            }
+        }
+
         if (doc.type === 'payment_request' && doc.doc_number) {
             documentContent = documentContent.replace(
                 /(Số:\s*<i>\s*)([^\s<]+DNTT[^\s<]*?)(\s*<\/i>)/gi,
