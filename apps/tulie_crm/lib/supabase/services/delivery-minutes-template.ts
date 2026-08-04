@@ -32,7 +32,7 @@ export const deliveryMinutesTemplate = `
   <p style="font-style:italic; margin: 0 0 3px 0; text-align:justify;">- Căn cứ {{appendix_list_text}} đính kèm Hợp đồng;</p>
   <p style="font-style:italic; margin: 0 0 10px 0; text-align:justify;">- Căn cứ vào kết quả triển khai thực tế và sự đồng ý nghiệm thu của hai bên.</p>
 
-  <p style="margin:10px 0;">Hôm nay, ngày {{day}} tháng {{month}} năm {{year}}, tại văn phòng của Bên A ({{customer_company}}), chúng tôi gồm:</p>
+  <p style="margin:10px 0;">Hôm nay, ngày {{day}} tháng {{month}} năm {{year}}, tại văn phòng của {{customer_company}}, chúng tôi gồm:</p>
 
   <!-- Bên A + Bên B (cùng 1 bảng) -->
   <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
