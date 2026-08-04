@@ -97,7 +97,15 @@ export async function GET(
         if (doc.type === 'delivery_minutes') {
             const customDelivDate = (contract?.customer_snapshot as any)?.delivery_date || contract?.end_date
             if (customDelivDate) {
-                const dDate = parseLocalDateString(customDelivDate)
+                const parseDate = (dStr: string) => {
+                    const cleanStr = dStr.includes('T') ? dStr.split('T')[0] : dStr
+                    const parts = cleanStr.split('-')
+                    if (parts.length === 3) {
+                        return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10))
+                    }
+                    return new Date(dStr)
+                }
+                const dDate = parseDate(customDelivDate)
                 const dDay = String(dDate.getDate()).padStart(2, '0')
                 const dMonth = String(dDate.getMonth() + 1).padStart(2, '0')
                 const dYear = String(dDate.getFullYear())
