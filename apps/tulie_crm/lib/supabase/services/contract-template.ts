@@ -50,8 +50,8 @@ export const contractSoftwareTemplate = `
   <!-- Parties A & B Table -->
   <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
     <colgroup>
-      <col style="width:160px">
-      <col style="width:auto">
+      <col style="width:170px">
+      <col style="width:220px">
       <col style="width:70px">
       <col style="width:auto">
     </colgroup>
@@ -64,7 +64,7 @@ export const contractSoftwareTemplate = `
     <tr>
       <td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td>
       <td style="font-weight:bold; vertical-align:top; white-space:nowrap;">{{customer_representative_title}} {{customer_representative}}</td>
-      <td style="vertical-align:top; white-space:nowrap;">Chức vụ:</td>
+      <td style="vertical-align:top; white-space:nowrap; padding-left:15px;">Chức vụ:</td>
       <td style="vertical-align:top; white-space:nowrap;">{{customer_position}}</td>
     </tr>
     <tr>
@@ -74,19 +74,19 @@ export const contractSoftwareTemplate = `
     <tr>
       <td style="vertical-align:top;">Điện thoại:</td>
       <td style="vertical-align:top;">{{customer_phone}}</td>
-      <td style="vertical-align:top;">Di động:</td>
+      <td style="vertical-align:top; padding-left:15px;">Di động:</td>
       <td style="vertical-align:top;">{{customer_mobile}}</td>
     </tr>
     <tr>
       <td style="vertical-align:top;">Mã số thuế:</td>
       <td style="vertical-align:top;">{{customer_tax_code}}</td>
-      <td style="vertical-align:top;">Email:</td>
+      <td style="vertical-align:top; padding-left:15px;">Email:</td>
       <td style="vertical-align:top;">{{customer_email}}</td>
     </tr>
     <tr>
       <td style="vertical-align:top;">Số tài khoản:</td>
       <td style="vertical-align:top;">{{customer_bank_account}}</td>
-      <td style="vertical-align:top;">tại</td>
+      <td style="vertical-align:top; padding-left:15px;">tại</td>
       <td style="vertical-align:top;">{{customer_bank_name}}</td>
     </tr>
 
@@ -101,7 +101,7 @@ export const contractSoftwareTemplate = `
     <tr>
       <td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td>
       <td style="font-weight:bold; vertical-align:top; white-space:nowrap;">Ông Nguyễn Thanh Tùng</td>
-      <td style="vertical-align:top; white-space:nowrap;">Chức vụ:</td>
+      <td style="vertical-align:top; white-space:nowrap; padding-left:15px;">Chức vụ:</td>
       <td style="vertical-align:top; white-space:nowrap;">Giám đốc</td>
     </tr>
     <tr>
@@ -111,19 +111,19 @@ export const contractSoftwareTemplate = `
     <tr>
       <td style="vertical-align:top;">Điện thoại:</td>
       <td style="vertical-align:top;"></td>
-      <td style="vertical-align:top;">Di động:</td>
+      <td style="vertical-align:top; padding-left:15px;">Di động:</td>
       <td style="vertical-align:top;">+84 98 898 4554</td>
     </tr>
     <tr>
       <td style="vertical-align:top;">Mã số thuế:</td>
       <td style="vertical-align:top;">0110163102</td>
-      <td style="vertical-align:top;">Email:</td>
+      <td style="vertical-align:top; padding-left:15px;">Email:</td>
       <td style="vertical-align:top;">info@tulie.vn</td>
     </tr>
     <tr>
       <td style="vertical-align:top;">Số tài khoản:</td>
       <td style="vertical-align:top;">86683979</td>
-      <td style="vertical-align:top;">tại</td>
+      <td style="vertical-align:top; padding-left:15px;">tại</td>
       <td style="vertical-align:top;">Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank) - TTGD Hội sở</td>
     </tr>
   </table>
@@ -710,8 +710,8 @@ export const contractSchoolTemplate = `
   <!-- Parties A & B Table -->
   <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
     <colgroup>
-      <col style="width:160px">
-      <col style="width:auto">
+      <col style="width:170px">
+      <col style="width:220px">
       <col style="width:70px">
       <col style="width:auto">
     </colgroup>
@@ -724,7 +724,7 @@ export const contractSchoolTemplate = `
     <tr>
       <td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td>
       <td style="font-weight:bold; vertical-align:top; white-space:nowrap;">{{customer_representative_title}} {{customer_representative}}</td>
-      <td style="vertical-align:top; white-space:nowrap;">Chức vụ:</td>
+      <td style="vertical-align:top; white-space:nowrap; padding-left:15px;">Chức vụ:</td>
       <td style="vertical-align:top; white-space:nowrap;">{{customer_position}}</td>
     </tr>
     <tr>
@@ -734,19 +734,19 @@ export const contractSchoolTemplate = `
     <tr>
       <td style="vertical-align:top;">Điện thoại:</td>
       <td style="vertical-align:top;">{{customer_phone}}</td>
-      <td style="vertical-align:top;">Di động:</td>
+      <td style="vertical-align:top; padding-left:15px;">Di động:</td>
       <td style="vertical-align:top;">{{customer_mobile}}</td>
     </tr>
     <tr>
       <td style="vertical-align:top;">Mã số thuế:</td>
       <td style="vertical-align:top;">{{customer_tax_code}}</td>
-      <td style="vertical-align:top;">Email:</td>
+      <td style="vertical-align:top; padding-left:15px;">Email:</td>
       <td style="vertical-align:top;">{{customer_email}}</td>
     </tr>
     <tr>
       <td style="vertical-align:top;">Số tài khoản:</td>
       <td style="vertical-align:top;">{{customer_bank_account}}</td>
-      <td style="vertical-align:top;">tại</td>
+      <td style="vertical-align:top; padding-left:15px;">tại</td>
       <td style="vertical-align:top;">{{customer_bank_name}}</td>
     </tr>
 
@@ -761,7 +761,7 @@ export const contractSchoolTemplate = `
     <tr>
       <td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td>
       <td style="font-weight:bold; vertical-align:top; white-space:nowrap;">Ông Nguyễn Thanh Tùng</td>
-      <td style="vertical-align:top; white-space:nowrap;">Chức vụ:</td>
+      <td style="vertical-align:top; white-space:nowrap; padding-left:15px;">Chức vụ:</td>
       <td style="vertical-align:top; white-space:nowrap;">Giám đốc</td>
     </tr>
     <tr>
@@ -771,7 +771,7 @@ export const contractSchoolTemplate = `
     <tr>
       <td style="vertical-align:top;">Điện thoại:</td>
       <td style="vertical-align:top;"></td>
-      <td style="vertical-align:top;">Di động:</td>
+      <td style="vertical-align:top; padding-left:15px;">Di động:</td>
       <td style="vertical-align:top;">+84 98 898 4554</td>
     </tr>
     <tr>
@@ -1129,8 +1129,8 @@ export const contractDesignTemplate = `
   <!-- Parties A & B Table -->
   <table style="width:100%; border-collapse:collapse; margin-bottom:14px; font-size:10pt;" cellpadding="2">
     <colgroup>
-      <col style="width:160px">
-      <col style="width:auto">
+      <col style="width:170px">
+      <col style="width:220px">
       <col style="width:70px">
       <col style="width:auto">
     </colgroup>
@@ -1143,7 +1143,7 @@ export const contractDesignTemplate = `
     <tr>
       <td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td>
       <td style="font-weight:bold; vertical-align:top; white-space:nowrap;">{{customer_representative_title}} {{customer_representative}}</td>
-      <td style="vertical-align:top; white-space:nowrap;">Chức vụ:</td>
+      <td style="vertical-align:top; white-space:nowrap; padding-left:15px;">Chức vụ:</td>
       <td style="vertical-align:top; white-space:nowrap;">{{customer_position}}</td>
     </tr>
     <tr>
@@ -1153,19 +1153,19 @@ export const contractDesignTemplate = `
     <tr>
       <td style="vertical-align:top;">Điện thoại:</td>
       <td style="vertical-align:top;">{{customer_phone}}</td>
-      <td style="vertical-align:top;">Di động:</td>
+      <td style="vertical-align:top; padding-left:15px;">Di động:</td>
       <td style="vertical-align:top;">{{customer_mobile}}</td>
     </tr>
     <tr>
       <td style="vertical-align:top;">Mã số thuế:</td>
       <td style="vertical-align:top;">{{customer_tax_code}}</td>
-      <td style="vertical-align:top;">Email:</td>
+      <td style="vertical-align:top; padding-left:15px;">Email:</td>
       <td style="vertical-align:top;">{{customer_email}}</td>
     </tr>
     <tr>
       <td style="vertical-align:top;">Số tài khoản:</td>
       <td style="vertical-align:top;">{{customer_bank_account}}</td>
-      <td style="vertical-align:top;">tại</td>
+      <td style="vertical-align:top; padding-left:15px;">tại</td>
       <td style="vertical-align:top;">{{customer_bank_name}}</td>
     </tr>
 
@@ -1180,7 +1180,7 @@ export const contractDesignTemplate = `
     <tr>
       <td style="vertical-align:top; white-space:nowrap;">Người đại diện pháp luật:</td>
       <td style="font-weight:bold; vertical-align:top; white-space:nowrap;">Ông Nguyễn Thanh Tùng</td>
-      <td style="vertical-align:top; white-space:nowrap;">Chức vụ:</td>
+      <td style="vertical-align:top; white-space:nowrap; padding-left:15px;">Chức vụ:</td>
       <td style="vertical-align:top; white-space:nowrap;">Giám đốc</td>
     </tr>
     <tr>
@@ -1190,7 +1190,7 @@ export const contractDesignTemplate = `
     <tr>
       <td style="vertical-align:top;">Điện thoại:</td>
       <td style="vertical-align:top;"></td>
-      <td style="vertical-align:top;">Di động:</td>
+      <td style="vertical-align:top; padding-left:15px;">Di động:</td>
       <td style="vertical-align:top;">+84 98 898 4554</td>
     </tr>
     <tr>

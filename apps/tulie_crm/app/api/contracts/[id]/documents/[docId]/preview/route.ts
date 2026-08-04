@@ -66,7 +66,9 @@ export async function GET(
     </tr>
   </table>`
             )
-            .replace(/<col style="width:210px">/gi, '<col style="width:170px">')
+            .replace(/<colgroup><col style="width:(?:160|170|210)px"><col style="width:(?:auto|220px)">/gi, '<colgroup><col style="width:170px"><col style="width:220px">')
+            .replace(/<td style="vertical-align:top; white-space:nowrap;">(Chức vụ:)<\/td>/gi, '<td style="vertical-align:top; white-space:nowrap; padding-left:15px;">$1</td>')
+            .replace(/<td style="vertical-align:top;">(Di động:|Email:|tại)<\/td>/gi, '<td style="vertical-align:top; padding-left:15px;">$1</td>')
             .replace(/<col style="width:80px">/gi, '<col style="width:70px">')
             .replace(/Đại diện pháp luật:/g, 'Người đại diện pháp luật:')
             .replace(
