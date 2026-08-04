@@ -150,7 +150,7 @@ const defaultTemplates: Omit<DocumentTemplate, 'id' | 'created_at' | 'updated_at
         ]
     },
     {
-        name: 'Biên bản giao nhận (Mẫu chuẩn)',
+        name: 'Biên bản nghiệm thu (Mẫu chuẩn)',
         type: 'delivery_minutes',
         content: deliveryMinutesTemplate,
         variables: [

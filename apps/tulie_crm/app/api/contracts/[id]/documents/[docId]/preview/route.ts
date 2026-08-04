@@ -339,7 +339,7 @@ export async function GET(
             freelance_contract: 'Hợp đồng Cộng tác viên',
             order: 'Đơn đặt hàng',
             payment_request: 'Đề nghị thanh toán',
-            delivery_minutes: 'Biên bản giao nhận',
+            delivery_minutes: 'Biên bản nghiệm thu',
         }
         const title = DOC_LABELS[doc.type] || 'Document'
 

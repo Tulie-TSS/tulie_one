@@ -95,7 +95,7 @@ export default function EditTemplatePage() {
         payment_request: 'Đề nghị TT',
         quotation: 'Báo giá',
         order: 'Đơn hàng',
-        delivery_minutes: 'Biên bản giao nhận',
+        delivery_minutes: 'Biên bản nghiệm thu',
         confirmation: 'Biên bản xác nhận',
     }
 

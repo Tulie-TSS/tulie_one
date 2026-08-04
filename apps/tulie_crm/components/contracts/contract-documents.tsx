@@ -112,7 +112,7 @@ export function ContractDocuments({ contract }: ContractDocumentsProps) {
         freelance_contract: { label: contract.title || 'Hợp đồng Cộng tác viên', description: 'Hợp đồng thỏa thuận cung cấp dịch vụ cá nhân', icon: FileText },
         order: { label: 'Đơn đặt hàng', description: 'Đơn đặt hàng chi tiết sản phẩm/dịch vụ', icon: ClipboardList },
         payment_request: { label: 'Đề nghị thanh toán', description: 'Đề nghị thanh toán theo hợp đồng dịch vụ', icon: CreditCard },
-        delivery_minutes: { label: 'Biên bản giao nhận', description: 'Biên bản xác nhận giao nhận hàng hóa/dịch vụ', icon: Package },
+        delivery_minutes: { label: 'Biên bản nghiệm thu', description: 'Biên bản xác nhận nghiệm thu và bàn giao sản phẩm/dịch vụ', icon: Package },
     }
 
     const isFramework = contract.type === 'contract'

@@ -48,7 +48,7 @@ const getTypeLabel = (type: DocumentTemplate['type']) => {
         case 'payment_request': return 'Đề nghị TT'
         case 'quotation': return 'Báo giá'
         case 'order': return 'Đơn hàng'
-        case 'delivery_minutes': return 'Biên bản giao nhận'
+        case 'delivery_minutes': return 'Biên bản nghiệm thu'
         case 'confirmation': return 'Biên bản xác nhận'
         case 'freelance_contract': return 'Hợp đồng CTV'
         default: return 'Khác'
