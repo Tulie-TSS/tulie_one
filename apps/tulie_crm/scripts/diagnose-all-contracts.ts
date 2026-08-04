@@ -126,7 +126,7 @@ async function diagnose() {
                 ? `${dateStr}/DNTT-TL-${(abbr || cleanInitials).toUpperCase()}`
                 : ''
             const deliveryDocNumber = (dateStr && (abbr || cleanInitials))
-                ? `${dateStr}/BGNT-TL-${(abbr || cleanInitials).toUpperCase()}`
+                ? `${dateStr}/BBNT-TL-${(abbr || cleanInitials).toUpperCase()}`
                 : ''
 
             const variables: Record<string, string> = {

@@ -123,7 +123,7 @@ export async function GET(
 
                 if (doc.doc_number) {
                     const updatedDocNum = doc.doc_number.replace(/^\d{8}/, delivDateStr)
-                    documentContent = documentContent.replace(/Số:\s*[\d\/]+BGNT[^\s<]*/gi, `Số: ${updatedDocNum}`)
+                    documentContent = documentContent.replace(/Số:\s*[\d\/]+(?:BGNT|BBNT)[^\s<]*/gi, `Số: ${updatedDocNum}`)
                 }
 
                 documentContent = documentContent.replace(

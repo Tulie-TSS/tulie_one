@@ -590,38 +590,38 @@ export async function generateDocument(
             const cn = contractDocNumber.trim()
             if (/HĐCTV-TL/i.test(cn)) {
                 paymentDocNumber = cn.replace(/HĐCTV-TL/i, 'DNTT-TL')
-                deliveryDocNumber = cn.replace(/HĐCTV-TL/i, 'BGNT-TL')
+                deliveryDocNumber = cn.replace(/HĐCTV-TL/i, 'BBNT-TL')
             } else if (/HDDV-TL|HDKT-TL/i.test(cn)) {
                 paymentDocNumber = cn.replace(/HDDV-TL|HDKT-TL/i, 'DNTT-TL')
-                deliveryDocNumber = cn.replace(/HDDV-TL|HDKT-TL/i, 'BGNT-TL')
+                deliveryDocNumber = cn.replace(/HDDV-TL|HDKT-TL/i, 'BBNT-TL')
             } else if (/HĐCTV/i.test(cn)) {
                 paymentDocNumber = cn.replace(/HĐCTV/i, 'DNTT')
-                deliveryDocNumber = cn.replace(/HĐCTV/i, 'BGNT')
+                deliveryDocNumber = cn.replace(/HĐCTV/i, 'BBNT')
             } else if (/HDDV|HDKT/i.test(cn)) {
                 paymentDocNumber = cn.replace(/HDDV|HDKT/i, 'DNTT')
-                deliveryDocNumber = cn.replace(/HDDV|HDKT/i, 'BGNT')
+                deliveryDocNumber = cn.replace(/HDDV|HDKT/i, 'BBNT')
             } else if (/^H[DĐ]-/i.test(cn)) {
                 paymentDocNumber = cn.replace(/^H[DĐ]-/i, 'DNTT-')
-                deliveryDocNumber = cn.replace(/^H[DĐ]-/i, 'BGNT-')
+                deliveryDocNumber = cn.replace(/^H[DĐ]-/i, 'BBNT-')
             } else if (/^H[DĐ]/i.test(cn)) {
                 paymentDocNumber = cn.replace(/^H[DĐ]/i, 'DNTT-')
-                deliveryDocNumber = cn.replace(/^H[DĐ]/i, 'BGNT-')
+                deliveryDocNumber = cn.replace(/^H[DĐ]/i, 'BBNT-')
             } else if (/\/H[DĐ]-/i.test(cn)) {
                 paymentDocNumber = cn.replace(/\/H[DĐ]-/i, '/DNTT-')
-                deliveryDocNumber = cn.replace(/\/H[DĐ]-/i, '/BGNT-')
+                deliveryDocNumber = cn.replace(/\/H[DĐ]-/i, '/BBNT-')
             } else if (/\/H[DĐ]/i.test(cn)) {
                 paymentDocNumber = cn.replace(/\/H[DĐ]/i, '/DNTT-')
-                deliveryDocNumber = cn.replace(/\/H[DĐ]/i, '/BGNT-')
+                deliveryDocNumber = cn.replace(/\/H[DĐ]/i, '/BBNT-')
             } else {
                 paymentDocNumber = `DNTT-${cn}`
-                deliveryDocNumber = `BGNT-${cn}`
+                deliveryDocNumber = `BBNT-${cn}`
             }
         } else {
             paymentDocNumber = (dateStr && (abbr || cleanInitials))
                 ? `${dateStr}/DNTT-TL-${(abbr || cleanInitials).toUpperCase()}`
                 : ''
             deliveryDocNumber = (dateStr && (abbr || cleanInitials))
-                ? `${dateStr}/BGNT-TL-${(abbr || cleanInitials).toUpperCase()}`
+                ? `${dateStr}/BBNT-TL-${(abbr || cleanInitials).toUpperCase()}`
                 : ''
         }
 
@@ -754,9 +754,9 @@ export async function generateDocument(
 
                 const dDateStr = `${dYear}${dMonth}${dDay}`
                 if (abbr || cleanInitials) {
-                    variables.report_number = `${dDateStr}/BGNT-TL-${(abbr || cleanInitials).toUpperCase()}`
+                    variables.report_number = `${dDateStr}/BBNT-TL-${(abbr || cleanInitials).toUpperCase()}`
                 } else if (variables.contract_number) {
-                    variables.report_number = variables.contract_number.replace(/HDDV|HDKT|HĐCTV/gi, 'BGNT').replace(/^\d{8}/, dDateStr)
+                    variables.report_number = variables.contract_number.replace(/HDDV|HDKT|HĐCTV/gi, 'BBNT').replace(/^\d{8}/, dDateStr)
                 }
             }
 
