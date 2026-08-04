@@ -120,6 +120,11 @@ export async function GET(
                     const updatedDocNum = doc.doc_number.replace(/^\d{8}/, delivDateStr)
                     documentContent = documentContent.replace(/Số:\s*[\d\/]+BGNT[^\s<]*/gi, `Số: ${updatedDocNum}`)
                 }
+
+                documentContent = documentContent.replace(
+                    /<p([^>]*)text-align:\s*justify;?([^>]*>\s*\*?\s*Ghi chú các lỗi)/gi,
+                    '<p$1text-align:left;$2'
+                )
             }
         }
 

@@ -96,7 +96,7 @@ export const deliveryMinutesTemplate = `
     </tr>
   </table>
 
-  <p style="margin:6px 0; text-align:justify; font-style:italic;">
+  <p style="margin:6px 0; text-align:left; font-style:italic;">
     * Ghi chú các lỗi/chỉnh sửa nhỏ cần khắc phục (nếu có): .....................................................................................................<br>
     Hai bên thống nhất các lỗi nhỏ này không ảnh hưởng đến nghiệm thu bàn giao chính thức. Bên B cam kết khắc phục trong vòng 05 ngày làm việc.
   </p>
