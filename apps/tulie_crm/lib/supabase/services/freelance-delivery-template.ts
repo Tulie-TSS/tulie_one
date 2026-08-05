@@ -5,11 +5,11 @@ export const freelanceDeliveryTemplate = `
     <tr>
       <td style="width:50%; text-align:center; font-weight:bold; font-size:10pt; vertical-align:top; padding:0;">
         CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP<br>
-        <span style="text-decoration:underline;">CÔNG NGHỆ TULIE</span>
+        <span style="border-bottom: 1px solid #000; padding-bottom: 2px; display: inline-block; line-height: 1.2;">CÔNG NGHỆ TULIE</span>
       </td>
       <td style="width:50%; text-align:center; font-weight:bold; font-size:10pt; vertical-align:top; padding:0;">
         CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM<br>
-        <span style="font-weight:bold; text-decoration:underline;">Độc lập - Tự do - Hạnh phúc</span>
+        <span style="font-weight:bold; border-bottom: 1px solid #000; padding-bottom: 2px; display: inline-block; line-height: 1.2;">Độc lập - Tự do - Hạnh phúc</span>
       </td>
     </tr>
   </table>

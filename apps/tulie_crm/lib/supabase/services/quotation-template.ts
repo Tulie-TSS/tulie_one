@@ -14,7 +14,7 @@ export const quotationTemplate = `
             </td>
             <td style="width: 55%; text-align: right; vertical-align: top;">
                 <p style="margin: 0; font-weight: 800; font-size: 9pt;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
-                <p style="margin: 2px 0; font-weight: 700; font-size: 9pt; text-decoration: underline;">Độc lập - Tự do - Hạnh phúc</p>
+                <p style="margin: 2px 0; font-weight: 700; font-size: 9pt;"><span style="border-bottom: 1px solid #000; padding-bottom: 2px; display: inline-block; line-height: 1.2;">Độc lập - Tự do - Hạnh phúc</span></p>
                 <p style="margin: 20px 0 0 0; font-size: 8.5pt; font-style: italic; color: #666;">Hà Nội, ngày {{day}} tháng {{month}} năm {{year}}</p>
             </td>
         </tr>

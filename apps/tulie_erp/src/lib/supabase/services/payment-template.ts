@@ -14,12 +14,12 @@ export const paymentTemplate = `
     <tr>
       <td style="width:45%; text-align:center; font-size:10pt; vertical-align:top; padding:0;">
         <span style="font-weight:bold;">CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP</span><br>
-        <span style="font-weight:bold; text-decoration:underline;">CÔNG NGHỆ TULIE</span>
+        <span style="font-weight:bold; border-bottom: 1px solid #000; padding-bottom: 2px; display: inline-block; line-height: 1.2;">CÔNG NGHỆ TULIE</span>
       </td>
       <td style="width:10%;"></td>
       <td style="width:45%; text-align:center; font-size:10pt; vertical-align:top; padding:0;">
         <span style="font-weight:bold;">CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM</span><br>
-        <span style="font-weight:bold; text-decoration:underline;">Độc lập - Tự do - Hạnh phúc</span>
+        <span style="font-weight:bold; border-bottom: 1px solid #000; padding-bottom: 2px; display: inline-block; line-height: 1.2;">Độc lập - Tự do - Hạnh phúc</span>
       </td>
     </tr>
   </table>
@@ -28,7 +28,7 @@ export const paymentTemplate = `
   <table style="width:100%; border-collapse:collapse; margin: 8px 0 12px 0;">
     <tr>
       <td style="width:45%; text-align:center; font-size:10pt; padding:0;">
-        <span style="font-style:italic;">Số: {{payment_number}}</span>
+        <span>Số: {{payment_number}}</span>
       </td>
       <td style="width:10%;"></td>
       <td style="width:45%; text-align:center; font-style:italic; font-size:10pt; padding:0;">
