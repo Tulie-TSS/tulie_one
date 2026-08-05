@@ -136,11 +136,12 @@ export async function GET(
                     const cleanNum = parseFloat(numText.replace(/[^0-9]/g, ''))
                     if (!isNaN(cleanNum) && cleanNum > 0) {
                         const words = readNumberToWords(cleanNum)
-                        return `(tương đương: <strong>${numText}</strong> — Bằng chữ: <em>${words} đồng./.</em>)`
+                        return `(tương đương: <strong>${numText}</strong> — Bằng chữ: <em>${words}</em>)`
                     }
                     return match
                 }
             )
+            .replace(/(đồng\.\/\.)\s*(?:đồng\.\/\.|đồng)/gi, '$1')
             .replace(/style="width:30px;/gi, 'style="width:50px;')
             .replace(/style="width:55px;/gi, 'style="width:50px;')
             .replace(/width="30"/gi, 'width="50"')

@@ -113,7 +113,7 @@ export const deliveryMinutesTemplate = `
     - <strong>Yêu cầu phát sinh ngoài phạm vi:</strong> Mọi yêu cầu điều chỉnh, bổ sung tính năng, giao diện hoặc cấu trúc hệ thống phát sinh sau ngày ký biên bản này đều được tính là dịch vụ phát sinh ngoài Hợp đồng và sẽ được hai bên thỏa thuận chi phí riêng.
   </p>
   <p style="margin:6px 0; text-align:justify;">
-    - <strong>Nghĩa vụ thanh toán đợt cuối:</strong> Biên bản này là căn cứ đề nghị thanh toán. Bên A có nghĩa vụ thanh toán đợt cuối số tiền còn lại (tương đương: <strong>{{payment_amount}}</strong> — Bằng chữ: <em>{{amount_in_words}} đồng./.</em>) cho Bên B trong thời hạn tối đa <strong>07 (bảy) ngày làm việc</strong> kể từ ngày ký Biên bản này.
+    - <strong>Nghĩa vụ thanh toán đợt cuối:</strong> Biên bản này là căn cứ đề nghị thanh toán. Bên A có nghĩa vụ thanh toán đợt cuối số tiền còn lại (tương đương: <strong>{{payment_amount}}</strong> — Bằng chữ: <em>{{amount_in_words}}</em>) cho Bên B trong thời hạn tối đa <strong>07 (bảy) ngày làm việc</strong> kể từ ngày ký Biên bản này.
   </p>
   <p style="margin:6px 0; text-align:justify;">
     - <strong>Chậm thanh toán: Theo Điều 301 Luật Thương mại 2005</strong>, nếu Bên A chậm thanh toán quá thời hạn nêu trên, Bên A phải chịu phạt vi phạm 8% giá trị nghĩa vụ vi phạm, tính lãi chậm trả 15%/năm và Bên B có quyền tạm dừng dịch vụ bảo hành, bảo trì, hỗ trợ kỹ thuật hoặc tạm ngưng vận hành hệ thống cho đến khi Bên A hoàn tất nghĩa vụ thanh toán.

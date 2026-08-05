@@ -93,11 +93,12 @@ export async function GET(
                     const cleanNum = parseFloat(numText.replace(/[^0-9]/g, ''))
                     if (!isNaN(cleanNum) && cleanNum > 0) {
                         const words = readNumberToWords(cleanNum)
-                        return `(tương đương: <strong>${numText}</strong> — Bằng chữ: <em>${words} đồng./.</em>)`
+                        return `(tương đương: <strong>${numText}</strong> — Bằng chữ: <em>${words}</em>)`
                     }
                     return match
                 }
             )
+            .replace(/(đồng\.\/\.)\s*(?:đồng\.\/\.|đồng)/gi, '$1')
 
         if (doc.type === 'delivery_minutes') {
             const customDelivDate = (contract?.customer_snapshot as any)?.delivery_date || contract?.end_date
