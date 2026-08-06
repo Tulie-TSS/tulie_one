@@ -1287,13 +1287,15 @@ export async function generateDocument(
                         <p style="font-weight:bold; font-size:10pt; margin: 18px 0 6px 0;">II. PHẠM VI CÔNG VIỆC, SẢN PHẨM BÀN GIAO, TIÊU CHÍ NGHIỆM THU VÀ LỘ TRÌNH</p>
                     `
 
+                    const showNumbering = proposalSections.length > 1
                     proposalSections.forEach((section, idx) => {
                         const sectionContent = section.content
                             .replace(/\n/g, '<br>')
                             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        const sectionTitle = showNumbering ? `${idx + 1}. ${section.label}` : section.label
                         proposalHtml += `
                             <div style="margin-bottom:16px;">
-                                <p style="font-weight:bold; font-size:10pt; margin: 0 0 6px 0; border-bottom:1px solid #ddd; padding-bottom:4px;">${idx + 1}. ${section.label}</p>
+                                <p style="font-weight:bold; font-size:10pt; margin: 0 0 6px 0; border-bottom:1px solid #ddd; padding-bottom:4px;">${sectionTitle}</p>
                                 <div style="font-size:9.5pt; text-align:justify; line-height:1.6; padding-left:4px;">${sectionContent}</div>
                             </div>
                         `
