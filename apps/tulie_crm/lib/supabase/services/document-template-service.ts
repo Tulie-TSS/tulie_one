@@ -706,7 +706,12 @@ export async function generateDocument(
             variables.total_amount_number = new Intl.NumberFormat('vi-VN').format(contract.total_amount || 0)
             if (!variables.amount_in_words) variables.amount_in_words = readNumberToWords(contract.total_amount || 0)
             variables.start_date = contract.start_date ? formatLocalDateString(contract.start_date) : ''
-            variables.service_description = contract.description || contract.quotation?.title || contract.title || ''
+            const rawServiceDesc = (contract.product_name_in_contract || contract.quotation?.product_name_in_contract || contract.quotation?.title || contract.title || contract.description || '').trim()
+            if (!rawServiceDesc || rawServiceDesc.length > 200 || rawServiceDesc.includes('\n') || /^phụ lục/i.test(rawServiceDesc)) {
+                variables.service_description = (contract.product_name_in_contract || contract.quotation?.product_name_in_contract || contract.quotation?.title || contract.title || 'Thiết kế & Phát triển Website').trim()
+            } else {
+                variables.service_description = rawServiceDesc
+            }
             
             const contractTitle = getDocumentContractTitle(contract)
             variables.contract_title_body = contractTitle
