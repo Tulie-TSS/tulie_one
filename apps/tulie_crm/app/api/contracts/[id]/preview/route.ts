@@ -45,11 +45,13 @@ export async function GET(
 
         const companyName = (contract.customer?.company_name || contract.customer?.name || '').toLowerCase()
         const isSchool = contract.contract_template === 'school' || 
-                         companyName.includes('trường') || 
-                         companyName.includes('giáo dục') || 
-                         companyName.includes('school') || 
-                         companyName.includes('maple bear') ||
-                         companyName.includes('sunshine')
+                         companyName.includes('mầm non') || 
+                         companyName.includes('tiểu học') || 
+                         companyName.includes('thcs') || 
+                         companyName.includes('thpt') || 
+                         companyName.includes('đại học') || 
+                         companyName.includes('cao đẳng') || 
+                         companyName.includes('maple bear')
 
         if (type === 'contract') {
             const targetName = isSchool

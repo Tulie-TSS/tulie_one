@@ -1099,7 +1099,7 @@ export async function generateDocument(
                             
                             let milestoneReason: string
                             if (isDeposit) {
-                                milestoneReason = `Theo điều khoản thanh toán tại Điều 2 của Hợp đồng, Bên sử dụng dịch vụ thanh toán đặt cọc cho Bên cung cấp dịch vụ để triển khai dự án.`
+                                milestoneReason = `Theo điều khoản thanh toán tại Điều 2 của Hợp đồng, Bên sử dụng dịch vụ thanh toán tạm ứng cho Bên cung cấp dịch vụ để triển khai dự án.`
                             } else {
                                 const deliveryDate = pendingMilestone.due_date 
                                     ? formatLocalDateString(pendingMilestone.due_date) 
@@ -1677,11 +1677,13 @@ export async function generateDocumentBundle(contractId: string) {
         if (docType === 'contract') {
             const customerName = (customer?.company_name || customer?.name || '').toLowerCase()
             const isSchoolCustomer = contract.contract_template === 'school' || 
-                                    customerName.includes('trường') || 
-                                    customerName.includes('giáo dục') || 
-                                    customerName.includes('school') || 
-                                    customerName.includes('maple bear') ||
-                                    customerName.includes('sunshine')
+                                    customerName.includes('mầm non') || 
+                                    customerName.includes('tiểu học') || 
+                                    customerName.includes('thcs') || 
+                                    customerName.includes('thpt') || 
+                                    customerName.includes('đại học') || 
+                                    customerName.includes('cao đẳng') || 
+                                    customerName.includes('maple bear')
             const targetName = isSchoolCustomer
                 ? 'Hợp đồng dịch vụ trường học / giáo dục (Mẫu chuẩn)'
                 : contract.contract_template === 'design'
@@ -1735,7 +1737,7 @@ export async function generateDocumentBundle(contractId: string) {
                             
                             let milestoneReason = ''
                             if (isDeposit) {
-                                milestoneReason = `Theo điều khoản thanh toán tại Điều 2 của Hợp đồng, Bên sử dụng dịch vụ thanh toán đặt cọc cho Bên cung cấp dịch vụ để triển khai dự án.`
+                                milestoneReason = `Theo điều khoản thanh toán tại Điều 2 của Hợp đồng, Bên sử dụng dịch vụ thanh toán tạm ứng cho Bên cung cấp dịch vụ để triển khai dự án.`
                             } else {
                                 const deliveryDate = milestone.due_date 
                                     ? formatLocalDateString(milestone.due_date) 

@@ -144,7 +144,14 @@ export async function GET(
             )
         }
 
-        if (doc.type === 'contract' && (documentContent.includes('Nhà trường') || documentContent.includes('trường') || documentContent.includes('TRƯỜNG') || documentContent.includes('MAPLE BEAR') || documentContent.includes('SUNSHINE'))) {
+        const isSchoolDoc = contract?.contract_template === 'school' || 
+                            compStr.toLowerCase().includes('mầm non') || 
+                            compStr.toLowerCase().includes('tiểu học') || 
+                            compStr.toLowerCase().includes('thcs') || 
+                            compStr.toLowerCase().includes('thpt') || 
+                            compStr.toLowerCase().includes('maple bear')
+
+        if (doc.type === 'contract' && isSchoolDoc) {
             documentContent = documentContent.replace(
                 /(Bên sử dụng dịch vụ \(Bên A\)<\/td>\s*<td[^>]*>\s*)(.*?)(<\/td>)/gi,
                 (match: string, p1: string, companyText: string, p3: string) => {
