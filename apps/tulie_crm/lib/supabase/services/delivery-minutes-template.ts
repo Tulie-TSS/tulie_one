@@ -8,7 +8,7 @@ export const deliveryMinutesTemplate = `
   <table style="width:100%; border-collapse:collapse; margin-bottom: 0;">
     <tr>
       <td style="width:50%; text-align:center; font-weight:bold; font-size:10pt; vertical-align:top; padding:0;">
-        CÔNG TY TNHH DỊV VỤ VÀ GIẢI PHÁP<br>
+        CÔNG TY TNHH DỊCH VỤ VÀ GIẢI PHÁP<br>
         <span style="border-bottom: 1px solid #000; padding-bottom: 2px; display: inline-block; line-height: 1.2;">CÔNG NGHỆ TULIE</span>
       </td>
       <td style="width:50%; text-align:center; font-weight:bold; font-size:10pt; vertical-align:top; padding:0;">
@@ -21,7 +21,7 @@ export const deliveryMinutesTemplate = `
   <table style="width:100%; border-collapse:collapse; margin: 6px 0 4px 0;">
     <tr>
       <td style="width:50%; text-align:center; font-size:10pt; padding:0;">Số: {{report_number}}</td>
-      <td style="width:50%; text-align:right; font-style:italic; font-size:10pt; padding:0;">Hà Nội, ngày {{day}} tháng {{month}} năm {{year}}</td>
+      <td style="width:50%; text-align:center; font-style:italic; font-size:10pt; padding:0;">Hà Nội, ngày {{day}} tháng {{month}} năm {{year}}</td>
     </tr>
   </table>
 

@@ -27,7 +27,7 @@ export const contractSoftwareTemplate = `
   <table style="width:100%; border-collapse:collapse; margin: 6px 0 4px 0;">
     <tr>
       <td style="width:50%; text-align:center; font-size:10pt; padding:0;">Số: {{contract_number}}</td>
-      <td style="width:50%; text-align:right; font-style:italic; font-size:10pt; padding:0;">Hà Nội, ngày {{day}} tháng {{month}} năm {{year}}</td>
+      <td style="width:50%; text-align:center; font-style:italic; font-size:10pt; padding:0;">Hà Nội, ngày {{day}} tháng {{month}} năm {{year}}</td>
     </tr>
   </table>
 
@@ -686,7 +686,7 @@ export const contractSchoolTemplate = `
   <table style="width:100%; border-collapse:collapse; margin: 6px 0 4px 0;">
     <tr>
       <td style="width:50%; text-align:center; font-size:10pt; padding:0;">Số: {{contract_number}}</td>
-      <td style="width:50%; text-align:right; font-style:italic; font-size:10pt; padding:0;">Hà Nội, ngày {{day}} tháng {{month}} năm {{year}}</td>
+      <td style="width:50%; text-align:center; font-style:italic; font-size:10pt; padding:0;">Hà Nội, ngày {{day}} tháng {{month}} năm {{year}}</td>
     </tr>
   </table>
 
@@ -1110,7 +1110,7 @@ export const contractDesignTemplate = `
   <table style="width:100%; border-collapse:collapse; margin: 6px 0 4px 0;">
     <tr>
       <td style="width:50%; text-align:center; font-size:10pt; padding:0;">Số: {{contract_number}}</td>
-      <td style="width:50%; text-align:right; font-style:italic; font-size:10pt; padding:0;">Hà Nội, ngày {{day}} tháng {{month}} năm {{year}}</td>
+      <td style="width:50%; text-align:center; font-style:italic; font-size:10pt; padding:0;">Hà Nội, ngày {{day}} tháng {{month}} năm {{year}}</td>
     </tr>
   </table>
 
